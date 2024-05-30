@@ -15,8 +15,10 @@
 	"DoorAttic.Name": "Porta da Dimensão - Sótão",
 	"DoorLoft.Name": "Porta da Dimensão - Loft",
 	"DoorCellar.Name": "Porta da Dimensão - Adega",
+	"DoorSpa.Name": "Porta da Dimensão - Spa",
 	"Door.Empty": "Não há nada atrás desta porta.",
 	"Door.Offline": "Não se deve bisbilhotar quando o amigo está fora!",
+	"Door.Locked": "Esta porta está trancada",
 	"Painting.Name": "Pintura da Temporada",
 	"Synchronizer.Name": "Sincronizador de Espaço-Tempo",
 	"Synchronizer.Description": "Sincroniza sua dimensão pessoal com a data de Pelican Towns",
@@ -27,4 +29,6 @@
 	"VoidSeal.Buff.Name": "Vazio Interior",
 	"VoidSeal.Buff.Description": "Sinto-me tão... vazio",
 	"NoContentPacks": "Tem a porta, mas não tem o pacote de conteúdos para a acompanhar",
+	"Key.Name": "Chave do vazio",
+	"Key.Description": "Fechaduras e desbloqueios uma dimensão pessoal",
 }

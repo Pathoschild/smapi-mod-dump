@@ -8,17 +8,15 @@
 **
 *************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using StardewModdingAPI;
+using StardewValley;
 
 namespace GiftTasteHelper.Framework
 {
     /// <summary>Database for storing NPC gift tastes.</summary>
     internal class GiftDatabase : IGiftDatabase
     {
-        public event DataSourceChangedDelegate DatabaseChanged;
+        public event DataSourceChangedDelegate? DatabaseChanged;
 
         public GiftDatabaseModel Database { get; protected set; }
         protected readonly IModHelper Helper;
@@ -63,9 +61,9 @@ namespace GiftTasteHelper.Framework
             if (!check || !ContainsGift(npcName, itemId, taste))
             {
                 Utils.DebugLog($"Adding {itemId} to {npcName}'s {taste} tastes.");
-                Database.Entries[npcName].Add(taste, new GiftModel() { ItemId = itemId });
+                Database.Entries[npcName].Add(taste, new GiftModel(itemId));
 
-                DatabaseChanged();
+                DatabaseChanged?.Invoke();
                 return true;
             }
             return false;
@@ -86,10 +84,10 @@ namespace GiftTasteHelper.Framework
 
             // Add only the gifts that are not already in the DB.
             var unique = itemIds.Where(id => !ContainsGift(npcName, id, taste)).Select(id => id);
-            if (unique.Count() > 0)
+            if (unique.Any())
             {
-                Database.Entries[npcName].AddRange(taste, itemIds.Select(id => new GiftModel() { ItemId = id }));
-                DatabaseChanged();
+                Database.Entries[npcName].AddRange(taste, itemIds.Select(id => new GiftModel(id)));
+                DatabaseChanged?.Invoke();
                 return true;
             }
             return false;
@@ -100,8 +98,7 @@ namespace GiftTasteHelper.Framework
         {
             if (Database.Entries.ContainsKey(npcName))
             {
-                var entryForTaste = Database.Entries[npcName][taste];
-                if (entryForTaste != null)
+                if (Database.Entries[npcName].Entries.TryGetValue(taste, out var entryForTaste))
                 {
                     return entryForTaste.Select(model => model.ItemId).ToArray();
                 }
@@ -116,7 +113,7 @@ namespace GiftTasteHelper.Framework
         public static string DBRoot => "DB";
         public static string DBFileName => "GiftDatabase.json";
 
-        private string DBPath;
+        private readonly string DBPath;
 
         public StoredGiftDatabase(IModHelper helper, string path)
             : base(helper, helper.Data.ReadJsonFile<GiftDatabaseModel>(path) ?? new GiftDatabaseModel())
@@ -133,11 +130,54 @@ namespace GiftTasteHelper.Framework
                 this.Database.Version = GiftDatabaseModel.CurrentVersion;
                 Write();
             }
+
+            // Load existing gift data.
+            AddSaveGameGifts();
+        }
+
+        private void AddSaveGameGifts()
+        {
+            foreach (var npcName in Game1.NPCGiftTastes.Keys)
+            {
+                if (!Game1.player.giftedItems.ContainsKey(npcName))
+                {
+                    continue;
+                }
+
+                var tasteItems = new Dictionary<GiftTaste, List<string>>();
+                foreach (var item in Game1.player.giftedItems[npcName].Keys)
+                {
+                    var taste = Utils.GetTasteForGift(npcName, item);
+                    if (taste is GiftTaste.MAX)
+                    {
+                        continue;
+                    }
+
+                    if (tasteItems.TryGetValue(taste, out var tastes))
+                    {
+                        tastes.Add(item);
+                    }
+                    else
+                    {
+                        tasteItems[taste] = new List<string> { item };
+                    }
+                }
+
+                foreach (var (taste, gifts) in tasteItems)
+                {
+                    AddGifts(npcName, taste, gifts.ToArray());
+                }
+            }
         }
 
         public static void MigrateDatabase(IModHelper helper, string fromPath, ref StoredGiftDatabase newDb)
         {
-            GiftDatabaseModel fromDatabaseModel = helper.Data.ReadJsonFile<GiftDatabaseModel>(fromPath);
+            GiftDatabaseModel? fromDatabaseModel = helper.Data.ReadJsonFile<GiftDatabaseModel>(fromPath);
+            if (fromDatabaseModel is null)
+            {
+                return;
+            }
+
             if (newDb.Database.Entries.Keys.Count == 0)
             {
                 newDb.Database = fromDatabaseModel;

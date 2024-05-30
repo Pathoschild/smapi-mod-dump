@@ -1,0 +1,16 @@
+{
+  // Basic
+  "LineSprinkler.DisplayName": "Aspersor em Linha",
+  "LineSprinkler.Description": "Irriga 4 azulejos em linha reta em uma direção todas as manhãs.",
+  // Quality
+  "QualityLineSprinkler.DisplayName": "Aspersor em Linha de Qualidade",
+  "QualityLineSprinkler.Description": "Irriga 8 azulejos em linha reta em uma direção todas as manhãs.",
+  // Iridium
+  "IridiumLineSprinkler.DisplayName": "Aspersor em Linha de Irídio",
+  "IridiumLineSprinkler.Description": "Irriga 24 azulejos em linha reta em uma direção todas as manhãs.",
+
+  // Config
+  "Controls": "Controles",
+  "RotateSprinklerKeybind": "Girar Aspersor",
+  "RotateSprinklerKeybind.Tooltip": "Pressionar esta tecla enquanto segura um aspersor ou passa o cursor sobre um aspersor colocado irá girá-lo 90° para a direita."
+}

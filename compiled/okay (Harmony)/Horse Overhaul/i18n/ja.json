@@ -31,5 +31,7 @@
   "HorseEatHorseRadish": "ノワサビは場所によってはホースラディッシュといわれているが、馬は食べることができない。", // if 'horseradish' in your native language does not include the word 'horse', please don't add the 'Despite the name' part into your translation
   "HorseEatDislike": "馬はそれを食べたがらない。",
   "Owner": "飼い主：{{ownerName}}",
-  "UnknownName": "不明"
+  "UnknownName": "不明",
+  "BookSaddleBagName": "サドルバッグの使い方",
+  "BookSaddleBagDescription": "馬にサドルバッグを装着して、アイテムを運ぶことができる。"
 }

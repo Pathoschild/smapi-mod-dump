@@ -1,4 +1,5 @@
 {
   "EasyChestKey": "R",
-  "ChestSortBy": "color"
+  "ChestSortBy": "color",
+  "ShowChestInfo": true
 }

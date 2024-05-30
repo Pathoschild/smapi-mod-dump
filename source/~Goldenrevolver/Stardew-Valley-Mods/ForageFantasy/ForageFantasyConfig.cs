@@ -50,6 +50,8 @@ namespace ForageFantasy
 
         public bool TapperQualityRequiresTapperPerk { get; set; } = false;
 
+        public bool TapperSapHasQuality { get; set; } = false;
+
         public int TapperXPAmount { get; set; } = 3;
 
         public int SmallStumpBonusXPAmount { get; set; } = 1;
@@ -64,9 +66,11 @@ namespace ForageFantasy
 
         public int PineTapperDaysNeeded { get; set; } = 7;
 
+        public int EqualizedPricePerDayForMapleOakPineTapperProduct { get; set; } = 0;
+
         public int MysticTapperDaysNeeded { get; set; } = 7;
 
-        public int EqualizedPricePerDayForMapleOakPineTapperProduct { get; set; } = 0;
+        public int MahoganyTapperDaysNeeded { get; set; } = 7;
 
         public bool MushroomTreeTappersConsistentDaysNeeded { get; set; } = true;
 
@@ -108,10 +112,18 @@ namespace ForageFantasy
                 config.OakTapperDaysNeeded = 1;
             }
 
-            if (config.MysticTapperDaysNeeded <= 0)
+            // this can be disabled by turning it to 0, for the 'oak, maple, pine' that logic would be too complex for something noone uses
+            if (config.MysticTapperDaysNeeded < 0)
             {
                 invalidConfig = true;
-                config.MysticTapperDaysNeeded = 1;
+                config.MysticTapperDaysNeeded = 0;
+            }
+
+            // this can be disabled by turning it to 0, for 'oak, maple and pine' that logic would be too complex for something noone uses
+            if (config.MahoganyTapperDaysNeeded < 0)
+            {
+                invalidConfig = true;
+                config.MahoganyTapperDaysNeeded = 0;
             }
 
             if (config.TapperQualityOptions < 0 || config.TapperQualityOptions > 4)
@@ -222,6 +234,8 @@ namespace ForageFantasy
                 GetConfigName(mod, "TapperQualityOptions"), GetConfigDescription(mod, "TapperQualityOptions"), TapperQualityOptionsChoices, GetConfigDropdownChoice(mod, "TapperQualityOptions"));
             api.AddBoolOption(manifest, () => config.TapperQualityRequiresTapperPerk, (bool val) => config.TapperQualityRequiresTapperPerk = val,
                 GetConfigName(mod, "TapperQualityRequiresTapperPerk"), GetConfigDescription(mod, "TapperQualityRequiresTapperPerk"));
+            api.AddBoolOption(manifest, () => config.TapperSapHasQuality, (bool val) => config.TapperSapHasQuality = val,
+                GetConfigName(mod, "TapperSapHasQuality"), GetConfigDescription(mod, "TapperSapHasQuality"));
 
             api.AddSectionTitle(manifest, GetConfigName(mod, "SectionXPRewards"));
 
@@ -249,7 +263,9 @@ namespace ForageFantasy
                 GetConfigName(mod, "EqualizedPricePerDayForMapleOakPineTapperProduct"), GetConfigDescription(mod, "EqualizedPricePerDayForMapleOakPineTapperProduct"), EqualizedPricePerDayChoices, GetConfigDropdownChoice(mod, "EqualizedPricePerDayOptions"));
 
             api.AddNumberOption(manifest, () => config.MysticTapperDaysNeeded, (int val) => config.MysticTapperDaysNeeded = val,
-                GetConfigName(mod, "MysticDaysNeeded"), GetConfigDescription(mod, "MysticDaysNeeded"), 1);
+                GetConfigName(mod, "MysticDaysNeeded"), GetConfigDescription(mod, "MysticDaysNeeded"), 0);
+            api.AddNumberOption(manifest, () => config.MahoganyTapperDaysNeeded, (int val) => config.MahoganyTapperDaysNeeded = val,
+                GetConfigName(mod, "MahoganyDaysNeeded"), GetConfigDescription(mod, "MahoganyDaysNeeded"), 0);
             api.AddBoolOption(manifest, () => config.MushroomTreeTappersConsistentDaysNeeded, (bool val) => config.MushroomTreeTappersConsistentDaysNeeded = val,
                 GetConfigName(mod, "MushroomTreeTappersConsistentDaysNeeded"), GetConfigDescription(mod, "MushroomTreeTappersConsistentDaysNeeded"));
 

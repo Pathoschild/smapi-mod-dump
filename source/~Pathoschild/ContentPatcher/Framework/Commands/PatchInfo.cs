@@ -48,6 +48,9 @@ namespace ContentPatcher.Framework.Commands
         /// <summary>The parsed asset name (if available).</summary>
         public ITokenString? ParsedTargetAsset { get; }
 
+        /// <summary>The parsed asset name locale (if available).</summary>
+        public string? TargetAssetLocale { get; }
+
         /// <summary>The priority for this patch when multiple patches apply.</summary>
         /// <remarks>This is an <see cref="AssetLoadPriority"/> or <see cref="AssetEditPriority"/> value, depending on the patch type.</remarks>
         public int? Priority { get; }
@@ -83,6 +86,7 @@ namespace ContentPatcher.Framework.Commands
             )
         {
             this.RawTargetAsset = patch.AssetName;
+            this.TargetAssetLocale = patch.AssetNameLocale;
         }
 
         /// <summary>Construct an instance.</summary>
@@ -105,6 +109,7 @@ namespace ContentPatcher.Framework.Commands
 
             this.RawTargetAsset = patch.RawTargetAsset?.Raw;
             this.ParsedTargetAsset = patch.RawTargetAsset;
+            this.TargetAssetLocale = patch.TargetLocale;
             this.IsLoaded = true;
             this.IsApplied = patch.IsApplied;
             this.Patch = patch;
@@ -122,6 +127,19 @@ namespace ContentPatcher.Framework.Commands
             return !this.IsApplied
                 ? base.GetReasonNotLoaded()
                 : null;
+        }
+
+        /// <summary>Get the patch's display target, which combines the <see cref="ParsedTargetAsset"/> and <see cref="TargetAssetLocale"/>.</summary>
+        public string? GetDisplayTarget()
+        {
+            string? target = this.ParsedTargetAsset?.Value;
+            if (string.IsNullOrWhiteSpace(target))
+                return null;
+
+            if (!string.IsNullOrWhiteSpace(this.TargetAssetLocale))
+                target += "." + this.TargetAssetLocale;
+
+            return target;
         }
 
 

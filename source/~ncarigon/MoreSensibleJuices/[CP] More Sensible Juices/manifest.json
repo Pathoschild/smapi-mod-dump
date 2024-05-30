@@ -11,7 +11,7 @@
 {
 	"Name": "[CP] More Sensible Juices",
 	"Author": "NCarigon",
-	"Version": "1.0.1",
+	"Version": "1.0.6",
 	"Description": "Content Patcher for More Sensible Juices.",
 	"UniqueID": "NCarigon.MoreSensibleJuicesCP",
 	"UpdateKeys": [ "nexus:23146" ],

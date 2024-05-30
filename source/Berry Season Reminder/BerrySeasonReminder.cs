@@ -11,13 +11,15 @@
 using System;
 using StardewModdingAPI;
 using Microsoft.Xna.Framework.Graphics;
-using Harmony;
+using HarmonyLib;
 
 namespace BerrySeasonReminder
 {
 	/// <summary>The mod entry point.</summary>
 	public class ModEntry : Mod
 	{
+		public static BerrySeasonReminderConfig Config;
+
 		/*********
 		** Public methods
 		*********/
@@ -25,7 +27,9 @@ namespace BerrySeasonReminder
 		/// <param name="helper">Provides simplified APIs for writing mods.</param>
 		public override void Entry(IModHelper helper)
 		{
-			HarmonyInstance harmony = HarmonyInstance.Create(ModManifest.UniqueID);
+			Config = Helper.ReadConfig<BerrySeasonReminderConfig>();
+
+			Harmony harmony = new(ModManifest.UniqueID);
 
 			// Patch the billboard's draw method to add berry icons as necessary.
 			harmony.Patch(original: AccessTools.Method(typeof(StardewValley.Menus.Billboard), nameof(StardewValley.Menus.Billboard.draw), new Type[] { typeof(SpriteBatch) }),

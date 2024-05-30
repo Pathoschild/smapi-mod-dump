@@ -8,23 +8,27 @@
 **
 *************************************************/
 
+#if COMMON_MUTEX
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using StardewValley.Network;
+using Leclair.Stardew.Common.Events;
+
+using Netcode;
 
 using StardewModdingAPI;
-using StardewValley;
 using StardewModdingAPI.Events;
-using Leclair.Stardew.Common.Events;
-using Netcode;
+
+using StardewValley;
+using StardewValley.Network;
 
 namespace Leclair.Stardew.Common;
 
 public class AdvancedMultipleMutexRequest {
 
-	public static ModSubscriber? Mod;
+	public static ModSubscriber? Mod { get; internal set; }
 
 	private readonly IModHelper? Helper;
 	private readonly int Timeout;
@@ -74,7 +78,7 @@ public class AdvancedMultipleMutexRequest {
 			return false;
 
 		// Double check with every mutex to ensure we hold the lock.
-		foreach(var mutex in Mutexes) {
+		foreach (var mutex in Mutexes) {
 			if (!mutex.IsLockHeld())
 				return false;
 		}
@@ -95,7 +99,7 @@ public class AdvancedMultipleMutexRequest {
 			return;
 		}
 
-		foreach(var mutex in Mutexes) {
+		foreach (var mutex in Mutexes) {
 			if (mutex.IsLocked()) {
 				OnFailure?.Invoke();
 				return;
@@ -141,7 +145,7 @@ public class AdvancedMultipleMutexRequest {
 				mutex.Update(farmers);
 
 				// See if we're held now, but didn't get an update.
-				if ( mutex.IsLockHeld() && ! AcquiredLocks.Contains(mutex)) {
+				if (mutex.IsLockHeld() && !AcquiredLocks.Contains(mutex)) {
 #if DEBUG
 					LogLevel level = LogLevel.Debug;
 #else
@@ -171,7 +175,7 @@ public class AdvancedMultipleMutexRequest {
 
 		ReportedLocks.Add(mutex);
 
-		if (! AcquiredLocks.Contains(mutex))
+		if (!AcquiredLocks.Contains(mutex))
 			AcquiredLocks.Add(mutex);
 
 		if (ReportedLocks.Count >= Mutexes.Length)
@@ -250,7 +254,7 @@ public class AdvancedMultipleMutexRequest {
 
 			Mod.LogTable(headers, states, level);
 
-		} catch(Exception) {
+		} catch (Exception) {
 			/* do nothing */
 		}
 	}
@@ -275,7 +279,7 @@ public class AdvancedMultipleMutexRequest {
 					Mod.Log($"Unable to acquire all mutexes within {Timeout} ms. IsHost: {Game1.IsMasterGame}; Multiplayer: {Context.IsMultiplayer}; Mutex state:", level);
 					LogMutexes();
 
-				} catch(Exception) {
+				} catch (Exception) {
 					/* do nothing */
 				}
 			}
@@ -303,3 +307,5 @@ public class AdvancedMultipleMutexRequest {
 	}
 
 }
+
+#endif

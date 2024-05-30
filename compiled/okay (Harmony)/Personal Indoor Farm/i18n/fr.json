@@ -5,8 +5,10 @@
 	"DoorAttic.Name": "Porte dimensionnelle - Grenier",
 	"DoorLoft.Name": "Porte dimensionnelle - Loft",
 	"DoorCellar.Name": "Porte dimensionnelle - Cave",
+	"DoorSpa.Name": "Porte dimensionnelle - Spa",
 	"Door.Empty": "Il n'y a rien derrière cette porte.",
 	"Door.Offline": "Tu ne dois pas fouiner quand ton ami n'est pas là !",
+	"Door.Locked": "Cette porte est verrouillée",
 	"Painting.Name": "Peinture de saison",
 	"Synchronizer.Name": "Synchroniseur espace-temps",
 	"Synchronizer.Description": "Synchronise votre dimension personnelle avec la date des villes du Pélican",
@@ -17,4 +19,6 @@
 	"VoidSeal.Buff.Name": "Vide intérieur",
 	"VoidSeal.Buff.Description": "Je me sens si... vide",
 	"NoContentPacks": "Vous avez la porte, mais vous n'avez pas de contenu pour l'accompagner.",
+	"Key.Name": "Clé du vide",
+	"Key.Description": "Verrouille et déverrouille une dimension personnelle",
 }

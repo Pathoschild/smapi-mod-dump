@@ -36,11 +36,22 @@ namespace HappyHomeDesigner.Patches
 
 		private static void ReceiveItem(Farmer __instance, Item item)
 		{
-			if (item.QualifiedItemId is "(O)" + AssetManager.CARD_ID)
-				Game1.PerformActionWhenPlayerFree(() => {
+			switch(item.QualifiedItemId)
+			{
+				case "(O)" + AssetManager.CARD_ID:
+					if (__instance.hasOrWillReceiveMail(AssetManager.CARD_FLAG))
+						return;
+
 					__instance.mailReceived.Add(AssetManager.CARD_FLAG);
-					__instance.holdUpItemThenMessage(item, true);
-				});
+					Game1.PerformActionWhenPlayerFree(
+						() => __instance.holdUpItemThenMessage(item, true)
+					);
+					break;
+				case "(O)" + AssetManager.PORTABLE_ID:
+					__instance.removeItemFromInventory(item);
+					__instance.addItemToInventory(ItemRegistry.Create("(T)" + AssetManager.PORTABLE_ID));
+					break;
+			}
 		}
 
 		private static string AddHoldUpMessage(string original, Item __instance)
@@ -52,10 +63,17 @@ namespace HappyHomeDesigner.Patches
 
 		private static void ChangeItemReceiveBehavior(Item item, ref bool needsInventorySpace, ref bool showNotification)
 		{
-			if (item.QualifiedItemId is "(O)" + AssetManager.CARD_ID)
+			switch (item.QualifiedItemId)
 			{
-				needsInventorySpace = false;
-				showNotification = false;
+				case "(O)" + AssetManager.CARD_ID:
+					needsInventorySpace = false;
+					showNotification = false;
+					break;
+
+				case "(O)" + AssetManager.PORTABLE_ID:
+					needsInventorySpace = true;
+					showNotification = false;
+					break;
 			}
 		}
 	}

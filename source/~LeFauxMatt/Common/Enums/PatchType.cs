@@ -8,7 +8,11 @@
 **
 *************************************************/
 
+#if IS_FAUXCORE
+namespace StardewMods.FauxCore.Common.Enums;
+#else
 namespace StardewMods.Common.Enums;
+#endif
 
 using NetEscapades.EnumGenerators;
 

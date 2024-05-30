@@ -1,0 +1,24 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ncarigon/StardewValleyMods
+**
+*************************************************/
+
+{
+	"press_Name": "果汁机",
+	"press_Description": "把水果和蔬菜做成果汁。",
+	"flavor_Name": "{0} {1}",
+
+	"config.PressRetainsQuality.name": "与原料相同品质",
+	"config.PressRetainsQuality.description": "由果汁机生产的物品质量与原料相同",
+	"config.UseNormalWineRecipe.name": "正常葡萄酒生产",
+	"config.UseNormalWineRecipe.description": "启用后，将水果直接放入酿造机中也能生产葡萄酒。",
+	"config.UseNormalBeerRecipe.name": "正常啤酒生产",
+	"config.UseNormalBeerRecipe.description": "启用后，直接将小麦放入酿造机中也能生产啤酒。",
+	"config.UseNormalPaleAleRecipe.name": "正常淡啤酒生产",
+	"config.UseNormalPaleAleRecipe.description": "启用后，将啤酒花直接放入酿造机中也能生产啤酒花。",
+}

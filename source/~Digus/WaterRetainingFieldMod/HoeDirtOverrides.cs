@@ -21,7 +21,7 @@ namespace WaterRetainingFieldMod
 {
     public class HoeDirtOverrides
     {
-        internal static Dictionary<Vector2, int> TileLocationState = new Dictionary<Vector2, int>();
+        internal static Dictionary<Vector2, int> TileLocationState = new();
 
         public static bool DayUpdatePrefix(HoeDirt __instance, ref int __state)
         {
@@ -29,15 +29,17 @@ namespace WaterRetainingFieldMod
             return true;
         }
 
-        public static void DayUpdatePostfix(HoeDirt __instance, ref GameLocation environment, ref Vector2 tileLocation, ref int __state)
+        public static void DayUpdatePostfix(HoeDirt __instance, ref int __state)
         {
+            GameLocation environment = __instance.Location;
+            Vector2 tileLocation = __instance.Tile;
             if (environment is Farm || environment.isGreenhouse.Value )
             {
-                if ((!__instance.hasPaddyCrop() || !__instance.paddyWaterCheck(environment, tileLocation)) && __state == 1 && (__instance.fertilizer.Value == 370 || __instance.fertilizer.Value == 371))
+                if ((!__instance.hasPaddyCrop() || !__instance.paddyWaterCheck()) && __state == 1 && __instance.fertilizer.Value is "(O)370" or "(O)371")
                 {
-                    if (TileLocationState.ContainsKey(tileLocation))
+                    if (TileLocationState.TryGetValue(tileLocation, out var value))
                     {
-                        __instance.state.Value = TileLocationState[tileLocation];
+                        __instance.state.Value = value;
                         return;
                     }
                     else
@@ -49,20 +51,20 @@ namespace WaterRetainingFieldMod
             }
         }
 
-        private static void AddStateAdjacentFertilizedTiles(GameLocation environment, Vector2 tileLocation, int stateValue, int fertilizer)
+        private static void AddStateAdjacentFertilizedTiles(GameLocation environment, Vector2 tileLocation, int stateValue, string fertilizer)
         {
-            Vector2[] adjasent = new Vector2[]
+            Vector2[] adjacent = new Vector2[]
             {
                 new Vector2(tileLocation.X, tileLocation.Y + 1)
                 , new Vector2(tileLocation.X + 1, tileLocation.Y)
                 , new Vector2(tileLocation.X - 1, tileLocation.Y)
                 , new Vector2(tileLocation.X, tileLocation.Y - 1)
             };
-            foreach (var adjacentTileLocation in adjasent)
+            foreach (var adjacentTileLocation in adjacent)
             {
                 if (!TileLocationState.ContainsKey(adjacentTileLocation) && environment.terrainFeatures.ContainsKey(adjacentTileLocation) && environment.terrainFeatures[adjacentTileLocation] is HoeDirt hoeDirt)
                 {
-                    if (hoeDirt.state.Value == 1 && hoeDirt.fertilizer.Value == fertilizer && (!hoeDirt.hasPaddyCrop() || !hoeDirt.paddyWaterCheck(environment, tileLocation)))
+                    if (hoeDirt.state.Value == 1 && hoeDirt.fertilizer.Value == fertilizer && (!hoeDirt.hasPaddyCrop() || !hoeDirt.paddyWaterCheck()))
                     {
                         TileLocationState[adjacentTileLocation] = stateValue;
                         AddStateAdjacentFertilizedTiles(environment, adjacentTileLocation, stateValue, fertilizer);

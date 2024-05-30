@@ -1,0 +1,32 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/weizinai/StardewValleyMods
+**
+*************************************************/
+
+{
+    "Config.OpenConfigMenuKeybind.Name": "Open Config Menu Keybind",
+    // Daily Greeting Modify
+    "Config.DailyGreetingModifyTitle.Name": "Daily Greeting Modify",
+    "Config.DailyGreetingModifyForVillager.Name": "Villager",
+    "Config.DailyGreetingModifyForDatingVillager.Name": "Dating Villager",
+    "Config.DailyGreetingModifyForSpouse.Name": "Spouse",
+    // Gift Modify
+    "Config.GiftModifyTitle.Name": "Gift Modify",
+    "Config.DislikeGiftModify.Name": "Dislike Gift",
+    "Config.HateGiftModify.Name": "Hate Gift",
+    // Garbage Can Modify
+    "Config.GarbageCanModify.Name": "Garbage Can Modify",
+    // Animal Friendship Modify
+    "Config.AnimalFriendshipModifyTitle.Name": "Animal Friendship Modify",
+    "Config.PetAnimalModifyForFriendship.Name": "Pet Animal Modify",
+    "Config.FeedAnimalModifyForFriendship.Name": "Feed Animal Modify",
+    // Animal Happiness Modify
+    "Config.AnimalHappinessModifyTitle.Name": "Animal Happiness Modify",
+    "Config.PetAnimalModifyForHappiness.Name": "Pet Animal Modify",
+    "Config.FeedAnimalModifyForHappiness.Name": "Feed Animal Modify"
+}

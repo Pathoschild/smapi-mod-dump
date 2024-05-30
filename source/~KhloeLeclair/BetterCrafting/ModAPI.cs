@@ -11,23 +11,23 @@
 #nullable enable
 
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
+
+using Leclair.Stardew.BetterCrafting.DynamicRules;
+using Leclair.Stardew.BetterCrafting.Menus;
+using Leclair.Stardew.BetterCrafting.Models;
+using Leclair.Stardew.Common;
+using Leclair.Stardew.Common.Crafting;
+using Leclair.Stardew.Common.Inventory;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-using Leclair.Stardew.Common;
-using Leclair.Stardew.Common.Inventory;
-using Leclair.Stardew.Common.Crafting;
+using StardewModdingAPI;
 
 using StardewValley;
-
-using Leclair.Stardew.BetterCrafting.Models;
-using Leclair.Stardew.BetterCrafting.Menus;
 using StardewValley.Menus;
-using Leclair.Stardew.BetterCrafting.DynamicRules;
-using StardewModdingAPI;
 
 namespace Leclair.Stardew.BetterCrafting;
 
@@ -61,13 +61,15 @@ public class ModAPI : IBetterCrafting {
 
 	private readonly ModEntry Mod;
 
-	private readonly IManifest Other;
+	internal readonly IManifest Other;
 
 
 	public ModAPI(ModEntry mod, IManifest other) {
 		Mod = mod;
 		Other = other;
 	}
+
+	public IBetterCraftingConfig Config => Mod.Config;
 
 	#region GUI
 
@@ -135,6 +137,11 @@ public class ModAPI : IBetterCrafting {
 		return null;
 	}
 
+	/// <inheritdoc />
+	public IBetterCraftingMenu? GetMenu(IClickableMenu menu) {
+		return menu is BetterCraftingPage bcp ? bcp : null;
+	}
+
 	#endregion
 
 	#region Events
@@ -155,10 +162,13 @@ public class ModAPI : IBetterCrafting {
 	/// <inheritdoc />
 	public event Action<IPopulateContainersEvent>? MenuPopulateContainers;
 
+	/// <inheritdoc />
+	public event Action<ISimplePopulateContainersEvent>? MenuSimplePopulateContainers;
+
 	internal bool EmitMenuPopulate(BetterCraftingPage menu, ref IList<LocatedInventory>? containers) {
 		bool disable_discovery = false;
 
-		if (MenuPopulateContainers is not null) {
+		if (MenuPopulateContainers is not null || MenuSimplePopulateContainers is not null) {
 			List<Tuple<object, GameLocation?>> values = containers == null ? new() :
 				containers.Select(x => new Tuple<object, GameLocation?>(x.Source, x.Location)).ToList();
 
@@ -166,7 +176,12 @@ public class ModAPI : IBetterCrafting {
 				DisableDiscovery = disable_discovery
 			};
 
-			MenuPopulateContainers.Invoke(evt);
+			try {
+				MenuPopulateContainers?.Invoke(evt);
+				MenuSimplePopulateContainers?.Invoke(evt);
+			} catch (Exception ex) {
+				Mod.Log($"There was an error in the MenuPopulateContainers event handler of the mod '{Other.Name}' ({Other.UniqueID}): {ex}", LogLevel.Error);
+			}
 
 			disable_discovery = evt.DisableDiscovery;
 
@@ -180,13 +195,26 @@ public class ModAPI : IBetterCrafting {
 	}
 
 	/// <inheritdoc />
+	public event Action<IClickableMenu>? MenuClosing;
+
+	internal void EmitMenuClosing(BetterCraftingPage menu) {
+		if (MenuClosing != null) {
+			try {
+				MenuClosing.Invoke(menu);
+			} catch (Exception ex) {
+				Mod.Log($"There was an error in the MenuClosing event handler of the mod '{Other.Name}' ({Other.UniqueID}): {ex}", LogLevel.Error);
+			}
+		}
+	}
+
+	/// <inheritdoc />
 	public event Action<IGlobalPerformCraftEvent>? PerformCraft;
 
 	internal IEnumerable<Action<IGlobalPerformCraftEvent>> GetPerformCraftHooks() {
 		if (PerformCraft is null)
 			yield break;
 
-		foreach(Delegate del in PerformCraft.GetInvocationList()) {
+		foreach (Delegate del in PerformCraft.GetInvocationList()) {
 			yield return (Action<IGlobalPerformCraftEvent>) del;
 		}
 	}
@@ -195,7 +223,11 @@ public class ModAPI : IBetterCrafting {
 	public event Action<IPostCraftEvent>? PostCraft;
 
 	internal void EmitPostCraft(IPostCraftEvent evt) {
-		PostCraft?.Invoke(evt);
+		try {
+			PostCraft?.Invoke(evt);
+		} catch (Exception ex) {
+			Mod.Log($"There was an error in the PostCraft event handler of the mod '{Other.Name}' ({Other.UniqueID}): {ex}", LogLevel.Error);
+		}
 	}
 
 	#endregion
@@ -329,9 +361,14 @@ public class ModAPI : IBetterCrafting {
 		}), true);
 	}
 
-	/// <inheritdoc />
+	[Obsolete("Use the one with the optional consumedItems parameter.")]
 	public void ConsumeItems(IEnumerable<(Func<Item, bool>, int)> items, Farmer? who, IEnumerable<IBCInventory>? inventories, int maxQuality = int.MaxValue, bool lowQualityFirst = false, IList<Item>? consumedItems = null) {
-		InventoryHelper.ConsumeItems(items, who, inventories, maxQuality, lowQualityFirst, consumedItems);
+		InventoryHelper.ConsumeItems(items, who, inventories, maxQuality, lowQualityFirst, null, consumedItems);
+	}
+
+	/// <inheritdoc />
+	public void ConsumeItems(IEnumerable<(Func<Item, bool>, int)> items, Farmer? who, IEnumerable<IBCInventory>? inventories, int maxQuality = int.MaxValue, bool lowQualityFirst = false, IList<Item>? consumedItems = null, IList<Item>? matchedItems = null) {
+		InventoryHelper.ConsumeItems(items, who, inventories, maxQuality, lowQualityFirst, matchedItems, consumedItems);
 	}
 
 	[Obsolete("Use the one with the optional consumedItems parameter.")]
@@ -340,6 +377,11 @@ public class ModAPI : IBetterCrafting {
 	}
 
 	/// <inheritdoc />
+	public int CountItem(Func<Item, bool> predicate, Farmer? who, IEnumerable<Item?>? items, int maxQuality = int.MaxValue, IList<Item>? matchingItems = null) {
+		return InventoryHelper.CountItem(predicate, who, items, out bool _, max_quality: maxQuality, matchingItems: matchingItems);
+	}
+
+	[Obsolete("Use the one with the optional matchingItems parameter.")]
 	public int CountItem(Func<Item, bool> predicate, Farmer? who, IEnumerable<Item?>? items, int maxQuality = int.MaxValue) {
 		return InventoryHelper.CountItem(predicate, who, items, out bool _, max_quality: maxQuality);
 	}
@@ -402,6 +444,11 @@ public class ModAPI : IBetterCrafting {
 	/// <inheritdoc />
 	public void UnregisterInventoryProvider(Type type) {
 		Mod.UnregisterInventoryProvider(type);
+	}
+
+	/// <inheritdoc />
+	public IInventoryProvider? GetProvider(object thing) {
+		return Mod.GetInventoryProvider(thing);
 	}
 
 	#endregion

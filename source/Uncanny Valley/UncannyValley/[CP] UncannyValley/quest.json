@@ -1,0 +1,47 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/jasisco5/UncannyValleyMod
+**
+*************************************************/
+
+{
+  "Changes": [
+    // Add Quests
+    {
+      "Action": "EditData",
+      "Target": "Data/Quests",
+      "Entries": {
+        "2051901": "Location/Uncanny Valley/Vincent saw something strange around the blacksmith. Help Jodi and investigate./Investigate around the blacksmith/Custom_Mansion_Exterior/-1/0/-1/false",
+        "2051902": "Location/Uncanny Valley/Follow the Wizard's Apprenctice into the mansion/Enter the Mansion/Custom_Mansion_Interior/-1/0/-1/false",
+        "2051903": "Basic/Uncanny Valley/Find out what's going on from the Butler/Speak to the Butler/-1/0/-1/false",
+        "2051904": "Monster/Uncanny Valley/The Butler has asked you to vanquish the monsters in the mansion.\n\nHe'll reward you with the key to the basement.'/0 of 20 slimes slain./Green_Slime 20/2051905/0/-1/false",
+        "2051905": "Basic/Uncanny Valley/Find the Spectral Saber and destroy the totem to break the curse./Break the Totem/2051906/0/-1/false",
+        "2051906": "Location/Uncanny Valley/The Butler is evil?!/Escape the Mansion/Custom_Mansion_Exterior/-1/0/-1/false"
+
+      }
+    },
+    // Add Sword to Shop
+    {
+      //"LogName": "Editing Krobus Shop",
+      "Action": "EditData",
+      "Target": "Data/Shops",
+      "TargetField": [
+        "AdventureShop",
+        "Items"
+      ],
+      "Entries": {
+        "UncannyValley.UncannyValleyMod.SpectralSabre": {
+          "Condition": "{{UncannyValley.UncannyValleyMod/WeaponObtained}}",
+          "Id": "UncannyValley.UncannyValleyMod.SpectralSabre",
+          "ItemId": "2051901",
+          "AvailableStockLimit": "Global",
+          "Price": 2000
+        }
+      }
+    }
+  ]
+}

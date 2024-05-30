@@ -8,24 +8,27 @@
 **
 *************************************************/
 
+#if IS_FAUXCORE
+namespace StardewMods.FauxCore.Common.Services;
+
+using System.Reflection;
+using StardewMods.FauxCore.Common.Helpers;
+using StardewMods.FauxCore.Common.Interfaces;
+using StardewMods.FauxCore.Common.Models;
+
+#else
 namespace StardewMods.Common.Services;
 
 using System.Reflection;
 using StardewMods.Common.Helpers;
 using StardewMods.Common.Interfaces;
 using StardewMods.Common.Models;
-using StardewMods.Common.Services.Integrations.FauxCore;
+#endif
 
 /// <summary>Represents a base event manager service.</summary>
-internal class BaseEventManager : BaseService, IEventManager
+internal class BaseEventManager : IEventManager
 {
     private static readonly ReverseComparer<int> ReverseComparer = new();
-
-    /// <summary>Initializes a new instance of the <see cref="BaseEventManager" /> class.</summary>
-    /// <param name="log">Dependency used for logging debug information to the console.</param>
-    /// <param name="manifest">Dependency for accessing mod manifest.</param>
-    public BaseEventManager(ILog log, IManifest manifest)
-        : base(log, manifest) { }
 
     /// <summary>Gets the subscribers.</summary>
     protected Dictionary<Type, SortedList<int, List<Delegate>>> Subscribers { get; } = new();
@@ -62,7 +65,7 @@ internal class BaseEventManager : BaseService, IEventManager
                 }
                 catch (Exception ex)
                 {
-                    this.Log.Trace("Exception occured: {0}\n{1}", ex.Message, ex.StackTrace);
+                    Log.Trace("Exception occured: {0}\n{1}", ex.Message, ex.StackTrace);
                 }
             }
         }
@@ -100,7 +103,7 @@ internal class BaseEventManager : BaseService, IEventManager
                 }
                 catch (Exception ex)
                 {
-                    this.Log.Trace("Exception occured: {0}\n{1}", ex.Message, ex.StackTrace);
+                    Log.Trace("Exception occured: {0}\n{1}", ex.Message, ex.StackTrace);
                 }
             }
         }

@@ -6,9 +6,9 @@ mods:
    Event Limiter
 
 latest commit:
-   commit af09218884617cc5cfefb2378d917444cd837104
+   commit 3bb930d297579e045bcb34498c6390fad401fb3a
    Author: Amelie <amelie.parkinson.bates@gmail.com>
-   Date:   Wed Mar 20 07:46:27 2024 +1100
+   Date:   Mon May 6 14:14:44 2024 +1000
    
-       update manifest.json
+       add more whitelisting
    

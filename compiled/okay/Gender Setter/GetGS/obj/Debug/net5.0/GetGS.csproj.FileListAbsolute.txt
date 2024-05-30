@@ -1,0 +1,10 @@
+/Users/sqbr/Projects/GetGS/GetGS/bin/Debug/net5.0/GetGS.deps.json
+/Users/sqbr/Projects/GetGS/GetGS/bin/Debug/net5.0/GetGS.dll
+/Users/sqbr/Projects/GetGS/GetGS/bin/Debug/net5.0/GetGS.pdb
+/Users/sqbr/Projects/GetGS/GetGS/obj/Debug/net5.0/GetGS.csproj.AssemblyReference.cache
+/Users/sqbr/Projects/GetGS/GetGS/obj/Debug/net5.0/GetGS.GeneratedMSBuildEditorConfig.editorconfig
+/Users/sqbr/Projects/GetGS/GetGS/obj/Debug/net5.0/GetGS.AssemblyInfoInputs.cache
+/Users/sqbr/Projects/GetGS/GetGS/obj/Debug/net5.0/GetGS.AssemblyInfo.cs
+/Users/sqbr/Projects/GetGS/GetGS/obj/Debug/net5.0/GetGS.csproj.CoreCompileInputs.cache
+/Users/sqbr/Projects/GetGS/GetGS/obj/Debug/net5.0/GetGS.dll
+/Users/sqbr/Projects/GetGS/GetGS/obj/Debug/net5.0/GetGS.pdb

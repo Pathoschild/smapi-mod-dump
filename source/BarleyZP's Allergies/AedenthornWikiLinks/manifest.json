@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/lisyce/SDV_Allergies_Mod
+**
+*************************************************/
+
+{
+  "Name": "Wiki Links Unofficial Update",
+  "Author": "aedenthorn,BarleyZP",
+  "Version": "1.0.0",
+  "Description": "Unofficial update of Aedenthorn's Wiki Links for 1.6",
+  "UniqueID": "aedenthorn.WikiLinks",
+  "EntryDll": "WikiLinks.dll",
+  "MinimumApiVersion": "3.13.0",
+  "UpdateKeys": [ "Nexus:24119" ]
+}

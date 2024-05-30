@@ -9,6 +9,7 @@
 
     // generic values
     "generic.unknown": "bilinmiyor",
+    "generic.list-separator": ", ", // text between listed values (like ", " in "A, B, C")
 
     // generic field values
     "generic.percent": "{{percent}}%",
@@ -98,31 +99,19 @@
     "data.item.box.description": "Çeşitli eşyalar elde etmek için parçala.",
 
     // location names
-    "location.backwoods": "Kömürözü Ormanı",
-    "location.beach": "Sahil",
     "location.beach.east-pier": "Sahil (doğu iskelesi)",
     "location.bugLand": "Mutant böcek yuvası",
-    "location.busStop": "Otobüs Durağı",
-    "location.desert": "Çöl",
     "location.desert.topPond": "desert (north pond)", // TODO
-    "location.farm": "Çiftlik",
     "location.farmCave": "Çiftlik Mağarası",
     "location.farmHouse": "Çiftlik Evi",
-    "location.forest": "Orman",
     "location.forest.island-tip": "Orman Nehri (büyük adanın güney ucu)",
     "location.forest.lake": "Orman Göleti",
     "location.forest.river": "Orman Nehri",
-    "location.mountain": "Dağ",
-    "location.railroad": "Demiryolu",
-    "location.sewer": "Kanalizasyon",
     "location.submarine": "Akşam Pazarı Denizaltısı",
-    "location.town": "Kasaba",
     "location.town.northmost-bridge": "Kasaba (en kuzeydeki köprü)",
-    "location.tunnel": "Otobüs Tüneli",
     "location.undergroundMine": "Maden",
     "location.undergroundMine.level": "Maden seviyesi {{level}}",
     "location.witchSwamp": "Cadı'nın Bataklığı",
-    "location.woods": "Gizli Orman",
 
     "location.caldera": "Zencefil Adası krateri",
     "location.islandEast": "Zencefil Adası doğu",
@@ -134,7 +123,31 @@
     "location.islandWest.freshwater": "Zencefil Adası batı (gölet)",
     "location.islandWest.ocean": "Zencefil Adası batı (okyanus)",
 
+    "location.fish-area": "{{locationName}} ({{areaName}})",
     "location.unknown-fish-area": "{{locationName}} (balıkçılık alanı {{id}})",
+
+
+    /*********
+    ** Conditions & context tags
+    *********/
+    // TODO
+    "condition-or-context-tag.negate": "not {{value}}",
+
+    "condition.item-type.input": "input item",
+    "condition.item-type.target": "target item",
+
+    "condition.item-context-tag": "{{item}} has context tag {{tags}}",
+    "condition.item-context-tags": "{{item}} has context tags {{tags}}",
+    "condition.item-context-tag.value": "'{{tag}}'", // the format of each context tag in the list (each context tag isn't translated)
+
+    "condition.item-edibility.edible": "{{item}} is edible",
+    "condition.item-edibility.min": "{{item}} has edibility of {{min}} or more",
+    "condition.item-edibility.range": "{{item}} has edibility of {{min}} to {{max}}",
+
+    "context-tag.bone": "any bone",
+    "context-tag.egg": "any egg",
+    "context-tag.large-egg": "any large egg",
+    "context-tag.preserved-item": "preserved {{name}}",
 
 
     /*********
@@ -316,9 +329,13 @@
     "item.needed-for.gourmet-chef": "gurme şef başarısı (pişir {{recipes}})",
     "item.needed-for.craft-master": "zanaat ustası başarısı (yap {{recipes}})",
     "item.needed-for.quests": "şuanki görevler ({{quests}})",
+    "item.unknown-recipes": "{{count}} unknown recipes", // TODO
     "item.sells-to.shipping-box": "gönderi kutusu",
     "item.recipes-for-ingredient.entry": "{{name}} (lazım {{count}})",
     "item.recipes-for-machine.multiple-items": "{{name}} x{{count}}",
+    "item.recipes-for-machine.same-as-input": "[same as input]", // e.g. crystalarium produces same item that was put in // TODO
+    "item.recipes-for-machine.conditions": "[conditions: {{conditions}}]", // TODO
+    "item.recipes-for-machine.too-complex": "Some machine rules are too dynamic to display.", // TODO
     "item.number-owned.summary": "bundan {{count}} tane sahipsin",
     "item.number-crafted.summary": "bundan {{count}} tane yaptın",
 
@@ -538,7 +555,7 @@
 
     // values
     "puzzle.solution.solved": "Bulmaca çözüldü!",
-    "puzzle.solution.hidden": "Bulmaca çözümleri ilerleme modun gizlidir.",
+    "puzzle.solution.hidden": "Bulmaca çözümleri ayarlarınıza göre gizlidir.",
 
 
     /*********
@@ -644,10 +661,21 @@
     *********/
     // main options
     "config.title.main-options": "Ana seçenekler",
-    "config.progression-mode.name": "İlerleme modu",
-    "config.progression-mode.desc": "Oyunda keşfedene kadar bazı içeriklerin (örn. hediye zevkleri ve bulmaca çözümleri) gizlenip gizlenmeyeceği.",
     "config.force-full-screen.name": "Tam ekranı zorla",
     "config.force-full-screen.desc": "Menünün pencerede ortalanmak yerine her zaman tam ekran olup olmayacağı. Bu, özellikle veri madenciliği alanlarını görüntülerken kullanışlıdır.",
+
+    // progression mode
+    // TODO
+    "config.title.progression": "İlerleme modu",
+
+    "config.progression.show-unknown-gift-tastes.name": "Show unknown gift tastes",
+    "config.progression.show-unknown-gift-tastes.desc": "Whether to show gift tastes you haven't learned about in-game yet (e.g. from dialogue text or experimenting).",
+
+    "config.progression.show-unknown-recipes.name": "Show unknown recipes",
+    "config.progression.show-unknown-recipes.desc": "Whether to show recipes you haven't learned in-game yet.",
+
+    "config.progression.show-puzzle-solutions.name": "Show puzzle solutions",
+    "config.progression.show-puzzle-solutions.desc": "Whether to show puzzle solutions.",
 
     // gift tastes
     "config.title.gift-tastes": "Hediye Zevkleri",
@@ -667,6 +695,18 @@
 
     "config.highlight-unrevealed-gift-tastes.name": "Açıklanmayan hediye zevklerini vurgulayın",
     "config.highlight-unrevealed-gift-tastes.desc": "NPC profilinde açıklanmayan eşya hediye zevklerinin vurgulanıp vurgulanmayacağı. Etkinleştirildiğinde, açıklanmayan hediye zevkleri gösterilecek.",
+
+    // collapse fields
+    // TODO
+    "config.title.collapse-fields": "Collapse large fields",
+
+    "config.collapse-fields.enabled.name": "Enabled",
+    "config.collapse-fields.enabled.desc": "Whether to collapse large fields, so the lookup menu will replace the list with a clickable 'show X values' link to expand it.",
+
+    "config.collapse-fields.building-recipes.name": "Building lookup: recipes",
+    "config.collapse-fields.item-recipes.name": "Item lookup: recipes",
+    "config.collapse-fields.npc-gift-tastes.name": "NPC lookup: gift tastes",
+    "config.collapse-fields.any.desc": "If the field contains this many values, the lookup menu will replace the list with a clickable 'show X values' link to expand it.",
 
     // advanced options
     "config.title.advanced-options": "Gelişmiş Seçenekler",

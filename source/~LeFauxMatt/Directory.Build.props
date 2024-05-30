@@ -8,6 +8,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <LangVersion>latest</LangVersion>
     <BaseManifest>new</BaseManifest>
+    <MinimumGameVersion>1.6</MinimumGameVersion>
     <MinimumApiVersion_Behavior>Update</MinimumApiVersion_Behavior>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <EnableModZip Condition="'$(Configuration)' == 'Debug'">False</EnableModZip>
@@ -19,10 +20,10 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1"/>
-    <PackageReference Include="Leclair.Stardew.ModManifestBuilder" Version="2.3.0" />
-    <PackageReference Include="JetBrains.Annotations" Version="2023.3.0"/>
-    <PackageReference Include="NetEscapades.EnumGenerators" Version="1.0.0-beta08"/>
-    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.507">
+    <PackageReference Include="Leclair.Stardew.ModManifestBuilder" Version="2.3.1" />
+    <PackageReference Include="JetBrains.Annotations" Version="2024.2.0-eap1" />
+    <PackageReference Include="NetEscapades.EnumGenerators" Version="1.0.0-beta09" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.556">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -37,6 +38,7 @@
     <Using Include="StardewValley"/>
     <Using Include="StardewModdingAPI"/>
     <Using Include="System.Diagnostics.CodeAnalysis"/>
+    <Using Alias="Container" Include="SimpleInjector.Container" />
     <Using Alias="Object" Include="System.Object"/>
     <Using Alias="SObject" Include="StardewValley.Object"/>
   </ItemGroup>

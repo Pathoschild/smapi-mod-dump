@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/23339
+IDs: ApryllForever.NuclearBomb, ApryllForever.NuclearBombLocations
+update keys: Nexus:23339, GitHub:ApryllForever/NuclearBombLocations

@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/1Avalon/Ore-Detector
+   Git: https://github.com/1Avalon/Ore-Detector.git
+
+mods:
+   Ore Detector
+
+latest commit:
+   commit 7500c30d13bad89492befcf48e23dab0929b6b00
+   Author: Avalon <axj30.11.04@gmail.com>
+   Date:   Sat May 4 13:22:55 2024 +0100
+   
+       display hover text
+   

@@ -15,8 +15,10 @@
 	"DoorAttic.Name": "Boyut Kapısı - Tavan arası",
 	"DoorLoft.Name": "Boyut Kapısı - Çatı katı",
 	"DoorCellar.Name": "Boyut Kapısı - Kiler",
+	"DoorSpa.Name": "Boyut Kapısı - Hamam",
 	"Door.Empty": "Bu kapının arkasında hiçbir şey yok.",
 	"Door.Offline": "Arkadaşın uzakta olduğunda etrafta pusuda olmamalısın!",
+	"Door.Locked": "Bu kapı kilitli.",
 	"Painting.Name": "Mevsimin Resmi",
 	"Synchronizer.Name": "Uzay Zaman Senkronizatörü",
 	"Synchronizer.Description": "Kişisel boyutunuzu Pelican Town'un tarihine senkronize eder.",
@@ -27,4 +29,6 @@
 	"VoidSeal.Buff.Name": "İçsel Boşluk",
 	"VoidSeal.Buff.Description": "Kendimi çok boş hissediyorum.",
 	"NoContentPacks": "Kapınız var, ancak onunla birlikte gidecek bir oda içeriği paketiniz yok",
+	"Key.Name": "Geçersiz Anahtar",
+	"Key.Description": "Kilitler ve Kilit Açmalar kişisel bir boyut",
 }

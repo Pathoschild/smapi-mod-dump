@@ -10,7 +10,7 @@
   "UniqueID": "shivion.FilteredChestHopper",
   "Name": "FilteredChestHopper",
   "Author": "Shivion",
-  "Version": "1.3.4",
+  "Version": "1.4.4",
   "Description": "...",
   "EntryDll": "FilteredChestHopper.dll",
   "UpdateKeys": [

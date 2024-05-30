@@ -1,13 +1,12 @@
 {
-  "Farmer": {
-    "Allergies": {
-      "egg": false,
-      "wheat": false,
-      "fish": false,
-      "shellfish": false,
-      "treenuts": false,
-      "dairy": false,
-      "mushroom": false
-    }
-  }
+  "AllergyPageButton": "L",
+  "EnableTab": true,
+  "HintBeforeEating": true,
+  "NumberRandomAllergies": -1,
+  "AllergenCountHint": true,
+  "HoldingReaction": false,
+  "CookingReaction": false,
+  "EnableNausea": true,
+  "EatingDebuffLengthSeconds": 120,
+  "DebuffSeverityMultiplier": 1.0
 }

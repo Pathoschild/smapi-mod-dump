@@ -1,0 +1,7 @@
+﻿{
+	"Carpenter_Flip": "翻转建筑物",
+	"Carpenter_SelectBuilding_Flip": "选择要翻转的建筑物",
+	"Carpenter_CannotFlip": "这栋楼不能翻转" ,
+	"Carpenter_CannotFlip_Permission": "您无权翻转此建筑",
+	"Carpenter_CannotFlip_PlayerHere": "当玩家在建筑物上时无法翻转"
+}

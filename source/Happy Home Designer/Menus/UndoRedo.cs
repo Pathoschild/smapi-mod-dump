@@ -15,31 +15,32 @@ using System.Collections.Generic;
 
 namespace HappyHomeDesigner.Menus
 {
-    public partial class UndoRedoButton : ClickableComponent
-    {
-        private readonly Stack<WallFloorState> backwards = new();
-        private readonly Stack<WallFloorState> forwards = new();
+	public partial class UndoRedoButton<T> : ClickableComponent where T : IUndoRedoState<T>
+	{
+		private readonly Stack<T> backwards = new();
+		private readonly Stack<T> forwards = new();
 
-        public void Push(WallFloorState state)
-        {
-            forwards.Clear();
-            backwards.Push(state);
-        }
+		/// <summary>Apply a new state</summary>
+		public void Push(T state)
+		{
+			forwards.Clear();
+			backwards.Push(state);
+		}
 
-        public bool Undo(bool playSound)
-            => Do(backwards, forwards, playSound, false);
+		public bool Undo(bool playSound)
+			=> Do(backwards, forwards, playSound, false);
 
-        public bool Redo(bool playSound)
-            => Do(forwards, backwards, playSound, true);
+		public bool Redo(bool playSound)
+			=> Do(forwards, backwards, playSound, true);
 
-        private static bool Do(Stack<WallFloorState> from, Stack<WallFloorState> to, bool playSound, bool forward)
-        {
+		private static bool Do(Stack<T> from, Stack<T> to, bool playSound, bool forward)
+		{
 			if (from.Count is 0)
 				return false;
 
 			var state = from.Pop();
 
-			if (WallFloorState.Apply(state, Game1.currentLocation, forward))
+			if (state.Apply(forward))
 			{
 				if (playSound)
 					Game1.playSound("Cowboy_gunshot");
@@ -53,10 +54,10 @@ namespace HappyHomeDesigner.Menus
 			return false;
 		}
 
-        public void Clear()
-        {
-            backwards.Clear();
-            forwards.Clear();
-        }
-    }
+		public void Clear()
+		{
+			backwards.Clear();
+			forwards.Clear();
+		}
+	}
 }

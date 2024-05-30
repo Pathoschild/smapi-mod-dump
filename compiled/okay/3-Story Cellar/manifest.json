@@ -1,8 +1,8 @@
 {
   "Name": "3-story-cellar",
   "Author": "fan",
-  "Version": "1.0.0",
-  "Description": "3-story cellar",
+  "Version": "1.0.1",
+  "Description": "<One or two sentences about the mod>",
   "UniqueID": "fan.3-story-cellar",
   "EntryDll": "3-story-cellar.dll",
   "MinimumApiVersion": "3.0.0",

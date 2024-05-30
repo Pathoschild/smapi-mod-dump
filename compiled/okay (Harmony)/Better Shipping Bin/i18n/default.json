@@ -1,0 +1,10 @@
+{
+  "Config.TotalValue.Title": "Show Total Value",
+  "Config.TotalValue.Description": "Show a banner at the top of the shipping bin inventory with the total value of all items",
+  "Config.MiniTotalValue.Title": "Show Total Value (Mini bin)",
+  "Config.MiniTotalValue.Description": "Show the same banner as on the regular inventory in the mini shipping bin",
+  "Config.InvertScroll.Title": "Invert Scroll Wheel",
+  "Config.InvertScroll.Description": "Invert the direction of the scroll wheel when scrolling through the inventory",
+
+  "Menu.TotalValue": "Total value : "
+}

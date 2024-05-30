@@ -83,6 +83,13 @@ internal partial class Mod: StardewModdingAPI.Mod {
             setValue: value => Config.ShowBubbles = value
         );
         
+        configMenu.AddBoolOption(
+            mod: ModManifest,
+            name: I18n.RenderOnTop,
+            getValue: () => Config.RenderOnTop,
+            setValue: value => Config.RenderOnTop = value
+        );
+        
         configMenu.AddNumberOption(
             mod: ModManifest,
             name: I18n.BubbleYOffset,

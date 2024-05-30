@@ -435,20 +435,6 @@
       "Category": "other"
     }
   ],
-  "BathHouse_WomensLocker": [
-    {
-      "NameOrTranslationKey": "static_tile-bathhouse_locker-entry_room_door",
-      "X": [13],
-      "Y": [27],
-      "Category": "doors"
-    },
-    {
-      "NameOrTranslationKey": "static_tile-bathhouse_locker-pool_entrance",
-      "X": [2],
-      "Y": [27],
-      "Category": "doors"
-    }
-  ],
   "Beach": [
     {
       "NameOrTranslationKey": "static_tile-beach-beach_warp_statue",
@@ -2663,12 +2649,6 @@
       "Category": "interactables"
     },
     {
-      "NameOrTranslationKey": "static_tile-sewer-mutant_bug_lair",
-      "X": [3],
-      "Y": [19],
-      "Category": "doors"
-    },
-    {
       "NameOrTranslationKey": "static_tile-sewer-sewage_pool",
       "X": [17],
       "Y": [29],
@@ -2939,12 +2919,6 @@
       "X": [24,25,26,27,28],
       "Y": [25,26,27,28],
       "Category": "water"
-    },
-    {
-      "NameOrTranslationKey": "static_tile-town-bookseller",
-      "X": [109,110],
-      "Y": [26],
-      "Category": "interactables"
     }
   ],
   "Trailer": [

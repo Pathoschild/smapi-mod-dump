@@ -557,7 +557,7 @@ namespace AlternativeTextures.Framework.UI
                 else
                 {
                     var preFilteredTextureOptions = cachedTextureOptions.Where(i => !i.modData[_textureOwnerKey].Contains(AlternativeTextures.DEFAULT_OWNER) && AlternativeTextures.textureManager.GetSpecificTextureModel(i.modData[_textureNameKey]) is AlternativeTextureModel model && model.HasKeyword(i.modData[_textureVariationKey], _searchBox.Text));
-                    var vanillaFilteredTexureOptions = cachedTextureOptions.Where(i => i.modData[_textureOwnerKey].Contains(AlternativeTextures.DEFAULT_OWNER) && i.modData[_textureNameKey].Contains(_searchBox.Text, StringComparison.OrdinalIgnoreCase));
+                    var vanillaFilteredTexureOptions = cachedTextureOptions.Where(i => (i.modData[_textureOwnerKey].Contains(AlternativeTextures.DEFAULT_OWNER) && i.modData[_textureNameKey].Contains(_searchBox.Text, StringComparison.OrdinalIgnoreCase)) || (i.modData.TryGetValue(_textureDisplayNameKey, out string displayName) && string.IsNullOrEmpty(displayName) is false && displayName.Contains(_searchBox.Text, StringComparison.OrdinalIgnoreCase)));
                     filteredTextureOptions = preFilteredTextureOptions.Concat(vanillaFilteredTexureOptions).ToList();
                 }
             }

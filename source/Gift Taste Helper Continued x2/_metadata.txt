@@ -6,9 +6,9 @@ mods:
    Gift Taste Helper Continued x2
 
 latest commit:
-   commit b9826ed32c356a026ebecb9829131a8bceb52bab
+   commit d63db5f4232ee1d51a8601f3b49dc1ef9e70dcd2
    Author: JoXW100 <joxw100@gmail.com>
-   Date:   Sat Mar 30 17:51:34 2024 +0100
+   Date:   Mon Apr 29 00:03:37 2024 +0200
    
-       NPC specifict tastes can now override universal tastes
+       Marked values as nullable, cleanup
    

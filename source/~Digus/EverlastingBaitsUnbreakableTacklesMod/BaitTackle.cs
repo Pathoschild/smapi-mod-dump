@@ -14,30 +14,56 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using EverlastingBaitsAndUnbreakableTacklesMod.utility;
 
 namespace EverlastingBaitsAndUnbreakableTacklesMod
 {
-    public enum BaitTackle
+    public class BaitTackle : Enumeration
     {
-        [Description("Everlasting Bait")]
-        EverlastingBait = 685,
-        [Description("Everlasting Wild Bait")]
-        EverlastingWildBait = 774,
-        [Description("Everlasting Magnet")]
-        EverlastingMagnet = 703,
-        [Description("Unbreakable Spinner")]
-        UnbreakableSpinner = 686,
-        [Description("Unbreakable Lead Bobber")]
-        UnbreakableLeadBobber = 692,
-        [Description("Unbreakable Trap Bobber")]
-        UnbreakableTrapBobber = 694,
-        [Description("Unbreakable Cork Bobber")]
-        UnbreakableCorkBobber = 695,
-        [Description("Unbreakable Treasure Hunter")]
-        UnbreakableTreasureHunter = 693,
-        [Description("Unbreakable Barbed Hook")]
-        UnbreakableBarbedHook = 691,
-        [Description("Unbreakable Dressed Spinner")]
-        UnbreakableDressedSpinner = 687
+
+        public static readonly BaitTackle EverlastingBait = new ("685", "Everlasting Bait");
+        public static readonly BaitTackle EverlastingWildBait = new ("774", "Everlasting Wild Bait");
+        public static readonly BaitTackle EverlastingMagnet = new ("703", "Everlasting Magnet");
+        public static readonly BaitTackle UnbreakableSpinner = new ("686", "Unbreakable Spinner");
+        public static readonly BaitTackle UnbreakableLeadBobber = new ("692", "Unbreakable Lead Bobber");
+        public static readonly BaitTackle UnbreakableTrapBobber = new ("694", "Unbreakable Trap Bobber");
+        public static readonly BaitTackle UnbreakableSonarBobber = new ("SonarBobber", "Unbreakable Sonar Bobber");
+        public static readonly BaitTackle UnbreakableCorkBobber = new ("695", "Unbreakable Cork Bobber");
+        public static readonly BaitTackle UnbreakableTreasureHunter = new ("693", "Unbreakable Treasure Hunter");
+        public static readonly BaitTackle UnbreakableBarbedHook = new ("691", "Unbreakable Barbed Hook");
+        public static readonly BaitTackle UnbreakableDressedSpinner = new ("687", "Unbreakable Dressed Spinner");
+
+        public BaitTackle(string id, string description) : base(id, description)
+        {
+        }
+
+        public static BaitTackle GetFromDescription(string value)
+        {
+            foreach (BaitTackle baitTackle in Enumeration.GetAll<BaitTackle>())
+            {
+                if (baitTackle.Description.Equals(value))
+                {
+                    return baitTackle;
+                }
+            }
+            return null;
+        }
+
+        public static BaitTackle GetFromId(string value)
+        {
+            foreach (BaitTackle baitTackle in Enumeration.GetAll<BaitTackle>())
+            {
+                if (baitTackle.Id.Equals(value))
+                {
+                    return baitTackle;
+                }
+            }
+            return null;
+        }
+
+        public string GetQuestName()
+        {
+            return "Quest" + Id;
+        }
     }
 }

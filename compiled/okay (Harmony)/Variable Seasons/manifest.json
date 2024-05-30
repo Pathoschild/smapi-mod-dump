@@ -1,7 +1,7 @@
 {
   "Name": "StardewVariableSeasons",
   "Author": "calebstein1",
-  "Version": "0.4.1-beta",
+  "Version": "0.5.0-beta",
   "Description": "Adds variability to when exactly seasons change, as well as how long crops can survive out of season.",
   "UniqueID": "calebstein1.StardewVariableSeasons",
   "EntryDLL": "StardewVariableSeasons.dll",

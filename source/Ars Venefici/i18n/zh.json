@@ -1,0 +1,187 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/HeyImAmethyst/Ars-Venefici
+**
+*************************************************/
+
+{
+    /*********
+	** Config
+	*********/
+
+    "config.position_x.name": "X 位置",
+    "config.position_y.name": "Y 位置",
+
+    "config.position_x.tooltip": "在屏幕左上角为基准的像素X位置上绘制法术标签。",
+    "config.position_y.tooltip": "在屏幕左上角为基准的像素Y位置上绘制法术标签。",
+
+    "config.open_spellbook_key.name": "打开法术书按钮",
+    "config.open_spellbook_key.tooltip": "同时按下Shift键和此按钮以打开法术书。",
+
+    "config.move_spell_lable_key.name": "移动法术标签按钮",
+    "config.move_spell_lable_key.tooltip": "同时按下Shift键和此按钮以移动法术标签。",
+
+    "config.next_spell_key.name": "下一个法术按钮",
+    "config.next_spell_key.tooltip": "按下此按钮以切换到下一个法术。",
+
+    "config.previous_spell_key.name": "上一个法术按钮",
+    "config.previous_spell_key.tooltip": "按下此按钮以切换到上一个法术。",
+
+    "config.cast_spell_key.name": "施放法术按钮",
+    "config.cast_spell_key.tooltip": "按下此按钮以施放当前法术。",
+
+    /*********
+	** Spell Parts
+	*********/
+
+    "spellpart.self.name": "自身",
+    "spellpart.self.description": "对自己施加效果。",
+
+    "spellpart.projectile.name": "魔法球",
+    "spellpart.projectile.description": "发射一个魔法球。",
+
+    "spellpart.touch.name": "触碰",
+    "spellpart.touch.description": "会作用于你触碰的地形。",
+
+    "spellpart.etherial_touch.name": "灵触",
+    "spellpart.etherial_touch.description": "会作用于鼠标光标下的地形。",
+
+    "spellpart.aoe.name": "范围效果",
+    "spellpart.aoe.description": "会在触发法术的区域周围施放法术。这个形状必须放在最后。",
+
+    "spellpart.zone.name": "Zone",
+    "spellpart.zone.description": "Makes a 'zone' of the spell cast. This shape must be placed last. This shape will continue ticking the spell effect it was attached to.",
+
+
+    "spellpart.dig.name": "掘地三尺",
+    "spellpart.dig.description": "可以击碎岩石、清除碎石和砍伐树木。",
+
+    "spellpart.plow.name": "犁耕丰壤",
+    "spellpart.plow.description": "犁耕可耕种的地面。",
+
+    "spellpart.grow.name": "万物生",
+    "spellpart.grow.description": "促进树木和作物的生长。",
+
+    "spellpart.harvest.name": "硕果归仓",
+    "spellpart.harvest.description": "收获可收割的作物。",
+
+    "spellpart.create_water.name": "甘雨咒",
+    "spellpart.create_water.description": "为耕种过的土地浇水。",
+
+    "spellpart.explosion.name": "爆裂冲击",
+    "spellpart.explosion.description": "制造一次爆炸。",
+
+    "spellpart.blink.name": "瞬移",
+    "spellpart.blink.description": "将目标传送到指定位置。仅与“接触”和“以太接触”形态有效。只会传送施法者。",
+
+    "spellpart.light.name": "定焰置炬",
+    "spellpart.light.description": "在指定位置放置一个火把。用此方法创建的火把将无法回收。",
+
+    "spellpart.heal.name": "治疗术",
+    "spellpart.heal.description": "如果对自己使用，你可以治疗自己；如果与投射物一起使用，则可以治疗其他玩家。",
+
+    "spellpart.life_drain.name": "生命汲取",
+    "spellpart.life_drain.description": "对目标造成伤害，并根据造成的伤害为你治疗。",
+
+    "spellpart.physical_damage.name": "物理伤害",
+    "spellpart.physical_damage.description": "对目标造成伤害。",
+
+    "spellpart.haste.name": "Haste",
+    "spellpart.haste.description": "Increases the player's speed'.",
+
+
+    "spellpart.damage.name": "伤害增强",
+    "spellpart.damage.description": "增强基于伤害组件的攻击力。",
+
+    "spellpart.range.name": "范围",
+    "spellpart.range.description": "增加范围形状和某些组件的作用范围。",
+
+    "spellpart.bounce.name": "反弹",
+    "spellpart.bounce.description": "使魔法球在击中墙壁时反弹，直到击中怪物、可开采地形或消失。",
+
+    "spellpart.piercing.name": "穿透",
+    "spellpart.piercing.description": "增加魔法球在被摧毁前能够穿透敌人的次数。",
+
+    "spellpart.velocity.name": "速度",
+    "spellpart.velocity.description": "提高魔法球的飞行速度。",
+
+    "spellpart.healing.name": "治疗增强",
+    "spellpart.healing.description": "加强治疗效果。",
+
+    "spellpart.duration.name": "Duration",
+    "spellpart.duration.description": "Adds additional time to Zone spells.",
+
+    "spellpart.mining_power.name": "Mining Power",
+    "spellpart.mining_power.description": "Adds +1 axe/pickaxe upgrade to Dig spells.",
+
+    /*********
+	** UI
+	*********/
+
+    "ui.mana_cost.name": "Mana Cost",
+
+    "ui.spell_label.shape_group.name": "Shape Group",
+
+    "ui.spell_book.source_area.name": "Source Area",
+    "ui.spell_book.shape_group_area.name": "Shape Group Area",
+    "ui.spell_book.spell_grammar_area.name": "Spell Grammar Area",
+
+    /*********
+	** Skill/Professions
+	*********/
+
+    "skill.wizardry.name": "Wizardry",
+    "skill.extra_level_up_info.text": "+1 mana regen",
+    "skill.skill_page_hover_text_mana_regen.text": "mana regen",
+
+    "professions.ManaEfficiency1.name": "Mana Effeciency I",
+    "professions.ManaEfficiency1.description": "Total mana cost of spells is reduced by about a third",
+
+    "professions.ManaEfficiency2.name": "Mana Effeciency II",
+    "professions.ManaEfficiency2.description": "Total mana cost of spells is reduced by about half",
+
+    "professions.ManaRegen1.name": "Mana Regen I",
+    "professions.ManaRegen1.description": "+0.5 mana regen per level",
+
+    "professions.ManaRegen2.name": "Mana Regen II",
+    "professions.ManaRegen2.description": "+1 mana regen per level",
+
+    "professions.ManaConservation.name": "Mana Conservation",
+    "professions.ManaConservation.description": "25% chance of spells not costing any mana",
+
+    "professions.ManaCap.name": "Mana Reserve",
+    "professions.ManaCap.description": "+500 max mana",
+
+    /*********
+    ** Wizard learn-magic event
+    *********/
+
+    "event.wizard.1": "你好啊， @.",
+    "event.wizard.2": "我见你对魔法波动很敏感，特意测试了你的天赋，发现你是百年难遇的天才。",
+    "event.wizard.3": "想不想学魔法?",
+    "event.wizard.4": "这是学习魔法必须要看的魔法书，现在免费送给你了。",
+
+    "event.message.1": "巫师塞给你一本《魔法小白到骨灰级大佬》！你现在可以学习魔法了！按Shift和'B'来打开它。",
+
+    "event.wizard.5": "随着实力的增强，你可以在魔法书上学习更多的魔法。",
+    "event.wizard.6": "要使用魔法，你需要在魔法页面的每个形状组里放上一块或多块方块形状。",
+    "event.wizard.7": "然后，你还得在魔法的语法部分里放上几个八角形组件",
+    "event.wizard.8": "要是想改变形状和组件，你可以使用菱形修饰符。",
+    "event.wizard.9": "别忘了给你的魔法想个喜欢的咒语。咒语想好，就合上魔法书，魔法会自动保存。",
+    "event.wizard.10": "合上魔法书后，你可以循环查看你的魔法列表。",
+
+    "event.message.2": "使用'Z'和'X'来浏览你的魔法列表。你也可以使用Shift和'Z'以及Shift和'X'来循环浏览魔法的形状组。",
+
+    "event.wizard.11": "找到想用的魔法，就能开始施法了。",
+
+    "event.message.3": "想施法，就按Q。",
+    "event.message.4": "这些按键都能在Ars Venefici的设置文件里改。",
+
+    "event.wizard.12": "祝你修炼顺利，早日取代邓布利多，成为星露谷最强大的巫师。",
+
+    "event.wizard.abovehead": "至尊巫师——@"
+}

@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/JonathanFeenstra/Auto-StackBait
+**
+*************************************************/
+
+{
+  "Name": "Auto-Stack Bait",
+  "Author": "Jonathan Feenstra",
+  "Version": "1.0.4",
+  "Description": "Automatically adds any new bait to fishing poles that have the same type of bait attached.",
+  "UniqueID": "JonathanFeenstra.AutoStackBait",
+  "EntryDll": "AutoStackBait.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:23423" ]
+}

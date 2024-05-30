@@ -1,0 +1,16 @@
+{
+  // Basic
+  "LineSprinkler.DisplayName": "Line Sprinkler",
+  "LineSprinkler.Description": "Waters 4 tiles in a straight line every morning.",
+  // Quality
+  "QualityLineSprinkler.DisplayName": "Quality Line Sprinkler",
+  "QualityLineSprinkler.Description": "Waters 8 tiles in a straight line every morning.",
+  // Iridium
+  "IridiumLineSprinkler.DisplayName": "Iridum Line Sprinkler",
+  "IridiumLineSprinkler.Description": "Waters 24 tiles in a straight line every morning.",
+
+  // Config
+  "Controls": "Controls",
+  "RotateSprinklerKeybind": "Rotate Sprinkler",
+  "RotateSprinklerKeybind.Tooltip": "Pressing this key while holding a sprinkler or hovering your mouse over a placed sprinkler will rotate it 90° to the right."
+}

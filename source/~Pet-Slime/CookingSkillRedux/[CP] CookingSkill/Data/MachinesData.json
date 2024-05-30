@@ -1,0 +1,348 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Pet-Slime/StardewValley
+**
+*************************************************/
+
+{
+    "Changes": [
+        {
+            "Action": "EditData",
+            "Target": "Strings/Objects",
+            "Entries": {
+                "{{ModId}}_Flavor": "{0} {1}"
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Machines",
+            "Entries": {
+                "(BC)moonslime.Cooking.soda_machine": {
+                    "OutputRules": [
+                        {
+                            "Id": "Fruit_Soda",
+                            "Triggers": [
+                                {
+                                    "Id": "ItemPlacedInMachine_Fruit",
+                                    "Trigger": "ItemPlacedInMachine",
+                                    "RequiredItemId": null,
+                                    "RequiredTags": [
+                                        "category_fruits"
+                                    ],
+                                    "RequiredCount": 1,
+                                    "Condition": null
+                                }
+                            ],
+                            "UseFirstValidOutput": true,
+                            "OutputItem": [
+                                {
+                                    "CustomData": null,
+                                    "OutputMethod": null,
+                                    "CopyColor": true,
+                                    "CopyPrice": true,
+                                    "CopyQuality": true,
+                                    "PreserveType": null,
+                                    "PreserveId": "DROP_IN",
+                                    "IncrementMachineParentSheetIndex": 0,
+                                    "PriceModifiers": [
+                                        {
+                                            "Modification": "Multiply",
+                                            "Amount": 1.5
+                                        }
+                                    ],
+                                    "PriceModifierMode": "Stack",
+                                    "Condition": null,
+                                    "Id": "Default",
+                                    "ItemId": "(O)moonslime.Cooking.soda",
+                                    "RandomItemId": null,
+                                    "MaxItems": null,
+                                    "MinStack": -1,
+                                    "MaxStack": -1,
+                                    "Quality": -1,
+                                    "ObjectInternalName": "(O)moonslime.Cooking.soda_{0}",
+                                    "ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_Flavor %PRESERVED_DISPLAY_NAME %DISPLAY_NAME]",
+                                    "ToolUpgradeLevel": -1,
+                                    "IsRecipe": false,
+                                    "StackModifiers": null,
+                                    "StackModifierMode": "Stack",
+                                    "QualityModifiers": null,
+                                    "QualityModifierMode": "Stack",
+                                    "ModData": null,
+                                    "PerItemCondition": null
+                                }
+                            ],
+                            "MinutesUntilReady": 120
+                        },
+                        {
+                            "Id": "Default",
+                            "Triggers": [
+                                {
+                                    "Id": "ItemPlacedInMachine",
+                                    "Trigger": "ItemPlacedInMachine",
+                                    "RequiredItemId": "(O)724",
+                                    "RequiredCount": 0
+                                }
+                            ],
+                            "UseFirstValidOutput": true,
+                            "OutputItem": [
+                                {
+                                    "CustomData": null,
+                                    "OutputMethod": null,
+                                    "CopyColor": false,
+                                    "CopyPrice": false,
+                                    "CopyQuality": true,
+                                    "PreserveType": null,
+                                    "PreserveId": null,
+                                    "IncrementMachineParentSheetIndex": 0,
+                                    "PriceModifiers": null,
+                                    "PriceModifierMode": "Stack",
+                                    "Condition": null,
+                                    "Id": "Default",
+                                    "ItemId": "(O)moonslime.Cooking.soda",
+                                    "RandomItemId": null,
+                                    "MaxItems": null,
+                                    "MinStack": 8,
+                                    "MaxStack": 8,
+                                    "Quality": -1,
+                                    "ObjectInternalName": null,
+                                    "ObjectDisplayName": null,
+                                    "ToolUpgradeLevel": -1,
+                                    "IsRecipe": false,
+                                    "StackModifiers": null,
+                                    "StackModifierMode": "Stack",
+                                    "QualityModifiers": null,
+                                    "QualityModifierMode": "Stack",
+                                    "ModData": null,
+                                    "PerItemCondition": null
+                                }
+                            ],
+                            "MinutesUntilReady": 120
+                        },
+                        {
+                            "Id": "Mystic_Soda",
+                            "Triggers": [
+                                {
+                                    "Id": "ItemPlacedInMachine",
+                                    "Trigger": "ItemPlacedInMachine",
+                                    "RequiredItemId": "(O)MysticSyrup",
+                                    "RequiredCount": 1
+                                }
+                            ],
+                            "UseFirstValidOutput": true,
+                            "OutputItem": [
+                                {
+                                    "CustomData": null,
+                                    "OutputMethod": null,
+                                    "CopyColor": false,
+                                    "CopyPrice": false,
+                                    "CopyQuality": true,
+                                    "PreserveType": null,
+                                    "PreserveId": null,
+                                    "IncrementMachineParentSheetIndex": 0,
+                                    "PriceModifiers": null,
+                                    "PriceModifierMode": "Stack",
+                                    "Condition": null,
+                                    "Id": "Default",
+                                    "ItemId": "(O)moonslime.Cooking.soda_Mystic",
+                                    "RandomItemId": null,
+                                    "MaxItems": null,
+                                    "MinStack": 16,
+                                    "MaxStack": 16,
+                                    "Quality": -1,
+                                    "ObjectInternalName": null,
+                                    "ObjectDisplayName": null,
+                                    "ToolUpgradeLevel": -1,
+                                    "IsRecipe": false,
+                                    "StackModifiers": null,
+                                    "StackModifierMode": "Stack",
+                                    "QualityModifiers": null,
+                                    "QualityModifierMode": "Stack",
+                                    "ModData": null,
+                                    "PerItemCondition": null
+                                }
+                            ],
+                            "MinutesUntilReady": 120
+                        }
+                    ],
+                    "AdditionalConsumedItems": [
+                        {
+                            "ItemId": "(O)724",
+                            "RequiredCount": 1,
+                            "InvalidCountMessage": "{{i18n: moonslime.Cooking.syrup.need_item}}"
+                        }
+                    ],
+                    "WobbleWhileWorking": true,
+                    "ShowNextIndexWhileWorking": true,
+                    "ShowNextIndexWhenReady": true,
+                    "LoadEffects": [
+                        {
+                            "Id": "Default",
+                            "Condition": null,
+                            "Sounds": [
+                                {
+                                    "Id": "clank",
+                                    "Delay": 0
+                                },
+                                {
+                                    "Id": "bubbles",
+                                    "Delay": 0
+                                }
+                            ],
+                            "Interval": 100,
+                            "Frames": null,
+                            "ShakeDuration": -1,
+                            "TemporarySprites": [
+                                {
+                                    "Id": "Default",
+                                    "Condition": null,
+                                    "Texture": "TileSheets\\animations",
+                                    "SourceRect": {
+                                        "X": 256,
+                                        "Y": 1856,
+                                        "Width": 64,
+                                        "Height": 128
+                                    },
+                                    "Interval": 80,
+                                    "Frames": 6,
+                                    "Loops": 999999,
+                                    "PositionOffset": "0, -32",
+                                    "Flicker": false,
+                                    "Flip": false,
+                                    "SortOffset": 0,
+                                    "AlphaFade": 0.005,
+                                    "Scale": 0.25,
+                                    "ScaleChange": 0,
+                                    "Rotation": 0,
+                                    "RotationChange": 0,
+                                    "Color": "#bfbf00bf"
+                                }
+                            ]
+                        }
+                    ],
+                    "StatsToIncrementWhenLoaded": [
+                        {
+                            "StatName": "moonslime.CookingSkill.Soda_Machine"
+                        }
+                    ]
+                },
+                "(BC)moonslime.Cooking.oven": {
+                    "OutputRules": [
+                        {
+                            "Id": "Radio_bar_insert",
+                            "Triggers": [
+                                {
+                                    "Id": "ItemPlacedInMachine",
+                                    "Trigger": "ItemPlacedInMachine",
+                                    "RequiredItemId": "(O)910",
+                                    "RequiredCount": 5
+                                }
+                            ],
+                            "UseFirstValidOutput": true,
+                            "OutputItem": [
+                                {
+                                    "Id": "Prismatic Shard",
+                                    "Condition": "RANDOM 0.1",
+                                    "ItemId": "(O)74",
+                                    "MinStack": 1,
+                                    "MaxStack": 1
+                                },
+                                {
+                                    "Id": "Pearl",
+                                    "Condition": "RANDOM 0.1",
+                                    "ItemId": "(O)797",
+                                    "MinStack": 1,
+                                    "MaxStack": 1
+                                },
+                                {
+                                    "Id": "Golden Pumpkin",
+                                    "Condition": "RANDOM 0.1",
+                                    "ItemId": "(O)373",
+                                    "MinStack": 1,
+                                    "MaxStack": 1
+                                },
+                                {
+                                    "Id": "Rabbit's Foot",
+                                    "Condition": "RANDOM 0.1",
+                                    "ItemId": "(O)446",
+                                    "MinStack": 1,
+                                    "MaxStack": 1
+                                },
+                                {
+                                    "Id": "Radioactive Bar",
+                                    "Condition": "RANDOM 0.1",
+                                    "ItemId": "(O)910",
+                                    "MinStack": 5,
+                                    "MaxStack": 20
+                                },
+                                {
+                                    "Id": "Dragon Tooth",
+                                    "Condition": "RANDOM 0.1",
+                                    "ItemId": "(O)852",
+                                    "MinStack": 1,
+                                    "MaxStack": 1
+                                },
+                                {
+                                    "Id": "Magic Rock Candy",
+                                    "Condition": "RANDOM 0.1",
+                                    "ItemId": "(O)279",
+                                    "MinStack": 1,
+                                    "MaxStack": 5
+                                },
+                                {
+                                    "Id": "Cinder Shards",
+                                    "Condition": "RANDOM 0.1",
+                                    "ItemId": "(O)848",
+                                    "MinStack": 1,
+                                    "MaxStack": 5
+                                },
+                                {
+                                    "Id": "Ancient Fruit",
+                                    "Condition": "RANDOM 0.1",
+                                    "ItemId": "(O)454",
+                                    "MinStack": 1,
+                                    "MaxStack": 5
+                                },
+                                {
+                                    "Id": "Radioactive Ore",
+                                    "ItemId": "(O)909",
+                                    "MinStack": 5,
+                                    "MaxStack": 20
+                                }
+                            ],
+                            "MinutesUntilReady": 360
+                        }
+                    ],
+                    "AdditionalConsumedItems": [
+                        {
+                            "ItemId": "(O)787",
+                            "RequiredCount": 1,
+                            "InvalidCountMessage": "{{i18n: moonslime.Luck.battery.need_item}}"
+                        }
+                    ],
+                    "WobbleWhileWorking": true,
+                    "ShowNextIndexWhileWorking": true,
+                    "ShowNextIndexWhenReady": true,
+                    "LoadEffects": [
+                        {
+                            "Id": "Default",
+                            "Condition": null,
+                            "Sounds": [
+                                {
+                                    "Id": "clank",
+                                    "Delay": 0
+                                }
+                            ],
+                            "Interval": 100,
+                            "Frames": null,
+                            "ShakeDuration": -1
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}

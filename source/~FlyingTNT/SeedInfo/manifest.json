@@ -11,7 +11,7 @@
 {
   "Name": "Seed Info",
   "Author": "aedenthorn, FlyingTNT",
-  "Version": "1.0.2",
+  "Version": "1.0.3",
   "Description": "Adds crop sale price information to shops.",
   "UniqueID": "FlyingTNT.SeedInfo",
   "EntryDll": "SeedInfo.dll",

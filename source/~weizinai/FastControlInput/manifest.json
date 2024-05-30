@@ -1,0 +1,27 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/weizinai/StardewValleyMods
+**
+*************************************************/
+
+{
+    "Name": "Fast Control Input",
+    "Author": "weizinai",
+    "Version": "0.1.0",
+    "Description": "A mod allows you to speed up the game's response to player input.",
+    "UniqueID": "weizinai.FastControlInput",
+    "EntryDll": "FastControlInput.dll",
+    "UpdateKeys": [
+        "Nexus:24324"
+    ],
+    "Dependencies": [
+        {
+            "UniqueID": "spacechase0.GenericModConfigMenu",
+            "IsRequired": false
+        }
+    ]
+}

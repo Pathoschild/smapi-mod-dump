@@ -14,29 +14,50 @@ using StardewValley;
 using GenericModConfigMenu;
 using StardewValley.TerrainFeatures;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using StardewValley.Locations;
-using xTile.Tiles;
 using HarmonyLib;
-using xTile.ObjectModel;
+using StardewValley.Objects;
+using Object = StardewValley.Object;
 
 namespace StrongerTools {
     internal class ModEntry : Mod {
 
-        Item item;
+        Item? item;
         ModConfig config = new();
-        
+        bool hardwareCursor = false;
+
         public override void Entry(IModHelper helper) {
             config = helper.ReadConfig<ModConfig>();
-            
+
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;
             helper.Events.Input.ButtonPressed += OnButtonPressed;
             helper.Events.GameLoop.DayStarted += OnDayStarted;
+            helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
+            helper.Events.GameLoop.ReturnedToTitle += OnReturnedToTitle;
+
+            var harmony = new Harmony(ModManifest.UniqueID);
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(Trinket), nameof(Trinket.canBeShipped)),
+                postfix: new HarmonyMethod(typeof(ModEntry), nameof(Trinket_CanBeShipped_Postfix))
+            );
+        }
+
+        private void OnReturnedToTitle(object? sender, StardewModdingAPI.Events.ReturnedToTitleEventArgs e) {
+            hardwareCursor = false;
+        }
+
+        private void OnUpdateTicked(object? sender, StardewModdingAPI.Events.UpdateTickedEventArgs e) {
+            if (hardwareCursor) return;
+            EnableHardwareCursor();
+        }
+
+        static void Trinket_CanBeShipped_Postfix(ref bool __result) {
+            __result = true;
         }
 
         private void OnDayStarted(object? sender, StardewModdingAPI.Events.DayStartedEventArgs e) {
             GameLocation location = Game1.getLocationFromName("Backwoods");
-            
+
             AddTerrainFeature(location, new Vector2(34, 10), Tree.pineTree);
             AddTerrainFeature(location, new Vector2(41, 16), Tree.bushyTree);
             AddTerrainFeature(location, new Vector2(12, 19), Tree.bushyTree);
@@ -54,11 +75,63 @@ namespace StrongerTools {
         void AddTerrainFeature(GameLocation location, Vector2 tilePosition, string treeType) {
             if (!location.IsTileOccupiedBy(tilePosition)) {
                 location.terrainFeatures.Add(tilePosition, new Tree(treeType, Tree.treeStage));
-                if (config.ShowLogs) Monitor.Log($"Placing stage 5 pine tree at {location.Name} (X:{tilePosition.X}, Y:{tilePosition.Y})", LogLevel.Info);
+                if (config.ShowLogs) Monitor.Log(
+                    $"Placing stage 5 {GetTreeNameByID(treeType)} tree at {location.Name} (X:{tilePosition.X}, Y:{tilePosition.Y})", LogLevel.Info);
             }
         }
 
+        string GetTreeNameByID(string id) {
+            string treeName;
+            switch (id) {
+                case "1":
+                    treeName = "Oak";
+                    break;
+                case "2":
+                    treeName = "Maple";
+                    break;
+                case "3":
+                    treeName = "Pine";
+                    break;
+                default:
+                    treeName = "";
+                    break;
+            }
+            return treeName;
+        }
+
         private void OnGameLaunched(object? sender, StardewModdingAPI.Events.GameLaunchedEventArgs e) {
+            SetupGMCM();
+            EnableHardwareCursor();
+        }
+
+        private void OnButtonPressed(object? sender, StardewModdingAPI.Events.ButtonPressedEventArgs e) {
+            if (!Context.IsPlayerFree) return;
+            if (Game1.activeClickableMenu != null) return;
+
+            item = Game1.player.CurrentTool;
+
+            if (e.Button.IsUseToolButton()) {
+                if (item is Pickaxe pickaxe) {
+                    switch (pickaxe.ItemId) {
+                        case "GoldPickaxe":
+                            if (pickaxe.additionalPower.Value < 3) pickaxe.additionalPower.Value = 3;
+                            break;
+                        case "IridiumPickaxe":
+                            if (pickaxe.additionalPower.Value < 10) pickaxe.additionalPower.Value = 10;
+                            break;
+                    }
+
+                    if (config.ShowLogs) Monitor.Log($"{pickaxe.Name} current additional power: +{pickaxe.additionalPower.Value}", LogLevel.Info);
+                }
+            }
+        }
+
+        void EnableHardwareCursor() {
+            Game1.options.hardwareCursor = true;
+            hardwareCursor = true;
+        }
+
+        void SetupGMCM() {
             var configMenu = Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
             if (configMenu is null) return;
 
@@ -79,43 +152,6 @@ namespace StrongerTools {
                 setValue: value => config.ShowLogs = value,
                 name: () => "Enabled"
             );
-            
-            //EditAudio("thunder", "mySound.wav", "Sound");
-            //EditAudio("thunder_small", "mySound.wav", "Sound");
-        }
-
-        void EditAudio(string cue, string audioFile, string category) {
-            var existingCueDef = Game1.soundBank.GetCueDefinition(cue);
-            SoundEffect audio;
-            string filePathCombined = Path.Combine(Helper.DirectoryPath, audioFile);
-
-            using (var stream = new FileStream(filePathCombined, FileMode.Open)) {
-                audio = SoundEffect.FromStream(stream);
-            }
-
-            existingCueDef.SetSound(audio, Game1.audioEngine.GetCategoryIndex(category), false);
-        }
-
-        private void OnButtonPressed(object? sender, StardewModdingAPI.Events.ButtonPressedEventArgs e) {
-            if (!Context.IsPlayerFree) return;
-            if (Game1.activeClickableMenu != null) return;
-
-            item = Game1.player.CurrentTool;
-            
-            if (e.Button.IsUseToolButton()) {
-                if (item is Pickaxe pickaxe) {
-                    switch (pickaxe.ItemId) {
-                        case "GoldPickaxe":
-                            if (pickaxe.additionalPower.Value < 3) pickaxe.additionalPower.Value = 3;
-                            break;
-                        case "IridiumPickaxe":
-                            if (pickaxe.additionalPower.Value < 10) pickaxe.additionalPower.Value = 10;
-                            break;
-                    }
-
-                    if (config.ShowLogs) Monitor.Log($"{pickaxe.Name} current additional power: +{pickaxe.additionalPower.Value}", LogLevel.Info);
-                }
-            }
         }
 
     }

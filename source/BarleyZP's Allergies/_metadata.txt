@@ -6,9 +6,9 @@ mods:
    BarleyZP's Allergies
 
 latest commit:
-   commit 23ac80964d8d9cb2357b2d8ab9261e8ad0e345db
+   commit e73e9d599fc53b90a1d232653479585894da5058
    Author: Cara Lisy <lisyce@gmail.com>
-   Date:   Tue Apr 16 13:02:33 2024 -0700
+   Date:   Thu May 23 18:08:52 2024 -0700
    
-       default dict keys
+       bzpa release notes
    

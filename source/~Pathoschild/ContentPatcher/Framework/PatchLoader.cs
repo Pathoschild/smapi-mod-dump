@@ -361,7 +361,7 @@ namespace ContentPatcher.Framework
             IPatch? TrackSkip(string reason, bool warn = true)
             {
                 reason = reason.TrimEnd('.', ' ');
-                this.PatchManager.AddPermanentlyDisabled(new DisabledPatch(path, entry.Action, action, entry.Target, pack, parentPatch, reason));
+                this.PatchManager.AddPermanentlyDisabled(new DisabledPatch(path, entry.Action, action, entry.Target, entry.TargetLocale, pack, parentPatch, reason));
                 if (warn)
                     logSkip(reason + '.');
                 return null;
@@ -399,6 +399,13 @@ namespace ContentPatcher.Framework
                     }
                     else if (!tokenParser.TryParseString(entry.Target, immutableRequiredModIDs, path.With(nameof(entry.Target)), out string? error, out targetAsset))
                         return TrackSkip($"the {nameof(PatchConfig.Target)} is invalid: {error}");
+                }
+
+                // patch target asset locale
+                IManagedTokenString? targetAssetLocale = null;
+                {
+                    if (entry.TargetLocale != null && !tokenParser.TryParseString(entry.TargetLocale, immutableRequiredModIDs, path.With(nameof(entry.TargetLocale)), out string? error, out targetAssetLocale))
+                        return TrackSkip($"the {nameof(PatchConfig.TargetLocale)} is invalid: {error}");
                 }
 
                 // parse 'enabled'
@@ -462,7 +469,6 @@ namespace ContentPatcher.Framework
                             patch = new IncludePatch(
                                 indexPath: indexPath,
                                 path: path,
-                                assetName: null,
                                 conditions: conditions,
                                 fromFile: fromAsset,
                                 updateRate: updateRate,
@@ -491,6 +497,7 @@ namespace ContentPatcher.Framework
                                 indexPath: indexPath,
                                 path: path,
                                 assetName: targetAsset!,
+                                assetLocale: targetAssetLocale,
                                 priority: priority,
                                 updateRate: updateRate,
                                 conditions: conditions,
@@ -549,6 +556,7 @@ namespace ContentPatcher.Framework
                                 indexPath: indexPath,
                                 path: path,
                                 assetName: targetAsset!,
+                                assetLocale: targetAssetLocale,
                                 priority: priority,
                                 conditions: conditions,
                                 fromFile: fromAsset,
@@ -599,6 +607,7 @@ namespace ContentPatcher.Framework
                                 indexPath: indexPath,
                                 path: path,
                                 assetName: targetAsset!,
+                                assetLocale: targetAssetLocale,
                                 priority: priority,
                                 conditions: conditions,
                                 fromAsset: fromAsset,
@@ -734,6 +743,7 @@ namespace ContentPatcher.Framework
                                 indexPath: indexPath,
                                 path: path,
                                 assetName: targetAsset!,
+                                assetLocale: targetAssetLocale,
                                 priority: priority,
                                 conditions: conditions,
                                 fromAsset: fromAsset,

@@ -13,112 +13,56 @@ namespace StardewMods.ExpandedStorage.Framework.Services;
 using StardewModdingAPI.Events;
 using StardewMods.Common.Helpers;
 using StardewMods.Common.Interfaces;
+using StardewMods.Common.Models.Data;
+using StardewMods.Common.Models.Events;
 using StardewMods.Common.Services;
+using StardewMods.Common.Services.Integrations.BetterChests;
 using StardewMods.Common.Services.Integrations.ContentPatcher;
-using StardewMods.Common.Services.Integrations.ExpandedStorage;
-using StardewMods.Common.Services.Integrations.FauxCore;
-using StardewMods.ExpandedStorage.Framework.Enums;
+using StardewMods.ExpandedStorage.Framework.Interfaces;
 using StardewMods.ExpandedStorage.Framework.Models;
 using StardewValley.GameData.BigCraftables;
 
-/// <summary>Responsible for managing expanded storage objects.</summary>
-internal sealed class AssetHandler : BaseService
+/// <inheritdoc />
+internal sealed class AssetHandler : BaseAssetHandler
 {
-    private const string AssetPath = "Data/BigCraftables";
-
-    private readonly Dictionary<string, IStorageData> data = new();
+    private readonly IModConfig modConfig;
 
     /// <summary>Initializes a new instance of the <see cref="AssetHandler" /> class.</summary>
-    /// <param name="eventSubscriber">Dependency used for subscribing to events.</param>
-    /// <param name="log">Dependency used for logging debug information to the console.</param>
-    /// <param name="manifest">Dependency for accessing mod manifest.</param>
-    public AssetHandler(IEventSubscriber eventSubscriber, ILog log, IManifest manifest)
-        : base(log, manifest)
+    /// <param name="contentPatcherIntegration">Dependency for Content Patcher integration.</param>
+    /// <param name="eventManager">Dependency used for managing events.</param>
+    /// <param name="gameContentHelper">Dependency used for loading game assets.</param>
+    /// <param name="modConfig">Dependency used for accessing config data.</param>
+    /// <param name="modContentHelper">Dependency used for accessing mod content.</param>
+    public AssetHandler(
+        ContentPatcherIntegration contentPatcherIntegration,
+        IEventManager eventManager,
+        IGameContentHelper gameContentHelper,
+        IModConfig modConfig,
+        IModContentHelper modContentHelper)
+        : base(contentPatcherIntegration, eventManager, gameContentHelper, modContentHelper)
     {
-        eventSubscriber.Subscribe<AssetsInvalidatedEventArgs>(this.OnAssetsInvalidated);
-        eventSubscriber.Subscribe<ConditionsApiReadyEventArgs>(this.OnConditionsApiReady);
+        this.modConfig = modConfig;
+        this.Asset("Data/BigCraftables").Edit(this.AddOptions, AssetEditPriority.Late);
+        eventManager.Subscribe<ConfigChangedEventArgs<DefaultConfig>>(this.OnConfigChanged);
     }
 
-    /// <summary>Tries to retrieve the storage data associated with the specified item.</summary>
-    /// <param name="item">The item for which to retrieve the data.</param>
-    /// <param name="storageData">
-    /// When this method returns, contains the data associated with the specified item; otherwise,
-    /// null.
-    /// </param>
-    /// <returns>true if the data was successfully retrieved; otherwise, false.</returns>
-    public bool TryGetData(Item item, [NotNullWhen(true)] out IStorageData? storageData)
+    private void AddOptions(IAssetData asset)
     {
-        // Return from cache
-        if (this.data.TryGetValue(item.QualifiedItemId, out storageData))
+        var bigCraftableData = asset.AsDictionary<string, BigCraftableData>().Data;
+        foreach (var (id, data) in bigCraftableData)
         {
-            return true;
-        }
-
-        // Check if enabled
-        if (ItemRegistry.GetData(item.QualifiedItemId)?.RawData is not BigCraftableData bigCraftableData
-            || bigCraftableData.CustomFields?.GetBool(this.ModId + "/Enabled") != true)
-        {
-            storageData = null;
-            return false;
-        }
-
-        // Load storage data
-        this.Log.Trace("Loading managed storage: {0}", item.QualifiedItemId);
-        storageData = new StorageData();
-        this.data.Add(item.QualifiedItemId, storageData);
-
-        foreach (var (customFieldKey, customFieldValue) in bigCraftableData.CustomFields)
-        {
-            var keyParts = customFieldKey.Split('/');
-            if (keyParts.Length != 2
-                || !keyParts[0].Equals(this.ModId, StringComparison.OrdinalIgnoreCase)
-                || !CustomFieldKeysExtensions.TryParse(keyParts[1], out var storageAttribute))
+            if (!this.modConfig.StorageOptions.TryGetValue(id, out var storageOptions))
             {
                 continue;
             }
 
-            switch (storageAttribute)
-            {
-                case CustomFieldKeys.CloseNearbySound:
-                    storageData.CloseNearbySound = customFieldValue;
-                    break;
-                case CustomFieldKeys.Frames:
-                    storageData.Frames = customFieldValue.GetInt(1);
-                    break;
-                case CustomFieldKeys.IsFridge:
-                    storageData.IsFridge = customFieldValue.GetBool();
-                    break;
-                case CustomFieldKeys.OpenNearby:
-                    storageData.OpenNearby = customFieldValue.GetBool();
-                    break;
-                case CustomFieldKeys.OpenNearbySound:
-                    storageData.OpenNearbySound = customFieldValue;
-                    break;
-                case CustomFieldKeys.OpenSound:
-                    storageData.OpenSound = customFieldValue;
-                    break;
-                case CustomFieldKeys.PlaceSound:
-                    storageData.PlaceSound = customFieldValue;
-                    break;
-                case CustomFieldKeys.PlayerColor:
-                    storageData.PlayerColor = customFieldValue.GetBool();
-                    break;
-                default:
-                    this.Log.Warn("{0} is not a supported attribute", keyParts[2]);
-                    break;
-            }
-        }
-
-        return true;
-    }
-
-    private void OnAssetsInvalidated(AssetsInvalidatedEventArgs e)
-    {
-        if (e.Names.Any(assetName => assetName.IsEquivalentTo(AssetHandler.AssetPath)))
-        {
-            this.data.Clear();
+            data.CustomFields ??= new Dictionary<string, string>();
+            var typeModel = new DictionaryModel(() => data.CustomFields);
+            var typeOptions = new StorageOptions(typeModel);
+            storageOptions.CopyTo(typeOptions);
         }
     }
 
-    private void OnConditionsApiReady(ConditionsApiReadyEventArgs args) => this.data.Clear();
+    private void OnConfigChanged(ConfigChangedEventArgs<DefaultConfig> e) =>
+        this.GameContentHelper.InvalidateCache("Data/BigCraftables");
 }

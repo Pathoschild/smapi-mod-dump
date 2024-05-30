@@ -59,25 +59,25 @@ namespace StardewDruid.Event.Scene
             {
                 case 1:
 
-                    CastVoice("Farmer", duration: 3000);
+                    CastVoice(0, "Farmer", duration: 3000);
 
                     break;
 
                 case 4:
 
-                    CastVoice("You come at last", duration: 3000);
+                    CastVoice(0, "You come at last", duration: 3000);
 
                     break;
 
                 case 7:
 
-                    CastVoice("I'm in the ceiling", duration: 3000);
+                    CastVoice(0, "I'm in the ceiling", duration: 3000);
 
                     break;
 
                 case 10:
 
-                    CastVoice("Stand here and perform the rite", duration: 3000);
+                    CastVoice(0, "Stand here and perform the rite", duration: 3000);
 
                     Mod.instance.CastMessage(Mod.instance.Config.riteButtons.ToString() + " with a tool in hand to perform a rite of the Weald", -1);
 
@@ -85,7 +85,7 @@ namespace StardewDruid.Event.Scene
 
                 case 13:
 
-                    CastVoice("As the first farmer did long ago", duration: 3000);
+                    CastVoice(0, "As the first farmer did long ago", duration: 3000);
 
                     break;
 
@@ -106,18 +106,25 @@ namespace StardewDruid.Event.Scene
 
             expireTime = Game1.currentGameTime.TotalGameTime.TotalSeconds + 600.0;
 
-            Mod.instance.iconData.DecorativeIndicator(location, Game1.player.Position, IconData.decorations.weald);
+            ModUtility.AnimateHands(Game1.player, Game1.player.FacingDirection, 600);
+
+            Mod.instance.iconData.DecorativeIndicator(location, Game1.player.Position, IconData.decorations.weald, 4f, new());
 
             location.playSound("discoverMineral");
 
-            ModUtility.AnimateRockfalls(location, Game1.player.Tile);
+            Mod.instance.rite.CastRockfall(true);
+            Mod.instance.rite.CastRockfall(true);
+            Mod.instance.rite.CastRockfall(true);
+            Mod.instance.rite.CastRockfall(true);
+            Mod.instance.rite.CastRockfall(true);
+            Mod.instance.rite.CastRockfall(true);
 
         }
 
         public override void EventAbort()
         {
 
-            CharacterData.CharacterRemove(CharacterData.characters.effigy);
+            CharacterData.CharacterRemove(CharacterData.characters.Effigy);
 
             base.EventAbort();
 
@@ -160,22 +167,20 @@ namespace StardewDruid.Event.Scene
 
                 case 1:
 
-                    location.playSound("boulderBreak");
-
-                    location.playSound("boulderBreak");
-
                     Vector2 EffigyPosition = origin + new Vector2(128, -640);
 
-                    TemporaryAnimatedSprite EffigyAnimation = new(0, 1000f, 1, 1, EffigyPosition - new Vector2(36, 72), false, false)
+                    TemporaryAnimatedSprite EffigyAnimation = new(0, 2000f, 1, 1, EffigyPosition - new Vector2(36, 72), false, false)
                     {
 
                         sourceRect = new(0, 0, 32, 32),
 
-                        texture = CharacterData.CharacterTexture(CharacterData.characters.effigy),
+                        texture = CharacterData.CharacterTexture(CharacterData.characters.Effigy),
 
                         scale = 4.25f,
 
-                        motion = new Vector2(0, 0.64f),
+                        motion = new Vector2(0, 0.32f),
+
+                        rotationChange = 0.1f,
 
                         timeBasedMotion = true,
 
@@ -185,15 +190,11 @@ namespace StardewDruid.Event.Scene
 
                     break;
 
-                case 2:
+                case 3:
 
                     RemoveActors();
 
-                    location.playSound("boulderBreak");
-
-                    location.playSound("boulderBreak");
-
-                    CharacterData.CharacterLoad(CharacterData.characters.effigy, StardewDruid.Character.Character.mode.scene);
+                    CharacterData.CharacterLoad(CharacterData.characters.Effigy, StardewDruid.Character.Character.mode.scene);
 
                     narrators = new()
                     {
@@ -201,7 +202,7 @@ namespace StardewDruid.Event.Scene
 
                     }; ;
 
-                    companions.Add(0,Mod.instance.characters[CharacterData.characters.effigy]);
+                    companions.Add(0,Mod.instance.characters[CharacterData.characters.Effigy]);
 
                     companions[0].netStandbyActive.Set(false);
 
@@ -215,13 +216,23 @@ namespace StardewDruid.Event.Scene
 
                     companions[0].eventName = eventId;
 
+                    voices[0] = companions[0];
+
+                    Mod.instance.iconData.ImpactIndicator(location, companions[0].Position, IconData.impacts.impact, 6f, new());
+
+                    location.playSound("explosion");
+
+                    break;
+
+                case 4:
+
                     DialogueCue(0, "Well done");
 
                     DialogueLoad(0, 1);
 
                     break;
 
-                case 4:
+                case 6:
 
                     DialogueNext(companions[0]);
 
@@ -284,24 +295,21 @@ namespace StardewDruid.Event.Scene
 
                 default: // introOne
 
-                    intro = "So the successor appears. I am the Effigy of the First Farmer, and the sole remnant of my circle of Druids.";
+                    intro = "Forgotten Effigy: So a successor appears. I am the Effigy, crafted by the First Farmer, sustained by the powers of the elderborn, and bored.";
 
                     break;
 
                 case 2:
 
-                    intro = "The Effigy: ^That is a matter for another time. The lineage of valley farmers was once aligned with the otherworld. If you intend to become a Stardew Druid, you will need to learn many lessons.";
+                    intro = "Forgotten Effigy: It is difficult to explain the course of events that led to my predicament. First know that the lineage of valley farmers you belong to was once aligned with the otherworld. They formed a circle of Druids.";
 
                     break;
 
                 case 3:
 
+                    intro = "An interesting proposition. Meet me in the grove outside, and we will test your aptitude for the otherworld.";
 
-                    intro = "Meet me in the grove outside, and your journey will begin.";
-
-                    npc.CurrentDialogue.Push(new(npc, "0", intro));
-
-                    Game1.drawDialogue(npc);
+                    DialogueDraw(npc, intro);
 
                     return;
 
@@ -315,13 +323,15 @@ namespace StardewDruid.Event.Scene
                 default: //introOne
 
                     responseList.Add(new Response("1a", "Who stuck you in the ceiling?"));
+                    responseList.Add(new Response("1a", "I inherited this plot from my grandfather. His notes didn't say anything about a magic scarecrow."));
                     responseList.Add(new Response("1b", "(Say nothing)"));
 
                     break;
 
                 case 2:
 
-                    responseList.Add(new Response("2a", "(start journey) Ok. What is the first lesson?"));
+                    responseList.Add(new Response("2a", "I want to be like the farmers of old and form a circle"));
+                    responseList.Add(new Response("2a", "Do you think I could become...(dramatic pause)... a Stardew Druid?"));
                     responseList.Add(new Response("2b", "(Say nothing)"));
 
                     break;
@@ -338,9 +348,7 @@ namespace StardewDruid.Event.Scene
 
         public override void DialogueResponses(Farmer visitor, string dialogueId)
         {
-            
-            Mod.instance.Monitor.Log(dialogueId,LogLevel.Debug);
-            
+
             switch (dialogueId)
             {
 
@@ -348,15 +356,11 @@ namespace StardewDruid.Event.Scene
 
                     activeCounter = Math.Max(100, activeCounter);
 
-                    dialogueCounter++;
-
                     break;
 
                 case "2a":
 
                     activeCounter = Math.Max(200, activeCounter);
-
-                    dialogueCounter++;
 
                     break;
 

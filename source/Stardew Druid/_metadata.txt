@@ -6,9 +6,9 @@ mods:
    Stardew Druid
 
 latest commit:
-   commit df06dfae6ef18a66ee2fb14fa93b25e3636b26d9
+   commit 2f02587f424767c0fa11ca57b772c0d2d87f78c8
    Author: Piers Mathieson <piersmathieson@gmail.com>
-   Date:   Mon Apr 15 00:05:57 2024 +1200
+   Date:   Fri May 17 09:17:30 2024 +1200
    
-       2.2.0
+       2.2.0.1
    

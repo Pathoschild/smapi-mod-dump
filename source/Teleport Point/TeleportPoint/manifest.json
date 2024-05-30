@@ -11,7 +11,7 @@
 {
   "Name": "TeleportPoint",
   "Author": "Enaium",
-  "Version": "1.2.1",
+  "Version": "1.2.2",
   "Description": "Record teleport point",
   "UniqueID": "Enaium.TeleportPoint",
   "EntryDll": "TeleportPoint.dll",
@@ -22,11 +22,12 @@
   "Dependencies": [
     {
       "UniqueID": "Enaium.EnaiumToolKit",
-      "MinimumVersion": "1.5.0"
+      "MinimumVersion": "1.8.0"
     }
   ],
   "Custom": {
     "ModMenu": {
+      "Setting": "TeleportPoint.Framework.Gui.TeleportPointScreen",
       "Contact": {
         "HomePage": "https://github.com/Enaium-StardewValleyMods/TeleportPoint",
         "Issues": "https://github.com/Enaium-StardewValleyMods/TeleportPoint/issues"

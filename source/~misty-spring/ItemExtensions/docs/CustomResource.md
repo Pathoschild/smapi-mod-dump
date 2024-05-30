@@ -101,7 +101,7 @@ You can make mine spawns with `MineSpawns` (which is a `List<MineSpawn>`):
 |--------------------------|----------|----------|----------------------------------------------------------------------------------------------------------------------------|
 | Floors                   | `string` | Yes      | Floors to spawn in. Must be slash separated. For example, "5, 7/9, 13/25" will spawn it on floors 5, 7 to 9, and 13 to 25. |
 | Condition                | `string` | No       | A GSQ for these spawns to apply. (optional) Calculated on mine generation.                                                 |
-| Type                     | `string` | No       | Can be: All (always spawns),  Qi (danger mines only), Normal (regular mines only). Default "All"                           |
+| Type                     | `string` | No       | Can be: `All` (always spawns in mines),  `Qi` (danger mines only), `Normal` (regular mines only), `Volcano`, `Mountain`, or `Frenzy` (similar to mushroom levels) . Default "All"                           |
 | SpawnFrequency           | `double` | No       | How likely it is for this ore to appear in the mines. **Goes from 0 to 1** (e.g, 0.8 = 80%)					                                                                |
 | AdditionalChancePerLevel | `double` | No       | Extra chance to spawn per mine level                  					                                                                |
 

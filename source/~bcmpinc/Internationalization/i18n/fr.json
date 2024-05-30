@@ -1,0 +1,23 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/bcmpinc/StardewHack
+**
+*************************************************/
+
+{
+  "title": "Internationalization : Stardew Valley Mod Translator",
+  "mod": "Mod",
+  "locale": "Paramètre régional",
+  "progress": "Progrès",
+  "save": "Sauvegarder",
+  "download": "Charger",
+  "error": "Erreur",
+  "hide": "cacher",
+  "new_translation": "Nouvelle traduction",
+  "old_translation": "Ancienne traduction",
+  "error.total_lines": "L’analyse a échoué à reconnaître {{count}} entrées de traduction dans default.json."
+}

@@ -19,7 +19,7 @@ namespace DwarvishMattock
 	public class TerrainFeaturePatches
 	{
 		public static DynamicMethod performToolActionOriginal = null;
-		public static bool performToolAction_Prefix(ref TerrainFeature __instance, Tool t, int damage, Vector2 tileLocation, GameLocation location, ref bool __result)
+		public static bool performToolAction_Prefix(ref TerrainFeature __instance, Tool t, int damage, Vector2 tileLocation, ref bool __result)
 		{
 			ModEntry.M.Log("performToolAction_Prefix A", StardewModdingAPI.LogLevel.Info);
 			// Gotta have the original method available for mattock stand-ins.
@@ -37,9 +37,10 @@ namespace DwarvishMattock
 				if (__instance is Tree || __instance is FruitTree || __instance is Bush || __instance is GiantCrop || __instance is Flooring)
 				{
 					ModEntry.M.Log("Struck a feature:" + __instance.GetType().ToString(), StardewModdingAPI.LogLevel.Info);
+
 					// Treat the mattock as an axe for various terrain features.
-					Axe standinAxe = mattock.asAxe();
-					__result = (bool) performToolActionOriginal.Invoke(__instance, new object[] { __instance, standinAxe, damage, tileLocation, location });
+					Axe standinAxe = mattock.AsAxe();
+					__result = (bool) performToolActionOriginal.Invoke(__instance, new object[] { __instance, standinAxe, damage, tileLocation });
 					return false;
 				}
 				else if (__instance is ResourceClump clump)
@@ -50,8 +51,8 @@ namespace DwarvishMattock
 						case 602: // Log
 						{
 							// Treat the mattock as an axe for stumps.
-							Axe standinAxe = mattock.asAxe();
-							__result = (bool) performToolActionOriginal.Invoke(__instance, new object[] { __instance, standinAxe, damage, tileLocation, location });
+							Axe standinAxe = mattock.AsAxe();
+							__result = (bool) performToolActionOriginal.Invoke(__instance, new object[] { __instance, standinAxe, damage, tileLocation });
 							return false;
 						}
 						case 622: // Iridium meteorite
@@ -62,9 +63,8 @@ namespace DwarvishMattock
 						case 758: // Icy Boulder 2
 						{
 							// Treat the mattock as a pickaxe for boulders.
-							Pickaxe standinPickaxe = (t as Mattock).asPickaxe();
-							standinPickaxe.DoFunction(location, (int)(__instance.currentTileLocation.X * 64), (int)(__instance.currentTileLocation.Y * 64), 1, Game1.player);
-							//__result = (bool) performToolActionOriginal.Invoke(__instance, new object[] { __instance, standinPickaxe, damage, tileLocation, location });
+							Pickaxe standinPickaxe = (t as Mattock).AsPickaxe();
+							standinPickaxe.DoFunction(__instance.Location, (int)(__instance.Tile.X * 64), (int)(__instance.Tile.Y * 64), 1, Game1.player);
 							return false;
 						}
 					}

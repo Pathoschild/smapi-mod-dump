@@ -37,7 +37,7 @@ namespace GenericModConfigMenu
         /// <param name="mod">The mod's manifest.</param>
         /// <param name="text">The title text shown in the form.</param>
         /// <param name="tooltip">The tooltip text shown when the cursor hovers on the title, or <c>null</c> to disable the tooltip.</param>
-        void AddSectionTitle(IManifest mod, Func<string> text, Func<string> tooltip = null);
+        void AddSectionTitle(IManifest mod, Func<string> text, Func<string>? tooltip = null);
 
         /// <summary>Add a boolean option at the current position in the form.</summary>
         /// <param name="mod">The mod's manifest.</param>
@@ -46,7 +46,7 @@ namespace GenericModConfigMenu
         /// <param name="name">The label text to show in the form.</param>
         /// <param name="tooltip">The tooltip text shown when the cursor hovers on the field, or <c>null</c> to disable the tooltip.</param>
         /// <param name="fieldId">The unique field ID for use with <see cref="OnFieldChanged"/>, or <c>null</c> to auto-generate a randomized ID.</param>
-        void AddBoolOption(IManifest mod, Func<bool> getValue, Action<bool> setValue, Func<string> name, Func<string> tooltip = null, string fieldId = null);
+        void AddBoolOption(IManifest mod, Func<bool> getValue, Action<bool> setValue, Func<string> name, Func<string>? tooltip = null, string? fieldId = null);
 
         /// <summary>Add an integer option at the current position in the form.</summary>
         /// <param name="mod">The mod's manifest.</param>
@@ -59,6 +59,6 @@ namespace GenericModConfigMenu
         /// <param name="interval">The interval of values that can be selected.</param>
         /// <param name="formatValue">Get the display text to show for a value, or <c>null</c> to show the number as-is.</param>
         /// <param name="fieldId">The unique field ID for use with <see cref="OnFieldChanged"/>, or <c>null</c> to auto-generate a randomized ID.</param>
-        void AddNumberOption(IManifest mod, Func<int> getValue, Action<int> setValue, Func<string> name, Func<string> tooltip = null, int? min = null, int? max = null, int? interval = null, Func<int, string> formatValue = null, string fieldId = null);
+        void AddNumberOption(IManifest mod, Func<int> getValue, Action<int> setValue, Func<string> name, Func<string>? tooltip = null, int? min = null, int? max = null, int? interval = null, Func<int, string>? formatValue = null, string? fieldId = null);
     }
 }

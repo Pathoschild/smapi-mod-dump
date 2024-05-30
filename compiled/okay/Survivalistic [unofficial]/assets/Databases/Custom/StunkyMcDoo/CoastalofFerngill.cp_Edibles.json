@@ -1,0 +1,41 @@
+{
+  "edibles": [
+    [
+      "Ferngill Scallop",
+      "10/10"
+    ],
+    [
+      "Anisea-Weed",
+      "5/10"
+    ],
+    [
+      "Spysea-Weed",
+      "5/10"
+    ],
+    [
+      "Laverbread",
+      "10/15"
+    ],
+    ///烹饪
+    [
+      "Popcorn Cockles",
+      "40/20"
+    ],
+    [
+      "Seared Ferngill Scallops",
+      "40/15"
+    ],
+    [
+      "Seaweed Salad",
+      "45/20"
+    ],
+    [
+      "Shucked Oyster",
+      "35/15"
+    ],
+    [
+      "Spicy Mussels",
+      "40/10"
+    ]
+  ]
+}

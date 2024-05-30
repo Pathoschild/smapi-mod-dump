@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/calebstein1/StardewDisableBuildingFade
+   Git: https://github.com/calebstein1/StardewDisableBuildingFade.git
+
+mods:
+   Disable Building Fade
+
+latest commit:
+   commit bff2534907857f45cdc1b74be3e2f0ac70c13d6c
+   Author: Caleb Stein <caleb@calebstein.net>
+   Date:   Mon May 27 15:00:17 2024 -0700
+   
+       add Nexus id to manifest.json
+   

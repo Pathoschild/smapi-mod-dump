@@ -162,13 +162,29 @@ namespace StardewDruid.Data
 
                 treeIndex = new()
                     {
-                        1,2,3,1,2,3,1,2,3,8,
+                        1,2,3,1,2,3,8,7
                     };
 
-                if (location is Farm)
+                /*if (location is Farm)
                 {
 
                     treeIndex.Add(7);
+
+                }*/
+
+                if(Game1.player.ForagingLevel > 5)
+                {
+
+                    treeIndex.Add(10);
+                    treeIndex.Add(11);
+                    treeIndex.Add(12);
+
+                }
+
+                if (Game1.player.ForagingLevel > 10)
+                {
+
+                    treeIndex.Add(13);
 
                 }
 
@@ -359,10 +375,10 @@ namespace StardewDruid.Data
 
         }
 
-        public static Dictionary<int, int> CropList(GameLocation location)
+        public static List<string> CropList(GameLocation location)
         {
 
-            Dictionary<int, int> objectIndexes;
+            List<string> objectIndexes;
 
             string season = Game1.currentSeason;
 
@@ -387,12 +403,13 @@ namespace StardewDruid.Data
 
                     objectIndexes = new()
                     {
-                        [0] = 478, // rhubarb
-                        [1] = 476, // garlic
-                        [2] = 433, // coffee
-                        [3] = 745, // strawberry
-                        [4] = 473, // bean
-                        [5] = 477, // kale
+                        "478", // rhubarb
+                        "476", // garlic
+                        "433", // coffee
+                        "745", // strawberry
+                        "473", // bean
+                        "477", // kale
+                        "CarrotSeeds",
                     };
 
                     break;
@@ -402,14 +419,14 @@ namespace StardewDruid.Data
 
                     objectIndexes = new()
                     {
-                        [0] = 479, // melon
-                        [1] = 485, // red cabbage
-                        [2] = 433, // coffee
-                        [3] = 481, // blueberry
-                        [4] = 302, // hops
-                        [5] = 483, // wheat
+                        "479", // melon
+                        "485", // red cabbage
+                        "433", // coffee
+                        "481", // blueberry
+                        "302", // hops
+                        "483", // wheat
+                        "SummerSquashSeeds",
                     };
-
 
                     break;
 
@@ -417,11 +434,12 @@ namespace StardewDruid.Data
 
                     objectIndexes = new()
                     {
-                        [0] = 490, // pumpkin
-                        [1] = 492, // yam
-                        [2] = 299, // amaranth
-                        [3] = 493, // cranberry
-                        [4] = 301, // grape
+                        "490", // pumpkin
+                        "492", // yam
+                        "299", // amaranth
+                        "493", // cranberry
+                        "301", // grape
+                        "BroccoliSeeds",
                     };
 
                     break;
@@ -430,10 +448,10 @@ namespace StardewDruid.Data
 
                     objectIndexes = new()
                     {
-                        [0] = 833, // pineapple
-                        [1] = 831, // taro
-                        [2] = 486, // starfruit
-                        [3] = 829, // ginger
+                        "833", // pineapple
+                        "831", // taro
+                        "486", // starfruit
+                        "829", // ginger
 
                     };
 
@@ -441,7 +459,12 @@ namespace StardewDruid.Data
 
                 default:
 
-                    objectIndexes = new();
+                    objectIndexes = new()
+                    {
+                        "PowdermelonSeeds",
+
+                    };
+
                     break;
 
             }
@@ -571,68 +594,110 @@ namespace StardewDruid.Data
 
         }
 
-        public static int RandomLowFish(GameLocation location)
+        public static string RandomLowFish(GameLocation location)
         {
-            Dictionary<int, int> objectIndexes;
+            List<string> indexes = new();
 
             if (location is Beach)
             {
 
-                objectIndexes = new Dictionary<int, int>()
+                if (Game1.isRaining)
                 {
 
+                    indexes.Add("150"); // red snapper
+                    indexes.Add("SeaJelly"); // red snapper
 
-                    [0] = 131, // sardine
-                    [1] = 147, // herring
-                    [2] = 129, // anchovy
-                    [3] = 701, // tilapia
-                    [4] = 131, // sardine
-                    [5] = 147, // herring
-                    [6] = 129, // anchovy
-                    [7] = 150, // red snapper
+                }
 
-                };
+                switch (Game1.currentSeason)
+                {
+
+                    case "spring":
+                        indexes.Add("147"); // herring
+                        indexes.Add("129"); // anchovy
+                        break;
+                    case "summer":
+                        indexes.Add("701"); // tilapia
+                        indexes.Add("131"); // sardine
+                        break;
+                    case "fall":
+                        indexes.Add("129"); // anchovy
+                        indexes.Add("131"); // sardine
+                        break;
+                    case "winter":
+                        indexes.Add("131"); // sardine
+                        indexes.Add("147"); // herring
+                        break;
+
+                }
 
             }
             else if (location is IslandLocation)
             {
 
-                objectIndexes = new Dictionary<int, int>()
+                if (Game1.isRaining)
                 {
 
+                    indexes.Add("150"); // red snapper
+                    indexes.Add("SeaJelly"); // red snapper
 
-                    [0] = 838, // blue discuss
-                    [1] = 837, // lionfish
-                    [2] = 267, // flounder
-                    [3] = 701, // tilapia
-                    [4] = 838, // blue discuss
-                    [5] = 837, // lionfish
-                    [6] = 267, // flounder
-                    [7] = 150, // red snapper
+                }
 
-                };
+                indexes.Add("838"); // blue discuss
+                indexes.Add("837"); // lionfish
+
+            }
+            else if (location is Town || location is Forest)
+            {
+                
+                if(Game1.timeOfDay >= 1700)
+                {
+
+                    indexes.Add("132"); // bream
+                    indexes.Add("RiverJelly"); // red snapper
+                }
+
+                switch (Game1.currentSeason)
+                {
+
+                    case "spring":
+
+                        indexes.Add("137"); // smallmouth bass
+                        indexes.Add("142"); // sunfish
+                        break;
+                    case "summer":
+                        indexes.Add("142"); // sunfish
+                        indexes.Add("138"); // rainbow trout
+                        break;
+
+                    case "fall":
+                        indexes.Add("137"); // smallmouth bass
+                        indexes.Add("141"); // perch
+                        break;
+
+                    case "winter":
+                        indexes.Add("141"); // perch
+                        break;
+
+                }
 
             }
             else
             {
 
-                objectIndexes = new Dictionary<int, int>()
+                if (Game1.timeOfDay >= 1700)
                 {
 
-                    [0] = 145, // carp
-                    [1] = 137, // smallmouth bass
-                    [2] = 142,  // sunfish
-                    [3] = 141, // perch
-                    [4] = 145, // carp
-                    [5] = 137, // smallmouth bass
-                    [6] = 142,  // sunfish
-                    [7] = 132  // bream
+                    indexes.Add("132"); // bream
+                    indexes.Add("CaveJelly"); // red snapper
 
-                };
+                }
+
+                indexes.Add("145"); // carp
 
             }
 
-            int randomFish = objectIndexes[Game1.random.Next(objectIndexes.Count)];
+            string randomFish = indexes[Game1.random.Next(indexes.Count)];
 
             return randomFish;
 
@@ -798,7 +863,7 @@ namespace StardewDruid.Data
 
         }
 
-        public static int RandomPoolFish(GameLocation location)
+        public static string RandomPoolFish(GameLocation location)
         {
 
             Dictionary<int, int> objectIndexes;
@@ -843,71 +908,52 @@ namespace StardewDruid.Data
 
             int objectIndex = objectIndexes[probability];
 
-            return objectIndex;
+            return objectIndex.ToString();
 
         }
 
-        public static int RandomBushForage(Bush bush, int index)
+        public static int RandomBushForage()
         {
 
-            int objectIndex;
+            int seasonal = 414; // crystal fruit
 
-            if (index == 0)
+            switch (Game1.currentSeason)
             {
 
-                switch (Game1.currentSeason)
-                {
+                case "spring":
 
-                    case "spring":
+                    seasonal = 296; // salmonberry
 
-                        objectIndex = 296; // salmonberry
+                    break;
 
-                        break;
+                case "summer":
 
-                    case "summer":
+                    seasonal = 398; // grape
 
-                        objectIndex = 398; // grape
+                    break;
 
-                        break;
+                case "fall":
 
-                    case "fall":
+                    seasonal = 410; // blackberry
 
-                        objectIndex = 410; // blackberry
-
-                        break;
-
-                    default:
-
-                        objectIndex = 414; // crystal fruit
-
-                        break;
-
-                }
+                    break;
 
             }
-            else
+            Dictionary<int, int> objectIndexes = new()
             {
+                [0] = 257, // 257 morel
+                [1] = 281, // 281 chanterelle
+                [2] = 404, // 404 mushroom
+                [3] = seasonal,
+                [4] = seasonal,
+                [5] = seasonal,
+                [6] = seasonal,
+                [7] = seasonal,
+                [8] = seasonal,
 
-                Dictionary<int, int> objectIndexes = new()
-                {
-                    [0] = 257, // 257 morel
-                    [1] = 257, // 257 morel
-                    [2] = 281, // 281 chanterelle
-                    [3] = 404, // 404 mushroom
-                    [4] = 404, // 404 mushroom
+            };
 
-                };
-
-                objectIndex = objectIndexes[new Random().Next(objectIndexes.Count)];
-
-            }
-
-            if (bush.size.Value == 3)
-            {
-
-                objectIndex = 815;
-
-            }
+            int objectIndex = objectIndexes[new Random().Next(objectIndexes.Count)];
 
             return objectIndex;
 
@@ -1224,11 +1270,9 @@ namespace StardewDruid.Data
                 ["grass"] = false,
                 ["trees"] = false,
                 ["fishup"] = false,
-                ["portal"] = false,
                 ["wildspawn"] = false,
                 ["fishspot"] = false,
                 ["cropseed"] = false,
-                ["artifact"] = false,
                 ["whisk"] = false,
                 ["gravity"] = false,
                 ["teahouse"] = false,
@@ -1252,7 +1296,6 @@ namespace StardewDruid.Data
                 ["grass"] = true,
                 ["trees"] = true,
                 ["fishup"] = true,
-                ["portal"] = true,
                 ["wildspawn"] = true,
                 ["fishspot"] = true,
                 ["cropseed"] = true,
@@ -1374,20 +1417,18 @@ namespace StardewDruid.Data
                 spawnIndex["grass"] = true;
                 spawnIndex["trees"] = true;
                 spawnIndex["wildspawn"] = true;
-                spawnIndex["portal"] = true;
                 spawnIndex["artifact"] = true;
                 spawnIndex["whisk"] = true;
                 spawnIndex["weeds"] = true;
 
             }
-            else if (playerLocation is Woods || playerLocation is IslandEast || playerLocation is IslandShrine)
+            else if (playerLocation is Woods || playerLocation is IslandEast || playerLocation is IslandShrine || playerLocation is StardewDruid.Location.Grove)
             {
 
                 spawnIndex["forage"] = true;
                 spawnIndex["flower"] = true;
                 spawnIndex["grass"] = true;
                 spawnIndex["wildspawn"] = true;
-                spawnIndex["portal"] = true;
                 spawnIndex["fishspot"] = true;
                 spawnIndex["weeds"] = true;
 
@@ -1395,7 +1436,7 @@ namespace StardewDruid.Data
             else if (playerLocation is MineShaft || playerLocation is VolcanoDungeon || playerLocation is Location.Crypt) //|| playerLocation.Name.Contains("Mine"))
             {
 
-                if (playerLocation.Name.Contains("60") || playerLocation.Name.Contains("100"))
+                if (playerLocation.Name.Contains("20") || playerLocation.Name.Contains("60") || playerLocation.Name.Contains("100"))
                 {
                     spawnIndex["fishspot"] = true;
 
@@ -1423,7 +1464,7 @@ namespace StardewDruid.Data
                 spawnIndex["weeds"] = true;
 
             }
-            else if (playerLocation is Beach || playerLocation is IslandSouth || playerLocation is IslandSouthEast || playerLocation is IslandSouthEastCave)
+            else if (playerLocation is Beach || playerLocation is IslandSouth || playerLocation is IslandSouthEast || playerLocation is IslandSouthEastCave || playerLocation is StardewDruid.Location.Atoll)
             {
 
                 spawnIndex["wildspawn"] = true;
@@ -1431,6 +1472,7 @@ namespace StardewDruid.Data
                 spawnIndex["fishspot"] = true;
                 spawnIndex["artifact"] = true;
                 spawnIndex["whisk"] = true;
+                spawnIndex["weeds"] = true;
 
                 if (playerLocation is Beach || playerLocation is IslandSouth || playerLocation is IslandSouthEast)
                 {
@@ -1483,8 +1525,15 @@ namespace StardewDruid.Data
                 spawnIndex["teahouse"] = true;
 
             }
+            else if(playerLocation.Name.Contains("Saloon"))
+            {
+
+                spawnIndex["crate"] = true;
+
+            }
             else
             {
+                
                 return new();
 
             }

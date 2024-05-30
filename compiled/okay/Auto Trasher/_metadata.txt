@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/23663
+IDs: HedgehogTechnologies.AutoTrasher
+update keys: Nexus:23663, GitHub:jag3dagster/AutoShaker

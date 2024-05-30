@@ -14,27 +14,27 @@ using System;
 
 namespace HappyHomeDesigner.Framework
 {
-	public struct WallFloorState : IEquatable<WallFloorState>
+	public struct WallFloorState : IUndoRedoState<WallFloorState>
 	{
 		public bool isFloor;
 		public string area;
 		public string which;
 		public string old;
 
-		public static bool Apply(WallFloorState state, GameLocation where, bool forward)
+		public readonly bool Apply(bool forward)
 		{
-			if (state.area is null || where is null)
+			if (area is null)
 				return false;
 
-			string what = forward ? state.which : state.old;
+			string what = forward ? which : old;
 
-			if (what is null || where is not DecoratableLocation deco)
+			if (what is null || Game1.currentLocation is not DecoratableLocation deco)
 				return false;
 
-			if (state.isFloor)
-				deco.SetFloor(what, state.area);
+			if (isFloor)
+				deco.SetFloor(what, area);
 			else
-				deco.SetWallpaper(what, state.area);
+				deco.SetWallpaper(what, area);
 
 			return true;
 		}

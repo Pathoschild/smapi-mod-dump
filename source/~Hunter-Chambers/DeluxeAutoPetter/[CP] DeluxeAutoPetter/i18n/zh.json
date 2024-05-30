@@ -1,0 +1,24 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Hunter-Chambers/StardewValleyMods
+**
+*************************************************/
+
+{
+  "quest_mail_title": "自动抚摸机改良",
+  "quest_mail_start": "你好！",
+  "quest_mail_details": "我听说你找到了一个Joja牌自动抚摸机。如果你愿意的话，我可以帮你升级它。只要给我一个自动抚摸机，300个硬木，还有25个铱锭就行了，剩下的就交给我吧！",
+  "quest_reward_mail_title": "豪华版自动抚摸机",
+  "quest_reward_mail_details": "好消息，罗宾用你提供的材料做出了豪华版自动抚摸机！现在我会开始出售豪华版自动抚摸机了，有时间的话来我这里购买吧！你的小动物们会喜欢的！",
+  "quest_title": "豪华版自动抚摸机",
+  "quest_description": "把所需的材料送到罗宾家。",
+  "quest_objective": "递交1个自动抚摸机，300个硬木，25个铱锭。",
+  "deluxe_auto_petter_display_name": "豪华版自动抚摸机",
+  "deluxe_auto_petter_description": "运作方式与普通的自动抚摸机一样，但是效果更好！哦耶！",
+  "robin_name": "罗宾",
+  "marnie_name": "玛尼"
+}

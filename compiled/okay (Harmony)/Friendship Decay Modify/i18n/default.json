@@ -1,0 +1,21 @@
+{
+    // Daily Greeting Modify
+    "Config.DailyGreetingModifyTitle.Name": "Daily Greeting Modify",
+    "Config.DailyGreetingModifyForVillager.Name": "Villager",
+    "Config.DailyGreetingModifyForDatingVillager.Name": "Dating Villager",
+    "Config.DailyGreetingModifyForSpouse.Name": "Spouse",
+    // Gift Modify
+    "Config.GiftModifyTitle.Name": "Gift Modify",
+    "Config.DislikeGiftModify.Name": "Dislike Gift",
+    "Config.HateGiftModify.Name": "Hate Gift",
+    // Garbage Can Modify
+    "Config.GarbageCanModify.Name": "Garbage Can Modify",
+    // Animal Friendship Modify
+    "Config.AnimalFriendshipModifyTitle.Name": "Animal Friendship Modify",
+    "Config.PetAnimalModifyForFriendship.Name": "Pet Animal Modify",
+    "Config.FeedAnimalModifyForFriendship.Name": "Feed Animal Modify",
+    // Animal Happiness Modify
+    "Config.AnimalHappinessModifyTitle.Name": "Animal Happiness Modify",
+    "Config.PetAnimalModifyForHappiness.Name": "Pet Animal Modify",
+    "Config.FeedAnimalModifyForHappiness.Name": "Feed Animal Modify",
+}

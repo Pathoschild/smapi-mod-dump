@@ -8,15 +8,15 @@
 **
 *************************************************/
 
-using EnaiumToolKit.Framework.Utils;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
+using StardewModdingAPI.Utilities;
 
 namespace NameTags.Framework;
 
 public class Config
 {
-    public SButton OpenSetting { get; set; } = SButton.N;
+    public KeybindList OpenSetting { get; set; } = new(SButton.N);
     public Color Color { get; set; } = Color.White;
     public Color BackgroundColor { get; set; } = Color.Black;
     public bool RenderMonster { get; set; } = true;

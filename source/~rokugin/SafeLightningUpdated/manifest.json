@@ -11,7 +11,7 @@
 {
   "name": "Safe Lightning Updated",
   "author": "Rokugin",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Stops lightning from destroying things, optionally removes strikes and sounds.",
   "uniqueID": "Rokugin.SafeLightningUpdated",
   "entryDLL": "SafeLightningUpdated.dll",

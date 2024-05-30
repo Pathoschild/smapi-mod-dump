@@ -47,6 +47,7 @@ namespace Unlockable_Bundles.Lib
         private NetString _bundleCompletedMail = new();
 
         private NetVector2 _shopPosition = new();
+        public NetList<Vector2, NetVector2> _alternativeShopPositions = new();
         private NetString _shopTexture = new();
         private NetString _shopAnimation = new();
         private NetInt _shopTextureWidth = new();
@@ -102,6 +103,7 @@ namespace Unlockable_Bundles.Lib
         public string BundleCompletedMail { get => _bundleCompletedMail.Value; set => _bundleCompletedMail.Value = value; }
 
         public Vector2 ShopPosition { get => _shopPosition.Value; set => _shopPosition.Value = value; }
+        public List<Vector2> PossibleShopPositions { get { var ret = new List<Vector2>() { ShopPosition }; ret.AddRange(_alternativeShopPositions.ToList()); return ret; } }
         public string ShopTexture { get => _shopTexture.Value; set => _shopTexture.Value = value; }
         public string ShopAnimation { get => _shopAnimation.Value; set => _shopAnimation.Value = value; }
         public int ShopTextureWidth { get => _shopTextureWidth.Value; set => _shopTextureWidth.Value = value; }
@@ -158,6 +160,7 @@ namespace Unlockable_Bundles.Lib
             this.BundleCompletedMail = model.BundleCompletedMail;
 
             this.ShopPosition = model.ShopPosition;
+            this._alternativeShopPositions = new(model.AlternativeShopPositions);
             this.ShopTexture = model.ShopTexture;
             this.ShopAnimation = model.ShopAnimation;
             this.ShopTextureWidth = model.ShopTextureWidth;
@@ -216,6 +219,7 @@ namespace Unlockable_Bundles.Lib
             .AddField(_bundleCompletedMail, "_bundleCompletedMail")
 
             .AddField(_shopPosition, "_shopPosition")
+            .AddField(_alternativeShopPositions, "alternativeShopPositions")
             .AddField(_shopTexture, "_shopTexture")
             .AddField(_shopAnimation, "_shopAnimation")
             .AddField(_shopTextureWidth, "_shopTextureWidth")

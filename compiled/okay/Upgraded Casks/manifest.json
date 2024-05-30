@@ -1,0 +1,16 @@
+{
+  "Name": "Upgraded Casks",
+  "Author": "CyanFire",
+  "Version": "1.4.0",
+  "Description": "Extra code for Upgraded Casks",
+  "UniqueID": "CF.UpgradedCasks",
+  "EntryDll": "UpgradedCasks.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:22477" ],
+  "Dependencies": [
+    {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "IsRequired": true
+    }
+  ]
+}

@@ -36,7 +36,7 @@ namespace StardewValleyTodo.Helpers {
     }
 
     public static class BundleStringParser {
-        public static BundleParsedKey parseKey(string raw) {
+        public static BundleParsedKey ParseKey(string raw) {
             var parts = raw.Split('/');
 
             return new BundleParsedKey(
@@ -45,7 +45,7 @@ namespace StardewValleyTodo.Helpers {
             );
         }
 
-        public static BundleParsedValue parseValue(string raw) {
+        public static BundleParsedValue ParseValue(string raw) {
             // Animal/BO 16 1/186 1 0 182 1 0 174 1 0 438 1 0 440 1 0 442 1 0/4/5//Животный
             var parts = raw.Split('/');
 

@@ -18,11 +18,11 @@ namespace BerrySeasonReminder
 {
 	public class BillboardPatches
 	{
-		private const int BEARS_KNOWLEDGE_EVENT = 2120303;
+		private const string BEARS_KNOWLEDGE_EVENT = "2120303";
 
 		public static void performHoverAction_Postfix(ref Billboard __instance, int x, int y, ref string ___hoverText)
 		{
-			if (__instance.calendarDays != null && Game1.player.eventsSeen.Contains(BEARS_KNOWLEDGE_EVENT))
+			if (__instance.calendarDays != null && (!BerrySeasonReminder.ModEntry.Config.RequireBearsKnowledge || Game1.player.eventsSeen.Contains(BEARS_KNOWLEDGE_EVENT)))
 			{
 				for (int i = 0; i < __instance.calendarDays.Count; i++)
 				{
@@ -54,17 +54,17 @@ namespace BerrySeasonReminder
 		{
 			if (!___dailyQuestBoard)
 			{
-				// If this player has Bear's Knowledge, draw berry seasons on the calendar.
-				if (Game1.player.eventsSeen.Contains(BEARS_KNOWLEDGE_EVENT))
+				// If this player has Bear's Knowledge (or config says we don't need it), draw berry seasons on the calendar.
+				if (!BerrySeasonReminder.ModEntry.Config.RequireBearsKnowledge || Game1.player.eventsSeen.Contains(BEARS_KNOWLEDGE_EVENT))
 				{
 					if (Game1.currentSeason.Equals("fall"))
 					{
 						// Add a blackberry icon to days within blackberry season.  (Fall 8 - 11)
 						for (int i = 7; i <= 10; i++)
 						{
-							Utility.drawWithShadow(b, Game1.objectSpriteSheet, new Vector2(__instance.calendarDays[i].bounds.X + 12,
-								(float)(__instance.calendarDays[i].bounds.Y + 60) - Game1.dialogueButtonScale / 2f), new Rectangle(32, 272, 16, 16),
-								Color.White, 0f, Vector2.Zero, 2f, flipped: false, 1f);
+							Utility.drawWithShadow(b, Game1.objectSpriteSheet, new Vector2(__instance.calendarDays[i].bounds.X + 82,
+								(__instance.calendarDays[i].bounds.Y + 14) - Game1.dialogueButtonScale / 2.0f), new Rectangle(32, 272, 16, 16),
+								Color.White, 0.0f, Vector2.Zero, 2.0f, flipped: false, 1.0f);
 						}
 					}
 					else if (Game1.currentSeason.Equals("spring"))
@@ -72,13 +72,13 @@ namespace BerrySeasonReminder
 						// Add a salmonberry icon to days within salmonberry season.  (Spring 15 - 18)
 						for (int i = 14; i <= 17; i++)
 						{
-							Utility.drawWithShadow(b, Game1.objectSpriteSheet, new Vector2(__instance.calendarDays[i].bounds.X + 12,
-								(float)(__instance.calendarDays[i].bounds.Y + 60) - Game1.dialogueButtonScale / 2f), new Rectangle(128, 192, 16, 16),
-								Color.White, 0f, Vector2.Zero, 2f, flipped: false, 1f);
+							Utility.drawWithShadow(b, Game1.objectSpriteSheet, new Vector2(__instance.calendarDays[i].bounds.X + 82,
+								(__instance.calendarDays[i].bounds.Y + 14) - Game1.dialogueButtonScale / 2.0f), new Rectangle(128, 192, 16, 16),
+								Color.White, 0.0f, Vector2.Zero, 2.0f, flipped: false, 1.0f);
 						}
 					}
 
-					Game1.mouseCursorTransparency = 1f;
+					Game1.mouseCursorTransparency = 1.0f;
 					__instance.drawMouse(b);
 					if (___hoverText.Length > 0)
 					{

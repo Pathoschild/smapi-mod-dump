@@ -115,7 +115,7 @@ namespace stardew_access.Utils
         }
 
         /// <summary>
-        /// Returns the time in the 12 hours format
+        /// Returns the time in the 12 or 24 hours format
         /// </summary>
         public static string TimeOfDay
         {
@@ -125,11 +125,23 @@ namespace stardew_access.Utils
 
                 int minutes = timeOfDay % 100;
                 int hours = timeOfDay / 100;
-                string amOrpm = hours / 12 == 1 ? "PM" : "AM";
-                hours %= 12;
-                if (hours == 0) hours = 12;
-                return $"{hours}:{minutes:00} {amOrpm}";
-            }
+
+                if (MainClass.Config.Use24HourFormat is false)
+                {
+                    string amOrpm = hours / 12 == 1 ? "PM" : "AM";
+                    hours %= 12;
+                    if (hours == 0) hours = 12;
+                    return $"{hours}:{minutes:00} {amOrpm}";
+                } 
+                else
+                {
+                    
+                    // fix for ingame 26 hoursformat
+                    if (hours >= 24) hours -= 24;
+
+                    return $"{hours}:{minutes:00}";
+                }
+            } 
         }
 
         /// <summary>
@@ -194,6 +206,21 @@ namespace stardew_access.Utils
                 x /= Game1.tileSize;
                 y /= Game1.tileSize;
                 return new Vector2(x, y);
+            }
+        }
+
+        /// <summary>
+        /// The bounding box of the tile the player is facing.
+        /// </summary>
+        public static Rectangle FacingTileBoundingBox
+        {
+            get
+            {
+		Rectangle playerBoundingBox = Game1.player.GetBoundingBox();
+                int x = (int)FacingTile.X * Game1.tileSize;
+                int y = (int)FacingTile.Y * Game1.tileSize;
+
+                return new(x, y, playerBoundingBox.Width, playerBoundingBox.Height);
             }
         }
     }

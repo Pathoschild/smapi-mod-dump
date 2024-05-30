@@ -14,9 +14,9 @@ mods:
    Zoom Per Map
 
 latest commit:
-   commit b71f031fcbffe8facc0c93a37b0570f69433f27f
+   commit 6d97b78182d28f6a5df96df2f6b4996de234d165
    Author: Alan <contact@decidedlyhuman.co.uk>
-   Date:   Mon Apr 22 18:24:54 2024 +0100
+   Date:   Wed May 8 18:52:39 2024 +0100
    
-       MEEP: Oops. I was checking against the complete wrong thing here.
+       SB: Fixed an issue with picking up furniture.
    

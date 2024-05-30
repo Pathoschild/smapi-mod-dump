@@ -13,22 +13,85 @@ is a Stardew Valley mod that adds extra functionalities to Content Patcher
 machine recipe definitions, and allows modders to define recipes that can do
 things beyond what's possible in the base game (e.g per-recipe fuel).
 
+As of 1.5.0, this mod also adds a bunch of miscellaneous features not strictly
+related to machines.
+
 This document is for modders looking to incorporate this mod into their own
 content packs. For users, install the mod as usual from the link above.
 
-## Use
-This mod reads extra data defined the [`CustomData` field in `OutputItem`](https://stardewvalleywiki.com/Modding:Machines#Item_processing_rules), which is
-a map of arbitrary string keys to string values intended for mod use. Since
-`CustomData` is per-output, it's possible to specify different settings for each
-recipe, or even each output in the case of multiple possible outputs.
+## Table of Contents
+* [Item Features](#item-features)
+    + [Draw smoke particles around item](#draw-smoke-particles-around-item)
+    + [Draw an item's preserve item's sprite instead of its base sprite](#draw-an-items-preserve-items-sprite-instead-of-its-base-sprite)
+    + [Define extra loved items for Junimos](#define-extra-loved-items-for-junimos)
+    + [Append extra context tags to shop and machine item queries](#append-extra-context-tags-to-shop-and-machine-item-queries)
+* [Machine Features](#machine-features)
+    + [Adding additional fuel for a specific recipe](#adding-additional-fuel-for-a-specific-recipe)
+    + [Output inherit the flavor of input items](#output-inherit-the-flavor-of-input-items)
+    + [Output inherit the dye color of input items](#output-inherit-the-dye-color-of-input-items)
+* [Animal Features](#animal-features)
+    + [Define custom male/female ratio](#define-custom-malefemale-ratio)
+
+## Item Features
+
+### Draw smoke particles around item
+
+Items with the context tag `smoked_item` will have its sprite darkened and
+have smoke particles drawn around it like smoked fish.
+
+### Draw an item's preserve item's sprite instead of its base sprite
+
+Items with the context tag `draw_preserve_sprite` will have its sprite be
+the sprite of its `preservedParentSheetIndex` item instead (if set).
+
+With `smoked_item` and `draw_preserve_sprite` combined, you can implement
+custom smoked item similar to smoked fish without having to output a
+`(O)SmokedFish` item, such as a smoked egg item that uses the sprite of the egg
+used to make it albeit dark and smoking.
+
+More item effects aside from smoke might come in the future.
+
+### Define extra loved items for Junimos
+
+Items with the context tag `junimo_loved_item` can be fed to junimos to improve
+their harvest rate just like raisins.
+
+### Append extra context tags to shop and machine item queries
+
+Set the following field in the [item query's `ModData`
+field](https://stardewvalleywiki.com/Modding:Item_queries#Item_spawn_fields).
+
+| Field Name                         | Description              |
+| ---------------------------------- | ------------------------ |
+| `selph.ExtraMachineConfig.ExtraContextTags` | A comma-separated list of extra context tags for the item spawned by this item query.|
+
+Important notes:
+
+* This feature can be used anywhere item queries are used, such as machines or shops.
+* If you're using this field, it's highly recommended you also set the
+  `ObjectInternalName` field (and optionaly the display name) so the spawned
+  items do not stack with other items of the same ID that may not have this
+  field, causing the context tags to be lost.
+
+For an example, scroll down to the example for additional fuels for machine recipes.
+
+----
+
+## Machine Features
+Unless otherwise specified, this mod reads extra data defined the [`CustomData`
+field in
+`OutputItem`](https://stardewvalleywiki.com/Modding:Machines#Item_processing_rules),
+which is a map of arbitrary string keys to string values intended for mod use.
+Since `CustomData` is per-output, it's possible to specify different settings
+for each recipe, or even each output in the case of multiple possible outputs.
 
 ### Adding additional fuel for a specific recipe
 
 | Field Name                         | Description              |
 | ---------------------------------- | ------------------------ |
-| `selph.ExtraMachineConfig.RequirementId.1` | The additional fuel that should be consumed by this recipe in addition to the ones specified in the machine's `AdditionalConsumedItems` field.<br> You can specify multiple fuels by adding another field with the same name, but with the number at the end incremented (eg. `ExtraMachineConfig.RequirementId.2`).<br> This ID can either be a qualified ID for a specific item, or a category ID for only categories (eg. `-2` will consume any gemstones as fuel).|
+| `selph.ExtraMachineConfig.RequirementId.1`<br>`selph.ExtraMachineConfig.RequirementTags.1` | The additional fuel that should be consumed by this recipe in addition to the ones specified in the machine's `AdditionalConsumedItems` field.<br> You can specify multiple fuels by adding another field with the same name, but with the number at the end incremented (eg. `ExtraMachineConfig.RequirementId.2`).<br> `RequirementId` allows specifying by qualified ID for a specific item, or a category ID for only categories (eg. `-2` will consume any gemstones as fuel), while `RequirementTags` allow specifying a comma-separated list of tags that must all match.<br>**CURRENT LIMITATION**: Both `RequirementId` and `RequirementTags` currently cannot be used for the same fuel number. If you need to specify both, add the item ID to the tag list (e.g. `"id_(o)itemid"`).|
 | `selph.ExtraMachineConfig.RequirementCount.1` | The count of the additional fuel specified in the field above. Defaults to 1 if not specified. |
-| `selph.ExtraMachineConfig.RequirementInvalidMsg` | The message to show to players if all the requirements are not satisfied. Note that if there are multiple output rules with this field, only the last one will be shown.|
+| `selph.ExtraMachineConfig.RequirementInvalidMsg` | The message to show to players if all the requirements are not satisfied. Note that if there are multiple output rules with this field for the same input item, only the first one will be shown.|
 
 #### Example
 
@@ -73,6 +136,9 @@ normal for copper.
               "ItemId": "(O)72",
               "MinStack": 4,
               "Quality": 3,
+              "ModData": {
+                "selph.ExtraMachineConfig.ExtraContextTags": "milk_polished,milk_polished_iridium"
+              },
             },
             {
               "CustomData": {
@@ -83,6 +149,9 @@ normal for copper.
               "ItemId": "(O)72",
               "MinStack": 3,
               "Quality": 2,
+              "ModData": {
+                "selph.ExtraMachineConfig.ExtraContextTags": "milk_polished,milk_polished_gold"
+              },
             },
             {
               "CustomData": {
@@ -93,6 +162,9 @@ normal for copper.
               "ItemId": "(O)72",
               "MinStack": 2,
               "Quality": 1,
+              "ModData": {
+                "selph.ExtraMachineConfig.ExtraContextTags": "milk_polished,milk_polished_iron"
+              },
             },
             {
               "CustomData": {
@@ -103,6 +175,9 @@ normal for copper.
               "ItemId": "(O)72",
               "MinStack": 1,
               "Quality": 0,
+              "ModData": {
+                "selph.ExtraMachineConfig.ExtraContextTags": "milk_polished,milk_polished_copper"
+              },
             },
           ],
           "MinutesUntilReady": 10,
@@ -118,13 +193,14 @@ normal for copper.
 
 ### Output inherit the flavor of input items
 
+**NOTE**: This feature is deprecated in the upcoming Stardew Valley 1.6.9, which supports this feature natively.
+
 | Field Name                         | Description              |
 | ---------------------------------- | ------------------------ |
 | `selph.ExtraMachineConfig.InheritPreserveId` | When set to any value, copies the input item's flavor (e.g. the "Blueberry" part of "Blueberry Wine") into the output item.|
 
 NOTE: Version 1.0.0 also supports this functionality via setting the
-`PreserveId` field to `"INHERIT"`. This is not recommended however since
-it would lead to weird results if this mod's not installed.
+`PreserveId` field to `"INHERIT"`. This is deprecated and might no longer work in later versions.
 
 #### Example
 
@@ -174,9 +250,11 @@ honey's flower flavor to the mead, and increment its price accordingly.
 
 ### Output inherit the dye color of input items
 
+**NOTE**: This feature is deprecated in the upcoming Stardew Valley 1.6.9, which supports this feature natively.
+
 | Field Name                         | Description              |
 | ---------------------------------- | ------------------------ |
-| `selph.ExtraMachineConfig.CopyColor` | When set to any value, copies the input item's color into the output item.<br>The difference between this settings and the base game's `CopyColor` is that the latter only supports copying the color of colored items (eg. flowers), while the former will copy the dye color if the input is not a colored object.|
+| `selph.ExtraMachineConfig.CopyColor` | When set to any value, copies the input item's color into the output item.<br>The difference between this settings and the base game's `CopyColor` is that the latter only supports copying the color of colored items (eg. flowers), while the former will copy the dye color if the input is not a colored object.<br>Make sure the output item's next sprite is a monochrome color sprite, otherwise the coloring might look weird.|
 
 #### Example
 
@@ -230,33 +308,14 @@ be of the base color, even with `CopyColor` set.
 
 ----
 
-## Appendix: Comparison vs Producer Framework Mod 
-[Producer Framework Mod](https://www.nexusmods.com/stardewvalley/mods/4970)
-allows defining custom machines and recipes in Stardew Valley, with more
-features and configurations than what's possible in the base game. Several of
-those features are part of this mod's feature set, and as such it's expected
-there will be significant overlap between them.
+## Animal Features
 
-The main differences:
+These fields are set in the animal data's `CustomFields` dict. Note that
+`CustomFields` is a dict of string key to string values, so all values must be
+strings (including numbers).
 
-* PFM was made before the 1.6 overhaul to machine recipes, and is designed to
-  make adding extra machines relatively painlessly and agnostic of game
-  version. EMC was made to take advantage of the new reworked data structures
-  in 1.6.
+### Define custom male/female ratio
 
-* PFM uses its own JSON configuration format, while EMC directly reads from
-  the CustomData fields in
-  [Content Patcher-patched machine
-  recipes](https://stardewvalleywiki.com/Modding:Machines). Because of this,
-  CP mods that use EMC will work perfectly fine without it,
-  whereas PFM is a hard dependency for its users.
-
-* PFM uses its own machine handling code, and is more flexible and extensible
-  as a result, while EMC is designed to work around the game's handling and
-  data structures as well as keeping things working even when uninstalled, and
-  does not have many features as a result, but is much more compatible with any
-  other mods that also patch game code.
-
-In general, if you want to stick to pure Content Patcher (for compatibility
-with other mods, etc.) for your mod then use this mod; otherwise it's probably
-a better idea to stick to PFM.
+| Field Name                         | Description              |
+| ---------------------------------- | ------------------------ |
+| `selph.ExtraMachineConfig.MalePercentage` | An integer between 0 and 100 specifying the percentage of this species that will be male. For example, set to `"40"` to make 40% of animals male. Overrides the regular animal gender settings.|

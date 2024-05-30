@@ -87,17 +87,17 @@ public class ItemCacheManager : BaseManager {
 
 	[Subscriber]
 	private void OnAssetInvalidated(object? sender, AssetsInvalidatedEventArgs e) {
-		foreach(var name in e.Names) {
+		foreach (var name in e.Names) {
 			// This path covers two objects.
 			if (name.BaseName == FLOORPAPER) {
-				Log($"Clearing floors and wallpapers cache.", StardewModdingAPI.LogLevel.Trace);
+				Log($"Clearing floors and wallpapers cache.", LogLevel.Trace);
 				ItemMaps.Remove(ItemRegistry.type_floorpaper);
 				ItemMaps.Remove(ItemRegistry.type_wallpaper);
 				CachedQueries.ResetAllScreens();
 
 				// And the rest...
 			} else if (REVERSE_TYPE_MAPS.TryGetValue(name.BaseName, out string? typekey)) {
-				Log($"Clearing {typekey} cache.", StardewModdingAPI.LogLevel.Trace);
+				Log($"Clearing {typekey} cache.", LogLevel.Trace);
 				ItemMaps.Remove(typekey);
 				CachedQueries.ResetAllScreens();
 			}
@@ -117,7 +117,7 @@ public class ItemCacheManager : BaseManager {
 	#endregion
 
 	private void LoadItems() {
-		foreach(string type in TYPE_MAPS.Keys) {
+		foreach (string type in TYPE_MAPS.Keys) {
 			if (!ItemMaps.ContainsKey(type)) {
 				var typedef = ItemRegistry.GetTypeDefinition(type);
 				if (typedef is not null) {
@@ -137,7 +137,7 @@ public class ItemCacheManager : BaseManager {
 	}
 
 	private IEnumerable<Item> GetAllUnknownItems() {
-		foreach(var typedef in ItemRegistry.ItemTypes) {
+		foreach (var typedef in ItemRegistry.ItemTypes) {
 			if (!TYPE_MAPS.ContainsKey(typedef.Identifier)) {
 				Log($"Unexpected item type: {typedef.Identifier}", StardewModdingAPI.LogLevel.Trace);
 
@@ -158,14 +158,14 @@ public class ItemCacheManager : BaseManager {
 		// First, make sure we've loaded everything.
 		LoadItems();
 
-		foreach(var items in ItemMaps.Values) {
+		foreach (var items in ItemMaps.Values) {
 			if (items is not null)
-				foreach(var item in items)
+				foreach (var item in items)
 					if (predicate(item))
 						yield return item;
 		}
 
-		foreach(var item in GetAllUnknownItems()) {
+		foreach (var item in GetAllUnknownItems()) {
 			if (predicate(item))
 				yield return item;
 		}

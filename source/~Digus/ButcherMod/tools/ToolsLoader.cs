@@ -56,8 +56,7 @@ namespace AnimalHusbandryMod.tools
             MenuTilesSprites = helper.GameContent.Load<Texture2D>(MenuTilesSpriteName);
             _customLetterBG = helper.GameContent.Load<Texture2D>(_customLetterBGName);
             DataLoader.ToolsSprites = DataLoader.Helper.GameContent.Load<Texture2D>(_toolsSpriteName);
-            DataLoader.Helper.GameContent.InvalidateCache("Data/Tools");
-            this.LoadMail();
+            
         }
 
         public void Edit(object sender, AssetRequestedEventArgs args)
@@ -252,7 +251,7 @@ namespace AnimalHusbandryMod.tools
             List<string> validBuildingsForInsemination = new List<string>(new string[] { "Deluxe Barn", "Big Barn", "Deluxe Coop" });
             bool InseminationSyringeCondition(Letter l)
             {
-                if (DataLoader.ModConfig.DisablePregnancy) return false;
+                if (DataLoader.ModConfig.DisablePregnancy || DataLoader.ModConfig.DisableInseminationSyringeLetter) return false;
                 bool hasAnimalInValidBuildings = Game1.locations.Any((location) =>
                 {
                     if (location is Farm farm)
@@ -270,12 +269,12 @@ namespace AnimalHusbandryMod.tools
 
             bool FeedingBasketCondition(Letter l)
             {
-                return !DataLoader.ModConfig.DisableTreats && !Game1.player.mailReceived.Contains(l.Id) && Game1.player.getFriendshipHeartLevelForNPC("Marnie") >= 2 && (Game1.player.hasPet() || HasAnimal());
+                return !DataLoader.ModConfig.DisableTreats && !DataLoader.ModConfig.DisableFeedingBasketLetter && !Game1.player.mailReceived.Contains(l.Id) && Game1.player.getFriendshipHeartLevelForNPC("Marnie") >= 2 && (Game1.player.hasPet() || HasAnimal());
             }
 
             bool FeedingBasketRedeliveryCondition(Letter l)
             {
-                return !DataLoader.ModConfig.DisableTreats && Game1.player.mailReceived.Contains("feedingBasket") && !ItemUtility.HasModdedItem(FeedingBasketOverrides.FeedingBasketKey) && Game1.player.getFriendshipHeartLevelForNPC("Marnie") >= 6;
+                return !DataLoader.ModConfig.DisableTreats && !DataLoader.ModConfig.DisableFeedingBasketLetter && Game1.player.mailReceived.Contains("feedingBasket") && !ItemUtility.HasModdedItem(FeedingBasketOverrides.FeedingBasketKey) && Game1.player.getFriendshipHeartLevelForNPC("Marnie") >= 6;
             }
 
             Letter meatCleaverLetter = new Letter("meatCleaver", meatCleaverText, MeatCleaverCondition, (l) => { if (!Game1.player.mailReceived.Contains(l.Id)) Game1.player.mailReceived.Add(l.Id); })

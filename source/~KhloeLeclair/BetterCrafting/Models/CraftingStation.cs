@@ -8,12 +8,6 @@
 **
 *************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace Leclair.Stardew.BetterCrafting.Models;
 
 public class CraftingStation : ICraftingStation {
@@ -30,8 +24,12 @@ public class CraftingStation : ICraftingStation {
 
 	public bool IsCooking { get; set; } = false;
 
-	public string[] Recipes { get; set; } = Array.Empty<string>();
+	public string[] Recipes { get; set; } = [];
 
 	public Category[]? Categories { get; set; } = null;
+
+
+
+
 
 }

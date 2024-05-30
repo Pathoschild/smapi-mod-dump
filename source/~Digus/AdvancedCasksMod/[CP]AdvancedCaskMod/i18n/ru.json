@@ -1,0 +1,16 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Digus/StardewValleyMods
+**
+*************************************************/
+
+{
+    "HardwoodCask.BigCraftable.DisplayName": "Бочонок из твёрдой древесины",
+    "HardwoodCask.BigCraftable.Description": "Используется в погребе для выдержки вин и сыров. Быстрее, чем обычный бочонок",
+    "RadioactiveCask.BigCraftable.DisplayName": "Радиоактивная бочка",
+    "RadioactiveCask.BigCraftable.Description": "Используется в любом месте для выдержки вин и сыров. Работает быстрее любого другого бочонка."
+}

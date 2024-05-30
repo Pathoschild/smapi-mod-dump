@@ -48,7 +48,7 @@ namespace PublicAccessTV
 		internal static readonly string EventMap = "Railroad";
 		internal static readonly Dictionary<string, string> Events = new ()
 		{
-			{ "79400101/n kdau.never", "archaeo/39 46/farmer 30 55 0 Demetrius 28 46 1/addBigProp 29 46 106/move farmer 0 -9 3 true/pause 750/animate Demetrius true false 500 24/pause 250/playSound openBox/pause 1000/faceDirection Demetrius 2/jump Demetrius 4/pause 1250/faceDirection Demetrius 1/speak Demetrius \"{{demetrius01}}\"/animate Demetrius true false 1000 24/pause 750/playSound woodyHit/removeObject 29 46/pause 250/move Demetrius 1 0 1/speak Demetrius \"{{demetrius02}}$h#$b#{{demetrius03}}$n\"/viewport move -4 4 1500/advancedMove Demetrius false 0 4/advancedMove farmer false 0 4/pause 1450/stopAdvancedMoves/pause 50/faceDirection Demetrius 1 true/faceDirection farmer 3/pause 50/speak Demetrius \"{{demetrius04}}$s#$b#{{demetrius05}}\"/emote farmer 16/speak Demetrius \"$q -1 null#{{demetrius06}}#$r -1 30 kdau.PublicAccessTV.trains1#{{farmer01}}#$r -1 0 kdau.PublicAccessTV.trains2#{{farmer02}}#$r -1 -30 kdau.PublicAccessTV.trains3#{{farmer03}}\"/fork 79400101_Reject/pause 500/speak Demetrius \"{{demetrius08}}\"/advancedMove farmer false 0 10/advancedMove Demetrius false 0 10/pause 1500/stopAdvancedMoves/mail kdau.PublicAccessTV.trains%&NL&%/end dialogue Demetrius \"{{demetrius09}}\"" },
+			{ "79400101/n kdau.never", "archaeo/39 46/farmer 30 55 0 Demetrius 28 46 1/addBigProp 29 46 106/move farmer 0 -9 3 true/pause 750/animate Demetrius true false 500 24/pause 250/playSound openBox/pause 1000/faceDirection Demetrius 2/jump Demetrius 4/pause 1250/faceDirection Demetrius 1/speak Demetrius \"{{demetrius01}}\"/animate Demetrius true false 1000 24/pause 750/playSound woodyHit/removeObject 29 46/pause 250/move Demetrius 1 0 1/speak Demetrius \"{{demetrius02}}$h#$b#{{demetrius03}}\"/viewport move -4 4 1500/advancedMove Demetrius false 0 4/advancedMove farmer false 0 4/pause 1450/stopAdvancedMoves/pause 50/faceDirection Demetrius 1 true/faceDirection farmer 3/pause 50/speak Demetrius \"{{demetrius04}}$s#$b#{{demetrius05}}\"/emote farmer 16/speak Demetrius \"$q -1 null#{{demetrius06}}#$r -1 30 kdau.PublicAccessTV.trains1#{{farmer01}}#$r -1 0 kdau.PublicAccessTV.trains2#{{farmer02}}#$r -1 -30 kdau.PublicAccessTV.trains3#{{farmer03}}\"/fork 79400101_Reject/pause 500/speak Demetrius \"{{demetrius08}}\"/advancedMove farmer false 0 10/advancedMove Demetrius false 0 10/pause 1500/stopAdvancedMoves/mail kdau.PublicAccessTV.trains%&NL&%/end dialogue Demetrius \"{{demetrius09}}\"" },
 			{ "79400101_Reject", "stopMusic/pause 1000/speak Demetrius \"{{demetrius08}}$s\"/advancedMove Demetrius false 0 10/pause 1500/stopAdvancedMoves/end invisible Demetrius" },
 		};
 
@@ -107,8 +107,9 @@ namespace PublicAccessTV
 			Helper.Events.Display.RenderedWorld += ForceDrawTrain;
 
 			// Run the event script.
-			Game1.currentLocation.startEvent (new Event (eventString: Events["79400101/n kdau.never"], fromAssetName: null, eventID: EventID));
-		}
+			var eventString = Game1.content.LoadString("Data\\Events\\Railroad:79400101/n kdau.never");
+            Game1.currentLocation.startEvent(new Event(eventString: eventString, fromAssetName: null, eventID: EventID));
+        }
 
 		private static void ForceDrawTrain (object _sender,
 			RenderedWorldEventArgs e)

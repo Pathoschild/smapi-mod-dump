@@ -10,6 +10,8 @@
 
 {
 	// task names and keywords (for parsing)
+	"task.animal": "动物",
+	"task.animal.keywords": "买,购买,获得",
 	"task.basic": "基本",
 	"task.blacksmith": "升级工具",
 	"task.blacksmith.keywords": "升级",
@@ -25,9 +27,6 @@
 	"task.gift.keywords": "送礼物",
 	"task.sell": "出售",
 	"task.sell.keywords": "出售,售卖",
-	
-	// journal button (when the player has no active quests)
-	"ui.taskbutton.hover": "日志 ({{key}})",
 
 	// tab/page names
 	"ui.tab.quests": "人物",
@@ -42,9 +41,14 @@
 	"ui.tasks.renewbutton.hover": "刷新任务",
 	"ui.tasks.renew.day": "{{count}} 天",
 	"ui.tasks.renew.days": "{{count}} 天",
+	"ui.tasks.status.deliver": "[152] 交付",
+	"ui.tasks.status.upgrading": "[42] 升级",
+	"ui.tasks.status.ready": "[151] 准备取货",
 	"ui.tasks.moneybox.hover0": "净收入/支出或利润",
 	"ui.tasks.moneybox.hover1": "目前资金",
 	"ui.tasks.moneybutton.hover": "切换金额",
+	"ui.tasks.filter": "筛选: {{category}}",
+	"ui.tasks.filter.all": "所有",
 
 	// add new task menu
 	"ui.tasks.new": "新建任务",
@@ -62,28 +66,33 @@
 	"ui.tasks.options.renew.Weekly": "每周刷新",
 	"ui.tasks.options.renew.Monthly": "每月刷新",
 	"ui.tasks.options.renew.Annually": "每年刷新",
+	"ui.tasks.options.renew.Custom": "定制",
 	"ui.tasks.options.type": "任务类型",
 
 	// task parameter names
+	"ui.tasks.parameter.animal": "动物",
 	"ui.tasks.parameter.building": "建筑",
 	"ui.tasks.parameter.count": "需要",
 	"ui.tasks.parameter.item": "物品",
 	"ui.tasks.parameter.monster": "怪物",
-	"ui.tasks.parameter.npc": "NPC",
+	"ui.tasks.parameter.npc": "村民",
+	"ui.tasks.parameter.quality": "质量 (最低)",
 	"ui.tasks.parameter.tool": "工具",
 
-	// seasons
-	"seasons.spring": "春季",
-	"seasons.summer": "夏季",
-	"seasons.fall": "秋季",
-	"seasons.winter": "冬季",
+	// +---------------------------------+
+	// | display name aliases (OPTIONAL) |
+	// +---------------------------------+
+	// NOTE: case insensitive, underscores replaced with spaces
 
-	// weekdays
-	"weekdays.monday": "周一",
-	"weekdays.tuesday": "周二",
-	"weekdays.wednesday": "周三",
-	"weekdays.thursday": "周四",
-	"weekdays.friday": "周五",
-	"weekdays.saturday": "周六",
-	"weekdays.sunday": "周日"
+	// animal shop display names
+	//"alias.animalshop.dairy_cow": "cow,cows",
+
+	// building display names
+	//"alias.buildings.farmhouse": "house,home",
+
+	// item display names
+	//"alias.items.<item>": "",
+
+	// villager display names
+	//"alias.npcs.<villager>": ""
 }

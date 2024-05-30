@@ -1,0 +1,7 @@
+{
+  "AllowSameRing": false,
+  "BalancedMode": false,
+  "DestroyRingOnFailure": false,
+  "FailureChancePerExtraRing": 20,
+  "CostPerExtraRing": 100
+}

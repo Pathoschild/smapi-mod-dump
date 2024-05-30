@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/Smoked-Fish/ParticleFramework
+   Git: https://github.com/Smoked-Fish/ParticleFramework.git
+
+mods:
+   Particle Framework
+
+latest commit:
+   commit 1bd03cc70971897cdab803737f721e210b3f2fc3
+   Author: Smoked Fish <espy.jacob@gmail.com>
+   Date:   Mon May 6 22:34:00 2024 -0700
+   
+       Merge branch 'main' of https://github.com/Smoked-Fish/ParticleFramework
+   

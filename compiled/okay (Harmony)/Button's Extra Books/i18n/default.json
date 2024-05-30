@@ -42,6 +42,14 @@
   "Config.Books.QiNotebookBonus.Name": "Qi Gem Chance",
   "Config.Books.QiNotebookBonus.Description": "Percent chance that a Qi Gem will drop in addition to the usual odds.",
   
+  "Config.Books.PetGifts.Title": "Pawsitive Reinforcement",
+  
+  "Config.Books.CheatCodes.Title": "Secret Codes for Arcade Machines",
+  "Config.Books.CheatCodesRequirement.Name": "Junimo Kart Deaths Required",
+  "Config.Books.CheatCodesRequirement.Description": "The number of times you must die in Junimo Kart before the Secret Codes book becomes available.",
+  "Config.Books.CheatCodesBonus.Name": "Extra Lives",
+  "Config.Books.CheatCodesBonus.Description": "The number of extra lives you start Junimo Kart with.",
+  
   // DEBUG SETTINGS //
   "Config.Debug.EnableDebugBook.Name": "Enable Debug Book",
   "Config.Debug.EnableDebugBook.Description": "If enabled, a debug book will be available from Pierre that will remove all of your powers granted by this mod."

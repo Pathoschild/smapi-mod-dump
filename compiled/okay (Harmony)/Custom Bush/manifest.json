@@ -9,7 +9,7 @@
   "UniqueID": "furyx639.CustomBush",
   "Name": "Custom Bush",
   "Author": "LeFauxMatt",
-  "Version": "1.2.0",
+  "Version": "1.2.1",
   "Description": "Custom Bush is a framework which allows custom bushes to be added to the game which work like the tea sapling.",
   "MinimumApiVersion": "4.0",
   "EntryDll": "CustomBush.dll",

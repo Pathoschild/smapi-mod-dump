@@ -1,0 +1,8 @@
+{
+  "VeryTidySort_ByStats": false,
+  "SortAdditionalCategories": false,
+  "Cloth_ColorSortByHue": true,
+  "Ring_CombinedRingIsPrior": true,
+  "Object_NotSortResourceByDisplayName": true,
+  "Furniture_NotCompareFurnitureType": true
+}

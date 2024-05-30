@@ -30,6 +30,7 @@ namespace ForageFantasy
         internal const string oakResinNonQID = "725";
         internal const string pineTarNonQID = "726";
         internal const string mysticSyrupNonQID = "MysticSyrup";
+        internal const string sapQID = "(O)92";
 
         private static float GetTapperProductPricePerDay(string product, float? priceOverride = null)
         {

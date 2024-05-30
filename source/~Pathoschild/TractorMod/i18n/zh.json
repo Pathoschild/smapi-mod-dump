@@ -24,16 +24,23 @@
     ** Section titles
     ****/
     "config.main-options": "常规",
+    "config.audio": "声音",
     "config.controls": "键位",
     "config.axe": "斧头",
     "config.hoe": "锄头",
-    "config.pickaxe": "镐子",
+    "config.pickaxe": "十字镐",
     "config.scythe": "镰刀",
     "config.melee-blunt": "武器-锤",
     "config.melee-dagger": "武器-匕首",
     "config.melee-sword": "武器-剑",
     "config.other-tools": "其他工具",
     "config.custom-tools": "自定义工具",
+
+
+    /****
+    ** Warnings
+    ****/
+    "config.questable-tractor-warning": "你已安装 Questable Tractor 模组。该模组通过覆盖拖拉机设置来工作，因此它可能会重置你在此处所做的更改。",
 
 
     /****
@@ -48,15 +55,12 @@
     "config.magnetic-radius.name": "吸附半径",
     "config.magnetic-radius.tooltip": "能够吸起掉落物的距离。默认{{defaultValue}}。",
 
-    // TODO
-    "config.tractor-sounds.name": "Sound Effects",
-    "config.tractor-sounds.tooltip": "Which sound effects to play while riding the tractor. Changes may not fully take effect until you reload the save. Default {{defaultValue}}.",
-    "config.tractor-sounds.value.None": "no sounds",
-    "config.tractor-sounds.value.Horse": "horse sounds",
-    "config.tractor-sounds.value.Tractor": "tractor sounds",
-
     "config.build-price.name": "建造价格",
-    "config.build-price.tooltip": "拖拉机仓库的价格。默认{{defaultValue}}g。",
+    "config.build-price.tooltip": "拖拉机仓库的价格。默认{{defaultValue}}金。",
+
+    // TODO
+    "config.require-build-materials.name": "Require Build Materials",
+    "config.require-build-materials.tooltip": "Whether you need to provide materials to build a tractor garage, in addition to the gold price.",
 
     "config.can-summon-without-garage.name": "未建造仓库时召唤拖拉机",
     "config.can-summon-without-garage.tooltip": "在未建造拖拉机仓库的情况下，是否能召唤一台临时拖拉机。",
@@ -69,13 +73,26 @@
 
 
     /****
+    ** Audio
+    ****/
+    "config.tractor-sounds.name": "音效",
+    "config.tractor-sounds.tooltip": "驾驶拖拉机时播放的音效。在重新加载存档之前，更改可能不会完全生效。默认{{defaultValue}}。",
+    "config.tractor-sounds.value.None": "无",
+    "config.tractor-sounds.value.Horse": "马蹄",
+    "config.tractor-sounds.value.Tractor": "拖拉机",
+
+    "config.tractor-volume.name": "音效大小",
+    "config.tractor-volume.tooltip": "拖拉机声音效果的大小。默认值：{{defaultValue}}%。",
+
+
+    /****
     ** Keybind options
     ****/
     "config.summon-key.name": "召唤拖拉机",
     "config.summon-key.tooltip": "将一台可用的拖拉机传送至你的位置。默认退格键。",
 
     "config.dismiss-key.name": "收回拖拉机",
-    "config.dismiss-key.tooltip": "将你正在开的拖拉机收回仓库。",
+    "config.dismiss-key.tooltip": "将你正在驾驶的拖拉机收回仓库。",
 
     "config.hold-to-activate-key.name": "按住以激活功能",
     "config.hold-to-activate-key.tooltip": "如果有指定键位，只有按住此键时才能激活拖拉机功能。",
@@ -84,14 +101,14 @@
     /****
     ** Trees & bushes
     ****/
-    "config.chop-fruit-trees-seeds.name": "清除水果树（种子）",
-    "config.chop-fruit-trees-seeds.tooltip": "是否清除处于种子阶段的水果树。",
+    "config.chop-fruit-trees-seeds.name": "清除果树（种子）",
+    "config.chop-fruit-trees-seeds.tooltip": "是否清除处于种子阶段的果树。",
 
-    "config.chop-fruit-trees-saplings.name": "清除水果树（树苗）",
-    "config.chop-fruit-trees-saplings.tooltip": "是否清除处于树苗阶段的水果树。",
+    "config.chop-fruit-trees-saplings.name": "清除果树（树苗）",
+    "config.chop-fruit-trees-saplings.tooltip": "是否清除处于树苗阶段的果树。",
 
-    "config.chop-fruit-trees-grown.name": "清除水果树（成熟）",
-    "config.chop-fruit-trees-grown.tooltip": "是否清除已长成的水果树。",
+    "config.chop-fruit-trees-grown.name": "清除果树（成熟）",
+    "config.chop-fruit-trees-grown.tooltip": "是否清除已长成的果树。",
 
     "config.chop-trees-seeds.name": "清除树（种子）",
     "config.chop-trees-seeds.tooltip": "是否清除处于种子阶段的树。",
@@ -103,13 +120,19 @@
     "config.chop-trees-grown.tooltip": "是否清除已长成的树。",
 
     "config.chop-trees-stumps.name": "清除树桩",
-    "config.chop-trees-stumps.tooltip": "是否清除砍倒的树的树桩（不包括水果树）。",
+    "config.chop-trees-stumps.tooltip": "是否清除砍倒的树的树桩（不包括果树）。",
 
     "config.chop-bushes.name": "清除灌木丛",
     "config.chop-bushes.tooltip": "是否清除能够砍掉的灌木丛。",
 
-    "config.harvest-fruit-trees.name": "收获水果树",
-    "config.harvest-fruit-trees.tooltip": "是否收获水果树。",
+    "config.harvest-fruit-trees.name": "收获果树",
+    "config.harvest-fruit-trees.tooltip": "是否收获果树。",
+
+    "config.harvest-tree-moss.name": "收获苔藓",
+    "config.harvest-tree-moss.tooltip": "是否收获树上的苔藓。",
+
+    "config.harvest-tree-seeds.name": "收获树种",
+    "config.harvest-tree-seeds.tooltip": "是否收获树上的种子。",
 
 
     /****
@@ -130,11 +153,14 @@
     "config.harvest-flowers.name": "收获花",
     "config.harvest-flowers.tooltip": "是否收获花。",
 
-    "config.harvest-forage.name": "收获觅食物品",
-    "config.harvest-forage.tooltip": "是否收获觅食物品。",
+    "config.harvest-forage.name": "收获采集品",
+    "config.harvest-forage.tooltip": "是否收获采集品。",
 
-    "config.harvest-grass.name": "收获草",
-    "config.harvest-grass.tooltip": "是否清除草，如果有筒仓，通常会给干草。",
+    "config.harvest-blue-grass.name": "收获蓝色草",
+    "config.harvest-blue-grass.tooltip": "是否清除蓝色草，如果有筒仓，通常会给干草。",
+
+    "config.harvest-non-blue-grass.name": "收获非蓝色草",
+    "config.harvest-non-blue-grass.tooltip": "是否清除非蓝色草，如果有筒仓，通常会给干草。",
 
 
     /****
@@ -153,8 +179,11 @@
     "config.till-dirt.name": "耕地",
     "config.till-dirt.tooltip": "是否耕地。",
 
-    "config.dig-artifact-spots.name": "挖蚯蚓（远古斑点）",
-    "config.dig-artifact-spots.tooltip": "是否填挖出远古斑点。",
+    "config.dig-artifact-spots.name": "挖掘远古斑点",
+    "config.dig-artifact-spots.tooltip": "是否挖掘远古斑点。",
+
+    "config.dig-seed-spots.name": "挖掘种子斑点",
+    "config.dig-seed-spots.tooltip": "是否挖掘种子斑点。",
 
     "config.clear-tilled-dirt.name": "填平耕地",
     "config.clear-tilled-dirt.tooltip": "是否填平已耕的地块。",
@@ -164,7 +193,7 @@
     ** Mining
     ****/
     "config.break-boulders-and-meteorites.name": "清除巨石和陨石",
-    "config.break-boulders-and-meteorites.tooltip": "是否能敲碎巨石（原石）和陨石。",
+    "config.break-boulders-and-meteorites.tooltip": "是否能够清除巨石和陨石。",
 
     "config.harvest-mine-spawns.name": "收获矿物",
     "config.harvest-mine-spawns.tooltip": "是否收获矿物，如石英、泪晶。",

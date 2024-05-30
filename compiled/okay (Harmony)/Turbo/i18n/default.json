@@ -1,0 +1,7 @@
+{
+    "Speed.Change": "Speed changed to:",
+    "ClockMode.Change": "Clock Mode:",
+    "ClockMode.Regular": "Regular",
+    "ClockMode.Constant": "Constant",
+    "ClockMode.Frozen": "Frozen"
+}

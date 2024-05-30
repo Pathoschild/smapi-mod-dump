@@ -19,17 +19,10 @@ namespace SkillPrestige.Framework.Commands
     // ReSharper disable once UnusedMember.Global - referenced via reflection
     internal class ResetAllPrestigeCommand : SkillPrestigeCommand
     {
-        /*********
-        ** Public methods
-        *********/
         /// <summary>Construct an instance.</summary>
         public ResetAllPrestigeCommand()
             : base("player_resetallprestige", "Resets all prestige professions and prestige points.\n\nUsage: player_resetallprestige", testingCommand: true) { }
 
-
-        /*********
-        ** Protected methods
-        *********/
         /// <summary>Applies the effect of a command when it is called from the console.</summary>
         protected override void Apply(string[] args)
         {
@@ -53,12 +46,13 @@ namespace SkillPrestige.Framework.Commands
                 return;
             }
             Logger.LogInformation($"Resetting all skill prestiges...");
-            foreach (var prestige in PrestigeSaveData.CurrentlyLoadedPrestigeSet.Prestiges)
+            foreach (var prestige in PrestigeSet.Instance.Prestiges)
             {
                 prestige.PrestigePoints = 0;
                 prestige.PrestigeProfessionsSelected = new List<int>();
             }
-            PrestigeSaveData.Instance.Save();
+
+            PrestigeSet.Save();
             Logger.LogInformation("Prestiges reset.");
         }
     }

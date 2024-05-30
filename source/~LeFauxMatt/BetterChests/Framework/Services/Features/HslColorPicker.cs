@@ -14,14 +14,15 @@ using HarmonyLib;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
+using StardewMods.BetterChests.Framework.Enums;
 using StardewMods.BetterChests.Framework.Interfaces;
 using StardewMods.BetterChests.Framework.Models.Containers;
 using StardewMods.BetterChests.Framework.Models.Events;
-using StardewMods.BetterChests.Framework.UI;
+using StardewMods.BetterChests.Framework.UI.Components;
 using StardewMods.Common.Enums;
 using StardewMods.Common.Interfaces;
 using StardewMods.Common.Models;
-using StardewMods.Common.Services.Integrations.BetterChests.Enums;
+using StardewMods.Common.Services.Integrations.BetterChests;
 using StardewMods.Common.Services.Integrations.FauxCore;
 using StardewValley.Menus;
 using StardewValley.Objects;
@@ -32,38 +33,38 @@ internal sealed class HslColorPicker : BaseFeature<HslColorPicker>
     private static HslColorPicker instance = null!;
 
     private readonly AssetHandler assetHandler;
-    private readonly PerScreen<HslComponent?> colorPicker = new();
+    private readonly PerScreen<HslPicker?> colorPicker = new();
+    private readonly IIconRegistry iconRegistry;
     private readonly IInputHelper inputHelper;
-    private readonly MenuManager menuManager;
+    private readonly MenuHandler menuHandler;
     private readonly IPatchManager patchManager;
     private readonly IReflectionHelper reflectionHelper;
 
     /// <summary>Initializes a new instance of the <see cref="HslColorPicker" /> class.</summary>
     /// <param name="assetHandler">Dependency used for handling assets.</param>
     /// <param name="eventManager">Dependency used for managing events.</param>
+    /// <param name="iconRegistry">Dependency used for registering and retrieving icons.</param>
     /// <param name="inputHelper">Dependency used for checking and changing input state.</param>
-    /// <param name="menuManager">Dependency used for managing the current menu.</param>
-    /// <param name="log">Dependency used for logging debug information to the console.</param>
-    /// <param name="manifest">Dependency for accessing mod manifest.</param>
+    /// <param name="menuHandler">Dependency used for managing the current menu.</param>
     /// <param name="modConfig">Dependency used for accessing config data.</param>
     /// <param name="patchManager">Dependency used for managing patches.</param>
-    /// <param name="reflectionHelper">Dependency used for reflecting into external code.</param>
+    /// <param name="reflectionHelper">Dependency used for reflecting into non-public code.</param>
     public HslColorPicker(
         AssetHandler assetHandler,
         IEventManager eventManager,
+        IIconRegistry iconRegistry,
         IInputHelper inputHelper,
-        MenuManager menuManager,
-        ILog log,
-        IManifest manifest,
+        MenuHandler menuHandler,
         IModConfig modConfig,
         IPatchManager patchManager,
         IReflectionHelper reflectionHelper)
-        : base(eventManager, log, manifest, modConfig)
+        : base(eventManager, modConfig)
     {
         HslColorPicker.instance = this;
         this.assetHandler = assetHandler;
+        this.iconRegistry = iconRegistry;
         this.inputHelper = inputHelper;
-        this.menuManager = menuManager;
+        this.menuHandler = menuHandler;
         this.patchManager = patchManager;
         this.reflectionHelper = reflectionHelper;
 
@@ -128,12 +129,15 @@ internal sealed class HslColorPicker : BaseFeature<HslColorPicker>
 
     [SuppressMessage("ReSharper", "InconsistentNaming", Justification = "Harmony")]
     [SuppressMessage("StyleCop", "SA1313", Justification = "Harmony")]
-    private static void DiscreteColorPicker_draw_prefix(DiscreteColorPicker __instance)
+    private static bool DiscreteColorPicker_draw_prefix(DiscreteColorPicker __instance)
     {
-        if (HslColorPicker.instance.colorPicker.Value is not null)
+        if (HslColorPicker.instance.colorPicker.Value is null)
         {
-            __instance.visible = false;
+            return true;
         }
+
+        __instance.visible = false;
+        return false;
     }
 
     [SuppressMessage("ReSharper", "InconsistentNaming", Justification = "Harmony")]
@@ -193,9 +197,8 @@ internal sealed class HslColorPicker : BaseFeature<HslColorPicker>
             return;
         }
 
-        var (mouseX, mouseY) = Game1.getMousePosition(true);
-        if ((this.menuManager.CurrentMenu as ItemGrabMenu)?.colorPickerToggleButton.containsPoint(mouseX, mouseY)
-            == true)
+        var cursor = e.Cursor.GetScaledScreenPixels().ToPoint();
+        if ((this.menuHandler.CurrentMenu as ItemGrabMenu)?.colorPickerToggleButton.bounds.Contains(cursor) == true)
         {
             this.inputHelper.Suppress(e.Button);
             Game1.playSound("drumkit6");
@@ -211,8 +214,8 @@ internal sealed class HslColorPicker : BaseFeature<HslColorPicker>
 
         switch (e.Button)
         {
-            case SButton.MouseLeft or SButton.ControllerA when this.colorPicker.Value.LeftClick(mouseX, mouseY):
-            case SButton.MouseRight or SButton.ControllerX when this.colorPicker.Value.RightClick(mouseX, mouseY):
+            case SButton.MouseLeft or SButton.ControllerA when this.colorPicker.Value.LeftClick(cursor):
+            case SButton.MouseRight or SButton.ControllerX when this.colorPicker.Value.RightClick(cursor):
                 this.inputHelper.Suppress(e.Button);
                 Game1.playSound("coin");
                 break;
@@ -221,15 +224,18 @@ internal sealed class HslColorPicker : BaseFeature<HslColorPicker>
 
     private void OnInventoryMenuChanged(InventoryMenuChangedEventArgs e)
     {
-        if (this.menuManager.CurrentMenu is not ItemGrabMenu
+        if (this.menuHandler.CurrentMenu is not ItemGrabMenu
             {
                 chestColorPicker:
                 {
                     itemToDrawColored: Chest chest,
                 } chestColorPicker,
             } itemGrabMenu
-            || this.menuManager.Top.Container is not ChestContainer container
-            || container.Options.HslColorPicker != FeatureOption.Enabled)
+            || this.menuHandler.Top.Container is not ChestContainer
+            {
+                HslColorPicker: FeatureOption.Enabled,
+            } container
+            || !this.iconRegistry.TryGetIcon(InternalIcon.Hsl, out var icon))
         {
             this.colorPicker.Value = null;
             return;
@@ -240,12 +246,14 @@ internal sealed class HslColorPicker : BaseFeature<HslColorPicker>
             chest.modData[key] = value;
         }
 
-        itemGrabMenu.colorPickerToggleButton.texture = this.assetHandler.Icons.Value;
-        itemGrabMenu.colorPickerToggleButton.sourceRect = new Rectangle(126, 0, 16, 16);
+        itemGrabMenu.chestColorPicker.visible = false;
+        itemGrabMenu.colorPickerToggleButton.texture = icon.Texture(IconStyle.Button);
+        itemGrabMenu.colorPickerToggleButton.sourceRect = new Rectangle(0, 0, 16, 16);
 
-        this.colorPicker.Value = new HslComponent(
+        this.colorPicker.Value = new HslPicker(
             this.assetHandler,
             chestColorPicker,
+            this.iconRegistry,
             this.inputHelper,
             itemGrabMenu,
             this.reflectionHelper,
@@ -261,6 +269,7 @@ internal sealed class HslColorPicker : BaseFeature<HslColorPicker>
             return;
         }
 
-        this.colorPicker.Value.Draw(e.SpriteBatch);
+        var cursor = this.inputHelper.GetCursorPosition().GetScaledScreenPixels().ToPoint();
+        this.colorPicker.Value.Draw(e.SpriteBatch, cursor);
     }
 }

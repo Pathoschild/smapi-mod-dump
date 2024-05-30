@@ -134,7 +134,7 @@ namespace BetterRanching
 			if (!Context.IsWorldReady) return;
 
 			if (!e.Button.IsUseToolButton() || !Config.PreventFailedHarvesting ||
-				!GameExtensions.HoldingOverridableTool() || !GameExtensions.IsClickableArea()) return;
+				!GameExtensions.HoldingOverridableTool() || !GameExtensions.IsClickableArea() || GameExtensions.PlayerCanGrabSomething()) return;
 			var who = Game1.player;
 
 			Vector2 position = ((!Game1.wasMouseVisibleThisFrame) ? who.GetToolLocation() : new Vector2(Game1.getOldMouseX() + Game1.viewport.X, Game1.getOldMouseY() + Game1.viewport.Y));
@@ -177,6 +177,7 @@ namespace BetterRanching
 					break;
 			}
 
+
 			animal = Utility.GetBestHarvestableFarmAnimal(toolRect: new Rectangle(x - 32, y - 32, 64, 64), animals: currentLocation.animals.Values, tool: who.CurrentTool);
 
 			if (animal == null)
@@ -211,7 +212,7 @@ namespace BetterRanching
 		{
 			if (!Context.IsWorldReady || Game1.eventUp) return;
 
-			var farmAnimalList = Game1.currentLocation.animals.Values;
+			var farmAnimalList = Game1.currentLocation.getAllFarmAnimals().Where(x=> x.currentLocation == Game1.currentLocation);
 
 			foreach (var farmAnimal in farmAnimalList)
 				Api.DrawItemBubble(Game1.spriteBatch, farmAnimal, AnimalBeingRanched == farmAnimal);

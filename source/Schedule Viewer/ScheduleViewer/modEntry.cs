@@ -10,6 +10,7 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Newtonsoft.Json.Linq;
 using ScheduleViewer.Interfaces;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -36,6 +37,8 @@ namespace ScheduleViewer
         public const string ModMessageSchedule = "the day's schedule";
         public const string ModMessageCurrentLocation = "NPC current location update";
 
+        public static readonly string CustomDataPath = "Mods/BinaryLip.ScheduleViewer/TileAreas";
+
         /*********
         ** Public methods
         *********/
@@ -48,9 +51,12 @@ namespace ScheduleViewer
             ModHelper = helper;
             Config = helper.ReadConfig<ModConfig>();
             // set up event handlers
+            //helper.Events.Content.AssetReady += OnAssetReady; //not sure if needed
+            helper.Events.Content.AssetRequested += OnAssetRequested;
             helper.Events.Display.MenuChanged += OnMenuChanged;
-            helper.Events.GameLoop.GameLaunched += OnGameLaunched;
             helper.Events.GameLoop.DayStarted += OnDayStarted;
+            helper.Events.GameLoop.GameLaunched += OnGameLaunched;
+            helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
             helper.Events.Input.ButtonsChanged += OnButtonsChanged;
             helper.Events.Multiplayer.ModMessageReceived += OnModMessageReceived;
             helper.Events.Multiplayer.PeerConnected += OnPeerConnected;
@@ -60,6 +66,16 @@ namespace ScheduleViewer
         /*********
         ** Private methods
         *********/
+        /// <inheritdoc cref="IGameLoopEvents.SaveLoaded"/>
+        private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
+        {
+            Schedule.LoadTileAreas();
+            if (Game1.IsMasterGame)
+            {
+                Schedule.ClearSchedules();
+            }
+        }
+
         /// <inheritdoc cref="IGameLoopEvents.DayStarted"/>
         private void OnDayStarted(object sender, DayStartedEventArgs e)
         {
@@ -124,6 +140,13 @@ namespace ScheduleViewer
                     name: () => this.Helper.Translation.Get("config.option.show_schedule_key.name"),
                     getValue: () => Config.ShowSchedulesKey,
                     setValue: value => Config.ShowSchedulesKey = value
+                );
+                configMenuApi.AddBoolOption(
+                    ModManifest,
+                    name: () => this.Helper.Translation.Get("config.option.use_address.name"),
+                    tooltip: () => this.Helper.Translation.Get("config.option.use_address.description"),
+                    getValue: () => Config.UseAddress,
+                    setValue: value => Config.UseAddress = value
                 );
                 configMenuApi.AddBoolOption(
                     ModManifest,
@@ -227,8 +250,7 @@ namespace ScheduleViewer
             }
             catch (Exception ex)
             {
-                Console.Log("Error opening the Schedule Viewer. See details below:", LogLevel.Error);
-                Console.Log(ex.ToString(), LogLevel.Error);
+                Console.Log($"Error opening the Schedule Viewer. See details below:\n{ex}", LogLevel.Error);
             }
         }
 
@@ -254,7 +276,9 @@ namespace ScheduleViewer
                         Schedule.ReceiveSchedules(e.ReadAs<(int, Dictionary<string, Schedule.NPCSchedule>)>());
                         break;
                     case ModMessageCurrentLocation:
-                        Schedule.UpdateCurrentLocation(e.ReadAs<(string, string)>());
+                        var (location, npcsToUpdate) = e.ReadAs<(string, string[])>();
+                        string locationName = Schedule.PrettyPrintLocationName(location);
+                        Schedule.UpdateCurrentLocation(locationName, npcsToUpdate);
                         break;
                 }
             }
@@ -263,15 +287,18 @@ namespace ScheduleViewer
         /// <inheritdoc cref="IWorldEvents.NpcListChanged"/>
         private void OnNpcListChanged(object sender, NpcListChangedEventArgs e)
         {
-            // update current location for NPCs that are ignoring their schedule
+            // update current location for NPCs
             if (Game1.IsMasterGame && Schedule.HasSchedules())
             {
-                var npcsToUpdate = Schedule.GetSchedules().Where(schedule => e.Added.Any(npc => npc.Name.Equals(schedule.Key)));
-                string locationName = Schedule.PrettyPrintLocationName(e.Location);
-                foreach (var npc in npcsToUpdate)
+                string[] npcsToUpdate = Schedule.GetSchedules()
+                    .Where(schedule => e.Added.Any(npc => npc.Name.Equals(schedule.Key))) // find npcs that moved locations
+                    .Select(item => item.Key) // select their internal name
+                    .ToArray();
+                if (npcsToUpdate.Length > 0)
                 {
-                    Schedule.UpdateCurrentLocation((npc.Key, locationName));
-                    this.Helper.Multiplayer.SendMessage<(string, string)>((npc.Key, locationName), ModMessageCurrentLocation);
+                    string locationName = Schedule.PrettyPrintLocationName(e.Location);
+                    Schedule.UpdateCurrentLocation(locationName, npcsToUpdate);
+                    this.Helper.Multiplayer.SendMessage<(string, string[])>((e.Location.Name, npcsToUpdate), ModMessageCurrentLocation);
                 }
             }
         }
@@ -286,6 +313,25 @@ namespace ScheduleViewer
             if (e.NewMenu is SchedulesPage)
             {
                 ErrorDialogue = null;
+            }
+        }
+
+        /// <inheritdoc cref="IContentEvents.AssetRequested"/>
+        private void OnAssetRequested(object sender, AssetRequestedEventArgs e)
+        {
+            if (e.Name.IsEquivalentTo(CustomDataPath))
+            {
+                e.LoadFromModFile<Dictionary<string, JObject>>("assets/tile_areas.json", AssetLoadPriority.Medium);
+            }
+        }
+
+        /// <inheritdoc cref="IContentEvents.AssetReady"/>
+        private void OnAssetReady(object sender, AssetReadyEventArgs e)
+        {
+            // update tile areas if asset gets updated. will this ever happen?
+            if (e.Name.IsEquivalentTo(CustomDataPath))
+            {
+                Schedule.LoadTileAreas();
             }
         }
 

@@ -32,5 +32,5 @@ public class BasicItem
     public int Quality => _item.Quality;
     public int Category => _item.Category;
     public int StackSize => _item.Stack;
-    public string Url => $"/items/id/{QualifiedItemId}";
+    public string Url => $"/api/v1/items/id/{QualifiedItemId}";
 }

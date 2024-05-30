@@ -101,6 +101,9 @@ namespace FashionSense.Framework.Managers
                 case IApi.Type.Shoes:
                     appearanceId = ModDataKeys.CUSTOM_SHOES_ID;
                     break;
+                case IApi.Type.Player:
+                    appearanceId = ModDataKeys.CUSTOM_BODY_ID;
+                    break;
                 // Purposely returning null for accessories, as they require the full appearanceId to be passed over
                 default:
                 case IApi.Type.Accessory:

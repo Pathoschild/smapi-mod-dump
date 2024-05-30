@@ -9,5 +9,6 @@
   "AvoidFestivalDay": false,
   "AlwaysStartAt1st": false,
   "UseWheatSeeds": true,
-  "UseWinter28toYear1": true
+  "UseWinter28toYear1": true,
+  "TVRecipeWithSeasonContext": true
 }

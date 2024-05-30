@@ -8,10 +8,11 @@
 **
 *************************************************/
 
-#nullable enable
+#if COMMON_SIMPLELAYOUT
 
 using System;
 using System.Linq;
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -340,3 +341,5 @@ public class LayoutNode : ILayoutNode {
 		}
 	}
 }
+
+#endif

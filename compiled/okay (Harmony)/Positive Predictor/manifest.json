@@ -1,7 +1,7 @@
 ﻿{
   "Name": "PositivePredictor",
   "Author": "season",
-  "Version": "0.0.1",
+  "Version": "0.0.6",
   "Description": "Predict better results for some events.",
   "UniqueID": "season.PositivePredictor",
   "EntryDll": "PositivePredictor.dll",

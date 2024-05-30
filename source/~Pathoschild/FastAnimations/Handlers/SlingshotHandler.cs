@@ -35,22 +35,19 @@ namespace Pathoschild.Stardew.FastAnimations.Handlers
         /*********
         ** Public methods
         *********/
-        /// <summary>Construct an instance.</summary>
-        /// <param name="multiplier">The animation speed multiplier to apply.</param>
+        /// <inheritdoc />
         public SlingshotHandler(float multiplier)
             : base(multiplier) { }
 
-        /// <summary>Get whether the animation is currently active.</summary>
-        /// <param name="playerAnimationID">The player's current animation ID.</param>
+        /// <inheritdoc />
         public override bool IsEnabled(int playerAnimationID)
         {
             return
                 Game1.player.UsingTool
-                && Game1.player.CurrentTool is Slingshot;
+                && Game1.player.CurrentTool is Slingshot { pullStartTime: > SlingshotHandler.MillisecondsPerSkip }; // don't decrement past zero, which will disable firing
         }
 
-        /// <summary>Perform any logic needed on update while the animation is active.</summary>
-        /// <param name="playerAnimationID">The player's current animation ID.</param>
+        /// <inheritdoc />
         public override void Update(int playerAnimationID)
         {
             Slingshot slingshot = (Slingshot)Game1.player.CurrentTool;

@@ -1,7 +1,7 @@
 {
   "Name": "Pick Forge Enchantment",
   "Author": "Dragoon23",
-  "Version": "1.0.1",
+  "Version": "1.0.5",
   "Description": "Pick Forge Enchantment.",
   "UniqueID": "Dragoon23.ForgeEnchantment",
   "EntryDll": "ForgeEnchantment.dll",

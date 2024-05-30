@@ -1,0 +1,9 @@
+{
+  "Config.TotalValue.Title": "Montrer la valeur totale",
+  "Config.TotalValue.Description": "Montrer une bannière au-dessus du bac d’expédition avec la valeur totale de tous les objets",
+  "Config.MiniTotalValue.Title": "Montrer la valeur totale (Mini-bac)",
+  "Config.MiniTotalValue.Description": "Montrer la même bannière que dans l’inventaire classique dans le mini-bac d’expédition.",
+  "Config.InvertScroll.Title": "Inverser la roulette de défilement",
+  "Config.InvertScroll.Description": "Inverser la direction du défilement dans l’inventaire",
+  "Menu.TotalValue": "Valeur totale :"
+}

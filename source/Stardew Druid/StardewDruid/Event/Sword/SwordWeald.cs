@@ -32,15 +32,6 @@ namespace StardewDruid.Event.Sword
 
         }
 
-        public override void EventSetup(Vector2 target, string id, bool trigger = false)
-        {
-
-            base.EventSetup(target, id, trigger);
-
-            origin = new Vector2(12, 8) * 64;
-        
-        }
-
         public override void EventRemove()
         {
             
@@ -61,7 +52,9 @@ namespace StardewDruid.Event.Sword
 
             base.EventActivate();
 
-            Mod.instance.iconData.DecorativeIndicator(location, Game1.player.Position, IconData.decorations.weald);
+            ModUtility.AnimateHands(Game1.player,Game1.player.FacingDirection,600);
+
+            Mod.instance.iconData.DecorativeIndicator(location, Game1.player.Position, IconData.decorations.weald, 4f, new());
 
             location.playSound("discoverMineral");
 
@@ -84,25 +77,19 @@ namespace StardewDruid.Event.Sword
                         [2] = new("Sighs of the earth", Microsoft.Xna.Framework.Color.LightCyan),
                     };
 
-                    AddActor(0,origin + new Vector2(-180, -32));
-                    AddActor(1,origin + new Vector2(180, -32));
-                    AddActor(2,origin + new Vector2(0, -180));
-
-                    actors[0].doEmote(8);
-
-                    actors[1].doEmote(8);
-
-                    actors[2].doEmote(8);
-
-                    break;
-
-                case 3:
+                    AddActor(0,origin + new Vector2(-192, -32));
+                    AddActor(1,origin + new Vector2(128, -96));
+                    AddActor(2,origin + new Vector2(-64, -180));
 
                     DialogueCue(0,"something treads the old paths");
 
+                    CastVoice(1, "!");
+
+                    CastVoice(2, "!");
+
                     break;
 
-                case 5:
+                case 4:
 
                     DialogueCue(2,"aye, a mortal");
 
@@ -114,19 +101,7 @@ namespace StardewDruid.Event.Sword
 
                     break;
 
-                case 9:
-
-                    DialogueCue(0,"it seeks the forgotten ways");
-
-                    break;
-
-                case 11:
-
-                    DialogueCue(2,"(grumble)");
-
-                    break;
-
-                case 13:
+                case 10:
 
                     DialogueSetups(null, 1);
 
@@ -147,12 +122,14 @@ namespace StardewDruid.Event.Sword
                 case 301:
 
                     DialogueCue(0, "arise");
-                    CastVoice("arise", 1);
-                    CastVoice("arise", 2);
+
+                    CastVoice(1, "arise");
+
+                    CastVoice(2, "arise");
 
                     //---------------------- throw Forest Sword
 
-                    Mod.instance.iconData.CursorIndicator(location, origin - new Vector2(128,128), IconData.cursors.weald);
+                    Mod.instance.iconData.ImpactIndicator(location, origin, IconData.impacts.nature, 6f, new());
 
                     location.playSound("discoverMineral");
 
@@ -163,26 +140,11 @@ namespace StardewDruid.Event.Sword
                         swordIndex = 44;
                     }
 
-                    int delayThrow = 600;
+                    ThrowHandle swordThrow = new(Game1.player, origin - new Vector2(64,320), new StardewValley.Tools.MeleeWeapon(swordIndex.ToString()));
 
-                    Vector2 triggerVector = ModUtility.PositionToTile(origin) - new Vector2(1, 2);
+                    swordThrow.delay = 40;
 
-                    new Throw().ThrowSword(Game1.player, swordIndex, triggerVector, delayThrow);
-
-                    //----------------------- cast animation
-
-                    Color animateColor = new(0.8f, 1, 0.8f, 1);
-
-                    ModUtility.AnimateSparkles(Mod.instance.rite.castLocation, triggerVector + new Vector2(-3, -3), animateColor);
-                    ModUtility.AnimateSparkles(Mod.instance.rite.castLocation, triggerVector + new Vector2(-3, -4), animateColor);
-                    ModUtility.AnimateSparkles(Mod.instance.rite.castLocation, triggerVector + new Vector2(-2, -5), animateColor);
-                    ModUtility.AnimateSparkles(Mod.instance.rite.castLocation, triggerVector + new Vector2(-1, -6), animateColor);
-                    ModUtility.AnimateSparkles(Mod.instance.rite.castLocation, triggerVector + new Vector2(0, -7), animateColor);
-                    ModUtility.AnimateSparkles(Mod.instance.rite.castLocation, triggerVector + new Vector2(1, -7), animateColor);
-                    ModUtility.AnimateSparkles(Mod.instance.rite.castLocation, triggerVector + new Vector2(2, -7), animateColor);
-                    ModUtility.AnimateSparkles(Mod.instance.rite.castLocation, triggerVector + new Vector2(4, -5), animateColor);
-                    ModUtility.AnimateSparkles(Mod.instance.rite.castLocation, triggerVector + new Vector2(5, -4), animateColor);
-                    ModUtility.AnimateSparkles(Mod.instance.rite.castLocation, triggerVector + new Vector2(5, -3), animateColor);
+                    swordThrow.register();
 
                     break;
 
@@ -209,13 +171,13 @@ namespace StardewDruid.Event.Sword
 
                 default:
 
-                    intro = "Voices in union: ^...Farmer...";
+                    intro = "Sighs of the Earth: What say you, farmer?";
 
                     break;
 
                 case 2:
 
-                    intro = "Sighs of the Earth: The monarchs remain dormant, their realm untended. Who are you to claim the inheritance of the broken circle?";
+                    intro = "Whispers on the wind: The monarchs remain dormant, their realm untended. Who are you to claim the inheritance of the broken circle?";
 
                     break;
 
@@ -234,19 +196,22 @@ namespace StardewDruid.Event.Sword
 
                 default:
 
-                    responseList.Add(new Response("1a", "I've come to pay homage to the Kings of Oak and Holly.").SetHotKey(Microsoft.Xna.Framework.Input.Keys.Enter));
+                    responseList.Add(new Response("1a", "I seek the blessing of the Two Kings to reform the circle of Druids.").SetHotKey(Microsoft.Xna.Framework.Input.Keys.Enter));
+                    responseList.Add(new Response("1a", "Ok. Whoever's behind the rock, come on out."));
                     responseList.Add(new Response("1b", "(Say nothing)").SetHotKey(Microsoft.Xna.Framework.Input.Keys.Escape));
 
                     break;
                 case 2:
 
-                    responseList.Add(new Response("2a", "The valley is my home now. I will attend to it.").SetHotKey(Microsoft.Xna.Framework.Input.Keys.Enter));
+                    responseList.Add(new Response("2a", "The valley is my home now. I want to care for and protect it.").SetHotKey(Microsoft.Xna.Framework.Input.Keys.Enter));
+                    responseList.Add(new Response("2a", "I'm being friendly and playing along with your little game. Just dont pull down my pants or anything."));
                     responseList.Add(new Response("2b", "(This is a bit much)").SetHotKey(Microsoft.Xna.Framework.Input.Keys.Escape));
 
                     break;
                 case 3:
 
                     responseList.Add(new Response("3a", "I will serve the Weald like the druids of yore.").SetHotKey(Microsoft.Xna.Framework.Input.Keys.Enter));
+                    responseList.Add(new Response("3a", "Serve... tea?"));
                     responseList.Add(new Response("3b", "(Maybe not)").SetHotKey(Microsoft.Xna.Framework.Input.Keys.Escape));
 
                     break;
@@ -262,7 +227,7 @@ namespace StardewDruid.Event.Sword
 
         public override void DialogueResponses(Farmer visitor, string dialogueId)
         {
-            Mod.instance.Monitor.Log(dialogueId, LogLevel.Debug);
+
             switch (dialogueId)
             {
 
@@ -270,23 +235,17 @@ namespace StardewDruid.Event.Sword
 
                     activeCounter = Math.Max(100, activeCounter);
 
-                    dialogueCounter++;
-
                     break;
 
                 case "2a":
 
                     activeCounter = Math.Max(200, activeCounter);
 
-                    dialogueCounter++;
-
                     break;
 
                 case "3a":
 
                     activeCounter = Math.Max(300, activeCounter);
-
-                    dialogueCounter++;
 
                     break;
 

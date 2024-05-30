@@ -30,7 +30,7 @@ namespace CustomNames
              * Plan:
              *  1. Patch DisplayName for Object, Tool, Ring, and maybe more. \\Easy
              *  2. Patch Forge menu and inject a textbox to allow renaming \\Kill me
-             *  3. Patch in some functionality for extra flair \\Meh
+             *  3. Patch in some functionality for extra flair \\Meh //Never mind, just kill me again (fucking toolbar)
              */
         }
 

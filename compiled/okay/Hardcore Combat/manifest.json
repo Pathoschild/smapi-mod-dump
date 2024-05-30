@@ -1,0 +1,10 @@
+﻿{
+  "Name": "HardcoreCombat",
+  "Author": "jeWel",
+  "Version": "1.1.0",
+  "Description": "Adds combat difficulties: Very Easy, Easy, Normal, Hard, Advanced, Expert, Master and Legendary.",
+  "UniqueID": "jeWel.HardcoreCombat",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:???" ],
+  "EntryDll": "HardcoreCombat.dll"
+}

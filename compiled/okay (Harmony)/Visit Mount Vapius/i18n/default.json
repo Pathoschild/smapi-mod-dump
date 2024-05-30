@@ -1,5 +1,6 @@
 ﻿{
   "fruit-tree.forbidden": "This fruit tree is not yours.",
 
-  "not-now":  "Not now."
+  "not-now": "Not now.",
+  "occupied":  "Someone else is using that.",
 }

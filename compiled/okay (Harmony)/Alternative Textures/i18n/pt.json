@@ -1,0 +1,32 @@
+{
+  // Tools
+  "tools.name.paint_bucket": "Balde de Tinta",
+  "tools.name.paint_brush": "Pincel de Pintura",
+  "tools.name.scissors": "Tesoura",
+  "tools.name.spray_can": "Lata de Spray",
+  "tools.name.catalogue": "Catálogo de Texturas",
+
+  "tools.description.paint_bucket": "Permite aplicar diferentes texturas a objetos suportados.",
+  "tools.description.paint_brush": "Permite copiar uma textura e aplicá-la a outros objetos do mesmo tipo.",
+  "tools.description.scissors": "Permite aplicar diferentes texturas a entidades.",
+  "tools.description.spray_can": "Permite aplicar texturas aleatórias a objetos dentro de um raio.",
+  "tools.description.catalogue": "Lista todas as texturas alternativas disponíveis.",
+
+  // Messages
+  "messages.warning.no_textures_for_season": "{{itemName}} não possui texturas alternativas para esta estação!",
+  "messages.warning.paint_not_placeable": "Você não pode aplicar tinta nisso!",
+  "messages.warning.brush_is_empty": "O pincel não possui uma textura copiada! Clique com o botão direito em um objeto para copiar uma textura.",
+  "messages.warning.spray_can_is_empty": "A lata de spray não possui texturas definidas! Clique com o botão direito em um objeto para selecionar texturas para aplicar.",
+  "messages.warning.spray_can_not_supported": "A lata de spray não suporta este objeto.",
+  "messages.warning.brush_not_supported": "O pincel não suporta a cópia de texturas deste objeto.",
+  "messages.warning.invalid_copied_texture": "A textura copiada {{textureName}} não é válida para este objeto!",
+  "messages.warning.custom_building_not_supported": "Este edifício personalizado ({{itemName}}) não suporta variações de textura.",
+  
+  "messages.info.texture_copied": "Textura copiada!",
+  "messages.info.cleared_brush": "Pincel limpo!",
+
+  // UI
+  "ui.labels.catalogue": "Catálogo",
+  "ui.labels.paint_brush.copied": "Textura copiada para o seu Pincel de Pintura!",
+  "ui.labels.paint_brush.not_found": "Não foi possível copiar a textura: Nenhum Pincel de Pintura encontrado em seu inventário!"
+}

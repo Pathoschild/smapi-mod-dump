@@ -1,0 +1,10 @@
+{
+  "Name": "Enchantment",
+  "Author": "kalik",
+  "Version": "1.0.0",
+  "Description": "Update for 'ManyEnchantments' mod",
+  "UniqueID": "kalik.Enchantment",
+  "EntryDll": "Enchantment.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": []
+}

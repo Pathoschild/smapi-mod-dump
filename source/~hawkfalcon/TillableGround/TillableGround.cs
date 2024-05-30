@@ -15,6 +15,7 @@ using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using xTile.Layers;
 using xTile.Tiles;
+using System;
 
 namespace TillableGround {
      public class TillableGround : Mod {
@@ -79,14 +80,14 @@ namespace TillableGround {
             Vector2 offset = new Vector2((float)(vector.X / 64), (float)(vector.Y / 64));
 
             return this.Helper.Reflection.GetMethod(player.CurrentTool, "tilesAffected").
-                Invoke<List<Vector2>>(offset, player.toolPower, player);
+                Invoke<List<Vector2>>(offset, player.toolPower.Value, player);
         }
 
         public void FancyTillFeedback(int x, int y, string message) {
             // Add the hoe animation without hoeing
             Game1.currentLocation.temporarySprites.Add(
                  new TemporaryAnimatedSprite(12, new Vector2(x * 64f, y * 64f), Color.White, 8,
-                     Game1.random.NextDouble() < 0.5, 50f, 0, -1, -1f, -1, 0)
+                     new Random().NextDouble() < 0.5, 50f, 0, -1, -1f, -1, 0)
             );
 
             Game1.addHUDMessage(new HUDMessage("Made tile " + message, 3) {

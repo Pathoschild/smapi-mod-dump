@@ -1,0 +1,89 @@
+{
+  "IsModEnabled": true,
+  "LayoutFeature": {
+    "IsFeatureEnabled": true,
+    "PresetChoice": "Default",
+    "DefaultSplitscreenLayout": {
+      "TwoPlayerLayout": {
+        "ScreenSplits": [
+          "0, 0, 0.5, 1",
+          "0.5, 0, 0.5, 1"
+        ]
+      },
+      "ThreePlayerLayout": {
+        "ScreenSplits": [
+          "0, 0, 1, 0.5",
+          "0, 0.5, 0.5, 0.5",
+          "0.5, 0.5, 0.5, 0.5"
+        ]
+      },
+      "FourPlayerLayout": {
+        "ScreenSplits": [
+          "0, 0, 0.5, 0.5",
+          "0.5, 0, 0.5, 0.5",
+          "0, 0.5, 0.5, 0.5",
+          "0.5, 0.5, 0.5, 0.5"
+        ]
+      }
+    },
+    "SwapSidesSplitscreenLayout": {
+      "TwoPlayerLayout": {
+        "ScreenSplits": [
+          "0.5, 0, 0.5, 1",
+          "0, 0, 0.5, 1"
+        ]
+      },
+      "ThreePlayerLayout": {
+        "ScreenSplits": [
+          "0, 0, 1, 0.5",
+          "0.5, 0.5, 0.5, 0.5",
+          "0, 0.5, 0.5, 0.5"
+        ]
+      },
+      "FourPlayerLayout": {
+        "ScreenSplits": [
+          "0.5, 0, 0.5, 0.5",
+          "0, 0, 0.5, 0.5",
+          "0.5, 0.5, 0.5, 0.5",
+          "0, 0.5, 0.5, 0.5"
+        ]
+      }
+    },
+    "CustomSplitscreenLayout": {
+      "TwoPlayerLayout": {
+        "ScreenSplits": [
+          "0, 0, 1, 0.5",
+          "0, 0.5, 1, 0.5"
+        ]
+      },
+      "ThreePlayerLayout": {
+        "ScreenSplits": [
+          "0, 0, 1, 0.5",
+          "0, 0.5, 0.5, 0.5",
+          "0.5, 0.5, 0.5, 0.5"
+        ]
+      },
+      "FourPlayerLayout": {
+        "ScreenSplits": [
+          "0, 0, 0.5, 0.5",
+          "0.5, 0, 0.5, 0.5",
+          "0, 0.5, 0.5, 0.5",
+          "0.5, 0.5, 0.5, 0.5"
+        ]
+      }
+    }
+  },
+  "MusicFixFeature": {
+    "IsFeatureEnabled": true
+  },
+  "HudTweaksFeature": {
+    "IsFeatureEnabled": true,
+    "IsSplitscreenOnly": false,
+    "IsToolbarHudOffsetEnabled": true
+  },
+  "ShowNameFeature": {
+    "IsFeatureEnabled": true,
+    "IsSplitscreenOnly": true,
+    "Position": "Top"
+  }
+}

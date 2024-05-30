@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/24410
+IDs: chiccen.GarbageCanTweaks
+update keys: Nexus:24410, GitHub:chiccenFL/StardewValleyMods

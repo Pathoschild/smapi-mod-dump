@@ -204,7 +204,7 @@ namespace StardewDruid.Character
 
                 Mod.instance.characters[trackFor].currentLocation.characters.Add(Mod.instance.characters[trackFor]);
 
-                ModUtility.AnimateQuickWarp(Mod.instance.characters[trackFor].currentLocation, Mod.instance.characters[trackFor].Position - new Vector2(0, 32));
+                Mod.instance.iconData.AnimateQuickWarp(Mod.instance.characters[trackFor].currentLocation, Mod.instance.characters[trackFor].Position - new Vector2(0, 32));
 
                 //Mod.instance.characters[trackFor].DeactivateStandby();
 

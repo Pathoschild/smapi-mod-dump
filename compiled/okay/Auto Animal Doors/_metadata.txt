@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/1019
 IDs: AaronTaggart.AutoAnimalDoors
-update keys: Nexus:1019, GitHub:taggartaa/AutoAnimalDoors
+update keys: Nexus:1019, CurseForge:1002753, GitHub:taggartaa/AutoAnimalDoors

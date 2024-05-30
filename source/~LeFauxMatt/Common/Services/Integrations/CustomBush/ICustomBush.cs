@@ -8,7 +8,11 @@
 **
 *************************************************/
 
+#if IS_FAUXCORE
+namespace StardewMods.FauxCore.Common.Services.Integrations.CustomBush;
+#else
 namespace StardewMods.Common.Services.Integrations.CustomBush;
+#endif
 
 using StardewValley.GameData;
 

@@ -1,0 +1,74 @@
+{
+  "MenuKeybind": "H",
+  "ColorizeWorld": true,
+  "ColorizeUI": true,
+  "ColorizeBySeason": true,
+  "ColorizerActiveProfile": 0,
+  "ColorizerProfiles": [
+    {
+      "Saturation": 0.0,
+      "Lightness": 0.0,
+      "Contrast": 0.0,
+      "Luma": "BT709",
+      "ShadowR": 0.0,
+      "ShadowG": 0.0,
+      "ShadowB": 0.0,
+      "MidtoneR": 0.0,
+      "MidtoneG": 0.0,
+      "MidtoneB": 0.0,
+      "HighlightR": 0.0,
+      "HighlightG": 0.0,
+      "HighlightB": 0.0
+    },
+    {
+      "Saturation": 0.0,
+      "Lightness": 0.0,
+      "Contrast": 0.0,
+      "Luma": "BT709",
+      "ShadowR": 0.0,
+      "ShadowG": 0.0,
+      "ShadowB": 0.0,
+      "MidtoneR": 0.0,
+      "MidtoneG": 0.0,
+      "MidtoneB": 0.0,
+      "HighlightR": 0.0,
+      "HighlightG": 0.0,
+      "HighlightB": 0.0
+    },
+    {
+      "Saturation": 0.0,
+      "Lightness": 0.0,
+      "Contrast": 0.0,
+      "Luma": "BT709",
+      "ShadowR": 0.0,
+      "ShadowG": 0.0,
+      "ShadowB": 0.0,
+      "MidtoneR": 0.0,
+      "MidtoneG": 0.0,
+      "MidtoneB": 0.0,
+      "HighlightR": 0.0,
+      "HighlightG": 0.0,
+      "HighlightB": 0.0
+    },
+    {
+      "Saturation": 0.0,
+      "Lightness": 0.0,
+      "Contrast": 0.0,
+      "Luma": "BT709",
+      "ShadowR": 0.0,
+      "ShadowG": 0.0,
+      "ShadowB": 0.0,
+      "MidtoneR": 0.0,
+      "MidtoneG": 0.0,
+      "MidtoneB": 0.0,
+      "HighlightR": 0.0,
+      "HighlightG": 0.0,
+      "HighlightB": 0.0
+    }
+  ],
+  "DepthOfFieldEnabled": false,
+  "DepthOfFieldSettings": {
+    "Field": 0.6,
+    "Intensity": 6.0
+  }
+}

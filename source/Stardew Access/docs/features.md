@@ -10,99 +10,108 @@ for queries and analysis.**
 
 ## Table Of Contents
 
-* [Table Of Contents](#table-of-contents)
-* [Feature List](#feature-list)
-    * [Read Tile](#read-tile)
-    * [Tile Viewer](#tile-viewer)
-    * [Tile Info Menu](#tile-info-menu)
-    * [Object Tracker](#object-tracker)
-    * [Grid Movement](#grid-movement)
-    * [Warning](#warning)
-    * [Others](#others)
-    * [Radar](#radar)
-* [Other Pages](#other-pages)
+- [Game Narration](#game-narration)
+- [Tile Reader](#tile-reader)
+    - [Tile Viewer](#tile-viewer)
+    - [Tile Info Menu](#tile-info-menu)
+- [Object Tracker](#object-tracker)
+    - [Object Tracker Favorites](#object-tracker-favorites)
+- [Grid Movement](#grid-movement)
+- [Radar](#radar)
+- [Other Pages](#other-pages)
 
-## Feature List
+## Game Narration
 
-### Read Tile
+Stardew Access uses your screen reader to narrate the game as you play, this includes objects, menus, inventories, shops, character dialogue, and more. Some information is narrated on request: the player's map and coordinates, health and energy, currency, and more To convey all of your stats exactly when you need them.
+Warnings are also included for full inventory, low health, low energy, and being out very late.
 
-Reads the name and information about the tile the player is currently facing (not the one the player is standing on).
-This feature uses in-game methods/properties to get the name and information of the object on the tile.
-Many tiles don't have textual information so for that, the mod uses a json file to get the name of the tile.
-You can find this file in the `assets/TilesData` folder by the name `tiles.json`.
-You can also create a `tiles_user.json` file in the `assets/TilesData` folder and add new entries which can also be made
-to work
-only when a certain mod(s) is installed or on a specific farm type, etc.
-You don't have to manually enter the entries, you can use the Tile Info Menu for that
-but there will be a guide for manually adding entries into the `tiles_user.json` file soon.
+**Important Notes:**
 
-See
-related: [keybindings](keybindings.md#global-keys), [commands](commands.md#read-tile-related), [configs](config.md#read-tile-configs).
+1. Narration may be interrupted due to your screen reader's configuration
+    - If using NVDA, ensure that "sleep mode" is turned on or that "Speech Interrupt for Typed Characters" in NVDA's keyboard settings section is turned off. It is recommended to set up a profile to do this automatically [NVDA user guide section 12.4: Profiles](https://www.nvaccess.org/files/nvda/documentation/userGuide.html#ConfigurationProfiles).
+<!--todo: document procedures for other platforms-->
+
+For more information, see the following pages:
+
+- [Keys](keybindings.md#global-keys)
+- [Narration & Verbosity Configs](config.md#narration--verbosity-configs)
+
+## Tile Reader
+
+This feature set makes up the core of Stardew Access. It reads the tile that the player is currently facing by getting the tile's info internally.
+Extra tile information can be added via `tiles.json` located in `assets/TilesData` directory.
+You may also create `tiles_user.json` in `assets/TilesData` directory to add new entries via the tile info menu in-game. these entries may be made dependent on certain mods, farm types, and other options.
+
+<!--todo: add manual user.json guide-->
 
 ### Tile Viewer
 
-Allows browsing of the map and snapping mouse to tiles with the arrow keys.
-This Feature can be used to place items into the world like calendar.
-We can press the `AutoWalkToTileKey` (default to left control + enter) to auto walk the player to that tile (if
-possible).
-Pressing the `OpenTileInfoMenuKey` (default to left shift + enter) to open the tile info menu for the active tile.
+This feature extends the tile reader by allowing you to move the tile cursor anywhere on the active map. This feature is handy for exploring, placing items, selecting tiles, and quickly adding and removing items to machines.
+You may also walk to selected tiles with a keystroke, open the tile info menu to get more info about any objects, or add custom tile info to a selected tile.
 
-See related: [keybindings](keybindings.md#tile-viewer-keys), [configs](config.md#tile-viewer-configs).
+**Important Notes:**
+
+1. For better navigation and mouse button simulation, the cursor is automatically snapped to the tile that the player is looking at unless relative cursor lock has been enabled.
+2. Minimizing or otherwise unfocusing the window without pausing will cause this feature to temporarily stop working when you return to the window. To prevent this, always pause the game before switching to another window.
 
 ### Tile Info Menu
 
-Can be opened by using the `OpenTileInfoMenuKey` (default to Left Shift + Enter) while using the tile viewer.
-The menu contains an option to mark a tile for the various building related operations.
-Another option to add entries in the `tiles_user.json` for a tile.
+This menu is opened with `left ctrl + enter` and allows you to mark the tile's coordinates for future reference, add the tile to custom tile data, and speak detailed tile info.
 
-**Current Limitations:**
+**Important notes:**
 
 1. The third option, the one that should speak the details about the tile only speaks the tile's name.
 2. We can only have one mod as a dependency although having multiple in the `tiles_user.json` is supported.
 3. We can only set the currently ongoing event or the current farm type as dependency.
 4. Festivals are not properly detected.
 
-### Object Tracker
+For more information about all tile reader features, including the tile info menu, see the following pages:
 
-Allows finding and tracking down objects on the map.
-This feature also allows to auto navigate to an object or speaks it's relative distance from the player.
+- [Tile Viewer Keys](keybindings.md#tile-viewer-keys)
+- [Tile Viewer Configs](config.md#tile-viewer-configs)
+- [Global & Tile Reader Keybindings](keybindings.md#global-keys)
+- [Tile Reader Commands](commands.md#tile-reader-commands)
 
-See related: [keybindings](keybindings.md#object-tracker-keys), [configs](config.md#object-tracker-configs).
+## Object Tracker
 
-### Grid Movement
+This feature set allows you to track individual objects on the map. from doorways to forageables to animals and slimes, the object tracker sorts everything into categories and provides a list of everything on the map, sorted by proximity.
+You can get coordinates, distance, and auto-travel to the nearest instance of the selected object.
 
-When enabled, the player moves tile by tile instead of freely.
-This feature is most helpful when planting/harvesting crops or in any case where precise movement is required.
+### Object Tracker Favorites
 
-_Note: In case you encounter the player moving more than one step or the speed being faster than usual,
-try reducing the speed of grid movement from the config._
+Set frequently-traveled spots as a favorite. With 10 favorites per stack and an effectively-limitless set of stacks of favorites per map, you can efficiently get anywhere you need to.
 
-See related: [keybindings](keybindings.md#grid-movement-keys), [configs](config.md#grid-movement-configs).
+For more information about the object tracker feature set, including object tracker favorites, see the following pages:
 
-### Warning
+- [Object Tracker Keys](keybindings.md#object-tracker-keys)
+- [Object Tracker configs](config.md#object-tracker-configs)
 
-Warns the player when their health or stamina/energy is low.
-Also warns when its past midnight.
+## Grid Movement
 
-### Others
+When enabled, the player moves 1 tile at a time and makes a footstep sound on every movement. This feature is very handy when precise movement is required, such as when planting or harvesting crops.
 
-Almost all the vanilla menus are patched to be made accessible by the mod.
-For better navigation and mouse button simulation, the mod snaps the cursor to the tile adjacent to the player based on
-where the player is looking.
-If you switch or minimize the game's window while it is still not paused, this feature will prevent the cursor from
-moving.
-So be sure to pause the game or open any menu before switching/minimizing the window.
-The mod also adds a few keybindings to speak player's current position, location, health, etc.
-See the keybindings page for these keybinds.
+**Important notes:**
 
-### Radar
+1. In case you encounter the player moving more than one step or the speed being faster than usual,
+try reducing the speed of grid movement from the config.
 
-_Note that this is kinda an experimental feature so any feedback on how to improve this feature will be helpful_
+For more information, see the following pages:
 
-Plays a sound at point of interest nearby, like chest, doors, harvestable item, etc.
-The game not supporting stereo sound makes this feature somewhat confusing.
+- [Grid Movement Keys](keybindings.md#grid-movement-keys)
+- [Grid Movement Configs](config.md#grid-movement-configs)
 
-See related: [commands](commands.md#radar-related), [configs](config.md#radar-configs).
+## Radar
+
+This feature will play auditory beacons at the location of the nearest selected object.
+
+**Important Notes:**
+
+1. This feature is experimental and not well-developed and is not recommended for general gameplay.
+
+For more information, see the following pages:
+
+- [Radar Commands](commands.md#radar-commands)
+- [Radar Configs](config.md#radar-configs)
 
 ## Other Pages
 

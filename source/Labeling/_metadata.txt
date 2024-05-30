@@ -6,11 +6,11 @@ mods:
    Labeling
 
 latest commit:
-   commit 881c71c5ca4ce146e29e3079ea3f79779383c699
+   commit acf149d21d56ab09fe8349c7fc3e4f3a5c355d73
    Author: Enaium <32991121+Enaium@users.noreply.github.com>
-   Date:   Wed Mar 27 22:46:15 2024 +0800
+   Date:   Thu May 23 21:52:10 2024 +0800
    
-       Merge pull request #1 from Enaium-StardewValleyMods/develop
+       Merge pull request #3 from Enaium/develop
        
-       update to 1.6
+       update code
    

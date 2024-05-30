@@ -28,9 +28,6 @@ namespace SkillPrestige.CookingSkill
     [SuppressMessage("Performance", "CA1822:Mark members as static")]
     internal class ModEntry : Mod, ISkillMod
     {
-        /*********
-        ** Fields
-        *********/
         /// <summary>The cooking skill icon.</summary>
         private Texture2D IconTexture;
 
@@ -46,10 +43,6 @@ namespace SkillPrestige.CookingSkill
         /// <summary>The unique ID for the Cooking Skill mod.</summary>
         private const string TargetModId = "spacechase0.CookingSkill";
 
-
-        /*********
-        ** Accessors
-        *********/
         /// <summary>The name to display for the mod in the log.</summary>
         public string DisplayName => "Cooking Skill";
 
@@ -62,10 +55,6 @@ namespace SkillPrestige.CookingSkill
         /// <summary>The prestiges added by this mod.</summary>
         public IEnumerable<Prestige> AdditionalPrestiges => this.GetAddedPrestiges();
 
-
-        /*********
-        ** Public methods
-        *********/
         /// <summary>The mod entry point, called after the mod is first loaded.</summary>
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
@@ -78,10 +67,6 @@ namespace SkillPrestige.CookingSkill
             ModHandler.RegisterMod(this);
         }
 
-
-        /*********
-        ** Private methods
-        *********/
         /// <summary>Get the skills added by this mod.</summary>
         private IEnumerable<Skill> GetAddedSkills()
         {
@@ -91,7 +76,6 @@ namespace SkillPrestige.CookingSkill
             yield return new Skill
             {
                 Type = this.SkillType,
-                SkillScreenPosition = this.IsLuckSkillModLoaded ? 7 : 6, // fix potential conflict with order due to luck skill mod
                 SourceRectangleForSkillIcon = new Rectangle(0, 0, 16, 16),
                 SkillIconTexture = this.IconTexture,
                 Professions = this.GetAddedProfessions(),

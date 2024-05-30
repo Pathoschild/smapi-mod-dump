@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using StardewValley;
 using StardewValley.Internal;
+using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
 using StardewValley.Extensions;
 
@@ -47,6 +48,7 @@ public static class Utils {
     return null;
   }
 
+  // Legacy Tapper API:
   // Get the modded output rules for this tapper.
   // NOTE: If this function returns null, its consumers should not update the tapper.
   // If a list, then touch it.
@@ -97,13 +99,6 @@ public static class Utils {
       _ => null,
     };
     if (data != null) {
-      // Clear just in case the game added the vanilla produce to the tapper
-      if (feature is Tree) {
-        tapper.heldObject.Value = null;
-        tapper.readyForHarvest.Value = false;
-        tapper.showNextIndex.Value = false;
-        tapper.ResetParentSheetIndex();
-      }
       float timeMultiplier = 1f;
       foreach (string contextTag in tapper.GetContextTags()) {
         if (contextTag.StartsWith("tapper_multiplier_") && float.TryParse(contextTag.Substring("tapper_multiplier_".Length), out var result)) {
@@ -178,6 +173,7 @@ public static class Utils {
           tapper.heldObject.Value = output;
           tapper.MinutesUntilReady = minutesUntilReady;
           tapper.lastOutputRuleId.Value = tapItem.Id;
+          tapper.showNextIndex.Value = false;
           break;
         }
       }
@@ -204,4 +200,58 @@ public static class Utils {
     centerPos.Y = (int)centerPos.Y + (int)resourceClump.height.Value - 1;
     return centerPos;
   }
+
+  public static bool IsCrabPot(Item item) {
+    return item.HasContextTag("custom_crab_pot_item");
+  }
+
+  public static bool IsCustomTreeTappers(Item item) {
+    return item.HasContextTag("custom_wild_tree_tapper_item");
+  }
+
+  public static bool DisallowWildTreePlacement(Item item) {
+    return item.HasContextTag("disallow_wild_tree_placement");
+  }
+
+  public static bool IsFruitTreeTapper(Item item) {
+    return item.HasContextTag("custom_fruit_tree_tapper_item");
+  }
+
+  public static bool IsGiantCropTapper(Item item) {
+    return item.HasContextTag("custom_giant_crop_tapper_item");
+  }
+
+  // Return true if this item is a modded tapper and it is placeable on the terrain feature in question.
+  // If isVanillaTapper is true, then it is a vanilla tapper
+  public static bool IsModdedTapperPlaceableAt(SObject obj, GameLocation location, Vector2 tileLocation, out bool isVanillaTapper, out TerrainFeature feature, out Vector2 centerPos) {
+    isVanillaTapper = true;
+    if (!Utils.GetFeatureAt(location, tileLocation, out feature, out centerPos) || location.objects.ContainsKey(centerPos)) {
+      return false;
+    }
+
+    // Context tags based
+    switch (feature) {
+      case Tree:
+        if (DisallowWildTreePlacement(obj)) return false;
+        if (IsCustomTreeTappers(obj)) {
+          isVanillaTapper = false;
+          return true;
+        }
+        break;
+      case FruitTree:
+        if (IsFruitTreeTapper(obj)) return true;
+        break;
+      case GiantCrop:
+        if (IsGiantCropTapper(obj)) return true;
+        break;
+    }
+
+    // Legacy API
+    if (Utils.GetOutputRules(obj, feature, out bool disallowBaseTapperRules) is var outputRules &&
+        outputRules != null) {
+      return true;
+    }
+    isVanillaTapper = !disallowBaseTapperRules;
+    return false;
+  } 
 }

@@ -1,7 +1,9 @@
 ﻿{
-  "Action.Shake.Future": "Zarandear",
   "Action.Dig.Future": "Cavar",
+  "Action.Forage.Future": "Forage", // TODO
+  "Action.Shake.Future": "Zarandear",
 
+  "Category.Animal": "Animals", // TODO
   "Category.Beach": "Playa",
   "Category.BushBlooms": "Florecimiento de arbustos",
   "Category.CustomBushes": "Arbustos personalizados",
@@ -45,6 +47,8 @@
 
   "Option.FruitsReadyToShake.Name": "Frutos mínimos listos para zarandear",
   "Option.FruitsReadyToShake.Tooltip": "Cantidad mínima de frutos que un Árbol Frutal debe tener para que AutoForager zarandée el árbol.",
+  "Option.IgnoreMushroomLogTrees.Name": "Skip Moss-Covered Trees near{{whitespace}}Mushroom Logs?", // TODO
+  "Option.IgnoreMushroomLogTrees.Tooltip": "Whether or not to skip harvesting Moss from trees that are near enough to contribute to a Mushroom log.", // TODO
   "Option.IsForagerActive.Name": "¿AutoForager está activo?",
   "Option.IsForagerActive.Tooltip": "Determina si AutoForager zarandeará árboles y arbustos, y recolectará objetos.",
   "Option.RequireHoe.Name": "¿Se requiere una azada para la Raíz de Jengibre,{{whitespace}}Lugar de Artefacto y Lugar de Semilla?",
@@ -74,7 +78,9 @@
   "Reward.Buried.Items": "Objetos enterrados",
   "Reward.Buried.Seeds": "Semillas enterradas",
   "Reward.GoldenWalnuts": "Nueces doradas",
+  "Reward.Mushrooms": "Mushrooms", // TODO
   "Reward.Salmonberries": "Frambuesas",
+  "Reward.TappedTree": "Tree Byproducts", // TODO
   "Reward.TeaLeaves": "Hojas de té",
 
   "Section.Bushes.Text": "Cambiar arbustos",
@@ -90,8 +96,12 @@
   "Subject.Bushes": "arbustos",
   "Subject.BushBloomSchedules": "calendario de florecimiento de arbustos",
   "Subject.GingerRoots": "Raíces de jengibre",
+  "Subject.MushroomBoxes": "Mushroom Boxes", // TODO
+  "Subject.MushroomLogs": "Mushroom Logs", // TODO
   "Subject.SalmonberryBushes": "Arbusto de frambuesas",
   "Subject.SeedSpot": "Lugar de semilla",
+  "Subject.SpawnableForageIds": "spawnable forage ids", // TODO
+  "Subject.Tappers": "Tappers", // TODO
   "Subject.TeaBushes": "Arbustos de té",
   "Subject.WalnutBushes": "Arbustos de nueces"
 }

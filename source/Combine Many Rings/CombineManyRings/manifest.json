@@ -11,7 +11,7 @@
 {
   "Name": "CombineManyRings",
   "Author": "Stari",
-  "Version": "1.0.1",
+  "Version": "1.1.0",
   "Description": "Allows you to combine already combined rings.",
   "UniqueID": "Stari.CombineManyRings",
   "EntryDll": "CombineManyRings.dll",

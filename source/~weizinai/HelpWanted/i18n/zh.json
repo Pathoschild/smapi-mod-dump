@@ -1,0 +1,86 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/weizinai/StardewValleyMods
+**
+*************************************************/
+
+{
+    // 一般设置
+    "Config.GeneralSettingsTitle.Name": "一般设置",
+    "Config.OpenConfigMenuKeybind.Name": "打开配置菜单快捷键",
+    "Config.QuestFirstDay.Name": "第一天任务",
+    "Config.QuestFirstDay.Tooltip": "当该选项禁用时,游戏不会在第一天生成任务,正如原版游戏一样.",
+    "Config.QuestFestival.Name": "节日任务",
+    "Config.QuestFestival.Tooltip": "当该选项禁用时,如果游戏今天或者明天是节日,则不会生成任务,正如原版游戏一样.",
+    "Config.DailyQuestChance.Name": "每日任务概率",
+    "Config.OneQuestPerVillager.Name": "每个村民一个任务",
+    "Config.ExcludeMaxHeartsNPC.Name": "排除满心NPC",
+    "Config.ExcludeNPCList.Name": "NPC排除列表",
+    "Config.ExcludeNPCList.Tooltip": "排除的NPC列表.每个NPC的名字之间用逗号分隔.(例如: \"刘易斯, 玛妮\")",
+    "Config.QuestDays.Name": "任务天数",
+    "Config.QuestDays.Tooltip": "完成任务的限制时间",
+    "Config.MaxQuests.Name": "最大任务数量",
+    "Config.MaxQuests.Tooltip": "每日的最大任务数量.受限于任务板能放下的便签数量",
+    "Config.EnableRSVQuestBoard.Name": "启用RSV任务面板",
+    "Config.MaxRSVQuests.Name": "最大RSV任务数量",
+
+    // 交易任务
+    "Config.ItemDeliveryPage.Name": "交易任务",
+    "Config.ItemDeliveryWeight.Name": "交易任务权重",
+    "Config.ItemDeliveryWeight.Tooltip": "交易任务的权重.该权重是相对于其他几种任务来说的.",
+    "Config.ItemDeliveryRewardMultiplier.Name": "交易任务奖励倍数",
+    "Config.ItemDeliveryFriendshipGain.Name": "交易任务友谊奖励",
+    "Config.ItemDeliveryFriendshipGain.Tooltip": "该选项的值需要重启游戏才能生效.",
+    "Config.QuestItemSettingsTitle.Name": "任务物品设置",
+    "Config.QuestItemRequirement.Name": "任务物品要求",
+    "Config.QuestItemRequirement.Tooltip": "交易任务的物品要求.如果为0,则表示交易任务物品至少要是最爱物品.如果为1,则表示交易任务物品至少要是喜爱物品.如果为2,则表示交易任务物品至少要是一般物品.如果为3,则表示交易任务物品至少要是不喜欢物品.如果为4,则表示交易任务物品至少要是讨厌物品.",
+    "Config.MaxPrice.Name": "最大价格",
+    "Config.MaxPrice.Tooltip": "交易任务物品的最大价格.如果为-1,则没有限制",
+    "Config.AllowArtisanGoods.Name": "允许工匠物品",
+    "Config.AllowArtisanGoods.Tooltip": "交易任务的物品是否可以是工匠物品",
+    "Config.UseModPossibleItems.Name": "使用模组可能物品列表",
+    "Config.UseModPossibleItems.Tooltip": "当该选项启用时,交易任务的物品会从满足任务物品要求的所有物品中随机选择.当该选项禁用时,交易任务的物品会从原版交易任务的物品列表中选择.",
+
+    // 采集任务
+    "Config.ResourceCollectionPage.Name": "采集任务",
+    "Config.ResourceCollectionWeight.Name": "采集任务权重",
+    "Config.ResourceCollectionWeight.Tooltip": "采集任务的权重.该权重是相对于其他几种任务来说的.",
+    "Config.ResourceCollectionRewardMultiplier.Name": "采集任务奖励倍数",
+
+    // 钓鱼任务
+    "Config.FishingPage.Name": "钓鱼任务",
+    "Config.FishingWeight.Name": "钓鱼任务权重",
+    "Config.FishingWeight.Tooltip": "钓鱼任务的权重.该权重是相对于其他几种任务来说的.",
+    "Config.FishingRewardMultiplier.Name": "钓鱼任务奖励倍数",
+
+    // 杀怪任务
+    "Config.SlayMonstersPage.Name": "杀怪任务",
+    "Config.SlayMonstersWeight.Name": "杀怪任务权重",
+    "Config.SlayMonstersWeight.Tooltip": "杀怪任务的权重.该权重是相对于其他几种任务来说的.杀怪任务要到达过矿井且在游戏中天数大于6天",
+    "Config.SlayMonstersRewardMultiplier.Name": "杀怪任务奖励倍数",
+    "Config.MoreSlayMonsterQuests.Name": "更多杀怪任务",
+    "Config.MoreSlayMonsterQuests.Tooltip": "当该选项启用时,会有更多的怪物作为杀怪任务的目标.",
+
+    // 外观
+    "Config.AppearancePage.Name": "外观",
+    "Config.NoteAppearanceTitle.Name": "便签外观",
+    "Config.NoteScale.Name": "便签缩放",
+    "Config.XOverlapBoundary.Name": "便签水平重叠率",
+    "Config.XOverlapBoundary.Tooltip": "任务便签的水平重叠率.如果设为1,则完全不能重叠.如果设为0.5,则能重叠一半.如果设为0,则能完全重叠.",
+    "Config.YOverlapBoundary.Name": "便签垂直重叠率",
+    "Config.YOverlapBoundary.Tooltip": "任务标签的垂直重叠率.如果设为1,则完全不能重叠.如果设为0.5,则能重叠一半.如果设为0,则能完全重叠.",
+    "Config.RandomColorMin.Name": "随机颜色通道最小值",
+    "Config.RandomColorMax.Name": "随机颜色通道最大值",
+    "Config.PortraitAppearanceTitle.Name": "肖像外观",
+    "Config.PortraitScale.Name": "肖像缩放",
+    "Config.PortraitOffsetX.Name": "肖像水平偏移",
+    "Config.PortraitOffsetY.Name": "肖像垂直偏移",
+    "Config.PortraitTintR.Name": "肖像色调 R",
+    "Config.PortraitTintG.Name": "肖像色调 G",
+    "Config.PortraitTintB.Name": "肖像色调 B",
+    "Config.PortraitTintA.Name": "肖像色调 A"
+}

@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Name>Expanded Storage</Name>
     <Description>Framework for adding new types of chests to the game.</Description>
-    <Version>3.0.5</Version>
+    <Version>3.1.0</Version>
     <EnableHarmony>true</EnableHarmony>
     <RootNamespace>StardewMods.ExpandedStorage</RootNamespace>
     <UniqueId>furyx639.ExpandedStorage</UniqueId>
@@ -15,7 +15,7 @@
     <PackageReference Include="Pathoschild.Stardew.ModTranslationClassBuilder" Version="2.0.1"/>
     <PackageReference Include="SimpleInjector">
       <HintPath>$(GameModsPath)\FauxCore\SimpleInjector.dll</HintPath>
-      <Version>5.4.2</Version>
+      <Version>5.4.5</Version>
       <Private>false</Private>
     </PackageReference>
     <Reference Include="HarmonyLib">
@@ -24,8 +24,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <SMAPIDependency Include="furyx639.FauxCore" Version="1.1.1" required="true"/>
-    <SMAPIDependency Include="furyx639.ToolbarIcons" required="false"/>
-    <SMAPIDependency Include="spacechase0.GenericModConfigMenu" Version="1.8.2" required="false"/>
+    <SMAPIDependency Include="furyx639.FauxCore" Version="1.2.0" required="true"/>
+    <SMAPIDependency Include="spacechase0.GenericModConfigMenu" Version="1.12.0" required="false"/>
   </ItemGroup>
 </Project>

@@ -9,9 +9,9 @@ mods:
    Longer Fence Life
 
 latest commit:
-   commit 901f89d5e4edc611568d52204c280a85154c5e8a
+   commit 91dc97ea72a3a086b22ec8521c80408d2a93b2f9
    Author: NormanPCN <91967509+NormanPCN@users.noreply.github.com>
-   Date:   Fri Apr 19 14:11:45 2024 -0700
+   Date:   Fri May 17 14:05:50 2024 -0700
    
-       Further debug goals tweaks
+       Add racoon ship mixed flower seeds
    

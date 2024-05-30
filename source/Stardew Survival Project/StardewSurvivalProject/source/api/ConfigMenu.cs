@@ -278,8 +278,8 @@ namespace StardewSurvivalProject.source.api
                 mod: context.ModManifest,
                 optionName: "% threshold for Thirst",
                 optionDesc: "Thirst effect will be applied if Thirst value drop below this threshold (Default: 25, Effect is disabled if value below 0)",
-                optionGet: () => (float)ModConfig.GetInstance().HungerEffectPercentageThreshold,
-                optionSet: value => ModConfig.GetInstance().HungerEffectPercentageThreshold = (double)value,
+                optionGet: () => (float)ModConfig.GetInstance().ThirstEffectPercentageThreshold,
+                optionSet: value => ModConfig.GetInstance().ThirstEffectPercentageThreshold = (double)value,
                 min: -1f,
                 max: 100f,
                 interval: 0.1f
@@ -544,6 +544,26 @@ namespace StardewSurvivalProject.source.api
                 optionDesc: "Base Temperature used for most calculation (Default: 25)",
                 optionGet: () => (float)ModConfig.GetInstance().EnvironmentBaseTemperature,
                 optionSet: value => ModConfig.GetInstance().EnvironmentBaseTemperature = (double)value
+            );
+            api.RegisterClampedOption(
+                mod: context.ModManifest,
+                optionName: "Indoor Temperature Multiplier",
+                optionDesc: "Impact of the building on temperature (Default: 0.9)",
+                optionGet: () => (float)ModConfig.GetInstance().IndoorTemperatureMultiplier,
+                optionSet: value => ModConfig.GetInstance().IndoorTemperatureMultiplier = (double)value,
+                min: 0f,
+                max: 1f,
+                interval: 0.01f
+            );
+            api.RegisterClampedOption(
+                mod: context.ModManifest,
+                optionName: "Farm Indoor Temperature Multiplier",
+                optionDesc: "Impact of the farm building on temperature (Default: 0.5)",
+                optionGet: () => (float)ModConfig.GetInstance().FarmIndoorTemperatureMultiplier,
+                optionSet: value => ModConfig.GetInstance().FarmIndoorTemperatureMultiplier = (double)value,
+                min: 0f,
+                max: 1f,
+                interval: 0.01f
             );
             api.RegisterSimpleOption(
                 mod: context.ModManifest,

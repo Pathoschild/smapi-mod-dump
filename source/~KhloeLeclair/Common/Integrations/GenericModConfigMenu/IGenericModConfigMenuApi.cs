@@ -9,6 +9,7 @@
 *************************************************/
 
 #nullable disable
+#if COMMON_GMCM
 
 using System;
 
@@ -189,3 +190,5 @@ namespace GenericModConfigMenu {
 		void Unregister(IManifest mod);
 	}
 }
+
+#endif

@@ -453,6 +453,31 @@ internal class ModConfig
     public Boolean TTS { get; set; } = true;
 
     /// <summary>
+    /// Toggles speaking of character speech bubbles.
+    /// </summary>
+    public Boolean AutoReadCharacterBubbles { get; set; } = true;
+
+    /// <summary>
+    /// Toggles speaking of character dialog.
+    /// </summary>
+    public Boolean AutoReadCharacterDialog { get; set; } = true;
+
+    /// <summary>
+    /// Toggles speaking of question dialog.
+    /// </summary>
+    public Boolean AutoReadQuestionDialog { get; set; } = true;
+
+    /// <summary>
+    /// Toggles speaking of basic dialogs (like no mail in mailbox).
+    /// </summary>
+    public Boolean AutoReadBasicDialog { get; set; } = true;
+
+    /// <summary>
+    /// Key to manually read current dialog.
+    /// </summary>
+    public KeybindList ManualReadDialogKey { get; set; } = KeybindList.Parse("R");
+
+    /// <summary>
     /// Toggles detecting the dropped items.
     /// </summary>
     public Boolean TrackDroppedItems { get; set; } = true;
@@ -515,6 +540,11 @@ internal class ModConfig
     ///  You can fix what motion type every fish has, by default every fish has a fixed motion type like for squid it's sinker, walleye it's smooth, etc. You can use a value between 0 to 4 to fix the motion. 0 indicates mixed motion type, 1 indicates art, 2 indicates smooth, 3 indicates sinker and 4 indicates floater.
     /// </summary>
     public int FixFishingMotionType { get; set; } = 999;
+
+    /// <summary>
+    /// if true, the <see cref="stardew_access.Utils.CurrentPlayer.TimeOfDay"/> will return the time in the 24-hourformat.
+    /// </summary>
+    public bool Use24HourFormat { get; set; } = false;
 
     // TODO Add the exclusion and focus list too
     // public String ExclusionList { get; set; } = "test";

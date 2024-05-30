@@ -9,12 +9,23 @@
 *************************************************/
 
 {
+  /*
+   | This file is automatically updated by ModManifestBuilder
+   | when the project is compiled.
+   | 
+   | Changes made to this file may be overwritten.
+   | 
+   */
+  "$schema": "https://smapi.io/schemas/manifest.json",
+  "UniqueID": "EnderTedi.NoFenceDecayRedux",
   "Name": "No Fence Decay Redux",
   "Author": "EnderTedi",
-  "Version": "1.0.0",
+  "Version": "1.1.0-Debug",
   "Description": "Stops Fence Decay From Occuring",
-  "UniqueID": "EnderTedi.NoFenceDecayRedux",
+  "MinimumApiVersion": "4.0.0",
+  "MinimumGameVersion": "1.6.0",
   "EntryDll": "No Fence Decay - Redux.dll",
-  "MinimumApiVersion": "2.9.0",
-  "UpdateKeys": [ "Nexus:1180" ]
+  "UpdateKeys": [
+    "Nexus:20802"
+  ]
 }

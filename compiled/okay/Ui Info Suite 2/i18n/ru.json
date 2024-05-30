@@ -25,7 +25,7 @@
   "ToolIsFinishedBeingUpgraded": "{0} улучшено!",
   "NpcBirthday": "Сегодня день рождение {0}",
   "RobinBuildingStatus": "Робин завершит строительство через {0} дн.",
-  "RobinHouseUpgradeStatus": "Robin will finish upgrading your house in {0} day(s)", // TODO
+  "RobinHouseUpgradeStatus": "Робин закончит модернизацию вашего дома за {0} дн",
   // Display icons - Foragables
   "CanFindSalmonberry": "Сегодня ты можешь найти морошку",
   "CanFindBlackberry": "Сегодня ты можешь найти ежевику",

@@ -55,6 +55,9 @@ namespace ContentPatcher.Framework.Patches
         /// <summary>The <see cref="RawTargetAsset"/> with support for managing its state.</summary>
         protected IManagedTokenString? ManagedRawTargetAsset { get; }
 
+        /// <summary>The <see cref="TargetLocale"/> with support for managing its state.</summary>
+        protected IManagedTokenString? ManagedRawTargetLocale { get; set; }
+
         /// <summary>Whether the patch has a 'FromFile' field specified, regardless of whether it's ready.</summary>
         [MemberNotNullWhen(true, nameof(Patch.RawFromAsset), nameof(Patch.ManagedRawFromAsset))]
         protected bool HasFromAsset => this.RawFromAsset != null && this.ManagedRawFromAsset != null;
@@ -104,6 +107,9 @@ namespace ContentPatcher.Framework.Patches
         public IAssetName? TargetAsset { get; private set; }
 
         /// <inheritdoc />
+        public string? TargetLocale { get; private set; }
+
+        /// <inheritdoc />
         public IAssetName? TargetAssetBeforeRedirection { get; private set; }
 
         /// <inheritdoc />
@@ -120,6 +126,9 @@ namespace ContentPatcher.Framework.Patches
 
         /// <inheritdoc />
         public bool IsApplied { get; set; }
+
+        /// <inheritdoc />
+        public bool PredatesTargetLocale { get; }
 
         /// <inheritdoc />
         public int LastChangedTick { get; protected set; }
@@ -233,6 +242,7 @@ namespace ContentPatcher.Framework.Patches
         /// <param name="path">The path to the patch from the root content file.</param>
         /// <param name="type">The patch type.</param>
         /// <param name="assetName">The normalized asset name to intercept.</param>
+        /// <param name="assetLocale">The locale code in the target asset's name to match. See <see cref="IPatch.TargetAsset"/> for more info.</param>
         /// <param name="priority">The priority for this patch when multiple patches apply.</param>
         /// <param name="updateRate">When the patch should be updated.</param>
         /// <param name="conditions">The conditions which determine whether this patch should be applied.</param>
@@ -241,12 +251,13 @@ namespace ContentPatcher.Framework.Patches
         /// <param name="migrator">The aggregate migration which applies for this patch.</param>
         /// <param name="parentPatch">The parent <see cref="PatchType.Include"/> patch for which this patch was loaded, if any.</param>
         /// <param name="fromAsset">The normalized asset key from which to load the local asset (if applicable), including tokens.</param>
-        protected Patch(int[] indexPath, LogPathBuilder path, PatchType type, IManagedTokenString? assetName, int priority, UpdateRate updateRate, IEnumerable<Condition> conditions, IContentPack contentPack, IRuntimeMigration migrator, IPatch? parentPatch, Func<string, IAssetName> parseAssetName, IManagedTokenString? fromAsset = null)
+        protected Patch(int[] indexPath, LogPathBuilder path, PatchType type, IManagedTokenString? assetName, IManagedTokenString? assetLocale, int priority, UpdateRate updateRate, IEnumerable<Condition> conditions, IContentPack contentPack, IRuntimeMigration migrator, IPatch? parentPatch, Func<string, IAssetName> parseAssetName, IManagedTokenString? fromAsset = null)
         {
             this.IndexPath = indexPath;
             this.Path = path;
             this.Type = type;
             this.ManagedRawTargetAsset = assetName;
+            this.ManagedRawTargetLocale = assetLocale;
             this.Priority = priority;
             this.UpdateRate = updateRate;
             this.Conditions = conditions.ToArray();
@@ -260,12 +271,16 @@ namespace ContentPatcher.Framework.Patches
             this.Contextuals
                 .Add(this.Conditions)
                 .Add(assetName)
+                .Add(assetLocale)
                 .Add(fromAsset);
             if (assetName != null)
                 this.ManuallyUpdatedTokens.Add(assetName);
+            if (assetLocale != null)
+                this.ManuallyUpdatedTokens.Add(assetLocale);
             if (fromAsset != null)
                 this.ManuallyUpdatedTokens.Add(fromAsset);
 
+            this.PredatesTargetLocale = migrator.Version.IsOlderThan("2.1.0");
             this.LastChangedTick = Game1.ticks;
         }
 
@@ -315,14 +330,15 @@ namespace ContentPatcher.Framework.Patches
             if (!this.HasTargetAsset)
                 return false;
 
-            bool changed = this.ManagedRawTargetAsset.UpdateContext(context);
+            bool changed = this.ManagedRawTargetAsset.UpdateContext(context) | this.ManagedRawTargetLocale?.UpdateContext(context) is true;
 
-            if (this.RawTargetAsset.IsReady)
+            if (this.RawTargetAsset.IsReady && this.ManagedRawTargetLocale?.IsReady != false)
             {
                 IAssetName assetName = this.ParseAssetNameImpl(this.RawTargetAsset.Value!);
                 IAssetName? redirectedTo = this.Migrator.RedirectTarget(assetName, this);
 
                 this.TargetAsset = redirectedTo ?? assetName;
+                this.TargetLocale = this.ManagedRawTargetLocale?.Value;
                 this.TargetAssetBeforeRedirection = redirectedTo != null ? assetName : null;
 
                 context.SetLocalValue(nameof(ConditionType.Target), this.TargetAsset.Name);
@@ -332,6 +348,7 @@ namespace ContentPatcher.Framework.Patches
             else
             {
                 this.TargetAsset = null;
+                this.TargetLocale = null;
                 context.SetLocalValue(nameof(ConditionType.Target), "", ready: false);
                 context.SetLocalValue(nameof(ConditionType.TargetPathOnly), "", ready: false);
                 context.SetLocalValue(nameof(ConditionType.TargetWithoutPath), "", ready: false);

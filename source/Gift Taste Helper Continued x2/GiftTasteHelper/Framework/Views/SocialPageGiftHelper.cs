@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -24,7 +22,7 @@ namespace GiftTasteHelper.Framework
         /*********
         ** Properties
         *********/
-        private readonly SocialPage SocialPage = new SocialPage();
+        private readonly SocialPage SocialPage = new();
         private string LastHoveredNpc = string.Empty;
 
 
@@ -42,9 +40,11 @@ namespace GiftTasteHelper.Framework
             // reset
             this.LastHoveredNpc = string.Empty;
 
-            SDVSocialPage nativeSocialPage = this.GetNativeSocialPage(menu);
+            SDVSocialPage? nativeSocialPage = this.GetNativeSocialPage(menu);
             if (nativeSocialPage != null)
+            {
                 this.SocialPage.Init(nativeSocialPage, this.Reflection);
+            }
             return base.OnOpen(menu);
         }
 
@@ -54,15 +54,16 @@ namespace GiftTasteHelper.Framework
             this.SocialPage.OnResize(this.GetNativeSocialPage(menu));
         }
 
+        /*
         public override bool CanTick()
         {
             // we don't have a tab-changed event so don't tick when the social tab isn't open
             return this.IsCorrectMenuTab(Game1.activeClickableMenu) && base.CanTick();
         }
+        */
 
         public override void OnCursorMoved(CursorMovedEventArgs e)
         {
-            Debug.Assert(this.IsCorrectMenuTab(Game1.activeClickableMenu));
             if (!Utils.Ensure(this.SocialPage != null, "Social Page is null!"))
             {
                 return;
@@ -78,7 +79,14 @@ namespace GiftTasteHelper.Framework
 
         public override void OnPostUpdate(UpdateTickedEventArgs e)
         {
-            this.SocialPage.OnUpdate();
+            if (IsCorrectMenuTab(Game1.activeClickableMenu))
+            {
+                this.SocialPage.OnUpdate();
+            }
+            else
+            {
+                OnClose();
+            }
         }
 
         /*********
@@ -88,19 +96,17 @@ namespace GiftTasteHelper.Framework
         {
             // Prevent the tooltip from going off screen if we're at the edge
             if (x + width > viewportW)
-                x = viewportW - width;
-        }
-
-        private bool IsCorrectMenuTab(IClickableMenu menu)
-        {
-            if (menu is GameMenu gameMenu)
             {
-                return gameMenu.currentTab == GameMenu.socialTab;
+                x = viewportW - width;
             }
-            return false;
         }
 
-        private SDVSocialPage GetNativeSocialPage(IClickableMenu menu)
+        private static bool IsCorrectMenuTab(IClickableMenu menu)
+        {
+            return menu is GameMenu gameMenu && gameMenu.currentTab == GameMenu.socialTab;
+        }
+
+        private SDVSocialPage? GetNativeSocialPage(IClickableMenu menu)
         {
             try
             {
@@ -126,8 +132,7 @@ namespace GiftTasteHelper.Framework
 
             if (hoveredNpc != this.LastHoveredNpc)
             {
-                if (this.GiftDrawDataProvider.HasDataForNpc(hoveredNpc) &&
-                    SetSelectedNPC(hoveredNpc))
+                if (this.GiftDrawDataProvider.HasDataForNpc(hoveredNpc) && SetSelectedNPC(hoveredNpc))
                 {
                     this.DrawCurrentFrame = true;
                     this.LastHoveredNpc = hoveredNpc;

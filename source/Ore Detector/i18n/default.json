@@ -1,0 +1,41 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/1Avalon/Ore-Detector
+**
+*************************************************/
+
+{
+  "OreDetector.No": "No",
+  "OreDetector.Yes": "Yes",
+  "OreDetector.Ladder": "Ladder",
+  "OreDetector.Hole": "Hole",
+  "OreDetector.SetPosition": "Left click to confirm postion",
+  "OreDetector.Blacklist": "Blacklist",
+
+  //Config
+  "OreDetector.Config.PositionOption": "Position",
+  "OreDetector.Config.AbovePlayer": "Above player",
+  "OreDetector.Config.TopLeft": "Top left",
+  "OreDetector.Config.NextToCursor": "Next to cursor",
+  "OreDetector.Config.Custom": "Custom",
+
+  "OreDetector.Config.DrawLineToLadder": "Draw line to ladder",
+  "OreDetector.Config.DrawLineToHole": "Draw line to hole",
+  "OreDetector.Config.LineLadderColor": "Line color for ladder",
+  "OreDetector.Config.LineHoleColor": "Line color for hole",
+  "OreDetector.Config.Color.Red": "Red",
+  "OreDetector.Config.Color.Blue": "Blue",
+  "OreDetector.Config.Color.Green": "Green",
+  "OreDetector.Config.Color.Yellow": "Yellow",
+
+  "OreDetector.DisplayOreName": "Display ore name",
+  "OreDetector.SetCustomPostion": "Set custom position",
+
+  "OreDetector.Config.HideInformation": "Hide/Show information",
+
+  "OreDetector.Config.ShowBlacklist": "Show Blacklist"
+}

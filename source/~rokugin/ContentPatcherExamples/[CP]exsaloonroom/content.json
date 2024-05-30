@@ -1,0 +1,59 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/rokugin/StardewMods
+**
+*************************************************/
+
+{
+  "Format": "2.1.0",
+  "Changes": [
+    {
+      "LogName": "Load saloon second floor map",
+      "Action": "Load",
+      "Target": "Maps/{{ModId}}_SaloonSecondFloor",
+      "FromFile": "assets/Custom_SaloonSecondFloor.tmx"
+    },
+    {
+      "LogName": "Add saloon second floor to locations",
+      "Action": "EditData",
+      "Target": "Data/Locations",
+      "Entries": {
+        "{{ModId}}_SaloonSecondFloor": {
+          "DisplayName": "Saloon Second Floor",
+          "CreateOnLoad": {
+            "MapPath": "Maps/{{ModId}}_SaloonSecondFloor"
+          }
+        }
+      }
+    },
+    {
+      "LogName": "Patch stairs into saloon map",
+      "Action": "EditMap",
+      "Target": "Maps/Saloon",
+      "FromFile": "assets/Custom_Saloon_Stairs.tmx",
+      "ToArea": {
+        "X": 0,
+        "Y": 8,
+        "Width": 3,
+        "Height": 7
+      },
+      "PatchMode": "ReplaceByLayer",
+      "MapTiles": [
+        {
+          "Position": {
+            "X": 1,
+            "Y": 8
+          },
+          "Layer": "Back",
+          "SetProperties": {
+            "TouchAction": "Warp {{ModId}}_SaloonSecondFloor 1 8"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -10,16 +10,17 @@
 
 using System;
 
-using Leclair.Stardew.Common.Serialization.Converters;
 using Leclair.Stardew.CloudySkies.Models;
+using Leclair.Stardew.Common.Serialization.Converters;
 
 using Microsoft.Xna.Framework;
+
 using StardewValley;
 
 namespace Leclair.Stardew.CloudySkies.Effects;
 
 [DiscriminatedType("ModifyStamina")]
-public record ModifyStaminaEffectData : BaseEffectData {
+public record ModifyStaminaEffectData : BaseEffectData, IModifyStaminaEffectData {
 
 	public float Chance { get; set; } = 1f;
 
@@ -31,7 +32,7 @@ public record ModifyStaminaEffectData : BaseEffectData {
 
 }
 
-public class ModifyStaminaEffect : IEffect {
+public class ModifyStaminaEffect : IWeatherEffect {
 
 	public ulong Id { get; }
 
@@ -45,7 +46,7 @@ public class ModifyStaminaEffect : IEffect {
 
 	private readonly int MaxValue;
 
-	public ModifyStaminaEffect(ulong id, ModifyStaminaEffectData data) {
+	public ModifyStaminaEffect(ulong id, IModifyStaminaEffectData data) {
 		Id = id;
 		Rate = data.Rate;
 

@@ -73,6 +73,11 @@ namespace DeluxeJournal.Menus.Components
             downArrowButton = new ClickableTextureComponent(bounds, Game1.mouseCursors, new Rectangle(421, 472, 11, 12), 4f);
         }
 
+        public int GetScrollOffset()
+        {
+            return ScrollAmount / ScrollDistance;
+        }
+
         public int GetOverflowAmount()
         {
             return Math.Max(ContentHeight - _contentBounds.Height, 0);

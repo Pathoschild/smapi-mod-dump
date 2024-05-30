@@ -17,9 +17,9 @@ mods:
    Yet Another Harvest With Scythe Mod
 
 latest commit:
-   commit 5d287e227efa865fdd023b0fb9f01101aa75fb9c
-   Author: Bauke Conijn <bcmpinc@users.sourceforge.net>
-   Date:   Sat Mar 30 08:16:17 2024 +0100
+   commit 1adc842b1ba831f0e663f19c4431e877a16b425f
+   Author: Merhaf <54317788+Merhaf@users.noreply.github.com>
+   Date:   Fri Apr 26 02:25:45 2024 +0900
    
-       Bump version.
+       Create ko.json
    

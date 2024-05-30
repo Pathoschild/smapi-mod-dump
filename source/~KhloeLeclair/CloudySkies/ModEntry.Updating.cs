@@ -78,18 +78,18 @@ public partial class ModEntry {
 		int offsetX;
 		int offsetY;
 
-		switch(direction) {
+		switch (direction) {
 			case 0: // Down
 				offsetX = 0;
 				offsetY = (int) speed;
 				break;
 			case 1: // Left
-				offsetX = -(int)speed;
+				offsetX = -(int) speed;
 				offsetY = 0;
 				break;
 			case 2: // Up
 				offsetX = 0;
-				offsetY = -(int)speed;
+				offsetY = -(int) speed;
 				break;
 			case 3:
 				offsetX = (int) speed;

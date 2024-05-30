@@ -64,7 +64,7 @@ namespace IntegratedMinecarts.Patches
                 }
 
                 if (destination.TargetLocation == "BusStop" && currentlocation == "Desert" | currentlocation == "EastScarp_DeepDark" | currentlocation == "EastScarp_Village" |
-                    currentlocation == "Caldera" | currentlocation == "IslandNorthCave1")
+                    currentlocation == "Caldera" | currentlocation == "IslandNorthCave1" | currentlocation == "IslandWest")
                 {
                     GameLocation target = Game1.getLocationFromName(currentlocation);
                     Monitor!.Log($"Changing LocationContext from Location:{target.Name}:{target.locationContextId}", LogLevel.Trace);
@@ -102,7 +102,7 @@ namespace IntegratedMinecarts.Patches
                 previouslocation.locationContextId = "Lemurkat_EastScarp";
                 Monitor.Log($"Changed to Location:{previouslocation.Name}:{previouslocation.locationContextId}", LogLevel.Trace);
             }
-            if (newlocation.Name == "BusStop" && previouslocation.Name == "Caldera" | previouslocation.Name == "IslandNorthCave1")
+            if (newlocation.Name == "BusStop" && previouslocation.Name == "Caldera" | previouslocation.Name == "IslandNorthCave1" | previouslocation.Name == "IslandWest")
             {
                 Monitor!.Log($"After Warping, Changing LocationContext back from Location:{previouslocation.Name}:{previouslocation.locationContextId}", LogLevel.Trace);
                 previouslocation.locationContextId = "Island";

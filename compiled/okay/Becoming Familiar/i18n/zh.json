@@ -1,5 +1,5 @@
 {
-  // In Game Notifications. Please feel freeo to tweak. When Translating, please do not translate anything between {{ }} 's.
+  // In Game Notifications. Please feel free to tweak. When Translating, please do not translate anything between {{ }} 's.
   "notifications.1-heart": "{{villager}} 注意到了你。",
   "notifications.2-heart": "{{villager}} 对你笑了笑。",
   "notifications.3-heart": "{{villager}} 对你微笑。",

@@ -92,6 +92,12 @@ namespace ContentPatcher.Framework.Conditions
         }
 
         /// <inheritdoc />
+        public bool ShouldUpdate()
+        {
+            return false;
+        }
+
+        /// <inheritdoc />
         public IContextualState GetDiagnosticState()
         {
             return new ContextualState();

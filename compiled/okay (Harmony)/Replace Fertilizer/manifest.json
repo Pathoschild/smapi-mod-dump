@@ -1,0 +1,10 @@
+{
+  "Name": "Replace Fertilizer",
+  "Author": "jingshenSN2",
+  "Version": "1.0.0",
+  "Description": "Replace Fertilizer with new one in your dirt",
+  "UniqueID": "jingshenSN2.replace_fertilizer",
+  "EntryDll": "ReplaceFertilizer.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": ["nexus:99000"]
+}

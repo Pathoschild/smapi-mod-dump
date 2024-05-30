@@ -13,9 +13,9 @@
 using System;
 using System.Collections.Generic;
 
-using Newtonsoft.Json;
-
 using Leclair.Stardew.Common.Serialization.Converters;
+
+using Newtonsoft.Json;
 
 namespace Leclair.Stardew.Common.Types;
 

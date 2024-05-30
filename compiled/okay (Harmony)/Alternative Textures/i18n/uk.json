@@ -4,11 +4,13 @@
   "tools.name.paint_brush": "Пензлик",
   "tools.name.scissors": "Ножиці",
   "tools.name.spray_can": "Балончик спрею",
+  "tools.name.catalogue": "Каталог текстур",
 
   "tools.description.paint_bucket": "Дозволяє застосовувати різні текстури до об'єктів, що підтримують таку можливість.",
   "tools.description.paint_brush": "Дозволяє копіювати текстуру та застосувати її до інших об'єктів того ж типу.",
   "tools.description.scissors": "Дозволяє застосовувати різні текстури до об'єктів",
   "tools.description.spray_can": "Дозволяє застосовувати випадкові текстури до об’єктів в радіусі.",
+  "tools.description.catalogue": "Перелік всіх доступних альтернативних текстур.",
 
   // Messages
   "messages.warning.no_textures_for_season": "{{itemName}} не має альтернативної текстури для поточного сезону!",
@@ -21,5 +23,10 @@
   "messages.warning.custom_building_not_supported": "Будівля  ({{itemName}}) не підтримує змінні текстури.",
 
   "messages.info.texture_copied": "Текстуру скопійовано!",
-  "messages.info.cleared_brush": "Пензлик очищено!"
+  "messages.info.cleared_brush": "Пензлик очищено!",
+
+  // UI
+  "ui.labels.catalogue": "Каталог",
+  "ui.labels.paint_brush.copied": "Текстуру скопійовано пензликом!",
+  "ui.labels.paint_brush.not_found": "Не вдалося скопіювати текстуру: Не знайдено пензлика у вашому інвентарі!"
 }

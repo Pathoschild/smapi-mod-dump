@@ -10,10 +10,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using HarmonyLib;
 using StardewValley;
 using StardewValley.GameData.Tools;
+using StardewValley.Tools;
 
 namespace NermNermNerm.Stardew.QuestableTractor
 {
@@ -92,6 +94,61 @@ namespace NermNermNerm.Stardew.QuestableTractor
             }
         }
 
+        private bool IsActuallyFishing()
+        {
+            // When would you not be fishing?  In the stock game, the only thing that calls the method
+            // we're Harmony-Patching is the inimically-named FishingRod.DoFunction, which does a ton
+            // of stuff before calling GameLocation.getFish to see what got snagged.
+            // However, VisibleFish also calls GameLocation.getFish to figure out what fish to draw,
+            // and it calls it a whole bunch.  So we need to figure out if we're being called for
+            // the fishing rod or something else.  The main technique we're going to use is to see if,
+            // at a reasonable distance up the stack, we see that we're being called from the FishingRod
+            // class.  It's not super-precise, and that's to defend against changes to the game code.
+            //
+            // System.Diagnostics.StackTrace is not built for speed, so performance is a concern, however
+            // while it's not quick, it's not super-slow either.  So we mitigate it by the heuristic
+            // of first just checking to see if the fishing rod is the active item (because if it's not,
+            // we're obviously not fishing), then falling back to the stack walk if needed.  We also
+            // track the performance of the method and issue warnings to make it easy for players to
+            // discover if we're the source of lag.
+
+            // High-performance test to see if we're fishing or not
+            if (Game1.player.ActiveItem is not FishingRod)
+            {
+                return false;
+            }
+
+            var watch = Stopwatch.StartNew();
+
+            // Note that we could use the variant of the constructor that allows you to skip the top few frames
+            // (which will obviously be our code), but I don't feel like the perf win is enough to justify the risk
+            // of something like compiler inlining or minor refactors causing mayhem.
+            var stack = new StackTrace();
+            for (int i = 0; i < 10; ++i) // <- 10 is just a spitball in a possibly-jinxed attempt to minimize false-positives.
+            {
+                var frame = stack.GetFrame(i);
+                if (frame is not null)
+                {
+                    var method = frame.GetMethod();
+                    if (method is not null)
+                    {
+                        if (method.DeclaringType == typeof(FishingRod) || method.Name.Contains("DoFunction_PatchedBy"))
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            long ms = watch.ElapsedMilliseconds;
+            if (ms > 10)
+            {
+                this.LogWarning($"IsActuallyFishing took {watch.Elapsed.TotalMilliseconds}.  If you're experiencing unpleasant lag while fishing on the farm, you can temporarily disable the VisibleFish mod until you complete the 'We need a bigger pole' quest to get past this problem.");
+            }
+
+            return false;
+        }
+
         /// <summary>
         ///   If this returns null, the behavior of fishing should be left alone.  If it returns something,
         ///   then the something should be what the player gets from the cast.
@@ -102,12 +159,13 @@ namespace NermNermNerm.Stardew.QuestableTractor
         /// </remarks>
         private Item? ReplaceFish()
         {
-            // attaching to Farm.getFish should ensure we only get called from this location, but just to be sure nothing
-            // else uses the same type...
-            if (Game1.currentLocation != Game1.getFarm() || !Game1.IsMasterGame)
+            // Ensure that the call is for fishing on the farm by the main player.
+            if (Game1.currentLocation != Game1.getFarm() || !Game1.IsMasterGame || !this.IsActuallyFishing())
             {
                 return null;
             }
+
+            this.LogTrace("Intercepted a call to Farm.GetFish");
 
             var borrowHarpoonQuest = FakeQuest.GetFakeQuestByType<BorrowHarpoonQuest>(Game1.player);
             if (Game1.player.CurrentTool?.QualifiedItemId == HarpoonToolQiid)

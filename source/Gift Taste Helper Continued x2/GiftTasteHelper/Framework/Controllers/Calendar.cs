@@ -8,7 +8,6 @@
 **
 *************************************************/
 
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley.Menus;
@@ -22,11 +21,11 @@ namespace GiftTasteHelper.Framework
         *********/
         public static int InvalidDay => -1;
 
-        private Billboard Billboard;
-        private List<ClickableTextureComponent> CalendarDays;
+        private Billboard? Billboard;
+        private List<ClickableTextureComponent>? CalendarDays;
 
         /// <summary>Simplifies access to private game code.</summary>
-        private IReflectionHelper Reflection;
+        private IReflectionHelper? Reflection;
 
 
         /*********
@@ -40,7 +39,7 @@ namespace GiftTasteHelper.Framework
         /*********
         ** Public methods
         *********/
-        public void Init(Billboard menu, IReflectionHelper reflection)
+        public void Init(Billboard menu, IReflectionHelper? reflection)
         {
             this.Clear();
 
@@ -68,13 +67,19 @@ namespace GiftTasteHelper.Framework
 
         public string GetCurrentHoverText()
         {
+            if (this.Billboard is null || this.Reflection is null)
+            {
+                return string.Empty;
+            }
             return this.Reflection.GetField<string>(this.Billboard, "hoverText").GetValue();
         }
 
         public int GetHoveredDayIndex(SVector2 mouse)
         {
-            if (!this.Bounds.Contains(mouse.ToPoint()))
+            if (!this.Bounds.Contains(mouse.ToPoint()) || this.CalendarDays is null)
+            {
                 return Calendar.InvalidDay;
+            }
 
             for (int i = 0; i < this.CalendarDays.Count; ++i)
             {
@@ -89,8 +94,10 @@ namespace GiftTasteHelper.Framework
         public string GetHoveredBirthdayNpcName(SVector2 mouse)
         {
             string name = string.Empty;
-            if (!this.Bounds.Contains(mouse.ToPoint()))
+            if (!this.Bounds.Contains(mouse.ToPoint()) || this.CalendarDays is null)
+            {
                 return name;
+            }
 
             foreach (ClickableTextureComponent day in this.CalendarDays)
             {

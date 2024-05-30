@@ -18,17 +18,10 @@ namespace SkillPrestige.Framework.Commands
     // ReSharper disable once UnusedMember.Global - referenced via reflection
     internal class SetMasteryExperienceCommand : SkillPrestigeCommand
     {
-        /*********
-        ** Public methods
-        *********/
         /// <summary>Construct an instance.</summary>
         public SetMasteryExperienceCommand()
             : base("player_setmasteryexperience", GetDescription(), testingCommand: true) { }
 
-
-        /*********
-        ** Protected methods
-        *********/
         /// <summary>Applies the effect of a command when it is called from the console.</summary>
         protected override void Apply(string[] args)
         {
@@ -65,25 +58,6 @@ namespace SkillPrestige.Framework.Commands
                 + "Usage: player_setexperience <skill> <level>\n"
                 + $"- skill: the name of the skill (one of {skillNames}).\n"
                 + "- level: the target experience level.";
-        }
-
-        /// <summary>Get the level unlocked with the given experience.</summary>
-        /// <param name="experience">The total experience points.</param>
-        private static int GetLevel(int experience)
-        {
-            return experience switch
-            {
-                < 100 => 0,
-                < 380 => 1,
-                < 770 => 2,
-                < 1300 => 3,
-                < 2150 => 4,
-                < 3300 => 5,
-                < 4800 => 6,
-                < 6900 => 7,
-                < 10000 => 8,
-                _ => experience < 15000 ? 9 : 10
-            };
         }
     }
 }

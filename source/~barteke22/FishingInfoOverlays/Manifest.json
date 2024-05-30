@@ -11,7 +11,7 @@
 {
   "Name": "Fishing Info Overlays",
   "Author": "barteke22",
-  "Version": "1.1.5",
+  "Version": "1.2.0",
   "Description": "Adds a preview showing fish in current location when holding a fishing rod, which fish you're currently catching, and more!",
   "UniqueID": "barteke22.FishingInfoOverlays",
   "EntryDll": "FishingInfoOverlays.dll",

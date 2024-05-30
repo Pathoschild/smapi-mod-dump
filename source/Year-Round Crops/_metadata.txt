@@ -6,9 +6,9 @@ mods:
    Year-Round Crops
 
 latest commit:
-   commit 8c5513e31575843e7a101797a9df99b612026334
-   Author: Vince Belanger <vincebel@protonmail.com>
-   Date:   Sat May 15 16:07:38 2021 -0400
+   commit 5f8c38327d11017d2d915d6210bb61d9f050f22c
+   Author: vincebel7 <vincebel@protonmail.com>
+   Date:   Mon May 20 21:06:04 2024 -0400
    
-       Merge branch 'master' of https://github.com/vincebel7/YearRoundCrops
+       Update README for 1.6
    

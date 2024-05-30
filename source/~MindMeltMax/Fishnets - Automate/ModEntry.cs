@@ -26,13 +26,13 @@ namespace Fishnets.Automate
                 var fishNetsApi = Helper.ModRegistry.GetApi<IFishnetApi>(FishNetsId);
                 if (fishNetsApi is null)
                 {
-                    Monitor.Log($"Unable to load api for Fish Nets, mod will not work", LogLevel.Error);
+                    Monitor.Log($"Unable to load api for Fish Nets, extension will not work", LogLevel.Error);
                     return;
                 }
                 var automatApi = Helper.ModRegistry.GetApi<IAutomateApi>(AutomateId);
                 if (automatApi is null)
                 {
-                    Monitor.Log($"Unable to load api for Automate, mod will not work", LogLevel.Error);
+                    Monitor.Log($"Unable to load api for Automate, extension will not work", LogLevel.Error);
                     return;
                 }
 

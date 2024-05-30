@@ -9,6 +9,17 @@ for queries and analysis.**
 [← back to readme](README.md)
 
 # Release notes
+## 1.2.0
+Released 25 May 2024 for SMAPI 4.0.0 or later.
+
+* The mod no longer has separate "balanced mode" and "unlimited mode" downloads.  
+  _Balanced mode is now the default. You can use [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098) to disable "Require Horse Flute" if you used unlimited mode._
+
+## 1.1.24
+Released 22 May 2024 for SMAPI 4.0.0 or later.
+
+* Improved translations. Thanks to mitekano23 (added Japanese)!
+
 ## 1.1.23
 Released 19 March 2024 for SMAPI 4.0.0 or later.
 

@@ -1,10 +1,10 @@
-{
-  "Name": "AutoGrabTruffles",
-  "Author": "QiXing",
+﻿{
+  "Name": "Auto-Grab Truffles",
+  "Author": "Tsin",
   "Version": "1.1.0",
-  "Description": "Allow barn auto-grabbers to collect truffles.",
-  "UniqueID": "qixing.AutoGrabTruffles",
+  "Description": "Auto-grabbers in the barn will collect truffles.",
+  "UniqueID": "Tsin.AutoGrabTruffles",
   "EntryDll": "AutoGrabTruffles.dll",
-  "MinimumApiVersion": "4.0.0",
-  "UpdateKeys": [ "Nexus:20874", "GitHub:qixing-jk/QiXingAutoGrabTruffles" ]
+  "MinimumApiVersion": "3.14.0",
+  "UpdateKeys": [ "Nexus:14162" ]
 }

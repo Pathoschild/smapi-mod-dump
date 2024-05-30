@@ -96,7 +96,11 @@ namespace Pathoschild.Stardew.TractorMod
 
             // init
             I18n.Init(helper.Translation);
-            this.AudioManager = new AudioManager(this.Helper.DirectoryPath, isActive: () => this.Config.SoundEffects == TractorSoundType.Tractor);
+            this.AudioManager = new AudioManager(
+                directoryPath: this.Helper.DirectoryPath,
+                isActive: () => this.Config.SoundEffects == TractorSoundType.Tractor,
+                getVolume: () => this.Config.SoundEffectsVolume
+            );
             this.TextureManager = new(
                 directoryPath: this.Helper.DirectoryPath,
                 publicAssetBasePath: this.PublicAssetBasePath,
@@ -231,7 +235,7 @@ namespace Pathoschild.Stardew.TractorMod
 
                         // normalize tractor
                         if (tractor != null)
-                            TractorManager.SetTractorInfo(tractor, this.Config.SoundEffects, this.Helper.Reflection);
+                            TractorManager.SetTractorInfo(tractor, this.Config.SoundEffects);
 
                         // normalize ownership
                         garage.owner.Value = 0;
@@ -269,13 +273,15 @@ namespace Pathoschild.Stardew.TractorMod
 
                         Builder = Game1.builder_robin,
                         BuildCost = this.Config.BuildPrice,
-                        BuildMaterials = this.Config.BuildMaterials
-                            .Select(p => new BuildingMaterial
-                            {
-                                ItemId = p.Key,
-                                Amount = p.Value
-                            })
-                            .ToList(),
+                        BuildMaterials = this.Config.RequireBuildMaterials
+                            ? this.Config.BuildMaterials
+                                .Select(p => new BuildingMaterial
+                                {
+                                    ItemId = p.Key,
+                                    Amount = p.Value
+                                })
+                                .ToList()
+                            : new(),
                         BuildDays = 2,
 
                         Size = new Point(4, 2),
@@ -330,7 +336,7 @@ namespace Pathoschild.Stardew.TractorMod
                     foreach (Horse horse in horses)
                     {
                         if (tractorIDs.Contains(horse.HorseId) && !TractorManager.IsTractor(horse))
-                            TractorManager.SetTractorInfo(horse, this.Config.SoundEffects, this.Helper.Reflection);
+                            TractorManager.SetTractorInfo(horse, this.Config.SoundEffects);
                     }
                 }
             }
@@ -377,6 +383,8 @@ namespace Pathoschild.Stardew.TractorMod
             // update tractor effects
             if (Context.IsPlayerFree)
                 this.TractorManager.Update();
+            else if (Game1.CurrentEvent is not null)
+                this.AudioManager.SetEngineState(EngineState.Stop);
         }
 
         /// <inheritdoc cref="IGameLoopEvents.DayEnding"/>
@@ -495,6 +503,8 @@ namespace Pathoschild.Stardew.TractorMod
 
             foreach (var pair in this.TractorManagerImpl.GetActiveValues())
                 this.UpdateConfigFor(pair.Value);
+
+            this.AudioManager.UpdateVolume();
         }
 
         /// <summary>Apply the mod configuration to a tractor manager instance.</summary>
@@ -570,7 +580,7 @@ namespace Pathoschild.Stardew.TractorMod
             if (tractor == null && this.Config.CanSummonWithoutGarage && Context.IsMainPlayer)
             {
                 tractor = new Horse(Guid.NewGuid(), 0, 0);
-                TractorManager.SetTractorInfo(tractor, this.Config.SoundEffects, this.Helper.Reflection);
+                TractorManager.SetTractorInfo(tractor, this.Config.SoundEffects);
                 this.TextureManager.ApplyTextures(tractor, this.IsTractor);
             }
 

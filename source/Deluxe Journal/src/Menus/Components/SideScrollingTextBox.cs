@@ -18,15 +18,36 @@ namespace DeluxeJournal.Menus.Components
     /// <summary>A TextBox that does not limit character width and scrolls horizontally.</summary>
     public class SideScrollingTextBox : TextBox
     {
-        public SideScrollingTextBox(Texture2D? textBoxTexture, Texture2D? caretTexture, SpriteFont font, Color textColor) :
-            base(textBoxTexture, caretTexture, font, textColor)
+        /// <summary>Get the bounds packed in a <see cref="Rectangle"/>.</summary>
+        public Rectangle Bounds => new Rectangle(X, Y, Width, Height);
+
+        public SideScrollingTextBox(Texture2D? textBoxTexture, Texture2D? caretTexture, SpriteFont font, Color textColor)
+            : base(textBoxTexture, caretTexture, font, textColor)
         {
             limitWidth = false;
         }
 
+        /// <summary><see cref="TextBox.Update"/> wrapper that opens the text entry window with looser restrictions.</summary>
+        /// <remarks>
+        /// HACK: <see cref="Game1.lastCursorMotionWasMouse"/> gets set to <c>true</c> after closing the on-screen keyboard, for
+        /// whatever reason, preventing the user from opening another without first snapping to another component.
+        /// </remarks>
+        public virtual void ForceUpdate()
+        {
+            Update();
+
+            // HACK: Game1.lastCursorMotionWasMouse gets set to true after closing the
+            // on-screen keyboard, for whatever reason, preventing the user from opening
+            // another without first snapping to another component.
+            if (Game1.options.SnappyMenus && Game1.textEntry == null)
+            {
+                Game1.showTextEntry(this);
+            }
+        }
+
         public bool ContainsPoint(int x, int y)
         {
-            return new Rectangle(X, Y, Width, Height).Contains(x, y);
+            return Bounds.Contains(x, y);
         }
 
         public override void Draw(SpriteBatch b, bool drawShadow = true)
@@ -35,6 +56,7 @@ namespace DeluxeJournal.Menus.Components
             string text = PasswordBox ? new string('•', Text.Length) : Text;
             Vector2 size = _font.MeasureString(text);
             int scroll = (size.X > Width - 18) ? (int)size.X - Width + 18 : 0;
+            Vector2 textPosition = new Vector2(X - scroll + 16, Y + (_textBoxTexture != null ? 12 : 8));
             bool caretVisible = !(Game1.currentGameTime.TotalGameTime.TotalMilliseconds % 1000.0 < 500.0);
 
             if (_textBoxTexture != null)
@@ -50,7 +72,7 @@ namespace DeluxeJournal.Menus.Components
 
             if (caretVisible && Selected)
             {
-                b.Draw(Game1.staminaRect, new Rectangle(X + (int)size.X - scroll + 18, Y + 8, 4, 32), _textColor);
+                b.Draw(Game1.staminaRect, new Rectangle(X + (int)size.X - scroll + 18, Y + (_textBoxTexture == null ? 12 : 8), 4, 32), _textColor);
             }
 
             b.End();
@@ -63,11 +85,11 @@ namespace DeluxeJournal.Menus.Components
 
             if (drawShadow)
             {
-                Utility.drawTextWithShadow(b, text, _font, new Vector2(X - scroll + 16, Y + ((_textBoxTexture != null) ? 12 : 8)), _textColor);
+                Utility.drawTextWithShadow(b, text, _font, textPosition, _textColor);
             }
             else
             {
-                b.DrawString(_font, text, new Vector2(X - scroll + 16, Y + ((_textBoxTexture != null) ? 12 : 8)), _textColor, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.99f);
+                b.DrawString(_font, text, textPosition, _textColor, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.99f);
             }
 
             b.End();

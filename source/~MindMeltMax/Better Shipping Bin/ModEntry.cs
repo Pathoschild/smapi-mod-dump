@@ -54,9 +54,9 @@ namespace BetterShipping
                 return;
             api.Register(ModManifest, () => IConfig = new(), () => Helper.WriteConfig(IConfig));
 
-            api.AddBoolOption(ModManifest, () => IConfig.ShowTotalValueBanner, (v) => IConfig.ShowTotalValueBanner = v, () => "Show Total Value", () => "Show a banner at the top of the shipping bin inventory with the total value of all items");
-            api.AddBoolOption(ModManifest, () => IConfig.ShowTotalValueMiniBin, (v) => IConfig.ShowTotalValueMiniBin = v, () => "Show Total Value (Mini bin)", () => "Show the same banner as on the regular inventory in the mini shipping bin");
-            api.AddBoolOption(ModManifest, () => IConfig.InvertScrollWheelDirection, (v) => IConfig.InvertScrollWheelDirection = v, () => "Invert Scroll Wheel", () => "Invert the direction of the scroll wheel when scrolling through the inventory");
+            api.AddBoolOption(ModManifest, () => IConfig.ShowTotalValueBanner, (v) => IConfig.ShowTotalValueBanner = v, () => Helper.Translation.Get("Config.TotalValue.Title"), () => Helper.Translation.Get("Config.TotalValue.Description"));
+            api.AddBoolOption(ModManifest, () => IConfig.ShowTotalValueMiniBin, (v) => IConfig.ShowTotalValueMiniBin = v, () => Helper.Translation.Get("Config.MiniTotalValue.Title"), () => Helper.Translation.Get("Config.MiniTotalValue.Description"));
+            api.AddBoolOption(ModManifest, () => IConfig.InvertScrollWheelDirection, (v) => IConfig.InvertScrollWheelDirection = v, () => Helper.Translation.Get("Config.InvertScroll.Title"), () => Helper.Translation.Get("Config.InvertScroll.Description"));
         }
     }
 

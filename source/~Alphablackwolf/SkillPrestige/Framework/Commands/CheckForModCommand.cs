@@ -14,16 +14,10 @@ namespace SkillPrestige.Framework.Commands
     // ReSharper disable once UnusedMember.Global - referenced via reflection
     internal class CheckForModCommand : SkillPrestigeCommand
     {
-        /*********
-        ** Public methods
-        *********/
         /// <summary>Construct an instance.</summary>
         public CheckForModCommand()
             : base("checkformod", "Checks for the existence of a mod.\n\nUsage: checkformod <uniqueId>\n- uniqueId: the mod's uniqueId as found in the manifest.", testingCommand: true) { }
 
-        /*********
-        ** Protected methods
-        *********/
         /// <summary>Applies the effect of a command when it is called from the console.</summary>
         protected override void Apply(string[] args)
         {

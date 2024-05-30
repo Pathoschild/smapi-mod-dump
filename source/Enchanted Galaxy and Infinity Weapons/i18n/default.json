@@ -1,0 +1,123 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/namelessto/EnchantedGalaxyWeapons
+**
+*************************************************/
+
+{
+    /*********
+    ** Mod Config Options
+    *********/
+
+    // Main menu section
+    "menu.main-title": "Main Options",
+    "menu.basic-options": "Basic Options",
+    "menu.default": "Default: {{defaultValue}}",
+    "menu.true": "true",
+    "menu.false": "false",
+
+    "menu.main-daily-limit": "Daily Limit",
+    "menu.main-daily-limit-tooltip": "Whether to limit the number of barrels that can spawn per day. Disable to ignore the limit.\n",
+
+    "menu.main-daily-limit-amount": "Daily Spawn Limit",
+    "menu.main-daily-limit-amount-tooltip-p1": "Maximum number of barrels that can spawn per day, ignored if the limit is disabled.\n",
+    "menu.main-daily-limit-amount-tooltip-p2": "Decrease when breaking a barrel.\n",
+
+    "menu.main-global-chance": "Allow Global Drop Chance",
+    "menu.main-global-chance-tooltip-p1": "If enabled, the drop chance will be the same at any level in the mines/skull cavern.\n",
+    "menu.main-global-chance-tooltip-p2": "Instead of increasing chance at higher levels as it normally would.\n",
+
+    "menu.main-base-chance": "Base Drop Chance",
+
+    "menu.main-increment-chance": "Drop Chance Increment",
+    "menu.main-increment-chance-tooltip-p1": "The value is added to base drop chance after every 20 floors up to 120.\n",
+    "menu.main-increment-chance-tooltip-p2": "Ignored if global chance is on.\n",
+
+    "menu.main-dangerous-chance": "The dangerous variants of the mines and skull cavern add additional 10%",
+
+    "menu.main-additional-attempts": "Additional Spawn Attempts",
+    "menu.main-additional-attempts-tooltip-p1": "Increase this value to have better chance to spawn a crate per floor.\n",
+    "menu.main-additional-attempts-tooltip-p2": "Doesn't work with the more barrels.\n",
+
+    "menu.main-more-barrels": "Allow More Barrels",
+    "menu.main-more-barrels-tooltip-p1": "Allow for more than 1 barrel per floor.\n",
+    "menu.main-more-barrels-tooltip-p2": "If value is larger than daily limit will stop spawning after passing it.\n",
+
+    "menu.main-barrels-amount": "Additional Barrels Amount",
+    "menu.main-barrels-amount-tooltip": "Increase this value to have more barrels per floor.\n",
+
+    // Enchantments menu section
+    "menu.enchantments": "Enchantments",
+    "menu.enchantments-title": "Enchantments Page",
+
+    "menu.enchantments-guarantee-regular": "Force Regular Enchantment",
+    "menu.enchantments-guarantee-regular-tooltip": "Guarantee all weapons drop will have regular enchantment.\n",
+
+    "menu.enchantments-guarantee-innate": "Force Innate Enchantment",
+    "menu.enchantments-guarantee-innate-tooltip": "Guarantee all weapons drop will have innate enchantment(s).\n",
+
+    "menu.enchantments-regular-chance": "Regular Enchantment Chance",
+    "menu.enchantments-regular-chance-tooltip": "The chance a weapon will get a regular enchantment.\n",
+
+    "menu.enchantments-innate-chance": "Innate Enchantment Chance",
+    "menu.enchantments-innate-chance-tooltip": "The chance a weapon will get an innate enchantment.\n",
+
+    "menu.enchantments-regular-options": "Regular Enchantments Options",
+    "menu.enchantments-select": "Select enchantment that could appear",
+
+    "menu.enchantments-artful": "Artful",
+    "menu.enchantments-bug-killer": "Bug Killer",
+    "menu.enchantments-crusader": "Crusader",
+    "menu.enchantments-haymaker": "Haymaker",
+    "menu.enchantments-vampiric": "Vampiric",
+
+    "menu.enchantments-innate-options": "Innate Enchantments Options",
+
+    "menu.enchantments-innate-keep": "Keep as is",
+    "menu.enchantments-innate-keep-tooltip": "While this is selected the options below doesn't do anything",
+
+    "menu.enchantments-min-innate": "Min Innate Enchantments",
+    "menu.enchantments-max-innate": "Max Innate Enchantments",
+
+    "menu.enchantments-innate-limit-p1": "Increasing the minimum does guarantee it will be enchanted.\n",
+    "menu.enchantments-innate-limit-p2": "If max is lower the min the cap will be the max.",
+
+    "menu.enchantments-slime-gatherer": "Slime Gatherer",
+    "menu.enchantments-slime-slayer": "Slime Slayer",
+    "menu.enchantments-attack": "Attack",
+    "menu.enchantments-speed": "Speed",
+    "menu.enchantments-defense": "Defense",
+    "menu.enchantments-weight": "Weight",
+    "menu.enchantments-crit-chance": "Crit. Chance",
+    "menu.enchantments-crit-power": "Crit. Power",
+
+    // Weapons menu section
+    "menu.weapons": "Weapons",
+    "menu.weapons-title": "Weapons Page",
+
+    "menu.weapons-skip-galaxy": "Skip Galaxy Check",
+    "menu.weapons-skip-galaxy-tooltip": "Allow galaxy weapons to drop even without getting the galaxy sword before.\n",
+
+    "menu.weapons-skip-infinity": "Skip Infinity Check",
+    "menu.weapons-skip-infinity-tooltip": "Allow infinity weapons to drop even without getting an infinity weapon before.\n",
+
+    "menu.weapons-allow": "Weapons that can be obtained",
+
+    "menu.weapons-galaxy-sword": "Galaxy Sword",
+    "menu.weapons-galaxy-dagger": "Galaxy Dagger",
+    "menu.weapons-galaxy-hammer": "Galaxy Hammer",
+    "menu.weapons-infinity-sword": "Infinity Sword",
+    "menu.weapons-infinity-dagger": "Infinity Dagger",
+    "menu.weapons-infinity-hammer": "Infinity Hammer",
+
+    /*********
+    ** In-game text
+    *********/
+
+    "game.aura-felt": "Powerful aura is in the air",
+    "game.aura-left": "The powerful aura won't return again today.."
+}

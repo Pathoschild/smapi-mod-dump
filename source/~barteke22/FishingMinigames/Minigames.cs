@@ -17,7 +17,9 @@ using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.BellsAndWhistles;
 using StardewValley.Buildings;
+using StardewValley.Extensions;
 using StardewValley.Objects;
+using StardewValley.SpecialOrders;
 using StardewValley.Tools;
 using System;
 using System.Collections.Generic;
@@ -45,7 +47,7 @@ namespace FishingMinigames
         private float modifier;
 
         private int caughtExtraFish;
-        public int whichFish;
+        public string whichFish;
         private int minFishSize;
         private int maxFishSize;
         public float fishSize;
@@ -60,7 +62,7 @@ namespace FishingMinigames
         private bool showPerfect;
         private bool fromFishPond;
         private int clearWaterDistance;
-        public Object item;
+        public Item item;
 
 
         private bool hereFishying;
@@ -114,6 +116,8 @@ namespace FishingMinigames
         public static float[] minigameDifficulty = new float[4];
         public static Color minigameColor;
 
+        public static readonly string[] JUNK = ["(O)167", "(O)168", "(O)169", "(O)170", "(O)171", "(O)172"];
+        public const string TRASH = "(O)168";
 
 
         private MinigamesStart start;
@@ -418,7 +422,7 @@ namespace FishingMinigames
             if (start == null)
             {
                 //draw mouse target on water
-                if ((!Game1.eventUp || (fishingFestivalMinigame != 0 && festivalMode[screen] != 0)) && !Game1.menuUp && who.CurrentItem is FishingRod && (!hereFishying || infoTimer > 0)) AimAssist(batch);
+                if ((!Game1.eventUp || (fishingFestivalMinigame != 0 && festivalMode[screen] != 0)) && Game1.activeClickableMenu == null && who.CurrentItem is FishingRod && (!hereFishying || infoTimer > 0)) AimAssist(batch);
 
                 if (showPerfect)//add perfect popup
                 {
@@ -435,7 +439,7 @@ namespace FishingMinigames
                 if (endMinigameStyle[screen] == 3 && endMinigameTimer > 0 && endMinigameTimer < 100)//draw letter for end minigame
                 {
                     float y_offset = (float)Math.Round(Math.Sin(Game1.currentGameTime.TotalGameTime.TotalMilliseconds / 200), 2);
-                    Vector2 position = new Vector2(who.getStandingX() - Game1.viewport.X, who.getStandingY() - 156 - Game1.viewport.Y) + new Vector2(y_offset);
+                    Vector2 position = new Vector2(who.getStandingPosition().X - Game1.viewport.X, who.getStandingPosition().Y - 156 - Game1.viewport.Y) + new Vector2(y_offset);
                     batch.Draw(Game1.mouseCursors, position + new Vector2(-24, 0), new Rectangle(473, 36, 24, 24), minigameColor, 0f, Vector2.Zero, 2f, SpriteEffects.None, 0.98f);//text bg box
                     batch.DrawString(Game1.smallFont, endMinigameKey, position - (Game1.smallFont.MeasureString(endMinigameKey) / 2 * 1.2f) + new Vector2(0f, 28f), minigameColor, 0f, Vector2.Zero, 1.2f, SpriteEffects.None, 1f); //text
                 }
@@ -464,7 +468,7 @@ namespace FishingMinigames
 
                             x = (int)aimTile.X * 64;
                             y = (int)aimTile.Y * 64;
-                            Game1.stats.timesFished++;
+                            Game1.stats.TimesFished++;
 
                             HereFishyFishy(who);
                         }
@@ -579,13 +583,14 @@ namespace FishingMinigames
                 fromFishPond = who.currentLocation.isTileBuildingFishable((int)bobberTile.X, (int)bobberTile.Y);
 
                 clearWaterDistance = FishingRod.distanceToLand((int)bobberTile.X, (int)bobberTile.Y, who.currentLocation);
-                double baitPotency = ((rod.attachments[0] != null) ? ((float)rod.attachments[0].Price / 10f) : 0f);
+                Object bait = rod.GetBait();
+                double baitPotency = ((bait != null) ? ((float)bait.Price / 10f) : 0f);
 
                 Rectangle fishSplashRect = new Rectangle(who.currentLocation.fishSplashPoint.X * 64, who.currentLocation.fishSplashPoint.Y * 64, 64, 64);
                 Rectangle bobberRect = new Rectangle(x - 80, y - 80, 64, 64);
                 bool splashPoint = fishSplashRect.Intersects(bobberRect);
 
-                item = who.currentLocation.getFish(0, (rod.attachments[0] != null) ? rod.attachments[0].ParentSheetIndex : (-1), clearWaterDistance + (splashPoint ? 1 : 0), who, baitPotency + (splashPoint ? 0.4 : 0.0), bobberTile); //all item data starts here, FishingRod.cs
+                item = who.currentLocation.getFish(0, rod.GetBait()?.QualifiedItemId, clearWaterDistance + (splashPoint ? 1 : 0), who, baitPotency + (splashPoint ? 0.4 : 0.0), bobberTile); //all item data starts here, FishingRod.cs
 
                 if (fromFishPond) //get whole fishpond stage in one go: 6-3-1 fish
                 {
@@ -603,18 +608,17 @@ namespace FishingMinigames
                     }
                 }
 
-                if (whichFish == 79 || whichFish == 842)//notes
+                if (whichFish == "(O)79" || whichFish == "(O)842")//notes
                 {
                     item = who.currentLocation.tryToCreateUnseenSecretNote(who);
                 }
 
-                if (item != null) whichFish = item.ParentSheetIndex;//fix here for fishpond
+                if (item != null) whichFish = item.QualifiedItemId;//fix here for fishpond
 
-                if (item == null || whichFish <= 0)
+                if (item == null || whichFish == null || ItemRegistry.GetDataOrErrorItem(item.QualifiedItemId).IsErrorItem)
                 {
-                    item = new Object(Game1.random.Next(167, 173), 1);//trash
-                    whichFish = item.ParentSheetIndex;
-
+                    item = ItemRegistry.Create("(O)" + Game1.random.Next(167, 173));//trash
+                    whichFish = item.QualifiedItemId;
                     fromFishPond = false;
                 }
 
@@ -624,14 +628,15 @@ namespace FishingMinigames
                 minFishSize = 0;
                 maxFishSize = 0;
 
-                Dictionary<int, string> data = Game1.content.Load<Dictionary<int, string>>("Data\\Fish");
+                Dictionary<string, string> data = DataLoader.Fish(Game1.content);
                 string[] fishData = null;
-                if (data.ContainsKey(whichFish)) fishData = data[whichFish].Split('/');
-
+                if (data.TryGetValue(item.ItemId, out string val))
+                {
+                    fishData = val.Split('/');
+                }
 
                 itemIsInstantCatch = false;
-                if (item is Furniture) itemIsInstantCatch = true;
-                else if (Utility.IsNormalObjectAtParentSheetIndex(item, whichFish) && data.ContainsKey(whichFish))
+                if (item.HasTypeObject() && fishData != null)
                 {
                     if (int.TryParse(fishData[1], out difficulty) && int.TryParse(fishData[3], out minFishSize) && int.TryParse(fishData[4], out maxFishSize))
                     {
@@ -642,10 +647,35 @@ namespace FishingMinigames
                 }
                 else itemIsInstantCatch = true;
 
-                if (itemIsInstantCatch || item.Category == -20 || item.ParentSheetIndex == 152 || item.ParentSheetIndex == 153 || item.ParentSheetIndex == 157 || item.ParentSheetIndex == 797 || item.ParentSheetIndex == 79 || item.ParentSheetIndex == 73 || item.ParentSheetIndex == 842 || (item.ParentSheetIndex >= 820 && item.ParentSheetIndex <= 828) || item.ParentSheetIndex == GameLocation.CAROLINES_NECKLACE_ITEM || item.ParentSheetIndex == 890 || fromFishPond)
+                if (!itemIsInstantCatch)
                 {
-                    itemIsInstantCatch = true;
+                    switch (item.QualifiedItemId)
+                    {
+                        case "(O)152":
+                        case "(O)153":
+                        case "(O)157":
+                        case "(O)797":
+                        case "(O)79":
+                        case "(O)73":
+                        case "(O)842":
+                        case "(O)890":
+                        case "(O)820":
+                        case "(O)821":
+                        case "(O)822":
+                        case "(O)823":
+                        case "(O)824":
+                        case "(O)825":
+                        case "(O)826":
+                        case "(O)827":
+                        case "(O)828":
+                            itemIsInstantCatch = true;
+                            break;
+                        default:
+                            itemIsInstantCatch = item.Category == -20 || item.QualifiedItemId == GameLocation.CAROLINES_NECKLACE_ITEM_QID;
+                            break;
+                    }
                 }
+                rod.lastCatchWasJunk = itemIsInstantCatch;
 
                 //special item handling
                 if (fishingFestivalMinigame == 0 && !(item is Furniture) && !fromFishPond && who.team.specialOrders != null)
@@ -655,7 +685,7 @@ namespace FishingMinigames
                         order.onFishCaught?.Invoke(who, item);
                     }
                 }
-                if (whichFish == GameLocation.CAROLINES_NECKLACE_ITEM) item.questItem.Value = true;
+                if (whichFish == GameLocation.CAROLINES_NECKLACE_ITEM_QID) item.specialItem = true;
 
 
 
@@ -691,7 +721,7 @@ namespace FishingMinigames
                 }
                 if (caughtExtraFish > 0) item.Stack += caughtExtraFish;
 
-                bossFish = FishingRod.isFishBossFish(whichFish);
+                bossFish = (who.CurrentItem as FishingRod).bossFish;
 
                 //bossFish = true;//boss test
                 //whichFish = 163;
@@ -792,11 +822,11 @@ namespace FishingMinigames
                 case null:
                     if (!fromFishPond && fishingFestivalMinigame == 0)
                     {
-                        Helper.Multiplayer.SendMessage((whichFish < 167 || whichFish > 172) ? whichFish : 168, "whichFish", modIDs: new[] { "barteke22.FishingInfoOverlays" }, new[] { who.UniqueMultiplayerID });//notify overlay of which fish
+                        Helper.Multiplayer.SendMessage(JUNK.Contains(whichFish) ? "(O)168" : whichFish, "whichFish", modIDs: new[] { "barteke22.FishingInfoOverlays" }, new[] { who.UniqueMultiplayerID });//notify overlay of which fish
                     }
                     if (!Context.IsSplitScreen && voices.TryGetValue(voiceType[screen], out SoundEffect sfx)) sfx.Play(voiceVolumePersonal, voicePitch[screen], 0);
 
-                    if ((who.CurrentTool as FishingRod).getBaitAttachmentIndex() != -1 || (who.CurrentTool as FishingRod).getBobberAttachmentIndex() != -1) drawAttachments = true;
+                    if ((who.CurrentTool as FishingRod).GetBait() != null || (who.CurrentTool as FishingRod).GetTackleQualifiedItemIDs().Count > 0) drawAttachments = true;
                     SendMessage(who);
 
                     who.completelyStopAnimatingOrDoingAction();
@@ -906,11 +936,12 @@ namespace FishingMinigames
                     }
                     else itemSpriteSize = 4f;
                     if (item is Furniture) itemSpriteSize = 2.2f;
-                    sourceRect = (item is Furniture) ? (item as Furniture).defaultSourceRect : Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, whichFish, 16, 16);
+                    var miniData = ItemRegistry.GetDataOrErrorItem(item.QualifiedItemId);
+                    sourceRect = miniData.GetSourceRect();
                     SendMessage(who);
 
                     float t;
-                    float distance = y - (float)(who.getStandingY() - 100);
+                    float distance = y - (float)(who.getStandingPosition().Y - 100);
 
                     float height = Math.Abs(distance + 170f);
                     if (oldFacingDirection == 0) height -= 130f;
@@ -925,7 +956,7 @@ namespace FishingMinigames
                     {
                         xVelocity = (who.Position.X - x) / t;
                     }
-                    who.currentLocation.TemporarySprites.Add(new TemporaryAnimatedSprite((item is Furniture) ? Furniture.furnitureTexture.ToString() : "Maps\\springobjects", sourceRect, t, 1, 0, new Vector2(x, y), false, false, layer, 0f, Color.White, itemSpriteSize, 0f, 0f, 0f, false)
+                    who.currentLocation.TemporarySprites.Add(new TemporaryAnimatedSprite((item is Furniture) ? Furniture.furnitureTextureName : "Maps\\springobjects", sourceRect, t, 1, 0, new Vector2(x, y), false, false, layer, 0f, Color.White, itemSpriteSize, 0f, 0f, 0f, false)
                     {
                         motion = new Vector2(xVelocity, -velocity),
                         acceleration = new Vector2(0f, gravity),
@@ -1010,7 +1041,7 @@ namespace FishingMinigames
                         endMinigameKey = temp[Game1.random.Next(0, temp.Length)].ToString().ToUpper();
                         return;
                 }
-                Vector2 position = new Vector2(who.getStandingX(), who.getStandingY() - 180) + offset;
+                Vector2 position = new Vector2(who.getStandingPosition().X, who.getStandingPosition().Y - 180) + offset;
                 if (fishingFestivalMinigame != 1)
                 {
                     position.X -= Game1.viewport.X;
@@ -1098,12 +1129,12 @@ namespace FishingMinigames
                             else effects["UNBREAKING0"] = 9999f;
                             if (effects["UNBREAKING1"] < Game1.random.Next(1, 101)) rodDummy.attachments[1] = (who.CurrentTool as FishingRod).attachments[1];
                             else effects["UNBREAKING1"] = 9999f;
-                            Helper.Reflection.GetField<Farmer>(rodDummy, "lastUser").SetValue(who);
-                            Helper.Reflection.GetField<int>(rodDummy, "whichFish").SetValue(whichFish);
-                            Helper.Reflection.GetField<bool>(rodDummy, "caughtDoubleFish").SetValue(caughtExtraFish > 0);
-                            Helper.Reflection.GetField<int>(rodDummy, "fishQuality").SetValue(fishQuality);
-                            Helper.Reflection.GetField<int>(rodDummy, "clearWaterDistance").SetValue(clearWaterDistance);
-                            Helper.Reflection.GetField<Farmer>(who.CurrentTool, "lastUser").SetValue(who);
+                            rodDummy.lastUser = who;
+                            rodDummy.whichFish = ItemRegistry.GetMetadata(whichFish);
+                            rodDummy.numberOfFishCaught = caughtExtraFish;
+                            rodDummy.fishQuality = fishQuality;
+                            rodDummy.clearWaterDistance = clearWaterDistance;
+                            who.CurrentTool.lastUser = who;
                         }
 
 
@@ -1116,7 +1147,7 @@ namespace FishingMinigames
                         {
                             if (endMinigameStage == 8)//water on face
                             {
-                                who.currentLocation.playSoundAt("fishSlap", who.getTileLocation());
+                                who.currentLocation.playSound("fishSlap", who.Tile);
                                 who.currentLocation.TemporarySprites.Add(new TemporaryAnimatedSprite(10, who.Position - new Vector2(0, 120), Color.Blue * 0.9f)
                                 {
                                     layerDepth = (who.Position.Y + 17.5f) / 10000f,
@@ -1176,7 +1207,7 @@ namespace FishingMinigames
                                 if (fishingFestivalMinigame == 1 && (endMinigameStage == 10 || festivalMode[screen] == 1 || endMinigameStyle[screen] == 0))//fall
                                 {
                                     Event ev = Game1.CurrentEvent;
-                                    ev.caughtFish(137, Game1.random.Next(0, 20), who);
+                                    ev.caughtFish("(O)137", Game1.random.Next(0, 20), who);
                                     if (Game1.random.Next(0, 5) == 0) ev.perfectFishing();
                                 }
                                 else if (fishingFestivalMinigame == 2 && (endMinigameStage == 10 || festivalMode[screen] == 1 || endMinigameStyle[screen] == 0)) Game1.CurrentEvent.caughtFish(whichFish, (int)fishSize, who);//winter
@@ -1240,7 +1271,7 @@ namespace FishingMinigames
                 {
                     if (endMinigameStage == 10) showPerfect = true;
                     who.completelyStopAnimatingOrDoingAction();
-                    who.currentLocation.playSoundAt("cast", who.getTileLocation());
+                    who.currentLocation.playSound("cast", who.Tile);
                     (who.CurrentTool as FishingRod).setTimingCastAnimation(who);
                     who.UsingTool = true;
                     switch (oldFacingDirection)
@@ -1304,10 +1335,11 @@ namespace FishingMinigames
                 Vector2 position = who.Position + new Vector2(0, who.yJumpOffset * 2f) + who.jitter;
                 float layer = (who.Position.Y + (facingDir != 0 ? 17.5f : 16.2f)) / 10000f;
 
-                if (rod.getBaitAttachmentIndex() != -1)
+                if (rod.GetBait() is Object bait)
                 {
-                    who.currentLocation.TemporarySprites.Add(new TemporaryAnimatedSprite(Game1.objectSpriteSheetName,
-                        Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, rod.getBaitAttachmentIndex(), 16, 16),
+                    var data = ItemRegistry.GetDataOrErrorItem(bait.QualifiedItemId);
+                    who.currentLocation.TemporarySprites.Add(new TemporaryAnimatedSprite(data.GetTextureName(),
+                        data.GetSourceRect(),
                         position + new Vector2(facingDir == 3 ? 44f : -10f, -80f), false, 0f, Color.White)
                     {
                         layerDepth = layer,
@@ -1317,10 +1349,11 @@ namespace FishingMinigames
                         id = nexusKey
                     });
                 }
-                if (rod.getBobberAttachmentIndex() != -1)
+                if (rod.GetTackle().FirstOrDefault() is Object tackle)
                 {
-                    who.currentLocation.TemporarySprites.Add(new TemporaryAnimatedSprite(Game1.objectSpriteSheetName,
-                        Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, rod.getBobberAttachmentIndex(), 16, 16),
+                    var data = ItemRegistry.GetDataOrErrorItem(tackle.QualifiedItemId);
+                    who.currentLocation.TemporarySprites.Add(new TemporaryAnimatedSprite(data.GetTextureName(),
+                        data.GetSourceRect(),
                         position + new Vector2(facingDir == 3 ? -20f : 36f, -90f), false, 0f, Color.White)
                     {
                         layerDepth = layer,
@@ -1390,7 +1423,7 @@ namespace FishingMinigames
         }
         private void CaughtBubbleSprite(Farmer who)
         {
-            int whichFish = this.whichFish;
+            string whichFish = this.whichFish;
             float itemSpriteSize = this.itemSpriteSize;
             int fishCount = item.Stack;
             bool furniture;
@@ -1422,18 +1455,18 @@ namespace FishingMinigames
                 float rotOffset = 0f;
                 switch (whichFish)//regular hardcoded sprites
                 {
-                    case 128://puff
-                    case 151://squid
-                    case 798://midnight squid
-                    case 800://blob
+                    case "(O)128"://puff
+                    case "(O)151"://squid
+                    case "(O)798"://midnight squid
+                    case "(O)800"://blob
                         rotOffset = 2.2f;
                         break;
-                    case 158://stonefish
+                    case "(O)158"://stonefish
                         rotOffset = 1f;
                         break;
-                    case 160://angler
-                    case 838://discus
-                    case 899://ms angler
+                    case "(O)160"://angler
+                    case "(O)838"://discus
+                    case "(O)899"://ms angler
                         rotOffset = 0.3f;
                         break;
                 }
@@ -1441,8 +1474,8 @@ namespace FishingMinigames
                 Vector2 tankOffset = Vector2.Zero;
                 if (fishTankSprites)
                 {
-                    Object fish = new Object(whichFish, 1);
-                    FishTankFurniture tank = new FishTankFurniture(2322, Vector2.Zero);
+                    Item fish = ItemRegistry.Create(whichFish);
+                    FishTankFurniture tank = new FishTankFurniture("2322", Vector2.Zero);
                     if (fish.Category == Object.FishCategory && tank.CanBeDeposited(fish))//fishtank sprites
                     {
                         tank.boundingBox.Value = new Rectangle(0, 0, 300, 100);
@@ -1473,7 +1506,7 @@ namespace FishingMinigames
                         }
                         switch (whichFish)
                         {
-                            case 158://stonefish
+                            case "(O)158"://stonefish
                                 rotOffset = 1.2f;
                                 break;
                         }
@@ -1583,10 +1616,10 @@ namespace FishingMinigames
                 {
                     who.completelyStopAnimatingOrDoingAction();
 
-                    Vector2 topLeft = who.getTileLocation() + new Vector2((who.FacingDirection == 3) ? -maxDistance - 1 : (who.FacingDirection == 1) ? 1 : -1,
+                    Vector2 topLeft = who.Tile + new Vector2((who.FacingDirection == 3) ? -maxDistance - 1 : (who.FacingDirection == 1) ? 1 : -1,
                                                                           (who.FacingDirection == 0) ? -maxDistance : (who.FacingDirection == 2) ? 1 : -1);
 
-                    Vector2 bottomRight = who.getTileLocation() + new Vector2((who.FacingDirection == 3) ? 0 : (who.FacingDirection == 1) ? maxDistance + 2 : 2,//left : right
+                    Vector2 bottomRight = who.Tile + new Vector2((who.FacingDirection == 3) ? 0 : (who.FacingDirection == 1) ? maxDistance + 2 : 2,//left : right
                                                                               (who.FacingDirection == 0) ? 0 : (who.FacingDirection == 2) ? maxDistance + 1 : 2);//up : down
 
                     List<KeyValuePair<Vector2, bool>> tilesMid = new List<KeyValuePair<Vector2, bool>>();
@@ -1678,11 +1711,11 @@ namespace FishingMinigames
             else//free aim
             {
                 List<Vector2> tiles = new List<Vector2>();
-                int endX = who.getTileX() + maxDistance + 2;
-                int endY = who.getTileY() + 2;
-                for (int x = who.getTileX() - maxDistance - 1; x < endX; x++)
+                int endX = (int)who.Tile.X + maxDistance + 2;
+                int endY = (int)who.Tile.Y + 2;
+                for (int x = (int)who.Tile.X - maxDistance - 1; x < endX; x++)
                 {
-                    for (int y = who.getTileY() - 1; y < endY; y++)
+                    for (int y = (int)who.Tile.Y - 1; y < endY; y++)
                     {
                         if (who.currentLocation.isTileFishable(x, y) || (who.currentLocation.getTileIndexAt(x, y, "Buildings") == 1208) || (who.currentLocation.getTileIndexAt(x, y, "Buildings") == 1260))
                         {
@@ -1691,11 +1724,11 @@ namespace FishingMinigames
                         }
                     }
                 }
-                endX = who.getTileX() + 2;
-                endY = who.getTileY() + maxDistance + 1;
-                for (int x = who.getTileX() - 1; x < endX; x++)
+                endX = (int)who.Tile.X + 2;
+                endY = (int)who.Tile.Y + maxDistance + 1;
+                for (int x = (int)who.Tile.X - 1; x < endX; x++)
                 {
-                    for (int y = who.getTileY() - maxDistance; y < endY; y++)
+                    for (int y = (int)who.Tile.Y - maxDistance; y < endY; y++)
                     {
                         if (!tiles.Contains(new Vector2(x, y)) && (who.currentLocation.isTileFishable(x, y) || (who.currentLocation.getTileIndexAt(x, y, "Buildings") == 1208) || (who.currentLocation.getTileIndexAt(x, y, "Buildings") == 1260)))
                         {
@@ -1704,11 +1737,11 @@ namespace FishingMinigames
                         }
                     }
                 }
-                endX = (int)(who.getTileX() + maxDistance / 1.8f) + 3;
-                endY = (int)(who.getTileY() + maxDistance / 1.8f) + 2;
-                for (int x = (int)(who.getTileX() - maxDistance / 1.8f) - 1; x < endX; x++)
+                endX = (int)(who.Tile.X + maxDistance / 1.8f) + 3;
+                endY = (int)(who.Tile.Y + maxDistance / 1.8f) + 2;
+                for (int x = (int)(who.Tile.X - maxDistance / 1.8f) - 1; x < endX; x++)
                 {
-                    for (int y = (int)(who.getTileY() - maxDistance / 1.8f); y < endY; y++)
+                    for (int y = (int)(who.Tile.Y - maxDistance / 1.8f); y < endY; y++)
                     {
                         if (!tiles.Contains(new Vector2(x, y)) && (who.currentLocation.isTileFishable(x, y) || (who.currentLocation.getTileIndexAt(x, y, "Buildings") == 1208) || (who.currentLocation.getTileIndexAt(x, y, "Buildings") == 1260)))
                         {
@@ -1906,7 +1939,7 @@ namespace FishingMinigames
                             break;
                         case "Starting8":
                             float t;
-                            float distance = y - (float)(who.getStandingY() - 100);
+                            float distance = y - (float)(who.getStandingPosition().Y - 100);
 
                             float height = Math.Abs(distance + 170f);
                             if (message.oldFacingDirection == 0) height -= 130f;
@@ -1921,7 +1954,7 @@ namespace FishingMinigames
                             {
                                 xVelocity = (who.Position.X - x) / t;
                             }
-                            who.currentLocation.TemporarySprites.Add(new TemporaryAnimatedSprite((item is Furniture) ? Furniture.furnitureTexture.ToString() : "Maps\\springobjects", message.sourceRect, t, 1, 0, new Vector2(x, y), false, false, layer, 0f, Color.White, message.itemSpriteSize, 0f, 0f, 0f, false)
+                            who.currentLocation.TemporarySprites.Add(new TemporaryAnimatedSprite((item is Furniture) ? Furniture.furnitureTextureName : "Maps\\springobjects", message.sourceRect, t, 1, 0, new Vector2(x, y), false, false, layer, 0f, Color.White, message.itemSpriteSize, 0f, 0f, 0f, false)
                             {
                                 motion = new Vector2(xVelocity, -velocity),
                                 acceleration = new Vector2(0f, gravity),
@@ -1992,18 +2025,18 @@ namespace FishingMinigames
             {
                 if (args.Length == 1)
                 {
-                    if (!int.TryParse(args[0], out whichFish))
+                    if (ItemRegistry.GetData(args[0]) == null)
                     {
                         Item item2 = Utility.fuzzyItemSearch(args[0]);
-                        if (item2 != null) whichFish = item2.ParentSheetIndex;
+                        if (item2 != null) whichFish = item2.QualifiedItemId;
                     }
-                    Dictionary<int, string> data = Game1.content.Load<Dictionary<int, string>>("Data\\Fish");
+                    Dictionary<string, string> data = Game1.content.Load<Dictionary<string, string>>("Data\\Fish");
                     if (data.ContainsKey(whichFish))
                     {
                         string[] rawData = data[whichFish].Split('/');
                         if (!int.TryParse(rawData[1], out difficulty) || !int.TryParse(rawData[3], out minFishSize) || !int.TryParse(rawData[4], out maxFishSize)) Monitor.Log("Missing Data\\Fish values, try a different fish.", LogLevel.Debug);
                         fishSize = Game1.random.Next(minFishSize, maxFishSize + 1);
-                        bossFish = FishingRod.isFishBossFish(whichFish);
+                        bossFish = (who.CurrentItem as FishingRod).bossFish;
 
                         Monitor.Log("Starting minigame for " + rawData[0] + ". Difficulty: " + difficulty + ", size: " + fishSize + ", boss: " + bossFish, LogLevel.Debug);
                     }

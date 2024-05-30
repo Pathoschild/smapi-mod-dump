@@ -66,6 +66,8 @@ namespace Custom_Farm_Loader.GameLoopInjections
                     continue;
 
                 dailyUpdate.Location = Game1.getLocationFromName(dailyUpdate.Area.LocationName);
+                if (dailyUpdate.Items.Count == 0)
+                    dailyUpdate.Items = ItemObject.MapNameToItemId(dailyUpdate.RawItems);
 
                 if (dailyUpdate.Location == null) {
                     Monitor.LogOnce($"Unknown Location for DailyUpdate: {dailyUpdate.Area.LocationName}", LogLevel.Error);

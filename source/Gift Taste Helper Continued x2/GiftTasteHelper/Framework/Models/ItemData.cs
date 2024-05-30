@@ -63,21 +63,20 @@ namespace GiftTasteHelper.Framework
 
         public static ItemCategory GetCategory(string itemId)
         {
-            if (!Game1.objectData.ContainsKey(itemId)) 
+            if (!Game1.objectData.TryGetValue(itemId, out var objectInfo)) 
             {
                 return new ItemCategory { Name = "", ID = ItemCategory.InvalidId };
             }
-            return new ItemCategory { Name = Game1.objectData[itemId].Name, ID = itemId };
+            return new ItemCategory { Name = objectInfo.Name, ID = itemId };
         }
 
         public static ItemData MakeItem(string itemId)
         {
-            if (!Game1.objectData.ContainsKey(itemId))
+            if (!Game1.objectData.TryGetValue(itemId, out var objectInfo))
             {
                 throw new System.ArgumentException($"Tried creating an item with an invalid id: {itemId}");
             }
 
-            ObjectData objectInfo = Game1.objectData[itemId];
             string tokenizedName = TokenParser.ParseText(objectInfo.DisplayName);
             return new ItemData
             {

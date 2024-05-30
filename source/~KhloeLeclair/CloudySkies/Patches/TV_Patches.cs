@@ -9,40 +9,48 @@
 *************************************************/
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using HarmonyLib;
 
+using Leclair.Stardew.CloudySkies.Menus;
 using Leclair.Stardew.Common;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
+using StardewModdingAPI;
+
 using StardewValley;
-using StardewValley.Menus;
 using StardewValley.Objects;
-using StardewValley.TokenizableStrings;
 
 namespace Leclair.Stardew.CloudySkies.Patches;
 
 public static class TV_Patches {
 
 	private static ModEntry? Mod;
+	private static Func<TV, int>? GetCurrentChannel;
 	private static Action<TV, TemporaryAnimatedSprite>? SetAnimatedSprite;
+
+	private static bool DidPatch = false;
 
 	public static void Patch(ModEntry mod) {
 		Mod = mod;
 
 		try {
+			GetCurrentChannel = AccessTools.Field(typeof(TV), "currentChannel")
+				.CreateGetter<TV, int>();
+
 			SetAnimatedSprite = AccessTools.Field(typeof(TV), "screenOverlay")
 				.CreateSetter<TV, TemporaryAnimatedSprite>();
 
 			mod.Harmony.Patch(
-				original: AccessTools.Method(typeof(TV), "getWeatherForecast"),
+				original: AccessTools.Method(typeof(TV), "getWeatherForecast", [typeof(string)]),
 				postfix: new HarmonyMethod(typeof(TV_Patches), nameof(GetWeatherForecast__Postfix))
+			);
+
+			mod.Harmony.Patch(
+				original: AccessTools.Method(typeof(TV), nameof(TV.proceedToNextScene)),
+				prefix: new HarmonyMethod(typeof(TV_Patches), nameof(TV_proceedToNextScene__Prefix))
 			);
 
 			mod.Harmony.Patch(
@@ -51,50 +59,86 @@ public static class TV_Patches {
 			);
 
 			mod.Harmony.Patch(
-				original: AccessTools.Method(typeof(TV), "setWeatherOverlay"),
+				original: AccessTools.Method(typeof(TV), "setWeatherOverlay", [typeof(string)]),
 				postfix: new HarmonyMethod(typeof(TV_Patches), nameof(SetWeatherOverlay__Postfix))
 			);
 
+			mod.Harmony.Patch(
+				original: AccessTools.Method(typeof(TV), nameof(TV.draw), [typeof(SpriteBatch), typeof(int), typeof(int), typeof(float)]),
+				postfix: new HarmonyMethod(typeof(TV_Patches), nameof(Draw__Postfix))
+			);
+
+			DidPatch = true;
+
 		} catch (Exception ex) {
-			mod.Log($"Error patching TV.", StardewModdingAPI.LogLevel.Error, ex);
+			mod.Log($"Error patching TV. Is the game version pre-1.6.6?", StardewModdingAPI.LogLevel.Error, ex);
 		}
 
 	}
 
-	private static void SetWeatherOverlay__Postfix(TV __instance, bool island = false) {
+	private static void Draw__Postfix(TV __instance, SpriteBatch spriteBatch) {
+		try {
+			if (Game1.activeClickableMenu is TVWeatherMenu menu && menu.Television == __instance)
+				menu.DrawWorld(spriteBatch);
+
+		} catch (Exception ex) {
+			Mod?.Log($"Error in TV Draw postfix: {ex}", LogLevel.Error, once: true);
+		}
+	}
+
+
+	private static bool TV_proceedToNextScene__Prefix(TV __instance) {
 
 		try {
-			WorldDate tomorrow = new(Game1.Date);
-			tomorrow.TotalDays++;
+			if (!DidPatch || Mod is null || !Mod.Config.ReplaceTVMenu || GetCurrentChannel?.Invoke(__instance) != 2)
+				return true;
 
-			string weather = Game1.IsMasterGame
-				? Game1.weatherForTomorrow : Game1.netWorldState.Value.WeatherForTomorrow;
+			CommonHelper.YeetMenu(Game1.activeClickableMenu);
 
-			weather = Game1.getWeatherModificationsForDate(tomorrow, weather);
+			Game1.activeClickableMenu = new TVWeatherMenu(Mod, __instance);
+			return false;
 
-			if (Mod is not null && Mod.TryGetWeather(weather, out var weatherData)) {
+		} catch (Exception ex) {
+			Mod?.Log($"Error handling TV proceedToNextScene: {ex}", LogLevel.Error, once: true);
+		}
+
+		return true;
+
+	}
+
+
+	private static void SetWeatherOverlay__Postfix(TV __instance, string weatherId) {
+
+		try {
+			if (Mod is not null && Mod.TryGetWeather(weatherId, out var weatherData)) {
 
 				TemporaryAnimatedSprite sprite;
 
 				string textureName;
 				Point corner;
 				int frames;
+				float speed;
 
 				if (string.IsNullOrEmpty(weatherData.TVTexture)) {
 					textureName = "LooseSprites\\Cursors_1_6";
 					corner = new(178, 363);
 					frames = 6;
+					speed = 80f;
 
 				} else {
 					textureName = weatherData.TVTexture;
 					corner = weatherData.TVSource;
 					frames = weatherData.TVFrames;
+					speed = weatherData.TVSpeed;
 				}
+
+				if (frames < 1)
+					frames = 1;
 
 				sprite = new TemporaryAnimatedSprite(
 					textureName,
 					new Rectangle(corner.X, corner.Y, 13, 13),
-					100f,
+					speed,
 					frames,
 					999999,
 					__instance.getScreenPosition() + new Vector2(3f, 3f) * __instance.getScreenSizeModifier(),
@@ -124,21 +168,19 @@ public static class TV_Patches {
 			WorldDate tomorrow = new(Game1.Date);
 			tomorrow.TotalDays++;
 
-			string weather = Game1.IsMasterGame
-				? Game1.weatherForTomorrow : Game1.netWorldState.Value.WeatherForTomorrow;
-
+			string weather = Game1.netWorldState.Value.GetWeatherForLocation("Island").WeatherForTomorrow;
 			weather = Game1.getWeatherModificationsForDate(tomorrow, weather);
 
 			if (Mod is not null && Mod.TryGetWeather(weather, out var weatherData)) {
 				if (weatherData.ForecastByContext is null || !weatherData.ForecastByContext.TryGetValue("Island", out string? val))
 					val = weatherData.Forecast;
 
-				__result = val;
+				string? result = val;
 
-				if (string.IsNullOrEmpty(__result))
+				if (string.IsNullOrEmpty(result))
 					__result = Game1.content.LoadString("Strings\\StringsFromCSFiles:TV.cs.13164");
 				else
-					__result = TokenParser.ParseText(__result);
+					__result = Mod.TokenizeText(result);
 
 				__result = Game1.content.LoadString("Strings\\StringsFromCSFiles:TV_IslandWeatherIntro") + __result;
 
@@ -150,26 +192,18 @@ public static class TV_Patches {
 
 	}
 
-	private static void GetWeatherForecast__Postfix(TV __instance, ref string __result) {
+	private static void GetWeatherForecast__Postfix(TV __instance, string weatherId, ref string __result) {
 
 		try {
-			WorldDate tomorrow = new(Game1.Date);
-			tomorrow.TotalDays++;
-
-			string weather = Game1.IsMasterGame
-				? Game1.weatherForTomorrow : Game1.netWorldState.Value.WeatherForTomorrow;
-
-			weather = Game1.getWeatherModificationsForDate(tomorrow, weather);
-
-			if (Mod is not null && Mod.TryGetWeather(weather, out var weatherData)) {
-				__result = weatherData.Forecast;
-				if (string.IsNullOrEmpty(__result))
+			if (Mod is not null && Mod.TryGetWeather(weatherId, out var weatherData)) {
+				string? result = weatherData.Forecast;
+				if (string.IsNullOrEmpty(result))
 					__result = Game1.content.LoadString("Strings\\StringsFromCSFiles:TV.cs.13164");
 				else
-					__result = TokenParser.ParseText(__result);
+					__result = Mod.TokenizeText(result);
 			}
 
-		} catch(Exception ex) {
+		} catch (Exception ex) {
 			Mod?.Log($"Error getting weather forecast: {ex}", StardewModdingAPI.LogLevel.Error);
 		}
 

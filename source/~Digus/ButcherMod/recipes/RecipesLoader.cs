@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using MailFrameworkMod;
 using StardewModdingAPI;
@@ -38,6 +39,7 @@ namespace AnimalHusbandryMod.recipes
             {
                 args.Edit(asset =>
                 {
+                    if (DataLoader.ModConfig.DisableMeat) return;
                     var data = asset.AsDictionary<string, string>().Data;
                     AddCookingRecipe(data, Cooking.Meatloaf);
                     AddCookingRecipe(data, Cooking.OrangeChicken);
@@ -64,50 +66,58 @@ namespace AnimalHusbandryMod.recipes
             data[cooking.GetDescription()] = cooking.GetRecipeString();
         }
 
-        public void LoadMails()
+        public static void LoadMails()
         {
-            MailRepository.SaveLetter(new Letter("meatloafRecipe", DataLoader.i18n.Get("Cooking.Meatloaf.Letter"), Cooking.Meatloaf.GetDescription(), (letter) => !Game1.player.cookingRecipes.ContainsKey(letter.Recipe) && GetNpcFriendship("Lewis") >= 9 * 250 && GetNpcFriendship("Marnie") >= 7 * 250, (l) => Game1.player.mailReceived.Add(l.Id)) {GroupId = "AHM.CookingRecipe", Title = DataLoader.i18n.Get("Cooking.Meatloaf.Letter.Title") });
+            if (DataLoader.ModConfig.DisableMeat) return;
 
-            MailRepository.SaveLetter(new Letter("baconCheeseburgerRecipe", DataLoader.i18n.Get("Cooking.BaconCheeseburger.Letter"), Cooking.BaconCheeseburger.GetDescription(), (letter) => !Game1.player.cookingRecipes.ContainsKey(letter.Recipe) && GetNpcFriendship("Gus") >= 9 * 250 && SDate.Now() > new SDate(16, "fall", 1), (l) => Game1.player.mailReceived.Add(l.Id)) { GroupId = "AHM.CookingRecipe", Title = DataLoader.i18n.Get("Cooking.BaconCheeseburger.Letter.Title") });
+            MailRepository.SaveLetter(new Letter("meatloafRecipe", DataLoader.i18n.Get("Cooking.Meatloaf.Letter"), Cooking.Meatloaf.GetDescription(), (letter) => !Game1.player.cookingRecipes.ContainsKey(letter.Recipe) && GetNpcFriendship("Lewis") >= 9 * 250 && GetNpcFriendship("Marnie") >= 7 * 250 && !DataLoader.ModConfig.DisableMeat, (l) => Game1.player.mailReceived.Add(l.Id)) {GroupId = "AHM.CookingRecipe", Title = DataLoader.i18n.Get("Cooking.Meatloaf.Letter.Title") });
 
-            MailRepository.SaveLetter(new Letter("sweetAndSourPorkRecipe", DataLoader.i18n.Get("Cooking.SweetAndSourPork.Letter"), Cooking.SweetAndSourPork.GetDescription(), (letter) => !Game1.player.cookingRecipes.ContainsKey(letter.Recipe) && GetNpcFriendship("Jodi") >= 9 * 250 && GetNpcFriendship("Kent") >= 9 * 250, (l) => Game1.player.mailReceived.Add(l.Id)) { GroupId = "AHM.CookingRecipe", Title = DataLoader.i18n.Get("Cooking.SweetAndSourPork.Letter.Title") });
+            MailRepository.SaveLetter(new Letter("baconCheeseburgerRecipe", DataLoader.i18n.Get("Cooking.BaconCheeseburger.Letter"), Cooking.BaconCheeseburger.GetDescription(), (letter) => !Game1.player.cookingRecipes.ContainsKey(letter.Recipe) && GetNpcFriendship("Gus") >= 9 * 250 && SDate.Now() > new SDate(16, "fall", 1) && !DataLoader.ModConfig.DisableMeat, (l) => Game1.player.mailReceived.Add(l.Id)) { GroupId = "AHM.CookingRecipe", Title = DataLoader.i18n.Get("Cooking.BaconCheeseburger.Letter.Title") });
+
+            MailRepository.SaveLetter(new Letter("sweetAndSourPorkRecipe", DataLoader.i18n.Get("Cooking.SweetAndSourPork.Letter"), Cooking.SweetAndSourPork.GetDescription(), (letter) => !Game1.player.cookingRecipes.ContainsKey(letter.Recipe) && GetNpcFriendship("Jodi") >= 9 * 250 && GetNpcFriendship("Kent") >= 9 * 250 && !DataLoader.ModConfig.DisableMeat, (l) => Game1.player.mailReceived.Add(l.Id)) { GroupId = "AHM.CookingRecipe", Title = DataLoader.i18n.Get("Cooking.SweetAndSourPork.Letter.Title") });
 
             Func<Letter, bool> glazedHamCondition = (letter) => !Game1.player.cookingRecipes.ContainsKey(letter.Recipe)
                                         && GetNpcFriendship("Clint") >= 9
-                                        && Game1.stats.GeodesCracked > 80;
+                                        && Game1.stats.GeodesCracked > 80
+                                        && !DataLoader.ModConfig.DisableMeat;
             MailRepository.SaveLetter(new Letter("glazedHamRecipe", DataLoader.i18n.Get("Cooking.GlazedHam.Letter"), Cooking.GlazedHam.GetDescription(), glazedHamCondition, (l) => Game1.player.mailReceived.Add(l.Id)) { GroupId = "AHM.CookingRecipe", Title = DataLoader.i18n.Get("Cooking.GlazedHam.Letter.Title") });
 
-            MailRepository.SaveLetter(new Letter("cowboyDinnerkRecipe", DataLoader.i18n.Get("Cooking.CowboyDinner.Letter"), Cooking.CowboyDinner.GetDescription(), (letter) => !Game1.player.cookingRecipes.ContainsKey(letter.Recipe) && (Game1.getLocationFromName("ArchaeologyHouse") as LibraryMuseum)?.museumPieces.Count() >= 70, (l) => Game1.player.mailReceived.Add(l.Id)) { GroupId = "AHM.CookingRecipe", Title = DataLoader.i18n.Get("Cooking.CowboyDinner.Letter.Title") });
+            MailRepository.SaveLetter(new Letter("cowboyDinnerkRecipe", DataLoader.i18n.Get("Cooking.CowboyDinner.Letter"), Cooking.CowboyDinner.GetDescription(), (letter) => !Game1.player.cookingRecipes.ContainsKey(letter.Recipe) && (Game1.getLocationFromName("ArchaeologyHouse") as LibraryMuseum)?.museumPieces.Count() >= 70 && !DataLoader.ModConfig.DisableMeat, (l) => Game1.player.mailReceived.Add(l.Id)) { GroupId = "AHM.CookingRecipe", Title = DataLoader.i18n.Get("Cooking.CowboyDinner.Letter.Title") });
 
-            MailRepository.SaveLetter(new Letter("rabbitStewRecipe", DataLoader.i18n.Get("Cooking.RabbitStew.Letter"), Cooking.RabbitStew.GetDescription(), (letter) => !Game1.player.cookingRecipes.ContainsKey(letter.Recipe) && GetNpcFriendship("Linus") >= 9 * 250 && (Game1.stats.TimesUnconscious >= 1 || Game1.player.deepestMineLevel >= 100), (l) => Game1.player.mailReceived.Add(l.Id)) { GroupId = "AHM.CookingRecipe", Title = DataLoader.i18n.Get("Cooking.RabbitStew.Letter.Title") });
+            MailRepository.SaveLetter(new Letter("rabbitStewRecipe", DataLoader.i18n.Get("Cooking.RabbitStew.Letter"), Cooking.RabbitStew.GetDescription(), (letter) => !Game1.player.cookingRecipes.ContainsKey(letter.Recipe) && GetNpcFriendship("Linus") >= 9 * 250 && (Game1.stats.TimesUnconscious >= 1 || Game1.player.deepestMineLevel >= 100) && !DataLoader.ModConfig.DisableMeat, (l) => Game1.player.mailReceived.Add(l.Id)) { GroupId = "AHM.CookingRecipe", Title = DataLoader.i18n.Get("Cooking.RabbitStew.Letter.Title") });
 
-            MailRepository.SaveLetter(new Letter("monteCristoRecipe", DataLoader.i18n.Get("Cooking.MonteCristo.Letter"), Cooking.MonteCristo.GetDescription(), (letter) => !Game1.player.cookingRecipes.ContainsKey(letter.Recipe) && GetNpcFriendship("Leah") >= 8 * 250 && Game1.stats.ItemsForaged >= 1200, (l) => Game1.player.mailReceived.Add(l.Id)) { GroupId = "AHM.CookingRecipe", Title = DataLoader.i18n.Get("Cooking.MonteCristo.Letter.Title") });
+            MailRepository.SaveLetter(new Letter("monteCristoRecipe", DataLoader.i18n.Get("Cooking.MonteCristo.Letter"), Cooking.MonteCristo.GetDescription(), (letter) => !Game1.player.cookingRecipes.ContainsKey(letter.Recipe) && GetNpcFriendship("Leah") >= 8 * 250 && Game1.stats.ItemsForaged >= 1200 && !DataLoader.ModConfig.DisableMeat, (l) => Game1.player.mailReceived.Add(l.Id)) { GroupId = "AHM.CookingRecipe", Title = DataLoader.i18n.Get("Cooking.MonteCristo.Letter.Title") });
 
-            MailRepository.SaveLetter(new Letter("steakWithMushroomsRecipe", DataLoader.i18n.Get("Cooking.SteakWithMushrooms.Letter"), Cooking.SteakWithMushrooms.GetDescription(), (letter) => !Game1.player.cookingRecipes.ContainsKey(letter.Recipe) && GetNpcFriendship("Alex") >= 8 * 250 && Game1.stats.MonstersKilled >= 1000, (l) => Game1.player.mailReceived.Add(l.Id)) { GroupId = "AHM.CookingRecipe", Title = DataLoader.i18n.Get("Cooking.SteakWithMushrooms.Letter.Title") });
+            MailRepository.SaveLetter(new Letter("steakWithMushroomsRecipe", DataLoader.i18n.Get("Cooking.SteakWithMushrooms.Letter"), Cooking.SteakWithMushrooms.GetDescription(), (letter) => !Game1.player.cookingRecipes.ContainsKey(letter.Recipe) && GetNpcFriendship("Alex") >= 8 * 250 && Game1.stats.MonstersKilled >= 1000 && !DataLoader.ModConfig.DisableMeat, (l) => Game1.player.mailReceived.Add(l.Id)) { GroupId = "AHM.CookingRecipe", Title = DataLoader.i18n.Get("Cooking.SteakWithMushrooms.Letter.Title") });
         }
 
-        private int GetNpcFriendship(string name)
+        private static int GetNpcFriendship(string name)
         {
-            if (Game1.player.friendshipData.ContainsKey(name))
-            {
-                return Game1.player.friendshipData[name].Points;
-            }
-            else
-            {
-                return 0;
-            }
+            return Game1.player.friendshipData.ContainsKey(name) ? Game1.player.friendshipData[name].Points : 0;
         }
 
-        public void AddAllMeatRecipes(string arg1, string[] arg2)
+        public static void AddAllMeatRecipes(string arg1 = null, string[] arg2 = null)
         {
             if (Context.IsWorldReady)
             {
+                var meatRecipeNumber = 0;
                 foreach (Cooking cooking in Enum.GetValues(typeof(Cooking)))
                 {
                     if (!Game1.player.cookingRecipes.ContainsKey(cooking.GetDescription()))
                     {
                         Game1.player.cookingRecipes.Add(cooking.GetDescription(), 0);
                         AnimalHusbandryModEntry.monitor.Log($"Added {cooking.GetDescription()} recipe to the player.", LogLevel.Info);
+                        meatRecipeNumber++;
+                    }
+                }
+
+                if (meatRecipeNumber > 0 && Game1.hudMessages.Count > 0)
+                {
+                    Regex regex = new Regex(@"[\d]+");
+                    var matchCollection = regex.Matches(Game1.hudMessages.Last()?.message);
+                    if (int.TryParse(matchCollection[0].Value, out var oldNumber))
+                    {
+                        Game1.hudMessages.Last().message = Game1.content.LoadString("Strings\\1_6_Strings:QoS_Cookbook", meatRecipeNumber + oldNumber);
                     }
                 }
             }

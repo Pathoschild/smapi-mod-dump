@@ -18,6 +18,7 @@ namespace HappyHomeDesigner.Menus
 
 		public bool ToggleFavorite(bool playSound);
 
+		/// <returns>A string used mainly to search for this entry</returns>
 		public string GetName();
 	}
 }

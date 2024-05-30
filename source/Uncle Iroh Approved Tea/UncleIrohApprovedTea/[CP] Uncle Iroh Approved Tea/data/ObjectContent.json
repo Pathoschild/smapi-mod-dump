@@ -23,7 +23,14 @@
         {
             "LogName": "Drink Objects",
             "Action": "Include",
-            "FromFile": "data/Objects/Drinks.json"
+            "FromFile": "data/Objects/Drinks.json",
+            "When": {"TeaRecipes": false }
+        },
+        {
+            "LogName": "Drink Dishes",
+            "Action": "Include",
+            "FromFile": "data/Objects/CookableDrinks.json",
+            "When": {"TeaRecipes": true }
         },
         {
             "LogName": "Harvestable Objects",

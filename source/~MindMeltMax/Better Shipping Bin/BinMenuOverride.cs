@@ -55,7 +55,6 @@ namespace BetterShipping
         private readonly Farm farm = Game1.RequireLocation<Farm>("Farm");
 
         private int offset;
-        private Item? hoverItem;
         private InventoryMenu itemsMenu;
         private ClickableTextureComponent upArrow;
         private ClickableTextureComponent downArrow;
@@ -70,6 +69,9 @@ namespace BetterShipping
         private int maxOffset => (int)Math.Ceiling(((double)actuallItems.Count - maxItemsPerPage) / ((double)maxItemsPerPage / 3));
         private IList<Item> actuallItems => farm.getShippingBin(Game1.player);
         private List<Item> itemsInView => getItemsInView(offset);
+
+        //Changed accesibility and name for hoverItem for Lookup Anything compat (easiest compat I've ever made... Thanks Pathos)
+        public Item HoveredItem;
 
         public BinMenuOverride(int offset = 0) : base(Utility.highlightShippableObjects, false, true, menuOffsetHack: 64)
         {
@@ -279,22 +281,22 @@ namespace BetterShipping
 
         public override void performHoverAction(int x, int y)
         {
-            hoverItem = null;
+            HoveredItem = null;
             base.performHoverAction(x, y);
             upArrow.tryHover(x, y, .25f);
             downArrow.tryHover(x, y, .25f);
             upperRightCloseButton.tryHover(x, y, .25f);
             Item i = itemsMenu.hover(x, y, heldItem);
-            if (i != null && i != hoverItem && Utility.highlightShippableObjects(i))
+            if (i != null && i != HoveredItem && Utility.highlightShippableObjects(i))
             {
-                hoverItem = i;
+                HoveredItem = i;
                 return;
             }
 
             i = inventory.hover(x, y, heldItem);
-            if (i != null && i != hoverItem && Utility.highlightShippableObjects(i))
+            if (i != null && i != HoveredItem && Utility.highlightShippableObjects(i))
             {
-                hoverItem = i;
+                HoveredItem = i;
                 return;
             }
         }
@@ -335,8 +337,8 @@ namespace BetterShipping
             upperRightCloseButton.draw(b);
             drawTotalValue(b);
 
-            if (hoverItem != null)
-                drawToolTip(b, hoverItem.getDescription(), hoverItem.DisplayName, hoverItem, moneyAmountToShowAtBottom: getPriceOfItem(hoverItem));
+            if (HoveredItem != null)
+                drawToolTip(b, HoveredItem.getDescription(), HoveredItem.DisplayName, HoveredItem, moneyAmountToShowAtBottom: getPriceOfItem(HoveredItem));
 
             heldItem?.drawInMenu(b, new Vector2(Game1.getOldMouseX() + 8, Game1.getOldMouseY() + 8), 1f);
 
@@ -350,7 +352,7 @@ namespace BetterShipping
                 return;
 
             int value = 0;
-            string text = "Total value : ";
+            string text = ModEntry.IHelper.Translation.Get("Menu.TotalValue");
 
             for (int i = 0; i < farm.getShippingBin(Game1.player).Count; i++)
                 value += getPriceOfItem(farm.getShippingBin(Game1.player)[i]);

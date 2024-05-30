@@ -1,0 +1,11 @@
+﻿{
+    /*********
+    ** Generic Mod Config Menu UI
+    *********/
+    "config.skip-to.name": "スキップ設定",
+    "config.skip-to.tooltip": "どの画面にスキップするか。標準はタイトルメニューです。",
+    "config.skip-to.values.title-menu": "タイトルメニュー",
+    "config.skip-to.values.load-menu": "つづきから",
+    "config.skip-to.values.join-coop": "CO-OPの参加",
+    "config.skip-to.values.host-coop": "CO-OPのホスト"
+}

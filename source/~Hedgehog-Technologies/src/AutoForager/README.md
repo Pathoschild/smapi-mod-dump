@@ -31,7 +31,7 @@ You can find a breakdown of the config values [here](./docs/config.md)
 ### Translation
 &nbsp;     | No Translation  | Partial Translation  | Full Translation  | Translated By
 :--------: | :-------------: | :------------------: | :---------------: | :------------:
-Chinese    | ✔              | ✔                    | ✔                | [Krobus](https://www.nexusmods.com/users/127351118)
+Chinese    | ✔              | ✔                    | ❌                | [Krobus](https://www.nexusmods.com/users/127351118)
 French     | ✔              | ❌                   | ❌                | n/a
 German     | ✔              | ❌                   | ❌                | n/a
 Hungarian  | ✔              | ❌                   | ❌                | n/a
@@ -39,9 +39,9 @@ Italian    | ✔              | ❌                   | ❌                | n/a
 Japanese   | ✔              | ❌                   | ❌                | n/a
 Korean     | ✔              | ❌                   | ❌                | n/a
 Polish     | ✔              | ❌                   | ❌                | n/a
-Portuguese | ✔              | ✔                    | ✔                | [NARCOAZAZAL](https://www.nexusmods.com/users/200703680)
+Portuguese | ✔              | ✔                    | ❌                | [NARCOAZAZAL](https://www.nexusmods.com/users/200703680)
 Russian    | ✔              | ❌                   | ❌                | n/a
-Spanish    | ✔              | ✔                    | ✔                | [ElviraCroft](https://github.com/ElviraCroft)
+Spanish    | ✔              | ✔                    | ❌                | [ElviraCroft](https://github.com/ElviraCroft)
 Thai       | ✔              | ❌                   | ❌                | n/a
 Turkish    | ✔              | ❌                   | ❌                | n/a
 Ukrainian  | ✔              | ❌                   | ❌                | n/a
@@ -63,7 +63,11 @@ Ukrainian  | ✔              | ❌                   | ❌                | n/a
   - SMAPI 4.0.0 or later
 - Automatic Integrations
   - [Bush Bloom Mod](https://www.nexusmods.com/stardewvalley/mods/15792)
+    - Minimum version: **1.1.9**
   - [Custom Bush](https://www.nexusmods.com/stardewvalley/mods/20619)
+    - Minimum version: **1.0.4**
+  - [Farm Type Manager](https://www.nexusmods.com/stardewvalley/mods/3231)
+    - Minimum version: **1.20.0**
 - No known mod conflicts
   - If you find one, please feel free to notify me here on Github, on the [Nexus Mod](https://www.nexusmods.com/stardewvalley/mods/7736) site, or on the [CurseForge](https://www.curseforge.com/stardewvalley/mods/auto-forager) site.
 
@@ -73,6 +77,30 @@ Ukrainian  | ✔              | ❌                   | ❌                | n/a
 
 ## Releases
 Releases can be found on [GitHub](https://github.com/Hedgehog-Technologies/StardewMods/releases), on the [Nexus Mod](https://www.nexusmods.com/stardewvalley/mods/7736) site, and on the [CurseForge](https://www.curseforge.com/stardewvalley/mods/auto-forager) site.
+### 3.5.2
+- Fix tappers being delayed by a day when auto foraged from
+### 3.5.1
+- Fix picking up artifact and seed spots
+### 3.5.0
+- Add automatic integration with [Farm Type Manager](https://www.nexusmods.com/stardewvalley/mods/3231)
+  - Content packs should no longer be needed going forward but will continue to work
+  - Category names will likely be different as they are now pulled from the FTM content pack instead of the AF content packs
+  - Minimum version: **1.20.0**
+  - Shoutout to [Esca-MMC](https://github.com/Esca-MMC) for supplying the API
+- Add options to forage Mushroom Boxes, Mushroom Logs, and Tappers
+- Add Animal products as a category for vanilla animal products
+- Add vanilla Fruit forageable toggles to help with the Fruit Bat cave option
+### 3.4.3
+- Add additional safeguards around players clicking through title menu quickly
+### 3.4.2
+- Fix items incorrectly getting increased quality where they normally wouldn't
+### 3.4.1
+- Prevent content packs from overriding known categories of vanilla forageables
+- Lower the amount of warning log spew when multiple content packs add the same native item as a forageable
+### 3.4.0
+- Add ability to ignore moss-covered trees that are near enough to contribute to a Mushroom Log
+- Fix optional tool requirement for harvesting moss to be less intrusive
+- Lower the amount some logs were spamming the SMAPI console
 ### 3.3.0
 - Wild Tree shake items are now supported
 - Adds Spanish translations

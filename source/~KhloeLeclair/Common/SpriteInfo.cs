@@ -31,6 +31,8 @@ public class SpriteInfo {
 	public Color? OverlayColor;
 	public float OverlayScale;
 
+	public int Quality;
+
 	public bool IsPrismatic;
 
 	public int BaseFrames;
@@ -57,7 +59,8 @@ public class SpriteInfo {
 		int frameTime = 100,
 		int frameDelay = 0,
 		int framePadX = 0,
-		int framePadY = 0
+		int framePadY = 0,
+		int quality = 0
 	) {
 		Texture = texture;
 		BaseSource = baseSource;
@@ -75,6 +78,7 @@ public class SpriteInfo {
 		FrameDelay = frameDelay;
 		FramePadX = framePadX;
 		FramePadY = framePadY;
+		Quality = quality;
 	}
 
 	public int Width {
@@ -215,7 +219,7 @@ public class SpriteInfo {
 		float offsetY = Math.Max((targetSize - (source.Height * bs)) / 2, 0);
 
 		Color color = baseColor ?? BaseColor ?? Color.White;
-		if (!baseColor.HasValue && IsPrismatic && ! overlay.HasValue)
+		if (!baseColor.HasValue && IsPrismatic && !overlay.HasValue)
 			color = Utility.GetPrismaticColor();
 
 		batch.Draw(
@@ -235,18 +239,18 @@ public class SpriteInfo {
 
 		if (overlay != null) {
 			float os = s * OverlayScale;
-			offsetX = Math.Max((targetSize - (overlay.Value.Width * os)) / 2, 0);
-			offsetY = Math.Max((targetSize - (overlay.Value.Height * os)) / 2, 0);
+			float overlayOffsetX = Math.Max((targetSize - (overlay.Value.Width * os)) / 2, 0);
+			float overlayOffsetY = Math.Max((targetSize - (overlay.Value.Height * os)) / 2, 0);
 
 			color = overlayColor ?? OverlayColor ?? Color.White;
-			if (! overlayColor.HasValue && IsPrismatic)
+			if (!overlayColor.HasValue && IsPrismatic)
 				color = Utility.GetPrismaticColor();
 
 			batch.Draw(
 				OverlayTexture ?? Texture,
 				new Vector2(
-					(float) Math.Floor(location.X + offsetX),
-					(float) Math.Floor(location.Y + offsetY)
+					(float) Math.Floor(location.X + overlayOffsetX),
+					(float) Math.Floor(location.Y + overlayOffsetY)
 				),
 				overlay.Value,
 				color * alpha,
@@ -257,6 +261,36 @@ public class SpriteInfo {
 				1f
 			);
 		}
+
+		if (Quality != 0) {
+			Texture2D qualitySheet = Game1.mouseCursors;
+			Rectangle qualityRect = Quality < 4
+				? new Rectangle(338 + (Quality - 1) * 8, 400, 8, 8)
+				: new Rectangle(346, 392, 8, 8);
+
+			float qualityYOffset = (Quality < 4)
+				? 0f :
+				(((float) Math.Cos(Game1.currentGameTime.TotalGameTime.Milliseconds * Math.PI / 512.0) + 1f) * 0.05f);
+
+			float qualityScale = 0.75f * s;
+			int qHeight = (int) (qualityRect.Height * qualityScale);
+
+			batch.Draw(
+				qualitySheet,
+				new Vector2(
+					location.X,
+					location.Y + (targetSize - qHeight) + qualityYOffset
+				),
+				qualityRect,
+				color * alpha,
+				0f,
+				Vector2.Zero,
+				qualityScale,
+				SpriteEffects.None,
+				1f
+			);
+		}
+
 	}
 
 	public virtual void Draw(SpriteBatch batch, Vector2 location, float scale, Vector2 size, int frame = -1, Color? baseColor = null, Color? overlayColor = null, float alpha = 1) {
@@ -273,7 +307,7 @@ public class SpriteInfo {
 			height = Math.Max(height, overlay.Value.Height * OverlayScale);
 		}
 
-		
+
 		float targetWidth = scale * size.X;
 		float targetHeight = scale * size.Y;
 
@@ -305,8 +339,8 @@ public class SpriteInfo {
 
 		if (overlay != null) {
 			float os = s * OverlayScale;
-			offsetX = Math.Max((targetWidth - (overlay.Value.Width * os)) / 2, 0);
-			offsetY = Math.Max((targetHeight - (overlay.Value.Height * os)) / 2, 0);
+			float overlayOffsetX = Math.Max((targetWidth - (overlay.Value.Width * os)) / 2, 0);
+			float overlayOffsetY = Math.Max((targetHeight - (overlay.Value.Height * os)) / 2, 0);
 
 			color = overlayColor ?? OverlayColor ?? Color.White;
 			if (!overlayColor.HasValue && IsPrismatic)
@@ -315,14 +349,43 @@ public class SpriteInfo {
 			batch.Draw(
 				OverlayTexture ?? Texture,
 				new Vector2(
-					(float) Math.Floor(location.X + offsetX),
-					(float) Math.Floor(location.Y + offsetY)
+					(float) Math.Floor(location.X + overlayOffsetX),
+					(float) Math.Floor(location.Y + overlayOffsetY)
 				),
 				overlay.Value,
 				color * alpha,
 				0f,
 				Vector2.Zero,
 				os,
+				SpriteEffects.None,
+				1f
+			);
+		}
+
+		if (Quality != 0) {
+			Texture2D qualitySheet = Game1.mouseCursors;
+			Rectangle qualityRect = Quality < 4
+				? new Rectangle(338 + (Quality - 1) * 8, 400, 8, 8)
+				: new Rectangle(346, 392, 8, 8);
+
+			float qualityYOffset = (Quality < 4)
+				? 0f :
+				(((float) Math.Cos(Game1.currentGameTime.TotalGameTime.Milliseconds * Math.PI / 512.0) + 1f) * 0.05f);
+
+			float qualityScale = 0.75f * s;
+			int qHeight = (int) (qualityRect.Height * qualityScale);
+
+			batch.Draw(
+				qualitySheet,
+				new Vector2(
+					location.X,
+					location.Y + (targetHeight - qHeight) + qualityYOffset
+				),
+				qualityRect,
+				color * alpha,
+				0f,
+				Vector2.Zero,
+				qualityScale,
 				SpriteEffects.None,
 				1f
 			);

@@ -1,0 +1,44 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/kqrse/StardewValleyMods
+**
+*************************************************/
+
+{
+  "enabled": "有効化",
+  "modded-machines-enabled": "MODの生産設備にも有効化",
+  "modded-machines-enabled-tooltip": "MODの生産設備にも吹き出しを有効にする。",
+  "bubble-y-offset": "吹き出しのY位置",
+  "bubble-x-offset": "吹き出しのX位置",
+  "emote-interval": "吹き出しの表示間隔（ミリ秒）",
+  "opacity": "不透明度",
+  "bubble-size": "吹き出しサイズ",
+  "zoom-level-99-enabled": "ズームレベルを99に設定",
+  "zoom-level-99-enabled-tooltip": "UIスケーリングのバグを防ぐため、ズームレベルを100から99に修正。",
+
+  "jars-enabled": "保存ジャー",
+  "kegs-enabled": "醸造ダル",
+  "casks-enabled": "熟成ダル",
+  "mayonnaise-machines-enabled": "マヨネーズマシン",
+  "cheese-presses-enabled": "チーズプレス",
+  "looms-enabled": "織り機",
+  "oil-makers-enabled": "オイルメーカー",
+  "dehydrators-enabled": "乾燥器",
+  "fish-smokers-enabled": "魚のくんせい器",
+  "bait-makers-enabled": "エサ製造器",
+  "bone-mills-enabled": "クリスタルチェア",
+  "charcoal-kilns-enabled": "炭焼き窯",
+  "crystalariums-enabled": "結晶コピーマシン",
+  "furnaces-enabled": "溶鉱炉",
+  "recycling-machines-enabled": "リサイクルマシン",
+  "seed-makers-enabled": "タネ製造マシン",
+  "slime-egg-presses-enabled": "スライムエッグプレス",
+  "crab-pots-enabled": "カニかご",
+  "deconstructors-enabled": "分解器",
+  "geode-crushers-enabled": "ジオード粉砕機",
+  "wood-chippers-enabled": "ウッドチッパー"
+}

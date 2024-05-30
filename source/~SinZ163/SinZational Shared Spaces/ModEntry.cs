@@ -255,7 +255,7 @@ public static class Patches
         {
             // Need to duplicate it due to NetCollection.Set clears the destination before iterating the argument.
             // so if it was setting with itself as the argument it is a clear
-            var newCabin = new Cabin("Maps/Farmhouse");
+            var newCabin = new Cabin("Maps/FarmHouse");
             newCabin.name.Value = location.name.Value;
             newCabin.isFarm.Value = true;
             newCabin.isAlwaysActive.Value = true;
@@ -275,7 +275,7 @@ public static class Patches
         if (__instance.buildingType.Value != "Farmhouse") return;
         if (!who.modData.TryGetValue(Constants.SelectedFloor, out var floor)) return;
         // Default behaviour
-        if (floor == "Farmhouse") return;
+        if (floor == "FarmHouse") return;
         __result = false;
 
         who.currentLocation.playSound("doorClose", who.Tile);

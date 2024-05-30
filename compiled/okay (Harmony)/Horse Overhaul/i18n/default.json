@@ -31,5 +31,7 @@
   "HorseEatHorseRadish": "Despite the name, horseradish is dangerous for horses, while normal radish is not.", // if 'horseradish' in your native language does not include the word 'horse', please don't add the 'Despite the name' part into your translation
   "HorseEatDislike": "Your horse doesn't want to eat that.",
   "Owner": "Belongs to: {{ownerName}}",
-  "UnknownName": "Unknown"
+  "UnknownName": "Unknown",
+  "BookSaddleBagName": "Proper Use Of Saddle Bags",
+  "BookSaddleBagDescription": "Your horse can wear a saddle bag to carry items for you."
 }

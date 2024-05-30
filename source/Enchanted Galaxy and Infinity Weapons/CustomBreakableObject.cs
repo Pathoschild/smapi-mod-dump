@@ -262,7 +262,7 @@ namespace EnchantedGalaxyWeapons
 
             if (ModEntry.MaxSpawnForDay == 0)
             {
-                HUDMessage message = HUDMessage.ForCornerTextbox("The powerful aura won't return again today..");
+                HUDMessage message = HUDMessage.ForCornerTextbox(ModEntry.ModInstance.Helper.Translation.Get("game.aura-left"));
                 Game1.addHUDMessage(message);
             }
             return;

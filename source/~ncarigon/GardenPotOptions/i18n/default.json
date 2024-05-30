@@ -24,6 +24,12 @@
     "NCarigon.GardenPotOptions/config_name_AllowTransplant": "Allow Transplant",
     "NCarigon.GardenPotOptions/config_desc_AllowTransplant": "Allow garden pots to pickup and put down crops from hoed dirt, or bushes from non-hoed dirt.",
 
+    "NCarigon.GardenPotOptions/config_name_TreeTransplantMax": "Max Tree Transplant Size",
+    "NCarigon.GardenPotOptions/config_desc_TreeTransplantMax": "Prevent trees over this size from being transplanted.",
+
+    "NCarigon.GardenPotOptions/config_name_FruitTreeTransplantMax": "Max Fruit Tree Transplant Size",
+    "NCarigon.GardenPotOptions/config_desc_FruitTreeTransplantMax": "Prevent fruit trees over this size from being transplanted.",
+
     "NCarigon.GardenPotOptions/config_name_HeartsGardenPot": "Hearts for Garden Pot",
     "NCarigon.GardenPotOptions/config_desc_HeartsGardenPot": "Evelyn will gift you a garden pot at when reaching the specified friendship level. Value of -1 will disable this option.",
 

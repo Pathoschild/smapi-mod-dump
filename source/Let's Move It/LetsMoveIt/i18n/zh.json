@@ -1,0 +1,67 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Exblosis/StardewValleyMods
+**
+*************************************************/
+
+{
+    // Config
+    "config.ModEnabled": "启用模组",
+    "config.ModKey": "模组修饰键",
+    "config.MoveKey": "移动按键",
+    "config.OverwriteKey": "强制放置修饰键",
+    "config.OverwriteKey.Tooltip": "警告：可能会删除其他物件！",
+    "config.CancelKey": "取消按键",
+    "config.RemoveKey": "删除按键",
+    "config.CopyMode": "复制而非移动",
+    "config.Sound": "音效",
+    "config.PrioritizeCrops": "移动作物优先设置",
+    "config.MoveCropWithoutTile": "移动作物不连带耕地",
+    "config.MoveCropWithoutIndoorPot": "移动作物或茶树不连带花盆",
+    // "config.IndoorPot.Note": "注意：茶树不能从花盆上移入或移出",
+    "config.Page.Components.Link": "启用或禁用细项",
+    "config.Page.Components.Link.Tooltip": "点击此处进行设置",
+    "config.Page.Components.Title": "细项",
+    "config.EnableMoveBuilding": "移动建筑",
+    "config.EnableMoveEntity": "移动实体对象",
+    "config.EnableMoveEntity.Tooltip": "玩家、村民、动物、怪物",
+    "config.EnableMoveCrop": "移动作物",
+    "config.EnableMoveObject": "所有物品",
+    "config.EnableMovePlaceableObject": "移动放置的物品",
+    "config.EnableMovePlaceableObject.Tooltip": "可打造物品、矿井木桶",
+    "config.EnableMoveCollectibleObject": "移动可收集物品",
+    "config.EnableMoveCollectibleObject.Tooltip": "花、矿物",
+    "config.EnableMoveGeneratedObject": "移动生成的物品",
+    "config.EnableMoveGeneratedObject.Tooltip": "树枝、杂草、石头、矿石、远古斑点",
+    "config.EnableMoveResourceClump": "所有大型资源",
+    "config.EnableMoveGiantCrop": "移动巨大作物",
+    "config.EnableMoveStump": "移动大树桩",
+    "config.EnableMoveHollowLog": "移动大圆木",
+    "config.EnableMoveBoulder": "移动圆石",
+    "config.EnableMoveMeteorite": "移动陨石",
+    "config.EnableMoveTerrainFeature": "全部地形特征",
+    "config.EnableMoveFlooring": "移动地板",
+    "config.EnableMoveTree": "移动树木",
+    "config.EnableMoveFruitTree": "移动果树",
+    "config.EnableMoveGrass": "移动牧草",
+    "config.EnableMoveFarmland": "移动耕地",
+    "config.EnableMoveBush": "移动灌木",
+
+    // Dialogue
+    "dialogue.Remove": "您真的要{{select}}吗，此操作无法撤销！",
+    "dialogue.Remove.Select1": "删除",
+    "dialogue.Remove.Select2": "消灭",
+    "dialogue.Remove.Select3": "摧毁",
+
+    // Message
+    "message.OnlyHost": "只有农场主可以进行此操作！",
+    "message.BuildingIsFull": "此农场建筑已无空间！",
+    "message.NotImplemented": "未能执行！",
+    "message.Info.Cancel": "取消",
+    "message.Info.Force": "强制",
+    "message.Info.Remove": "删除"
+}

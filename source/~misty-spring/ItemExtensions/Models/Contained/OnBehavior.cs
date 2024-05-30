@@ -9,6 +9,7 @@
 *************************************************/
 
 using ItemExtensions.Models.Internal;
+using StardewValley.GameData.Objects;
 
 namespace ItemExtensions.Models.Contained;
 
@@ -48,4 +49,5 @@ public class OnBehavior : IWorldChangeData
     public List<string> RemoveFlags { get; set; }
 
     public List<MonsterSpawnData> SpawnMonsters { get; set; } = null;
+    public List<ObjectBuffData> AddBuffs { get; set; }
 }

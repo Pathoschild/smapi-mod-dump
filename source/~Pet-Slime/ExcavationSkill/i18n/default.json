@@ -1,0 +1,63 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Pet-Slime/StardewValley
+**
+*************************************************/
+
+{
+    "skill.name": "Archaeology",
+    "skill.perk": "+{{bonus}}% chance of bonus item from digging",
+    "skill.perk_bonus": "Chance to get {{rarity}} bonus digging drops",
+
+    "config.AlternativeSkillPageIcon": "Alternative Skill Icon Page",
+    "config.AlternativeSkillPageIcon.tooltip": "Requires restart. Change the page icon from brush and rock to a shovel.",
+
+    "config.ExperienceFromArtifactSpots": "Artifact spot experience gain",
+    "config.ExperienceFromArtifactSpots.tooltip": "Archaeology exp gained from digging specifically in an artifact spot.",
+
+    "config.ExperienceFromMinesDigging": "Mines and Skull Cavern experince gain",
+    "config.ExperienceFromMinesDigging.tooltip": "Archaeology exp gained from digging while in the mines or skull cavern.",
+
+    "config.ExperienceFromBuriedAndPannedItem": "Buired items and panning experince gain",
+    "config.ExperienceFromBuriedAndPannedItem.tooltip": "Archaeology exp gained from digging up random items like clay, and from panning.",
+
+    "config.ExperienceFromWaterShifter": "Water Shifter exp gain",
+    "config.ExperienceFromWaterShifter.tooltip": "Archaeology exp gained from harvesting from a water shifter.",
+
+    "config.ExperienceFromResearchTable": "Research Table exp gain",
+    "config.ExperienceFromResearchTable.tooltip": "This config does nothing at the moment.",
+
+    "config.ExperienceFromAncientBattery": "Ancient Battery exp gain",
+    "config.ExperienceFromAncientBattery.tooltip": "Archaeology exp gained from harvesting from an ancient battery",
+
+    "config.ExperienceFromPreservationChamber": "Preservation Chamber exp gain",
+    "config.ExperienceFromPreservationChamber.tooltip": "Archaeology exp gained from harvesting from a preservation chamber",
+
+    "config.ExperienceFromHPreservationChamber": "Hardwood Preservation Chamber exp gain",
+    "config.ExperienceFromHPreservationChamber.tooltip": "Archaeology exp gained from harvesting from a hardwood preservation chamber",
+
+    "moonslime.Archaeology.skill_book.levelup": "You learned a few things about Archaeology.",
+
+    "moonslime.Archaeology.water_shifter.name": "Water Sifter",
+    "moonslime.Archaeology.water_shifter.description": "Place it in the water, string it with fiber, and check the next day to see it has anything. \nWorks in streams, lakes, and the ocean.",
+
+
+    "Archaeology5a.name": "Pioneer",
+    "Archaeology5a.desc": "Extra chances of artifact spots spawning.",
+    "Archaeology5b.name": "Dowser",
+    "Archaeology5b.desc": "Extra chances of panning spots spawning.",
+    "Archaeology10a1.name": "Antiquarian",
+    "Archaeology10a1.desc": "Be able to find additional Artifacts while digging.",
+    "Archaeology10a2.name": "Curator",
+    "Archaeology10a2.desc": "Sell artifacts that are on displays for twice the amount!",
+    "Archaeology10b1.name": "Dredger",
+    "Archaeology10b1.desc": "Gain additional items while panning",
+    "Archaeology10b2.name": "Forty-Niner",
+    "Archaeology10b2.desc": "On Successful Panning or Digging, Get a speed boost.\n Duration based on level.",
+    "Archaeology10b2.buff": "Gold Rush!"
+
+}

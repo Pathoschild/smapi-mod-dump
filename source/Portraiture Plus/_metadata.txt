@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/Arborsm/PortraiturePlus
+   Git: https://github.com/Arborsm/PortraiturePlus.git
+
+mods:
+   Portraiture Plus
+
+latest commit:
+   commit 22a1dd35f511fba46afb15320e8b559ba617b52d
+   Author: Arbor <BlueGrayx@qq.com>
+   Date:   Wed May 29 00:11:47 2024 +0800
+   
+       finally
+   

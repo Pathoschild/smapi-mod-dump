@@ -1,5 +1,8 @@
 {
   "MagnetBaitEnabled": true,
+  "ForceTreasure": false,
   "WildBaitEnabled": true,
-  "TargetedBaitEnabled": true
+  "ForceDoubleFish": false,
+  "TargetedBaitEnabled": true,
+  "ForceTargetedFish": false
 }

@@ -193,7 +193,11 @@ namespace NermNermNerm.Junimatic
                         if (trigger.RequiredItemId is not null)
                         {
                             var itemData = ItemRegistry.GetData(trigger.RequiredItemId);
-                            if (categories[(int)projectType].Contains(itemData.Category))
+                            if (itemData is null)
+                            {
+                                ModEntry.Instance.LogWarningOnce($"ItemRegistry.GetData failed for {trigger.RequiredItemId} - this could render {this.Machine.Name} unusable to Junimos");
+                            }
+                            else if (categories[(int)projectType].Contains(itemData.Category))
                             {
                                 return true;
                             }

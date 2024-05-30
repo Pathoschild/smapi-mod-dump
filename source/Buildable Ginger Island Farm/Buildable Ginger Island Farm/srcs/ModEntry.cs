@@ -8,8 +8,11 @@
 **
 *************************************************/
 
+using System;
+using HarmonyLib;
 using StardewModdingAPI;
 using BuildableGingerIslandFarm.Handlers;
+using BuildableGingerIslandFarm.Patches;
 using BuildableGingerIslandFarm.Utilities;
 
 namespace BuildableGingerIslandFarm
@@ -29,6 +32,20 @@ namespace BuildableGingerIslandFarm
 			Helper = base.Helper;
 			Monitor = base.Monitor;
 			ModManifest = base.ModManifest;
+
+			// Load Harmony patches
+			try
+			{
+				Harmony harmony = new(ModManifest.UniqueID);
+
+				// Apply building patches
+				JunimoHutPatch.Apply(harmony);
+			}
+			catch (Exception e)
+			{
+				Monitor.Log($"Issue with Harmony patching: {e}", LogLevel.Error);
+				return;
+			}
 
 			// Subscribe to events
 			Helper.Events.GameLoop.GameLaunched += GameLaunchedHandler.Apply;

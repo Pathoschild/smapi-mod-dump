@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#if COMMON_WIDGETS
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -96,3 +98,5 @@ public struct KMargins : IEquatable<KMargins> {
 	}
 
 }
+
+#endif

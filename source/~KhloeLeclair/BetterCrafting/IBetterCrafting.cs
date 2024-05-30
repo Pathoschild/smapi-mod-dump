@@ -1229,13 +1229,20 @@ public interface IBetterCraftingMenu {
 /// Better Crafting menu is opened, and serves to allow other mods to add
 /// or remove specific containers from a menu.
 /// </summary>
-public interface IPopulateContainersEvent {
+public interface IPopulateContainersEvent : ISimplePopulateContainersEvent {
 
 	/// <summary>
 	/// The relevant Better Crafting menu.
 	/// </summary>
 	IBetterCraftingMenu Menu { get; }
 
+}
+
+/// <summary>
+/// A simplified interface for the PopulateContainers event that allows
+/// you to remove the IBetterCraftingMenu interface.
+/// </summary>
+public interface ISimplePopulateContainersEvent {
 	/// <summary>
 	/// A list of all the containers this menu should draw items from.
 	/// </summary>
@@ -1246,8 +1253,9 @@ public interface IPopulateContainersEvent {
 	/// own container discovery logic, if you so desire.
 	/// </summary>
 	bool DisableDiscovery { get; set; }
-
 }
+
+
 
 /// <summary>
 /// This event is emitted by <see cref="IBetterCrafting"/> whenever the
@@ -1265,9 +1273,77 @@ public interface IDiscoverIconsEvent {
 
 }
 
+public enum MaxQuality {
+	Disabled,
+	None,
+	Silver,
+	Gold,
+	Iridium
+};
+
+public enum SeasoningMode {
+	Disabled,
+	Enabled,
+	InventoryOnly
+}
+
+public interface IBetterCraftingConfig {
+
+	bool ShowSourceModInTooltip { get; }
+
+	bool UseFullHeight { get; }
+
+	bool ReplaceCooking { get; }
+
+	bool ReplaceCrafting { get; }
+
+	bool UseCategories { get; }
+
+	bool LowQualityFirst { get; }
+
+	MaxQuality MaxQuality { get; }
+
+	bool UseUniformGrid { get; }
+
+	bool SortBigLast { get; }
+
+	bool HideUnknown { get; }
+
+	SeasoningMode UseSeasoning { get; }
+
+	bool UseDiscovery { get; }
+
+	int MaxInventories { get; }
+
+	int MaxDistance { get; }
+
+	int MaxCheckedTiles { get; }
+
+	int MaxWorkbenchGap { get; }
+
+	int NearbyRadius { get; }
+
+	bool UseDiagonalConnections { get; }
+
+	bool EnableCookoutWorkbench { get; }
+
+	bool EnableCookoutLongevity { get; }
+
+	bool EnableCookoutExpensive { get; }
+
+	bool UseTransfer { get; }
+
+}
 
 
 public interface IBetterCrafting {
+
+	/// <summary>
+	/// This allows you to read some configuration values from
+	/// Better Crafting, which may be useful when interacting
+	/// with the API.
+	/// </summary>
+	IBetterCraftingConfig Config { get; }
 
 	#region GUI
 
@@ -1325,6 +1401,13 @@ public interface IBetterCrafting {
 	/// </summary>
 	IBetterCraftingMenu? GetActiveMenu();
 
+	/// <summary>
+	/// Cast an <see cref="IClickableMenu"/> to a <see cref="IBetterCraftingMenu"/>
+	/// if it's an instance of our menu, or return <c>null</c> otherwise.
+	/// </summary>
+	/// <param name="menu">The menu to cast.</param>
+	IBetterCraftingMenu? GetMenu(IClickableMenu menu);
+
 	#endregion
 
 	#region Events
@@ -1340,6 +1423,20 @@ public interface IBetterCrafting {
 	/// allowing other mods to manipulate the list of containers.
 	/// </summary>
 	event Action<IPopulateContainersEvent>? MenuPopulateContainers;
+
+	/// <summary>
+	/// This event is fired whenever a new Better Crafting menu is opened,
+	/// allowing other mods to manipulate the list of containers. This
+	/// version of the event doesn't include a reference to the menu, which
+	/// makes it possible to reduce the amount of the API file you're
+	/// using by quite a bit.
+	/// </summary>
+	event Action<ISimplePopulateContainersEvent>? MenuSimplePopulateContainers;
+
+	/// <summary>
+	/// This event is fired whenever a Better Crafting menu is closed.
+	/// </summary>
+	event Action<IClickableMenu>? MenuClosing;
 
 	/// <summary>
 	/// This event is fired whenever a player crafts an item using
@@ -1527,6 +1624,12 @@ public interface IBetterCrafting {
 	/// items first.</param>
 	/// <param name="consumedItems">An optional list that will contain copies
 	/// of the consumed Items.</param>
+	/// <param name="matchedItems">An optional list of item instances that,
+	/// if provided, will prevent any item instances not in the list from
+	/// being consumed.</param>
+	void ConsumeItems(IEnumerable<(Func<Item, bool>, int)> items, Farmer? who, IEnumerable<IBCInventory>? inventories, int maxQuality = int.MaxValue, bool lowQualityFirst = false, IList<Item>? consumedItems = null, IList<Item>? matchedItems = null);
+
+	[Obsolete("Use the version with an optional parameter for matchedItems.")]
 	void ConsumeItems(IEnumerable<(Func<Item, bool>, int)> items, Farmer? who, IEnumerable<IBCInventory>? inventories, int maxQuality = int.MaxValue, bool lowQualityFirst = false, IList<Item>? consumedItems = null);
 
 	[Obsolete("Use the version with an optional parameter for consumedItems.")]
@@ -1544,7 +1647,12 @@ public interface IBetterCrafting {
 	/// <param name="who">An optional player, to include that player's inventory in the search.</param>
 	/// <param name="items">An optional enumeration of <see cref="Item"/>s to include in the search.</param>
 	/// <param name="maxQuality">The maximum quality of item to count.</param>
+	/// <param name="matchingItems">An optional list of item instances. If set,
+	/// we will add every counted item instance to the list.</param>
 	/// <returns>The number of matching items.</returns>
+	int CountItem(Func<Item, bool> predicate, Farmer? who, IEnumerable<Item?>? items, int maxQuality = int.MaxValue, IList<Item>? matchingItems = null);
+
+	[Obsolete("Use the version with an optional matchingItems parameter.")]
 	int CountItem(Func<Item, bool> predicate, Farmer? who, IEnumerable<Item?>? items, int maxQuality = int.MaxValue);
 
 	#endregion
@@ -1646,6 +1754,14 @@ public interface IBetterCrafting {
 	/// </summary>
 	/// <param name="type"></param>
 	void UnregisterInventoryProvider(Type type);
+
+	/// <summary>
+	/// Get an inventory provider for the provided thing. If there are no
+	/// inventory providers capable of handling the thing, returns
+	/// <c>null</c> instead.
+	/// </summary>
+	/// <param name="thing">The instance to get an inventory provider for.</param>
+	IInventoryProvider? GetProvider(object thing);
 
 	#endregion
 

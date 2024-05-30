@@ -11,10 +11,8 @@
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley.Menus;
-using FullFishingBar;
-using System;
 
-namespace AutoForager
+namespace FullFishingBar
 {
 	/// <summary>
 	/// The mod entry point.
@@ -45,11 +43,7 @@ namespace AutoForager
 				{
 					if (_config.OnlyCorkBobber && !bobberBarMenu.bobbers.Contains("(O)695")) return;
 
-					bobberBarMenu.bobberBarHeight = Math.Min(
-						Math.Max(
-							(int)(BobberBar.bobberBarTrackHeight * _config.BarSizePercentage),
-							(int)(BobberBar.bobberBarTrackHeight * 0.1)),
-						BobberBar.bobberBarTrackHeight);
+					bobberBarMenu.bobberBarHeight = GetBobberBarSize();
 				}
 			}
 		}
@@ -57,6 +51,15 @@ namespace AutoForager
 		private void OnGameLaunched(object? sender, GameLaunchedEventArgs e)
 		{
 			_config.RegisterModConfigMenu(Helper, ModManifest);
+		}
+
+		private int GetBobberBarSize()
+		{
+			var trackHeight = BobberBar.bobberBarTrackHeight;
+			var configSizePercentage = _config.GetBarSizePercentage();
+			var barSize = (int)(trackHeight * configSizePercentage);
+
+			return barSize;
 		}
 	}
 }

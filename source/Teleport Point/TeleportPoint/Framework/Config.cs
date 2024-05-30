@@ -10,13 +10,13 @@
 
 using System.Collections.Generic;
 using StardewModdingAPI;
+using StardewModdingAPI.Utilities;
 using TeleportPoint.Framework.Gui;
 
-namespace TeleportPoint.Framework
+namespace TeleportPoint.Framework;
+
+public class Config
 {
-    public class Config
-    {
-        public SButton OpenTeleport { get; set; } = SButton.L;
-        public List<TeleportData> TeleportData { get; set; } = new List<TeleportData>();
-    }
+    public KeybindList OpenTeleport { get; set; } = new(SButton.L);
+    public List<TeleportData> TeleportData { get; set; } = new();
 }

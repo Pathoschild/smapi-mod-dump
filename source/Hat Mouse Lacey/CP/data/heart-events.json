@@ -652,7 +652,7 @@
           waitForAllStationary/
           animate {{Lacey}} false false 1200 28/
           animate farmer true false 1200 101/
-          specificTemporarySprite heart 13 21/
+          specificTemporarySprite heart 23 21/
           playSound dwop/
           pause 1200/
           speak {{Lacey}} \"{{i18n:events.14h.1}}\"/

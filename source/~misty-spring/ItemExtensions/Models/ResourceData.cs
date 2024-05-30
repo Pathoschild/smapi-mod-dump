@@ -91,7 +91,7 @@ public class ResourceData
     internal int ActualSkill { get; set; } = -1;
 
     // Extra
-    public List<string> ContextTags { get; set; } = new();
+    public List<string> ContextTags { get; set; } = new() { "placeable" };
     public Dictionary<string, string> CustomFields { get; set; } = new();
     public LightData Light { get; set; } = null;
 
@@ -282,7 +282,7 @@ public class ResourceData
         Tool = "vanilla";
     }
     
-    private IEnumerable<string> GetFloors(string floorData)
+    internal static IEnumerable<string> GetFloors(string floorData)
     {
         var all = new List<string>();
         //removes spaces and then separates by comma

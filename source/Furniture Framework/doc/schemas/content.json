@@ -1,0 +1,284 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Leroymilo/FurnitureFramework
+**
+*************************************************/
+
+{
+	"$schema": "https://json-schema.org/draft-07/schema",
+	"$id": "https://raw.githubusercontent.com/Leroymilo/FurnitureFramework/main/doc/schemas/content.json",
+	"title": "Furniture Pack",
+	"description": "The definition of a Content Pack for the Furniture Framework",
+	"type": "object",
+	"properties": {
+		"Format": {
+			"description": "The Format number of the Pack.",
+			"type": "integer",
+			"const": 2
+		},
+		"Furniture": {
+			"description": "A dictionary containing your custom Furniture definitions",
+			"type": "object",
+			"additionalProperties": {
+				"type": "object",
+				"properties": {
+
+					"Display Name": {
+						"type": "string",
+						"description": "The name of your Furniture in game. Supports {{RectVariant}} and {{ImageVariant}} tokens."
+					},
+
+					"Description": {
+						"type": "string",
+						"description": "The description of your Furniture. Supports {{RectVariant}} and {{ImageVariant}} tokens."
+					},
+
+					"Rotations": {
+						"description": "The Rotations of your Furniture. Can be an integer or a list of strings.",
+						"oneOf": [
+							{
+								"type": "integer",
+								"enum": [1, 2, 4]
+							},
+							{
+								"type": "array",
+								"items": {"type": "string"},
+								"minItems": 1,
+								"unevaluatedItems": false,
+								"uniqueItems": true
+							}
+						]
+					},
+
+					"Source Image": {
+						"description": "The path to your sprite-sheet. Can be a string, a dictionary of strings or an array of strings",
+						"oneOf": [
+							{
+								"type": "string"
+							},
+							{
+								"type": "object",
+								"additionalProperties": { "type": "string" },
+								"minProperties": 1
+							},
+							{
+								"type": "array",
+								"items": { "type": "string" },
+								"minItems": 1,
+								"uniqueItems": true
+							}
+						]
+					},
+					
+					"Source Rect": {
+						"description": "The Source Rectangle in the sprite-sheet for the base sprite of your Furniture. Can be directional.",
+						"oneOf": [
+							{ "$ref": "/Leroymilo/FurnitureFramework/main/doc/schemas/rectangle.json" },
+							{
+								"type": "object",
+								"additionalProperties": {
+									"$ref": "/Leroymilo/FurnitureFramework/main/doc/schemas/rectangle.json"
+								}
+							}
+						]
+					},
+
+					"Collisions": {
+						"description": "The Collisions of your Furniture. Can be directional.",
+						"oneOf": [
+							{ "$ref": "/Leroymilo/FurnitureFramework/main/doc/schemas/collisions.json" },
+							{
+								"type": "object",
+								"additionalProperties": {
+									"$ref": "/Leroymilo/FurnitureFramework/main/doc/schemas/collisions.json"
+								}
+							}
+						]
+					},
+
+					"Force Type": { "type": "string" },
+
+					"Price": { "type": "integer", "minimum": 0 },
+
+					"Placement Restriction": { "type": "integer", "enum": [0, 1, 2] },
+
+					"Context Tags": { "type": "array", "items": { "type": "string" } },
+
+					"Exclude from Random Sales": { "type": "boolean" },
+
+					"Shows in Shops": { "type": "array", "items": { "type": "string" } },
+
+					"Shop Id": { "type": "string" },
+
+					"Source Rect Offsets": {
+						"oneOf": [
+							{
+								"$ref": "/Leroymilo/FurnitureFramework/main/doc/schemas/vector.json"
+							},
+							{
+								"type": "object",
+								"additionalProperties": {
+									"$ref": "/Leroymilo/FurnitureFramework/main/doc/schemas/vector.json"
+								},
+								"minProperties": 1
+							},
+							{
+								"type": "array",
+								"items": {
+									"$ref": "/Leroymilo/FurnitureFramework/main/doc/schemas/vector.json"
+								},
+								"minItems": 1,
+								"uniqueItems": true
+							}
+						]
+					},
+
+					"Frame Count": { "type": "integer" },
+
+					"Frame Duration": { "type": "integer" },
+
+					"Animation Offset": { "$ref": "/Leroymilo/FurnitureFramework/main/doc/schemas/vector.json" },
+
+					"Special Type": {
+						"type": "string",
+						"enum": [ "None", "Dresser", "TV", "Bed" ]
+					},
+
+					"Placement Type": {
+						"type": "string",
+						"enum": [ "Normal", "Rug", "Mural" ]
+					},
+
+					"Icon Rect": {
+						"$ref": "/Leroymilo/FurnitureFramework/main/doc/schemas/rectangle.json"
+					},
+
+					"Seasonal": { "type": "boolean" },
+
+					"Layers": {
+						"oneOf": [
+							{
+								"$ref": "/Leroymilo/FurnitureFramework/main/doc/schemas/layers.json"
+							},
+							{
+								"type": "object",
+								"additionalProperties": {
+									"$ref": "/Leroymilo/FurnitureFramework/main/doc/schemas/layers.json"
+								}
+							}
+						]
+					},
+					
+					"Seats": {
+						"oneOf": [
+							{
+								"$ref": "/Leroymilo/FurnitureFramework/main/doc/schemas/seats.json"
+							},
+							{
+								"type": "object",
+								"additionalProperties": {
+									"$ref": "/Leroymilo/FurnitureFramework/main/doc/schemas/seats.json"
+								}
+							}
+						]
+					},
+
+					"Slots": {
+						"oneOf": [
+							{
+								"$ref": "/Leroymilo/FurnitureFramework/main/doc/schemas/slots.json"
+							},
+							{
+								"type": "object",
+								"additionalProperties": {
+									"$ref": "/Leroymilo/FurnitureFramework/main/doc/schemas/slots.json"
+								}
+							}
+						]
+					},
+
+					"Toggle": {
+						"type": "boolean"
+					},
+
+					"Sounds": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"Mode": {
+									"type": "string",
+									"enum": [ "on_turn_on", "on_turn_off", "on_click" ]
+								},
+
+								"Name": {
+									"type": "string",
+									"description": "The name of the sound in the game. See here for a list of valid sounds: https://www.stardewvalleywiki.com/Modding:Audio#Sound."
+								}
+							}
+						}
+					},
+
+					"Particles": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"Source Image": {
+									"type": "string"
+								},
+								"Source Rect": {
+									"$ref": "/Leroymilo/FurnitureFramework/main/doc/schemas/rectangle.json"
+								},
+								"Emission Interval": { "type": "integer", "minimum": 1 },
+								"Spawn Rect": {
+									"$ref": "/Leroymilo/FurnitureFramework/main/doc/schemas/rectangle.json"
+								},
+
+								"Depths": {
+									"type": "array",
+									"items": { "type": "number" }
+								},
+								"Speed": {
+									"$ref": "/Leroymilo/FurnitureFramework/main/doc/schemas/vector.json"
+								},
+								"Rotations": {
+									"type": "array",
+									"items": { "type": "number" }
+								},
+								"Rotation Speeds": {
+									"type": "array",
+									"items": { "type": "number" }
+								},
+
+								"Scale": { "type": "number", "exclusiveMinimum": 0 },
+								"Scale Change": { "type": "number" },
+								"Color": { "type": "string" },
+								"Alpha": { "type": "number", "exclusiveMinimum": 0, "maximum": 1 },
+								"Alpha Fade": { "type": "number" },
+
+								"Frame Count": { "type": "integer", "minimum": 0 },
+								"Frame Duration": { "type": "integer", "minimum": 1 },
+								"Loop Count": { "type": "integer", "minimum": 1 },
+								"Hold Last Frame": { "type": "boolean" },
+								"Flicker": { "type": "boolean" },
+
+								"Emit When On": { "type": "boolean" },
+								"Emit When Off": { "type": "boolean" },
+								"Burst": { "type": "boolean" }
+							},
+							"required": [ "Source Image", "Emission Interval", "Spawn Rect" ]
+						}
+					}
+				},
+				"required": [ "Display Name", "Rotations", "Source Image", "Collisions" ],
+				"additionalProperties": false
+			}
+		}
+	},
+	"required": ["Format", "Furniture"]
+}

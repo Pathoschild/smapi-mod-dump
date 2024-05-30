@@ -52,7 +52,7 @@ namespace BetterJunimos.Abilities {
         }
 
         private bool ShouldAvoidHarvesting(Vector2 pos, HoeDirt hd) {
-            var item = new StardewValley.Object(pos, hd.crop.indexOfHarvest.Value);
+            var item = new StardewValley.Object(hd.crop.indexOfHarvest.Value, 1);
 
             // TODO: check properly if the crop will die tomorrow instead of special-casing 
             if (item.ParentSheetIndex == 421) {

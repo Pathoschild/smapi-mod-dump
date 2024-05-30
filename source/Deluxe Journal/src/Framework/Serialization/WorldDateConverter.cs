@@ -19,9 +19,9 @@ namespace DeluxeJournal.Framework.Serialization
         public override WorldDate ReadJson(JsonReader reader, Type objectType, WorldDate? existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
             JObject json = JObject.Load(reader);
-            string season = json["Season"]?.ToObject<string>() ?? "spring";
-            int day = json["Day"]?.ToObject<int>() ?? 1;
-            int year = json["Year"]?.ToObject<int>() ?? 1;
+            string season = json["Season"]?.Value<string>() ?? "spring";
+            int day = json["Day"]?.Value<int>() ?? 1;
+            int year = json["Year"]?.Value<int>() ?? 1;
 
             return new WorldDate(year, season, day);
         }
@@ -30,7 +30,7 @@ namespace DeluxeJournal.Framework.Serialization
         {
             writer.WriteStartObject();
             writer.WritePropertyName("Season");
-            writer.WriteValue(value?.Season ?? "spring");
+            writer.WriteValue(value?.SeasonKey ?? "spring");
             writer.WritePropertyName("Day");
             writer.WriteValue(value?.DayOfMonth ?? 1);
             writer.WritePropertyName("Year");

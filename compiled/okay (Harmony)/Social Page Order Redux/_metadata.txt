@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/23374
+IDs: FlyingTNT.SocialPageOrderRedux
+update keys: Nexus:23374, GitHub:FlyingTNT/StardewValleyMods

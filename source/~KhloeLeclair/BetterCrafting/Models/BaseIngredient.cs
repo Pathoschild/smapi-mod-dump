@@ -28,7 +28,7 @@ using StardewValley.ItemTypeDefinitions;
 
 namespace Leclair.Stardew.BetterCrafting.Models;
 
-public class BaseIngredient : IOptimizedIngredient, IConsumptionTrackingIngredient, IConditionalIngredient, IRecyclable {
+public class BaseIngredient : IOptimizedIngredient, IConsumptionPreTrackingIngredient, IConditionalIngredient, IRecyclable {
 
 	private readonly string ItemId;
 	private readonly int NumericId;
@@ -55,9 +55,9 @@ public class BaseIngredient : IOptimizedIngredient, IConsumptionTrackingIngredie
 		if (NumericId >= 0)
 			Data = ItemRegistry.GetDataOrErrorItem(ItemId);
 
-		IngList = new KeyValuePair<string, int>[] {
+		IngList = [
 			new(ItemId, Quantity)
-		};
+		];
 	}
 
 	#region IConditionalIngredient
@@ -299,12 +299,18 @@ public class BaseIngredient : IOptimizedIngredient, IConsumptionTrackingIngredie
 
 	public int Quantity { get; private set; }
 
+	public bool IsFuzzyIngredient => NumericId < 0;
+
 	public void Consume(Farmer who, IList<IBCInventory>? inventories, int max_quality, bool low_quality_first) {
-		Consume(who, inventories, max_quality, low_quality_first, null);
+		Consume(who, inventories, max_quality, low_quality_first, null, null);
+	}
+
+	public void Consume(Farmer who, IList<IBCInventory>? inventories, int max_quality, bool low_quality_first, IList<Item>? matchingItems, IList<Item>? consumedItems) {
+		InventoryHelper.ConsumeItems(IngList, who, inventories, max_quality, low_quality_first, matchingItems, consumedItems);
 	}
 
 	public void Consume(Farmer who, IList<IBCInventory>? inventories, int max_quality, bool low_quality_first, IList<Item>? consumedItems) {
-		InventoryHelper.ConsumeItems(IngList, who, inventories, max_quality, low_quality_first, consumedItems);
+		InventoryHelper.ConsumeItems(IngList, who, inventories, max_quality, low_quality_first, null, consumedItems);
 	}
 
 
@@ -317,10 +323,14 @@ public class BaseIngredient : IOptimizedIngredient, IConsumptionTrackingIngredie
 	}
 
 	public int GetAvailableQuantity(Farmer who, IList<Item?>? items, IList<IBCInventory>? inventories, int max_quality) {
+		return GetAvailableQuantity(who, items, inventories, max_quality, null);
+	}
+
+	public int GetAvailableQuantity(Farmer who, IList<Item?>? items, IList<IBCInventory>? inventories, int max_quality, IList<Item>? matchingItems) {
 		bool ItemMatcher(Item item) {
 			return CraftingRecipe.ItemMatchesForCrafting(item, ItemId);
 		}
 
-		return InventoryHelper.CountItem(ItemMatcher, who, items, out bool _, max_quality: max_quality);
+		return InventoryHelper.CountItem(ItemMatcher, who, items, out bool _, max_quality: max_quality, matchingItems: matchingItems);
 	}
 }

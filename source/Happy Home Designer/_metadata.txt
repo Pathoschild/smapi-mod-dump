@@ -6,10 +6,9 @@ mods:
    Happy Home Designer
 
 latest commit:
-   commit 991a07a3fec9ea2c60f61939e1c813762fd17b44
+   commit baab6e542632f4e48e9ee929ba8d3704e6176e70
    Author: Wren <grahamgrasley@gmail.com>
-   Date:   Tue Apr 23 19:42:43 2024 -0400
+   Date:   Tue May 28 23:54:16 2024 -0400
    
-       added config options
-       large variants, client mode, early deluxe
+       add german translation
    

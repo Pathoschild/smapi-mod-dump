@@ -18,14 +18,14 @@ using Newtonsoft.Json;
 
 namespace Leclair.Stardew.CloudySkies.Serialization;
 
-public class EffectDataConverter : JsonConverter { 
+public class EffectDataConverter : JsonConverter {
 
 	private static readonly CaseInsensitiveDictionary<Type> Types = new();
 
 	private static readonly DiscriminatingConverter<BaseEffectData> Converter;
 
 	static EffectDataConverter() {
-		Converter = new("Type", Types);
+		Converter = new("Type", Types, "Custom");
 		Converter.PopulateTypes();
 	}
 

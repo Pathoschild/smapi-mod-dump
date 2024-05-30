@@ -1,0 +1,17 @@
+{
+  "Name": "HUD Customizer",
+  "Author": "Espy",
+  "Version": "0.2.0",
+  "Description": "HUD Customizer.",
+  "UniqueID": "Espy.HUDCustomizer",
+  "EntryDll": "HUDCustomizer.dll",
+  "UpdateKeys": [ "Nexus:23704" ],
+  "MinimumApiVersion": "4.0.0",
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.GenericModConfigMenu",
+      "MinimumVersion": "1.12.0",
+      "IsRequired": false
+    }
+  ]
+}

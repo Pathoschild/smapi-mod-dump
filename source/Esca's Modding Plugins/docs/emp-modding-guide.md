@@ -14,6 +14,9 @@ See [the main readme](readme.md) for other information about EMP.
 ## Contents
 * [Bed Placement](#bed-placement)
   * [Pass Out Safely](#pass-out-safely)
+* [Content Patcher Tokens](#content-patcher-tokens)
+  * [Game State Query](#game-state-query)
+  * [Player Stats](#player-stats)
 * [Custom Order Boards](#custom-order-boards)
 * [Destroyable Bushes](#destroyable-bushes)
 * [Fish Locations](#fish-locations)
@@ -38,6 +41,66 @@ Note that this specifically prevents money loss and receiving a letter about bei
 To enable this feature at a location, add the map property `Esca.EMP/PassOutSafely` and set its value to `true`:
 
 ![Esca.EMP/PassOutSafely: true](images/PassOutSafely_MapProperty.png)
+
+## Content Patcher Tokens
+EMP adds the following custom tokens to Content Patcher. To enable them, do **one** of the following:
+
+A) Add EMP as a dependency in your mod's "manifest.json" file: `"Dependencies": [{"UniqueID": "Esca.EMP"}]`
+
+B) Whenever you use a token from EMP, add this "When" condition: `"HasMod": "Esca.EMP"`
+
+### Game State Query
+The `Esca.EMP/GameStateQuery` token can be used to check a [game state query (GSQ)](https://stardewvalleywiki.com/Modding:Game_state_queries) in Content Patcher. It returns either "True" or "False". It's only active while a save is fully loaded.
+
+Note that this token uses the same update rates as other tokens. Its value will only change at the specified update rate for your patch (at the start of each day, by default). GSQs might also be slightly slower than other tokens, so if another token can achieve the same goal, use that instead.
+
+Format example:
+
+```js
+{
+  "Format": "2.0.0",
+  "Changes": [
+    {
+      "LogName": "Edit object sprites while the Night Market is open",
+      "Action": "EditImage",
+      "Target": "Maps/springobjects",
+      "FromFile": "assets/My_Edited_SpringObjects.png",
+      "When": {
+        "Esca.EMP/GameStateQuery: IS_PASSIVE_FESTIVAL_OPEN NightMarket": "true"
+      },
+      "Update": "OnTimeChange"
+    }
+  ]
+}
+```
+
+### Player Stats
+The `Esca.EMP/PlayerStat` token can be used to check certain statistics about the local player. It returns the current number of whichever stat you input.
+
+Note that this token only checks stats for the current local player. Due to technical limitations, it can't check other players' stats in multiplayer.
+
+For a list of stats tracked by the base game, check the "PLAYER_STAT" description on [this wiki page](https://stardewvalleywiki.com/Modding:Game_state_queries#Player_info_.26_progress). Mods can also add custom stats with C#, [trigger actions](https://stardewvalleywiki.com/Modding:Trigger_actions), etc.
+
+Format example:
+
+```js
+{
+  "Format": "2.0.0",
+  "Changes": [
+    {
+      "LogName": "Make Parsnip Seeds display the player's total footstep count in their description",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "Fields": {
+        "472": {
+          "Description": "Steps Taken: {{Esca.EMP/PlayerStat: stepsTaken}}"
+        }
+      },
+      "Update": "OnTimeChange"
+    }
+  ]
+}
+```
 
 ## Custom Order Boards
 This feature allows mods to add new Special Orders boards that only display orders from a custom category ("OrderType"). See the wiki's guide to the [Data/SpecialOrders](https://stardewvalleywiki.com/Modding:Special_orders) asset for information about creating special orders.

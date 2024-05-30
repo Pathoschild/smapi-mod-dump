@@ -1,7 +1,7 @@
 {
   "Name": "Heart Event Helper",
   "Author": "bungus",
-  "Version": "1.0.5",
+  "Version": "1.0.6",
   "Description": "Display friendship effects within heart event dialogue options.",
   "UniqueID": "bungus.HeartEventHelper",
   "EntryDll": "HeartEventHelper.dll",

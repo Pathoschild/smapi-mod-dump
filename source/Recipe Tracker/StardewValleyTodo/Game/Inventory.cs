@@ -10,7 +10,6 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using StardewValley;
 using NativeInventory = StardewValley.Inventories.Inventory;
 
 namespace StardewValleyTodo.Game {

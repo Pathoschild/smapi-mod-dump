@@ -19,12 +19,17 @@ using Leclair.Stardew.Common.Events;
 
 using StardewModdingAPI;
 
+using StardewValley;
+using StardewValley.Delegates;
+using StardewValley.Triggers;
+
 namespace Leclair.Stardew.Common;
 
 public static class EventHelper {
 
 	private readonly static BindingFlags EVENT_FLAGS = BindingFlags.Public | BindingFlags.Instance;
 	private readonly static BindingFlags METHOD_FLAGS = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
+	private readonly static BindingFlags STATIC_METHOD_FLAGS = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static;
 
 	private static readonly Dictionary<object, Dictionary<Type, Tuple<object, EventInfo>?>> CachedEvents = new();
 
@@ -75,32 +80,152 @@ public static class EventHelper {
 
 	delegate void ConsoleCommandDelegate(string name, string[] args);
 
-	public static void RegisterConsoleCommands(object provider, ICommandHelper helper, Action<string, LogLevel>? logger) {
-		Type provtype = provider.GetType();
+	public static List<string> RegisterConsoleCommands(object provider, ICommandHelper helper, Action<string, LogLevel>? logger) {
+		bool is_static;
+		if (provider is Type provType)
+			is_static = true;
+		else {
+			is_static = false;
+			provType = provider.GetType();
+		}
 
-		foreach(MethodInfo method in provtype.GetMethods(METHOD_FLAGS)) {
-			foreach (var attr in method.GetCustomAttributes(typeof(ConsoleCommand))) {
-				if (attr is not ConsoleCommand cmd)
-					continue;
+		List<string> result = new();
 
-				ParameterInfo[] parms = method.GetParameters();
-				if (parms.Length != 2)
-					continue;
+		foreach (MethodInfo method in provType.GetMethods(is_static ? STATIC_METHOD_FLAGS : METHOD_FLAGS)) {
 
-				if (parms[0].ParameterType != typeof(string) || parms[1].ParameterType != typeof(string[]))
-					continue;
+			Action<string, string[]>? @delegate = null;
 
-				string name = string.IsNullOrWhiteSpace(cmd.Name) ? method.Name : cmd.Name;
-				string desc = string.IsNullOrWhiteSpace(cmd.Description) ? string.Empty : cmd.Description;
+			foreach (var attr in method.GetCustomAttributes<ConsoleCommand>()) {
+
+				if (@delegate is null)
+					try {
+						@delegate = new Action<string, string[]>(
+							is_static
+								? method.CreateDelegate<ConsoleCommandDelegate>()
+								: method.CreateDelegate<ConsoleCommandDelegate>(provider)
+							);
+
+					} catch (Exception ex) {
+						logger?.Invoke($"Failed to register console command. Method {method.Name} does not match console command delegate: {ex}", LogLevel.Error);
+						break;
+					}
+
+				string name = string.IsNullOrWhiteSpace(attr.Name) ? method.Name : attr.Name;
+				string desc = string.IsNullOrWhiteSpace(attr.Description) ? string.Empty : attr.Description;
 
 				try {
-					ConsoleCommandDelegate del = method.CreateDelegate<ConsoleCommandDelegate>(provider);
-					helper.Add(name, desc, new Action<string, string[]>(del));
+					helper.Add(name, desc, @delegate);
+					result.Add(name);
 				} catch (Exception ex) {
-					logger?.Invoke($"Failed to register console command {name}: {ex}", LogLevel.Error);
+					logger?.Invoke($"Failed to register console command '{name}': {ex}", LogLevel.Error);
 				}
 			}
 		}
+
+		return result;
+	}
+
+
+	public static List<string> RegisterTriggerActions(object provider, string? prefix, Action<string, LogLevel>? logger) {
+		bool is_static;
+		if (provider is Type provType)
+			is_static = true;
+		else {
+			is_static = false;
+			provType = provider.GetType();
+		}
+
+		List<string> result = new();
+
+		foreach (MethodInfo method in provType.GetMethods(is_static ? STATIC_METHOD_FLAGS : METHOD_FLAGS)) {
+
+			TriggerActionDelegate? @delegate = null;
+
+			foreach (var attr in method.GetCustomAttributes<TriggerAction>()) {
+
+				if (@delegate is null)
+					try {
+						@delegate = is_static
+							? method.CreateDelegate<TriggerActionDelegate>()
+							: method.CreateDelegate<TriggerActionDelegate>(provider);
+					} catch (Exception ex) {
+						logger?.Invoke($"Failed to register trigger action. Method {method.Name} does not match trigger delegate: {ex}", LogLevel.Error);
+						break;
+					}
+
+				string name = string.IsNullOrWhiteSpace(attr.Name) ? method.Name : attr.Name;
+				if (!string.IsNullOrEmpty(prefix) && !attr.SkipPrefix)
+					name = prefix + name;
+
+				try {
+					TriggerActionManager.RegisterAction(name, @delegate);
+					result.Add(name);
+				} catch (Exception ex) {
+					logger?.Invoke($"Failed to register trigger action '{name}': {ex}", LogLevel.Error);
+				}
+			}
+		}
+
+		return result;
+	}
+
+	public static List<string> RegisterGameStateQueries(object provider, string?[]? prefixes, Action<string, LogLevel>? logger) {
+		bool is_static;
+		if (provider is Type provType)
+			is_static = true;
+		else {
+			is_static = false;
+			provType = provider.GetType();
+		}
+
+		if (prefixes is null || prefixes.Length == 0)
+			prefixes = [null];
+
+		List<string> result = new();
+
+		foreach (MethodInfo method in provType.GetMethods(is_static ? STATIC_METHOD_FLAGS : METHOD_FLAGS)) {
+			GameStateQueryDelegate? @delegate = null;
+			string? first_name = null;
+
+			foreach (var attr in method.GetCustomAttributes<GSQCondition>()) {
+
+				if (@delegate is null)
+					try {
+						@delegate = is_static
+							? method.CreateDelegate<GameStateQueryDelegate>()
+							: method.CreateDelegate<GameStateQueryDelegate>(provider);
+
+					} catch (Exception ex) {
+						logger?.Invoke($"Failed to register game state query condition. Method {method.Name} does not match delegate: {ex}", LogLevel.Error);
+						break;
+					}
+
+				string name = string.IsNullOrWhiteSpace(attr.Name) ? method.Name : attr.Name;
+
+				foreach (string? pre in attr.SkipPrefix ? [null] : prefixes) {
+					string prename = name;
+					if (!string.IsNullOrWhiteSpace(pre))
+						prename = pre + name;
+
+					try {
+						if (first_name is null) {
+							GameStateQuery.Register(prename, @delegate);
+							result.Add(prename);
+							first_name = prename;
+
+						} else if (!GameStateQuery.Exists(prename)) {
+							GameStateQuery.RegisterAlias(prename, first_name);
+							result.Add(prename);
+						}
+
+					} catch (Exception ex) {
+						logger?.Invoke($"Failed to register game state query condition '{prename}': {ex}", LogLevel.Error);
+					}
+				}
+			}
+		}
+
+		return result;
 	}
 
 

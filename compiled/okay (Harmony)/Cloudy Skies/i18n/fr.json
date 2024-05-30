@@ -1,0 +1,31 @@
+{
+	"mod.name": "Cloudy Skies",
+
+	"setting.weather-tooltip": "Info-bulle Temps",
+	"setting.weather-tooltip.about": "Si activé, une info-bulle s’affichera lorsque vous survolez l’icône du temps de l’horloge avec le nom des conditions météorologiques actuelles.",
+
+	"setting.debug": "Débugage : chrononomètre",
+	"setting.debug.about": "Si activé, un chronomètre s’affichera à l’écran pour montrer combien de temps a été dépensé pour mettre à jour et le rendu du temps. Peut être utile pour être sûr que vous n’allez pas trop loin avec des conditions météorologiques personnalisées",
+
+	"setting.debug.shaders": "Débugage : re-compiler les shaders",
+	"setting.debug.shaders.about": "Si activé, Cloudy Skies essayera de recompiler les shaders avec l’utilitaire « mgfxc » si le code source d’un shader est présent dans un fichier « .fx » avec son fichier compilé « .mgfx ».",
+
+	"setting.replace-tv-menu": "Modifier la Chaîne Météo TV",
+	"setting.replace-tv-menu.about": "Si activé, remplace la Chaîne Météo de la télévision avec une version personnalisée qui permet de montrer la météo de plusieurs lieux",
+
+	"setting.custom-ginger-isle": "Modifier l’apparence de l’île sur la TV",
+	"setting.custom-ginger-isle.about": "Si activé, nous remplacerons l’art pour l’île Gingembre dans notre Chaîne TV personnalisée avec un art personnalisé qui s’intègre mieux aux autres.",
+
+	"tv.select-location": "Sélectionnez un lieu :",
+
+	"location.stardew-valley": "Stardew Valley",
+	"location.calico-desert": "Désert de Calico",
+
+	"weather.sunny": "ensoleillé",
+	"weather.rain": "pluvieux",
+	"weather.debris": "venteux",
+	"weather.lightning": "avis de tempête",
+	"weather.festival": "ensoleillé",
+	"weather.snow": "neige",
+	"weather.green": "pluie verte"
+}

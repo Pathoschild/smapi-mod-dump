@@ -41,10 +41,10 @@ namespace RidgesideVillage
 		{
 			if (!Game1.IsMasterGame)
 				return;
-			if (Game1.player.hasItemInInventoryNamed("Old Lucky Foxtail Charm") && Game1.player.eventsSeen.Contains(RSVConstants.E_LORENZO1H) && !Game1.player.eventsSeen.Contains(RSVConstants.E_GRANDMA))
+			if (Game1.player.Items.ContainsId(RSVConstants.IFOXTAILCHARM) && Game1.player.eventsSeen.Contains(RSVConstants.E_LORENZO1H) && !Game1.player.eventsSeen.Contains(RSVConstants.E_GRANDMA))
 			{
 				var location = Game1.getLocationFromName("FarmHouse");
-				var events = location.GetLocationEvents();
+				location.TryGetLocationEvents(out string assetName, out var events);
 				string eventString = events["grandmaMessage"];
 				Game1.player.eventsSeen.Add(RSVConstants.E_GRANDMA);
 				Log.Debug($"Now playing grandma event");
@@ -84,7 +84,7 @@ namespace RidgesideVillage
 
 		private string message;
 
-		public NetFields NetFields { get; } = new NetFields();
+		public NetFields NetFields { get; } = new NetFields("RSVGrandMaEvent");
 
 		public GrandmaEvent()
 		{
@@ -103,7 +103,7 @@ namespace RidgesideVillage
 			return true;
 			*/
 			var location = Game1.getLocationFromName("FarmHouse");
-			var events = location.GetLocationEvents();
+			location.TryGetLocationEvents(out var assetName, out var events);
 			string eventString = events["grandmaMessage"];
 			UtilFunctions.StartEvent(new Event(eventString), "FarmHouse", -1000, -1000);
 			return false;

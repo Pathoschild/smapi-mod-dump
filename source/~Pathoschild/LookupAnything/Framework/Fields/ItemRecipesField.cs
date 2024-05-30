@@ -33,6 +33,9 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Fields
         /// <summary>Provides utility methods for interacting with the game code.</summary>
         private readonly GameHelper GameHelper;
 
+        /// <summary>Whether to show recipes the player hasn't learned in-game yet.</summary>
+        private readonly bool ShowUnknownRecipes;
+
         /// <summary>The number of pixels between an item's icon and text.</summary>
         private readonly int IconMargin = 5;
 
@@ -51,11 +54,13 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Fields
         /// <param name="label">A short field label.</param>
         /// <param name="ingredient">The ingredient item.</param>
         /// <param name="recipes">The recipes to list.</param>
-        public ItemRecipesField(GameHelper gameHelper, string label, Item ingredient, RecipeModel[] recipes)
+        /// <param name="showUnknownRecipes">Whether to show recipes the player hasn't learned in-game yet.</param>
+        public ItemRecipesField(GameHelper gameHelper, string label, Item? ingredient, RecipeModel[] recipes, bool showUnknownRecipes)
             : base(label, true)
         {
             this.GameHelper = gameHelper;
             this.Recipes = this.BuildRecipeGroups(ingredient, recipes).ToArray();
+            this.ShowUnknownRecipes = showUnknownRecipes;
         }
 
         /// <inheritdoc />
@@ -90,23 +95,32 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Fields
                 curPos.X = position.X + groupLeftMargin;
                 curPos += this.DrawIconText(spriteBatch, font, curPos, absoluteWrapWidth, $"{group.Type}:", Color.Black);
 
+                int hiddenUnknownRecipesCount = 0;
+
                 // draw recipe lines
                 foreach (RecipeEntry entry in group.Recipes)
                 {
+                    if (!this.ShowUnknownRecipes && !entry.IsKnown)
+                    {
+                        hiddenUnknownRecipesCount++;
+                        continue;
+                    }
+
                     // fade recipes which aren't known
                     Color iconColor = entry.IsKnown ? Color.White : Color.White * .5f;
                     Color textColor = entry.IsKnown ? Color.Black : Color.Gray;
 
                     // reset position for recipe output
+                    float recipeLeftMargin = position.X + firstRecipeLeftMargin;
                     curPos = new Vector2(
-                        position.X + firstRecipeLeftMargin,
+                        recipeLeftMargin,
                         curPos.Y + firstRecipeTopMargin
                     );
 
                     // draw output item (icon + name + count + chance)
                     float inputLeft;
                     {
-                        var outputSize = this.DrawIconText(spriteBatch, font, curPos, absoluteWrapWidth, entry.Output.DisplayText, textColor, entry.Output.Sprite, iconSize, iconColor);
+                        var outputSize = this.DrawIconText(spriteBatch, font, curPos, absoluteWrapWidth, entry.Output.DisplayText, textColor, entry.Output.Sprite, iconSize, iconColor, qualityIcon: entry.Output.Quality);
                         float outputWidth = alignColumns
                             ? group.ColumnWidths[0]
                             : outputSize.X;
@@ -121,7 +135,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Fields
                         RecipeItemEntry input = entry.Inputs[i];
 
                         // move the draw position down to a new line if the next item would be drawn off the right edge
-                        Vector2 inputSize = this.DrawIconText(spriteBatch, font, curPos, absoluteWrapWidth, input.DisplayText, textColor, input.Sprite, iconSize, iconColor, probe: true);
+                        Vector2 inputSize = this.DrawIconText(spriteBatch, font, curPos, absoluteWrapWidth, input.DisplayText, textColor, input.Sprite, iconSize, iconColor, input.Quality, probe: true);
                         if (alignColumns)
                             inputSize.X = group.ColumnWidths[i + 1];
 
@@ -134,7 +148,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Fields
                         }
 
                         // draw input item (icon + name + count)
-                        this.DrawIconText(spriteBatch, font, curPos, absoluteWrapWidth, input.DisplayText, textColor, input.Sprite, iconSize, iconColor);
+                        this.DrawIconText(spriteBatch, font, curPos, absoluteWrapWidth, input.DisplayText, textColor, input.Sprite, iconSize, iconColor, input.Quality);
                         curPos = new Vector2(
                             x: curPos.X + inputSize.X,
                             y: curPos.Y
@@ -159,7 +173,24 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Fields
                             curPos.X += joinerSize.X + itemSpacer;
                         }
                     }
+                    curPos.X = recipeLeftMargin;
+                    curPos.Y += lineHeight;
 
+                    // draw condition
+                    if (entry.Conditions != null)
+                        curPos.Y += this.DrawIconText(spriteBatch, font, curPos with { X = curPos.X + this.IconSize + this.IconMargin }, absoluteWrapWidth, I18n.Item_RecipesForMachine_Conditions(conditions: entry.Conditions), textColor).Y;
+                }
+
+                // draw number of unknown recipes
+                if (hiddenUnknownRecipesCount > 0)
+                {
+                    // reset position for unknown recipe count (aligned horizontally with other recipes)
+                    curPos = new Vector2(
+                        position.X + firstRecipeLeftMargin + this.IconMargin + this.IconSize,
+                        curPos.Y + firstRecipeTopMargin
+                    );
+
+                    this.DrawIconText(spriteBatch, font, curPos, absoluteWrapWidth, I18n.Item_UnknownRecipes(hiddenUnknownRecipesCount), Color.Gray);
                     curPos.Y += lineHeight;
                 }
 
@@ -180,7 +211,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Fields
         /// <summary>Build an optimized representation of the recipes to display.</summary>
         /// <param name="ingredient">The ingredient item.</param>
         /// <param name="rawRecipes">The raw recipes to list.</param>
-        private IEnumerable<RecipeByTypeGroup> BuildRecipeGroups(Item ingredient, RecipeModel[] rawRecipes)
+        private IEnumerable<RecipeByTypeGroup> BuildRecipeGroups(Item? ingredient, RecipeModel[] rawRecipes)
         {
             /****
             ** build models for matching recipes
@@ -188,39 +219,80 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Fields
             Dictionary<string, RecipeEntry[]> rawGroups = rawRecipes
                 // split into specific recipes that match the item
                 // (e.g. a recipe with several possible inputs => several recipes with one possible input)
-                .SelectMany(recipe =>
+                .Select(recipe =>
                 {
-                    Item? outputItem = recipe.TryCreateItem(ingredient);
+                    // get output item
+                    Item? outputItem = ingredient is not null && recipe.IsForMachine(ingredient)
+                        ? recipe.TryCreateItem(null)
+                        : recipe.TryCreateItem(ingredient);
 
-                    RecipeItemEntry output = this.CreateItemEntry(
-                        name: recipe.SpecialOutput?.DisplayText ?? outputItem?.DisplayName ?? string.Empty,
-                        item: outputItem,
-                        sprite: recipe.SpecialOutput?.Sprite,
-                        minCount: recipe.MinOutput,
-                        maxCount: recipe.MaxOutput,
-                        chance: recipe.OutputChance,
-                        isOutput: true
+                    // handle error recipe
+                    if (recipe.OutputQualifiedItemId == DataParser.ComplexRecipeId)
+                    {
+                        return new RecipeEntry(
+                            name: recipe.Key,
+                            type: recipe.DisplayType,
+                            isKnown: recipe.IsKnown(),
+                            inputs: Array.Empty<RecipeItemEntry>(),
+                            output: this.CreateItemEntry(
+                                name: I18n.Item_RecipesForMachine_TooComplex(),
+                                item: outputItem,
+                                sprite: recipe.SpecialOutput?.Sprite,
+                                hasInputAndOutput: false
+                            ),
+                            conditions: recipe.Conditions.Length > 0
+                                ? I18n.List(recipe.Conditions.Select(HumanReadableConditionParser.Parse))
+                                : null
+                        );
+                    }
+
+                    // get output model
+                    RecipeItemEntry output;
+                    if (ItemRegistry.GetDataOrErrorItem(recipe.OutputQualifiedItemId)?.ItemId == "DROP_IN")
+                    {
+                        output = this.CreateItemEntry(
+                            name: I18n.Item_RecipesForMachine_SameAsInput(),
+                            item: null,
+                            sprite: null,
+                            minCount: recipe.MinOutput,
+                            maxCount: recipe.MaxOutput,
+                            chance: recipe.OutputChance,
+                            quality: recipe.Quality,
+                            hasInputAndOutput: true
+                        );
+                    }
+                    else
+                    {
+                        output = this.CreateItemEntry(
+                            name: recipe.SpecialOutput?.DisplayText ?? outputItem?.DisplayName ?? string.Empty,
+                            item: outputItem,
+                            sprite: recipe.SpecialOutput?.Sprite,
+                            minCount: recipe.MinOutput,
+                            maxCount: recipe.MaxOutput,
+                            chance: recipe.OutputChance,
+                            quality: recipe.Quality,
+                            hasInputAndOutput: true
+                        );
+                    }
+
+                    // get ingredient models
+                    IEnumerable<RecipeItemEntry> inputs = recipe.Ingredients
+                        .Select(this.TryCreateItemEntry)
+                        .WhereNotNull();
+                    if (recipe.Type != RecipeType.TailorInput) // tailoring is always two ingredients with cloth first
+                        inputs = inputs.OrderBy(entry => entry.DisplayText);
+
+                    // build recipe
+                    return new RecipeEntry(
+                        name: recipe.Key,
+                        type: recipe.DisplayType,
+                        isKnown: recipe.IsKnown(),
+                        inputs: inputs.ToArray(),
+                        output: output,
+                        conditions: recipe.Conditions.Length > 0
+                            ? I18n.List(recipe.Conditions.Select(HumanReadableConditionParser.Parse))
+                            : null
                     );
-
-                    return this.GetCartesianInputs(recipe)
-                        .Select(inputIds =>
-                        {
-                            // get ingredient models
-                            IEnumerable<RecipeItemEntry> inputs = inputIds
-                                .Select((inputId, index) => this.TryCreateItemEntry(inputId, recipe.Ingredients[index]))
-                                .WhereNotNull();
-                            if (recipe.Type != RecipeType.TailorInput) // tailoring is always two ingredients with cloth first
-                                inputs = inputs.OrderBy(entry => entry.DisplayText);
-
-                            // build recipe
-                            return new RecipeEntry(
-                                name: recipe.Key,
-                                type: recipe.DisplayType,
-                                isKnown: recipe.IsKnown(),
-                                inputs: inputs.ToArray(),
-                                output: output
-                            );
-                        });
                 })
 
                 // filter to unique recipe
@@ -283,9 +355,10 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Fields
         /// <param name="icon">The sprite to draw.</param>
         /// <param name="iconSize">The size to draw.</param>
         /// <param name="iconColor">The color to tint the sprite.</param>
+        /// <param name="qualityIcon">The quality for which to draw an icon over the sprite.</param>
         /// <param name="probe">Whether to calculate the positions without actually drawing anything to the screen.</param>
         /// <returns>Returns the drawn size.</returns>
-        private Vector2 DrawIconText(SpriteBatch batch, SpriteFont font, Vector2 position, float absoluteWrapWidth, string text, Color textColor, SpriteInfo? icon = null, Vector2? iconSize = null, Color? iconColor = null, bool probe = false)
+        private Vector2 DrawIconText(SpriteBatch batch, SpriteFont font, Vector2 position, float absoluteWrapWidth, string text, Color textColor, SpriteInfo? icon = null, Vector2? iconSize = null, Color? iconColor = null, int? qualityIcon = null, bool probe = false)
         {
             // draw icon
             int textOffset = 0;
@@ -297,6 +370,22 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Fields
             }
             else
                 iconSize = Vector2.Zero;
+
+            // draw quality icon overlay
+            if (qualityIcon > 0 && iconSize is { X: > 0, Y: > 0 })
+            {
+                Rectangle qualityRect = qualityIcon < SObject.bestQuality ? new(338 + (qualityIcon.Value - 1) * 8, 400, 8, 8) : new(346, 392, 8, 8); // from Item.DrawMenuIcons
+                Texture2D qualitySprite = Game1.mouseCursors;
+
+                Vector2 qualitySize = iconSize.Value / 2;
+                Vector2 qualityPos = new Vector2(
+                    position.X + iconSize.Value.X - qualitySize.X,
+                    position.Y + iconSize.Value.Y - qualitySize.Y
+                );
+
+                batch.DrawSpriteWithin(qualitySprite, qualityRect, qualityPos.X, qualityPos.Y, qualitySize, iconColor);
+            }
+
 
             // draw text
             Vector2 textSize = probe
@@ -311,13 +400,12 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Fields
         }
 
         /// <summary>Create a recipe item model.</summary>
-        /// <param name="id">The item id.</param>
         /// <param name="ingredient">The recipe ingredient model for the item.</param>
         /// <returns>The equivalent item entry model, or <c>null</c> for a category with no matching items.</returns>
-        private RecipeItemEntry? TryCreateItemEntry(string id, RecipeIngredientModel ingredient)
+        private RecipeItemEntry? TryCreateItemEntry(RecipeIngredientModel ingredient)
         {
             // from category
-            if (int.TryParse(id, out int category) && category < 0)
+            if (int.TryParse(ingredient.InputId, out int category) && category < 0)
             {
                 Item? input = this.GameHelper.GetObjectsByCategory(category).FirstOrDefault();
                 if (input == null)
@@ -338,7 +426,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Fields
                         displayName = input.getCategoryName();
                         break;
                 }
-                
+
                 return this.CreateItemEntry(
                     name: displayName,
                     minCount: ingredient.Count,
@@ -347,8 +435,9 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Fields
             }
 
             // from item
+            if (ingredient.InputId != null)
             {
-                Item input = ItemRegistry.Create(id);
+                Item input = ItemRegistry.Create(ingredient.InputId, allowNull: true);
 
                 if (input is SObject obj)
                 {
@@ -358,13 +447,33 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Fields
                         obj.preserve.Value = ingredient.PreserveType.Value;
                 }
 
+                if (input is not null)
+                {
+                    string name = input.DisplayName ?? input.ItemId;
+                    if (ingredient.InputContextTags.Length > 0) // if the item has both item ID and context tags, show tags to disambiguate
+                        name += $" ({I18n.List(ingredient.InputContextTags.Select(HumanReadableContextTagParser.Parse))})";
+
+                    return this.CreateItemEntry(
+                        name: name,
+                        item: input,
+                        minCount: ingredient.Count,
+                        maxCount: ingredient.Count
+                    );
+                }
+            }
+
+            // from context tags
+            if (ingredient.InputContextTags.Length > 0)
+            {
                 return this.CreateItemEntry(
-                    name: input?.DisplayName ?? string.Empty,
-                    item: input,
+                    name: I18n.List(ingredient.InputContextTags.Select(HumanReadableContextTagParser.Parse)),
                     minCount: ingredient.Count,
                     maxCount: ingredient.Count
                 );
             }
+
+            // invalid?
+            return null;
         }
 
         /// <summary>Create a recipe item model.</summary>
@@ -374,8 +483,9 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Fields
         /// <param name="minCount">The minimum number of items needed or created.</param>
         /// <param name="maxCount">The maximum number of items needed or created.</param>
         /// <param name="chance">The chance of creating an output item.</param>
-        /// <param name="isOutput">Whether the item is output or input.</param>
-        private RecipeItemEntry CreateItemEntry(string name, Item? item = null, SpriteInfo? sprite = null, int minCount = 1, int maxCount = 1, decimal chance = 100, bool isOutput = false)
+        /// <param name="quality">The item quality that will be produced, if applicable.</param>
+        /// <param name="hasInputAndOutput">Whether the item has both input and output ingredients.</param>
+        private RecipeItemEntry CreateItemEntry(string name, Item? item = null, SpriteInfo? sprite = null, int minCount = 1, int maxCount = 1, decimal chance = 100, int? quality = null, bool hasInputAndOutput = false)
         {
             // get display text
             string text;
@@ -393,51 +503,15 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Fields
                     text += $" ({I18n.Generic_Percent(chance)})";
 
                 // output suffix
-                if (isOutput)
+                if (hasInputAndOutput)
                     text += ":";
             }
 
             return new RecipeItemEntry(
                 Sprite: sprite ?? this.GameHelper.GetSprite(item),
-                DisplayText: text
+                DisplayText: text,
+                Quality: quality
             );
-        }
-
-        /// <summary>Get the cartesian product of the possible input ingredients for a recipe.</summary>
-        /// <param name="recipe">The recipe whose input sets to list.</param>
-        /// <returns>An enumerable containing each set of item ids.</returns>
-        private IEnumerable<string[]> GetCartesianInputs(RecipeModel recipe)
-        {
-            string[][] sets = recipe.Ingredients.Select(p => p.PossibleIds.ToArray()).ToArray();
-            return this.GetCartesianProduct(sets);
-        }
-
-        /// <summary>Get the cartesian product of an arbitrary number of arrays.</summary>
-        /// <typeparam name="T">The array value type.</typeparam>
-        /// <param name="arrays">The arrays to combine.</param>
-        /// <returns>An enumerable containing each set of item ids.</returns>
-        /// <remarks>Derived from <a href="https://stackoverflow.com/a/33106054/262123">code by Peter Almazov</a>.</remarks>
-        private IEnumerable<T[]> GetCartesianProduct<T>(IReadOnlyList<T[]> arrays)
-        {
-            int[] lengths = arrays.Select(a => a.Length).ToArray();
-            int length = arrays.Count;
-            int[] inds = new int[length];
-
-            while (inds[0] != lengths[0])
-            {
-                var result = new T[length];
-                for (int i = 0; i != length; i++)
-                    result[i] = arrays[i][inds[i]];
-                yield return result;
-
-                int j = length - 1;
-                inds[j]++;
-                while (j > 0 && inds[j] == lengths[j])
-                {
-                    inds[j--] = 0;
-                    inds[j]++;
-                }
-            }
         }
     }
 }

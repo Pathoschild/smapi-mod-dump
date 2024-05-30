@@ -9,8 +9,9 @@
 *************************************************/
 
 {
-  "screenGui.component.textField.flipUp": "Flip up",
-  "screenGui.component.textField.flipDown": "Flip down",
-  "screenGui.component.textField.closeScreen": "Close screen",
-  "screenGui.component.textField.Search": "Search"
+  "screenGui.component.arrowButton.flipUp": "Flip up",
+  "screenGui.component.arrowButton.flipDown": "Flip down",
+  "screenGui.component.arrowButton.backScreen": "Back screen",
+  "screenGui.component.closeButton.closeScreen": "Close screen",
+  "screenGui.component.textField.search": "Search"
 }

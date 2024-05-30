@@ -1,0 +1,21 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/bcmpinc/StardewHack
+**
+*************************************************/
+
+{
+    //Translate by DzikiSzogun (Discord @dzikiszogun)
+    "errors": "StardewHack {{version}} wykrył następujące błędy:",
+    "footer": "Sprawdź swoją konsolę lub log błędów, aby uzyskać dalsze instrukcje.",
+    "fatal":  "Stardew Valley nie może się uruchomić, dopóki te błędy nie zostaną naprawione.",
+    "outdated-harmony": "SMAPI korzysta z nieaktualnej wersji Harmony.",
+    "initialization-error": "Nie udało się zainicjować moda",
+    "failed-patch": "Nie udało się zastosować niektórych/wszystkich poprawek.",
+    "outdated-version": "StardewHack nie obsługuje tej wersji.",
+    "corrupted": "Pliki instalacyjne moda zostały uszkodzone.",
+}

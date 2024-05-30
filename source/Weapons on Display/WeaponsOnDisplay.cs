@@ -16,7 +16,7 @@ using StardewValley.Tools;
 using StardewValley.Objects;
 using StardewModdingAPI;
 using Microsoft.Xna.Framework.Graphics;
-using Harmony;
+using HarmonyLib;
 using System.Xml.Serialization;
 
 namespace WeaponsOnDisplay
@@ -33,13 +33,13 @@ namespace WeaponsOnDisplay
 		public override void Entry(IModHelper helper)
 		{
 			M = Monitor;
-			HarmonyInstance harmony = HarmonyInstance.Create(ModManifest.UniqueID);
+			Harmony harmony = new Harmony(ModManifest.UniqueID);
 
 			// Patch furniture's pick up, drop item, and render functionality to support weapons.
 			harmony.Patch(original: AccessTools.Method(typeof(StardewValley.Objects.Furniture), nameof(StardewValley.Objects.Furniture.clicked)),
 						  prefix: new HarmonyMethod(typeof(FurniturePatches), nameof(FurniturePatches.clicked_Prefix)));
 			harmony.Patch(original: AccessTools.Method(typeof(StardewValley.Objects.Furniture), nameof(StardewValley.Objects.Furniture.performObjectDropInAction)),
-						  postfix: new HarmonyMethod(typeof(FurniturePatches), nameof(FurniturePatches.performObjectDropInAction_Postfix)));
+						  prefix: new HarmonyMethod(typeof(FurniturePatches), nameof(FurniturePatches.performObjectDropInAction_Prefix)));
 			harmony.Patch(original: AccessTools.Method(typeof(StardewValley.Objects.Furniture), nameof(StardewValley.Objects.Furniture.draw),
 						  new Type[] { typeof(SpriteBatch), typeof(int), typeof(int), typeof(float) }),
 						  prefix: new HarmonyMethod(typeof(FurniturePatches), nameof(FurniturePatches.draw_Prefix)));
@@ -87,13 +87,13 @@ namespace WeaponsOnDisplay
 				{
 					if (furniture.heldObject.Value is WeaponProxy weaponProxy)
 					{
-						StardewValley.Object placeholder = new StardewValley.Object(furniture.heldObject.Value.TileLocation, 0);
+						StardewValley.Object placeholder = new StardewValley.Object(furniture.heldObject.Value.TileLocation, "0");
 						placeholder.Name = $"WeaponProxy:{XmlSerialize(weaponProxy.Weapon)}";
 						furniture.heldObject.Set(placeholder);
 					}
 					else if (furniture.heldObject.Value is SlingshotProxy slingshotProxy)
 					{
-						StardewValley.Object placeholder = new StardewValley.Object(furniture.heldObject.Value.TileLocation, 0);
+						StardewValley.Object placeholder = new StardewValley.Object(furniture.heldObject.Value.TileLocation, "0");
 						placeholder.Name = $"SlingshotProxy:{XmlSerialize(slingshotProxy.Weapon)}";
 						furniture.heldObject.Set(placeholder);
 					}
@@ -103,19 +103,19 @@ namespace WeaponsOnDisplay
 			// Ensure we check additional buildings like sheds and cabins.
 			foreach (Building building in Game1.getFarm().buildings)
 			{
-				if (building.indoors.Value != null && building.indoors.Value.furniture != null)
+				if (building != null && building.indoors.Value != null && building.indoors.Value.furniture != null)
 				{
 					foreach (Furniture furniture in building.indoors.Value.furniture)
 					{
 						if (furniture.heldObject.Value is WeaponProxy weaponProxy)
 						{
-							StardewValley.Object placeholder = new StardewValley.Object(furniture.heldObject.Value.TileLocation, 0);
+							StardewValley.Object placeholder = new StardewValley.Object(furniture.heldObject.Value.TileLocation, "0");
 							placeholder.Name = $"WeaponProxy:{XmlSerialize(weaponProxy.Weapon)}";
 							furniture.heldObject.Set(placeholder);
 						}
 						else if (furniture.heldObject.Value is SlingshotProxy slingshotProxy)
 						{
-							StardewValley.Object placeholder = new StardewValley.Object(furniture.heldObject.Value.TileLocation, 0);
+							StardewValley.Object placeholder = new StardewValley.Object(furniture.heldObject.Value.TileLocation, "0");
 							placeholder.Name = $"SlingshotProxy:{XmlSerialize(slingshotProxy.Weapon)}";
 							furniture.heldObject.Set(placeholder);
 						}
@@ -126,14 +126,20 @@ namespace WeaponsOnDisplay
 
 		private void restoreMeleeWeapon(Furniture furniture, string xmlString)
 		{
+			// If the given XML contains "<appearance>-1</appearance>", it is from an earlier version so it can be removed.
+			xmlString = xmlString.Replace("<appearance>-1</appearance>", "");
 			MeleeWeapon weapon = XmlDeserialize<MeleeWeapon>(xmlString);
-			furniture.heldObject.Set(new WeaponProxy(weapon));
+
+			furniture.heldObject.Set(new WeaponProxy((MeleeWeapon)weapon.getOne()));
 		}
 
 		private void restoreSlingshot(Furniture furniture, string xmlString)
 		{
+			// If the given XML contains "<appearance>-1</appearance>", it is from an earlier version so it can be removed.
+			xmlString = xmlString.Replace("<appearance>-1</appearance>", "");
 			Slingshot slingshot = XmlDeserialize<Slingshot>(xmlString);
-			furniture.heldObject.Set(new SlingshotProxy(slingshot));
+			
+			furniture.heldObject.Set(new SlingshotProxy((Slingshot)slingshot.getOne()));
 		}
 
 		/// <summary>Replaces all placeholder objects with their WeaponProxy counterparts.</summary>
@@ -169,30 +175,32 @@ namespace WeaponsOnDisplay
 			// Ensure we check additional buildings like sheds and cabins.
 			foreach (Building building in Game1.getFarm().buildings)
 			{
-				foreach (Furniture furniture in building.indoors.Value.furniture)
+				if (building != null && building.indoors.Value != null && building.indoors.Value.furniture != null)
 				{
-					if (furniture.heldObject.Value != null && furniture.heldObject.Value.Name.Contains("Proxy:"))
+					foreach (Furniture furniture in building.indoors.Value.furniture)
 					{
-						string xmlString = furniture.heldObject.Value.Name;
-						if (xmlString.StartsWith("WeaponProxy:"))
+						if (furniture.heldObject.Value != null && furniture.heldObject.Value.Name.Contains("Proxy:"))
 						{
-							try
+							string xmlString = furniture.heldObject.Value.Name;
+							if (xmlString.StartsWith("WeaponProxy:"))
 							{
-								restoreMeleeWeapon(furniture, xmlString.Substring("WeaponProxy:".Length));
+								try
+								{
+									restoreMeleeWeapon(furniture, xmlString.Substring("WeaponProxy:".Length));
+								}
+								catch (InvalidOperationException) // An exception may indicate a slingshot was stored in an older version of the mod.
+								{
+									restoreSlingshot(furniture, xmlString.Substring("WeaponProxy:".Length));
+								}
 							}
-							catch (InvalidOperationException) // An exception may indicate a slingshot was stored in an older version of the mod.
+							else if (xmlString.StartsWith("SlingshotProxy:"))
 							{
-								restoreSlingshot(furniture, xmlString.Substring("WeaponProxy:".Length));
+								restoreSlingshot(furniture, xmlString.Substring("SlingshotProxy:".Length));
 							}
-						}
-						else if (xmlString.StartsWith("SlingshotProxy:"))
-						{
-							restoreSlingshot(furniture, xmlString.Substring("SlingshotProxy:".Length));
 						}
 					}
 				}
 			}
 		}
-
 	}
 }

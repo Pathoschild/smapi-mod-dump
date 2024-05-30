@@ -10,24 +10,23 @@
 
 {
 	// task names and keywords (for parsing)
+	"task.animal": "Farm Animal",
+	"task.animal.keywords": "buy,purchase,get",
 	"task.basic": "Basic",
 	"task.blacksmith": "Upgrade Tool",
-	"task.blacksmith.keywords": "upgrade",
+	"task.blacksmith.keywords": "upgrade,buy,purchase,get",
 	"task.build": "Build",
-	"task.build.keywords": "build,construct,raise,buy,purchase,get",
+	"task.build.keywords": "build,construct,upgrade,buy,purchase,get",
 	"task.buy": "Buy",
 	"task.buy.keywords": "buy,purchase,get",
 	"task.collect": "Collect",
-	"task.collect.keywords": "collect,chop,harvest,gather,forage,fish,catch,mine,find,retrieve,get",
+	"task.collect.keywords": "collect,chop,harvest,gather,forage,fish,catch,mine,dig,find,search,retrieve,get,make",
 	"task.craft": "Craft",
 	"task.craft.keywords": "craft,cook,create,make,get",
 	"task.gift": "Gift",
 	"task.gift.keywords": "gift,give",
 	"task.sell": "Sell",
 	"task.sell.keywords": "sell,ship",
-	
-	// journal button (when the player has no active quests)
-	"ui.taskbutton.hover": "Journal ({{key}})",
 
 	// tab/page names
 	"ui.tab.quests": "Quests",
@@ -35,16 +34,21 @@
 	"ui.tab.notes": "Notes",
 	
 	// tasks page
-	"ui.tasks.help": "Press the Add Task button",
+	"ui.tasks.help": "Press the Add Task button below",
 	"ui.tasks.addbutton.hover": "Add Task",
 	"ui.tasks.editbox.hover": "Edit Task",
 	"ui.tasks.removebutton.hover": "Remove Task",
 	"ui.tasks.renewbutton.hover": "Renew Task",
 	"ui.tasks.renew.day": "{{count}} Day",
 	"ui.tasks.renew.days": "{{count}} Days",
+	"ui.tasks.status.deliver": "[152] Deliver",
+	"ui.tasks.status.upgrading": "[42] Upgrading",
+	"ui.tasks.status.ready": "[151] Ready",
 	"ui.tasks.moneybox.hover0": "Total Amount to Pay/Gain",
 	"ui.tasks.moneybox.hover1": "Net Wealth",
 	"ui.tasks.moneybutton.hover": "Change View",
+	"ui.tasks.filter": "Filter: {{category}}",
+	"ui.tasks.filter.all": "All",
 
 	// add new task menu
 	"ui.tasks.new": "Add New Task",
@@ -62,27 +66,32 @@
 	"ui.tasks.options.renew.Weekly": "Weekly",
 	"ui.tasks.options.renew.Monthly": "Monthly",
 	"ui.tasks.options.renew.Annually": "Annually",
+	"ui.tasks.options.renew.Custom": "Custom",
 	"ui.tasks.options.type": "Task Type",
 
 	// task parameter names
+	"ui.tasks.parameter.animal": "Animal",
 	"ui.tasks.parameter.building": "Building",
 	"ui.tasks.parameter.count": "Count",
 	"ui.tasks.parameter.item": "Item",
-	"ui.tasks.parameter.npc": "NPC",
+	"ui.tasks.parameter.npc": "Villager",
+	"ui.tasks.parameter.quality": "Quality (Minimum)",
 	"ui.tasks.parameter.tool": "Tool",
 
-	// seasons
-	"seasons.spring": "Spring",
-	"seasons.summer": "Summer",
-	"seasons.fall": "Fall",
-	"seasons.winter": "Winter",
+	// +---------------------------------+
+	// | display name aliases (OPTIONAL) |
+	// +---------------------------------+
+	// NOTE: case insensitive, underscores replaced with spaces
 
-	// weekdays
-	"weekdays.monday": "Monday",
-	"weekdays.tuesday": "Tuesday",
-	"weekdays.wednesday": "Wednesday",
-	"weekdays.thursday": "Thursday",
-	"weekdays.friday": "Friday",
-	"weekdays.saturday": "Saturday",
-	"weekdays.sunday": "Sunday"
+	// animal shop display names
+	"alias.animalshop.dairy_cow": "cow,cows",
+
+	// building display names
+	"alias.buildings.farmhouse": "house,home",
+
+	// item display names
+	//"alias.items.<item>": "",
+
+	// villager display names
+	"alias.npcs.abigail": "abby"
 }

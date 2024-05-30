@@ -71,11 +71,11 @@ namespace NermNermNerm.Junimatic
                 var items = chest.GetItemsForPlayer(Game1.player.UniqueMultiplayerID);
                 if (items.HasEmptySlots() || chest.GetActualCapacity() > items.Count)
                 {
-                    return items.Any(i => i.ItemId == objectToStore.ItemId && i.Quality == objectToStore.Quality);
+                    return items.Any(i => i is not null && i.ItemId == objectToStore.ItemId && i.Quality == objectToStore.Quality);
                 }
                 else
                 {
-                    int[] stacks = items.Where(i => i.ItemId == objectToStore.ItemId && i.Quality == objectToStore.Quality).Select(i => i.Stack).ToArray();
+                    int[] stacks = items.Where(i => i is not null && i.ItemId == objectToStore.ItemId && i.Quality == objectToStore.Quality).Select(i => i.Stack).ToArray();
                     return stacks.Sum() + objectToStore.Stack <= stacks.Length * 999;
                 }
             }

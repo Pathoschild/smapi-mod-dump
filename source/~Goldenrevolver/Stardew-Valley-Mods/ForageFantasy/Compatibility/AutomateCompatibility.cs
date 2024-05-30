@@ -95,6 +95,12 @@ namespace ForageFantasy
             {
                 return;
             }
+
+            if (!mod.Config.TapperSapHasQuality && tapper.heldObject.Value.QualifiedItemId == TapperAndMushroomQualityLogic.sapQID)
+            {
+                return;
+            }
+
             var tree = mod.Helper.Reflection.GetField<Tree>(__instance, "Tree").GetValue();
 
             if (tree != null)

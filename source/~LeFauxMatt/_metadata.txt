@@ -21,11 +21,11 @@ mods:
    Toolbar Icons
 
 latest commit:
-   commit c882996551dfe0cdcc4f2ab09c239dbf4a38b862
+   commit 23906c841b4a48909c8c09b962051c6f6d2b5459
    Author: FauxMatt <github@fauxmail.net>
-   Date:   Fri Apr 19 20:14:37 2024 -0700
+   Date:   Sat May 25 12:27:43 2024 -0700
    
-       Refactor menu management and fix Backpack Storage options
+       Refactor code to remove unnecessary InputHelper and ReflectionHelper dependencies
        
-       The menu management has been updated to handle the current menu more uniformly across the codebase. Also, the inheritance of global storage options by Backpack Storage has been removed. Various issues with the backpack config, such as visibility in other menus and item placement restrictions, have also been addressed.
+       Removal of unnecessary dependencies on InputHelper and ReflectionHelper in multiple files is mainly done. These dependencies were seen in the different menu classes and service features like ChestFinder within the BetterChests Framework. Additionally, some classes were also updated to clean up and simplify the code, making it more maintainable.
    

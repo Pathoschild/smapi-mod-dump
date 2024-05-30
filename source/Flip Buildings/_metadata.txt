@@ -6,9 +6,9 @@ mods:
    Flip Buildings
 
 latest commit:
-   commit 1ab9d6673caeb94f3b78028ed0342a728afc5ccd
+   commit 11b603a905d2a9f19facb8c343f997935c5e9d61
    Author: mouahrara <mouahrara@users.noreply.github.com>
-   Date:   Fri Apr 26 01:23:33 2024 +0200
+   Date:   Sat May 4 11:29:13 2024 +0200
    
-       Fix the fish pond bowls and code maintenance
+       Flip Buildings 2.0.1
    

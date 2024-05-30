@@ -69,11 +69,19 @@ Preparing environment
 
 Build
 - Clone the code
-- `dotnet build`
+- Run build command
+  ```sh
+  # This output to bin/debug directory
+  dotnet build
+  # This output to bin/release directory
+  dotnet build --configuration Release
+  ```
 
 Debug
-- The build file should be in release folder, manually copy and extract the build `.zip` file to the game `Mod` folder path
+- The build file should be already in release (and game mod folder)
+  - As I build and develop in other remote machine, I then manually copy and extract the build `.zip` file to the local game `Mod` folder path to test it
 - Start the game
-- Check the SMAPI log for testing the mod.
+  - If you want to work in the same terminal (right after code being built), You should run `"./Stardew Valley/StardewModdingAPI"` directly so the log can working normally. (By default steam will run the `./StardewValley` file, which open new termnial instance)
+  - Check the SMAPI log for testing the mod.
 
 > If build step fail, try install the game, steam in default location. It likely that the `Pathoschild.Stardew.ModBuildConfig` Nuget package can't detect game location.

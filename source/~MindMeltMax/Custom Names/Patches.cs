@@ -70,10 +70,10 @@ namespace CustomNames
 
         private static void drawCurrentItemName(int index, Toolbar toolbar, SpriteBatch b)
         {
-            if (!ModEntry.IConfig.ShowToolbarName)
-                return;
             if (nameFadeTimer.Value > 0)
                 --nameFadeTimer.Value;
+            if (!ModEntry.IConfig.ShowToolbarName)
+                return;
             if (index != Game1.player.CurrentToolIndex) //Inserted into loop, so check for indeces which are no the current tool index
                 return;
             if (index != curIndex.Value) //Update current tool index and check if it has a custom name property

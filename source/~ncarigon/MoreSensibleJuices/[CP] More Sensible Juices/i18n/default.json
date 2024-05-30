@@ -12,8 +12,6 @@
 	"press_Name": "Juice Press",
 	"press_Description": "Turns fruits and vegetables into juices.",
 	"flavor_Name": "{0} {1}",
-	"mash_Name": "Mash",
-	"mash_Description": "Fermented vegetable juice.",
 
 	"config.PressRetainsQuality.name": "Press Retains Quality",
 	"config.PressRetainsQuality.description": "Determines whether the output item's quality from the Juice Press will match the input item's quality.",
@@ -22,7 +20,5 @@
 	"config.UseNormalBeerRecipe.name": "Use Normal Beer Recipe",
 	"config.UseNormalBeerRecipe.description": "When enabled, beer will still be made when wheat is directly placed into kegs.",
 	"config.UseNormalPaleAleRecipe.name": "Use Normal Pale Ale Recipe",
-	"config.UseNormalPaleAleRecipe.description": "When enabled, pale ale will still be made when hops are directly placed into kegs.",
-	"config.UseNormalSakeRecipe.name": "Use Normal Sake Recipe",
-	"config.UseNormalSakeRecipe.description": "When enabled, sake will still be made when unmilled rice is directly placed into kegs. Requires the CopperStill mod."
+	"config.UseNormalPaleAleRecipe.description": "When enabled, pale ale will still be made when hops are directly placed into kegs."
 }

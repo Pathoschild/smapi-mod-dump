@@ -6,9 +6,9 @@ mods:
    Baits Do Their Jobs
 
 latest commit:
-   commit 6e6eca5b4e5be32c0769b05a59bc4d63db802f93
+   commit 8244a4b24e9486e3167cf011b2669a925b226c02
    Author: MercuryVN <121730147+MercuryVN@users.noreply.github.com>
-   Date:   Fri Apr 26 02:16:12 2024 +0700
+   Date:   Thu May 2 13:35:51 2024 +0700
    
-       Initial commit
+       0.2.0
    

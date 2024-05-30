@@ -1,0 +1,24 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Hunter-Chambers/StardewValleyMods
+**
+*************************************************/
+
+{
+  "quest_mail_title": "Mejoras para el Auto-caricias",
+  "quest_mail_start": "Hola",
+  "quest_mail_details": "Escuche que encontraste un auto-caricias de Joja. Si quieres, podria buscar la forma de mejorarlo.  Solo deja el auto-caricias, 300 de madera noble, y 25 lingotes de iridio en mi garaje, yo me encargaré del resto...",
+  "quest_reward_mail_title": "El Auto-caricias Deluxe",
+  "quest_reward_mail_details": "¡Buenas noticias! Robin pudo crear el \"Auto-caricias Deluxe\" con los materiales que le proporcionaste. Ahora yo vendo los Auto-caricias deluxe, así que puedes comprar uno cuando quieras. ¡Tus animales lo amaran!",
+  "quest_title": "El Auto-caricias Deluxe",
+  "quest_description": "Entrega los materiales necesarios en la casa de Robin.",
+  "quest_objective": "Entrega 1 Auto-caricias, 300 madera noble y 25 lingotes de iridio",
+  "deluxe_auto_petter_display_name": "Auto-caricias Deluxe",
+  "deluxe_auto_petter_description": "Hace lo mismo que un auto-caricias normal, pero con mejores resultados ¡Hurra!",
+  "robin_name": "Robin",
+  "marnie_name": "Marnie"
+}

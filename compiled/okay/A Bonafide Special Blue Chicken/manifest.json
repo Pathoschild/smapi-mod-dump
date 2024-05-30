@@ -1,13 +1,14 @@
 {
   "Name": "A Bonafide Special Blue Chicken",
   "Author": "rikai",
-  "Version": "2.3.0",
-  "Description": "A mod that makes blue chickens a little more interesting.",
+  "Version": "3.0.0",
+  "Description": "A small mod that makes blue chickens a little more interesting.",
   "UniqueID": "rikai.abonafidespecialbluechicken",
   "EntryDll": "ABonafideSpecialBlueChicken.dll",
   "MinimumApiVersion": "4.0",
   "UpdateKeys": [ "Nexus:8979" ],
   "Meta:Changelog": {
+    "3.0.0": "Refactored code to simplify things. Fixed config not saving properly. Added support for the Auto-grabber. New drop added.",
     "2.3.0": "Updated for Stardew Valley 1.6 and SMAPI 4.0"
   }
 }

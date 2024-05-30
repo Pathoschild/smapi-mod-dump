@@ -8,6 +8,11 @@
 **
 *************************************************/
 
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Reflection.Emit;
+using HarmonyLib;
 using StardewValley;
 
 namespace StardewVariableSeasons
@@ -20,22 +25,22 @@ namespace StardewVariableSeasons
 
             var message = changeDate switch
             {
-                23 or 24 =>
+                22 or 23 =>
                     $"And we're looking at an abnormally short {Game1.currentSeason} this year, make sure you remember to harvest early!",
-                25 or 26 => $"It looks like {Game1.currentSeason} will be a bit shorter than average this year.",
-                27 or 28 or 1 => $"The {Game1.currentSeason} is going to be about an average length this year.",
-                2 or 3 or 4 => $"We're expecting a slightly longer than average {Game1.currentSeason} this year.",
-                5 or 6 or 7 =>
+                24 or 25 => $"It looks like {Game1.currentSeason} will be a bit shorter than average this year.",
+                26 or 27 or 0 => $"The {Game1.currentSeason} is going to be about an average length this year.",
+                1 or 2 or 3 => $"We're expecting a slightly longer than average {Game1.currentSeason} this year.",
+                4 or 5 or 6 =>
                     $"This {Game1.currentSeason} is looking to run abnormally long, according to our projections.",
-                _ => ""
+                _ => "You... played with the dev panel didn't you? Well, be careful out there, time traveller!"
             };
 
             return message;
         }
-        
+
         public static void Postfix(ref string __result)
         {
-            if (Game1.dayOfMonth > 15 && Game1.dayOfMonth < 21)
+            if (Game1.dayOfMonth > 15 && Game1.dayOfMonth < 23)
                 __result += $" {GetWeatherMessage()}";
         }
     }

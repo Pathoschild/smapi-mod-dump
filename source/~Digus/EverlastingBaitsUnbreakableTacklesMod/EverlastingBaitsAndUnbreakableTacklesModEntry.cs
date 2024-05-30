@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using System.Collections.Generic;
 using HarmonyLib;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -79,7 +80,7 @@ namespace EverlastingBaitsAndUnbreakableTacklesMod
             if (!DataLoader.ModConfig.DisableIridiumQualityFish)
             {
                 harmony.Patch(
-                    original: AccessTools.Constructor(typeof(BobberBar), new[] { typeof(int), typeof(float), typeof(bool), typeof(int) }),
+                    original: AccessTools.Constructor(typeof(BobberBar), new[] { typeof(string), typeof(float), typeof(bool), typeof(List<string>), typeof(string), typeof(bool), typeof(string), typeof(bool) }),
                     postfix: new HarmonyMethod(typeof(GameOverrides), nameof(GameOverrides.BobberBar))
                 );
             }

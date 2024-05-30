@@ -28,6 +28,8 @@
   "config.FlowerProbability.4": "Often",
   "config.FlowerProbability.5": "Abundant",
   "config.AllLocations.Key": "Check all locations",
-  "config.AllLocations.Tooltip":  "If this option is enabled flower will try to appear on all the game locations that have grass instead of the default Farms and Greenhouse locations"
+  "config.AllLocations.Tooltip": "If this option is enabled flower will try to appear on all the game locations that have grass instead of the default Farms and Greenhouse locations",
+  "config.KeepRegrowFlower.Key": "Keep regrow flowers",
+  "config.KeepRegrowFlower.Tooltip": "If this option is enabled, flowers that bloom multiple times will not be removed on harvest"
 
 }

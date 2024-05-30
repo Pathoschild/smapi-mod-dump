@@ -1,0 +1,208 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/lisyce/SDV_Allergies_Mod
+**
+*************************************************/
+
+{
+  "Changes": [
+    {
+      "LogName": "Add plant milk context tag (coconut)",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "TargetField": [ "88", "ContextTags" ],
+      "Entries": {
+        "#-1": "BarleyZP.BzpAllergies_PlantMilkIngredient"
+      }
+    },
+    {
+      "LogName": "Add plant milk context tag (hazelnut)",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "TargetField": [ "408", "ContextTags" ],
+      "Entries": {
+        "#-1": "BarleyZP.BzpAllergies_PlantMilkIngredient"
+      }
+    },
+    {
+      "LogName": "Add plant milk context tag (rice)",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "TargetField": [ "423", "ContextTags" ],
+      "Entries": {
+        "#-1": "BarleyZP.BzpAllergies_PlantMilkIngredient"
+      }
+    },
+    {
+      "LogName": "Add flour context tag (wheat flour)",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "TargetField": [ "246", "ContextTags" ],
+      "Entries": {
+        "#-1": "BarleyZP.BzpAllergies_FlourIngredient"
+      }
+    },
+    {
+      "LogName": "Category Overrides",
+      "Action": "EditData",
+      "Target": "spacechase0.SpaceCore/ObjectExtensionData",
+      "Entries": {
+        "BarleyZP.BzpAllergies_PlantMilk": {
+          "CategoryTextOverride": ""
+        }
+      }
+    },
+    {
+      "LogName": "Add custom objects",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "Entries": {
+        "BarleyZP.BzpAllergies_AllergyMedicine": {
+          "Name": "Allergy Medicine",
+          "DisplayName": "{{i18n:obj.allergy-medicine.name}}",
+          "Description": "{{i18n:obj.allergy-medicine.desc}}",
+          "Type": "Basic",
+          "Category": 0,
+          "Price": 500,
+          "Texture": "BarleyZP.BzpAllergies/Sprites",
+          "SpriteIndex": 0,
+          "Edibility": 20,
+          "IsDrink": true,
+          "Buffs": null,
+          "GeodeDropsDefaultItems": false,
+          "GeodeDrops": null,
+          "ArtifactSpotChances": null,
+          "ExcludeFromFishingCollection": false,
+          "ExcludeFromShippingCollection": false,
+          "ExcludeFromRandomSale": false,
+          "ContextTags": [
+            "medicine_item",
+            "color_dark_purple",
+            "ginger_item"
+          ],
+          "CustomFields": null
+        },
+        "BarleyZP.BzpAllergies_LactasePills": {
+          "Name": "Lactase Pills",
+          "DisplayName": "{{i18n:obj.lactase-pills.name}}",
+          "Description": "{{i18n:obj.lactase-pills.desc}}",
+          "Type": "Basic",
+          "Category": 0,
+          "Price": 500,
+          "Texture": "BarleyZP.BzpAllergies/Sprites",
+          "SpriteIndex": 1,
+          "Edibility": 20,
+          "IsDrink": false,
+          "Buffs": null,
+          "GeodeDropsDefaultItems": false,
+          "GeodeDrops": null,
+          "ArtifactSpotChances": null,
+          "ExcludeFromFishingCollection": false,
+          "ExcludeFromShippingCollection": false,
+          "ExcludeFromRandomSale": false,
+          "ContextTags": [
+            "medicine_item",
+            "color_blue"
+          ],
+          "CustomFields": null
+        },
+        "BarleyZP.BzpAllergies_PlantMilk": {
+          "Name": "Plant Milk",
+          "DisplayName": "{{i18n:obj.plantmilk.name}}",
+          "Description": "{{i18n:obj.plantmilk.desc}}",
+          "Type": "Basic",
+          "Category": -6,
+          "Price": 150,
+          "Texture": "BarleyZP.BzpAllergies/Sprites",
+          "SpriteIndex": 5,
+          "Edibility": 20,
+          "IsDrink": true,
+          "Buffs": null,
+          "GeodeDropsDefaultItems": false,
+          "GeodeDrops": null,
+          "ArtifactSpotChances": null,
+          "ExcludeFromFishingCollection": false,
+          "ExcludeFromShippingCollection": false,
+          "ExcludeFromRandomSale": false,
+          "ContextTags": [
+            "color_white"
+          ],
+          "CustomFields": null
+        },
+        "BarleyZP.BzpAllergies_GfFlour": {
+          "Name": "Gluten Free Flour",
+          "DisplayName": "{{i18n:obj.gf-flour.name}}",
+          "Description": "{{i18n:obj.gf-flour.desc}}",
+          "Type": "Basic",
+          "Category": 0,
+          "Price": 50,
+          "Texture": "BarleyZP.BzpAllergies/Sprites",
+          "SpriteIndex": 7,
+          "Edibility": 5,
+          "IsDrink": false,
+          "Buffs": null,
+          "GeodeDropsDefaultItems": false,
+          "GeodeDrops": null,
+          "ArtifactSpotChances": null,
+          "ExcludeFromFishingCollection": false,
+          "ExcludeFromShippingCollection": false,
+          "ExcludeFromRandomSale": false,
+          "ContextTags": [
+            "color_white",
+            "BarleyZP.BzpAllergies_FlourIngredient"
+          ]
+        },
+        "BarleyZP.BzpAllergies_AllergyTeachBook": {
+          "Name": "All About Allergies",
+          "DisplayName": "{{i18n:obj.allergy-teach-book.name}}",
+          "Description": "{{i18n:obj.allergy-teach-book.desc}}",
+          "Type": "asdf",
+          "Category": -102,
+          "Price": 1000,
+          "Texture": "BarleyZP.BzpAllergies/Sprites",
+          "SpriteIndex": 9,
+          "Edibility": -300,
+          "IsDrink": false,
+          "Buffs": null,
+          "GeodeDropsDefaultItems": false,
+          "GeodeDrops": null,
+          "ArtifactSpotChances": null,
+          "ExcludeFromFishingCollection": false,
+          "ExcludeFromShippingCollection": false,
+          "ExcludeFromRandomSale": false,
+          "ContextTags": [
+            "color_green",
+            "book_item"
+          ]
+        },
+        "BarleyZP.BzpAllergies_AllergyCookbook": {
+          "Name": "Allergy-Sensitive Cooking",
+          "DisplayName": "{{i18n:obj.allergy-cookbook.name}}",
+          "Description": "{{i18n:obj.allergy-cookbook.desc}}",
+          "Type": "asdf",
+          "Category": -102,
+          "Price": 1000,
+          "Texture": "BarleyZP.BzpAllergies/Sprites",
+          "SpriteIndex": 8,
+          "Edibility": -300,
+          "IsDrink": false,
+          "Buffs": null,
+          "GeodeDropsDefaultItems": false,
+          "GeodeDrops": null,
+          "ArtifactSpotChances": null,
+          "ExcludeFromFishingCollection": false,
+          "ExcludeFromShippingCollection": false,
+          "ExcludeFromRandomSale": false,
+          "ContextTags": [
+            "color_purple",
+            "book_item"
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -7,17 +7,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimalHusbandryMod", "Butch
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MailFrameworkMod", "MailFrameworkMod\MailFrameworkMod.csproj", "{9AB101DD-FB56-4441-8180-783405D2D2F0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EverlastingBaitsAndUnbreakableTacklesMod", "EverlastingBaitsUnbreakableTacklesMod\EverlastingBaitsAndUnbreakableTacklesMod.csproj", "{3A15291C-575C-49DC-928F-F88BF8F91C53}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EverlastingBaitsAndUnbreakableTacklesMod", "EverlastingBaitsUnbreakableTacklesMod\EverlastingBaitsAndUnbreakableTacklesMod.csproj", "{3A15291C-575C-49DC-928F-F88BF8F91C53}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WaterRetainingFieldMod", "WaterRetainingFieldMod\WaterRetainingFieldMod.csproj", "{FCAFBC46-6562-4BD5-9DCC-3B5A2689EABC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WaterRetainingFieldMod", "WaterRetainingFieldMod\WaterRetainingFieldMod.csproj", "{FCAFBC46-6562-4BD5-9DCC-3B5A2689EABC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomCrystalariumMod", "CustomCrystalariumMod\CustomCrystalariumMod.csproj", "{3D06B5D6-9D1C-46B2-83E8-A1EBCC7D5FC9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CropTransplantMod", "CropTransplantMod\CropTransplantMod.csproj", "{0BD2ED3E-EB53-4003-93E7-C46B9E95AC9F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CropTransplantMod", "CropTransplantMod\CropTransplantMod.csproj", "{0BD2ED3E-EB53-4003-93E7-C46B9E95AC9F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomCaskMod", "CustomCaskMod\CustomCaskMod.csproj", "{D2C9ABB7-DE0B-4803-BAB0-22D9173317A4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomKissingMod", "CustomKissingMod\CustomKissingMod.csproj", "{1EE145B0-C855-4D47-83B6-F05E4371C1E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomKissingMod", "CustomKissingMod\CustomKissingMod.csproj", "{1EE145B0-C855-4D47-83B6-F05E4371C1E0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BorderlessWoodFloorMod", "BorderlessWoodFloorMod\BorderlessWoodFloorMod.csproj", "{4A7E728A-7163-4A98-8EAC-4F09A55DDB28}"
 EndProject
@@ -37,7 +37,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CCRMAutomate", "CCRMAutomat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GemLampPostsMod", "GemLampPostsMod\GemLampPostsMod.csproj", "{979CECE2-32AB-439C-AC4A-AA8F7F4B38E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdvancedCasksMod", "AdvancedCasksMod\AdvancedCasksMod.csproj", "{D23D5ED0-109B-4F84-8BAF-26278CC7F7E9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdvancedCasksMod", "AdvancedCasksMod\AdvancedCasksMod.csproj", "{D23D5ED0-109B-4F84-8BAF-26278CC7F7E9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -12,6 +12,7 @@
 	
 
   <ItemGroup>
+	<Folder Include="assets\" />
     <Folder Include="i18n\" />
   </ItemGroup>
 

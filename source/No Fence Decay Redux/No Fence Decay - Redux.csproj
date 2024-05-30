@@ -1,14 +1,22 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <RootNamespace>NoFenceDecayRedux</RootNamespace>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+	<TargetFramework>net6.0</TargetFramework>
+	<RootNamespace>NoFenceDecayRedux</RootNamespace>
+	<ImplicitUsings>enable</ImplicitUsings>
+	<Nullable>enable</Nullable>
 	<EnableHarmony>true</EnableHarmony>
+	<Name>No Fence Decay Redux</Name>
+	<Version>1.1.0</Version>
+	<Authors>EnderTedi</Authors>
+	<UniqueID>EnderTedi.NoFenceDecayRedux</UniqueID>
+	<UpdateKeys>Nexus:20802</UpdateKeys>
+	  <MinimumGameVersion>1.6.0</MinimumGameVersion>
+	  <MInimumApiVersion>4.0.0</MInimumApiVersion>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Leclair.Stardew.ModManifestBuilder" Version="2.3.1" />
     <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
   </ItemGroup>
 

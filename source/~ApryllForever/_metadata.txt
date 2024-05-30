@@ -10,11 +10,11 @@ mods:
    Polyamory Sweet → Polyamory Sweet Wedding
 
 latest commit:
-   commit 5cf3242c926c8b5cf42d753f7591b2e0e33ffc3b
+   commit a11d4584821eaacf8a97b07fd1ddfda26547da6e
    Author: Queen April the Infinite and Undying <101156981+ApryllForever@users.noreply.github.com>
-   Date:   Mon Mar 25 17:47:08 2024 -0700
+   Date:   Mon May 20 00:01:42 2024 -0700
    
-       Merge pull request #1 from BernieAteUsername/patch-1
+       Merge pull request #3 from mitekano23/patch-1
        
-       Update zh.json
+       Create ja.json
    

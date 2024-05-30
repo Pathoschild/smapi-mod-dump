@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-#nullable enable
+#if COMMON_OVERLAY
 
 using System;
 using System.Reflection;
@@ -272,3 +272,5 @@ public class BaseOverlay<T> : IOverlay, IDisposable where T : IClickableMenu {
 	#endregion
 
 }
+
+#endif

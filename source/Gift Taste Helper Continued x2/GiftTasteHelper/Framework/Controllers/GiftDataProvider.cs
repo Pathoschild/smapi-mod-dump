@@ -8,9 +8,6 @@
 **
 *************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using StardewValley;
 
 namespace GiftTasteHelper.Framework
@@ -18,7 +15,7 @@ namespace GiftTasteHelper.Framework
     #region BaseGiftDataProvider
     internal abstract class BaseGiftDataProvider : IGiftDataProvider
     {
-        public event DataSourceChangedDelegate DataSourceChanged;
+        public event DataSourceChangedDelegate? DataSourceChanged;
 
         protected IGiftDatabase Database;
 

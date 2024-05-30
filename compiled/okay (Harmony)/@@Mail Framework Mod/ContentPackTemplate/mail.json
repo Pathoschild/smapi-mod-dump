@@ -37,6 +37,18 @@
 		"TextColor": -1, //Remove this line to use the default color. Will be ignored if a CustomTextColor is set. -1 = Dark Red, 0 = Black, 1 = Sky Blue, 2 = Red, 3 = Blue Violet, 4 = White, 5 = Orange Red, 6 = Lime Green, 7 = Cyan, 8 = Darkest Gray
 		"CustomTextColorName": "White", //The color of the text.[http://www.foszor.com/blog/xna-color-chart/] Default will use the TextColor property.
 		"UpperRightCloseButton": "CustomCloseButton.png", // Name of the file in your content pack that has the custom close button to use. It should be 12 x 12 . If null or removed it will use the default button.
+		"ReplyConfig": { // If you want the player to send a reply after reading the letter. It will show the reply options that will add one or more "ReceivedMail" based on the player answer. Any additional logic related to the reply needs to be implemented based on the ReceivedMail added.
+			"QuestionKey": "MyMod.MyMailId.Question", //A key to identify your question. It has only internal use, but should be unique in your content pack to avoid conflict between replies.
+			"QuestionDialog": "Send a reply choosing your reward:", //Your question or text that will show over the reply options. If an translation file is provided, you should put a translation key here.
+			"Replies": [
+				{
+					"ReplyKey": "MyMod.MyMailId.Reply1", //Must be unique between the question replies.
+					"ReplyOptionDialog": "I want seeds.", //The option text that will show in the reply list. If an translation file is provided, you should put a translation key here.
+					"MailReceivedToAdd": [ "MyMod.MyMailId.PlayerSeedOption" ], // Text to add to the MailReceived list. This can be used to trigger new mail, events, vanilla flags, stop other MFM mail from being sent...
+					"ReplyResponseDialog": "Your letter requesting seeds was sent." //Text that will show after this reply option is chosen. If an translation file is provided, you should put a translation key here.
+				}
+			]
+		},
 		"Repeatable": false, // If true the mod won't check it the letter Id has already been delivered. Default is false.
 		"AutoOpen": false, // If true the mod will open the letter at the begin of the day after the conditions are met. The letter id will be marked as read and if there is a recipe set, it will be learned. Since the letter will never show, visual properties like title, text, background... will never be used, as well as the attachments.
 		// CONDITIONS FOR DELIVERY
@@ -72,10 +84,11 @@
 		"CollectionConditions": // Each collection condition of the list must have a value equal or higher than the defined amount.
 		[
 			{
-				"Collection": "Minerals", //[Shipped|Fish|Artifacts|Minerals|Cooking|Crafting] Required.
-				"Name": "", //The name of the object or recipe for 'Crafting' collection. For object, if a name is given, it will look for that name instead of using the index. If the name is not found, the letter is ignored. Default is null.
-				"Index": 72, // The index of the object. Will be overridden if a Name is given, so you can remove the line in that case.
-				"Amount": 10 // The amount the object in the collection should be equal or greater for the condition to be valid.
+				"Collection": "Shipped", //[Shipped|Fish|Artifacts|Minerals|Cooking|Crafting] Required.
+				"Name": "Oil", //Deprecated, uses Ids instead. The name of the object or recipe for 'Crafting' collection. If not a crafting colection, it will look for that name in the object list to find the index. If the name is not found, the letter is ignored. Will combine with the other properties. Default is null.
+				"Index": 211, //Deprecated, uses Ids instead. The index of the object. Will combine with the other properties. Default is null.
+				"Ids": [ "282", "MossSoup" ], //The items ids or the crafting recipe names. Will combine with the other properties. The amounts are summed to compare with the Amount property.
+				"Amount": 10 // The total amount the objects in the collection should be equal or greater for the condition to be valid.
 			}
 		],
 		"SpecialDateCondition": // Must be that date or after it.

@@ -4,5 +4,6 @@
   "EnableRewardsMultiplier": false,
   "SpecialOrderUnlockDay": 58,
   "RewardsMultiplier": 1,
-  "SpecialOrderRefreshEveryday": false
+  "SpecialOrderRefreshEveryday": false,
+  "DurationTweak": false
 }

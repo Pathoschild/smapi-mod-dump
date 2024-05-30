@@ -59,6 +59,9 @@ public partial class ObjectPatches
             var location = __instance.Location;
             var tileLocation = __instance.TileLocation;
             var damage = GetDamage(t, -1);
+#if DEBUG
+            Log($"Damage: {damage}");
+#endif
 
             if (damage <= 0)
                 return;

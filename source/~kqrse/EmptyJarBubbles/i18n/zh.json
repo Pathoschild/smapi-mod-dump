@@ -1,0 +1,43 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/kqrse/StardewValleyMods
+**
+*************************************************/
+
+{
+  "enabled": "已启用",
+  "modded-machines-enabled": "对其他Mod中的机器启用",
+  "modded-machines-enabled-tooltip": "这将使所有Mod中机器闲置时显示气泡",
+  "bubble-y-offset": "气泡Y偏移",
+  "bubble-x-offset": "气泡X偏移",
+  "emote-interval": "表情间隔（毫秒）",
+  "opacity": "透明度",
+  "bubble-size": "气泡大小",
+  "zoom-level-99-enabled": "将缩放级别设置为99",
+  "zoom-level-99-enabled-tooltip": "将缩放级别固定为99，而不是100，以防止因“界面缩放”而导致气泡出现在错误的位置",
+  "jars-enabled": "罐头瓶启用",
+  "kegs-enabled": "小桶启用",
+  "casks-enabled": "木桶启用",
+  "mayonnaise-machines-enabled": "蛋黄酱机启用",
+  "cheese-presses-enabled": "压酪机启用",
+  "looms-enabled": "织布机启用",
+  "oil-makers-enabled": "产油机启用",
+  "dehydrators-enabled": "烘干机启用",
+  "fish-smokers-enabled": "熏鱼机启用",
+  "bait-makers-enabled": "鱼饵制造机启用",
+  "bone-mills-enabled": "碎骨机启用",
+  "charcoal-kilns-enabled": "煤炭窑启用",
+  "crystalariums-enabled": "宝石复制器启用",
+  "furnaces-enabled": "熔炉启用",
+  "recycling-machines-enabled": "回收机启用",
+  "seed-makers-enabled": "种子生产器启用",
+  "slime-egg-presses-enabled": "史莱姆压蛋器启用",
+  "crab-pots-enabled": "蟹笼启用",
+  "deconstructors-enabled": "分解机启用",
+  "geode-crushers-enabled": "晶球破开器启用",
+  "wood-chippers-enabled": "碎木机启用"
+}

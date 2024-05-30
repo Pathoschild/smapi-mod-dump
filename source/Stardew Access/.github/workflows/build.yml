@@ -1,0 +1,88 @@
+##################################################
+##
+## You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+## for queries and analysis.
+##
+## This is *not* the original file, and not necessarily the latest version.
+## Source repository: https://github.com/stardew-access/stardew-access
+##
+##################################################
+
+name: Build
+
+# Refs:
+# ACT (for testing workflows locally): https://nektosact.com/
+
+on:
+  # Runs on the latest PR commit
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+  # Runs when this workflow is manually called
+  workflow_dispatch:
+
+  # Runs when this workflow is called by another workflow
+  workflow_call:
+  
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Pull source code
+        uses: actions/checkout@v4
+
+      - name: Install dotnet
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      # For some reason, if we use v6.0.x the build fails with 300+ syntax errors (in act atleast). And using 8.0.x doesn't.
+
+      - name: Install dotnet dependencies
+        run: dotnet restore
+
+      - name: Install ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: true
+
+      - name: Install kramdown
+        run: gem install kramdown
+
+      # Converts the .md files in docs/ to .html
+      - name: Compile local docs
+        run: |
+          mkdir ./stardew-access/compiled-docs
+          cd ./docs/
+          ruby ./compiler_script.rb
+          cd ../
+
+      # https://github.com/khanshoaib3/stardew-access/blob/aa2f9a380e9b2ce94932e86631d416dee7e94461/stardew-access/stardew-access.csproj#L52-L55
+      - name: Build the mod
+        run: |
+          dotnet build -p:BuildConfig=GITHUB
+          dotnet build -c Release -p:BuildConfig=GITHUB
+
+      # Rename build zips, remove space and `-debug` suffix to the debug build
+      - name: Rename build zips
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          mkdir './out/'
+          cd './stardew-access/bin/Debug/net6.0/'
+          for f in *zip; do fnew=$(echo ${f} | sed 's/\ /-/g' | sed 's/.zip/-debug.zip/'); mv "${f}" "../../../../out/${fnew}"; done
+          cd '../../../../'
+          cd 'stardew-access/bin/Release/net6.0/'
+          for f in *zip; do fnew=$(echo ${f} | sed 's/\ /-/g'); mv "${f}" "../../../../out/${fnew}"; done
+          cd '../../../../'
+          # ls './out/'
+
+      # Ref: https://github.com/actions/upload-artifact
+      # Will only upload artifacts when manually called
+      - name: Upload zips as artifacts
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/upload-artifact@v4
+        with:
+          name: stardew-access-nightly
+          path: out/*.zip

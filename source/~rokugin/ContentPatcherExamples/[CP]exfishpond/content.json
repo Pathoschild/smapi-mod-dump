@@ -1,0 +1,161 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/rokugin/StardewMods
+**
+*************************************************/
+
+{
+	"Format": "2.0.0",
+	"Changes": [
+		{
+			"LogName": "Overwrite context tags",
+			"Action": "EditData",
+			"Target": "Data/Objects",
+			"Fields": {
+				"163": {
+					"ContextTags": [
+						"color_green",
+						"fish_legendary"
+					]
+				},
+				"682": {
+					"ContextTags": [
+						"color_green",
+						"fish_legendary"
+					]
+				}
+			}
+		},
+		{
+			"LogName": "Add fish pond data",
+			"Action": "EditData",
+			"Target": "Data/FishPondData",
+			"Entries": {
+				"{{ModId}}_Legend": {
+					"Id": "Legend",
+					"RequiredTags": [
+						"item_legend"
+					],
+					"Precedence": 0,
+					"SpawnTime": -1,
+					"ProducedItems": [
+						{
+							"RequiredPopulation": 9,
+							"Chance": 0.1,
+							"ItemId": "(O)787",
+							"MinQuantity": 1,
+							"MaxQuantity": 1
+						},
+						{
+							"RequiredPopulation": 9,
+							"Chance": 0.06,
+							"ItemId": "(O)852",
+							"MinQuantity": 1,
+							"MaxQuantity": 1
+						},
+						{
+							"RequiredPopulation": 7,
+							"Chance": 0.1,
+							"ItemId": "(O)848",
+							"MinQuantity": 2,
+							"MaxQuantity": 5
+						},
+						{
+							"RequiredPopulation": 4,
+							"Chance": 0.05,
+							"ItemId": "(O)851",
+							"MinQuantity": 1,
+							"MaxQuantity": 1
+						},
+						{
+							"RequiredPopulation": 5,
+							"Chance": 1.0,
+							"ItemId": "(O)812",
+							"MinQuantity": 1,
+							"MaxQuantity": 1
+						},
+						{
+							"RequiredPopulation": 1,
+							"Chance": 0.8,
+							"ItemId": "(O)812",
+							"MinQuantity": 1,
+							"MaxQuantity": 1
+						}
+					],
+					"PopulationGates": {
+						"4": [
+							"(O)848 7"
+						],
+						"6": [
+							"(O)852 1"
+						]
+					}
+				},
+				"{{ModId}}_MutantCarp": {
+					"Id": "Mutant Carp",
+					"RequiredTags": [
+						"item_mutant_carp"
+					],
+					"Precedence": 0,
+					"SpawnTime": -1,
+					"ProducedItems": [
+						{
+							"RequiredPopulation": 9,
+							"Chance": 0.1,
+							"ItemId": "(O)787",
+							"MinQuantity": 1,
+							"MaxQuantity": 1
+						},
+						{
+							"RequiredPopulation": 9,
+							"Chance": 0.06,
+							"ItemId": "(O)852",
+							"MinQuantity": 1,
+							"MaxQuantity": 1
+						},
+						{
+							"RequiredPopulation": 7,
+							"Chance": 0.1,
+							"ItemId": "(O)848",
+							"MinQuantity": 2,
+							"MaxQuantity": 5
+						},
+						{
+							"RequiredPopulation": 4,
+							"Chance": 0.05,
+							"ItemId": "(O)851",
+							"MinQuantity": 1,
+							"MaxQuantity": 1
+						},
+						{
+							"RequiredPopulation": 5,
+							"Chance": 1.0,
+							"ItemId": "(O)812",
+							"MinQuantity": 1,
+							"MaxQuantity": 1
+						},
+						{
+							"RequiredPopulation": 1,
+							"Chance": 0.8,
+							"ItemId": "(O)812",
+							"MinQuantity": 1,
+							"MaxQuantity": 1
+						}
+					],
+					"PopulationGates": {
+						"4": [
+							"(O)848 7"
+						],
+						"6": [
+							"(O)852 1"
+						]
+					}
+				}
+			}
+		}
+	]
+}

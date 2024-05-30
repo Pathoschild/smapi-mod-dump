@@ -1,0 +1,10 @@
+{
+    "Name": "CaveCultCode",
+    "Author": "Evan Yoshitani",
+    "Version": "1.0.0",
+    "Description": "Code for the cave cult project specifically the ritual dagger and enemy spawning",
+    "UniqueID": "CtrlAltDefeat.CaveCultCode",
+    "EntryDll": "CaveCultCode.dll",
+    "MinimumApiVersion": "3.0.0",
+    "UpdateKeys": []
+}

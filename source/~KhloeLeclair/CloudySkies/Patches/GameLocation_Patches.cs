@@ -10,14 +10,13 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
 
 using HarmonyLib;
+
+using Microsoft.Xna.Framework;
 
 using StardewValley;
 using StardewValley.Objects;
@@ -63,7 +62,7 @@ public static class GameLocation_Patches {
 				transpiler: new HarmonyMethod(typeof(GameLocation_Patches), nameof(updateAmbientLighting__Transpiler))
 			);
 
-		} catch(Exception ex) {
+		} catch (Exception ex) {
 
 			mod.Log($"Error patching GameLocation. Weather will not work correctly.", StardewModdingAPI.LogLevel.Error, ex);
 
@@ -71,7 +70,7 @@ public static class GameLocation_Patches {
 
 		try {
 
-			foreach(var method in new MethodInfo[] {
+			foreach (var method in new MethodInfo[] {
 				 AccessTools.Method(typeof(Furniture), nameof(Furniture.OnAdded)),
 				 AccessTools.Method(typeof(Furniture), nameof(Furniture.timeToTurnOnLights)),
 				 AccessTools.Method(typeof(Furniture), nameof(Furniture.DayUpdate)),
@@ -82,7 +81,7 @@ public static class GameLocation_Patches {
 					transpiler: new HarmonyMethod(typeof(GameLocation_Patches), nameof(Furniture_Rain__Transpiler))
 				);
 
-		} catch(Exception ex) {
+		} catch (Exception ex) {
 			mod.Log($"Error patching Furniture.", StardewModdingAPI.LogLevel.Error, ex);
 		}
 
@@ -147,7 +146,7 @@ public static class GameLocation_Patches {
 		for (int i = 0; i < instrs.Length; i++) {
 			var in0 = instrs[i];
 
-			if (i + 2 < instrs.Length) { 
+			if (i + 2 < instrs.Length) {
 				var in1 = instrs[i + 1];
 				var in2 = instrs[i + 2];
 
@@ -189,7 +188,7 @@ public static class GameLocation_Patches {
 
 		var shouldSpawnFrogs = AccessTools.Method(typeof(GameLocation_Patches), nameof(ShouldSpawnFrogs));
 
-		foreach(var in0 in instructions) {
+		foreach (var in0 in instructions) {
 
 			if (in0.Calls(GameLocation_IsRainingHere))
 				yield return new CodeInstruction(in0) {
@@ -263,7 +262,7 @@ public static class GameLocation_Patches {
 
 		var useNightTiles = AccessTools.Method(typeof(GameLocation_Patches), nameof(UseNightTiles));
 
-		foreach(var in0 in instructions) {
+		foreach (var in0 in instructions) {
 
 			if (in0.LoadsField(Game1_isRaining)) {
 				// Old Code: Game1.isRaining
@@ -319,7 +318,10 @@ public static class GameLocation_Patches {
 
 		CodeInstruction[] instrs = instructions.ToArray();
 
-		for(int i = 0; i < instrs.Length; i++) {
+		bool replaced_color = false;
+		bool replaced_check = false;
+
+		for (int i = 0; i < instrs.Length; i++) {
 			var in0 = instrs[i];
 
 			if (i + 3 < instrs.Length) {
@@ -341,13 +343,15 @@ public static class GameLocation_Patches {
 
 					yield return new CodeInstruction(OpCodes.Call, getAmbientColor);
 
+					replaced_color = true;
+
 					// Skip the whole new Color(...)
 					i += 3;
 					continue;
 				}
 			}
 
-			if (in0.Calls(GameLocation_IsRainingHere))
+			if (in0.Calls(GameLocation_IsRainingHere)) {
 				// Old Code: this.IsRainingHere()
 				// New Code: PatchHelper.HasAmbientColor(this)
 				yield return new CodeInstruction(in0) {
@@ -355,9 +359,16 @@ public static class GameLocation_Patches {
 					operand = hasAmbientColor
 				};
 
-			else
+				replaced_check = true;
+
+			} else
 				yield return in0;
 		}
+
+		if (!replaced_color)
+			throw new Exception("did not replace color");
+		else if (!replaced_check)
+			throw new Exception("did not replace check");
 
 	}
 

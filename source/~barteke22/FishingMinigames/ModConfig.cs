@@ -42,12 +42,17 @@ namespace FishingMinigames
             {"Bamboo Pole", new Dictionary<string, int>(){      { "AREA", 0 }, { "DAMAGE", 0 }, { "DIFFICULTY", 0 }, { "EXTRA_MAX", 0 }, { "EXTRA_CHANCE", 0 }, { "QUALITY", 0 }, { "SIZE", 0 }, { "SPEED", 0 }, { "TREASURE", 0 } }},
             {"Fiberglass Rod", new Dictionary<string, int>(){   { "AREA", 0 }, { "DAMAGE", 0 }, { "DIFFICULTY", 0 }, { "EXTRA_MAX", 0 }, { "EXTRA_CHANCE", 0 }, { "QUALITY", 0 }, { "SIZE", 0 }, { "SPEED", 20 }, { "TREASURE", 0 } }},
             {"Iridium Rod", new Dictionary<string, int>(){      { "AREA", 0 }, { "DAMAGE", 0 }, { "DIFFICULTY", 0 }, { "EXTRA_MAX", 0 }, { "EXTRA_CHANCE", 0 }, { "QUALITY", 0 }, { "SIZE", 0 }, { "SPEED", 40 }, { "TREASURE", 0 } }},
+            {"Advanced Iridium Rod", new(){                     { "AREA", 0 }, { "DAMAGE", 0 }, { "DIFFICULTY", 0 }, { "EXTRA_MAX", 0 }, { "EXTRA_CHANCE", 0 }, { "QUALITY", 0 }, { "SIZE", 0 }, { "SPEED", 42 }, { "TREASURE", 0 } }},
 
             //baits
             {"Bait", new Dictionary<string, int>(){             { "AREA", 0 }, { "DAMAGE", 0 }, { "DIFFICULTY", 0 }, { "EXTRA_MAX", 0 }, { "EXTRA_CHANCE", 0 }, { "QUALITY", 0 }, { "SIZE", 10 }, { "SPEED", 0 }, { "TREASURE", 0 }, { "UNBREAKING", 0 } }},
             {"Magnet", new Dictionary<string, int>(){           { "AREA", 0 }, { "DAMAGE", 0 }, { "DIFFICULTY", 0 }, { "EXTRA_MAX", 0 }, { "EXTRA_CHANCE", 0 }, { "QUALITY", 0 }, { "SIZE", -10 }, { "SPEED", 0 }, { "TREASURE", 15 }, { "UNBREAKING", 0 } }},
             {"Wild Bait", new Dictionary<string, int>(){        { "AREA", 0 }, { "DAMAGE", 0 }, { "DIFFICULTY", 0 }, { "EXTRA_MAX", 2 }, { "EXTRA_CHANCE", 20 }, { "QUALITY", 0 }, { "SIZE", 20 }, { "SPEED", 0 }, { "TREASURE", 0 }, { "UNBREAKING", 0 } }},
             {"Magic Bait", new Dictionary<string, int>(){       { "AREA", 0 }, { "DAMAGE", 0 }, { "DIFFICULTY", 30 }, { "EXTRA_MAX", 0 }, { "EXTRA_CHANCE", 0 }, { "QUALITY", 0 }, { "SIZE", 0 }, { "SPEED", 0 }, { "TREASURE", 0 }, { "UNBREAKING", 0 } }},
+            {"Deluxe Bait", new Dictionary<string, int>(){      { "AREA", 0 }, { "DAMAGE", 0 }, { "DIFFICULTY", 10 }, { "EXTRA_MAX", 0 }, { "EXTRA_CHANCE", 0 }, { "QUALITY", 0 }, { "SIZE", 10 }, { "SPEED", 10 }, { "TREASURE", 0 }, { "UNBREAKING", 0 } }},
+            {"Challenge Bait", new Dictionary<string, int>(){   { "AREA", 0 }, { "DAMAGE", 0 }, { "DIFFICULTY", 0 }, { "EXTRA_MAX", 3 }, { "EXTRA_CHANCE", 0 }, { "QUALITY", 0 }, { "SIZE", 10 }, { "SPEED", 0 }, { "TREASURE", 0 }, { "UNBREAKING", 0 } }},
+            {"Targeted Bait", new Dictionary<string, int>(){    { "AREA", 0 }, { "DAMAGE", 0 }, { "DIFFICULTY", 0 }, { "EXTRA_MAX", 0 }, { "EXTRA_CHANCE", 0 }, { "QUALITY", 0 }, { "SIZE", 10 }, { "SPEED", 0 }, { "TREASURE", 0 }, { "UNBREAKING", 0 } }},
+
 
             //tackle
             {"Spinner", new Dictionary<string, int>(){          { "AREA", 0 }, { "DAMAGE", 0 }, { "DIFFICULTY", 0 }, { "EXTRA_MAX", 0 }, { "EXTRA_CHANCE", 0 }, { "LIFE", 3 }, { "QUALITY", 0 }, { "SIZE", 10 }, { "SPEED", 0 }, { "TREASURE", 0 }, { "UNBREAKING", 0 } }},
@@ -59,6 +64,7 @@ namespace FishingMinigames
             {"Barbed Hook", new Dictionary<string, int>(){      { "AREA", 10 }, { "DAMAGE", 0 }, { "DIFFICULTY", 20 }, { "EXTRA_MAX", 0 }, { "EXTRA_CHANCE", 0 }, { "LIFE", 2 }, { "QUALITY", 0 }, { "SIZE", 0 }, { "SPEED", 0 }, { "TREASURE", 0 }, { "UNBREAKING", 0 } }},
             {"Curiosity Lure", new Dictionary<string, int>(){   { "AREA", 0 }, { "DAMAGE", 0 }, { "DIFFICULTY", 0 }, { "EXTRA_MAX", 0 }, { "EXTRA_CHANCE", 0 }, { "LIFE", 0 }, { "QUALITY", 0 }, { "SIZE", 10 }, { "SPEED", 0 }, { "TREASURE", 1 }, { "UNBREAKING", 0 } }},
             {"Quality Bobber", new Dictionary<string, int>(){   { "AREA", 0 }, { "DAMAGE", 0 }, { "DIFFICULTY", 0 }, { "EXTRA_MAX", 0 }, { "EXTRA_CHANCE", 0 }, { "LIFE", 0 }, { "QUALITY", 1 }, { "SIZE", 20 }, { "SPEED", 0 }, { "TREASURE", 0 }, { "UNBREAKING", 0 } }},
+            {"Sonar Bobber", new Dictionary<string, int>(){     { "AREA", 2 }, { "DAMAGE", 0 }, { "DIFFICULTY", 0 }, { "EXTRA_MAX", 1 }, { "EXTRA_CHANCE", 1 }, { "LIFE", 0 }, { "QUALITY", 0 }, { "SIZE", 0 }, { "SPEED", 0 }, { "TREASURE", 2 }, { "UNBREAKING", 0 } }},
         };
 
 

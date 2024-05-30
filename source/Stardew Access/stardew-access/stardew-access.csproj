@@ -49,4 +49,9 @@
     <Folder Include="assets\translation\" />
   </ItemGroup>
 
+  <PropertyGroup Condition=" '$(BuildConfig)' == 'GITHUB' ">
+    <GamePath>../ref</GamePath>
+    <EnableModDeploy>false</EnableModDeploy>
+  </PropertyGroup>
+
 </Project>

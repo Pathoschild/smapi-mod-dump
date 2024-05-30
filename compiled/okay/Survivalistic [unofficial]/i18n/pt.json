@@ -1,70 +1,139 @@
 {
-  // Info warnings.
-  "hunger-warning": "Voce esta com fome! Coma algo!",
-  "hunger-source": "Fome",
+    /// Messages.
+    "Info.Fullness.Restore": "+{0} cheio.",
+    "Info.Thirst.Restore": "+{0} sedento.",
 
-  "thirsty-warning": "Voce esta com sede! Beba algo!",
-  "thirsty-source": "Sede",
+    // Warnings.
+    "Warning.Hunger.Title": "Voce esta com fome! Coma algo!",
+    "Warning.Hunger.Source": "Fome",
 
-  // Info debuffs.
-  "pass-out": "Voce desmaiou. Coma ou beba algo!",
-  "pass-out-source": "Exaustao corporal",
-
-  // Info buffs.
-  "buff.fullness.description": "Voce esta cheio e se sentindo muito poderoso!",
-  "buff.fullness.source": "Comer demais",
-
-  "buff.hydrated.description": "Voce bebeu demais",
-  "buff.hydrated.source": "Beber demais",
-
-  // Info messages.
-  "info-fullness": "+{0} cheio.",
-  "info-thirsty": "+{0} sedento.",
-
-  // Settings.
-  "multiplier-settings": "Configuracoes do Multiplayer",
-  "multiplier-settings-des": "Multiplicadores de fome e sede afetam a velocidade que voce perde os mesmos.",
-
-  "main-hunger-setting": "Multiplicador de Fome Passiva",
-  "main-hunger-setting-des": "Afeta a perda passiva de fome (todo segundo).",
-
-  "main-thirst-setting": "Multiplicador de Sede Passiva",
-  "main-thirst-setting-des": "Afeta a perda passiva de sede (todo segundo).",
-
-  "action-hunger-setting": "Fome ao realizar acao",
-  "action-hunger-setting-des": "Afeta o ganho de fome ao usar uma ferramenta (ex. Machado ou Picareta).",
-
-  "action-thirst-setting": "Sede ao realizar acao",
-  "action-thirst-setting-des": "Afeta o ganho de fome ao usar uma ferramenta (ex. Machado ou Picareta).\nNormalmente, voce perde o dobro de sede ao usar ferramentas.",
+    "Warning.Thirst.Title": "Voce esta com sede! Beba algo!",
+    "Warning.Thirst.Source": "Sede",
 
 
-  "bars-position-settings": "Configuracoes de Barras",
-  "bars-position-settings-des": "Seta os valores que determina a posicao das barras.",
+    /// Buffs.
+    "Buff.Fullness.Description": "Voce esta cheio e se sentindo muito poderoso!",
+    "Buff.Fullness.Source": "Comer demais",
 
-  "bars-position-variant": "Posicionamento de Barras",
-  "bars-position-variant-des": "Seta a posicao das barras, precisa ser UM destes:\n 'custom';\n 'bottom-right';\n 'bottom-left';\n 'middle-right';\n 'middle-left';\n 'top-left';\n 'top-right'.",
+    "Buff.Hydrated.Description": "Voce bebeu demais",
+    "Buff.Hydrated.Source": "Beber demais",
 
-  "bars-position-x": "Posicao 'X' das Barras",
-  "bars-position-x-des": "Adiciona distancia horizontal para as barras, calculado com base na posicao atual.\nFunciona apenas se 'Posicionamento de Barras' estiver definida para 'custom'.",
+    // Debuffs.
+    "Debuff.PassOut.Title": "Voce desmaiou. Coma ou beba algo!",
+    "Debuff.PassOut.Source": "Exaustao corporal",
 
-  "bars-position-y": "Posicao 'Y' das Barras",
-  "bars-position-y-des": "Adiciona distancia vertical para as barras, calculado com base na posicao atual.\nFunciona apenas se 'Posicionamento de Barras' estiver definida para 'custom'.",
+    /// Settings.
+    // Multiplier Settings.
+    "Setting.Multiplier.Title": "Configuracoes do Multiplayer",
+    "Setting.Multiplier.Description": "Multiplicadores de fome e sede afetam a velocidade que voce perde os mesmos.",
 
+    "Setting.Multiplier.PassiveHunger.Title": "Multiplicador de Fome Passiva",
+    "Setting.Multiplier.PassiveHunger.Description": "Afeta a perda passiva de fome (todo segundo).",
 
-  "compatibility-settings": "Compatibilidade",
-  "compatibility-settings-des": "Ativa ou Desativa a compatibilidade com alguns mods.",
+    "Setting.Multiplier.PassiveThirst.Title": "Multiplicador de Sede Passiva",
+    "Setting.Multiplier.PassiveThirst.Description": "Afeta a perda passiva de sede (todo segundo).",
 
-  "non-supported-food": "Ativar 'Comidas nao-suportadas'.",
-  "non-supported-food-des": "Se estiver ativo, o mod ira criar valores para fome e sede para as comidas nao-suportadas.",
+    "Setting.Multiplier.HungerOnAction.Title": "Fome ao realizar acao",
+    "Setting.Multiplier.HungerOnAction.Description": "Afeta o ganho de fome ao usar uma ferramenta (ex. Machado ou Picareta).",
 
-  "sleep-options": "Opcoes de Dormir",
+    "Setting.Multiplier.ThirstOnAction.Title": "Sede ao realizar acao",
+    "Setting.Multiplier.ThirstOnAction.Description": "Afeta o ganho de fome ao usar uma ferramenta (ex. Machado ou Picareta).\nNormalmente, voce perde o dobro de sede ao usar ferramentas.",
 
-  "sleep-decrease": "Dormir Diminui os Status",
-  "sleep-decrease-des": "Se estiver ativo, dormir ira diminuir seus status.",
+    // Bars Position Settings.
+    "Setting.BarsPosition.Title": "Configuracoes de Barras",
+    "Setting.BarsPosition.Description": "Seta os valores que determina a posicao das barras.",
 
-  "hunger-increase-after-sleep": "Aumento de fome",
-  "hunger-increase-after-sleep-des": "Ira aumentar sua fome apos dormir.\nRequer 'Dormir Diminui os Status' para funcionar.",
+    "Setting.BarsPosition.TypeOfPosition.Title": "Posicionamento de Barras",
+    "Setting.BarsPosition.TypeOfPosition.Description": "Seta a posicao das barras, precisa ser UM destes:\n 'custom';\n 'bottom-right';\n 'bottom-left';\n 'middle-right';\n 'middle-left';\n 'top-left';\n 'top-right'.",
 
-  "thirst-increase-after-sleep": "Aumento de sede",
-  "thirst-increase-after-sleep-des": "Ira aumentar sua sede apos dormir.\nRequer 'Dormir Diminui os Status' para funcionar."
+    "Setting.BarsPosition.AxisX.Title": "Posicao 'X' das Barras",
+    "Setting.BarsPosition.AxisX.Description": "Adiciona distancia horizontal para as barras, calculado com base na posicao atual.\nFunciona apenas se 'Posicionamento de Barras' estiver definida para 'custom'.",
+
+    "Setting.BarsPosition.AxisY.Title": "Posicao 'Y' das Barras",
+    "Setting.BarsPosition.AxisY.Description": "Adiciona distancia vertical para as barras, calculado com base na posicao atual.\nFunciona apenas se 'Posicionamento de Barras' estiver definida para 'custom'.",
+
+    // Bars Color.
+    "Setting.BarsColor.Title": "Cor das Barras",
+
+    "Setting.BarsColor.DynamicHungerColor.Title": "Cor Dinâmica da Barra de Fome",
+    "Setting.BarsColor.DynamicHungerColor.Description": "Com esta opção ativada, a cor da Barra de Fome mudará dinamicamente de acordo com o valor atual de fome do jogador. Se estiver definido como 'Falso', a cor será estática e independente do valor atual.",
+
+    "Setting.BarsColor.DynamicThirstColor.Title": "Cor Dinâmica da Barra de Sede",
+    "Setting.BarsColor.DynamicThirstColor.Description": "Com esta opção ativada, a cor da Barra de Sede mudará dinamicamente de acordo com o valor atual de sede do jogador. Se estiver definido como 'Falso', a cor será estática e independente do valor atual.",
+
+    // Compatibility Settings.
+    "Setting.Compatibility.Title": "Compatibilidade",
+    "Setting.Compatibility.Description": "Ativa ou Desativa a compatibilidade com alguns mods.",
+
+    "Setting.Compatibility.NonRecognizedFood.Title": "Ativar 'Comidas nao-suportadas'.",
+    "Setting.Compatibility.NonRecognizedFood.Description": "Se estiver ativo, o mod ira criar valores para fome e sede para as comidas nao-suportadas.",
+
+    // Gameplay Settings.
+    "Setting.Gameplay.SleepOptions.Title": "Opcoes de Dormir",
+
+    "Setting.Gameplay.SleepOptions.SleepDecrease.Title": "Dormir Diminui os Status",
+    "Setting.Gameplay.SleepOptions.SleepDecrease.Description": "Se estiver ativo, dormir ira diminuir seus status.",
+
+    "Setting.Gameplay.SleepOptions.HungerDiff.Title": "Aumento de fome",
+    "Setting.Gameplay.SleepOptions.HungerDiff.Description": "Ira aumentar sua fome apos dormir.\nRequer 'Dormir Diminui os Status' para funcionar.",
+
+    "Setting.Gameplay.SleepOptions.ThirstDiff.Title": "Aumento de sede",
+    "Setting.Gameplay.SleepOptions.ThirstDiff.Description": "Ira aumentar sua sede apos dormir.\nRequer 'Dormir Diminui os Status' para funcionar.",
+
+    // Tools Consumption Rate.
+    "Setting.ToolsConsumption.Title": "Taxas de Consumo de Ferramentas",
+
+    "Setting.ToolsConsumption.Axe.Hunger.Title": "Machado - Fome",
+    "Setting.ToolsConsumption.Axe.Hunger.Description": "Esta opção especifica o valor exato de fome usado em um único golpe de machado.",
+
+    "Setting.ToolsConsumption.Axe.Thirst.Title": "Machado - Sede",
+    "Setting.ToolsConsumption.Axe.Thirst.Description": "Esta opção especifica o valor exato de sede usado em um único golpe de machado.",
+
+    "Setting.ToolsConsumption.Pickaxe.Hunger.Title": "Picareta - Fome",
+    "Setting.ToolsConsumption.Pickaxe.Hunger.Description": "Esta opção especifica o valor exato de fome usado em um único golpe de picareta.",
+
+    "Setting.ToolsConsumption.Pickaxe.Thirst.Title": "Picareta - Sede",
+    "Setting.ToolsConsumption.Pickaxe.Thirst.Description": "Esta opção especifica o valor exato de sede usado em um único golpe de picareta.",
+
+    "Setting.ToolsConsumption.Hoe.Hunger.Title": "Enxada - Fome",
+    "Setting.ToolsConsumption.Hoe.Hunger.Description": "Esta opção especifica o valor exato de fome usado em um único golpe de enxada.",
+
+    "Setting.ToolsConsumption.Hoe.Thirst.Title": "Enxada - Sede",
+    "Setting.ToolsConsumption.Hoe.Thirst.Description": "Esta opção especifica o valor exato de sede usado em um único golpe de enxada.",
+
+    "Setting.ToolsConsumption.Scythe.Hunger.Title": "Foice - Fome",
+    "Setting.ToolsConsumption.Scythe.Hunger.Description": "Esta opção especifica o valor exato de fome usado em um único golpe de foice.",
+
+    "Setting.ToolsConsumption.Scythe.Thirst.Title": "Foice - Sede",
+    "Setting.ToolsConsumption.Scythe.Thirst.Description": "Esta opção especifica o valor exato de sede usado em um único golpe de foice.",
+
+    "Setting.ToolsConsumption.FishingRod.Hunger.Title": "Vara de Pesca - Fome",
+    "Setting.ToolsConsumption.FishingRod.Hunger.Description": "Esta opção especifica o valor exato de fome usado em uma única pescaria.",
+
+    "Setting.ToolsConsumption.FishingRod.Thirst.Title": "Vara de Pesca - Sede",
+    "Setting.ToolsConsumption.FishingRod.Thirst.Description": "Esta opção especifica o valor exato de sede usado em uma única pescaria.",
+
+    "Setting.ToolsConsumption.WateringCan.Hunger.Title": "Regador - Fome",
+    "Setting.ToolsConsumption.WateringCan.Hunger.Description": "Esta opção especifica o valor exato de fome usado em um único uso do regador.",
+
+    "Setting.ToolsConsumption.WateringCan.Thirst.Title": "Regador - Sede",
+    "Setting.ToolsConsumption.WateringCan.Thirst.Description": "Esta opção especifica o valor exato de sede usado em um único uso do regador.",
+
+    "Setting.ToolsConsumption.Shears.Hunger.Title": "Tesoura - Fome",
+    "Setting.ToolsConsumption.Shears.Hunger.Description": "Esta opção especifica o valor exato de fome usado em um único uso da tesoura.",
+
+    "Setting.ToolsConsumption.Shears.Thirst.Title": "Tesoura - Sede",
+    "Setting.ToolsConsumption.Shears.Thirst.Description": "Esta opção especifica o valor exato de sede usado em um único uso da tesoura.",
+
+    "Setting.ToolsConsumption.MilkPail.Hunger.Title": "Balde de Leite - Fome",
+    "Setting.ToolsConsumption.MilkPail.Hunger.Description": "Esta opção especifica o valor exato de fome usado em um único uso do balde de leite.",
+
+    "Setting.ToolsConsumption.MilkPail.Thirst.Title": "Balde de Leite - Sede",
+    "Setting.ToolsConsumption.MilkPail.Thirst.Description": "Esta opção especifica o valor exato de sede usado em um único uso do balde de leite.",
+
+    // Miscellaneous.
+    "Setting.Miscellaneous.Title": "Diversos",
+
+    "Setting.Miscellaneous.ShowPopUpMessages.Title": "Exibir Mensagens Pop-Up",
+    "Setting.Miscellaneous.ShowPopUpMessages.Description": "Com esta opção definida como 'Falso', o mod deixará de exibir caixas de mensagens pop-up com os valores de restauração das refeições consumíveis."
 }

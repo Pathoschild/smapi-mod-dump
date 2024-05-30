@@ -1,0 +1,45 @@
+{
+  "Config.PreciseFurniture.EnableMod.Name": "Mod Activé",
+  "Config.PreciseFurniture.EnableMod.Description": "Active le mod.",
+
+  "Config.PreciseFurniture.MoveCursor.Name": "Bouge le Curseur avec l'Objet",
+  "Config.PreciseFurniture.MoveCursor.Description": "Quand vous bougez un objet, le curseur bouge avec celui-ci.",
+
+  "Config.PreciseFurniture.BlacklistPreventsPickup.Name": "Pas de Déplacement des Objets Verrouillés.",
+  "Config.PreciseFurniture.BlacklistPreventsPickup.Description": "Evite de déplacer un objet vérouillé.",
+
+  "Config.PreciseFurniture.RaiseButton.Name": "Déplacement vers le Haut",
+  "Config.PreciseFurniture.RaiseButton.Description": "Touche pour bouger l'objet sélectionné vers le haut.",
+
+  "Config.PreciseFurniture.LowerButton.Name": "Déplacement vers le Bas",
+  "Config.PreciseFurniture.LowerButton.Description": "Touche pour bouger l'objet sélectionné vers le bas.",
+
+  "Config.PreciseFurniture.LeftButton.Name": "Déplacement vers la Gauche",
+  "Config.PreciseFurniture.LeftButton.Description": "Touche pour bouger l'objet sélectionné vers la gauche.",
+
+  "Config.PreciseFurniture.RightButton.Name": "Déplacement vers la Droite",
+  "Config.PreciseFurniture.RightButton.Description": "Touche pour bouger l'objet sélectionné vers la droite.",
+
+  "Config.PreciseFurniture.BlacklistKey.Name": "Verrouillage des Objets",
+  "Config.PreciseFurniture.BlacklistKey.Description": "Touche pour verrouiller un objet.",
+
+  "Config.PreciseFurniture.PassableKey.Name": "Rendre un Objet Traversable",
+  "Config.PreciseFurniture.PassableKey.Description": "Touche pour enlever la hitbox d'un objet.",
+
+  "Config.PreciseFurniture.ModKey.Name": "Modification de la Vitesse",
+  "Config.PreciseFurniture.ModKey.Description": "Bouton pour augmenter la vitesse de mouvement.",
+
+  "Config.PreciseFurniture.ModSpeed.Name": "Modification de la Vitesse",
+  "Config.PreciseFurniture.ModSpeed.Description": "De quel pourcentage le mod doit augmenter la vitesse de mouvement.",
+
+  "Config.PreciseFurniture.MoveSpeed.Name": "Nombre de Ticks par Mouvement",
+  "Config.PreciseFurniture.MoveSpeed.Description": "De combien de ticks les meubles doivent bouger quand vous appuyez sur le bouton.",
+
+  // Player Messages
+  "Message.PreciseFurniture.AddPassable": "{{furnitureName}} est maintenant traversable.",
+  "Message.PreciseFurniture.RemovePassable": "{{furnitureName}} a été retiré de la liste des meubles traversables.",
+  "Message.PreciseFurniture.AddBlacklist": "{{furnitureName}} est maintenant verrouillé.",
+  "Message.PreciseFurniture.RemoveBlacklist": "{{furnitureName}} est maintenant déverrouillé.",
+  "Message.PreciseFurniture.IsBlacklisted": "{{furnitureName}} est verrouillé.",
+  "Message.PreciseFurniture.PickupBlacklist": "Vous ne pouvez pas déplacer un meuble verrouillé."
+} 

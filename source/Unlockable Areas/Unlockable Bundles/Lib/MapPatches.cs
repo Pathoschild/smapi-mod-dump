@@ -268,15 +268,8 @@ namespace Unlockable_Bundles.Lib
             location.updateSeasonalTileSheets();
         }
 
-
-        //This is a workaround for a bug in splitscreen where splitscreen players reload the main players maps for some reason
-        //It happens ~sometimes only, shortly after/before daystart
-        //Tested on the Farm
         public static void checkIfMapPatchesNeedToBeReapplied(GameLocation location)
         {
-            if (!Context.IsSplitScreen)
-                return;
-
             if (!Context.IsWorldReady)
                 return;
 

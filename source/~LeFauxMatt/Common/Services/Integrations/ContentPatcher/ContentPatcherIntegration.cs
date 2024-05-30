@@ -8,17 +8,21 @@
 **
 *************************************************/
 
+#if IS_FAUXCORE
+namespace StardewMods.FauxCore.Common.Services.Integrations.ContentPatcher;
+
+using StardewMods.FauxCore.Common.Interfaces;
+#else
 namespace StardewMods.Common.Services.Integrations.ContentPatcher;
 
-using StardewModdingAPI.Events;
 using StardewMods.Common.Interfaces;
+#endif
+
+using StardewModdingAPI.Events;
 
 /// <inheritdoc />
 internal sealed class ContentPatcherIntegration : ModIntegration<IContentPatcherApi>
 {
-    private const string ModUniqueId = "Pathoschild.ContentPatcher";
-    private const string ModVersion = "1.28.0";
-
     private readonly IEventManager eventManager;
 
     private int countDown = 10;
@@ -27,7 +31,7 @@ internal sealed class ContentPatcherIntegration : ModIntegration<IContentPatcher
     /// <param name="eventManager">Dependency used for managing events.</param>
     /// <param name="modRegistry">Dependency used for fetching metadata about loaded mods.</param>
     public ContentPatcherIntegration(IEventManager eventManager, IModRegistry modRegistry)
-        : base(modRegistry, ContentPatcherIntegration.ModUniqueId, ContentPatcherIntegration.ModVersion)
+        : base(modRegistry)
     {
         this.eventManager = eventManager;
         if (this.IsLoaded)
@@ -35,6 +39,12 @@ internal sealed class ContentPatcherIntegration : ModIntegration<IContentPatcher
             this.eventManager.Subscribe<GameLaunchedEventArgs>(this.OnGameLaunched);
         }
     }
+
+    /// <inheritdoc />
+    public override string UniqueId => "Pathoschild.ContentPatcher";
+
+    /// <inheritdoc />
+    public override ISemanticVersion Version { get; } = new SemanticVersion(2, 0, 0);
 
     private void OnGameLaunched(GameLaunchedEventArgs e) =>
         this.eventManager.Subscribe<UpdateTickedEventArgs>(this.OnUpdateTicked);

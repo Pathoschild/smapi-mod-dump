@@ -1,0 +1,10 @@
+{
+  "Name": "AutomaticPettingOfAnimals",
+  "Author": "yangZ",
+  "Version": "1.0.1",
+  "Description": "Automatically pet all the animals on the farm and increase your likability",
+  "UniqueID": "yangZ.AutomaticPettingOfAnimals",
+  "EntryDll": "AutomaticPettingOfAnimals.dll",
+  "MinimumApiVersion": "4.0.8",
+  "UpdateKeys": []
+}

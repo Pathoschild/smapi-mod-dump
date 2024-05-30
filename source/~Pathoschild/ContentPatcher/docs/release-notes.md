@@ -17,6 +17,29 @@ When releasing a format change, don't forget to update the smapi.io/json schema!
 
 
 -->
+## 2.1.2
+Released 23 May 2024 for SMAPI 4.0.0 or later.
+
+* Fixed some older content packs broken in Content Patcher 2.1.0+.
+
+## 2.1.1
+Released 23 May 2024 for SMAPI 4.0.0 or later.
+
+* The localization changes in Content Patcher 2.1 now only apply to newer content packs, to avoid breaking content packs which depend on the old behavior.
+
+## 2.1.0
+Released 22 May 2024 for SMAPI 4.0.0 or later. See the [release highlights](https://www.patreon.com/posts/104747064).
+
+* Added `TargetLocale` field to patch a specific localized variant (like `Data/Bundles.fr-FR` but not `Data/Bundles`, or vice versa).
+* Added [token string API for C# mods](token-strings-api.md) (thanks to spacechase0!).
+* Editing content pack settings through Generic Mod Config Menu now force-updates all patches to apply the config changes.
+* Fixed some mod edits not applying correctly for non-English players.
+* Fixed `MigrateIds` action not applied correctly for some items (thanks to Digus!).
+
+**Update notes for mod authors:**  
+* Content Patcher 2.1 changes how `"Action": "Load"` patches are applied for non-English players. See the
+  [2.1 migration guide](author-migration-guide.md#21) for more info.
+
 ## 2.0.6
 Released 15 April 2024 for SMAPI 4.0.0 or later.
 
@@ -51,7 +74,7 @@ Released 20 March 2024 for SMAPI 4.0.0 or later.
 * Fixed error migrating some content packs to Stardew Valley 1.6.
 
 ## 2.0.0
-Released 19 March 2024 for SMAPI 4.0.0 or later.
+Released 19 March 2024 for SMAPI 4.0.0 or later. See the [release highlights](https://www.patreon.com/posts/100496385).
 
 * Updated for Stardew Valley 1.6.
 * Added load & edit priorities (see updated [action docs](author-guide.md#actions)).

@@ -30,6 +30,9 @@ namespace Pathoschild.Stardew.Automate
         /*********
         ** Public methods
         *********/
+        /// <summary>Get whether any of the <see cref="InputContainers"/> or <see cref="OutputContainers"/> are locked.</summary>
+        bool HasLockedContainers();
+
         /// <summary>Get all items from the given pipes.</summary>
         IEnumerable<ITrackedStack> GetItems();
 

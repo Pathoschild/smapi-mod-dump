@@ -1,0 +1,13 @@
+﻿{
+  "enabled": "Enabled",
+  "display-when-held": "Display when fertilizer is held",
+  "toggle-emote-key": "Toggle Emote Key",
+  "toggle-emote-key-tooltip": "Only works when 'Display when fertilizer is held' is disabled",
+  "hide-when-unusable": "Hide when fertilizer is unusable",
+  "hide-when-no-crop": "Hide when soil has no crops",
+  "bubble-y-offset": "Bubble Y Offset",
+  "bubble-x-offset": "Bubble X Offset",
+  "emote-interval": "Emote Interval (ms)",
+  "opacity": "Opacity",
+  "bubble-size": "Bubble Size"
+}

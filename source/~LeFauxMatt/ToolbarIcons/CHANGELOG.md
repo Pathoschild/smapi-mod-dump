@@ -8,6 +8,26 @@ for queries and analysis.**
 
 # Toolbar Icons Change Log
 
+## 2.8.0 (Unreleased)
+
+### Added
+
+* Added icon for showing the calendar.
+* Added hotkey for toggling all icons on/off.
+* Added config option to enable/disable icon tooltips.
+* Added config option to enable/disable icon sounds.
+
+### Changed
+
+* Updated for FauxCore 1.2.0.
+* If config file is missing, it will attempt to restore from global data.
+* Removed support for Dynamic Game Assets.
+* Content pack format now requires icons to be registered with FauxCore.
+
+### Fixed
+
+* Fixed issue with not being able to configure toolbar icons.
+
 ## 2.7.2 (April 12, 2024)
 
 ### Changed

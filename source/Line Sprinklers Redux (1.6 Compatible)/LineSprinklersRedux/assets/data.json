@@ -1,0 +1,66 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/rtrox/LineSprinklersRedux
+**
+*************************************************/
+
+[
+    {
+        "Id": "LineSprinkler",
+        "Object": {
+            "Name": "LineSprinkler",
+            "Fragility": 0,
+            "Price": 100,
+            "CanBePlacedOutdoors": true,
+            "CanBePlacedIndoors": true,
+            "IsLamp": false,
+            "Texture": "/Mods/{0}/Objects",
+          "SpriteIndex": "0",
+          "CustomFields": {
+            "Range": 4
+          }
+        },
+        "Recipe": "599 1 /Field/{0}/true/Farming 2",
+        "RecyclerOutput": "(0)599"
+    },
+    {
+        "Id": "QualityLineSprinkler",
+      "Object": {
+        "Name": "QualityLineSprinkler",
+        "Fragility": 0,
+        "Price": 450,
+        "CanBePlacedOutdoors": true,
+        "CanBePlacedIndoors": true,
+        "IsLamp": false,
+        "Texture": "/Mods/{0}/Objects",
+        "SpriteIndex": "4",
+        "CustomFields": {
+          "Range": 8
+        }
+      },
+        "Recipe": "621 1 /Field/{0}/true/Farming 6",
+        "RecyclerOutput": "(0)621"
+    },
+  {
+    "Id": "IridiumLineSprinkler",
+    "Object": {
+      "Name": "IridiumLineSprinkler",
+      "Fragility": 0,
+      "Price": 1000,
+      "CanBePlacedOutdoors": true,
+      "CanBePlacedIndoors": true,
+      "IsLamp": false,
+      "Texture": "/Mods/{0}/Objects",
+      "SpriteIndex": "8",
+      "CustomFields": {
+        "Range": 24
+      }
+    },
+    "Recipe": "645 1 /Field/{0}/true/Farming 9",
+    "RecyclerOutput": "(O)645"
+  }
+]

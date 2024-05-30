@@ -15,6 +15,7 @@ This document helps mod authors update their content packs for newer versions of
 ## Contents
 * [FAQs](#faqs)
 * [Migration guides](#migration-guides)
+  * [2.1](#21)
   * [2.0](#20)
   * [1.25](#125)
   * [1.24](#124)
@@ -96,8 +97,27 @@ You can fix it by:
 These changes only apply when you set the `Format` version in your `content.json` to the listed
 version or higher. See [release notes](release-notes.md) for a full list of changes.
 
+## 2.1
+Released 22 May 2024.
+
+* `"Action": "Load"` patches now apply to localized asset names _only_ if they have localized forms in the base game
+  folder.
+
+  For example, this patch will now always load `Characters/Toddler`, and _not_ a localized variant like
+  `Characters/Toddler.fr-FR`:
+  ```json
+  {
+      "Action": "Load",
+      "Target": "Characters/Toddler",
+      "FromFile": "assets/toddler.png"
+  }
+  ```
+
+  This should have no effect on most content packs, besides fixing various issues with some edits for non-English
+  players.
+
 ## 2.0
-Upcoming release.
+Released 19 March 2024.
 
 <ul>
 <li>

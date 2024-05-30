@@ -22,7 +22,7 @@
     /*********
     ** Current Version
     *********/
-    "Version": "2.5.3",
+    "Version": "2.5.12",
 
     /*********
     ** Content Pack Description
@@ -33,6 +33,7 @@
     ** Unique Manifest ID for Content Pack
     *********/
     "UniqueID": "Rafseazz.RSVCC",
+    "MinimumApiVersion": "4.0.0-alpha",
 
     /*********
     ** Update Keys (Currently only on Nexus)
@@ -45,6 +46,13 @@
     "ContentPackFor":
     {
         "UniqueID": "PeacefulEnd.CustomCompanions",
-        "MinimumVersion": "1.5.0"
+        "MinimumVersion": "4.0.0"
     },
+	"Dependencies": [
+		{
+			"UniqueID": "spacechase0.SpaceCore",
+    		"IsRequired": true,
+			"MinimumVersion": "1.19.0"
+  		},
+	]
 }

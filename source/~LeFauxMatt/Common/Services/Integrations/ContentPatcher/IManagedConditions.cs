@@ -8,7 +8,14 @@
 **
 *************************************************/
 
+#if IS_FAUXCORE
+namespace StardewMods.FauxCore.Common.Services.Integrations.ContentPatcher;
+#else
 namespace StardewMods.Common.Services.Integrations.ContentPatcher;
+#endif
+
+// ReSharper disable All
+#pragma warning disable
 
 /// <summary>
 /// A set of parsed conditions linked to the Content Patcher context. These conditions are

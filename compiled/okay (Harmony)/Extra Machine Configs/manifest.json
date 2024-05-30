@@ -1,8 +1,8 @@
 ﻿{
   "Name": "ExtraMachineConfig",
   "Author": "selph",
-  "Version": "1.3.2",
-  "Description": "Add extra functionalities to machine artisan recipes.",
+  "Version": "1.6.0",
+  "Description": "Add extra functionalities to machine artisan recipes and other misc data structures.",
   "UniqueID": "selph.ExtraMachineConfig",
   "EntryDll": "ExtraMachineConfig.dll",
   "MinimumApiVersion": "4.0.0",

@@ -1,7 +1,7 @@
 {
   "Name": "FreezeTime",
   "Author": "mori_sensei",
-  "Version": "1.0.2",
+  "Version": "1.0.5",
   "Description": "Freeze Time in multiplayer",
   "UniqueID": "mori_sensei.FreezeTime",
   "EntryDll": "FreezeTime.dll",

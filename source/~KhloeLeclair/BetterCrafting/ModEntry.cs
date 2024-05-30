@@ -11,16 +11,18 @@
 #nullable enable
 
 using System;
-using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Reflection;
 
 using HarmonyLib;
 
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-
+using Leclair.Stardew.BetterCrafting.DynamicRules;
+using Leclair.Stardew.BetterCrafting.Managers;
+using Leclair.Stardew.BetterCrafting.Menus;
+using Leclair.Stardew.BetterCrafting.Models;
 using Leclair.Stardew.Common;
 using Leclair.Stardew.Common.Enums;
 using Leclair.Stardew.Common.Events;
@@ -29,27 +31,25 @@ using Leclair.Stardew.Common.Inventory;
 using Leclair.Stardew.Common.Types;
 using Leclair.Stardew.Common.UI;
 
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+
+using Newtonsoft.Json.Linq;
+
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 
 using StardewValley;
+using StardewValley.Buildings;
+using StardewValley.Inventories;
+using StardewValley.ItemTypeDefinitions;
 using StardewValley.Menus;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
-
-using Leclair.Stardew.BetterCrafting.Managers;
-using Leclair.Stardew.BetterCrafting.Models;
-using Newtonsoft.Json.Linq;
-
-using StardewValley.ItemTypeDefinitions;
-using StardewValley.Buildings;
-using Leclair.Stardew.BetterCrafting.Menus;
-using System.Diagnostics;
-
+using StardewValley.TokenizableStrings;
 
 using SMAPIJsonHelper = StardewModdingAPI.Toolkit.Serialization.JsonHelper;
-using System.Reflection;
 
 namespace Leclair.Stardew.BetterCrafting;
 
@@ -75,6 +75,8 @@ public class ModEntry : PintailModSubscriber {
 	private readonly PerScreen<IClickableMenu?> CurrentMenu = new();
 	private readonly PerScreen<Menus.BetterCraftingPage?> OldCraftingPage = new();
 	private readonly PerScreen<bool> OldCraftingGameMenu = new();
+
+	internal readonly PerScreen<Inventory> TrashedItems = new(() => new());
 
 	private bool? hasBiggerBackpacks;
 	private bool? hasLoveOfCooking;
@@ -144,6 +146,7 @@ public class ModEntry : PintailModSubscriber {
 		Patches.Item_Patches.Patch(this);
 		Patches.GameLocation_Patches.Patch(this);
 		Patches.Torch_Patches.Patch(this);
+		Patches.Utility_Patches.Patch(this);
 		Patches.Workbench_Patches.Patch(this);
 
 		// Read Config
@@ -161,7 +164,6 @@ public class ModEntry : PintailModSubscriber {
 		Triggers = new TriggerManager(this);
 		Stations = new CraftingStationManager(this);
 
-		CheckRecommendedIntegrations();
 		InjectMenuHandler();
 	}
 
@@ -185,7 +187,7 @@ public class ModEntry : PintailModSubscriber {
 			if (ActivePriority == Config.MenuPriority)
 				return;
 
-			switch(ActivePriority) {
+			switch (ActivePriority) {
 				case MenuPriority.Low:
 					Helper.Events.Display.MenuChanged -= LowMenuChanged;
 					break;
@@ -198,7 +200,7 @@ public class ModEntry : PintailModSubscriber {
 			}
 		}
 
-		switch(Config.MenuPriority) {
+		switch (Config.MenuPriority) {
 			case MenuPriority.Low:
 				Helper.Events.Display.MenuChanged += LowMenuChanged;
 				ActivePriority = MenuPriority.Low;
@@ -215,7 +217,7 @@ public class ModEntry : PintailModSubscriber {
 
 	private static void UpdateTextures(Texture2D? oldTex, Texture2D newTex, IClickableMenu menu) {
 		if (menu.allClickableComponents != null)
-			foreach(var cmp in menu.allClickableComponents) {
+			foreach (var cmp in menu.allClickableComponents) {
 				if (cmp is ClickableTextureComponent tp && tp.texture == oldTex)
 					tp.texture = newTex;
 			}
@@ -226,7 +228,7 @@ public class ModEntry : PintailModSubscriber {
 		Sprites.Buttons._TexCache = null;
 
 		if (Game1.activeClickableMenu is GameMenu gm) {
-			foreach(var gmp in gm.pages) {
+			foreach (var gmp in gm.pages) {
 				if (gmp is Menus.BetterCraftingPage bcp) {
 					UpdateTextures(oldTex, Sprites.Buttons.Texture!, gmp);
 					bcp.LoadTextures();
@@ -242,19 +244,63 @@ public class ModEntry : PintailModSubscriber {
 
 	[EventPriority(EventPriority.Low)]
 	private void LowMenuChanged(object? sender, MenuChangedEventArgs e) {
-		HandleMenuChanged(e);
+		HandleMenuChanged();
 	}
 
 	private void NormalMenuChanged(object? sender, MenuChangedEventArgs e) {
-		HandleMenuChanged(e);
+		HandleMenuChanged();
 	}
 
 	[EventPriority(EventPriority.High)]
 	private void HighMenuChanged(object? sender, MenuChangedEventArgs e) {
-		HandleMenuChanged(e);
+		HandleMenuChanged();
 	}
 
-	private void HandleMenuChanged(MenuChangedEventArgs e) {
+	[Subscriber]
+	private void OnClickRecycle(object? sender, ButtonPressedEventArgs e) {
+		if (!Config.EffectiveAllowRecoverTrash ||
+			!e.Button.IsActionButton() ||
+			(Game1.activeClickableMenu is not null && !Game1.activeClickableMenu.readyToClose())
+		)
+			return;
+
+		var page = Game1.activeClickableMenu;
+		if (page is GameMenu gm)
+			page = gm.GetCurrentPage();
+
+		int x = Game1.getOldMouseX();
+		int y = Game1.getOldMouseY();
+
+		if (page is TrashGrabMenu)
+			return;
+
+		else if (page is ItemGrabMenu igm) {
+			if (!igm.trashCan.containsPoint(x, y))
+				return;
+
+		} else if (page is InventoryPage inv) {
+			if (!inv.trashCan.containsPoint(x, y))
+				return;
+
+		} else if (page is CraftingPage cp) {
+			if (!cp.trashCan.containsPoint(x, y))
+				return;
+
+		} else if (page is BetterCraftingPage bcp) {
+			if (!bcp.trashCan.containsPoint(x, y))
+				return;
+
+		} else
+			return;
+
+		Helper.Input.Suppress(e.Button);
+
+		Game1.nextClickableMenu.Insert(0, Game1.activeClickableMenu);
+		Game1.activeClickableMenu = new TrashGrabMenu(this, TrashedItems.Value);
+		Game1.playSound("trashcan");
+	}
+
+	private void HandleMenuChanged() {
 		IClickableMenu menu = Game1.activeClickableMenu;
 		if (CurrentMenu.Value == menu)
 			return;
@@ -300,7 +346,7 @@ public class ModEntry : PintailModSubscriber {
 					);
 
 					if (game != null) {
-						for(int i =0; i < game.pages.Count; i++) {
+						for (int i = 0; i < game.pages.Count; i++) {
 							if (game.pages[i] is CraftingPage cp) {
 								CommonHelper.YeetMenu(cp);
 
@@ -325,7 +371,7 @@ public class ModEntry : PintailModSubscriber {
 			// Did we *used* to have a GameMenu
 			if (CurrentMenu.Value is GameMenu gm1) {
 				if (gm1.GetCurrentPage() is not BetterCraftingPage) {
-					foreach(var page1 in gm1.pages) {
+					foreach (var page1 in gm1.pages) {
 						if (page1 is BetterCraftingPage bcp1)
 							bcp1.emergencyShutDown();
 					}
@@ -337,7 +383,7 @@ public class ModEntry : PintailModSubscriber {
 		}
 
 		// Replace crafting pages.
-		if (Config.SuppressBC?.IsDown() ?? false) { 
+		if (Config.SuppressBC?.IsDown() ?? false) {
 			CurrentMenu.Value = menu;
 			return;
 		}
@@ -432,6 +478,21 @@ public class ModEntry : PintailModSubscriber {
 	}
 
 	[Subscriber]
+	[EventPriority((EventPriority) int.MinValue)]
+	private void AfterGameLaunched(object? sender, GameLaunchedEventArgs e) {
+		var builder = ReflectionHelper.WhatPatchesMe(this, "  ", false);
+		if (builder is not null)
+			Log($"Detected Harmony Patches:\n{builder}", LogLevel.Trace);
+
+		ReflectionHelper.UnpatchMe(this, Harmony!, source => {
+			if (source == "FlyingTNT.ResourceStorage")
+				return true;
+
+			return false;
+		});
+	}
+
+	[Subscriber]
 	private void OnGameLaunched(object? sender, GameLaunchedEventArgs e) {
 		TextureWatcher = new(this, "Mods/leclair.bettercrafting/DynamicTextures/", (name, e) => {
 			return () => Helper.ModContent.Load<IRawTextureData>($"assets/{name}");
@@ -456,8 +517,6 @@ public class ModEntry : PintailModSubscriber {
 		RegisterSettings();
 
 		// Integrations
-		InventoryHelper.InitializeStackQuality(this);
-
 		intPFM = new(this);
 		//intRGB = new(this);
 		intSSR = new(this);
@@ -488,8 +547,15 @@ public class ModEntry : PintailModSubscriber {
 			}
 		});
 
+		Helper.ConsoleCommands.Add("bc_trash", "Open the trash reclaimation menu.", (name, args) => {
+			if (!Context.IsWorldReady || Game1.activeClickableMenu is not null)
+				return;
+
+			Game1.activeClickableMenu = new TrashGrabMenu(this, TrashedItems.Value);
+		});
+
 		Helper.ConsoleCommands.Add("bc_stations", "List all custom crafting stations, or open one if you provide a name.", (name, args) => {
-			if ( args.Length > 0 && !string.IsNullOrEmpty(args[0]) ) {
+			if (args.Length > 0 && !string.IsNullOrEmpty(args[0])) {
 				string key = args[0].Trim();
 
 				if (key.Equals("reload", StringComparison.OrdinalIgnoreCase)) {
@@ -503,14 +569,14 @@ public class ModEntry : PintailModSubscriber {
 					return;
 				}
 
-				Triggers.Map_OpenMenu(Game1.currentLocation, new string[] {
+				Triggers.Map_OpenMenu(Game1.currentLocation, [
 					"", "false", "false", key
-				}, Game1.player, Game1.player.Position.ToPoint());
+				], Game1.player, Game1.player.Position.ToPoint());
 				return;
 			}
 
 			Log($"Available Crafting Stations:", LogLevel.Info);
-			foreach(var station in Stations.GetStations())
+			foreach (var station in Stations.GetStations())
 				Log($" [{station.Id}]: {station.DisplayName} (Recipes: {station.Recipes?.Length ?? 0}, Exclusive: {station.AreRecipesExclusive})", LogLevel.Info);
 		});
 
@@ -520,7 +586,12 @@ public class ModEntry : PintailModSubscriber {
 	private void OnSaveLoaded(object? sender, SaveLoadedEventArgs e) {
 		_UseGlobalSave = null;
 		AtTitle = false;
+		TrashedItems.ResetAllScreens();
 		RegisterSettings();
+
+		// Load our settings.
+		if (Context.IsMultiplayer && Context.IsMainPlayer)
+			UpdateMultiplayerConfig();
 
 		// Touch this to load our texture ahead of time.
 		_ = Sprites.Buttons.Texture;
@@ -531,6 +602,7 @@ public class ModEntry : PintailModSubscriber {
 	private void OnReturnToTitle(object? sender, ReturnedToTitleEventArgs e) {
 		_UseGlobalSave = null;
 		AtTitle = true;
+		TrashedItems.ResetAllScreens();
 		RegisterSettings();
 	}
 
@@ -579,7 +651,7 @@ public class ModEntry : PintailModSubscriber {
 
 		// Disable the destroyOvernight flag on Cookout Kits when they're placed.
 		if (e.Added is not null)
-			foreach(var pair in e.Added) {
+			foreach (var pair in e.Added) {
 				var obj = pair.Value;
 				if (obj is Torch torch && torch.bigCraftable.Value && torch.ParentSheetIndex == 278) {
 					torch.destroyOvernight = false;
@@ -588,7 +660,7 @@ public class ModEntry : PintailModSubscriber {
 
 		// When a Cookout Kit is removed, drop the Cookout Kit item at its location.
 		if (e.Removed is not null)
-			foreach(var pair in e.Removed) {
+			foreach (var pair in e.Removed) {
 				var obj = pair.Value;
 				if (obj is Torch torch && torch.bigCraftable.Value && torch.ParentSheetIndex == 278 && torch.Fragility != 2) {
 					e.Location.debris.Add(new Debris(ItemRegistry.Create("(O)926", 1), new Vector2(pair.Key.X * 64 + 32, pair.Key.Y * 64 + 32)));
@@ -619,7 +691,7 @@ public class ModEntry : PintailModSubscriber {
 					heads = Helper.Data.ReadJsonFile<Dictionary<string, HeadSize>>(path);
 					if (heads is null)
 						Log($"The {path} file is missing or invalid.", LogLevel.Error);
-				} catch(Exception ex) {
+				} catch (Exception ex) {
 					Log($"The {path} file is invalid.", LogLevel.Error, ex);
 				}
 
@@ -697,7 +769,7 @@ public class ModEntry : PintailModSubscriber {
 				return _UseGlobalSave.Value;
 
 			string path = $"savedata/settings/{Constants.SaveFolderName}.json";
-			SaveSpecificConfig? data = null;
+			SaveSpecificConfig? data;
 
 			try {
 				data = Helper.Data.ReadJsonFile<SaveSpecificConfig>(path);
@@ -735,7 +807,52 @@ public class ModEntry : PintailModSubscriber {
 		Helper.WriteConfig(Config);
 		Helper.GameContent.InvalidateCache(@"Data/CraftingRecipes");
 		InjectMenuHandler();
+
+		if (Context.IsMultiplayer && Context.IsMainPlayer)
+			UpdateMultiplayerConfig();
 	}
+
+
+	private Dictionary<string, PropertyInfo>? ConfigFields;
+
+	private void UpdateMultiplayerConfig() {
+		if (Game1.MasterPlayer != Game1.player || Game1.MasterPlayer == null)
+			return;
+
+		if (ConfigFields == null) {
+			ConfigFields = new();
+			foreach (var prop in AccessTools.GetDeclaredProperties(typeof(ModConfig))) {
+				if (prop.GetCustomAttribute<MultiplayerSyncSetting>() != null && prop.CanRead)
+					ConfigFields[prop.Name] = prop;
+			}
+		}
+
+		foreach (var pair in ConfigFields) {
+			object? value = pair.Value.GetValue(Config);
+			string? sval;
+			if (value == null)
+				sval = null;
+			else if (value is bool vbool)
+				sval = vbool.ToString();
+			else if (value is int vint)
+				sval = vint.ToString();
+			else if (value is long vlong)
+				sval = vlong.ToString();
+			else if (value is string vstring)
+				sval = vstring;
+			else {
+				GetJsonHelper();
+				sval = JsonHelper?.Serialize(value);
+			}
+
+			string key = $"leclair.bettercrafting/{pair.Key}";
+			if (sval != null)
+				Game1.MasterPlayer.modData[key] = sval;
+			else
+				Game1.MasterPlayer.modData.Remove(key);
+		}
+	}
+
 
 	[MemberNotNullWhen(true, nameof(GMCMIntegration))]
 	public bool HasGMCM() {
@@ -747,7 +864,7 @@ public class ModEntry : PintailModSubscriber {
 			if (Game1.activeClickableMenu is GameMenu gm && gm.GetCurrentPage() is Menus.BetterCraftingPage p) {
 				OldCraftingPage.Value = p;
 				OldCraftingGameMenu.Value = true;
-			} 
+			}
 
 			if (Game1.activeClickableMenu is Menus.BetterCraftingPage page)
 				OldCraftingPage.Value = page;
@@ -767,6 +884,8 @@ public class ModEntry : PintailModSubscriber {
 
 		ConfigRegistered = true;
 
+		var storages = GetStorages();
+
 		Dictionary<SeasoningMode, Func<string>> seasoning = new();
 		seasoning.Add(SeasoningMode.Disabled, I18n.Seasoning_Disabled);
 		seasoning.Add(SeasoningMode.Enabled, I18n.Seasoning_Enabled);
@@ -785,8 +904,17 @@ public class ModEntry : PintailModSubscriber {
 				.Add(
 					I18n.Setting_UsePerSave,
 					I18n.Setting_UsePerSave_Tip,
-					c => ! UseGlobalSave,
-					(c, v) => UseGlobalSave = ! v
+					c => !UseGlobalSave,
+					(c, v) => UseGlobalSave = !v
+				);
+
+		if (AtTitle || Context.IsMainPlayer)
+			GMCMIntegration
+				.Add(
+					I18n.Setting_EnforceMultiplayer,
+					I18n.Setting_EnforceMultiplayer_Tip,
+					c => c.EnforceSettings,
+					(c, v) => c.EnforceSettings = v
 				);
 
 		GMCMIntegration
@@ -837,6 +965,12 @@ public class ModEntry : PintailModSubscriber {
 				c => c.UseCategories,
 				(c, val) => c.UseCategories = val
 			)
+			.Add(
+				I18n.Setting_SourceMod,
+				I18n.Setting_SourceMod_Tip,
+				c => c.ShowSourceModInTooltip,
+				(c, v) => c.ShowSourceModInTooltip = v
+			)
 			.AddChoice(
 				name: I18n.Setting_GiftTaste,
 				tooltip: I18n.Setting_GiftTaste_Tip,
@@ -863,6 +997,12 @@ public class ModEntry : PintailModSubscriber {
 				tooltip: I18n.Setting_GiftTasteAll_Tip,
 				get: c => c.ShowAllTastes,
 				set: (c, v) => c.ShowAllTastes = v
+			)
+			.Add(
+				name: I18n.Setting_RecoverTrash,
+				tooltip: I18n.Setting_RecoverTrash_About,
+				get: c => c.AllowRecoverTrash,
+				set: (c, v) => c.AllowRecoverTrash = v
 			)
 			.AddChoice(
 				name: I18n.Setting_Priority,
@@ -891,12 +1031,10 @@ public class ModEntry : PintailModSubscriber {
 				tooltip: I18n.Setting_NewRecipes_Prismatic_Tip,
 				get: c => c.NewRecipesPrismatic,
 				set: (c, v) => c.NewRecipesPrismatic = v
-			);
+			)
 
-		GMCMIntegration
-			.AddLabel(I18n.Setting_Bindings, I18n.Setting_Bindings_Tip, "page:bindings");
+			.AddLabel(I18n.Setting_Bindings, I18n.Setting_Bindings_Tip, "page:bindings")
 
-		GMCMIntegration
 			.AddLabel(I18n.Setting_Crafting, I18n.Setting_Crafting_Tip)
 			.Add(
 				I18n.Setting_UniformGrid,
@@ -908,16 +1046,21 @@ public class ModEntry : PintailModSubscriber {
 				I18n.Setting_Alphabetic,
 				I18n.Setting_Alphabetic_Tip,
 				c => c.CraftingAlphabetic,
-				(c,v) => c.CraftingAlphabetic = v
+				(c, v) => c.CraftingAlphabetic = v
 			)
 			.Add(
 				I18n.Setting_BigCraftablesLast,
 				I18n.Setting_BigCraftablesLast_Tip,
 				c => c.SortBigLast,
 				(c, val) => c.SortBigLast = val
-			);
+			)
+			.Add(
+				I18n.Setting_ShowUnknown,
+				I18n.Setting_ShowUnknown_Tip,
+				c => c.DisplayUnknownCrafting,
+				(c, v) => c.DisplayUnknownCrafting = v
+			)
 
-		GMCMIntegration
 			.AddLabel(I18n.Setting_Cooking, I18n.Setting_Cooking_Tip)
 			.Add(
 				I18n.Setting_Alphabetic,
@@ -937,9 +1080,8 @@ public class ModEntry : PintailModSubscriber {
 				I18n.Setting_HideUnknown_Tip,
 				c => c.HideUnknown,
 				(c, val) => c.HideUnknown = val
-			);
+			)
 
-		GMCMIntegration
 			.AddLabel(I18n.Setting_Quality)
 			.AddParagraph(I18n.Setting_Quality_Tip)
 			.Add(
@@ -958,6 +1100,18 @@ public class ModEntry : PintailModSubscriber {
 				I18n.Setting_SortQuality_Tip,
 				c => c.LowQualityFirst,
 				(c, v) => c.LowQualityFirst = v
+			)
+			.AddChoice(
+				I18n.Setting_ShowMatchingItems,
+				I18n.Setting_ShowMatchingItems_Tip,
+				c => c.ShowMatchingItem,
+				(c, v) => c.ShowMatchingItem = v,
+				choices: new Dictionary<ShowMatchingItemMode, Func<string>> {
+					{ ShowMatchingItemMode.Disabled, I18n.Setting_ShowMatchingItems_Never },
+					{ ShowMatchingItemMode.Always, I18n.Setting_ShowMatchingItems_Always },
+					{ ShowMatchingItemMode.Fuzzy, I18n.Setting_ShowMatchingItems_Fuzzy },
+					{ ShowMatchingItemMode.FuzzyQuality, I18n.Setting_ShowMatchingItems_FuzzyQuality }
+				}
 			)
 			.Add(
 				I18n.Setting_Nearby_Nearby,
@@ -981,9 +1135,8 @@ public class ModEntry : PintailModSubscriber {
 					0 => I18n.Setting_Nearby_Nearby_Off(),
 					_ => I18n.Setting_Nearby_Nearby_Tiles($"{Math.Pow(2, val + 1)}")
 				}
-			);
+			)
 
-		GMCMIntegration
 			.AddLabel(
 				I18n.Setting_Recycle,
 				I18n.Setting_Recycle_About,
@@ -1114,6 +1267,25 @@ public class ModEntry : PintailModSubscriber {
 				max: 1000
 			);
 
+		if (storages != null && storages.Count > 0) {
+			GMCMIntegration
+				.StartPage("page:invalid-storage", I18n.Setting_InvalidStorageTypes)
+				.AddParagraph(I18n.Setting_InvalidStorageTypes_Tip);
+
+			foreach (var pair in storages)
+				GMCMIntegration.Add(
+					() => TokenParser.ParseText(pair.Value),
+					null,
+					c => c.InvalidStorages.Contains(pair.Key),
+					(c, v) => {
+						if (v)
+							c.InvalidStorages.Add(pair.Key);
+						else
+							c.InvalidStorages.Remove(pair.Key);
+					}
+				);
+		}
+
 		GMCMIntegration
 			.StartPage("page:conn", I18n.Setting_Nearby_Connectors)
 			.AddParagraph(I18n.Setting_Nearby_Connectors_Tip);
@@ -1147,7 +1319,7 @@ public class ModEntry : PintailModSubscriber {
 			GMCMIntegration.AddLabel(I18n.Setting_Nearby_Fences);
 
 			var fences = FenceMap.Values.ToList();
-			fences.Sort((a,b) => a.Item2.CompareTo(b.Item2));
+			fences.Sort((a, b) => a.Item2.CompareTo(b.Item2));
 
 			foreach (var pair in fences) {
 				string connector = pair.Item1;
@@ -1175,7 +1347,7 @@ public class ModEntry : PintailModSubscriber {
 			sorted.Sort(StringComparer.InvariantCultureIgnoreCase);
 
 			foreach (string connector in sorted)
-				if ( ! string.IsNullOrEmpty(connector) )
+				if (!string.IsNullOrEmpty(connector))
 					GMCMIntegration.Add(
 						connector,
 						null,
@@ -1214,6 +1386,12 @@ public class ModEntry : PintailModSubscriber {
 			)
 			.AddLabel("")
 			.Add(
+				I18n.Setting_Recycle_HigherQuality,
+				I18n.Setting_Recycle_HigherQuality_Tip,
+				c => c.RecycleHigherQuality,
+				(c, v) => c.RecycleHigherQuality = v
+			)
+			.Add(
 				I18n.Setting_Recycle_Fuzzy,
 				I18n.Setting_Recycle_Fuzzy_Tip,
 				c => c.RecycleFuzzyItems,
@@ -1251,6 +1429,14 @@ public class ModEntry : PintailModSubscriber {
 				I18n.Setting_Nearby_Connectors_Tip,
 				"page:conn"
 			);
+
+		if (storages != null && storages.Count > 0)
+			GMCMIntegration
+				.AddLabel(
+					I18n.Setting_InvalidStorageTypes,
+					I18n.Setting_InvalidStorageTypes_Tip,
+					"page:invalid-storage"
+				);
 
 		GMCMIntegration
 			.StartPage("page:cookout", I18n.Setting_Cookout)
@@ -1294,7 +1480,7 @@ public class ModEntry : PintailModSubscriber {
 				I18n.Setting_Key_Modifier,
 				I18n.Setting_Key_Modifier_Tip,
 				c => c.ModiferKey,
-				(c,v) => c.ModiferKey = v
+				(c, v) => c.ModiferKey = v
 			)
 
 			.AddLabel(""); // Spacer
@@ -1336,7 +1522,7 @@ public class ModEntry : PintailModSubscriber {
 				I18n.Setting_Transfer_Quantity,
 				I18n.Setting_Transfer_Quantity_Tip,
 				c => accessor(c).Quantity,
-				(c,v) => accessor(c).Quantity = v,
+				(c, v) => accessor(c).Quantity = v,
 				min: 1,
 				max: 999
 			);
@@ -1391,10 +1577,50 @@ public class ModEntry : PintailModSubscriber {
 	}
 
 	public bool DoesTranslationExist(string key) {
-		return Helper.Translation.ContainsKey(key);
+		return Helper.Translation.Get(key).HasValue();
 	}
 
 	#region Connectors
+
+	private Dictionary<string, string> GetStorages() {
+		Dictionary<string, string> result = [];
+
+		foreach (string key in StorageRuleHandler.VANILLA_CHESTS) {
+			var md = ItemRegistry.GetMetadata(key);
+			if (md.TypeIdentifier == ItemRegistry.type_bigCraftable) {
+				if (Game1.bigCraftableData != null && Game1.bigCraftableData.TryGetValue(md.LocalItemId, out var data))
+					result[key] = data.DisplayName;
+
+			} else if (md.TypeIdentifier == ItemRegistry.type_furniture) {
+				// TODO: This
+
+			} else if (md.TypeIdentifier == ItemRegistry.type_object) {
+				if (Game1.objectData != null && Game1.objectData.TryGetValue(md.LocalItemId, out var data))
+					result[key] = data.DisplayName;
+			}
+		}
+
+		if (Game1.bigCraftableData != null)
+			foreach (var pair in Game1.bigCraftableData) {
+				if (!result.ContainsKey(pair.Key) &&
+					pair.Value.CustomFields is not null &&
+					pair.Value.CustomFields.TryGetValue("furyx639.ExpandedStorage/Enabled", out string? isExpanded) &&
+					isExpanded == "true"
+				) {
+					result[pair.Key] = pair.Value.DisplayName;
+				}
+			}
+
+		if (Game1.buildingData != null)
+			foreach (var pair in Game1.buildingData) {
+				var chests = pair.Value.Chests;
+				if (chests != null)
+					result[pair.Key] = pair.Value.Name;
+			}
+
+		return result;
+	}
+
 
 	[MemberNotNull(nameof(FloorMap))]
 	private void LoadFloorMap() {
@@ -1404,7 +1630,7 @@ public class ModEntry : PintailModSubscriber {
 		var data = DataLoader.FloorsAndPaths(Game1.content);
 		FloorMap = new();
 
-		foreach(var pair in data) {
+		foreach (var pair in data) {
 			if (string.IsNullOrEmpty(pair.Value.ItemId) || ItemRegistry.GetData(pair.Value.ItemId) is not ParsedItemData itemData)
 				continue;
 
@@ -1445,14 +1671,14 @@ public class ModEntry : PintailModSubscriber {
 		examples ??= new();
 
 		// Read any extra data files
-		foreach(var cp in Helper.ContentPacks.GetOwned()) {
+		foreach (var cp in Helper.ContentPacks.GetOwned()) {
 			if (!cp.HasFile("connector_examples.json"))
 				continue;
 
 			List<string>? extra = null;
 			try {
 				extra = cp.ReadJsonFile<List<string>>("connector_examples.json");
-			} catch(Exception ex) {
+			} catch (Exception ex) {
 				Log($"The connector_examples.json file of {cp.Manifest.Name} is invalid.", LogLevel.Error, ex);
 			}
 
@@ -1472,13 +1698,24 @@ public class ModEntry : PintailModSubscriber {
 		ConnectorExamples = examples;
 	}
 
+	public bool IsInvalidStorage(object obj) {
+		if (obj is SObject sobj)
+			return Config.InvalidStorages.Contains(sobj.QualifiedItemId);
+
+		if (obj is Building build)
+			return Config.InvalidStorages.Contains(build.buildingType.Value);
+
+		return false;
+	}
+
+
 	public bool IsValidConnector(object obj) {
 		if (obj == null)
 			return false;
 
 		(string, string) names;
 
-		switch(obj) {
+		switch (obj) {
 			case Fence fence:
 				// Just accept the raw value.
 				if (Config.ValidConnectors.Contains(fence.ItemId))
@@ -1539,13 +1776,11 @@ public class ModEntry : PintailModSubscriber {
 	}
 
 	public IInventoryProvider? GetInventoryProvider(object obj) {
-		// TODO: Check for MoveToConnected?
-
 		Type? type = obj?.GetType();
 		if (type is null)
 			return null;
 
-		if (! invProviders.ContainsKey(type)) {
+		if (!invProviders.ContainsKey(type)) {
 			// Try less specific.
 			if (obj is Chest)
 				type = typeof(Chest);
@@ -1553,8 +1788,20 @@ public class ModEntry : PintailModSubscriber {
 				type = typeof(Building);
 			else if (obj is Workbench)
 				type = typeof(Workbench);
-			else
-				return null;
+			else {
+				Type? target = null;
+				foreach (Type knownType in invProviders.Keys) {
+					if (knownType.IsAssignableFrom(type)) {
+						if (target == null || knownType.IsAssignableFrom(target))
+							target = knownType;
+					}
+				}
+
+				if (target != null)
+					invProviders[type] = invProviders[target];
+				else
+					return null;
+			}
 		}
 
 		return invProviders[type] as IInventoryProvider;

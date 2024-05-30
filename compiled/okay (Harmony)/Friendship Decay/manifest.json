@@ -1,7 +1,7 @@
 {
 	"Name": "Friendship Decay",
 	"Author": "stardemod",
-	"Version": "1.1.2",
+	"Version": "1.2.1",
 	"Description": "Neverending rapid friendship decay. Pets included.",
 	"UniqueID": "stardemod.FriendshipDecay",
 	"EntryDll": "FriendshipDecay.dll",

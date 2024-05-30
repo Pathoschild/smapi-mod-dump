@@ -22,8 +22,8 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Tiles
         /*********
         ** Fields
         *********/
-        /// <summary>Whether to only show content once the player discovers it.</summary>
-        private readonly bool ProgressionMode;
+        /// <summary>Whether to show puzzle solutions.</summary>
+        private readonly bool ShowPuzzleSolutions;
 
 
         /*********
@@ -34,14 +34,14 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Tiles
         /// <param name="location">The game location.</param>
         /// <param name="position">The tile position.</param>
         /// <param name="showRawTileInfo">Whether to show raw tile info like tilesheets and tile indexes.</param>
-        /// <param name="progressionMode">Whether to only show content once the player discovers it.</param>
-        public IslandShrinePuzzleSubject(GameHelper gameHelper, GameLocation location, Vector2 position, bool showRawTileInfo, bool progressionMode)
+        /// <param name="showPuzzleSolutions">Whether to show puzzle solutions.</param>
+        public IslandShrinePuzzleSubject(GameHelper gameHelper, GameLocation location, Vector2 position, bool showRawTileInfo, bool showPuzzleSolutions)
             : base(gameHelper, location, position, showRawTileInfo)
         {
             this.Name = I18n.Puzzle_IslandShrine_Title();
             this.Description = null;
             this.Type = null;
-            this.ProgressionMode = progressionMode;
+            this.ShowPuzzleSolutions = showPuzzleSolutions;
         }
 
         /// <summary>Get the data to display for this subject.</summary>
@@ -52,7 +52,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Tiles
                 IslandShrine shrine = (IslandShrine)this.Location;
                 bool complete = shrine.puzzleFinished.Value;
 
-                if (this.ProgressionMode && !complete)
+                if (!this.ShowPuzzleSolutions && !complete)
                     yield return new GenericField(I18n.Puzzle_Solution(), new FormattedText(I18n.Puzzle_Solution_Hidden(), Color.Gray));
                 else
                 {

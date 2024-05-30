@@ -10,13 +10,13 @@
 
 using System.Diagnostics;
 
+using Leclair.Stardew.CloudySkies.Layers;
 using Leclair.Stardew.CloudySkies.Models;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using StardewValley;
-using StardewValley.TokenizableStrings;
 
 namespace Leclair.Stardew.CloudySkies;
 
@@ -34,7 +34,7 @@ public partial class ModEntry {
 		WeatherData? data = CachedWeather.Value;
 
 		if (data is not null)
-			return data.DisplayName is null ? data.Id : TokenParser.ParseText(data.DisplayName);
+			return data.DisplayName is null ? data.Id : TokenizeText(data.DisplayName);
 
 		return CachedWeatherName.Value switch {
 			"Sun" => I18n.Weather_Sunny(),
@@ -110,41 +110,74 @@ public partial class ModEntry {
 		var hooks = HookDelegate();
 
 		bool old_lighting = false;
+		ShaderLayer? prevShader = null;
+		SpriteBatch batch = Game1.spriteBatch;
 
 		// Start rendering with a Begin
-		Game1.spriteBatch.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend, SamplerState.PointClamp);
+		batch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp);
 
 		// Now, we technically need to run the drawing hook.
-		if (hooks.OnRendering(StardewValley.Mods.RenderSteps.World_Weather, Game1.spriteBatch, time, targetScreen) && Game1.currentLocation!.IsOutdoors) {
+		if (hooks.OnRendering(StardewValley.Mods.RenderSteps.World_Weather, batch, time, targetScreen)) {
 
 			// Step 2. Draw the rest of the owl.
 			var layers = GetCachedWeatherLayers();
-			if (layers is not null)
-				foreach (var layer in layers) {
-					bool lighting = layer.DrawType == LayerDrawType.Lighting;
-					if (lighting != old_lighting) {
-						old_lighting = lighting;
-						Game1.spriteBatch.End();
-						Game1.spriteBatch.Begin(
-							SpriteSortMode.Texture,
-							lighting ? LightingBlend : BlendState.AlphaBlend,
-							SamplerState.PointClamp
-						);
-					}
+			if (layers is not null) {
+				int c = layers.Count;
+				for (int i = 0; i < c; i++) {
+					var layer = layers[i];
+					// We have different logic if this is a ShaderLayer.
+					if (layer is ShaderLayer shaderLayer) {
+						// If this is the first ShaderLayer in a run,
+						// then we need to end the current SpriteBatch to flush
+						// any pending draw calls.
+						if (prevShader is null)
+							batch.End();
 
-					layer.Draw(Game1.spriteBatch, time, targetScreen);
+						ShaderLayer? nextShader = (i + 1) < c ? layers[i + 1] as ShaderLayer : null;
+						shaderLayer.Draw(time, targetScreen, prevShader, nextShader);
+						prevShader = shaderLayer;
+
+					} else {
+						// Not a shader layer, do the normal stuff.
+						bool lighting = layer.DrawType == LayerDrawType.Lighting;
+
+						// If the lighting changed, or if we were previously drawing
+						// a shader layer, we need to start a new SpriteBatch.
+						if (lighting != old_lighting || prevShader is not null) {
+							old_lighting = lighting;
+							// If we weren't previously editing a shader, then
+							// there will be an open SpriteBatch. End it.
+							if (prevShader is null)
+								batch.End();
+
+							prevShader = null;
+
+							batch.Begin(
+								SpriteSortMode.Deferred,
+								lighting ? LightingBlend : BlendState.AlphaBlend,
+								SamplerState.PointClamp
+							);
+						}
+
+						layer.Draw(batch, time, targetScreen);
+					}
 				}
+			}
 		}
 
 		// Switch back for the final hook if we're in lighting mode.
-		if (old_lighting) {
-			Game1.spriteBatch.End();
-			Game1.spriteBatch.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend, SamplerState.PointClamp);
+		if (old_lighting || prevShader is not null) {
+			// If we weren't previously editing a shader, then
+			// there will be an open SpriteBatch. End it.
+			if (prevShader is null)
+				batch.End();
+
+			batch.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend, SamplerState.PointClamp);
 		}
 
 		// End it now that we're done.
-		hooks.OnRendered(StardewValley.Mods.RenderSteps.World_Weather, Game1.spriteBatch, time, targetScreen);
-		Game1.spriteBatch.End();
+		hooks.OnRendered(StardewValley.Mods.RenderSteps.World_Weather, batch, time, targetScreen);
+		batch.End();
 
 		if (timer is not null) {
 			timer.Stop();

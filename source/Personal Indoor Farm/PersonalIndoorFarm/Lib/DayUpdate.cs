@@ -128,7 +128,15 @@ namespace PersonalIndoorFarm.Lib
                     if (!farmer.modData.TryGetValue(PersonalFarm.generateFarmerPIDKey(doorId), out var pid))
                         continue;
 
-                    PersonalFarm.createLocation(pid, farmer, doorId);
+                    try {
+                        PersonalFarm.createLocation(pid, farmer, doorId);
+                    } catch (MissingRoomException) {
+                        if (!Context.IsMainPlayer)
+                            continue;
+                        Monitor.Log($"If you save now the {doorId} room {pid} for the player {farmer.Name} will be permanently deleted.", LogLevel.Error);
+                        farmer.modData.Remove(PersonalFarm.generateFarmerPIDKey(doorId));
+                    }
+                    
                 }
             }
         }

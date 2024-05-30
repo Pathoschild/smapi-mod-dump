@@ -32,14 +32,18 @@ namespace FashionSense.Framework.Managers
         internal readonly Texture2D sleevesAndShoesButtonTexture;
         internal readonly Texture2D sleevesButtonTexture;
         internal readonly Texture2D shoesButtonTexture;
+        internal readonly Texture2D bodyButtonTexture;
         internal readonly Texture2D exportButton;
+
+        // Appearances
+        internal IContentPack localPack;
 
         public AssetManager(IModHelper helper)
         {
             // Get the asset folder path
             assetFolderPath = helper.ModContent.GetInternalAssetName(Path.Combine("Framework", "Assets")).Name;
 
-            // Load in the assets
+            // Load in the UI assets
             _handMirrorTexture = helper.ModContent.Load<Texture2D>(Path.Combine(assetFolderPath, "HandMirror.png"));
             scissorsButtonTexture = helper.ModContent.Load<Texture2D>(Path.Combine(assetFolderPath, "UI", "HairButton.png"));
             accessoryButtonTexture = helper.ModContent.Load<Texture2D>(Path.Combine(assetFolderPath, "UI", "AccessoryButton.png"));
@@ -49,10 +53,20 @@ namespace FashionSense.Framework.Managers
             sleevesButtonTexture = helper.ModContent.Load<Texture2D>(Path.Combine(assetFolderPath, "UI", "SleevesButton.png"));
             sleevesAndShoesButtonTexture = helper.ModContent.Load<Texture2D>(Path.Combine(assetFolderPath, "UI", "SleevesShoesButton.png"));
             shoesButtonTexture = helper.ModContent.Load<Texture2D>(Path.Combine(assetFolderPath, "UI", "ShoesButton.png"));
+            bodyButtonTexture = helper.ModContent.Load<Texture2D>(Path.Combine(assetFolderPath, "UI", "BodyButton.png"));
             exportButton = helper.ModContent.Load<Texture2D>(Path.Combine(assetFolderPath, "UI", "ExportButton.png"));
 
             // Setup toolNames
             toolNames.Add("HandMirror", _handMirrorTexture);
+        }
+
+        internal IContentPack GetLocalPack(bool update = false)
+        {
+            if (localPack is null || update is true)
+            {
+                localPack = FashionSense.modHelper.ContentPacks.CreateTemporary(Path.Combine(FashionSense.modHelper.DirectoryPath, "Framework", "Assets", "Local Pack"), "PeacefulEnd.FashionSense.LocalPack", "FS - Local Pack", "The local appearance pack for the Fashion Sense framework.", FashionSense.modManifest.Author, FashionSense.modManifest.Version);
+            }
+            return localPack;
         }
 
         internal Texture2D GetHandMirrorTexture()

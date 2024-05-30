@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,10 +22,14 @@ namespace PersonalIndoorFarm
         public bool UseVanillaDoors { get; set; }
         public bool UseVMVDoors { get; set; }
 
+        public Color LockedDoorColor { get; set; }
+        public Color UnlockedDoorColor { get; set; }
         public ModConfig()
         {
             UseVanillaDoors = true;
             UseVMVDoors = true;
+            LockedDoorColor = Color.Red * 0.6f;
+            UnlockedDoorColor = Color.ForestGreen * 0.6f;
         }
     }
 }

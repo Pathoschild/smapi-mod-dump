@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-#nullable enable
+#if COMMON_BCINVENTORY
 
 using System;
 using System.Collections.Generic;
@@ -26,14 +26,14 @@ namespace Leclair.Stardew.Common.Inventory;
 public class ChestProvider : BaseInventoryProvider<Chest> {
 
 	public readonly Chest.SpecialChestTypes[] AllowedTypes;
-	
+
 	public ChestProvider() {
-		AllowedTypes = new[] {
+		AllowedTypes = [
 			Chest.SpecialChestTypes.JunimoChest,
 			Chest.SpecialChestTypes.BigChest,
 			Chest.SpecialChestTypes.AutoLoader,
 			Chest.SpecialChestTypes.None
-		};
+		];
 	}
 
 	public ChestProvider(IEnumerable<Chest.SpecialChestTypes> types) {
@@ -41,7 +41,7 @@ public class ChestProvider : BaseInventoryProvider<Chest> {
 	}
 
 	public ChestProvider(bool any) {
-		AllowedTypes = any ? CommonHelper.GetValues<Chest.SpecialChestTypes>().ToArray() : Array.Empty<Chest.SpecialChestTypes>();
+		AllowedTypes = any ? Enum.GetValues<Chest.SpecialChestTypes>().ToArray() : [];
 	}
 
 
@@ -104,3 +104,5 @@ public class ChestProvider : BaseInventoryProvider<Chest> {
 		return AllowedTypes.Contains(obj.SpecialChestType);
 	}
 }
+
+#endif

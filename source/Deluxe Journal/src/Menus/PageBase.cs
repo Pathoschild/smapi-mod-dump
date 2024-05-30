@@ -10,7 +10,6 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
 
@@ -18,51 +17,30 @@ using static StardewValley.Menus.ClickableComponent;
 
 namespace DeluxeJournal.Menus
 {
-    /// <summary>The base page that all typical pages should derive from.</summary>
-    public class PageBase : IClickableMenu, IPage
+    /// <summary>The base page that all typical pages derive from.</summary>
+    public class PageBase : IPage
     {
-        /// <summary>A wrapper for the IClickableMenu.allClickableComponents (or equivalent) field.</summary>
-        public List<ClickableComponent> AllClickableComponents => allClickableComponents;
-
-        /// <summary>The page name.</summary>
-        public string Name { get; }
-
-        /// <summary>The page title (should be translated for the current locale).</summary>
-        public string Title { get; }
-
-        /// <summary>Hover text to be displayed by the parent DeluxeJournalMenu.</summary>
-        public string HoverText { get; protected set; }
-
-        /// <summary>Tab ID value assigned by the page manager (this value is set immediately AFTER construction).</summary>
-        public int TabID { get; set; }
-
         /// <summary>Texture for the tab.</summary>
         public Texture2D TabTexture { get; set; }
 
         /// <summary>Source rect for the tab texture.</summary>
         public Rectangle TabSourceRect { get; set; }
 
-        protected ITranslationHelper Translation { get; }
-
-        public PageBase(string name, string title, int x, int y, int width, int height, Texture2D tabTexture, Rectangle tabSourceRect, ITranslationHelper translation) :
-            base(x, y, width, height)
+        public PageBase(string name, string title, int x, int y, int width, int height, Texture2D tabTexture, Rectangle tabSourceRect)
+            : base(name, title, x, y, width, height)
         {
-            Name = name;
-            Title = title;
             TabTexture = tabTexture;
             TabSourceRect = tabSourceRect;
-            Translation = translation;
-            HoverText = "";
         }
 
         /// <summary>Get the ClickableTextureComponent for the page tab.</summary>
-        public virtual ClickableTextureComponent GetTabComponent()
+        public override ClickableTextureComponent GetTabComponent()
         {
             Rectangle bounds = new Rectangle(xPositionOnScreen - 64, yPositionOnScreen + 16 + TabID * 64, 64, 64);
 
             return new ClickableTextureComponent(Name, bounds, "", Title, TabTexture, TabSourceRect, 4f)
             {
-                myID = ((IPage)this).TabComponentID,
+                myID = TabComponentID,
                 rightNeighborID = SNAP_TO_DEFAULT,
                 leftNeighborID = CUSTOM_SNAP_BEHAVIOR,
                 fullyImmutable = true
@@ -70,47 +48,41 @@ namespace DeluxeJournal.Menus
         }
 
         /// <summary>Called when the page becomes visible and active.</summary>
-        public virtual void OnVisible()
+        public override void OnVisible()
         {
         }
 
         /// <summary>Called when the page is hidden and no longer active.</summary>
-        public virtual void OnHidden()
+        public override void OnHidden()
         {
         }
 
         /// <summary>Returns true if keyboard input should be ignored by the parent DeluxeJournalMenu.</summary>
-        public virtual bool KeyboardHasFocus()
+        public override bool KeyboardHasFocus()
         {
             return false;
         }
 
-        /// <summary>Returns true if all input should be ignored by the parent DeluxeJournalMenu.</summary>
-        public virtual bool ChildHasFocus()
-        {
-            return _childMenu != null;
-        }
-
-        public override bool shouldDrawCloseButton()
-        {
-            return _childMenu == null;
-        }
-
         public override void performHoverAction(int x, int y)
         {
-            HoverText = "";
+            HoverText = string.Empty;
+        }
+
+        protected override void cleanupBeforeExit()
+        {
+            Game1.exitActiveMenu();
         }
 
         /// <summary>Snap to the tab ClickableComponent of the active page.</summary>
-        public void SnapToActiveTabComponent()
+        public virtual void SnapToActiveTabComponent()
         {
-            currentlySnappedComponent = getComponentWithID(IPage.TabRegion + DeluxeJournalMenu.ActiveTab);
+            currentlySnappedComponent = getComponentWithID(TabRegion + DeluxeJournalMenu.ActiveTab);
             snapCursorToCurrentSnappedComponent();
         }
 
         /// <summary>Set the child menu and snap to the default ClickableComponent.</summary>
         /// <param name="menu">IClickableMenu to be set as the child of this page.</param>
-        protected void SetSnappyChildMenu(IClickableMenu menu)
+        protected void SetSnappyChildMenu(IClickableMenu? menu)
         {
             SetChildMenu(menu);
 

@@ -19,34 +19,27 @@ namespace SkillPrestige.Framework.Menus.Elements.Buttons
     /// <summary>Represents a button that has nothing drawn on top of it's background texture.</summary>
     internal sealed class TextureButton : Button
     {
-        /*********
-        ** Fields
-        *********/
         private readonly ClickCallback OnClick;
 
         protected override string HoverText { get; }
         protected override string Text => string.Empty;
 
+        private readonly bool PlaySound;
 
-        /*********
-        ** Accessors
-        *********/
         public delegate void ClickCallback();
 
         public Rectangle SourceRectangle;
 
-
-        /*********
-        ** Public methods
-        *********/
-        public TextureButton(Rectangle bounds, Texture2D buttonTexture, Rectangle sourceRectangle, ClickCallback onClickCallback, string hoverText = "")
+        public TextureButton(Rectangle bounds, Texture2D buttonTexture, Rectangle sourceRectangle, ClickCallback onClickCallback, string hoverText = "", float scale = 1f, bool playSound = true)
         {
             this.Bounds = bounds;
             this.ButtonTexture = buttonTexture;
             this.HoverText = hoverText;
             this.SourceRectangle = sourceRectangle;
-            this.ClickableTextureComponent = new ClickableTextureComponent(string.Empty, this.Bounds, string.Empty, this.HoverText, this.ButtonTexture, sourceRectangle, 1f);
+            this.ClickableTextureComponent = new ClickableTextureComponent(string.Empty, this.Bounds, string.Empty,
+                this.HoverText, this.ButtonTexture, sourceRectangle, scale);
             this.OnClick = onClickCallback;
+            this.PlaySound = playSound;
         }
 
         /// <summary>Raised after the player presses a button on the keyboard, controller, or mouse.</summary>
@@ -56,11 +49,9 @@ namespace SkillPrestige.Framework.Menus.Elements.Buttons
         {
             base.OnButtonPressed(e, isClick);
 
-            if (isClick && this.IsHovered)
-            {
-                Game1.playSound("bigSelect");
-                this.OnClick.Invoke();
-            }
+            if (!isClick || !this.IsHovered) return;
+            if(this.PlaySound) Game1.playSound("bigSelect");
+            this.OnClick.Invoke();
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -74,10 +65,6 @@ namespace SkillPrestige.Framework.Menus.Elements.Buttons
             spriteBatch.Draw(this.ClickableTextureComponent.texture, location, this.ClickableTextureComponent.sourceRect, color, 0.0f, Vector2.Zero, Game1.pixelZoom, SpriteEffects.None, 0.4f);
         }
 
-
-        /*********
-        ** Protected methods
-        *********/
         /// <summary>Raised when the player begins hovering over the button.</summary>
         protected override void OnMouseHovered()
         {

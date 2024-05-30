@@ -82,6 +82,7 @@ namespace HappyHomeDesigner.Menus
 				search.Draw(b);
 		}
 
+		/// <summary>Called before the panels and tabs are drawn</summary>
 		public void DrawShadow(SpriteBatch b)
 		{
 			drawTextureBox(b, Game1.mouseCursors, BackgroundSource, xPositionOnScreen - BORDER_WIDTH - 4, 
@@ -132,6 +133,11 @@ namespace HappyHomeDesigner.Menus
 				|| search.ContainsPoint(x, y);
 		}
 
+		/// <summary>Select an item from the grid if possible</summary>
+		/// <param name="x">Mouse X</param>
+		/// <param name="y">Mouse Y</param>
+		/// <param name="which">The index of the selected item</param>
+		/// <returns>Whether or not an item was selected</returns>
 		public bool TrySelect(int x, int y, out int which)
 		{
 			which = -1;
@@ -146,6 +152,7 @@ namespace HappyHomeDesigner.Menus
 			return which < search.Filtered.Count;
 		}
 
+		/// <summary>Update the item count when the item list changes</summary>
 		public void UpdateCount()
 		{
 			scrollBar.Rows = search.Filtered.Count / scrollBar.Columns + (search.Filtered.Count % scrollBar.Columns is not 0 ? 1 : 0);

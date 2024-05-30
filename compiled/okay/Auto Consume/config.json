@@ -1,0 +1,11 @@
+{
+  "OpenMenuKey": "O",
+  "AutoHealKey": false,
+  "AutoBuffKey": false,
+  "HealItemID": "424",
+  "HealItemQuality": 2,
+  "BuffItemID": "253",
+  "BuffItemQuality": 0,
+  "BuffStartTime": 600,
+  "BuffEndTime": 2600
+}

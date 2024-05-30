@@ -12,7 +12,7 @@
     "$schema": "https://smapi.io/schemas/manifest.json",
     "Name": "Junimatic",
     "Author": "NermNermNerm",
-    "Version": "1.0.1",
+    "Version": "1.0.4",
     "MinimumApiVersion": "3.14.0",
     "UniqueID": "NermNermNerm.Junimatic",
     "Description": "Allows you to automate some of the repetitive tasks with a little help from the Junimos",

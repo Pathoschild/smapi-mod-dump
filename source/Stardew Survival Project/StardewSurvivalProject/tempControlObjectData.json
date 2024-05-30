@@ -163,6 +163,13 @@
     "needActive": true
   },
   {
+    "name": "Heater",
+    "deviceType": "heating",
+    "coreTemp": 60.0,
+    "effectiveRange": 4,
+    "needActive": true
+  },
+  {
     "name": "Portable Heater",
     "deviceType": "heating",
     "coreTemp": 60.0,

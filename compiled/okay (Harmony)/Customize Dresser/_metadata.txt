@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/23359
+IDs: Dragoon23.CustomizeDresser
+update keys: Nexus:23359

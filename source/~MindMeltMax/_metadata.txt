@@ -9,6 +9,7 @@ mods:
    Crop Walker
    Custom Names
    Easy Island Puzzle
+   Fairy Fix
    Fishing Nets
    Fishing Nets → Automate
    Fishing Nets → Better Crafting
@@ -27,9 +28,15 @@ mods:
    Winter Pigs
 
 latest commit:
-   commit a2807a8a5df623a1af2f1278ba209afa982bf5f1
+   commit fb8e8ff2e67ceb177df6c357edf858bfbb39c95d
    Author: MindMeltMax <49438916+MindMeltMax@users.noreply.github.com>
-   Date:   Wed Apr 24 16:47:02 2024 +0200
+   Date:   Wed May 29 17:44:18 2024 +0200
    
-       Added custom names
+       Updates
+       
+       * Re-wrote fish nets bait serialization (and all the stuff that came with that)
+       * Removed fish net offset serialization (should be backwards compatible)
+       * Fixed fish nets bug where jellies, junk, or weeds could have quality
+       * Update fish nets - automate to reflect changes to fish nets
+       + Added config option for fairy fix toggle overlay button (which should've been in the initial version)
    

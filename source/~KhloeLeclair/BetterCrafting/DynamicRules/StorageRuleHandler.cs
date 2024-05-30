@@ -9,10 +9,6 @@
 *************************************************/
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Leclair.Stardew.BetterCrafting.Models;
 using Leclair.Stardew.Common.Crafting;
@@ -69,7 +65,7 @@ public class StorageRuleHandler : IDynamicRuleHandler {
 			return true;
 
 		string qid = sobj.QualifiedItemId;
-		foreach(string chest in VANILLA_CHESTS)
+		foreach (string chest in VANILLA_CHESTS)
 			if (chest == qid) return true;
 
 		return false;

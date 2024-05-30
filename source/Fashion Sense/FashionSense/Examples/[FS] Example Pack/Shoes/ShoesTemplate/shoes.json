@@ -17,7 +17,7 @@
   // You do not need to follow this convention if using a custom tilesheet
 
   "Name": "Shoes Template",
-  "Format": "5.0.12",
+  "Format": "6.3.0",
   "FrontShoes": {
     "DisableNativeOffset": true,
     "ColorMasks": [
@@ -1155,6 +1155,16 @@
 
       // Start of sitting and riding horse frame
       {
+        "Frame": 106,
+        "EndWhenFarmerFrameUpdates": true,
+        "Conditions": [
+          {
+            "Name": "CurrentFarmerFrame",
+            "Value": 106
+          }
+        ]
+      },
+      {
         "Frame": 117,
         "EndWhenFarmerFrameUpdates": true,
         "Conditions": [
@@ -1494,6 +1504,16 @@
       // End of Shearing frames
 
       // Start of sitting and riding horse frame
+      {
+        "Frame": 106,
+        "EndWhenFarmerFrameUpdates": true,
+        "Conditions": [
+          {
+            "Name": "CurrentFarmerFrame",
+            "Value": 106
+          }
+        ]
+      },
       {
         "Frame": 117,
         "EndWhenFarmerFrameUpdates": true,

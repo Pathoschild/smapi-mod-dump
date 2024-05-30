@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using GenericModConfigMenu;
 using PredictiveCore;
 using StardewModdingAPI;
 
@@ -45,40 +46,50 @@ namespace PublicAccessTV
 
 		internal static void SetUpMenu ()
 		{
-			var api = Helper.ModRegistry.GetApi<GenericModConfigMenu.IApi>
+			var api = Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>
 				("spacechase0.GenericModConfigMenu");
 			if (api == null)
 				return;
 
 			var manifest = ModEntry.Instance.ModManifest;
-			api.RegisterModConfig (manifest, Reset, Save);
-			api.SetDefaultIngameOptinValue (manifest, true);
+			api.Register(
+				mod: manifest,
+				reset: Reset,
+				save: Save
+	        );
 
-			api.RegisterSimpleOption (manifest,
-				Helper.Translation.Get ("InaccuratePredictions.name"),
-				Helper.Translation.Get ("InaccuratePredictions.description"),
-				() => Instance.InaccuratePredictions,
-				(bool value) =>
+			// api.SetDefaultIngameOptinValue (manifest, true);
+
+			api.AddBoolOption(
+				mod: manifest,
+				getValue: () => Instance.InaccuratePredictions,
+				setValue: (bool value) =>
+                {
+                    Instance.InaccuratePredictions = value;
+                    if (Context.IsWorldReady)
+                        ModEntry.Instance.updateChannels();
+                },
+				name: () => Helper.Translation.Get("InaccuratePredictions.name"),
+				tooltip: () => Helper.Translation.Get("InaccuratePredictions.description")
+			);
+
+			api.AddSectionTitle(
+				mod: manifest,
+				text: () => Helper.Translation.Get("Cheats.name")
+			);
+
+			api.AddBoolOption(
+				mod: manifest,
+				getValue: () => Instance.BypassFriendships,
+				setValue: (bool value) =>
 				{
-					Instance.InaccuratePredictions = value;
-					if (Context.IsWorldReady)
-						ModEntry.Instance.updateChannels ();
-				});
-
-			api.RegisterLabel (manifest,
-				Helper.Translation.Get ("Cheats.name"),
-				null);
-
-			api.RegisterSimpleOption (manifest,
-				Helper.Translation.Get ("BypassFriendships.name"),
-				Helper.Translation.Get ("BypassFriendships.description"),
-				() => Instance.BypassFriendships,
-				(bool value) =>
-				{
-					Instance.BypassFriendships = value;
-					if (Context.IsWorldReady)
-						ModEntry.Instance.updateChannels ();
-				});
+                    Instance.BypassFriendships = value;
+                    if (Context.IsWorldReady)
+                        ModEntry.Instance.updateChannels();
+                },
+				name: () => Helper.Translation.Get("BypassFriendships.name"),
+				tooltip: () => Helper.Translation.Get("BypassFriendships.description")
+			);
 		}
 	}
 }

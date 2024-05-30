@@ -10,7 +10,7 @@
   "EnableArtisanMachines": true,
   "ArtisanMachinesPrice": 100000,
   "ArtisanMachinesGrangeMustWin": true,
-  "ArtisanMachinesPercentDecrease": 20,
+  "ArtisanMachinesPercentDecrease": 10,
   "EnableGiantCrops": true,
   "GiantCropsPrice": 30000,
   "GiantCropsPercent": 5,
@@ -20,6 +20,12 @@
   "BusDrivingPrice": 42500,
   "EnableQiNotebook": true,
   "QiNotebookPrice": 10,
-  "QiNotebookPercent": 1.0,
+  "QiNotebookPercent": 10.0,
+  "EnablePetGifts": true,
+  "PetGiftsPrice": 15000,
+  "EnableCheatCodes": true,
+  "CheatCodesPrice": 65536,
+  "CheatCodesRequirement": 30,
+  "CheatCodesLives": 1,
   "DebugBook": false
 }

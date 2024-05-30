@@ -10,15 +10,16 @@ mods:
    Quest Time Limits - Continued
    Resource Storage - Continued
    Seed Info - Continued
+   Social Page Order Redux
    Swim - Continued
    Wall Televisions - Continued
 
 latest commit:
-   commit ed47f2a667657410ebb0f5a1083853d42fe5f38d
+   commit e4f306d437752928b865ed6e4282a25eed615f59
    Author: C. Cooper <c.cooper@ku.edu>
-   Date:   Thu Apr 25 20:51:23 2024 -0500
+   Date:   Wed May 29 17:59:41 2024 -0500
    
-       Fix issue with special orders
+       Add Resource Storage 1.0.11
        
-       Farmer.OnItemReceived was not being called when resources entered the storage, so the counter was not being updated
+       Adds exception handling to the Better Crafting integration
    

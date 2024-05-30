@@ -36,7 +36,7 @@ namespace StardewValleyTodo.Game {
         }
 
         public int CountEmptySlots() {
-            return Math.Max(0, Slots - Ingredients.Where(x => x.IsDonated).Count());
+            return Math.Max(0, Slots - Ingredients.Count(x => x.IsDonated));
         }
     }
 }

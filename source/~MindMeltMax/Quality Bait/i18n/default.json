@@ -23,5 +23,12 @@
   "Deluxe.3": "Deluxe Bait (Iridium)",
   "Challenge.1": "Deluxe Bait (Silver)",
   "Challenge.2": "Deluxe Bait (Gold)",
-  "Challenge.3": "Deluxe Bait (Iridium)"
+  "Challenge.3": "Deluxe Bait (Iridium)",
+
+  "Config.ChancePercentage.Title": "Chance Percentage",
+  "Config.ChancePercentage.Description": "Determines the rate a which the caught fish will match the quality of the bait (0: never, 100: always). Does not work for trash or weeds",
+  "Config.BaitMakerQuality.Title": "Bait Maker Quality",
+  "Config.BaitMakerQuality.Description": "Toggle whether or not bait from the bait maker should output quality (same chance as for catches)",
+  "Config.ForceLowerQuality.Title": "Force Lower Quality",
+  "Config.ForceLowerQuality.Description": "Make sure that the quality of bait used is less then the one being crafted"
 }

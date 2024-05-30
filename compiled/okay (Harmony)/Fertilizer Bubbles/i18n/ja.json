@@ -1,0 +1,13 @@
+{
+  "enabled": "有効化",
+  "display-when-held": "肥料を持ったら表示",
+  "toggle-emote-key": "吹き出しの表示キー",
+  "toggle-emote-key-tooltip": "「肥料持ったらの表示」が無効の場合のみ、機能します。",
+  "hide-when-unusable": "肥料が使えなくなったら非表示",
+  "hide-when-no-crop": "土壌に作物がない時は非表示",
+  "bubble-y-offset": "吹き出しのY位置",
+  "bubble-x-offset": "吹き出しのX位置",
+  "emote-interval": "吹き出しの表示間隔（ミリ秒）",
+  "opacity": "不透明度",
+  "bubble-size": "吹き出しサイズ"
+}

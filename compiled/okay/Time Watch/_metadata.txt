@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/23725
+IDs: kyuubiran.TimeWatch
+update keys: Nexus:23725, GitHub:KyuubiRan/TimeWatch

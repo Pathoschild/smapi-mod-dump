@@ -1,0 +1,8 @@
+{
+  "EnableMod": true,
+  "LootTable": "default",
+  "EnableBirthday": true,
+  "BirthdayChance": 0.75,
+  "LootChance": 1.0,
+  "Debug": false
+}

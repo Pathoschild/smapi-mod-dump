@@ -1,20 +1,49 @@
 {
-  // In Game Notifications. Please feel free to tweak. When Translating, please do not translate anything between {{ }} 's.
-  "notifications.1-heart": "{{villager}} notices your presence.",
-  "notifications.2-heart": "{{villager}} grins in your direction.",
-  "notifications.3-heart": "{{villager}} smiles when they see you.",
-  "notifications.4-heart": "{{villager}} smiles widely when they see you!",
-  "notifications.5-heart": "{{villager}} says a friendly greeting before continuing.",
-  "notifications.6-heart": "{{villager}} says a few words about you.",
-  "notifications.7-heart": "{{villager}} is blushing.",
-  "notifications.8-heart": "{{villager}} is excited to see you!",
-  "notifications.9-heart": "{{villager}} makes a comment about enjoying spending time around you.",
-  "notifications.10-heart": "{{villager}} is happy to see you!",
-  "notifications.11-heart": "{{villager}} is very happy to see you!",
-  "notifications.12-heart": "{{villager}} is overjoyed to see you!",
-  "notifications.13-heart": "{{villager}} yells out that they love you!",
-  "notifications.14-heart": "{{villager}} is ecstatic to see you!",
-  "notifications.15-heart": "{{villager}} loves you!",
+  // In Game notifications.datable. Please feel free to tweak. When Translating, please do not translate anything between {{ }} 's.
+  "notifications.datable.0-heart": "{{villager}} glances curiously at you.",
+  "notifications.datable.1-heart": "{{villager}} notices your presence.",
+  "notifications.datable.2-heart": "{{villager}} grins in your direction.",
+  "notifications.datable.3-heart": "{{villager}} smiles when they see you.",
+  "notifications.datable.4-heart": "{{villager}} smiles widely when they see you!",
+  "notifications.datable.5-heart": "{{villager}} says a friendly greeting before continuing.",
+  "notifications.datable.6-heart": "{{villager}} says a few words about you.",
+  "notifications.datable.7-heart": "{{villager}} is blushing.",
+  "notifications.datable.8-heart": "{{villager}} is excited to see you!",
+  "notifications.datable.9-heart": "{{villager}} makes a comment about enjoying spending time around you.",
+  "notifications.datable.10-heart": "{{villager}} is happy to see you!",
+  "notifications.datable.11-heart": "{{villager}} is very happy to see you!",
+  "notifications.datable.12-heart": "{{villager}} is overjoyed to see you!",
+  "notifications.datable.13-heart": "{{villager}} yells out that they love you!",
+  "notifications.datable.14-heart": "{{villager}} is ecstatic to see you!",
+  "notifications.datable.15-heart": "{{villager}} loves you!",
+  
+  "notifications.non-datable.0-heart": "{{villager}} glances curiously at you.",
+  "notifications.non-datable.1-heart": "{{villager}} smiles at you.",
+  "notifications.non-datable.2-heart": "{{villager}} waves over to you.",
+  "notifications.non-datable.3-heart": "{{villager}} cheerfully says \"Hello!\"",
+  "notifications.non-datable.4-heart": "{{villager}} wonders if we should hang out more.",
+  "notifications.non-datable.5-heart": "{{villager}} offers to buy you a drink at the saloon!",
+  "notifications.non-datable.6-heart": "{{villager}} gives you a high five!",
+  "notifications.non-datable.7-heart": "{{villager}} gossips with you about the town.",
+  "notifications.non-datable.8-heart": "{{villager}} shows off the latest cool thing they found.",
+  "notifications.non-datable.9-heart": "{{villager}} makes a joke about being friends.",
+  "notifications.non-datable.10-heart": "{{villager}} comments on how they enjoy your company.",
+  "notifications.non-datable.11-heart": "{{villager}} talks about how they're glad to have you as a friend.",
+
+  "notifications.random-message.0": "{{villager}} tells you how to cheat with the spinner at the Valley Fair.",
+  "notifications.random-message.1": "{{villager}} comments about the tree south of your farm.",
+  "notifications.random-message.2": "{{villager}} tells a joke: Why did the Avali cross the road? To escape Kent's Fried Avali!",
+  "notifications.random-message.3": "{{villager}} talks about the legendary fish.",
+  
+  "notifications.child.0": "{{villager}} runs past, barely noticing you.",
+  "notifications.child.1": "{{villager}} looks at you curiously.",
+  "notifications.child.2": "{{villager}} stops to show you a cool bug they found!",
+  "notifications.child.3": "{{villager}} waves at you.",
+  "notifications.child.4": "{{villager}} smiles at you.",
+  "notifications.child.5": "{{villager}} runs up to you and gives you a hug, then runs off.", 
+  "notifications.child.6": "{{villager}} is about to say something, but sees a bug and runs off.",
+  "notifications.child.7": "{{villager}} is excited to see you!",
+  "notifications.child.8": "{{villager}} drives their toy car up your leg.",
   
   // Stuff in the settings menu. Only how much friendship supports new lines, though if you need them please feel free to ask.
   
@@ -28,5 +57,8 @@
   "settings.range.description": "The range in which the mod will detect villagers",
   
   "settings.how-much-friendship": "How much friendship", 
-  "settings.how-much-friendship.description": "How much friendship you will gain with the villager. {{newline}}1 Heart is 250 points, Daily decay of -2 for a normal NPC (not dating, married, etc)."
+  "settings.how-much-friendship.description": "How much friendship you will gain with the villager. {{newline}}1 Heart is 250 points, Daily decay of -2 for a normal NPC (not dating, married, etc).",
+  
+  "settings.request-for-translations": "If you know a language or want to fix one that's already here, please consider contributing to the mod's translations on GitHub!",
+  "settings.request-for-accidental-encounters": "If you get any notifications for NPC's that you shouldn't, please let me know on the mod's Nexus page or GitHub!"
 }

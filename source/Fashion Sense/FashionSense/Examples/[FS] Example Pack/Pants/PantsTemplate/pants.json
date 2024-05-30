@@ -60,8 +60,9 @@
         "EndWhenFarmerFrameUpdates": true,
         "Conditions": [
           {
-            "Name": "IsSitting",
-            "Value": false
+            "Name": "CurrentFarmerFrame",
+            "Operator": "EqualTo",
+            "Value": 0
           }
         ]
       },
@@ -1478,8 +1479,9 @@
         "EndWhenFarmerFrameUpdates": true,
         "Conditions": [
           {
-            "Name": "IsSitting",
-            "Value": false
+            "Name": "CurrentFarmerFrame",
+            "Operator": "EqualTo",
+            "Value": 6
           }
         ]
       },
@@ -2404,8 +2406,9 @@
         "EndWhenFarmerFrameUpdates": true,
         "Conditions": [
           {
-            "Name": "IsSitting",
-            "Value": false
+            "Name": "CurrentFarmerFrame",
+            "Operator": "EqualTo",
+            "Value": 12
           }
         ]
       },
@@ -2887,6 +2890,17 @@
         ]
       },
       {
+        "Frame": 15,
+        "EndWhenFarmerFrameUpdates": true,
+        "Conditions": [
+          {
+            "Name": "CurrentFarmerFrame",
+            "Operator": "EqualTo",
+            "Value": 37
+          }
+        ]
+      },
+      {
         "Frame": 58,
         "EndWhenFarmerFrameUpdates": true,
         "Conditions": [
@@ -3353,8 +3367,9 @@
         "EndWhenFarmerFrameUpdates": true,
         "Conditions": [
           {
-            "Name": "IsSitting",
-            "Value": false
+            "Name": "CurrentFarmerFrame",
+            "Operator": "EqualTo",
+            "Value": 6
           }
         ]
       },

@@ -1,0 +1,10 @@
+﻿{
+    "Name": "Health Bars",
+    "Author": "Maurício Gomes (Speeder)",
+    "Version": "1.9.2-unofficial.3-JoXW",
+    "MinimumApiVersion": "4.0.0",
+    "UniqueID": "Speeder.HealthBars",
+    "Description": "Add health bars to monsters.",
+    "EntryDll": "SMAPIHealthBarMod.dll",
+    "UpdateKeys": [ "Nexus:193", "Chuckklefish:3529" ]
+}

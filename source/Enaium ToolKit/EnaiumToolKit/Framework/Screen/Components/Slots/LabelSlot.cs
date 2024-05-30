@@ -8,9 +8,10 @@
 **
 *************************************************/
 
-using EnaiumToolKit.Framework.Utils;
+using EnaiumToolKit.Framework.Extensions;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
+using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 namespace EnaiumToolKit.Framework.Screen.Components.Slots;
 
@@ -25,7 +26,7 @@ public class LabelSlot : Slot<LabelSlot>.Entry
 
     public override void Render(SpriteBatch b, int x, int y)
     {
-        Hovered = Render2DUtils.IsHovered(Game1.getMouseX(), Game1.getMouseY(), x, y, Width, Height);
-        FontUtils.DrawHvCentered(b, Title, x, y, Width, Height);
+        Hovered = new Rectangle(x, y, Width, Height).Contains(Game1.getMouseX(), Game1.getMouseY());
+        b.DrawStringCenter(Title, x, y, Width, Height);
     }
 }

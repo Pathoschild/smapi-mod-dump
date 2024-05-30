@@ -17,6 +17,7 @@ using SkillPrestige.Framework.InputHandling;
 using SkillPrestige.Framework.Menus.Elements.Buttons;
 using SkillPrestige.Logging;
 using SkillPrestige.Professions;
+using SpaceCore;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
@@ -27,13 +28,9 @@ namespace SkillPrestige.Framework.Menus
     /// <summary>Represents a menu where players can choose to prestige a skill and select prestige awards.</summary>
     internal class PrestigeMenu : IClickableMenu, IInputHandler
     {
-        /*********
-        ** Fields
-        *********/
-        private readonly Skill Skill;
+        public readonly Skill Skill;
         private readonly Prestige Prestige;
         private PrestigeButton PrestigeButton;
-        private TextureButton SettingsButton;
         private Vector2 ProfessionButtonRowStartLocation;
         private Vector2 PrestigePointBonusLocation;
         private const int RowPadding = Game1.tileSize / 3;
@@ -45,10 +42,6 @@ namespace SkillPrestige.Framework.Menus
         private int DebounceTimer = 10;
         private int XSpaceAvailableForProfessionButtons;
 
-
-        /*********
-        ** Public methods
-        *********/
         public PrestigeMenu(Rectangle bounds, Skill skill, Prestige prestige)
             : base(bounds.X, bounds.Y, bounds.Width, bounds.Height, true)
         {
@@ -56,7 +49,28 @@ namespace SkillPrestige.Framework.Menus
             this.Skill = skill;
             this.Prestige = prestige;
             this.InitiatePrestigeButton();
-            this.InitiateSettingsButton();
+            this.SetupInitialComponentIds();
+        }
+
+        private List<ClickableComponent> GetAllClickableComponents()
+        {
+            var list = new List<ClickableComponent>
+            {
+                this.upperRightCloseButton,
+                this.PrestigeButton.ClickableTextureComponent,
+            };
+            list.AddRange(this.ProfessionButtons.Select(x => (ClickableComponent)x.ClickableTextureComponent));
+            return list;
+        }
+
+        private void SetupInitialComponentIds()
+        {
+            this.PrestigeButton.ClickableTextureComponent.myID = 1;
+            this.PrestigeButton.ClickableTextureComponent.upNeighborID = this.upperRightCloseButton.myID;
+            this.PrestigeButton.ClickableTextureComponent.rightNeighborID = this.upperRightCloseButton.myID;
+
+            this.upperRightCloseButton.downNeighborID = this.PrestigeButton.ClickableTextureComponent.myID;
+            this.upperRightCloseButton.leftNeighborID = this.PrestigeButton.ClickableTextureComponent.myID;
         }
 
         /// <summary>Raised after the player moves the in-game cursor.</summary>
@@ -69,7 +83,6 @@ namespace SkillPrestige.Framework.Menus
             foreach (var button in this.ProfessionButtons)
                 button.OnCursorMoved(e);
             this.PrestigeButton.OnCursorMoved(e);
-            this.SettingsButton.OnCursorMoved(e);
         }
 
         /// <summary>Raised after the player presses a button on the keyboard, controller, or mouse.</summary>
@@ -83,7 +96,13 @@ namespace SkillPrestige.Framework.Menus
             foreach (var button in this.ProfessionButtons)
                 button.OnButtonPressed(e, isClick);
             this.PrestigeButton.OnButtonPressed(e, isClick);
-            this.SettingsButton.OnButtonPressed(e, isClick);
+        }
+
+        public override void receiveLeftClick(int x, int y, bool playSound = true)
+        {
+            if (this.DebounceTimer > 0)
+                return;
+            base.receiveLeftClick(x, y, playSound);
         }
 
         public override void draw(SpriteBatch spriteBatch)
@@ -92,7 +111,6 @@ namespace SkillPrestige.Framework.Menus
 
             Game1.drawDialogueBox(this.xPositionOnScreen, this.yPositionOnScreen, this.width, this.height, false, true);
             this.upperRightCloseButton?.draw(spriteBatch);
-            this.DrawSettingsButton(spriteBatch);
             this.DrawHeader(spriteBatch);
             this.DrawPrestigePoints(spriteBatch);
             this.DrawPrestigePointBonus(spriteBatch);
@@ -106,14 +124,10 @@ namespace SkillPrestige.Framework.Menus
             Mouse.DrawCursor(spriteBatch);
         }
 
-
-        /*********
-        ** Protected methods
-        *********/
         private static int ProfessionButtonHeight(Profession profession)
         {
             int iconHeight = profession.IconSourceRectangle.Height * Game1.pixelZoom;
-            int textHeight = (Game1.dialogueFont.MeasureString(string.Join(Environment.NewLine, profession.DisplayName.Split(' '))).Y).Ceiling();
+            int textHeight = Game1.dialogueFont.MeasureString(string.Join(Environment.NewLine, profession.DisplayName.Split(' '))).Y.Ceiling();
             return Offset * 3 + iconHeight + textHeight;
         }
 
@@ -139,15 +153,18 @@ namespace SkillPrestige.Framework.Menus
             bool prestigeButtonDisabled = true;
             if (PerSaveOptions.Instance.PainlessPrestigeMode)
             {
-                if (this.Skill.GetSkillExperience() >= 15000 + PerSaveOptions.Instance.ExperienceNeededPerPainlessPrestige)
+                if (this.Skill.GetSkillExperience() >=
+                    15000 + PerSaveOptions.Instance.ExperienceNeededPerPainlessPrestige)
+                {
                     prestigeButtonDisabled = false;
+                }
+
             }
             else
             {
                 if (this.Skill.GetSkillLevel() >= 10)
                 {
-                    bool newLevelForSkillExists = Game1.player.newLevels.Any(point => point.X == this.Skill.Type.Ordinal && point.Y > 0);
-                    if (!newLevelForSkillExists)
+                    if (!this.Skill.NewLevelForSkillExists())
                         prestigeButtonDisabled = false;
                 }
             }
@@ -159,42 +176,13 @@ namespace SkillPrestige.Framework.Menus
             Logger.LogVerbose("Prestige menu - Prestige button initiated.");
         }
 
-        private void InitiateSettingsButton()
-        {
-            Logger.LogVerbose("Prestige menu - Initiating settings button...");
-            const int buttonWidth = 16 * Game1.pixelZoom;
-            const int buttonHeight = 16 * Game1.pixelZoom;
-            int rightEdgeOfDialog = this.xPositionOnScreen + this.width;
-            var bounds = new Rectangle(rightEdgeOfDialog - buttonWidth - Game1.tileSize, this.yPositionOnScreen, buttonWidth, buttonHeight);
-            this.SettingsButton = new TextureButton(bounds, Game1.mouseCursors, new Rectangle(96, 368, 16, 16), this.OpenSettingsMenu, "Open Settings Menu");
-
-            Logger.LogVerbose("Prestige menu - Settings button initiated.");
-        }
-
-        private void OpenSettingsMenu()
-        {
-            Logger.LogVerbose("Prestige Menu - Initiating Settings Menu...");
-            const int menuWidth = Game1.tileSize * 12;
-            const int menuHeight = Game1.tileSize * 10;
-            int menuXCenter = (menuWidth + borderWidth * 2) / 2;
-            int menuYCenter = (menuHeight + borderWidth * 2) / 2;
-            var viewport = Game1.graphics.GraphicsDevice.Viewport;
-            int screenXCenter = (int)(viewport.Width * (1.0 / Game1.options.zoomLevel)) / 2;
-            int screenYCenter = (int)(viewport.Height * (1.0 / Game1.options.zoomLevel)) / 2;
-            var bounds = new Rectangle(screenXCenter - menuXCenter, screenYCenter - menuYCenter,
-                menuWidth + borderWidth * 2, menuHeight + borderWidth * 2);
-            Game1.playSound("bigSelect");
-            this.exitThisMenu(false);
-            Game1.activeClickableMenu = new SettingsMenu(bounds);
-            Logger.LogVerbose("Prestige Menu - Loaded Settings Menu.");
-        }
-
         private void InitiateProfessionButtons()
         {
             Logger.LogVerbose("Prestige menu - Initiating profession buttons...");
             this.XSpaceAvailableForProfessionButtons = this.xPositionOnScreen + this.width - spaceToClearSideBorder * 2 - this.LeftProfessionStartingXLocation;
             this.InitiateLevelFiveProfessionButtons();
             this.InitiateLevelTenProfessionButtons();
+            this.allClickableComponents = this.GetAllClickableComponents();
             Logger.LogVerbose("Prestige menu - Profession button initiated.");
         }
 
@@ -210,45 +198,110 @@ namespace SkillPrestige.Framework.Menus
             int rightProfessionButtonXCenter = this.LeftProfessionStartingXLocation + (this.XSpaceAvailableForProfessionButtons * .75d).Floor();
             var firstProfession = this.Skill.Professions.First(x => x is TierOneProfession);
 
-            this.ProfessionButtons.Add(new MinimalistProfessionButton
+            var firstProfessionButton = new MinimalistProfessionButton
             {
-
-                Bounds = new Rectangle(leftProfessionButtonXCenter - ProfessionButtonWidth(firstProfession) / 2, (int)this.ProfessionButtonRowStartLocation.Y, ProfessionButtonWidth(firstProfession), ProfessionButtonHeight(firstProfession)),
+                Bounds = new Rectangle(leftProfessionButtonXCenter - ProfessionButtonWidth(firstProfession) / 2,
+                    (int)this.ProfessionButtonRowStartLocation.Y, ProfessionButtonWidth(firstProfession),
+                    ProfessionButtonHeight(firstProfession)),
                 CanBeAfforded = this.Prestige.PrestigePoints >= PerSaveOptions.Instance.CostOfTierOnePrestige,
                 IsObtainable = true,
                 Selected = this.Prestige.PrestigeProfessionsSelected.Contains(firstProfession.Id),
-                Profession = firstProfession
-            });
+                Profession = firstProfession,
+                ClickableTextureComponent =
+                {
+                    myID = 5,
+                    upNeighborID = this.PrestigeButton.ClickableTextureComponent.myID
+                }
+            };
+
+            this.PrestigeButton.ClickableTextureComponent.leftNeighborID = firstProfessionButton.ClickableTextureComponent.myID;
+
+
+
             var secondProfession = this.Skill.Professions.Where(x => x is TierOneProfession).Skip(1).First();
-            this.ProfessionButtons.Add(new MinimalistProfessionButton
+
+            var secondProfessionButton = new MinimalistProfessionButton
             {
 
-                Bounds = new Rectangle(rightProfessionButtonXCenter - ProfessionButtonWidth(secondProfession) / 2, (int)this.ProfessionButtonRowStartLocation.Y, ProfessionButtonWidth(secondProfession), ProfessionButtonHeight(secondProfession)),
+                Bounds = new Rectangle(rightProfessionButtonXCenter - ProfessionButtonWidth(secondProfession) / 2,
+                    (int)this.ProfessionButtonRowStartLocation.Y, ProfessionButtonWidth(secondProfession),
+                    ProfessionButtonHeight(secondProfession)),
                 CanBeAfforded = this.Prestige.PrestigePoints >= PerSaveOptions.Instance.CostOfTierOnePrestige,
                 IsObtainable = true,
                 Selected = this.Prestige.PrestigeProfessionsSelected.Contains(secondProfession.Id),
-                Profession = secondProfession
-            });
+                Profession = secondProfession,
+                ClickableTextureComponent =
+                {
+                    myID = 6,
+                    leftNeighborID = firstProfessionButton.ClickableTextureComponent.myID,
+                    upNeighborID = this.PrestigeButton.ClickableTextureComponent.myID
+                }
+            };
+
+            firstProfessionButton.ClickableTextureComponent.rightNeighborID = secondProfessionButton.ClickableTextureComponent.myID;
+            this.PrestigeButton.ClickableTextureComponent.downNeighborID = secondProfessionButton.ClickableTextureComponent.myID;
+            this.ProfessionButtons.Add(firstProfessionButton);
+            this.ProfessionButtons.Add(secondProfessionButton);
             Logger.LogVerbose("Prestige menu - Level 5 profession buttons initiated.");
         }
 
         private void InitiateLevelTenProfessionButtons()
         {
             Logger.LogVerbose("Prestige menu - Initiating level 10 profession buttons...");
+            int nextId = 10;
             int buttonCenterIndex = 1;
             bool canBeAfforded = this.Prestige.PrestigePoints >= PerSaveOptions.Instance.CostOfTierTwoPrestige;
-            foreach (var profession in this.Skill.Professions.Where(x => x is TierTwoProfession)
-            )
+            foreach (var profession in this.Skill.Professions.Where(x => x is TierTwoProfession))
             {
                 var tierTwoProfession = (TierTwoProfession)profession;
-                this.ProfessionButtons.Add(new MinimalistProfessionButton
+                var professionButton = new MinimalistProfessionButton
                 {
-                    Bounds = new Rectangle(this.LeftProfessionStartingXLocation + (this.XSpaceAvailableForProfessionButtons * (buttonCenterIndex / 8d)).Floor() - ProfessionButtonWidth(profession) / 2, (int)this.ProfessionButtonRowStartLocation.Y + this.GetRowHeight<TierOneProfession>() + RowPadding, ProfessionButtonWidth(profession), ProfessionButtonHeight(profession)),
+                    Bounds = new Rectangle(
+                        this.LeftProfessionStartingXLocation +
+                        (this.XSpaceAvailableForProfessionButtons * (buttonCenterIndex / 8d)).Floor() -
+                        ProfessionButtonWidth(profession) / 2,
+                        (int)this.ProfessionButtonRowStartLocation.Y + this.GetRowHeight<TierOneProfession>() +
+                        RowPadding, ProfessionButtonWidth(profession), ProfessionButtonHeight(profession)),
                     CanBeAfforded = canBeAfforded,
-                    IsObtainable = this.Prestige.PrestigeProfessionsSelected.Contains(tierTwoProfession.TierOneProfession.Id),
+                    IsObtainable =
+                        this.Prestige.PrestigeProfessionsSelected.Contains(tierTwoProfession.TierOneProfession.Id),
                     Selected = this.Prestige.PrestigeProfessionsSelected.Contains(tierTwoProfession.Id),
                     Profession = tierTwoProfession
-                });
+                };
+                    var firstProfessionButton = this.ProfessionButtons.First(x => x.Profession.LevelAvailableAt == 5);
+                    var secondProfessionButton = this.ProfessionButtons.Last(x => x.Profession.LevelAvailableAt == 5);
+                    professionButton.ClickableTextureComponent.myID = nextId;
+                    switch (nextId)
+                    {
+                        case 10:
+                            firstProfessionButton.ClickableTextureComponent.leftNeighborID = professionButton.ClickableTextureComponent.myID;
+                            firstProfessionButton.ClickableTextureComponent.downNeighborID = professionButton.ClickableTextureComponent.myID;
+                            professionButton.ClickableTextureComponent.upNeighborID = firstProfessionButton.ClickableTextureComponent.myID;
+                            break;
+                        case 11:
+                            var firstTierTwoProfessionButton = this.ProfessionButtons.Last(x => x.Profession.LevelAvailableAt == 10);
+                            professionButton.ClickableTextureComponent.leftNeighborID = firstTierTwoProfessionButton.ClickableTextureComponent.myID;
+                            professionButton.ClickableTextureComponent.upNeighborID = firstProfessionButton.ClickableTextureComponent.myID;
+                            firstTierTwoProfessionButton.ClickableTextureComponent.rightNeighborID = professionButton.ClickableTextureComponent.myID;
+                            break;
+                        case 12:
+                            var secondTierTwoProfessionButton = this.ProfessionButtons.Last(x => x.Profession.LevelAvailableAt == 10);
+                            professionButton.ClickableTextureComponent.leftNeighborID = secondTierTwoProfessionButton.ClickableTextureComponent.myID;
+                            professionButton.ClickableTextureComponent.upNeighborID = secondProfessionButton.ClickableTextureComponent.myID;
+                            secondProfessionButton.ClickableTextureComponent.downNeighborID = professionButton.ClickableTextureComponent.myID;
+                            secondTierTwoProfessionButton.ClickableTextureComponent.rightNeighborID = professionButton.ClickableTextureComponent.myID;
+                            break;
+                        case 13:
+                            var thirdTierTwoProfessionButton = this.ProfessionButtons.Last(x => x.Profession.LevelAvailableAt == 10);
+                            professionButton.ClickableTextureComponent.leftNeighborID = thirdTierTwoProfessionButton.ClickableTextureComponent.myID;
+                            professionButton.ClickableTextureComponent.upNeighborID = secondProfessionButton.ClickableTextureComponent.myID;
+                            secondProfessionButton.ClickableTextureComponent.rightNeighborID = professionButton.ClickableTextureComponent.myID;
+                            thirdTierTwoProfessionButton.ClickableTextureComponent.rightNeighborID = professionButton.ClickableTextureComponent.myID;
+                            break;
+                    }
+                    nextId++;
+
+                this.ProfessionButtons.Add(professionButton);
                 buttonCenterIndex += 2;
             }
             Logger.LogVerbose("Prestige menu - Level 10 profession buttons initiated.");
@@ -261,12 +314,6 @@ namespace SkillPrestige.Framework.Menus
                 button.CanBeAfforded = this.Prestige.PrestigePoints >= PerSaveOptions.Instance.CostOfTierTwoPrestige || button.Profession is TierOneProfession && this.Prestige.PrestigePoints >= PerSaveOptions.Instance.CostOfTierOnePrestige;
                 button.IsObtainable = button.Profession is TierOneProfession || this.Prestige.PrestigeProfessionsSelected.Contains(((TierTwoProfession)button.Profession).TierOneProfession.Id);
             }
-        }
-
-        private void DrawSettingsButton(SpriteBatch spriteBatch)
-        {
-            spriteBatch.Draw(Game1.mouseCursors, new Vector2(this.SettingsButton.Bounds.X, this.SettingsButton.Bounds.Y), this.SettingsButton.SourceRectangle, Color.White, 0.0f, Vector2.Zero, Game1.pixelZoom, SpriteEffects.None, 0.0001f);
-
         }
 
         private void DrawHeader(SpriteBatch spriteBatch)
@@ -339,7 +386,6 @@ namespace SkillPrestige.Framework.Menus
                 button.DrawHoverText(spriteBatch);
             }
             this.PrestigeButton.DrawHoverText(spriteBatch);
-            this.SettingsButton.DrawHoverText(spriteBatch);
         }
     }
 }

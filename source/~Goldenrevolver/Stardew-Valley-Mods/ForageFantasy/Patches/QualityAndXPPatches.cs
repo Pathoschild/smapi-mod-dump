@@ -117,6 +117,11 @@ namespace ForageFantasy
                         return;
                     }
 
+                    if (!config.TapperSapHasQuality && __instance.heldObject.Value.QualifiedItemId == TapperAndMushroomQualityLogic.sapQID)
+                    {
+                        return;
+                    }
+
                     if (__instance.Location != null && __instance.Location.terrainFeatures.TryGetValue(__instance.TileLocation, out var terrainFeature)
                         && terrainFeature is Tree tree)
                     {

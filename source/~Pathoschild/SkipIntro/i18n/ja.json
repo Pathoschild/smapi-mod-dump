@@ -1,0 +1,21 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Pathoschild/StardewMods
+**
+*************************************************/
+
+{
+    /*********
+    ** Generic Mod Config Menu UI
+    *********/
+    "config.skip-to.name": "スキップ設定",
+    "config.skip-to.tooltip": "どの画面にスキップするか。標準はタイトルメニューです。",
+    "config.skip-to.values.title-menu": "タイトルメニュー",
+    "config.skip-to.values.load-menu": "つづきから",
+    "config.skip-to.values.join-coop": "CO-OPの参加",
+    "config.skip-to.values.host-coop": "CO-OPのホスト"
+}

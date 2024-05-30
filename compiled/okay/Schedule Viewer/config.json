@@ -1,5 +1,6 @@
 {
   "ShowSchedulesKey": "V",
+  "UseAddress": true,
   "DisableHover": false,
   "UseLargerFontForScheduleDetails": false,
   "NPCSortOrder": "AlphabeticalAscending",

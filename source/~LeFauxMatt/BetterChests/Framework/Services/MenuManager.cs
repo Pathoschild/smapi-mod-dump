@@ -10,558 +10,319 @@
 
 namespace StardewMods.BetterChests.Framework.Services;
 
-using System.Globalization;
-using System.Reflection.Emit;
-using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
 using StardewMods.BetterChests.Framework.Interfaces;
-using StardewMods.BetterChests.Framework.Models.Containers;
 using StardewMods.BetterChests.Framework.Models.Events;
-using StardewMods.BetterChests.Framework.Services.Factory;
-using StardewMods.Common.Enums;
 using StardewMods.Common.Interfaces;
 using StardewMods.Common.Models;
-using StardewMods.Common.Services;
-using StardewMods.Common.Services.Integrations.BetterChests.Enums;
+using StardewMods.Common.Services.Integrations.BetterChests;
 using StardewMods.Common.Services.Integrations.FauxCore;
-using StardewValley.Buildings;
 using StardewValley.Menus;
-using StardewValley.Objects;
 
-/// <summary>Manages the item grab menu in the game.</summary>
-internal sealed class MenuManager : BaseService<MenuManager>
+/// <summary>Manages the menu by adding, removing, and filtering items.</summary>
+internal sealed class MenuManager
 {
-    private static MenuManager instance = null!;
-
-    private readonly PerScreen<InventoryMenuManager> bottomMenu;
-    private readonly ContainerFactory containerFactory;
-    private readonly PerScreen<IClickableMenu?> currentMenu = new();
     private readonly IEventManager eventManager;
-    private readonly PerScreen<ServiceLock?> focus = new();
-    private readonly PerScreen<InventoryMenuManager> topMenu;
+    private readonly IIconRegistry iconRegistry;
+    private readonly IInputHelper inputHelper;
+    private readonly MenuHandler menuHandler;
+    private readonly IModConfig modConfig;
+    private readonly WeakReference<IClickableMenu?> source = new(null);
+
+    private ClickableTextureComponent? downArrow;
+    private int maxScroll;
+    private int scrolled;
+    private ClickableTextureComponent? upArrow;
 
     /// <summary>Initializes a new instance of the <see cref="MenuManager" /> class.</summary>
-    /// <param name="containerFactory">Dependency used for accessing containers.</param>
     /// <param name="eventManager">Dependency used for managing events.</param>
-    /// <param name="log">Dependency used for logging debug information to the console.</param>
-    /// <param name="manifest">Dependency for accessing mod manifest.</param>
-    /// <param name="modConfig">Dependency used for accessing config data.</param>
+    /// <param name="iconRegistry">Dependency used for registering and retrieving icons.</param>
     /// <param name="inputHelper">Dependency used for checking and changing input state.</param>
-    /// <param name="patchManager">Dependency used for managing patches.</param>
+    /// <param name="menuHandler">Dependency used for managing the current menu.</param>
+    /// <param name="modConfig">Dependency used for accessing config data.</param>
     public MenuManager(
-        ContainerFactory containerFactory,
         IEventManager eventManager,
-        ILog log,
-        IManifest manifest,
-        IModConfig modConfig,
+        IIconRegistry iconRegistry,
         IInputHelper inputHelper,
-        IPatchManager patchManager)
-        : base(log, manifest)
+        MenuHandler menuHandler,
+        IModConfig modConfig)
     {
         // Init
-        MenuManager.instance = this;
-        this.containerFactory = containerFactory;
         this.eventManager = eventManager;
-
-        this.topMenu = new PerScreen<InventoryMenuManager>(
-            () => new InventoryMenuManager(eventManager, inputHelper, log, manifest, modConfig));
-
-        this.bottomMenu = new PerScreen<InventoryMenuManager>(
-            () => new InventoryMenuManager(eventManager, inputHelper, log, manifest, modConfig));
+        this.iconRegistry = iconRegistry;
+        this.inputHelper = inputHelper;
+        this.menuHandler = menuHandler;
+        this.modConfig = modConfig;
 
         // Events
-        eventManager.Subscribe<RenderingActiveMenuEventArgs>(this.OnRenderingActiveMenu);
-        eventManager.Subscribe<RenderedActiveMenuEventArgs>(this.OnRenderedActiveMenu);
-        eventManager.Subscribe<UpdateTickingEventArgs>(this.OnUpdateTicking);
-        eventManager.Subscribe<UpdateTickedEventArgs>(this.OnUpdateTicked);
-        eventManager.Subscribe<WindowResizedEventArgs>(this.OnWindowResized);
-
-        // Patches
-        patchManager.Add(
-            this.UniqueId,
-            new SavedPatch(
-                AccessTools.DeclaredMethod(typeof(IClickableMenu), nameof(IClickableMenu.SetChildMenu)),
-                AccessTools.DeclaredMethod(
-                    typeof(MenuManager),
-                    nameof(MenuManager.IClickableMenu_SetChildMenu_postfix)),
-                PatchType.Postfix),
-            new SavedPatch(
-                AccessTools.DeclaredMethod(
-                    typeof(InventoryMenu),
-                    nameof(InventoryMenu.draw),
-                    [typeof(SpriteBatch), typeof(int), typeof(int), typeof(int)]),
-                AccessTools.DeclaredMethod(typeof(MenuManager), nameof(MenuManager.InventoryMenu_draw_prefix)),
-                PatchType.Prefix),
-            new SavedPatch(
-                AccessTools.DeclaredMethod(
-                    typeof(InventoryMenu),
-                    nameof(InventoryMenu.draw),
-                    [typeof(SpriteBatch), typeof(int), typeof(int), typeof(int)]),
-                AccessTools.DeclaredMethod(typeof(MenuManager), nameof(MenuManager.InventoryMenu_draw_postfix)),
-                PatchType.Postfix),
-            new SavedPatch(
-                AccessTools
-                    .GetDeclaredConstructors(typeof(ItemGrabMenu))
-                    .Single(ctor => ctor.GetParameters().Length > 5),
-                AccessTools.DeclaredMethod(
-                    typeof(MenuManager),
-                    nameof(MenuManager.ItemGrabMenu_constructor_transpiler)),
-                PatchType.Transpiler));
-
-        patchManager.Patch(this.UniqueId);
+        eventManager.Subscribe<ButtonPressedEventArgs>(this.OnButtonPressed);
+        eventManager.Subscribe<ButtonsChangedEventArgs>(this.OnButtonsChanged);
+        eventManager.Subscribe<MouseWheelScrolledEventArgs>(this.OnMouseWheelScrolled);
+        eventManager.Subscribe<ItemsDisplayingEventArgs>(this.OnItemsDisplaying);
     }
 
-    /// <summary>Gets the current menu.</summary>
-    public IClickableMenu? CurrentMenu
+    /// <summary>Gets the capacity of the inventory menu.</summary>
+    public int Capacity =>
+        this.InventoryMenu?.capacity switch { null => 36, > 70 => 70, _ => this.InventoryMenu?.capacity ?? 0 };
+
+    /// <summary>Gets the number of columns of the inventory menu.</summary>
+    public int Columns => this.Capacity / this.Rows;
+
+    /// <summary>Gets the instance of the inventory menu that is being managed.</summary>
+    public InventoryMenu? InventoryMenu => this.Menu as InventoryMenu;
+
+    /// <summary>Gets the instance of the menu that is being managed.</summary>
+    public IClickableMenu? Menu => this.source.TryGetTarget(out var target) ? target : null;
+
+    /// <summary>Gets the number of rows of the inventory menu.</summary>
+    public int Rows => this.InventoryMenu?.rows ?? 3;
+
+    /// <summary>Gets or sets the container associated with the menu.</summary>
+    public IStorageContainer? Container { get; set; }
+
+    /// <summary>Gets the inventory icon.</summary>
+    public ClickableComponent? Icon { get; private set; }
+
+    /// <summary>Gets or sets the method used to highlight an item in the inventory menu.</summary>
+    public InventoryMenu.highlightThisItem? OriginalHighlightMethod { get; set; }
+
+    private ClickableTextureComponent DownArrow =>
+        this.downArrow ??= this.iconRegistry.Icon(VanillaIcon.ArrowDown).Component(IconStyle.Transparent);
+
+    private ClickableTextureComponent UpArrow =>
+        this.upArrow ??= this.iconRegistry.Icon(VanillaIcon.ArrowUp).Component(IconStyle.Transparent);
+
+    /// <summary>Draws overlay components to the SpriteBatch.</summary>
+    /// <param name="spriteBatch">The SpriteBatch used to draw the game object.</param>
+    /// <param name="cursor">The mouse position.</param>
+    public void Draw(SpriteBatch spriteBatch, Point cursor)
     {
-        get => this.currentMenu.Value;
-        private set => this.currentMenu.Value = value;
-    }
+        this.UpArrow.scale = this.UpArrow.bounds.Contains(cursor)
+            ? Math.Min(Game1.pixelZoom * 1.1f, this.UpArrow.scale + 0.05f)
+            : Math.Max(Game1.pixelZoom, this.UpArrow.scale - 0.05f);
 
-    /// <summary>Gets the inventory menu manager for the top inventory menu.</summary>
-    public IInventoryMenuManager Top => this.topMenu.Value;
+        this.DownArrow.scale = this.DownArrow.bounds.Contains(cursor)
+            ? Math.Min(Game1.pixelZoom * 1.1f, this.DownArrow.scale + 0.05f)
+            : Math.Max(Game1.pixelZoom, this.DownArrow.scale - 0.05f);
 
-    /// <summary>Gets the inventory menu manager for the bottom inventory menu.</summary>
-    public IInventoryMenuManager Bottom => this.bottomMenu.Value;
-
-    /// <summary>Determines if the specified source object can receive focus.</summary>
-    /// <param name="source">The object to check if it can receive focus.</param>
-    /// <returns>true if the source object can receive focus; otherwise, false.</returns>
-    public bool CanFocus(object source) => this.focus.Value is null || this.focus.Value.Source == source;
-
-    /// <summary>Tries to request focus for a specific object.</summary>
-    /// <param name="source">The object that needs focus.</param>
-    /// <param name="serviceLock">
-    /// An optional output parameter representing the acquired service lock, or null if failed to
-    /// acquire.
-    /// </param>
-    /// <returns>true if focus was successfully acquired; otherwise, false.</returns>
-    public bool TryGetFocus(object source, [NotNullWhen(true)] out IServiceLock? serviceLock)
-    {
-        serviceLock = null;
-        if (this.focus.Value is not null && this.focus.Value.Source != source)
+        if (this.scrolled > 0)
         {
-            return false;
+            this.UpArrow.draw(spriteBatch);
         }
 
-        if (this.focus.Value is not null && this.focus.Value.Source == source)
+        if (this.scrolled < this.maxScroll)
         {
-            serviceLock = this.focus.Value;
-            return true;
+            this.DownArrow.draw(spriteBatch);
         }
 
-        this.focus.Value = new ServiceLock(source, this);
-        serviceLock = this.focus.Value;
-        return true;
-    }
-
-    [SuppressMessage("ReSharper", "InconsistentNaming", Justification = "Harmony")]
-    [SuppressMessage("StyleCop", "SA1313", Justification = "Harmony")]
-    private static void IClickableMenu_SetChildMenu_postfix() => MenuManager.instance.UpdateMenu();
-
-    [SuppressMessage("ReSharper", "InconsistentNaming", Justification = "Harmony")]
-    [SuppressMessage("ReSharper", "RedundantAssignment", Justification = "Harmony")]
-    [SuppressMessage("StyleCop", "SA1313", Justification = "Harmony")]
-    private static void InventoryMenu_draw_prefix(InventoryMenu __instance, ref InventoryMenuManager? __state)
-    {
-        __state = __instance.Equals(MenuManager.instance.topMenu.Value.Menu)
-            ? MenuManager.instance.topMenu.Value
-            : __instance.Equals(MenuManager.instance.bottomMenu.Value.Menu)
-                ? MenuManager.instance.bottomMenu.Value
-                : null;
-
-        if (__state?.Container is null)
+        // Draw storage icon
+        if (this.Icon is not ClickableTextureComponent clickableTextureComponent)
         {
             return;
         }
 
-        // Apply operations
-        var itemsDisplayingEventArgs = new ItemsDisplayingEventArgs(__state.Container);
-        MenuManager.instance.eventManager.Publish(itemsDisplayingEventArgs);
-        __instance.actualInventory = itemsDisplayingEventArgs.Items.ToList();
+        spriteBatch.Draw(
+            Game1.mouseCursors,
+            new Vector2(this.Icon.bounds.X, this.Icon.bounds.Y + 44),
+            new Rectangle(21, 368, 11, 16),
+            Color.White,
+            (float)Math.PI * 3f / 2f,
+            Vector2.Zero,
+            Game1.pixelZoom,
+            SpriteEffects.None,
+            1f);
 
-        var defaultName = int.MaxValue.ToString(CultureInfo.InvariantCulture);
-        var emptyIndex = -1;
-        for (var index = 0; index < __instance.inventory.Count; ++index)
-        {
-            if (index >= __instance.actualInventory.Count)
-            {
-                __instance.inventory[index].name = defaultName;
-                continue;
-            }
+        spriteBatch.Draw(
+            Game1.mouseCursors,
+            new Vector2(this.Icon.bounds.X, this.Icon.bounds.Y + Game1.tileSize + 12),
+            new Rectangle(16, 368, 12, 16),
+            Color.White,
+            (float)Math.PI * 3f / 2f,
+            Vector2.Zero,
+            Game1.pixelZoom,
+            SpriteEffects.None,
+            1f);
 
-            if (__instance.actualInventory[index] is null)
-            {
-                // Iterate to next empty index
-                while (++emptyIndex < __state.Container.Items.Count
-                    && __state.Container.Items[emptyIndex] is not null) { }
-
-                if (emptyIndex >= __state.Container.Items.Count)
-                {
-                    __instance.inventory[index].name = defaultName;
-                    continue;
-                }
-
-                __instance.inventory[index].name = emptyIndex.ToString(CultureInfo.InvariantCulture);
-                continue;
-            }
-
-            var actualIndex = __state.Container.Items.IndexOf(__instance.actualInventory[index]);
-            __instance.inventory[index].name =
-                actualIndex > -1 ? actualIndex.ToString(CultureInfo.InvariantCulture) : defaultName;
-        }
+        spriteBatch.Draw(
+            clickableTextureComponent.texture,
+            new Vector2(
+                this.Icon.bounds.Center.X - (clickableTextureComponent.sourceRect.Width * Game1.pixelZoom / 2f) + 8,
+                this.Icon.bounds.Center.Y - (clickableTextureComponent.sourceRect.Height * Game1.pixelZoom / 2f)),
+            clickableTextureComponent.sourceRect,
+            Color.White,
+            0f,
+            Vector2.Zero,
+            Game1.pixelZoom,
+            SpriteEffects.None,
+            1f);
     }
 
-    [SuppressMessage("ReSharper", "InconsistentNaming", Justification = "Harmony")]
-    [SuppressMessage("ReSharper", "RedundantAssignment", Justification = "Harmony")]
-    [SuppressMessage("StyleCop", "SA1313", Justification = "Harmony")]
-    private static void InventoryMenu_draw_postfix(InventoryMenu __instance, ref InventoryMenuManager? __state)
+    /// <summary>Highlights an item using the provided highlight methods.</summary>
+    /// <param name="item">The item to highlight.</param>
+    /// <returns><c>true</c> if the item is successfully highlighted; otherwise, <c>false</c>.</returns>
+    public bool HighlightMethod(Item item)
     {
-        __state = __instance.Equals(MenuManager.instance.topMenu.Value.Menu)
-            ? MenuManager.instance.topMenu.Value
-            : __instance.Equals(MenuManager.instance.bottomMenu.Value.Menu)
-                ? MenuManager.instance.bottomMenu.Value
-                : null;
-
-        if (__state?.Container is null)
+        var original = this.OriginalHighlightMethod is null || this.OriginalHighlightMethod(item);
+        if (!original || this.Container is null)
         {
+            return original;
+        }
+
+        var itemHighlightingEventArgs = new ItemHighlightingEventArgs(this.Container, item);
+        this.eventManager.Publish(itemHighlightingEventArgs);
+        return itemHighlightingEventArgs.IsHighlighted;
+    }
+
+    /// <summary>Set the menu, clearing all operations, cached items, and set new arrow positions and neighbor IDs.</summary>
+    /// <param name="parent">The parent menu, if any.</param>
+    /// <param name="current">The current menu, if any.</param>
+    public void Set(IClickableMenu? parent, IClickableMenu? current)
+    {
+        this.source.SetTarget(current);
+        this.Icon = null;
+        if (parent is null)
+        {
+            this.scrolled = 0;
+            this.maxScroll = 0;
             return;
         }
 
-        // Restore original
-        __instance.actualInventory = __state.Container.Items;
-    }
+        // Add arrows
+        parent.allClickableComponents?.Add(this.UpArrow);
+        parent.allClickableComponents?.Add(this.DownArrow);
 
-    private static IEnumerable<CodeInstruction>
-        ItemGrabMenu_constructor_transpiler(IEnumerable<CodeInstruction> instructions) =>
-        new CodeMatcher(instructions)
-            .MatchStartForward(new CodeMatch(OpCodes.Stloc_1))
-            .Advance(-1)
-            .InsertAndAdvance(
-                new CodeInstruction(OpCodes.Ldarg_S, (short)16),
-                new CodeInstruction(
-                    OpCodes.Call,
-                    AccessTools.DeclaredMethod(typeof(MenuManager), nameof(MenuManager.GetChestContext))))
-            .MatchStartForward(
-                new CodeMatch(
-                    instruction => instruction.Calls(
-                        AccessTools.DeclaredMethod(typeof(Chest), nameof(Chest.GetActualCapacity)))))
-            .Advance(1)
-            .InsertAndAdvance(
-                new CodeInstruction(OpCodes.Ldarg_S, (short)16),
-                new CodeInstruction(
-                    OpCodes.Call,
-                    AccessTools.DeclaredMethod(typeof(MenuManager), nameof(MenuManager.GetMenuCapacity))))
-            .MatchStartForward(
-                new CodeMatch(
-                    instruction => instruction.Calls(
-                        AccessTools.DeclaredMethod(typeof(Chest), nameof(Chest.GetActualCapacity)))))
-            .Advance(1)
-            .InsertAndAdvance(
-                new CodeInstruction(OpCodes.Ldarg_S, (short)16),
-                new CodeInstruction(
-                    OpCodes.Call,
-                    AccessTools.DeclaredMethod(typeof(MenuManager), nameof(MenuManager.GetMenuCapacity))))
-            .InstructionEnumeration();
-
-    private static object? GetChestContext(Item? sourceItem, object? context) =>
-        context switch
+        if (this.InventoryMenu is not null)
         {
-            Chest chest => chest,
-            SObject
-            {
-                heldObject.Value: Chest heldChest,
-            } => heldChest,
-            Building building when building.buildingChests.Any() => building.buildingChests.First(),
-            GameLocation location when location.GetFridge() is Chest fridge => fridge,
-            _ => sourceItem,
-        };
+            // Reposition arrows
+            var topSlot = this.Columns - 1;
+            var bottomSlot = this.Capacity - 1;
+            this.UpArrow.bounds.X = this.InventoryMenu.xPositionOnScreen + this.InventoryMenu.width + 8;
+            this.UpArrow.bounds.Y = this.InventoryMenu.inventory[topSlot].bounds.Center.Y - (6 * Game1.pixelZoom);
+            this.DownArrow.bounds.X = this.InventoryMenu.xPositionOnScreen + this.InventoryMenu.width + 8;
+            this.DownArrow.bounds.Y = this.InventoryMenu.inventory[bottomSlot].bounds.Center.Y - (6 * Game1.pixelZoom);
 
-    private static int GetMenuCapacity(int capacity, object? context)
-    {
-        switch (context)
-        {
-            case Item item when MenuManager.instance.containerFactory.TryGetOne(item, out var container):
-            case Building building when MenuManager.instance.containerFactory.TryGetOne(building, out container):
-                return container.Options.ResizeChest switch
-                {
-                    ChestMenuOption.Small => 9,
-                    ChestMenuOption.Medium => 36,
-                    ChestMenuOption.Large => 70,
-                    _ when capacity is > 70 or -1 => 70,
-                    _ => capacity,
-                };
-
-            default: return capacity > 70 ? 70 : capacity;
+            // Assign Neighbor Ids
+            this.UpArrow.leftNeighborID = this.InventoryMenu.inventory[topSlot].myID;
+            this.InventoryMenu.inventory[topSlot].rightNeighborID = this.UpArrow.myID;
+            this.DownArrow.leftNeighborID = this.InventoryMenu.inventory[bottomSlot].myID;
+            this.InventoryMenu.inventory[bottomSlot].rightNeighborID = this.DownArrow.myID;
+            this.UpArrow.downNeighborID = this.DownArrow.myID;
+            this.DownArrow.upNeighborID = this.UpArrow.myID;
         }
-    }
 
-    private void OnUpdateTicking(UpdateTickingEventArgs e) => this.UpdateMenu();
-
-    private void OnUpdateTicked(UpdateTickedEventArgs e) => this.UpdateMenu();
-
-    private void UpdateHighlightMethods()
-    {
-        switch (this.CurrentMenu)
+        // Add icon
+        int x;
+        int y;
+        switch (this.menuHandler.CurrentMenu)
         {
-            case ItemGrabMenu itemGrabMenu:
-                if (itemGrabMenu.ItemsToGrabMenu.highlightMethod != this.topMenu.Value.HighlightMethod)
-                {
-                    this.topMenu.Value.OriginalHighlightMethod = itemGrabMenu.ItemsToGrabMenu.highlightMethod;
-                    itemGrabMenu.ItemsToGrabMenu.highlightMethod = this.topMenu.Value.HighlightMethod;
-                }
-
-                if (itemGrabMenu.inventory.highlightMethod != this.bottomMenu.Value.HighlightMethod)
-                {
-                    this.bottomMenu.Value.OriginalHighlightMethod = itemGrabMenu.inventory.highlightMethod;
-                    itemGrabMenu.inventory.highlightMethod = this.bottomMenu.Value.HighlightMethod;
-                }
-
+            case ItemGrabMenu itemGrabMenu when this == this.menuHandler.Top && this.InventoryMenu is not null:
+                x = this.InventoryMenu.xPositionOnScreen - Game1.tileSize - 36;
+                y = itemGrabMenu.yPositionOnScreen + 4;
                 break;
-
-            case InventoryPage inventoryPage:
-                if (inventoryPage.inventory.highlightMethod != this.bottomMenu.Value.HighlightMethod)
-                {
-                    this.bottomMenu.Value.OriginalHighlightMethod = inventoryPage.inventory.highlightMethod;
-                    inventoryPage.inventory.highlightMethod = this.bottomMenu.Value.HighlightMethod;
-                }
-
+            case ItemGrabMenu itemGrabMenu when this == this.menuHandler.Bottom:
+                x = itemGrabMenu.xPositionOnScreen - Game1.tileSize;
+                y = itemGrabMenu.yPositionOnScreen + (int)(itemGrabMenu.height / 2f) + 4;
                 break;
-        }
-    }
-
-    private void OnWindowResized(WindowResizedEventArgs e) => this.Top.Container?.ShowMenu();
-
-    private void UpdateMenu()
-    {
-        var menu = Game1.activeClickableMenu switch
-        {
-            { } menuWithChild when menuWithChild.GetChildMenu() is
-                { } childMenu => childMenu,
-            GameMenu gameMenu => gameMenu.GetCurrentPage(),
-            _ => Game1.activeClickableMenu,
-        };
-
-        if (menu == this.CurrentMenu)
-        {
-            this.UpdateHighlightMethods();
-            return;
-        }
-
-        this.CurrentMenu = menu;
-        this.focus.Value = null;
-        IClickableMenu? parentMenu = null;
-        InventoryMenu? top = null;
-        InventoryMenu? bottom = null;
-        var itemGrabMenu = menu as ItemGrabMenu;
-
-        if (itemGrabMenu is not null)
-        {
-            parentMenu = itemGrabMenu;
-            top = itemGrabMenu.ItemsToGrabMenu;
-            bottom = itemGrabMenu.inventory;
-
-            // Disable background fade
-            itemGrabMenu.setBackgroundTransparency(false);
-        }
-        else if (menu is InventoryPage inventoryPage)
-        {
-            parentMenu = inventoryPage;
-            bottom = inventoryPage.inventory;
-        }
-
-        this.topMenu.Value.Reset(parentMenu, top);
-        this.bottomMenu.Value.Reset(parentMenu, bottom);
-
-        if (parentMenu is null)
-        {
-            this.eventManager.Publish(new InventoryMenuChangedEventArgs());
-            return;
-        }
-
-        // Update top menu
-        if (this.containerFactory.TryGetOne(out var topContainer) && itemGrabMenu is not null)
-        {
-            // Relaunch shipping bin menu
-            if (itemGrabMenu.shippingBin
-                && topContainer is BuildingContainer
-                {
-                    Options.ResizeChest: not (ChestMenuOption.Default or ChestMenuOption.Disabled),
-                })
-            {
-                topContainer.ShowMenu();
-                return;
-            }
-
-            itemGrabMenu.behaviorFunction = topContainer.GrabItemFromInventory;
-            itemGrabMenu.behaviorOnItemGrab = topContainer.GrabItemFromChest;
-        }
-
-        this.topMenu.Value.Container = topContainer;
-
-        // Update bottom menu
-        if (bottom?.actualInventory.Equals(Game1.player.Items) != true
-            || !this.containerFactory.TryGetOne(Game1.player, out var bottomContainer))
-        {
-            bottomContainer = null;
-        }
-
-        this.bottomMenu.Value.Container = bottomContainer;
-
-        // Reset filters
-        this.UpdateHighlightMethods();
-        this.eventManager.Publish(new InventoryMenuChangedEventArgs());
-    }
-
-    [Priority(int.MaxValue)]
-    private void OnRenderingActiveMenu(RenderingActiveMenuEventArgs e)
-    {
-        if (Game1.options.showClearBackgrounds)
-        {
-            return;
-        }
-
-        switch (this.CurrentMenu)
-        {
-            case ItemGrabMenu:
-                // Redraw background
-                e.SpriteBatch.Draw(
-                    Game1.fadeToBlackRect,
-                    new Rectangle(0, 0, Game1.uiViewport.Width, Game1.uiViewport.Height),
-                    Color.Black * 0.5f);
-
+            case InventoryPage when this.InventoryMenu is not null:
+                x = this.InventoryMenu.xPositionOnScreen - Game1.tileSize - 36;
+                y = this.InventoryMenu.yPositionOnScreen + 24;
                 break;
-
-            case InventoryPage: break;
+            case ShopMenu shopMenu when this == this.menuHandler.Top && !shopMenu.tabButtons.Any():
+                x = shopMenu.xPositionOnScreen - Game1.tileSize + 4;
+                y = shopMenu.yPositionOnScreen + Game1.tileSize + 24;
+                break;
+            case ShopMenu when this == this.menuHandler.Bottom && this.InventoryMenu is not null:
+                x = this.InventoryMenu.xPositionOnScreen - Game1.tileSize - 20;
+                y = this.InventoryMenu.yPositionOnScreen + 24;
+                break;
             default: return;
         }
 
-        Game1.mouseCursorTransparency = 0f;
+        if (string.IsNullOrWhiteSpace(this.Container?.StorageIcon)
+            || !this.iconRegistry.TryGetIcon(this.Container.StorageIcon, out var storageIcon))
+        {
+            this.Icon = new ClickableComponent(new Rectangle(x, y, Game1.tileSize, Game1.tileSize + 12), "icon");
+            return;
+        }
+
+        this.Icon = storageIcon.Component(IconStyle.Transparent, x, y);
+        this.Icon.bounds.Size = new Point(Game1.tileSize, Game1.tileSize + 12);
+        parent.allClickableComponents?.Add(this.Icon);
+    }
+
+    private void OnButtonPressed(ButtonPressedEventArgs e)
+    {
+        if (e.Button is not SButton.MouseLeft)
+        {
+            return;
+        }
+
+        var cursor = e.Cursor.GetScaledScreenPixels();
+        if (this.scrolled > 0 && this.UpArrow.bounds.Contains(cursor))
+        {
+            this.scrolled--;
+            this.inputHelper.Suppress(e.Button);
+        }
+
+        if (this.scrolled < this.maxScroll && this.DownArrow.bounds.Contains(cursor))
+        {
+            this.scrolled++;
+            this.inputHelper.Suppress(e.Button);
+        }
+    }
+
+    private void OnButtonsChanged(ButtonsChangedEventArgs e)
+    {
+        var cursor = e.Cursor.GetScaledScreenPixels().ToPoint();
+        if (this.InventoryMenu?.isWithinBounds(cursor.X, cursor.Y) != true)
+        {
+            return;
+        }
+
+        if (this.modConfig.Controls.ScrollUp.JustPressed())
+        {
+            this.scrolled--;
+            this.inputHelper.SuppressActiveKeybinds(this.modConfig.Controls.ScrollUp);
+        }
+
+        if (this.modConfig.Controls.ScrollDown.JustPressed())
+        {
+            this.scrolled++;
+            this.inputHelper.SuppressActiveKeybinds(this.modConfig.Controls.ScrollDown);
+        }
     }
 
     [Priority(int.MinValue)]
-    private void OnRenderedActiveMenu(RenderedActiveMenuEventArgs e)
+    private void OnItemsDisplaying(ItemsDisplayingEventArgs e)
     {
-        switch (this.CurrentMenu)
+        if (e.Container != this.Container)
         {
-            case ItemGrabMenu itemGrabMenu:
-                // Draw overlay
-                this.topMenu.Value.Draw(e.SpriteBatch);
-                this.bottomMenu.Value.Draw(e.SpriteBatch);
-
-                // Redraw foreground
-                if (this.focus.Value is null)
-                {
-                    if (itemGrabMenu.hoverText != null
-                        && (itemGrabMenu.hoveredItem == null || itemGrabMenu.ItemsToGrabMenu == null))
-                    {
-                        if (itemGrabMenu.hoverAmount > 0)
-                        {
-                            IClickableMenu.drawToolTip(
-                                e.SpriteBatch,
-                                itemGrabMenu.hoverText,
-                                string.Empty,
-                                null,
-                                true,
-                                -1,
-                                0,
-                                null,
-                                -1,
-                                null,
-                                itemGrabMenu.hoverAmount);
-                        }
-                        else
-                        {
-                            IClickableMenu.drawHoverText(e.SpriteBatch, itemGrabMenu.hoverText, Game1.smallFont);
-                        }
-                    }
-
-                    if (itemGrabMenu.hoveredItem != null)
-                    {
-                        IClickableMenu.drawToolTip(
-                            e.SpriteBatch,
-                            itemGrabMenu.hoveredItem.getDescription(),
-                            itemGrabMenu.hoveredItem.DisplayName,
-                            itemGrabMenu.hoveredItem,
-                            itemGrabMenu.heldItem != null);
-                    }
-                    else if (itemGrabMenu.hoveredItem != null && itemGrabMenu.ItemsToGrabMenu != null)
-                    {
-                        IClickableMenu.drawToolTip(
-                            e.SpriteBatch,
-                            itemGrabMenu.ItemsToGrabMenu.descriptionText,
-                            itemGrabMenu.ItemsToGrabMenu.descriptionTitle,
-                            itemGrabMenu.hoveredItem,
-                            itemGrabMenu.heldItem != null);
-                    }
-
-                    itemGrabMenu.heldItem?.drawInMenu(
-                        e.SpriteBatch,
-                        new Vector2(Game1.getOldMouseX() + 8, Game1.getOldMouseY() + 8),
-                        1f);
-                }
-
-                break;
-
-            case InventoryPage inventoryPage:
-                // Draw overlay
-                this.topMenu.Value.Draw(e.SpriteBatch);
-                this.bottomMenu.Value.Draw(e.SpriteBatch);
-
-                // Redraw foreground
-                if (this.focus.Value is null)
-                {
-                    if (!string.IsNullOrEmpty(inventoryPage.hoverText))
-                    {
-                        if (inventoryPage.hoverAmount > 0)
-                        {
-                            IClickableMenu.drawToolTip(
-                                e.SpriteBatch,
-                                inventoryPage.hoverText,
-                                inventoryPage.hoverTitle,
-                                null,
-                                true,
-                                -1,
-                                0,
-                                null,
-                                -1,
-                                null,
-                                inventoryPage.hoverAmount);
-                        }
-                        else
-                        {
-                            IClickableMenu.drawToolTip(
-                                e.SpriteBatch,
-                                inventoryPage.hoverText,
-                                inventoryPage.hoverTitle,
-                                inventoryPage.hoveredItem,
-                                Game1.player.CursorSlotItem is not null);
-                        }
-                    }
-                }
-
-                break;
-
-            default: return;
+            return;
         }
 
-        Game1.mouseCursorTransparency = 1f;
-        Game1.activeClickableMenu.drawMouse(e.SpriteBatch);
+        var totalRows = (int)Math.Ceiling((double)e.Items.Count() / this.Columns);
+        this.maxScroll = Math.Max(0, totalRows - this.Rows);
+        this.scrolled = Math.Max(0, Math.Min(this.scrolled, this.maxScroll));
+
+        if (this.scrolled == 0 && this.maxScroll == 0)
+        {
+            return;
+        }
+
+        e.Edit(items => items.Skip(this.scrolled * this.Columns).Take(this.Capacity));
     }
 
-    private sealed class ServiceLock(object source, MenuManager menuManager) : IServiceLock
+    private void OnMouseWheelScrolled(MouseWheelScrolledEventArgs e)
     {
-        public object Source => source;
-
-        public void Release()
+        var cursor = this.inputHelper.GetCursorPosition().GetScaledScreenPixels().ToPoint();
+        if (this.InventoryMenu?.isWithinBounds(cursor.X, cursor.Y) != true)
         {
-            if (menuManager.focus.Value == this)
-            {
-                menuManager.focus.Value = null;
-            }
+            return;
         }
+
+        var scroll = this.modConfig.Controls.ScrollPage.IsDown() ? this.Rows : 1;
+        this.scrolled += e.Delta > 0 ? -scroll : scroll;
     }
 }

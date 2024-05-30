@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+#if COMMON_THEMEMANAGER
 // If THEME_MANAGER_PRE_314 is defined, we'll use SMAPI 3.13 and earlier
 // APIs for compatibility. If it is not defined, we'll use the new APIs
 // for content added in 3.14. Just comment or uncomment this line as
@@ -1391,3 +1392,5 @@ namespace Leclair.Stardew.Common.UI {
 		#endregion
 	}
 }
+
+#endif

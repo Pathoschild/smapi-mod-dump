@@ -6,9 +6,9 @@ mods:
    Transparency Settings
 
 latest commit:
-   commit 405d302730dadae7d2ae2aee0bcd6587e1a226fc
+   commit 8192b641b05c3b25f588f6d35b3aea2bc41d24d8
    Author: Esca-MMC <esca.mmc@gmail.com>
-   Date:   Wed Jun 9 16:22:07 2021 -0500
+   Date:   Thu May 23 22:17:19 2024 -0500
    
-       Switch build mode to Any CPU
+       Add grass transparency, tweak/comment config class
    

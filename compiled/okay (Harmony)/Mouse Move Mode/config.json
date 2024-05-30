@@ -1,4 +1,5 @@
 {
+  "MouseWhellingZoomStep": 0.25,
   "MouseWhellingMaxZoom": 2.0,
   "MouseWhellingMinZoom": 0.75,
   "RightClickMoveModeDefault": true,
@@ -8,5 +9,7 @@
   "HoldingMoveOnly": false,
   "WeaponsSpecticalInteractionType": 2,
   "ExtendedModeDefault": true,
-  "FullScreenKeybindShortcut": "RightAlt + Enter"
+  "FullScreenKeybindShortcut": "RightAlt + Enter",
+  "PathFindLimit": 500,
+  "ShowMousePositionHint": true
 }

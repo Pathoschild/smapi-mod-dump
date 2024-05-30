@@ -12,8 +12,8 @@
     "Name": "[MYC] Grains Overhull Extra Harvest Rules",
     "Author": "slimerrain",
     "Description": "Allows multiple items to be harvested from a crop.",
-    "Version": "1.0.3",
-    "MinimumApiVersion": "3.7.0",
+    "Version": "1.1.7",
+    "MinimumApiVersion": "4.0.0",
     "UniqueID": "slimerrain.grainsoverhullmyc",
     "ContentPackFor": { "UniqueID": "Cherry.MultiYieldCrops" },
     "Dependencies": [

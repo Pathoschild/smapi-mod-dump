@@ -6,9 +6,9 @@ mods:
    Even Better Artisan Good Icons
 
 latest commit:
-   commit 4b78078c782bf9a86fa33c4424a300857868198b
-   Author: chsiao58 <chsiao58@gmail.com>
-   Date:   Mon Apr 22 15:59:30 2024 -0400
+   commit fee92a314a4e6b55621e4230ee32954f2a56c3d5
+   Author: 58 <50811279+chsiao58@users.noreply.github.com>
+   Date:   Mon May 6 11:55:37 2024 -0400
    
-       remove Nexus update key
+       Update README.md
    

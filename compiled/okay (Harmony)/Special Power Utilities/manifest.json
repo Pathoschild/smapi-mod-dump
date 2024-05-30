@@ -1,12 +1,12 @@
 ﻿{
   "Name": "Special Power Utilities",
   "Author": "Spiderbuttons",
-  "Version": "1.1.1",
-  "Description": "An organized Special Items & Powers list along with a few small, helpful utility features for mod authors working with custom powers.",
+  "Version": "2.1.2",
+  "Description": "An organized Special Items & Powers list along with a few small, helpful utility features for mod authors working with custom powers and books.",
   "UniqueID": "Spiderbuttons.SpecialPowerUtilities",
   "EntryDll": "SpecialPowerUtilities.dll",
   "MinimumApiVersion": "4.0.0",
-  "UpdateKeys": [],
+  "UpdateKeys": [ "Nexus:22300" ],
   "Dependencies": [
     {
       "UniqueID": "Pathoschild.ContentPatcher",

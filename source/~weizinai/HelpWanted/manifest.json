@@ -1,0 +1,31 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/weizinai/StardewValleyMods
+**
+*************************************************/
+
+{
+    "Name": "Help Wanted Redux For 1.6",
+    "Author": "weizinai",
+    "Version": "1.1.1",
+    "Description": "Help Wanted.",
+    "UniqueID": "weizinai.HelpWanted",
+    "EntryDll": "HelpWanted.dll",
+    "UpdateKeys": [
+        "Nexus:21766"
+    ],
+    "Dependencies": [
+        {
+            "UniqueID": "spacechase0.GenericModConfigMenu",
+            "IsRequired": false
+        },
+        {
+            "UniqueID": "Rafseazz.RidgesideVillage",
+            "IsRequired": false
+        }
+    ]
+}

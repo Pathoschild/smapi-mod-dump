@@ -1,0 +1,26 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Arborsm/PortraiturePlus
+**
+*************************************************/
+
+{
+  "Name": "PortraiturePlus",
+  "Author": "Arborsm",
+  "Version": "1.0.0",
+  "Description": "Add tokens to Portraiture",
+  "UniqueID": "Arborsm.PortraiturePlus",
+  "EntryDll": "PortraiturePlus.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [24534],
+  "Dependencies": [
+    {
+      "UniqueID": "Platonymous.Portraiture",
+      "IsRequired": true
+    }
+  ]
+}

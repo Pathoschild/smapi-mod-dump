@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/23848
+IDs: mori_sensei.WeirdSounds
+update keys: Nexus:23848, GitHub:alcmoe/SVMods

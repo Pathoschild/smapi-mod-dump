@@ -122,7 +122,7 @@ namespace FashionSense.Framework.Managers
                 }
             }
 
-            return outfits;
+            return outfits.Where(o => o is not null && string.IsNullOrEmpty(o.Name) is false).ToList();
         }
 
         public List<Outfit> GetSharedOutfits(Farmer who)
@@ -202,6 +202,7 @@ namespace FashionSense.Framework.Managers
             who.modData[ModDataKeys.CUSTOM_SLEEVES_ID] = "None";
             who.modData[ModDataKeys.CUSTOM_PANTS_ID] = "None";
             who.modData[ModDataKeys.CUSTOM_SHOES_ID] = "None";
+            who.modData[ModDataKeys.CUSTOM_BODY_ID] = "None";
 
             FashionSense.accessoryManager.ClearAccessories(who);
         }
@@ -214,9 +215,14 @@ namespace FashionSense.Framework.Managers
             who.modData[ModDataKeys.CUSTOM_SLEEVES_ID] = String.IsNullOrEmpty(outfit.SleevesId) ? "None" : outfit.SleevesId;
             who.modData[ModDataKeys.CUSTOM_PANTS_ID] = String.IsNullOrEmpty(outfit.PantsId) ? "None" : outfit.PantsId;
             who.modData[ModDataKeys.CUSTOM_SHOES_ID] = String.IsNullOrEmpty(outfit.ShoesId) ? "None" : outfit.ShoesId;
+            who.modData[ModDataKeys.CUSTOM_BODY_ID] = String.IsNullOrEmpty(outfit.BodyId) ? "None" : outfit.BodyId;
 
             // Handle old outfits without ColorMaskLayers
-            who.changeHairColor(new Color() { PackedValue = uint.Parse(outfit.HairColor) });
+            if (outfit.HairColor is not null)
+            {
+                who.changeHairColor(new Color() { PackedValue = uint.Parse(outfit.HairColor) });
+            }
+
             if (outfit.Version < 3)
             {
                 who.modData[ModDataKeys.UI_HAND_MIRROR_HAT_COLOR] = outfit.HatColor;
@@ -258,49 +264,54 @@ namespace FashionSense.Framework.Managers
 
                 FashionSense.accessoryManager.HandleOldAccessoryFormat(Game1.player);
             }
-            else if (outfit.AccessoryIds.Count > 0)
+            else
             {
-                FashionSense.accessoryManager.SetAccessories(who, outfit.AccessoryIds, outfit.AccessoryColors);
+                FashionSense.accessoryManager.ClearAccessories(who);
 
-                List<Color> accessoryColorMasks = new List<Color>();
-                if (outfit.AppearanceToMaskColors.Any(d => d.Key is IApi.Type.Accessory))
+                if (outfit.AccessoryIds.Count > 0)
                 {
-                    accessoryColorMasks = outfit.AppearanceToMaskColors.First(d => d.Key is IApi.Type.Accessory).Value;
-                }
+                    FashionSense.accessoryManager.SetAccessories(who, outfit.AccessoryIds, outfit.AccessoryColors);
 
-                int accessoryCountOffset = 0;
-                foreach (int index in FashionSense.accessoryManager.GetActiveAccessoryIndices(who))
-                {
-                    var accessoryKey = FashionSense.accessoryManager.GetAccessoryIdByIndex(who, index);
-                    if (FashionSense.textureManager.GetSpecificAppearanceModel<AccessoryContentPack>(accessoryKey) is AccessoryContentPack aPack && aPack != null)
+                    List<Color> accessoryColorMasks = new List<Color>();
+                    if (outfit.AppearanceToMaskColors.Any(d => d.Key is IApi.Type.Accessory))
                     {
-                        AccessoryModel accessoryModel = aPack.GetAccessoryFromFacingDirection(who.FacingDirection);
-                        if (accessoryModel is null)
-                        {
-                            continue;
-                        }
+                        accessoryColorMasks = outfit.AppearanceToMaskColors.First(d => d.Key is IApi.Type.Accessory).Value;
+                    }
 
-                        try
+                    int accessoryCountOffset = 0;
+                    foreach (int index in FashionSense.accessoryManager.GetActiveAccessoryIndices(who))
+                    {
+                        var accessoryKey = FashionSense.accessoryManager.GetAccessoryIdByIndex(who, index);
+                        if (FashionSense.textureManager.GetSpecificAppearanceModel<AccessoryContentPack>(accessoryKey) is AccessoryContentPack aPack && aPack != null)
                         {
-                            if (accessoryModel.ColorMaskLayers.Count > 0)
+                            AccessoryModel accessoryModel = aPack.GetAccessoryFromFacingDirection(who.FacingDirection);
+                            if (accessoryModel is null)
                             {
-                                for (int x = 0; x < accessoryModel.ColorMaskLayers.Count; x++)
-                                {
-                                    FashionSense.colorManager.SetColor(who, AppearanceModel.GetColorKey(IApi.Type.Accessory, appearanceIndex: index, maskLayerIndex: x), accessoryColorMasks[accessoryCountOffset]);
+                                continue;
+                            }
 
+                            try
+                            {
+                                if (accessoryModel.ColorMaskLayers.Count > 0)
+                                {
+                                    for (int x = 0; x < accessoryModel.ColorMaskLayers.Count; x++)
+                                    {
+                                        FashionSense.colorManager.SetColor(who, AppearanceModel.GetColorKey(IApi.Type.Accessory, appearanceIndex: index, maskLayerIndex: x), accessoryColorMasks[accessoryCountOffset]);
+
+                                        accessoryCountOffset += 1;
+                                    }
+                                }
+                                else
+                                {
+                                    FashionSense.colorManager.SetColor(who, AppearanceModel.GetColorKey(IApi.Type.Accessory, appearanceIndex: index, maskLayerIndex: 0), accessoryColorMasks[accessoryCountOffset]);
                                     accessoryCountOffset += 1;
                                 }
                             }
-                            else
+                            catch (Exception ex)
                             {
-                                FashionSense.colorManager.SetColor(who, AppearanceModel.GetColorKey(IApi.Type.Accessory, appearanceIndex: index, maskLayerIndex: 0), accessoryColorMasks[accessoryCountOffset]);
-                                accessoryCountOffset += 1;
+                                // TODO: Log errors
+                                continue;
                             }
-                        }
-                        catch (Exception ex)
-                        {
-                            // TODO: Log errors
-                            continue;
                         }
                     }
                 }
@@ -318,6 +329,7 @@ namespace FashionSense.Framework.Managers
             FashionSense.ResetTextureIfNecessary(who.modData[ModDataKeys.CUSTOM_SLEEVES_ID]);
             FashionSense.ResetTextureIfNecessary(who.modData[ModDataKeys.CUSTOM_PANTS_ID]);
             FashionSense.ResetTextureIfNecessary(who.modData[ModDataKeys.CUSTOM_SHOES_ID]);
+            FashionSense.ResetTextureIfNecessary(who.modData[ModDataKeys.CUSTOM_BODY_ID]);
 
             // Set the current outfit ID
             who.modData[ModDataKeys.CURRENT_OUTFIT_ID] = outfit.Name;

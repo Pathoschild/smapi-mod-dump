@@ -30,8 +30,11 @@ namespace HorseOverhaul
         None,
         Sonr,
         Gwen,
-        Magimatica
+        Magimatica,
+        Lumi
     }
+
+    // TODO: UI info suite 2 compatibility (issue #313)
 
     public class HorseOverhaul : Mod
     {
@@ -44,11 +47,15 @@ namespace HorseOverhaul
 
         private readonly PerScreen<bool> dayJustStarted = new(createNewState: () => false);
 
+        internal readonly PerScreen<bool> isDoingHorseWarp = new(createNewState: () => false);
+
         public List<HorseWrapper> Horses { get => horses.Value; }
 
         public IBetterRanchingApi BetterRanchingApi { get; set; }
 
         public HorseOverhaulConfig Config { get; set; }
+
+        private static IManifest Manifest { get; set; }
 
         internal string GwenOption { get; set; } = "1";
 
@@ -92,7 +99,7 @@ namespace HorseOverhaul
 
                     if (FilledTroughOverlay != null)
                     {
-                        filledTroughTexture = MergeTextures(FilledTroughOverlay, filledTroughTexture);
+                        filledTroughTexture = MergeTextures(FilledTroughOverlay, filledTroughTexture, SeasonalVersion == SeasonalVersion.Lumi);
                     }
 
                     filledTroughTexture.Name = ModManifest.UniqueID + ".FilledTrough";
@@ -125,7 +132,7 @@ namespace HorseOverhaul
 
                     if (EmptyTroughOverlay != null)
                     {
-                        emptyTroughTexture = MergeTextures(EmptyTroughOverlay, emptyTroughTexture);
+                        emptyTroughTexture = MergeTextures(EmptyTroughOverlay, emptyTroughTexture, SeasonalVersion == SeasonalVersion.Lumi);
                     }
 
                     emptyTroughTexture.Name = ModManifest.UniqueID + ".EmptyTrough";
@@ -141,8 +148,12 @@ namespace HorseOverhaul
 
         private const int maximumSaddleBagPositionsChecked = 10;
 
+        public static readonly string saddleBagBookNonQID = $"{Manifest?.UniqueID}.SaddleBagBook";
+        public static readonly string saddleBagBookQID = $"(O){saddleBagBookNonQID}";
+
         public override void Entry(IModHelper helper)
         {
+            Manifest = this.ModManifest;
             Config = Helper.ReadConfig<HorseOverhaulConfig>();
 
             HorseOverhaulConfig.VerifyConfigValues(Config, this);
@@ -165,6 +176,7 @@ namespace HorseOverhaul
 
             helper.Events.Multiplayer.ModMessageReceived += OnModMessageReceived;
 
+            helper.Events.Content.AssetRequested += (_, e) => SaddleBagAccess.ApplySaddleBagUnlockChanges(e, this);
             helper.Events.Content.AssetReady += InvalidateStableTroughTexture;
 
             helper.Events.Input.ButtonPressed += (_, e) => ButtonHandling.OnButtonPressed(this, e);
@@ -202,9 +214,14 @@ namespace HorseOverhaul
             Utility.ForEachBuilding(delegate (Building building)
             {
                 // also do it for tractors
-                if (building is Stable stable && stable.getStableHorse() != null)
+                if (building is Stable stable)
                 {
-                    stable.getStableHorse().forceOneTileWide.Value = false;
+                    Horse horse = stable.getStableHorse();
+
+                    if (horse != null)
+                    {
+                        horse.forceOneTileWide.Value = false;
+                    }
                 }
 
                 return true;
@@ -432,6 +449,10 @@ namespace HorseOverhaul
                     EmptyTroughOverlay = Helper.ModContent.Load<IRawTextureData>($"assets/gwen/overlay_{GwenOption}.png");
                 }
             }
+            else if (SeasonalVersion == SeasonalVersion.Lumi)
+            {
+                emptyTroughTexture = null;
+            }
 
             // call this even if water or sprite changes are disabled to reset the texture
             // the overridden method makes sure to not change the sprite if the config disallows it
@@ -499,11 +520,9 @@ namespace HorseOverhaul
 
                     if (Context.IsMainPlayer && Config.HorseHeater && Game1.IsWinter)
                     {
-                        var horse = stable.getStableHorse();
-
-                        if (horse != null && CheckForHeater(location, stable))
+                        if (CheckForHeater(location, stable))
                         {
-                            var horseW = Horses.Where(h => h?.Horse?.HorseId == horse.HorseId).FirstOrDefault();
+                            var horseW = Horses.Where(h => h?.Stable?.HorseId == stable.HorseId).FirstOrDefault();
 
                             horseW?.AddHeaterBonus();
                         }

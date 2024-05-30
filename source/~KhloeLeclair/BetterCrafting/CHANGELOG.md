@@ -8,6 +8,141 @@ for queries and analysis.**
 
 # Changelog
 
+## 2.12.0
+Released May 27th, 2024.
+
+### Added
+* Setting to enforce some feature flags in multiplayer. Notably, this can
+  be used by the multiplayer host to disable the recover trash feature, to
+  disable the setting to reveal all gift tastes, to disable recycling items
+  with unknown recipes, and to disable recycling recipes with fuzzy items.
+* Setting to recycle items of higher-quality than any known recipe produces,
+  which is now enabled by default.
+* Setting to mark specific storage items as invalid for the purpose of acting
+  as sources of items. You can use this to, for example, stop Better Crafting
+  from using items that are in Hoppers.
+
+### Changed
+* Inventories are now cleaned only once per crafting operation, once the
+  crafting has finished, to avoid doing a lot of redundant work.
+
+### Fixed
+* Issue where crafting too many items would crash due to a stack exception.
+* The crafting menu now protects any items that are in its list of inventories
+  from use in crafting, as well as being trashed or removed from the player's
+  inventory.
+
+### API
+* Added new, simpler event for populating menu containers to allow mods to
+  listen to the event while also avoiding needing to include `IBetterCraftingMenu`,
+  `IRecipe`, etc. in their copy of the API file.
+* Added new event for when a menu closes.
+* Added method for casting an `IClickableMenu` to an `IBetterCraftingMenu`,
+  if the provided menu is one of our menus.
+
+
+## 2.11.0
+Released May 20th, 2024.
+
+### Added
+* Feature to recover trashed items. Just right-click on the trash can
+  in your menu (not all menus supported) to open a menu containing items
+  you've recently thrown in the trash. Up to 36 items are remembered at
+  any given time.
+* Ability to invert dynamic rules to exclude recipes from a category,
+  rather than including them.
+
+### Compatibility
+* Introduced a feature to block harmful Harmony patches from other mods.
+  I do not block other mods by default, but I reserve the right to do so
+  if another mod causes Better Crafting to break.
+* Start logging any mods that have applied Harmony patches to Better Crafting
+  at the end of the Game Started event.
+* Added `Resource Storage` to the list of mods that are not allowed to
+  Harmony patch Better Crafting. This is because Resource Storage attempts
+  to apply patches to modify how Better Crafting consumes items, but it
+  does so inconsistently and players will be presented with a confusing
+  situation where it seems as though they have enough items to perform
+  a craft but actually trying to do the craft does nothing.
+
+### Fixed
+* Minor text rendering issue where a color would leak outside of a colored
+  text segment.
+
+
+## 2.10.0
+Released May 13th, 2024.
+
+### Added
+* `Show Unknown Recipes` setting to display unknown recipes in the
+  crafting menu, similarly to how they're displayed in the cooking
+  menu. That is to say: greyed out.
+* `Show Matching Items` setting to display exactly which items should
+  be consumed when performing a craft. This *may* be inaccurate but it
+  is unlikely. This is disabled by default.
+
+### Changed
+* Recipes that create items with a quality greater than low quality
+  will now display a quality icon on the crafting menu.
+
+### Fixed
+* Integration with SpaceCore Vanilla Asset Expansion crafting recipe
+  overrides. I found a way to fix it without needing to wait for Casey
+  to merge my pull request.
+* Tool-tip caching not working correctly when the crafting menu
+  is in category editing mode.
+
+### API
+* Much of our configuration is now exposed via our API.
+* `CategoryIcon` now has a `Frames` property that can be used to set how
+  many frames of animation should be displayed. Note that this is largely
+  untested, but it should allow for animated station icons.
+
+
+## 2.9.0
+Released May 5th, 2024.
+
+### Added
+* New setting to display the mod that added an item on crafting tool-tips.
+
+### Changed
+* Improve integration with SpaceCore Vanilla Asset Extension crafting recipe
+  overrides, with support for our ingredient quality features as well as
+  item recycling. (Note: This will require an update from SpaceCore before
+  it will function correctly.)
+
+### Fixed
+* If an error happens in another mod's event handlers for one of our events,
+  capture the error properly and log it to minimize disruption to the user.
+
+
+## 2.8.3
+Released May 2nd, 2024.
+
+### Added
+* New dynamic rule for matching recipes that a given character likes
+  or loves. By default, this only matches discovered gift tastes, but
+  you can enable the "Show Undiscovered Gift Tastes" setting to make
+  it match everything.
+
+### Changed
+* All the dynamic rules for buffs have been combined into one rule,
+  with a selection dialog for the specific buff you want. This allows
+  for a better user experience by de-cluttering the rule selection
+  dialog, as well as showing you how many recipes any particular
+  buff actually match.
+
+### Fixed
+* The cursor snapping when it shouldn't.
+* Issue where Better Crafting was loading `Data/Objects` and `Data/Buffs`
+  during GameStarted, which could cache the resources early and cause
+  other mods' edits to not apply.
+* When drawing the `NEW` label on recipes, use a larger rectangle
+  that supports all languages.
+* Attempt to fix a sporadic NRE with the temporary loading menu for
+  controller users.
+
+
 ## 2.8.2
 Released April 20th, 2024.
 

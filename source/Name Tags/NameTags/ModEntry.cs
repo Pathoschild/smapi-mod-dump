@@ -8,7 +8,6 @@
 **
 *************************************************/
 
-using EnaiumToolKit.Framework.Utils;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -40,7 +39,7 @@ public class ModEntry : Mod
     public override void Entry(IModHelper helper)
     {
         Config = helper.ReadConfig<Config>();
-        helper.Events.Input.ButtonPressed += OnButtonPress;
+        helper.Events.Input.ButtonsChanged += OnButtonsChanged;
         helper.Events.Display.Rendered += OnRender;
     }
 
@@ -98,10 +97,14 @@ public class ModEntry : Mod
                 e.SpriteBatch.DrawString(Game1.dialogueFont, tag, new Vector2(x, y), Config.Color);
                 if (Config.TargetLine)
                 {
-                    var playerPosition = Game1.player.Position - new Vector2(Game1.viewport.X, Game1.viewport.Y);
-                    var targetPosition = variable.Position - new Vector2(Game1.viewport.X, Game1.viewport.Y);
-                    Utility.drawLineWithScreenCoordinates((int)playerPosition.X, (int)playerPosition.Y, (int)targetPosition.X,
-                        (int)targetPosition.Y, e.SpriteBatch, Config.Color, 0.1f);
+                    var playerPosition = Game1.GlobalToLocal(Game1.viewport, Game1.player.Position);
+                    var targetPosition = variable.getLocalPosition(Game1.viewport);
+                    Utility.drawLineWithScreenCoordinates(
+                        (int)playerPosition.X + Game1.tileSize / 2,
+                        (int)playerPosition.Y + Game1.tileSize / 2,
+                        (int)targetPosition.X + Game1.tileSize / 2,
+                        (int)targetPosition.Y + Game1.tileSize / 2
+                        , e.SpriteBatch, Config.Color, 0.1f);
                 }
             }
         }
@@ -152,13 +155,13 @@ public class ModEntry : Mod
         return n;
     }
 
-    private void OnButtonPress(object? sender, ButtonPressedEventArgs e)
+    private void OnButtonsChanged(object? sender, ButtonsChangedEventArgs e)
     {
         if (!Context.IsWorldReady)
             return;
         if (!Context.IsPlayerFree)
             return;
-        if (e.Button != Config.OpenSetting)
+        if (!Config.OpenSetting.JustPressed())
             return;
         Game1.activeClickableMenu = new NameTagsScreen();
     }

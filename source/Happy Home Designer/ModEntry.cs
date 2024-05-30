@@ -89,6 +89,17 @@ namespace HappyHomeDesigner
 						}
 					}
 				}
+				else if (config.OpenMenu.JustPressed())
+				{
+					helper.Input.Suppress(e.Button);
+
+					var catalogues =
+						ModUtilities.CatalogType.Collector |
+						ModUtilities.CatalogType.Furniture |
+						ModUtilities.CatalogType.Wallpaper;
+
+					Catalog.ShowCatalog(ModUtilities.GenerateCombined(catalogues), catalogues.ToString());
+				}
 			}
 		}
 
@@ -104,7 +115,6 @@ namespace HappyHomeDesigner
 			Patch(new(ModManifest.UniqueID));
 
 			AlternativeTextures.Init(Helper);
-			CustomFurniture.Init(Helper);
 		}
 
 		private static void Patch(Harmony harmony)
@@ -116,6 +126,7 @@ namespace HappyHomeDesigner
 			SearchFocusFix.Apply(harmony);
 			ItemReceive.Apply(harmony);
 			HandCatalogue.Apply(harmony);
+			CatalogFX.Apply(harmony);
 
 			AltTex.Apply(harmony);
 			// TODO rewrite patches when dga comes back

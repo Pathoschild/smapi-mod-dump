@@ -10,7 +10,6 @@
 
 using System;
 
-using Leclair.Stardew.CloudySkies.LayerData;
 using Leclair.Stardew.CloudySkies.Models;
 
 using Microsoft.Xna.Framework;
@@ -52,7 +51,7 @@ public class RainLayer : IWeatherLayer {
 
 	#region Life Cycle
 
-	public RainLayer(ModEntry mod, ulong id, RainLayerData data) {
+	public RainLayer(ModEntry mod, ulong id, IRainLayerData data) {
 		Mod = mod;
 		Id = id;
 		DrawType = data.Mode;
@@ -123,7 +122,7 @@ public class RainLayer : IWeatherLayer {
 		int maxY = Game1.viewport.Height + 64;
 		int maxX = Game1.viewport.Width + 64;
 
-		for(int i = 0; i < Drops.Length; i++) {
+		for (int i = 0; i < Drops.Length; i++) {
 			RainDrop drop = Drops[i];
 			drop.position.X -= offsetX;
 			drop.position.Y -= offsetY;
@@ -148,9 +147,9 @@ public class RainLayer : IWeatherLayer {
 		Rectangle source = Source;
 		Color color = Color * Opacity;
 
-		for(int i = 0; i < Drops.Length; i++) {
+		for (int i = 0; i < Drops.Length; i++) {
 			RainDrop drop = Drops[i];
-			for(int v = 0; v < Vibrancy; v++) {
+			for (int v = 0; v < Vibrancy; v++) {
 				if (Texture != null)
 					batch.Draw(
 						Texture,
@@ -192,7 +191,7 @@ public class RainLayer : IWeatherLayer {
 	public void Update(GameTime time) {
 		int length = Drops.Length;
 
-		for(int i = 0; i < length; i++) {
+		for (int i = 0; i < length; i++) {
 			RainDrop drop = Drops[i];
 			drop.accumulator += time.ElapsedGameTime.Milliseconds;
 

@@ -99,5 +99,9 @@
 
   //Config
   "Config.TestDateActorName": "Actor Name for Date Tests",
-  "Config.TestDateActorNameDescription": "The name of the NPC who should act as a date partner when testing dates. You can ignore it when you're not going to use it."
+  "Config.TestDateActorNameDescription": "The name of the NPC who should act as a date partner when testing dates. You can ignore it when you're not going to use it.",
+  "Config.SpouseAlwaysGivingLetter": "Spouse always giving letter",
+  "Config.MinHeartsRequired": "Minimum hearts required",
+  "Config.ChancePerHeart": "Chance per heart (in %)",
+  "Config.ChancePerHeartDescription": "The chance of receiving a letter from an NPC. Each heart will increase the chance by x percent (e.g. 6 hearts, 10% for each heart = 60% chance to receive a letter from the NPC)"
 }

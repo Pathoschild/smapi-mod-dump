@@ -8,18 +8,18 @@
 **
 *************************************************/
 
-#nullable enable
+#if COMMON_FLOW
 
 using System;
 using System.Collections.Generic;
+
+using Leclair.Stardew.Common.UI.FlowNode;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using StardewValley;
 using StardewValley.Menus;
-
-using Leclair.Stardew.Common.UI.FlowNode;
 
 namespace Leclair.Stardew.Common.UI;
 
@@ -69,7 +69,7 @@ public class ScrollableFlow {
 	public ClickableTextureComponent btnPageUp { get; private set; }
 	public ClickableTextureComponent btnPageDown { get; private set; }
 
-	public ClickableTextureComponent ScrollBar { get;private set; }
+	public ClickableTextureComponent ScrollBar { get; private set; }
 	public Rectangle ScrollArea { get; private set; }
 
 	public List<ClickableComponent> DynamicComponents { get; private set; }
@@ -207,6 +207,8 @@ public class ScrollableFlow {
 
 	public int FlowWidth => _width - (showScrollbar == ScrollVisibility.Hidden ? 0 : 80);
 
+	public float ContentHeight => Flow?.Height ?? 0f;
+
 	public int Position => (int) ScrollOffset;
 
 	public bool HasValue => Flow.HasValue;
@@ -225,7 +227,7 @@ public class ScrollableFlow {
 		}
 	}
 
-	public bool Reposition(int? x, int? y, int? width, int? height, int? scrollTopMargin, int? scrollBottomMargin) {
+	public bool Reposition(int? x = null, int? y = null, int? width = null, int? height = null, int? scrollTopMargin = null, int? scrollBottomMargin = null) {
 		int newX = x ?? _x;
 		int newY = y ?? _y;
 		int newWidth = width ?? _width;
@@ -282,7 +284,7 @@ public class ScrollableFlow {
 	}
 
 	private void UpdateFlow(bool recalculate = true) {
-		if (! Flow.HasValue) {
+		if (!Flow.HasValue) {
 			ScrollMax = 0;
 			ScrollOffset = 0;
 			ScrollBar.visible = btnPageUp.visible = btnPageDown.visible = IsScrollVisible;
@@ -396,7 +398,7 @@ public class ScrollableFlow {
 		);
 
 		if (scroll == -1) {
-			if (closest.HasValue) { 
+			if (closest.HasValue) {
 				float pos = FlowHelper.GetScrollOffsetForUniqueNode(
 					Flow.Value,
 					closest.Value.Item1.UniqueId
@@ -465,9 +467,9 @@ public class ScrollableFlow {
 
 		float height = 0;
 
-		for(int i = 0; i < Flow.Value.Lines.Length; i++) {
+		for (int i = 0; i < Flow.Value.Lines.Length; i++) {
 			CachedFlowLine line = Flow.Value.Lines[i];
-			foreach(IFlowNodeSlice slice in line.Slices) {
+			foreach (IFlowNodeSlice slice in line.Slices) {
 				if (slice.Node.Equals(node))
 					return ScrollTo(height + offset);
 			}
@@ -763,3 +765,5 @@ public class ScrollableFlow {
 	#endregion
 
 }
+
+#endif

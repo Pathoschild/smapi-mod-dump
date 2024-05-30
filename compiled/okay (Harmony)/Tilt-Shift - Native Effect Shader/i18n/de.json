@@ -23,6 +23,9 @@
     "settings.enable-directionalFading.label": "Richtungsabhängiges Ausblenden",
     "settings.enable-directionalFading.tooltip": "Den Effekt in Richtung ausblenden, in die der Spieler schaut",
 
+    "settings.enable-directionalFadingDuringEvents.label": "Während Ereignissen aktivieren",
+    "settings.enable-directionalFadingDuringEvents.tooltip": "Ausblende-Effekt während Ereignissen und Veranstaltungen aktivieren",
+
     "settings.directionalFading-time.label": "Ausblende-Zeit",
     "settings.directionalFading-time.tooltip": "Wie lange der Effekt ausblenden soll, um die gewünschte Stärke zu erreichen (Max. 1 Sekunde)",
 
@@ -39,7 +42,10 @@
     "settings.shader-strength.tooltip": "Wie stark der Effekt angewendet werden soll",
 
     "settings.shader-type.label": "Shader-Typ",
-    "settings.shader-type.tooltip": "Gaussian erzeugt eine weichere Unschärfe. Box ist schneller",
+    "settings.shader-type.tooltip": "Gaussian erzeugt eine weichere Unschärfe. Box ist schneller. Chex ist ein schneller 2D Box-ähnlicher Unschärfe-Shader-Typ mit reduzierten Probepunkten in einem Diamant-förmigen umkreis (2D-Methode wird automatisch ausgewählt)",
+
+    "settings.shader-sigma.label": "Gaussian Gewicht-Sigma",
+    "settings.shader-sigma.tooltip": "Der Sigma-Wert der zur berechnung der Gewicht-Werte des Gaussian Shader benutzt wird",
 
     "settings.shader-method.label": "Shader-Methode",
     "settings.shader-method.tooltip": "Automatic wählt automatisch die richtige Methode um Artefakte in bestimmten Situationen zu eliminieren und die Leistung zu maximieren. Nutze Automatic oder One-Pass (2D) wenn Artefakte auftreten. Nutze Two-Pass (1D) für Leistung",

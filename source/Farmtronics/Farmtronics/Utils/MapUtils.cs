@@ -54,7 +54,7 @@ namespace Farmtronics.Utils {
 			return location * Game1.tileSize;
 		}
 		
-		public static bool isCollidingWithBuilding(this BuildableGameLocation gameLocation, Rectangle position) {
+		public static bool isCollidingWithBuilding(this GameLocation gameLocation, Rectangle position) {
 			foreach (var building in gameLocation.buildings)
 			{
 				if (building.intersects(position)) return true;
@@ -68,7 +68,7 @@ namespace Farmtronics.Utils {
 
 			var bbox = new Rectangle(tileX*Game1.tileSize+2, tileY*Game1.tileSize+2, Game1.tileSize-4, Game1.tileSize-4);
 			foreach (var clump in gameLocation.resourceClumps) {
-				var clumpBounds = clump.getBoundingBox(clump.tile.Value);
+				var clumpBounds = clump.getBoundingBox();
 				if (clumpBounds.Intersects(bbox)) {
 					ModEntry.instance.Monitor.Log($"position {absolutePosition} intersects {clump.GetName()}, because {bbox} overlaps {clumpBounds}", LogLevel.Trace);
 					return clump;

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/23742
+IDs: ichortower.Nightshade
+update keys: Nexus:23742, GitHub:ichortower/Nightshade

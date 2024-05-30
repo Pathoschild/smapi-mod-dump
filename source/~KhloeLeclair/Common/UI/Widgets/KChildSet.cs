@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#if COMMON_WIDGETS
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -234,3 +236,5 @@ public class KChildSet : ICollection<KObject>, IEnumerable<KObject>, IReadOnlyCo
 	#endregion
 
 }
+
+#endif

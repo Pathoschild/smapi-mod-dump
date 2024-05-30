@@ -18,6 +18,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Unlockable_Bundles.Lib.ShopTypes;
+using Unlockable_Bundles.NetLib;
 using static Unlockable_Bundles.ModEntry;
 
 namespace Unlockable_Bundles.Lib
@@ -106,12 +107,36 @@ namespace Unlockable_Bundles.Lib
                 var index = unlockable._alreadyPaidIndex.ContainsKey(last.Key) ? unlockable._alreadyPaidIndex[last.Key] : -1;
                 ModData.setPartiallyPurchased(unlockable.ID, unlockable.LocationUnique, last.Key, last.Value, index);
                 ModAPI.raiseShopContributed(new API.BundleContributedEventArgs(Game1.player, new KeyValuePair<string, int>(last.Key, last.Value), unlockable.Location, unlockable.LocationUnique, unlockable.ID, false));
+
+            } else if (e.Type == "BundleDiscovered") {
+                var data = e.ReadAs<BundleDiscoveredTransferModel>();
+                ShopObject.setDiscovered(data.id, data.location, data.value);
+
+            } else if (e.Type == "OverviewMenuRequestMissing") {
+                var data = e.ReadAs<Dictionary<string, string>>();
+                var bundles = ShopObject.getAll();
+
+                var transfer = new List<UnlockableModel>();
+                foreach (var bundle in bundles) {
+                    if (bundle.WasDiscovered && !data.Contains(new KeyValuePair<string, string>(bundle.Unlockable.ID, bundle.Unlockable.LocationUnique)))
+                        transfer.Add((UnlockableModel)bundle.Unlockable);
+                }
+
+                Helper.Multiplayer.SendMessage(transfer, "OverviewMenuSendMissing", modIDs: new[] { ModManifest.UniqueID }, playerIDs: new[] { e.FromPlayerID });
+
+            } else if (e.Type == "OverviewMenuSendMissing") {
+                if (Game1.activeClickableMenu is not BundleOverviewMenu menu)
+                    return;
+
+                var data = e.ReadAs<List<UnlockableModel>>();
+                menu.appendMissingBundles(data);
+
             } else if (e.Type == "UpdateMailData") {
                 AssetRequested.MailData = e.ReadAs<Dictionary<string, string>>();
 
                 //Translating the mail if possible
                 var unlockables = Helper.GameContent.Load<Dictionary<string, UnlockableModel>>("UnlockableBundles/Bundles");
-                foreach(var unlockable in unlockables) {
+                foreach (var unlockable in unlockables) {
                     var mailKey = Unlockable.getMailKey(unlockable.Key);
 
                     if (AssetRequested.MailData.ContainsKey(mailKey))
@@ -130,6 +155,7 @@ namespace Unlockable_Bundles.Lib
 
                 foreach (var unlockable in needToBeApplied)
                     MapPatches.applyUnlockable(new Unlockable(unlockable), false);
+
             } else if (e.Type == "DebugWarpToHost") {
 #if DEBUG
                 var master = Game1.MasterPlayer;

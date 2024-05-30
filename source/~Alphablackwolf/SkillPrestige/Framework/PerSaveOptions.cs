@@ -21,16 +21,8 @@ namespace SkillPrestige.Framework
     [Serializable]
     internal class PerSaveOptions
     {
-        /*********
-        ** Fields
-        *********/
         // ReSharper disable once InconsistentNaming
         private static PerSaveOptions _instance;
-
-
-        /*********
-        ** Accessors
-        *********/
         public static PerSaveOptions Instance
         {
             get
@@ -61,10 +53,6 @@ namespace SkillPrestige.Framework
 
         public int ExperienceNeededPerPainlessPrestige { get; set; }
 
-
-        /*********
-        ** Public methods
-        *********/
         public static void Save()
         {
             Directory.CreateDirectory(ModEntry.PerSaveOptionsDirectory);
@@ -81,10 +69,6 @@ namespace SkillPrestige.Framework
         [SuppressMessage("Performance", "CA1822:Mark members as static")] //the whole point of the method is to force the load, cannot be static.
         public void Check() { }
 
-
-        /*********
-        ** Private methods
-        *********/
         private PerSaveOptions() { }
 
         private static void LoadPerSaveOptions()

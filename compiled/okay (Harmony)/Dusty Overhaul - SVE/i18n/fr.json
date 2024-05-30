@@ -1,0 +1,22 @@
+{
+  "config.FarmSpawnX.name": "Ferme X : ",
+  "config.FarmSpawnY.name": "Ferme Y : ",
+  "config.FarmHouse1SpawnX.name": "Ferme X (amélioration 1) X : ",
+  "config.FarmHouse1SpawnY.name": "Ferme X (amélioration 1) Y : ",
+  "config.FarmHouse2SpawnX.name": "Ferme X (amélioration 2+) X : ",
+  "config.FarmHouse2SpawnY.name": "Ferme X (amélioration 2+) Y : ",
+  "config.SpawnPosX.description": "Coordonnées X du point d'apparition :",
+  "config.SpawnPosY.description": "Coordonnées Y du point d'apparition :",
+  "config.CustomFarmSpawnPoints.name": "$ Personnaliser les points\nd’apparition de la ferme",
+  "config.CustomFarmSpawnPoints.description": "Sélectionnez si le mod utilise les coordonnées des points d'apparition personnalisés de la ferme fournies dans le fichier JSON de contenu ou les valeurs par défaut du mod.",
+  "config.CustomFarmhouseSpawnPoints.name": "$ Personnaliser les points\nd’apparition de la maison de la ferme",
+  "config.CustomFarmhouseSpawnPoints.description": "Sélectionnez si le mod utilise les coordonnées des points d'apparition personnalisés de la maison de la ferme fournies dans le fichier JSON de contenu ou les valeurs par défaut du mod.",
+  "config.section.SpawnSettings.name": "Paramètres d'apparition pour la maison de ferme",
+  "config.section.SpawnSettings.description": "Paramètres pour activer l'utilisation de points d'apparition personnalisés pour Dusty à la ferme/dans la maison de ferme.",
+  "config.section.FarmSpawn.name": "Ferme",
+  "config.section.FarmSpawn.description": "Paramètres d'apparition pour la ferme.",
+  "config.section.FarmHouseSpawn.name": "Maison de Ferme",
+  "config.section.FarmHouseSpawn.description": "Paramètres d'apparition pour la maison de ferme.",
+  "config.section.SpawnPointInstructions.name": "Instructions pour points d'apparition personnalisés",
+  "config.SpawnPointInstructions.text": "Ceci s'adresse à ceux qui utilisent une carte de ferme ou de maison de ferme personnalisée ou qui doivent modifier les points par défaut pour quelque raison que ce soit. Pour utiliser vos propres points d'apparition personnalisés pour Dusty, entrez les coordonnées X et Y dans les cases correspondantes ci-dessus. Chaque coordonnée doit être séparée par une virgule, assurez-vous que les coordonnées X et Y sont listées dans le même ordre également. Vous pouvez en ajouter autant que vous le souhaitez, il n'y a pas de limite. Enfin, activez le mod pour utiliser les points d'apparition personnalisés en cochant les cases correspondantes ci-dessus."
+}

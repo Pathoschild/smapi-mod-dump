@@ -49,6 +49,18 @@
 		<DebugSymbols>true</DebugSymbols>
 	</PropertyGroup>
 
+  <!-- UseCommon -->
+  <ItemGroup Condition="$(UseCommon) != ''">
+    <_UseCommon Include="$(UseCommon.ToUpper().Split(';'))" />
+    <_UseCommonList Include="@(_UseCommon->'COMMON_%(Identity)')" />
+  </ItemGroup>
+  <PropertyGroup>
+    <DefineConstants>$(DefineConstants);@(_UseCommonList, ';')</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(DefineConstants.Contains('COMMON_UI'))">
+    <DefineConstants>$(DefineConstants);COMMON_SIMPLELAYOUT;COMMON_FLOW</DefineConstants>
+  </PropertyGroup>
+
 	<!-- mod build package -->
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" ExcludeAssets="all" />

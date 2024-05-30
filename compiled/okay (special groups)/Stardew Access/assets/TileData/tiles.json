@@ -369,20 +369,6 @@
       "Category": "interactables"
     }
   ],
-  "BathHouse_MensLocker": [
-    {
-      "NameOrTranslationKey": "static_tile-bathhouse_locker-entry_room_door",
-      "X": [3],
-      "Y": [27],
-      "Category": "doors"
-    },
-    {
-      "NameOrTranslationKey": "static_tile-bathhouse_locker-pool_entrance",
-      "X": [15],
-      "Y": [27],
-      "Category": "doors"
-    }
-  ],
   "BathHouse_Pool": [
     {
       "NameOrTranslationKey": "static_tile-bathhouse_pool-womens_locker_room_door",
@@ -799,8 +785,8 @@
   "FarmHouse": [
     {
       "NameOrTranslationKey": "static_tile-farmhouse-cellar_door",
-      "X": [4, 5],
-      "Y": [25],
+      "X": [19, 20],
+      "Y": [35],
       "Category": "doors",
       "Conditions": ["FarmHouse:3"]
     }
@@ -811,6 +797,24 @@
       "X": [4,5,6],
       "Y": [5],
       "Category": "interactables"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-fishshop-bobber_machine",
+      "X": [10],
+      "Y": [4],
+      "Category": "interactables"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-fishshop-miniature_frigate",
+      "X": [9],
+      "Y": [4],
+      "Category": "decor"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-fishshop-tackle_box",
+      "X": [8],
+      "Y": [4],
+      "Category": "decor"
     }
   ],
   "Forest": [
@@ -2647,12 +2651,6 @@
       "X": [8],
       "Y": [20],
       "Category": "interactables"
-    },
-    {
-      "NameOrTranslationKey": "static_tile-sewer-mutant_bug_lair",
-      "X": [3],
-      "Y": [19],
-      "Category": "doors"
     },
     {
       "NameOrTranslationKey": "static_tile-sewer-sewage_pool",

@@ -19,16 +19,15 @@ public class DisplayGui : ScreenGui
     {
         foreach (var variable in ModEntry.GetInstance().Config.Labelings)
         {
-            var toggle = new ToggleButton(variable.Name, variable.Name)
+            AddElement(new ToggleButton(variable.Name, variable.Name)
             {
-                Toggled = variable.Display
-            };
-            toggle.OnLeftClicked = () =>
-            {
-                variable.Display = toggle.Toggled;
-                ModEntry.GetInstance().ConfigReload();
-            };
-            AddElement(toggle);
+                Current = variable.Display,
+                OnCurrentChanged = (toggle) =>
+                {
+                    variable.Display = toggle;
+                    ModEntry.GetInstance().ConfigReload();
+                }
+            });
         }
     }
 }

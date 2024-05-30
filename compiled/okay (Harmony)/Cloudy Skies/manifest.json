@@ -10,11 +10,17 @@
   "UniqueID": "leclair.cloudyskies",
   "Name": "Cloudy Skies",
   "Author": "Khloe Leclair",
-  "Version": "1.0.0",
+  "Version": "1.7.0",
   "Description": "A framework mod for adding custom weather types to the game via content packs!",
   "MinimumApiVersion": "4.0",
   "MinimumGameVersion": "1.6",
   "EntryDll": "CloudySkies.dll",
+  "Dependencies": [
+    {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "IsRequired": false
+    }
+  ],
   "UpdateKeys": [
     "Nexus:23135"
   ]

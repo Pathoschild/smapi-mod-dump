@@ -248,6 +248,11 @@ namespace Swim
                    postfix: new HarmonyMethod(typeof(AnimationManager), nameof(FarmerRenderer_draw_AllPatches_Postfix)),
                    transpiler: new HarmonyMethod(typeof(AnimationManager), nameof(FarmerRenderer_draw_Transpiler))
                 );
+
+                harmony.Patch(
+                    original: AccessTools.Method(typeof(FarmerRenderer), nameof(FarmerRenderer.drawHairAndAccesories)),
+                    prefix: new HarmonyMethod(typeof(AnimationManager), nameof(FarmerRenderer_drawHairAndAccessories_Prefix))
+                );
             }
             else if(Config.AnimationPatches == MediumPatches)
             {
@@ -314,7 +319,7 @@ namespace Swim
             public FarmerRendererDrawState(){}
         }
 
-        public static void FarmerRenderer_draw_AllPatches_Prefix(FarmerRenderer __instance, Farmer who, int currentFrame, ref AnimationFrame animationFrame, ref NetString ___textureName, ref bool ____spriteDirty, ref bool ____eyesDirty, ref bool ____skinDirty, ref bool ____shirtDirty, ref bool ____pantsDirty, ref bool ____shoesDirty, ref bool ____baseTextureDirty, ref FarmerRendererDrawState __state)
+        public static void FarmerRenderer_draw_AllPatches_Prefix(FarmerRenderer __instance, Farmer who, ref int currentFrame, ref AnimationFrame animationFrame, ref NetString ___textureName, ref bool ____spriteDirty, ref bool ____eyesDirty, ref bool ____skinDirty, ref bool ____shirtDirty, ref bool ____pantsDirty, ref bool ____shoesDirty, ref bool ____baseTextureDirty, ref FarmerRendererDrawState __state)
         {
             try
             {
@@ -339,6 +344,7 @@ namespace Swim
 
                 if (GetTextureState(who) is not FarmerTextureState textureState)
                 {
+                    MapAnimationFrameToBathingSuitAnimation(who, ref currentFrame);
                     return;
                 }
 
@@ -412,6 +418,8 @@ namespace Swim
                 {
                     animationFrame.armOffset = 0;
                 }
+
+                MapAnimationFrameToBathingSuitAnimation(who, ref currentFrame);
             }
             catch (Exception ex)
             {
@@ -665,7 +673,6 @@ namespace Swim
                 SMonitor.Log($"Transpiling FarmerRenderer.drawHairAndAccessories");
 
                 bool hat = true;
-                int hatCount = 0;
 
                 // We want codes[i] to be that first ldarg. We are going to check every instruction shown above because for this method, this code is kind of generic (similar checks happen multiple times)
                 for (int i = 0; i < codes.Count; i++)
@@ -684,32 +691,6 @@ namespace Swim
 
                         hat = false;
                     }
-
-                    // Only edit the feature offset if animation patches = 3
-                    if (Config.AnimationPatches == AllPatches && codes[i].opcode == OpCodes.Ldsfld && codes[i].operand is FieldInfo info && info == AccessTools.Field(typeof(FarmerRenderer), nameof(FarmerRenderer.featureYOffsetPerFrame)))
-                    {
-                        SMonitor.Log($"Editing the feature offset ({hatCount})");
-
-                        List<Label> labels = codes[i].labels;
-
-                        codes[i] = CodeInstruction.Call(typeof(AnimationManager), nameof(MapFarmerRendererFeatureYOffset));
-
-                        codes[i].labels = labels;
-
-                        hatCount++;
-                    }
-
-                    if (Config.AnimationPatches == AllPatches && codes[i].opcode == OpCodes.Ldsfld && codes[i].operand is FieldInfo info2 && info2 == AccessTools.Field(typeof(FarmerRenderer), nameof(FarmerRenderer.featureXOffsetPerFrame)))
-                    {
-                        SMonitor.Log($"Editing the feature offset ({hatCount})");
-
-                        List<Label> labels = codes[i].labels;
-
-                        codes[i] = CodeInstruction.Call(typeof(AnimationManager), nameof(MapFarmerRendererFeatureXOffset));
-                        codes[i].labels = labels;
-
-                        hatCount++;
-                    }
                 }
             }
             catch (Exception ex)
@@ -720,6 +701,19 @@ namespace Swim
             return codes.AsEnumerable();
         }
 
+        public static void FarmerRenderer_drawHairAndAccessories_Prefix(Farmer who, ref int currentFrame)
+        {
+            try
+            {
+                // Only maps if the player is wearing their bathing suit
+                MapAnimationFrameToBathingSuitAnimation(who, ref currentFrame);
+            }
+            catch(Exception ex)
+            {
+                SMonitor.Log($"Failed in {nameof(FarmerRenderer_drawHairAndAccessories_Prefix)}:\n{ex}", LogLevel.Error);
+            }
+        }
+
         public static IEnumerable<CodeInstruction> FarmerRenderer_draw_Transpiler(IEnumerable<CodeInstruction> instructions)
         {
             var codes = new List<CodeInstruction>(instructions);
@@ -728,7 +722,6 @@ namespace Swim
             {
                 bool pants = true;
                 bool body = true;
-                int hatCount = 0;
 
                 SMonitor.Log($"Transpiling FarmerRenderer.draw");
 
@@ -786,24 +779,6 @@ namespace Swim
                         codes[i + 7].operand = AccessTools.Method(typeof(AnimationManager), nameof(GetPantsRectHeight));*/
 
                         pants = false;
-                    }
-
-                    if (codes[i].opcode == OpCodes.Ldsfld && codes[i].operand is FieldInfo info1 && info1 == AccessTools.Field(typeof(FarmerRenderer), nameof(FarmerRenderer.featureYOffsetPerFrame)))
-                    {
-                        SMonitor.Log($"Editing the feature offset ({hatCount})");
-
-                        codes[i] = CodeInstruction.Call(typeof(AnimationManager), nameof(MapFarmerRendererFeatureYOffset));
-
-                        hatCount++;
-                    }
-
-                    if (codes[i].opcode == OpCodes.Ldsfld && codes[i].operand is FieldInfo info2 && info2 == AccessTools.Field(typeof(FarmerRenderer), nameof(FarmerRenderer.featureXOffsetPerFrame)))
-                    {
-                        SMonitor.Log($"Editing the feature offset ({hatCount})");
-
-                        codes[i] = CodeInstruction.Call(typeof(AnimationManager), nameof(MapFarmerRendererFeatureXOffset));
-
-                        hatCount++;
                     }
                 }
             }
@@ -985,9 +960,6 @@ namespace Swim
                false, false, false,  true,  true,  true                             // 120
             };
 
-        public static readonly int[] FarmerRendererFeatureXOffsetPerFrameMapped = AnimationFrameToBathingSuitFrameMap.Select(value => FarmerRenderer.featureXOffsetPerFrame[value]).ToArray();
-        public static readonly int[] FarmerRendererFeatureYOffsetPerFrameMapped = AnimationFrameToBathingSuitFrameMap.Select(value => FarmerRenderer.featureYOffsetPerFrame[value]).ToArray();
-
         public static bool TryMapAnimationFrame(int frame, out int mappedFrame)
         {
             if(frame >= 0 && frame < AnimationFrameToBathingSuitFrameMap.Length)
@@ -1070,16 +1042,6 @@ namespace Swim
         public static int GetPantsRectHeight(Rectangle sourceRect)
         {
             return getSwimSourceRectangle(GetCurrentlyDrawingFarmer(), sourceRect).Height;
-        }
-
-        public static int[] MapFarmerRendererFeatureXOffset()
-        {
-            return GetCurrentlyDrawingFarmer().bathingClothes.Value ? FarmerRendererFeatureXOffsetPerFrameMapped : FarmerRenderer.featureXOffsetPerFrame;
-        }
-
-        public static int[] MapFarmerRendererFeatureYOffset()
-        {
-            return GetCurrentlyDrawingFarmer().bathingClothes.Value ? FarmerRendererFeatureYOffsetPerFrameMapped : FarmerRenderer.featureYOffsetPerFrame;
         }
 
         const int bathingSuitTextureStartY = 576; // X is just 0

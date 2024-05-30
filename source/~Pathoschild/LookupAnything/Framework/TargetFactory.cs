@@ -57,7 +57,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework
             ISubjectRegistry codex = this;
             this.LookupProviders = new ILookupProvider[]
             {
-                new BuildingLookupProvider(reflection, gameHelper, codex),
+                new BuildingLookupProvider(reflection, gameHelper, config, codex),
                 new CharacterLookupProvider(reflection, gameHelper, config, codex),
                 new ItemLookupProvider(reflection, gameHelper, config, codex),
                 new TerrainFeatureLookupProvider(reflection, gameHelper, codex),

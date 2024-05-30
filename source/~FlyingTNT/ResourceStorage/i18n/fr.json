@@ -1,0 +1,29 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/FlyingTNT/StardewValleyMods
+**
+*************************************************/
+
+{
+  "GMCM_Option_ModEnabled_Name": "Mod activ�",
+  "GMCM_Option_AutoUse_Name": "Peut d�penser les ressources",
+  "GMCM_Option_ShowMessage_Name": "Montrer un message",
+  "GMCM_Option_ResourcesKey_Name": "Raccourci Ressources",
+  "GMCM_Option_ModKey1_Name": "Raccourci Mod Prendre 1",
+  "GMCM_Option_ModKey2_Name": "Raccourci Mod Prendre 2",
+  "GMCM_Option_ModKey3_Name": "Raccourci Mod Prendre 3",
+  "GMCM_Option_ModKey1Amount_Name": "Montant - Raccourci Mod 1",
+  "GMCM_Option_ModKey2Amount_Name": "Montant - Raccourci Mod 2",
+  "GMCM_Option_ModKey3Amount_Name": "Montant - Raccourci Mod 3",
+  "GMCM_Option_IconOffsetX_Name": "D�calage X de l�icone",
+  "GMCM_Option_IconOffsetY_Name": "D�calage Y de l�icone",
+  "auto": "Auto Stocker",
+  "take": "Prendre",
+  "added-x-y": "Ajout de {0} {1} au stockage.",
+  "removed-x-y": "Retrait de {0} {1} du stockage.",
+  "resources": "Ressources"
+}

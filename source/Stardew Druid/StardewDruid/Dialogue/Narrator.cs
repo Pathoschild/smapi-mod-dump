@@ -75,7 +75,7 @@ namespace StardewDruid.Dialogue
 
             string message = buffs.Dequeue();
 
-            Game1.addHUDMessage(new Banter(name, Color.White, message, 1));
+            Game1.addHUDMessage(new Banter(name, Color.Black, message, 1));
 
         }
 

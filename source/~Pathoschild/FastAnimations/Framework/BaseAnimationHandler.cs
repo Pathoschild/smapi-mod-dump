@@ -36,16 +36,13 @@ namespace Pathoschild.Stardew.FastAnimations.Framework
         /*********
         ** Public methods
         *********/
-        /// <summary>Get whether the animation is currently active.</summary>
-        /// <param name="playerAnimationID">The player's current animation ID.</param>
+        /// <inheritdoc />
         public abstract bool IsEnabled(int playerAnimationID);
 
-        /// <summary>Perform any updates needed when the player enters a new location.</summary>
-        /// <param name="location">The new location.</param>
+        /// <inheritdoc />
         public virtual void OnNewLocation(GameLocation location) { }
 
-        /// <summary>Perform any logic needed on update while the animation is active.</summary>
-        /// <param name="playerAnimationID">The player's current animation ID.</param>
+        /// <inheritdoc />
         public abstract void Update(int playerAnimationID);
 
 

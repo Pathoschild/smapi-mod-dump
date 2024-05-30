@@ -1,4 +1,5 @@
 {
   "heeliesButton": "Space",
-  "initialSpeedBoost": 3.5
+  "initialSpeedBoost": 3.5,
+  "staminaCost": 0.0
 }

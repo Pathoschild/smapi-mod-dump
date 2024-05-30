@@ -95,6 +95,13 @@ namespace FasterPathSpeed
                     name: () => "Enable Path Replace?",
                     tooltip: () => "If enabled, placing a path on an existing one replaces it"
                 );
+                api.AddBoolOption(
+                    mod: ModManifest,
+                    getValue: () => Config.IsTownPathSpeedBuff,
+                    setValue: value => Config.IsTownPathSpeedBuff = value,
+                    name: () => "Town Path Speed Buff?",
+                    tooltip: () => "If enabled, the existing town path provides the default path speed buff"
+                );
 
                 api.AddSectionTitle(
                     mod: ModManifest,

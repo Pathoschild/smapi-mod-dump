@@ -1,0 +1,86 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/poohnhi/PoohCore
+**
+*************************************************/
+
+{
+    "$schema": "https://smapi.io/schemas/content-patcher.json",
+    "Format": "1.29.0",
+    "DynamicTokens": [
+        // Check README.md for instruction!
+        {
+            "Name": "WnSWinnie.DailyDialogue",
+            "Value": "{{i18n:WnSWinnie.DailyDialogue.{{Random: {{Range: 1, 5}}}}}}", 
+        },
+        {
+            "Name": "WnSWinnie.DailyDialogue",
+            "Value": "WinnieDialogueProgression}{{i18n:WnSWinnie.DailyDialogue.{{poohnhi.PoohCore/GetMailFlagProgressNumber:WinnieDialogueProgression}}}}",
+            "When": {
+                "HasMod": "poohnhi.PoohCore",
+                "Query: {{poohnhi.PoohCore/GetMailFlagProgressNumber:WinnieDialogueProgression}} <= 5": true
+            }
+        },
+    ],
+    "Changes": [
+        // File Load
+        {
+            "LogName": "poohnhi.WnS.CP Load blank.json to create her dialogue file",
+            "Action": "Load",
+            "Target": "Characters/Dialogue/WnSWinnie",
+            "FromFile": "Assets/blank.json"
+        },
+        {
+            "LogName": "poohnhi.WnS.CP Portraits and Sprites",
+            "Action": "Load",
+            "Target": "Portraits/WnSWinnie, Characters/WnSWinnie",
+            "FromFile": "Assets/{{Target}}/{{TargetWithoutPath}}.png" // Must load the base first to avoid errors
+        },
+        {
+            "LogName": "poohnhi.WnS.CP Npc Dispositions 1.6",
+            "Action": "EditData",
+            "Target": "Data/Characters",
+            "Entries": {
+                "WnSWinnie": {
+                    // Basic infos
+                    "DisplayName": "{{i18n:WnSWinnie.DisplayName}}", // This would normally use {{i18n:}} to support translations
+                    // Birthday
+                    "BirthSeason": "summer",
+                    "BirthDay": 28,
+                    // Social features
+                    "CanSocialize": true,
+                    "CanReceiveGifts": false,
+                    "Home": [{
+                        "Id": "WinnieHome",
+                        "Location": "Farm",
+                        "Tile": {
+                            "X": 66,
+                            "Y": 15
+                        },
+                        "Direction": "Down"
+                    }],
+                }
+            }
+        },
+        // Edit Winnie's Dialogue
+        {
+            "LogName": "poohnhi.WnS.CP Edit Winnie Dialogue",
+            "Action": "EditData",
+            "Target": "Characters/Dialogue/WnSWinnie",
+            "Entries": {
+                // Daily dialogues
+                "Mon": "{{WnSWinnie.DailyDialogue}}",
+                "Tue": "{{WnSWinnie.DailyDialogue}}",
+                "Wed": "{{WnSWinnie.DailyDialogue}}",
+                "Thu": "{{WnSWinnie.DailyDialogue}}",
+                "Fri": "{{WnSWinnie.DailyDialogue}}",
+                "Sat": "{{WnSWinnie.DailyDialogue}}",
+                "Sun": "{{WnSWinnie.DailyDialogue}}"
+            }
+        }
+    ]
+}

@@ -14,6 +14,7 @@ using StardewValley.GameData.WildTrees;
 
 namespace CustomTapperFramework;
 
+// Legacy Tapper API Model object
 public class ExtendedTapItemData : WildTreeTapItemData {
   // If specified, only applies this rule if the tap object is of this ID.
   public string SourceId = null;

@@ -150,7 +150,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Fields
                 if (quality.GetNext() == quality)
                     break;
             }
-            return string.Join(", ", priceStrings);
+            return I18n.List(priceStrings);
         }
     }
 }

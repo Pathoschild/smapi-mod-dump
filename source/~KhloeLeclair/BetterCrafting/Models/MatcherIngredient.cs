@@ -20,12 +20,13 @@ using Leclair.Stardew.Common.Types;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-using StardewValley;
 using StardewModdingAPI;
+
+using StardewValley;
 
 namespace Leclair.Stardew.BetterCrafting.Models;
 
-public class MatcherIngredient : IOptimizedIngredient, IConsumptionTrackingIngredient, IConditionalIngredient, IRecyclable {
+public class MatcherIngredient : IOptimizedIngredient, IConsumptionPreTrackingIngredient, IConditionalIngredient, IRecyclable {
 
 	public readonly Func<Item, bool> ItemMatcher;
 	private readonly (Func<Item, bool>, int)[] IngList;
@@ -80,7 +81,7 @@ public class MatcherIngredient : IOptimizedIngredient, IConsumptionTrackingIngre
 		if (RecycledItem is not null)
 			return;
 
-		if ( _recycleTo is not null ) {
+		if (_recycleTo is not null) {
 			RecycledItem = new(_recycleTo());
 			return;
 		}
@@ -89,10 +90,10 @@ public class MatcherIngredient : IOptimizedIngredient, IConsumptionTrackingIngre
 		int price = 0;
 		int count = 0;
 
-		foreach(Item item in ModEntry.Instance.ItemCache.GetMatchingItems(ItemMatcher)) {
+		foreach (Item item in ModEntry.Instance.ItemCache.GetMatchingItems(ItemMatcher)) {
 			int ip = item.salePrice();
 			count++;
-			if (result is null || ip < price) { 
+			if (result is null || ip < price) {
 				result = item;
 				price = ip;
 			}
@@ -161,6 +162,8 @@ public class MatcherIngredient : IOptimizedIngredient, IConsumptionTrackingIngre
 
 	#region IIngredient
 
+	public bool IsFuzzyIngredient => true;
+
 	public bool SupportsQuality => true;
 
 	public string DisplayName => _displayName();
@@ -181,6 +184,10 @@ public class MatcherIngredient : IOptimizedIngredient, IConsumptionTrackingIngre
 		return InventoryHelper.CountItem(ItemMatcher, who, items, out bool _, max_quality: maxQuality);
 	}
 
+	public int GetAvailableQuantity(Farmer who, IList<Item?>? items, IList<IBCInventory>? inventories, int maxQuality, IList<Item>? matchingItems) {
+		return InventoryHelper.CountItem(ItemMatcher, who, items, out bool _, max_quality: maxQuality, matchingItems: matchingItems);
+	}
+
 	public bool HasAvailableQuantity(int quantity, Farmer who, IList<Item?>? items, IList<IBCInventory>? inventories, int maxQuality) {
 		return InventoryHelper.CountItem(ItemMatcher, who, items, out bool _, max_quality: maxQuality, limit: quantity) >= quantity;
 	}
@@ -190,7 +197,11 @@ public class MatcherIngredient : IOptimizedIngredient, IConsumptionTrackingIngre
 	}
 
 	public void Consume(Farmer who, IList<IBCInventory>? inventories, int maxQuality, bool lowQualityFirst, IList<Item>? consumedItems) {
-		InventoryHelper.ConsumeItems(IngList, who, inventories, maxQuality, lowQualityFirst, consumedItems);
+		InventoryHelper.ConsumeItems(IngList, who, inventories, maxQuality, lowQualityFirst, null, consumedItems);
+	}
+
+	public void Consume(Farmer who, IList<IBCInventory>? inventories, int maxQuality, bool lowQualityFirst, IList<Item>? matchedItems, IList<Item>? consumedItems) {
+		InventoryHelper.ConsumeItems(IngList, who, inventories, maxQuality, lowQualityFirst, matchedItems, consumedItems);
 	}
 
 	#endregion

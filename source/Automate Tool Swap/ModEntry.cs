@@ -11,19 +11,13 @@
 
 using GenericModConfigMenu;
 using Microsoft.Xna.Framework;
+using Netcode;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
 using StardewValley;
-using StardewValley.Buildings;
 using StardewValley.Locations;
 using StardewValley.Monsters;
-using StardewValley.Objects;
-using StardewValley.TerrainFeatures;
 using StardewValley.Tools;
-using xTile.Dimensions;
-using xTile.Tiles;
-
 
 
 namespace AutomateToolSwap
@@ -31,15 +25,21 @@ namespace AutomateToolSwap
     public class ModEntry : Mod
     {
         internal static ModEntry Instance { get; set; } = null!;
-        internal static ModConfig Config { get; private set; } = null!; // Declare static instance of ModConfig
+        internal static ModConfig Config { get; private set; } = null!;
         internal static Check check { get; private set; } = null!;
+        internal static ITranslationHelper i18n;
         internal static bool isTractorModInstalled;
+        internal static bool monsterNearby = false;
+
+
+        //When the mods are loading
+        //Quando os mods estão carregando
         public override void Entry(IModHelper helper)
         {
-            isTractorModInstalled = Helper.ModRegistry.IsLoaded("Pathoschild.TractorMod");
             Instance = this;
+            i18n = Helper.Translation;
             Config = Helper.ReadConfig<ModConfig>();
-            check = new Check(this);
+            check = new Check(Instance);
 
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;
             helper.Events.Input.ButtonPressed += OnButtonPressed;
@@ -47,201 +47,33 @@ namespace AutomateToolSwap
 
         }
 
+        //When the game opes
+        //Quando o jogo abre
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {
-            Config.Enabled = true;
-            var configMenu = this.Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
-            if (configMenu == null)
-                return;
-
-            configMenu.Register(
-                mod: this.ModManifest,
-                reset: () => Config = new ModConfig(),
-                save: () => this.Helper.WriteConfig(Config)
-            );
-
-            // Add the general settings
-            configMenu.AddSectionTitle(
-                mod: this.ModManifest,
-                text: () => "Detection Settings"
-            );
-
-            //If you should use the custumizable SwapKey or the game default
-            configMenu.AddBoolOption(
-                mod: this.ModManifest,
-                name: () => "Use Custom Swap Key",
-                tooltip: () => "If you should use the custumizable Tool Swap Keybind or the game default.",
-                getValue: () => Config.UseDifferentSwapKey,
-                setValue: isEnabled => Config.UseDifferentSwapKey = isEnabled
-            );
-
-            // Keybind for swapping tools
-            configMenu.AddKeybindList(
-                mod: this.ModManifest,
-                name: () => "Tool Swap Keybind",
-                tooltip: () => "The keybind to switch between tools (Only if you check the option above). Otherwise, it will use the default game keybind for Using Tools.",
-                getValue: () => Config.SwapKey,
-                setValue: keybinds => Config.SwapKey = keybinds
-            );
-
-            // Keybind for toggling mod on/off
-            configMenu.AddKeybindList(
-                mod: this.ModManifest,
-                name: () => "Toggle Mod Keybind",
-                tooltip: () => "The keybind to toggle the mod on or off.",
-                getValue: () => Config.ToggleKey,
-                setValue: keybinds => Config.ToggleKey = keybinds
-            );
-
-            // Keybind to switch back to last used tool
-            configMenu.AddKeybindList(
-                mod: this.ModManifest,
-                name: () => "Last Tool Keybind",
-                tooltip: () => "The keybind to switch back to the last used tool.",
-                getValue: () => Config.LastToolKey,
-                setValue: keybinds => Config.LastToolKey = keybinds
-            );
-
-            // Detection method for tool switching
-            configMenu.AddTextOption(
-                mod: this.ModManifest,
-                name: () => "Tool Selection Mode",
-                tooltip: () => "Choose how tools are switched: 'Cursor' uses the mouse pointer, 'Player' uses the player's orientation. (USE THIS FOR CONTROLLER)",
-                allowedValues: new string[] { "Cursor", "Player" },
-                getValue: () => Config.DetectionMethod,
-                setValue: method => Config.DetectionMethod = method
-            );
-
-            // Auto-return to last tool after switching
-            configMenu.AddBoolOption(
-                mod: this.ModManifest,
-                name: () => "Auto-Return to Last Tool",
-                tooltip: () => "Automatically return to the previously used tool after swapping.",
-                getValue: () => Config.AutoReturnToLastTool,
-                setValue: isEnabled => Config.AutoReturnToLastTool = isEnabled
-            );
-
-            // Add the general settings
-            configMenu.AddSectionTitle(
-                mod: this.ModManifest,
-                text: () => "Custom Swaps Settings"
-            );
-            // Switch to Weapon when clicking monsters
-            configMenu.AddBoolOption(
-               mod: this.ModManifest,
-               name: () => "Weapon for Monsters",
-               tooltip: () => "Automatically switch to Melee Weapons when clicking on monsters.",
-               getValue: () => Config.WeaponOnMonsters,
-               setValue: isEnabled => Config.WeaponOnMonsters = isEnabled
-           );
-
-            // Alternative method to swapping on Monsters
-            configMenu.AddBoolOption(
-               mod: this.ModManifest,
-               name: () => "Alternative \"Weapon for Monsters\"",
-               tooltip: () => "Alternative method to swapping on Monsters",
-               getValue: () => Config.AlternativeWeaponOnMonsters,
-               setValue: isEnabled => Config.AlternativeWeaponOnMonsters = isEnabled
-            );
-
-            // Add a NumberOption for MonsterRangeDetections 
-            configMenu.AddNumberOption(
-                mod: this.ModManifest,
-                name: () => "Monster Range Detection",
-                tooltip: () => "The range in which the mod detects monsters (in tiles).",
-                getValue: () => Config.MonsterRangeDetection,
-                setValue: value => Config.MonsterRangeDetection = value,
-                min: 1,
-                max: 10
-            );
-
-            // Switch to hoe when clicking on empty soil
-            configMenu.AddBoolOption(
-                mod: this.ModManifest,
-                name: () => "Hoe for Empty Soil",
-                tooltip: () => "Automatically switch to the hoe when clicking on empty soil.",
-                getValue: () => Config.HoeForEmptySoil,
-                setValue: isEnabled => Config.HoeForEmptySoil = isEnabled
-            );
-
-            // Switch to scythe when clicking on grass
-            configMenu.AddBoolOption(
-                mod: this.ModManifest,
-                name: () => "Scythe for Grass",
-                tooltip: () => "Automatically switch to the scythe when clicking on grass.",
-                getValue: () => Config.ScytheForGrass,
-                setValue: isEnabled => Config.ScytheForGrass = isEnabled
-            );
-
-            // Prioritize pickaxe over watering can
-            configMenu.AddBoolOption(
-                mod: this.ModManifest,
-                name: () => "Pickaxe Over Watering Can",
-                tooltip: () => "Prioritize using the pickaxe instead of switching to the watering can on dry soil.",
-                getValue: () => Config.PickaxeOverWateringCan,
-                setValue: isEnabled => Config.PickaxeOverWateringCan = isEnabled
-            );
-
-            // Use pickaxe for weeds instead of scythe
-            configMenu.AddBoolOption(
-                mod: this.ModManifest,
-                name: () => "Pickaxe for Weeds",
-                tooltip: () => "Automatically switch to the pickaxe instead of the scythe when clicking on weeds (fibers).",
-                getValue: () => Config.AnyToolForWeeds,
-                setValue: isEnabled => Config.AnyToolForWeeds = isEnabled
-            );
-
-            // Switch to fishing rod when clicking on water
-            configMenu.AddBoolOption(
-                mod: this.ModManifest,
-                name: () => "FishingRod On Water",
-                tooltip: () => "Automatically switch to the Fishing Rod when clicking on water outside of Farm.",
-                getValue: () => Config.FishingRodOnWater,
-                setValue: isEnabled => Config.FishingRodOnWater = isEnabled
-            );
-
-            // Disabled swap on growing trees
-            configMenu.AddBoolOption(
-                mod: this.ModManifest,
-                name: () => "Ignore Growing Trees",
-                tooltip: () => "Growing Trees do not swap to Axe.",
-                getValue: () => Config.IgnoreGrowingTrees,
-                setValue: isEnabled => Config.IgnoreGrowingTrees = isEnabled
-            );
-
-            // Add the Tractor settings
-            if (isTractorModInstalled)
-            {
-                configMenu.AddSectionTitle(
-                    mod: this.ModManifest,
-                    text: () => "Tractor Settings"
-                );
-
-                // Prioritize pickaxe over watering can
-                configMenu.AddBoolOption(
-                    mod: this.ModManifest,
-                    name: () => "Disable Auto Swap in Tractor",
-                    tooltip: () => "Disables Auto Swap in Tractor ALWAYS, otherwise you can use the Toggle Keybind to disable it",
-                    getValue: () => Config.DisableTractorSwap,
-                    setValue: isEnabled => Config.DisableTractorSwap = isEnabled
-                );
-
-            }
-
+            isTractorModInstalled = Helper.ModRegistry.IsLoaded("Pathoschild.TractorMod");
+            ConfigSetup.SetupConfig(Helper, Instance);
         }
 
         IndexSwitcher switcher = new IndexSwitcher(0);
 
+        //Special cases
+        //Casos especiais
         private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
         {
-            if (!Context.IsWorldReady)
+            if (!Context.IsWorldReady || Game1.activeClickableMenu != null)
                 return;
 
+            //Alternative "Weapon for Monsters"
             if (Config.AlternativeWeaponOnMonsters && Config.WeaponOnMonsters)
             {
+                monsterNearby = true;
                 Vector2 tile = Game1.player.Tile;
                 foreach (var monster in Game1.currentLocation.characters)
                 {
+                    if (monster is RockCrab)
+                        break;
+
                     Vector2 monsterTile = monster.Tile;
                     float distance = Vector2.Distance(tile, monsterTile);
 
@@ -252,14 +84,15 @@ namespace AutomateToolSwap
                     }
 
                 }
-
+                monsterNearby = false;
             }
 
+            //Code for Tractor Mod
+            //Codigo para o Mod de Trator
             if (!isTractorModInstalled || Config.DisableTractorSwap || (!Config.Enabled && !Config.DisableTractorSwap))
                 return;
 
-            //Code for Tractor Mod
-            if (Game1.player.isRidingHorse() && Game1.player.mount.Name.Contains("tractor"))
+            if (Game1.player.isRidingHorse() && Game1.player.mount.Name.ToLower().Contains("tractor"))
             {
                 Farmer player = Game1.player;
                 GameLocation currentLocation = Game1.currentLocation;
@@ -267,69 +100,63 @@ namespace AutomateToolSwap
                 Vector2 cursorTile = cursorPos.GrabTile;
                 Vector2 toolLocation = new Vector2((int)Game1.player.GetToolLocation().X / Game1.tileSize, (int)Game1.player.GetToolLocation().Y / Game1.tileSize);
 
-                switch (Config.DetectionMethod)
-                {
-                    case "Cursor":
-                        CheckTile(currentLocation, cursorTile, player);
-                        break;
-                    case "Player":
-                        CheckTile(currentLocation, toolLocation, player);
-                        break;
-                }
+                if (Config.DetectionMethod == "Cursor")
+                    CheckTile(currentLocation, cursorTile, player);
+
+                else if (Config.DetectionMethod == "Player")
+                    CheckTile(currentLocation, toolLocation, player);
+
             }
         }
 
         private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
-            // ignore if player hasn't loaded a save yet
-            if (!Context.IsWorldReady)
+            // ignore if player hasn't loaded a save yet or is in a menu
+            // ignora se o jogador não tiver carregado um save ou estiver em um menu
+            if (!Context.IsWorldReady || Game1.activeClickableMenu != null)
                 return;
 
             // turns mod on/off
+            // desliga e liga o mod
             if (Config.ToggleKey.JustPressed())
             {
                 Config.Enabled = !Config.Enabled;
                 if (Config.Enabled)
-                {
-                    Game1.addHUDMessage(new HUDMessage("AutomateToolSwap ENABLED", 2));
-                }
-                Game1.addHUDMessage(new HUDMessage("AutomateToolSwap DISABLED", 2));
-                Game1.hudMessages.First().timeLeft = 1200;
+                    Game1.addHUDMessage(new HUDMessage("AutomateToolSwap " + i18n.Get("mod.Enabled"), 2));
+                else
+                    Game1.addHUDMessage(new HUDMessage("AutomateToolSwap " + i18n.Get("mod.Disabled"), 2));
             }
 
             // swap to the last item
+            // troca para o item mais recente
             if (Config.LastToolKey.JustPressed() && Game1.player.canMove)
-            {
                 switcher.GoToLastIndex();
-            }
 
-            // check if the mod should try to swap
+            // check if the mod should try to swap items
+            // verifica se o mod deve tentar trocar itens
             if (!ButtonMatched(e) || !Config.Enabled || !(Game1.player.canMove))
                 return;
 
-
+            // variables for the main method
+            // variáveis para o método principal
             Farmer player = Game1.player;
             GameLocation currentLocation = Game1.currentLocation;
             ICursorPosition cursorPos = this.Helper.Input.GetCursorPosition();
             Vector2 cursorTile = cursorPos.GrabTile;
-            Vector2 toolLocation = new Vector2((int)Game1.player.GetToolLocation().X / Game1.tileSize, (int)Game1.player.GetToolLocation().Y / Game1.tileSize);
+            Vector2 frontOfPlayerTile = new Vector2((int)Game1.player.GetToolLocation().X / Game1.tileSize, (int)Game1.player.GetToolLocation().Y / Game1.tileSize);
+            if (Config.DetectionMethod == "Cursor")
+                CheckTile(currentLocation, cursorTile, player);
 
-            switch (Config.DetectionMethod)
-            {
-                case "Cursor":
-                    CheckTile(currentLocation, cursorTile, player);
-                    break;
-                case "Player":
-                    CheckTile(currentLocation, toolLocation, player);
-                    break;
-            }
+            else if (Config.DetectionMethod == "Player")
+                CheckTile(currentLocation, frontOfPlayerTile, player);
 
         }
 
-        // detects what is in the tile that the player is looking at and calls the function to swap tools
+        // detects what is in the tile that the player is looking at and calls the function to swap items
+        // detecta o que está no bloco que o jogador está olhando e chama a função para trocar items
         private void CheckTile(GameLocation location, Vector2 tile, Farmer player)
         {
-            if (Config.AlternativeWeaponOnMonsters && player.CurrentItem is MeleeWeapon && !player.CurrentItem.Name.Contains("Scythe"))
+            if (Config.AlternativeWeaponOnMonsters && player.CurrentItem is MeleeWeapon && !player.CurrentItem.Name.Contains("Scythe") && monsterNearby)
                 return;
 
             if (player.CurrentItem is Slingshot)
@@ -338,10 +165,10 @@ namespace AutomateToolSwap
             if (check.Objects(location, tile, player))
                 return;
 
-            if (check.TerrainFeatures(location, tile, player))
+            if (check.ResourceClumps(location, tile, player))
                 return;
 
-            if (check.ResourceClumps(location, tile, player))
+            if (check.TerrainFeatures(location, tile, player))
                 return;
 
             if (check.Water(location, tile, player))
@@ -354,24 +181,26 @@ namespace AutomateToolSwap
             if (check.Animals(location, tile, player))
                 return;
 
-            if (check.ShouldSwapToHoe(location, tile, player))
+            if (check.DiggableSoil(location, tile, player))
                 return;
 
         }
 
         //Looks for the tool necessary for the action
-        public void SetTool(Farmer player, Type toolType, string aux = "Scythe", bool anyTool = false)
+        //Procura pelo ferramenta necessária para a ação
+        public void SetTool(Farmer player, Type toolType, string aux = "", bool anyTool = false)
         {
             switcher.canSwitch = Config.AutoReturnToLastTool;
             var items = player.Items;
-            //Melee Weapons \/
+            //Melee Weapons (swords and scythes) \/
+            //Armas de curta distância (espadas e foice) \/
             if (toolType == typeof(MeleeWeapon))
             {
-                if (aux == "Scythe")
+                if (aux == "Scythe" || aux == "ScytheOnly")
                 {
                     for (int i = 0; i < player.maxItems; i++)
                     {
-                        if (items[i] != null && items[i].GetType() == toolType && items[i].Name.Contains(aux))
+                        if (items[i] != null && items[i].GetType() == toolType && items[i].Name.Contains("Scythe"))
                         {
                             if (player.CurrentToolIndex != i)
                             {
@@ -380,6 +209,8 @@ namespace AutomateToolSwap
                             return;
                         }
                     }
+                    if (aux == "ScytheOnly")
+                        return;
                 }
 
                 for (int i = 0; i < player.maxItems; i++)
@@ -397,36 +228,41 @@ namespace AutomateToolSwap
             }
 
             //Any other tool \/
+            //Qualquer outra ferramenta
 
             for (int i = 0; i < player.maxItems; i++)
             {
+
                 if ((items[i] != null && items[i].GetType() == toolType) || (anyTool && items[i] is Axe or Pickaxe or Hoe))
                 {
                     if (player.CurrentToolIndex != i)
                     {
                         switcher.SwitchIndex(i);
+
                     }
+
                     return;
                 }
+
             }
 
         }
 
-
-
-        //Any item \/
-        public void SetItem(Farmer player, string categorie, string item)
+        //Looks for the item necessary for the action
+        //Procura pelo item necessário para a ação
+        public void SetItem(Farmer player, string categorie, string item = "", string crops = "Both", int aux = 0)
         {
             switcher.canSwitch = Config.AutoReturnToLastTool;
 
             var items = player.Items;
             //Handles trash
-            if (categorie == "Trash")
+            //Trata da categoria lixo
+            if (categorie == "Trash" || categorie == "Fertilizer")
             {
                 for (int i = 0; i < player.maxItems; i++)
                 {
 
-                    if (items[i] != null && items[i].getCategoryName() == categorie && !(items[i].Name.Contains(item)))
+                    if (items[i] != null && items[i].category == aux && !(items[i].Name.Contains(item)))
                     {
                         if (player.CurrentToolIndex != i)
                         {
@@ -439,39 +275,88 @@ namespace AutomateToolSwap
             }
 
             //Handles resources
+            //Trata da categoria recursos
             if (categorie == "Resource")
             {
                 for (int i = 0; i < player.maxItems; i++)
                 {
-
-                    if (items[i] != null && items[i].getCategoryName() == categorie && items[i].Name.Contains(item) && items[i].Stack >= 5)
+                    if (items[i] != null && items[i].category == -15 && items[i].Name.Contains(item) && items[i].Stack >= 5)
                     {
                         if (player.CurrentToolIndex != i)
-                        {
                             switcher.SwitchIndex(i);
-                        }
+
                         return;
                     }
                 }
                 return;
             }
 
+            //Handles Seeds
+            //Trata da categoria sementes
+            if (categorie == "Seed")
+            {
+                for (int i = 0; i < player.maxItems; i++)
+                {
+
+                    if (items[i] != null && items[i].category == -74 && !items[i].HasContextTag("tree_seed_item"))
+                    {
+                        if (player.CurrentToolIndex != i)
+                            switcher.SwitchIndex(i);
+
+                        return;
+                    }
+                }
+                return;
+            }
+
+            //Handles Crops
+            //Trata da categoria plantações
+            if (categorie == "Crops")
+            {
+                bool canFruit = crops == "Both" || crops == "Fruit";
+                bool canVegetable = crops == "Both" || crops == "Vegetable";
+
+                for (int i = 0; i < player.maxItems; i++)
+                {
+                    bool isFruit(Item Item) { return Item != null && Item.category == -79; }
+
+                    bool isVegetable(Item Item) { return Item != null && Item.category == -75; }
+
+                    if (items[i] != null && (canFruit && isFruit(items[i]) || canVegetable && isVegetable(items[i])))
+                    {
+                        if (isFruit(player.CurrentItem) || isVegetable(player.CurrentItem))
+                            return;
+
+                        if (player.CurrentToolIndex != i)
+                            switcher.SwitchIndex(i);
+
+                        return;
+                    }
+                }
+                return;
+            }
+
+
             //Handles any other item
+            //Trata de qualquer outro item
             for (int i = 0; i < player.maxItems; i++)
             {
-
-                if (items[i] != null && items[i].getCategoryName() == categorie && items[i].Name.Contains(item))
+                if (items[i] != null && items[i].category == aux && items[i].Name.Contains(item))
                 {
+                    if (player.CurrentItem != null && player.CurrentItem.category.ToString() == categorie)
+                        return;
+
                     if (player.CurrentToolIndex != i)
-                    {
                         switcher.SwitchIndex(i);
-                    }
+
                     return;
                 }
             }
             return;
         }
 
+        //Checks if the button pressed matches the config
+        //Verifica se o botão pressionado corresponde a config
         public bool ButtonMatched(ButtonPressedEventArgs e)
         {
             if (Config.UseDifferentSwapKey)

@@ -8,46 +8,57 @@
 **
 *************************************************/
 
+using EnaiumToolKit.Framework.Extensions;
 using EnaiumToolKit.Framework.Screen.Components;
 using EnaiumToolKit.Framework.Screen.Elements;
-using EnaiumToolKit.Framework.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using StardewValley;
 using StardewValley.BellsAndWhistles;
 using StardewValley.Menus;
-using BaseButton = EnaiumToolKit.Framework.Screen.Components.BaseButton;
-using Button = EnaiumToolKit.Framework.Screen.Components.Button;
 
 namespace EnaiumToolKit.Framework.Screen;
 
 public class ScreenGui : GuiScreen
 {
     private readonly List<Element> _elements = new();
-    private List<Element> _searchElements;
+    private List<Element> _searchElements = new();
     private int _index;
     private int _maxElement;
-    private TextField _searchTextField;
+    private TextField _searchTextField = null!;
+    private ScrollBar _scrollBar = null!;
+    private ArrowButton _up = null!;
+    private ArrowButton _down = null!;
+    private ArrowButton _back = null!;
+    private int _x;
+    private int _y;
 
     private string? Title { get; }
 
+    protected ScreenGui() : this(null)
+    {
+    }
+
+    protected ScreenGui(string? title)
+    {
+        Title = title;
+        width = Element.DefaultWidth;
+    }
+
     protected override void Init()
     {
-        _index = 0;
-        _maxElement = 7;
-        width = 832;
-        height = 578;
+        _maxElement = (int)(Game1.graphics.GraphicsDevice.Viewport.Height / 1.5) / (Element.DefaultHeight + 3);
+        height = _maxElement * (Element.DefaultHeight + 3);
         var centeringOnScreen = Utility.getTopLeftPositionForCenteringOnScreen(width, height);
-        xPositionOnScreen = (int)centeringOnScreen.X;
-        yPositionOnScreen = (int)centeringOnScreen.Y + 32;
-        const int buttonSize = 60;
-        _searchTextField = new TextField("", GetTranslation("screenGui.component.textField.Search"),
-            xPositionOnScreen,
-            yPositionOnScreen - 100, width, 50);
-        AddComponent(_searchTextField);
-        AddComponent(new ArrowButton(xPositionOnScreen + width + ArrowButton.Width, yPositionOnScreen)
+        _x = (int)centeringOnScreen.X;
+        _y = (int)centeringOnScreen.Y;
+        _searchTextField = new TextField(null, GetTranslation("screenGui.component.textField.search"),
+            _x - 15,
+            _y - 100, width + 30, 70);
+        _up = new ArrowButton(_x + width + ArrowButton.Width, _y)
         {
+            Description = GetTranslation("screenGui.component.arrowButton.flipUp"),
             Direction = ArrowButton.DirectionType.Up,
             OnLeftClicked = () =>
             {
@@ -60,10 +71,11 @@ public class ScreenGui : GuiScreen
                     _index = 0;
                 }
             }
-        });
-        AddComponent(new ArrowButton(xPositionOnScreen + width + ArrowButton.Width,
-            yPositionOnScreen + height - ArrowButton.Height)
+        };
+        _down = new ArrowButton(_x + width + ArrowButton.Width,
+            _y + height - ArrowButton.Height)
         {
+            Description = GetTranslation("screenGui.component.arrowButton.flipDown"),
             Direction = ArrowButton.DirectionType.Down,
             OnLeftClicked = () =>
             {
@@ -80,12 +92,31 @@ public class ScreenGui : GuiScreen
                     }
                 }
             }
-        });
+        };
+        _scrollBar = new ScrollBar(_up.X, _up.Y + ArrowButton.Height,
+            ArrowButton.Width, _y + height - _up.Y - ArrowButton.Height * 2);
+
+        _back = new ArrowButton(_x - ArrowButton.Width * 2, _y)
+        {
+            Description = GetTranslation("screenGui.component.arrowButton.backScreen"),
+            Direction = ArrowButton.DirectionType.Left,
+            OnLeftClicked = () =>
+            {
+                if (PreviousMenu != null)
+                {
+                    OpenScreenGui(PreviousMenu);
+                }
+            }
+        };
+
+
+        AddComponentRange(_up, _down, _searchTextField, _scrollBar, _back);
 
         if (Game1.activeClickableMenu is not TitleMenu)
         {
-            AddComponent(new CloseButton(xPositionOnScreen + width + ArrowButton.Width, _searchTextField.Y)
+            AddComponent(new CloseButton(_x + width + ArrowButton.Width, _searchTextField.Y)
             {
+                Description = GetTranslation("screenGui.component.closeButton.closeScreen"),
                 OnLeftClicked = () => { Game1.activeClickableMenu = null; }
             });
         }
@@ -93,67 +124,85 @@ public class ScreenGui : GuiScreen
         base.Init();
     }
 
-    protected ScreenGui()
-    {
-    }
-
-    protected ScreenGui(string title)
-    {
-        Title = title;
-    }
-
-
     private string GetTranslation(string key)
     {
         return ModEntry.GetInstance().Helper.Translation.Get(key);
     }
 
+    public override void update(GameTime time)
+    {
+        if (IsActive() && Game1.input.GetMouseState().XButton1 == ButtonState.Pressed &&
+            Game1.oldMouseState.XButton1 == ButtonState.Released)
+        {
+            _back.OnLeftClicked?.Invoke();
+        }
+
+        base.update(time);
+    }
+
     public override void draw(SpriteBatch b)
     {
-        Render2DUtils.DrawBound(b, xPositionOnScreen, yPositionOnScreen, width, height, Color.White);
-        var y = yPositionOnScreen + 20;
-        _searchElements = new List<Element>();
-        _searchElements.AddRange(GetSearchElements());
-        var i = 0;
-        foreach (var element in GetElements())
-        {
-            if (element.Visibled)
-            {
-                element.Render(b, xPositionOnScreen + 15, y + i * 78);
-                if (element.Hovered && !element.Description.Equals(""))
-                {
-                    var descriptionWidth = FontUtils.GetWidth(element.Description) + 50;
-                    var descriptionHeight = FontUtils.GetHeight(element.Description) + 50;
+        b.DrawWindowTexture(_x - 15, _y - 15, width + 30, height + 25);
+        var y = _y;
+        _searchElements = GetSearchElements();
 
-                    drawTextureBox(b, Game1.mouseCursors, new Rectangle(384, 396, 15, 15), 0, 0,
-                        descriptionWidth,
-                        descriptionHeight, Color.Wheat, 4f, false);
-                    FontUtils.DrawHvCentered(b, element.Description, 0, 0, descriptionWidth, descriptionHeight);
-                }
-            }
+        _scrollBar.Max = _searchElements.Count - _maxElement;
+        _scrollBar.Current = _index;
+        _scrollBar.OnCurrentChanged = current => { _index = current; };
 
-            i++;
-        }
+        _back.Visibled = PreviousMenu != null;
 
         if (Title != null)
         {
-            SpriteText.drawStringWithScrollCenteredAt(b, Title, Game1.viewport.Width / 2,
-                Game1.viewport.Height - 100, Title);
+            SpriteText.drawStringWithScrollCenteredAt(b, Title, Game1.graphics.GraphicsDevice.Viewport.Width / 2,
+                Game1.graphics.GraphicsDevice.Viewport.Height - 100, Title);
         }
 
-        const string text = "EnaiumToolKit By Enaium";
-        FontUtils.Draw(b, text, 0, Game1.viewport.Height - FontUtils.GetHeight(text));
+        GetElements().Select((item, index) =>
+        {
+            var elementX = _x;
+            var elementY = y + index * (Element.DefaultHeight + 3);
+            return new { position = new { x = elementX, y = elementY }, element = item };
+        }).OrderBy(it => it.element.Focused).ToList().ForEach(ordered =>
+        {
+            ordered.element.Render(b, ordered.position.x, ordered.position.y);
+            ordered.element.Width = width;
+            ordered.element.Height = Element.DefaultHeight;
+            if (ordered.element.Hovered)
+            {
+                GetElements().Where(it => it != ordered.element).ToList().ForEach(it => it.Hovered = false);
+            }
+        });
+
+
+        base.draw(b);
+
+        foreach (var element in GetElements())
+        {
+            if (element is { Hovered: true, Description: not null } && !element.Description.Equals(""))
+            {
+                DrawTooltip(b, element.Description);
+            }
+        }
 
         drawMouse(b);
-        base.draw(b);
     }
 
     public override void receiveLeftClick(int x, int y, bool playSound = true)
     {
         foreach (var variable in GetElements().Where(variable =>
-                     variable is { Visibled: true, Enabled: true, Hovered: true }))
+                     variable is { Visibled: true, Enabled: true }))
         {
-            variable.MouseLeftClicked(x, y);
+            if (variable is { Hovered: true })
+            {
+                variable.Focused = true;
+                variable.MouseLeftClicked(x, y);
+            }
+            else if (variable.Focused)
+            {
+                variable.LostFocus(x, y);
+                variable.Focused = false;
+            }
         }
 
         base.receiveLeftClick(x, y, playSound);
@@ -162,9 +211,18 @@ public class ScreenGui : GuiScreen
     public override void releaseLeftClick(int x, int y)
     {
         foreach (var variable in GetElements().Where(variable =>
-                     variable is { Visibled: true, Enabled: true, Hovered: true }))
+                     variable is { Visibled: true, Enabled: true }))
         {
-            variable.MouseLeftReleased(x, y);
+            if (variable is { Hovered: true })
+            {
+                variable.Focused = true;
+                variable.MouseLeftReleased(x, y);
+            }
+            else if (variable.Focused)
+            {
+                variable.LostFocus(x, y);
+                variable.Focused = false;
+            }
         }
 
         base.releaseLeftClick(x, y);
@@ -173,12 +231,21 @@ public class ScreenGui : GuiScreen
     public override void receiveRightClick(int x, int y, bool playSound = true)
     {
         foreach (var variable in GetElements().Where(variable =>
-                     variable is { Visibled: true, Enabled: true, Hovered: true }))
+                     variable is { Visibled: true, Enabled: true }))
         {
-            variable.MouseRightClicked(x, y);
+            if (variable is { Hovered: true })
+            {
+                variable.Focused = true;
+                variable.MouseRightClicked(x, y);
+            }
+            else if (variable.Focused)
+            {
+                variable.LostFocus(x, y);
+                variable.Focused = false;
+            }
         }
 
-        base.receiveRightClick(x, y);
+        base.receiveRightClick(x, y, false);
     }
 
     public override void receiveScrollWheelAction(int direction)
@@ -194,43 +261,64 @@ public class ScreenGui : GuiScreen
             _index++;
         }
 
+        foreach (var element in GetElements())
+        {
+            if (element.Focused)
+            {
+                element.LostFocus(Game1.getMouseX(), Game1.getMouseY());
+                element.Focused = false;
+            }
+        }
+
         base.receiveScrollWheelAction(direction);
     }
 
     public override void receiveKeyPress(Keys key)
     {
-        if (Game1.options.menuButton[0].key == key)
+        if (key == Keys.PageUp)
         {
-            return;
+            _up.OnLeftClicked?.Invoke();
+        }
+        else if (key == Keys.PageDown)
+        {
+            _down.OnLeftClicked?.Invoke();
         }
 
         base.receiveKeyPress(key);
     }
 
-    private IEnumerable<Element> GetElements()
+    private List<Element> GetElements()
     {
         var elements = new List<Element>();
         for (int i = _index, j = 0;
              j < (_searchElements.Count >= _maxElement ? _maxElement : _searchElements.Count);
              i++, j++)
         {
-            elements.Add(_searchElements[i]);
+            try
+            {
+                elements.Add(_searchElements[i]);
+            }
+            catch (Exception)
+            {
+                _index = 0;
+            }
         }
 
         return elements;
     }
 
-    private IEnumerable<Element> GetSearchElements()
+    private List<Element> GetSearchElements()
     {
-        IEnumerable<Element> elements = _elements;
+        var elements = _elements;
         if (!_searchTextField.Text.Equals(""))
         {
             elements = elements.Where(element =>
-                element.Title.Contains(_searchTextField.Text, StringComparison.InvariantCultureIgnoreCase)
-                || element.Description.Contains(_searchTextField.Text, StringComparison.InvariantCultureIgnoreCase)
-            );
+                element.Title?.Contains(_searchTextField.Text, StringComparison.InvariantCultureIgnoreCase) == true
+                || element.Description?.Contains(_searchTextField.Text, StringComparison.InvariantCultureIgnoreCase) ==
+                true
+            ).ToList();
         }
-        
+
         return elements;
     }
 

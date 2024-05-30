@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/12369
-IDs: DestyNova.NEACode
-update keys: Nexus:12369

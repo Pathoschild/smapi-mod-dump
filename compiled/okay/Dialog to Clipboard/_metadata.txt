@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/23834
+IDs: dlrdlrdlr.DialogToClipboard
+update keys: Nexus:23834, GitHub:dlrdlrdlr/DialogToClipboard

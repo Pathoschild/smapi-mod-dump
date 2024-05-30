@@ -1,0 +1,922 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/poohnhi/PoohCore
+**
+*************************************************/
+
+{
+    "Changes": [
+        {
+            "Action": "EditData",
+            "Target": "spacechase0.SpaceCore/Questions",
+            "TargetField": ["Abigail"],
+            "Entries": {
+                "GiftTastePersonal1": {
+                    "ID": "GiftTastePersonal1",
+                    "Weight": 15,
+                    "QuestionText": "{{i18n:AskForGiftTaste}}",
+                    "AnswerText": "{{i18n:DefaultPersonal.{{Random:{{Range:1,12}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Abigail loved false none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "PLAYER_HEARTS Current Abigail {{MinHeartSelfSuggest}}"
+                },
+                // Mom Caroline, Dad Pierre
+                "GiftTasteRelative1": {
+                    "ID": "GiftTasteRelative1",
+                    "Weight": 10,
+                    "QuestionText": "{{i18n:AskForGiftSuggestion}}",
+                    "AnswerText": "{{i18n:DefaultRelative.{{Random:{{Range:1,11}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Abigail loved true none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "SYNCED_CHOICE day Abigail 1 2 1, PLAYER_HEARTS Current Abigail {{MinHeartFriendSuggest}}"
+                },
+                // Friends Sam, Sebastian
+                "GiftTasteFriend1": {
+                    "ID": "GiftTasteFriend1",
+                    "Weight": 10,
+                    "QuestionText": "{{i18n:AskForGiftSuggestion}}",
+                    "AnswerText": "{{i18n:DefaultFriend.{{Random:{{Range:1,11}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:{{Random:{{AbigailFriends}}}} loved false none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "SYNCED_CHOICE day Abigail 1 2 2, PLAYER_HEARTS Current Abigail {{MinHeartFriendSuggest}}"
+                }
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "spacechase0.SpaceCore/Questions",
+            "TargetField": ["Caroline"],
+            "Entries": {
+                "GiftTastePersonal1": {
+                    "ID": "GiftTastePersonal1",
+                    "Weight": 15,
+                    "QuestionText": "{{i18n:AskForGiftTaste}}",
+                    "AnswerText": "{{i18n:DefaultPersonal.{{Random:{{Range:1,12}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Caroline loved false none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "PLAYER_HEARTS Current Caroline {{MinHeartSelfSuggest}}"
+                },
+                // Husband Pierre, child Abigail
+                "GiftTasteRelative1": {
+                    "ID": "GiftTasteRelative1",
+                    "Weight": 10,
+                    "QuestionText": "{{i18n:AskForGiftSuggestion}}",
+                    "AnswerText": "{{i18n:DefaultRelative.{{Random:{{Range:1,11}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Caroline loved true none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "SYNCED_CHOICE day Caroline 1 2 1, PLAYER_HEARTS Current Caroline {{MinHeartFriendSuggest}}"
+                },
+                // Friends Jodi
+                "GiftTasteFriend1": {
+                    "ID": "GiftTasteFriend1",
+                    "Weight": 10,
+                    "QuestionText": "{{i18n:AskForGiftSuggestion}}",
+                    "AnswerText": "{{i18n:DefaultFriend.{{Random:{{Range:1,11}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:{{Random:{{CarolineFriends}}}} loved false none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "SYNCED_CHOICE day Caroline 1 2 2, PLAYER_HEARTS Current Caroline {{MinHeartFriendSuggest}}"
+                }
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "spacechase0.SpaceCore/Questions",
+            "TargetField": ["Clint"],
+            "Entries": {
+                "GiftTastePersonal1": {
+                    "ID": "GiftTastePersonal1",
+                    "Weight": 15,
+                    "QuestionText": "{{i18n:AskForGiftTaste}}",
+                    "AnswerText": "{{i18n:DefaultPersonal.{{Random:{{Range:1,12}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Clint loved false none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "PLAYER_HEARTS Current Clint {{MinHeartSelfSuggest}}"
+                },
+                // Friends maybe Lucikiel if installed after the introduction event (add later)
+                "GiftTasteFriend1": {
+                    "ID": "GiftTasteFriend1",
+                    "Weight": 10,
+                    "QuestionText": "{{i18n:AskForGiftSuggestion}}",
+                    "AnswerText": "{{i18n:DefaultFriend.{{Random:{{Range:1,11}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:{{Random:{{ClintFriends}}}} loved false none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "PLAYER_HEARTS Current Clint {{MinHeartFriendSuggest}}"
+                }
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "spacechase0.SpaceCore/Questions",
+            "TargetField": ["Demetrius"],
+            "Entries": {
+                "GiftTastePersonal1": {
+                    "ID": "GiftTastePersonal1",
+                    "Weight": 15,
+                    "QuestionText": "{{i18n:AskForGiftTaste}}",
+                    "AnswerText": "{{i18n:DefaultPersonal.{{Random:{{Range:1,12}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Demetrius loved false none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "PLAYER_HEARTS Current Demetrius {{MinHeartSelfSuggest}}"
+                },
+                // Robin Maru
+                "GiftTasteRelative1": {
+                    "ID": "GiftTasteRelative1",
+                    "Weight": 10,
+                    "QuestionText": "{{i18n:AskForGiftSuggestion}}",
+                    "AnswerText": "{{i18n:DefaultRelative.{{Random:{{Range:1,11}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Demetrius loved true none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "PLAYER_HEARTS Current Demetrius {{MinHeartFriendSuggest}}"
+                },
+                // Special: Sebastian doesn't in friends and family of Demetrius so he'll get special dialogue (add later)
+                // "GiftTasteFriend1": {
+                //     "ID": "GiftTasteFriend1",
+                //     "Weight": 10,
+                //     "QuestionText": "{{i18n:AskForGiftSuggestion}}",
+                //     "AnswerText": "{{i18n:DefaultFriend.{{Random:{{Range:1,11}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:{{Random: Lucikiel, Lucikiel}} loved false none}}}}",
+                //     "CanRepeatQuestion": true,
+                //     "Condition": "SYNCED_CHOICE day Demetrius 1 2 2"
+                // }
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "spacechase0.SpaceCore/Questions",
+            "TargetField": ["Willy"],
+            "Entries": {
+                "GiftTastePersonal1": {
+                    "ID": "GiftTastePersonal1",
+                    "Weight": 15,
+                    "QuestionText": "{{i18n:AskForGiftTaste}}",
+                    "AnswerText": "{{i18n:DefaultPersonal.{{Random:{{Range:1,12}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Willy loved false none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "PLAYER_HEARTS Current Willy {{MinHeartSelfSuggest}}"
+                },
+                // Special: maybe some custom npcs
+                "GiftTasteFriend1": {
+                    "ID": "GiftTasteFriend1",
+                    "Weight": 10,
+                    "QuestionText": "{{i18n:AskForGiftSuggestion}}",
+                    "AnswerText": "{{i18n:DefaultFriend.{{Random:{{Range:1,11}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:{{Random:{{WillyFriends}}}} loved false none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "PLAYER_HEARTS Current Willy {{MinHeartFriendSuggest}}"
+                }
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "spacechase0.SpaceCore/Questions",
+            "TargetField": ["Elliott"],
+            "Entries": {
+                "GiftTastePersonal1": {
+                    "ID": "GiftTastePersonal1",
+                    "Weight": 15,
+                    "QuestionText": "{{i18n:AskForGiftTaste}}",
+                    "AnswerText": "{{i18n:DefaultPersonal.{{Random:{{Range:1,12}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Elliott loved false {{DoNotSuggestGiftElliott}}}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "PLAYER_HEARTS Current Elliott {{MinHeartSelfSuggest}}"
+                },
+                "GiftTasteFriend1": {
+                    "ID": "GiftTasteFriend1",
+                    "Weight": 10,
+                    "QuestionText": "{{i18n:AskForGiftSuggestion}}",
+                    "AnswerText": "{{i18n:DefaultFriend.{{Random:{{Range:1,11}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:{{Random:{{ElliottFriends}}}} loved false none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "SYNCED_CHOICE day Elliott 1 2 2, PLAYER_HEARTS Current Elliott {{MinHeartFriendSuggest}}"
+                }
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "spacechase0.SpaceCore/Questions",
+            "TargetField": ["Emily"],
+            "Entries": {
+                "GiftTastePersonal1": {
+                    "ID": "GiftTastePersonal1",
+                    "Weight": 15,
+                    "QuestionText": "{{i18n:AskForGiftTaste}}",
+                    "AnswerText": "{{i18n:DefaultPersonal.{{Random:{{Range:1,12}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Emily loved false none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "PLAYER_HEARTS Current Emily {{MinHeartSelfSuggest}}"
+                },
+                // Haley
+                "GiftTasteRelative1": {
+                    "ID": "GiftTasteRelative1",
+                    "Weight": 10,
+                    "QuestionText": "{{i18n:AskForGiftSuggestion}}",
+                    "AnswerText": "{{i18n:DefaultRelative.{{Random:{{Range:1,11}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Emily loved true none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "SYNCED_CHOICE day Emily 1 4 1, PLAYER_HEARTS Current Emily {{MinHeartFriendSuggest}}"
+                },
+                "GiftTasteFriend1": {
+                    "ID": "GiftTasteFriend1",
+                    "Weight": 10,
+                    "QuestionText": "{{i18n:AskForGiftSuggestion}}",
+                    "AnswerText": "{{i18n:DefaultFriend.{{Random:{{Range:1,11}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:{{Random: {{EmilyFriends}}}} loved false none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "SYNCED_CHOICE day Emily 1 4 2 3 4, PLAYER_HEARTS Current Emily {{MinHeartFriendSuggest}}"
+                }
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "spacechase0.SpaceCore/Questions",
+            "TargetField": ["Evelyn"],
+            "Entries": {
+                "GiftTastePersonal1": {
+                    "ID": "GiftTastePersonal1",
+                    "Weight": 15,
+                    "QuestionText": "{{i18n:AskForGiftTaste}}",
+                    "AnswerText": "{{i18n:DefaultPersonal.{{Random:{{Range:1,12}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Evelyn loved false none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "PLAYER_HEARTS Current Evelyn {{MinHeartSelfSuggest}}"
+                },
+                // George Alex
+                "GiftTasteRelative1": {
+                    "ID": "GiftTasteRelative1",
+                    "Weight": 10,
+                    "QuestionText": "{{i18n:AskForGiftSuggestion}}",
+                    "AnswerText": "{{i18n:DefaultRelative.{{Random:{{Range:1,11}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Evelyn loved true none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "PLAYER_HEARTS Current Evelyn {{MinHeartFriendSuggest}}"
+                }
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "spacechase0.SpaceCore/Questions",
+            "TargetField": ["George"],
+            "Entries": {
+                "GiftTastePersonal1": {
+                    "ID": "GiftTastePersonal1",
+                    "Weight": 15,
+                    "QuestionText": "{{i18n:AskForGiftTaste}}",
+                    "AnswerText": "{{i18n:DefaultPersonal.{{Random:{{Range:1,12}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:George loved false none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "PLAYER_HEARTS Current George {{MinHeartSelfSuggest}}"
+                },
+                // Evelyn Alex
+                "GiftTasteRelative1": {
+                    "ID": "GiftTasteRelative1",
+                    "Weight": 10,
+                    "QuestionText": "{{i18n:AskForGiftSuggestion}}",
+                    "AnswerText": "{{i18n:DefaultRelative.{{Random:{{Range:1,11}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:George loved true none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "PLAYER_HEARTS Current George {{MinHeartFriendSuggest}}"
+                }
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "spacechase0.SpaceCore/Questions",
+            "TargetField": ["Gus"],
+            "Entries": {
+                "GiftTastePersonal1": {
+                    "ID": "GiftTastePersonal1",
+                    "Weight": 15,
+                    "QuestionText": "{{i18n:AskForGiftTaste}}",
+                    "AnswerText": "{{i18n:DefaultPersonal.{{Random:{{Range:1,12}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Gus loved false none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "PLAYER_HEARTS Current Gus {{MinHeartSelfSuggest}}"
+                },
+                // vanilla friends: Emily Pam
+                // "GiftTasteRelative1": {
+                //     "ID": "GiftTasteRelative1",
+                //     "Weight": 10,
+                //     "QuestionText": "{{i18n:AskForGiftSuggestion}}",
+                //     "AnswerText": "{{i18n:DefaultRelative.{{Random:{{Range:1,11}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Gus loved true none}}}}",
+                //     "CanRepeatQuestion": true,
+                //     "Condition": "PLAYER_HEARTS Current Gus {{MinHeartFriendSuggest}}"
+                // }
+                "GiftTasteFriend1": {
+                    "ID": "GiftTasteFriend1",
+                    "Weight": 10,
+                    "QuestionText": "{{i18n:AskForGiftSuggestion}}",
+                    "AnswerText": "{{i18n:DefaultFriend.{{Random:{{Range:1,11}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:{{Random:{{GusFriends}}}} loved false none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "PLAYER_HEARTS Current Gus {{MinHeartFriendSuggest}}"
+                }
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "spacechase0.SpaceCore/Questions",
+            "TargetField": ["Haley"],
+            "Entries": {
+                "GiftTastePersonal1": {
+                    "ID": "GiftTastePersonal1",
+                    "Weight": 15,
+                    "QuestionText": "{{i18n:AskForGiftTaste}}",
+                    "AnswerText": "{{i18n:DefaultPersonal.{{Random:{{Range:1,12}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Haley loved false none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "PLAYER_HEARTS Current Haley {{MinHeartSelfSuggest}}"
+                },
+                // Emily
+                "GiftTasteRelative1": {
+                    "ID": "GiftTasteRelative1",
+                    "Weight": 10,
+                    "QuestionText": "{{i18n:AskForGiftSuggestion}}",
+                    "AnswerText": "{{i18n:DefaultRelative.{{Random:{{Range:1,11}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Haley loved true none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "SYNCED_CHOICE day Haley 1 2 1, PLAYER_HEARTS Current Haley {{MinHeartFriendSuggest}}"
+                },
+                // Alex
+                "GiftTasteFriend1": {
+                    "ID": "GiftTasteFriend1",
+                    "Weight": 10,
+                    "QuestionText": "{{i18n:AskForGiftSuggestion}}",
+                    "AnswerText": "{{i18n:DefaultFriend.{{Random:{{Range:1,11}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:{{Random: {{HaleyFriends}}}} loved false none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "SYNCED_CHOICE day Haley 1 2 2, PLAYER_HEARTS Current Haley {{MinHeartFriendSuggest}}"
+                }
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "spacechase0.SpaceCore/Questions",
+            "TargetField": ["Harvey"],
+            "Entries": {
+                "GiftTastePersonal1": {
+                    "ID": "GiftTastePersonal1",
+                    "Weight": 15,
+                    "QuestionText": "{{i18n:AskForGiftTaste}}",
+                    "AnswerText": "{{i18n:DefaultPersonal.{{Random:{{Range:1,12}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Harvey loved false none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "PLAYER_HEARTS Current Harvey {{MinHeartSelfSuggest}}"
+                },
+                // Maru
+                "GiftTasteFriend1": {
+                    "ID": "GiftTasteFriend1",
+                    "Weight": 10,
+                    "QuestionText": "{{i18n:AskForGiftSuggestion}}",
+                    "AnswerText": "{{i18n:DefaultFriend.{{Random:{{Range:1,11}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:{{Random:{{HarveyFriends}}}} loved false none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "PLAYER_HEARTS Current Harvey {{MinHeartFriendSuggest}}"
+                }
+                // Harvey doesn't have relative
+                // "GiftTasteRelative1": {
+                //     "ID": "GiftTasteRelative1",
+                //     "Weight": 10,
+                //     "QuestionText": "{{i18n:AskForGiftSuggestion}}",
+                //     "AnswerText": "{{i18n:DefaultRelative.{{Random:{{Range:1,11}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Harvey loved true none}}}}",
+                //     "CanRepeatQuestion": true
+                // }
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "spacechase0.SpaceCore/Questions",
+            "TargetField": ["Jas"],
+            "Entries": {
+                "GiftTastePersonal1": {
+                    "ID": "GiftTastePersonal1",
+                    "Weight": 15,
+                    "QuestionText": "{{i18n:AskForGiftTaste}}",
+                    "AnswerText": "{{i18n:DefaultPersonal.{{Random:{{Range:1,12}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Jas loved false none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "PLAYER_HEARTS Current Jas {{MinHeartSelfSuggest}}"
+                },
+                // Vincent only - maybe add special case for Shane and Marnie?
+                "GiftTasteRelative1": {
+                    "ID": "GiftTasteRelative1",
+                    "Weight": 10,
+                    "QuestionText": "{{i18n:AskForGiftSuggestion}}",
+                    "AnswerText": "{{i18n:DefaultRelative.{{Random:{{Range:1,11}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Jas loved true none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "PLAYER_HEARTS Current Jas {{MinHeartFriendSuggest}}"
+                }
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "spacechase0.SpaceCore/Questions",
+            "TargetField": ["Jodi"],
+            "Entries": {
+                "GiftTastePersonal1": {
+                    "ID": "GiftTastePersonal1",
+                    "Weight": 15,
+                    "QuestionText": "{{i18n:AskForGiftTaste}}",
+                    "AnswerText": "{{i18n:DefaultPersonal.{{Random:{{Range:1,12}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Jodi loved false none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "PLAYER_HEARTS Current Jodi {{MinHeartSelfSuggest}}"
+                },
+                // Sam Vincent Kent
+                "GiftTasteRelative1": {
+                    "ID": "GiftTasteRelative1",
+                    "Weight": 10,
+                    "QuestionText": "{{i18n:AskForGiftSuggestion}}",
+                    "AnswerText": "{{i18n:DefaultRelative.{{Random:{{Range:1,11}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Jodi loved true none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "SYNCED_CHOICE day Jodi 1 2 1, PLAYER_HEARTS Current Jodi {{MinHeartFriendSuggest}}"
+                },
+                // Caroline
+                "GiftTasteFriend1": {
+                    "ID": "GiftTasteFriend1",
+                    "Weight": 10,
+                    "QuestionText": "{{i18n:AskForGiftSuggestion}}",
+                    "AnswerText": "{{i18n:DefaultFriend.{{Random:{{Range:1,11}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:{{Random:{{JodiFriends}}}} loved false none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "SYNCED_CHOICE day Jodi 1 2 2, PLAYER_HEARTS Current Jodi {{MinHeartFriendSuggest}}"
+                }
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "spacechase0.SpaceCore/Questions",
+            "TargetField": ["Alex"],
+            "Entries": {
+                "GiftTastePersonal1": {
+                    "ID": "GiftTastePersonal1",
+                    "Weight": 15,
+                    "QuestionText": "{{i18n:AskForGiftTaste}}",
+                    "AnswerText": "{{i18n:DefaultPersonal.{{Random:{{Range:1,12}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Alex loved false none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "PLAYER_HEARTS Current Alex {{MinHeartSelfSuggest}}"
+                },
+                // George, Evelyn
+                "GiftTasteRelative1": {
+                    "ID": "GiftTasteRelative1",
+                    "Weight": 10,
+                    "QuestionText": "{{i18n:AskForGiftSuggestion}}",
+                    "AnswerText": "{{i18n:DefaultRelative.{{Random:{{Range:1,11}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Alex loved true none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "SYNCED_CHOICE day Alex 1 4 1 2 3, PLAYER_HEARTS Current Alex {{MinHeartFriendSuggest}}"
+                },
+                // Haley
+                "GiftTasteFriend1": {
+                    "ID": "GiftTasteFriend1",
+                    "Weight": 10,
+                    "QuestionText": "{{i18n:AskForGiftSuggestion}}",
+                    "AnswerText": "{{i18n:DefaultFriend.{{Random:{{Range:1,11}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:{{Random:{{AlexFriends}}}} loved false none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "SYNCED_CHOICE day Alex 1 4 4, PLAYER_HEARTS Current Alex {{MinHeartFriendSuggest}}"
+                }
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "spacechase0.SpaceCore/Questions",
+            "TargetField": ["Kent"],
+            "Entries": {
+                "GiftTastePersonal1": {
+                    "ID": "GiftTastePersonal1",
+                    "Weight": 15,
+                    "QuestionText": "{{i18n:AskForGiftTaste}}",
+                    "AnswerText": "{{i18n:DefaultPersonal.{{Random:{{Range:1,12}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Kent loved false none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "PLAYER_HEARTS Current Kent {{MinHeartSelfSuggest}}"
+                },
+                // Jodi Sam Vincent
+                "GiftTasteRelative1": {
+                    "ID": "GiftTasteRelative1",
+                    "Weight": 10,
+                    "QuestionText": "{{i18n:AskForGiftSuggestion}}",
+                    "AnswerText": "{{i18n:DefaultRelative.{{Random:{{Range:1,11}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Kent loved true none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "PLAYER_HEARTS Current Kent {{MinHeartFriendSuggest}}"
+                }
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "spacechase0.SpaceCore/Questions",
+            "TargetField": ["Leah"],
+            "Entries": {
+                "GiftTastePersonal1": {
+                    "ID": "GiftTastePersonal1",
+                    "Weight": 15,
+                    "QuestionText": "{{i18n:AskForGiftTaste}}",
+                    "AnswerText": "{{i18n:DefaultPersonal.{{Random:{{Range:1,12}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Leah loved false none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "PLAYER_HEARTS Current Leah {{MinHeartSelfSuggest}}"
+                },
+                // Elliott
+                "GiftTasteFriend1": {
+                    "ID": "GiftTasteFriend1",
+                    "Weight": 10,
+                    "QuestionText": "{{i18n:AskForGiftSuggestion}}",
+                    "AnswerText": "{{i18n:DefaultFriend.{{Random:{{Range:1,11}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:{{Random:{{LeahFriends}}}} loved false none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "PLAYER_HEARTS Current Leah {{MinHeartFriendSuggest}}"
+                }
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "spacechase0.SpaceCore/Questions",
+            "TargetField": ["Lewis"],
+            "Entries": {
+                "GiftTastePersonal1": {
+                    "ID": "GiftTastePersonal1",
+                    "Weight": 15,
+                    "QuestionText": "{{i18n:AskForGiftTaste}}",
+                    "AnswerText": "{{i18n:DefaultPersonal.{{Random:{{Range:1,12}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Lewis loved false none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "PLAYER_HEARTS Current Lewis {{MinHeartSelfSuggest}}"
+                },
+                // Marnie
+                "GiftTasteRelative1": {
+                    "ID": "GiftTasteRelative1",
+                    "Weight": 10,
+                    "QuestionText": "{{i18n:AskForGiftSuggestion}}",
+                    "AnswerText": "{{i18n:DefaultRelative.{{Random:{{Range:1,11}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Lewis loved true none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "PLAYER_HEARTS Current Lewis {{MinHeartFriendSuggest}}"
+                }
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "spacechase0.SpaceCore/Questions",
+            "TargetField": ["Linus"],
+            "Entries": {
+                "GiftTastePersonal1": {
+                    "ID": "GiftTastePersonal1",
+                    "Weight": 15,
+                    "QuestionText": "{{i18n:AskForGiftTaste}}",
+                    "AnswerText": "{{i18n:DefaultPersonal.{{Random:{{Range:1,12}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Linus loved false none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "PLAYER_HEARTS Current Linus {{MinHeartSelfSuggest}}"
+                },
+                "GiftTasteFriend1": {
+                    "ID": "GiftTasteFriend1",
+                    "Weight": 10,
+                    "QuestionText": "{{i18n:AskForGiftSuggestion}}",
+                    "AnswerText": "{{i18n:DefaultFriend.{{Random:{{Range:1,11}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:{{Random:{{LinusFriends}}}} loved false none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "PLAYER_HEARTS Current Linus {{MinHeartFriendSuggest}}"
+                }
+            }
+        },
+        // Marlon
+        // Marnie
+        {
+            "Action": "EditData",
+            "Target": "spacechase0.SpaceCore/Questions",
+            "TargetField": ["Marnie"],
+            "Entries": {
+                "GiftTastePersonal1": {
+                    "ID": "GiftTastePersonal1",
+                    "Weight": 15,
+                    "QuestionText": "{{i18n:AskForGiftTaste}}",
+                    "AnswerText": "{{i18n:DefaultPersonal.{{Random:{{Range:1,12}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Marnie loved false none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "PLAYER_HEARTS Current Marnie {{MinHeartSelfSuggest}}"
+                },
+                // Lewis, Shane, Jas
+                "GiftTasteRelative1": {
+                    "ID": "GiftTasteRelative1",
+                    "Weight": 10,
+                    "QuestionText": "{{i18n:AskForGiftSuggestion}}",
+                    "AnswerText": "{{i18n:DefaultRelative.{{Random:{{Range:1,11}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Marnie loved true none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "PLAYER_HEARTS Current Marnie {{MinHeartFriendSuggest}}"
+                }
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "spacechase0.SpaceCore/Questions",
+            "TargetField": ["Maru"],
+            "Entries": {
+                "GiftTastePersonal1": {
+                    "ID": "GiftTastePersonal1",
+                    "Weight": 15,
+                    "QuestionText": "{{i18n:AskForGiftTaste}}",
+                    "AnswerText": "{{i18n:DefaultPersonal.{{Random:{{Range:1,12}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Maru loved false none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "PLAYER_HEARTS Current Maru {{MinHeartSelfSuggest}}"
+                },
+                "GiftTasteRelative1": {
+                    "ID": "GiftTasteRelative1",
+                    "Weight": 10,
+                    "QuestionText": "{{i18n:AskForGiftSuggestion}}",
+                    "AnswerText": "{{i18n:DefaultRelative.{{Random:{{Range:1,11}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Maru loved true none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "SYNCED_CHOICE day Maru 1 5 1 2 3, PLAYER_HEARTS Current Maru {{MinHeartFriendSuggest}}"
+                },
+                "GiftTasteFriend1": {
+                    "ID": "GiftTasteFriend1",
+                    "Weight": 10,
+                    "QuestionText": "{{i18n:AskForGiftSuggestion}}",
+                    "AnswerText": "{{i18n:DefaultFriend.{{Random:{{Range:1,11}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:{{Random: {{MaruFriends}}}} loved false none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "SYNCED_CHOICE day Maru 1 5 4 5, PLAYER_HEARTS Current Maru {{MinHeartFriendSuggest}}"
+                }
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "spacechase0.SpaceCore/Questions",
+            "TargetField": ["Pam"],
+            "Entries": {
+                "GiftTastePersonal1": {
+                    "ID": "GiftTastePersonal1",
+                    "Weight": 15,
+                    "QuestionText": "{{i18n:AskForGiftTaste}}",
+                    "AnswerText": "{{i18n:DefaultPersonal.{{Random:{{Range:1,12}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Pam loved false none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "PLAYER_HEARTS Current Pam {{MinHeartSelfSuggest}}"
+                },
+                // Penny, Gus
+                "GiftTasteRelative1": {
+                    "ID": "GiftTasteRelative1",
+                    "Weight": 10,
+                    "QuestionText": "{{i18n:AskForGiftSuggestion}}",
+                    "AnswerText": "{{i18n:DefaultRelative.{{Random:{{Range:1,11}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Pam loved true none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "PLAYER_HEARTS Current Pam {{MinHeartFriendSuggest}}"
+                }
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "spacechase0.SpaceCore/Questions",
+            "TargetField": ["Penny"],
+            "Entries": {
+                "GiftTastePersonal1": {
+                    "ID": "GiftTastePersonal1",
+                    "Weight": 15,
+                    "QuestionText": "{{i18n:AskForGiftTaste}}",
+                    "AnswerText": "{{i18n:DefaultPersonal.{{Random:{{Range:1,12}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Penny loved false none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "PLAYER_HEARTS Current Penny {{MinHeartSelfSuggest}}"
+                },
+                // Pam
+                "GiftTasteRelative1": {
+                    "ID": "GiftTasteRelative1",
+                    "Weight": 10,
+                    "QuestionText": "{{i18n:AskForGiftSuggestion}}",
+                    "AnswerText": "{{i18n:DefaultRelative.{{Random:{{Range:1,11}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Penny loved true 303-346-348-459-873}}}}", // Penny will never suggest item id that have one in these ids: 303-346-348-459-873
+                    "CanRepeatQuestion": true,
+                    "Condition": "SYNCED_CHOICE day Penny 1 5 1, PLAYER_HEARTS Current Penny {{MinHeartFriendSuggest}}"
+                },
+                "GiftTasteFriend1": {
+                    "ID": "GiftTasteFriend1",
+                    "Weight": 10,
+                    "QuestionText": "{{i18n:AskForGiftSuggestion}}",
+                    "AnswerText": "{{i18n:DefaultFriend.{{Random:{{Range:1,11}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:{{Random:{{PennyFriends}}}} loved false none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "SYNCED_CHOICE day Penny 1 5 2 3 4 5, PLAYER_HEARTS Current Penny {{MinHeartFriendSuggest}}"
+                }
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "spacechase0.SpaceCore/Questions",
+            "TargetField": ["Pierre"],
+            "Entries": {
+                "GiftTastePersonal1": {
+                    "ID": "GiftTastePersonal1",
+                    "Weight": 15,
+                    "QuestionText": "{{i18n:AskForGiftTaste}}",
+                    "AnswerText": "{{i18n:DefaultPersonal.{{Random:{{Range:1,12}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Pierre loved false none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "PLAYER_HEARTS Current Pierre {{MinHeartSelfSuggest}}"
+                },
+                // Abigail, Caroline
+                "GiftTasteRelative1": {
+                    "ID": "GiftTasteRelative1",
+                    "Weight": 10,
+                    "QuestionText": "{{i18n:AskForGiftSuggestion}}",
+                    "AnswerText": "{{i18n:DefaultRelative.{{Random:{{Range:1,11}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Pierre loved true none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "PLAYER_HEARTS Current Pierre {{MinHeartFriendSuggest}}"
+                }
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "spacechase0.SpaceCore/Questions",
+            "TargetField": ["Robin"],
+            "Entries": {
+                "GiftTastePersonal1": {
+                    "ID": "GiftTastePersonal1",
+                    "Weight": 15,
+                    "QuestionText": "{{i18n:AskForGiftTaste}}",
+                    "AnswerText": "{{i18n:DefaultPersonal.{{Random:{{Range:1,12}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Robin loved false none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "PLAYER_HEARTS Current Robin {{MinHeartSelfSuggest}}"
+                },
+                // Demetrius, Maru, Sebastian
+                "GiftTasteRelative1": {
+                    "ID": "GiftTasteRelative1",
+                    "Weight": 10,
+                    "QuestionText": "{{i18n:AskForGiftSuggestion}}",
+                    "AnswerText": "{{i18n:DefaultRelative.{{Random:{{Range:1,11}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Robin loved true none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "PLAYER_HEARTS Current Robin {{MinHeartFriendSuggest}}"
+                }
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "spacechase0.SpaceCore/Questions",
+            "TargetField": ["Sam"],
+            "Entries": {
+                "GiftTastePersonal1": {
+                    "ID": "GiftTastePersonal1",
+                    "Weight": 15,
+                    "QuestionText": "{{i18n:AskForGiftTaste}}",
+                    "AnswerText": "{{i18n:DefaultPersonal.{{Random:{{Range:1,12}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Sam loved false none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "PLAYER_HEARTS Current Sam {{MinHeartSelfSuggest}}"
+                },
+                "GiftTasteRelative1": {
+                    "ID": "GiftTasteRelative1",
+                    "Weight": 10,
+                    "QuestionText": "{{i18n:AskForGiftSuggestion}}",
+                    "AnswerText": "{{i18n:DefaultRelative.{{Random:{{Range:1,11}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Sam loved true none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "SYNCED_CHOICE day Sam 1 5 1 2 3, PLAYER_HEARTS Current Sam {{MinHeartFriendSuggest}}"
+                },
+                "GiftTasteFriend1": {
+                    "ID": "GiftTasteFriend1",
+                    "Weight": 10,
+                    "QuestionText": "{{i18n:AskForGiftSuggestion}}",
+                    "AnswerText": "{{i18n:DefaultFriend.{{Random:{{Range:1,11}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:{{Random: {{SamFriends}}}} loved false none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "SYNCED_CHOICE day Sam 1 5 4 5, PLAYER_HEARTS Current Sam {{MinHeartFriendSuggest}}"
+                }
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "spacechase0.SpaceCore/Questions",
+            "TargetField": ["Sebastian"],
+            "Entries": {
+                "GiftTastePersonal1": {
+                    "ID": "GiftTastePersonal1",
+                    "Weight": 15,
+                    "QuestionText": "{{i18n:AskForGiftTaste}}",
+                    "AnswerText": "{{i18n:DefaultPersonal.{{Random:{{Range:1,12}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Sebastian loved false none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "PLAYER_HEARTS Current Sebastian {{MinHeartSelfSuggest}}"
+                },
+                // Robin Maru Sam
+                "GiftTasteRelative1": {
+                    "ID": "GiftTasteRelative1",
+                    "Weight": 10,
+                    "QuestionText": "{{i18n:AskForGiftSuggestion}}",
+                    "AnswerText": "{{i18n:DefaultRelative.{{Random:{{Range:1,11}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Sebastian loved true none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "PLAYER_HEARTS Current Sebastian {{MinHeartFriendSuggest}}"
+                }
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "spacechase0.SpaceCore/Questions",
+            "TargetField": ["Shane"],
+            "Entries": {
+                // Shane is one of special case. He'll be negative at 0 to 4 hearts, and positive at 5+ hearts
+                "GiftTasteNegativePersonal1": {
+                    "ID": "GiftTasteNegativePersonal1",
+                    "Weight": 15,
+                    "QuestionText": "{{i18n:AskForGiftTaste}}",
+                    "AnswerText": "{{i18n:DefaultPersonalNegative.{{Random:{{Range:1,3}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Shane loved false none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "PLAYER_HEARTS Any Shane 0 4, PLAYER_HEARTS Current Shane {{MinHeartSelfSuggest}}"
+                },
+                // Marnie
+                "GiftTasteNegativeRelative1": {
+                    "ID": "GiftTasteNegativeRelative1",
+                    "Weight": 10,
+                    "QuestionText": "{{i18n:AskForGiftSuggestion}}",
+                    "AnswerText": "{{i18n:DefaultRelativeNegative.{{Random:{{Range:1,3}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Shane loved true none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "PLAYER_HEARTS Any Shane 0 4, PLAYER_HEARTS Current Shane {{MinHeartFriendSuggest}}"
+                },
+                "GiftTastePersonal1": {
+                    "ID": "GiftTastePersonal1",
+                    "Weight": 15,
+                    "QuestionText": "{{i18n:AskForGiftTaste}}",
+                    "AnswerText": "{{i18n:DefaultPersonal.{{Random:{{Range:1,12}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Shane loved false none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "PLAYER_HEARTS Any Shane 5, PLAYER_HEARTS Current Shane {{MinHeartSelfSuggest}}"
+                },
+                // Marnie
+                "GiftTasteRelative1": {
+                    "ID": "GiftTasteRelative1",
+                    "Weight": 10,
+                    "QuestionText": "{{i18n:AskForGiftSuggestion}}",
+                    "AnswerText": "{{i18n:DefaultRelative.{{Random:{{Range:1,11}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Shane loved true none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "PLAYER_HEARTS Any Shane 5, PLAYER_HEARTS Current Shane {{MinHeartFriendSuggest}}"
+                }
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "spacechase0.SpaceCore/Questions",
+            "TargetField": ["Vincent"],
+            "Entries": {
+                "GiftTastePersonal1": {
+                    "ID": "GiftTastePersonal1",
+                    "Weight": 15,
+                    "QuestionText": "{{i18n:AskForGiftTaste}}",
+                    "AnswerText": "{{i18n:DefaultPersonal.{{Random:{{Range:1,12}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Vincent loved false none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "PLAYER_HEARTS Current Vincent {{MinHeartSelfSuggest}}"
+                },
+                // Jas
+                "GiftTasteRelative1": {
+                    "ID": "GiftTasteRelative1",
+                    "Weight": 10,
+                    "QuestionText": "{{i18n:AskForGiftSuggestion}}",
+                    "AnswerText": "{{i18n:DefaultRelative.{{Random:{{Range:1,11}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Vincent loved true none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "PLAYER_HEARTS Current Vincent {{MinHeartFriendSuggest}}"
+                }
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "spacechase0.SpaceCore/Questions",
+            "TargetField": ["Wizard"],
+            "Entries": {
+                "GiftTastePersonal1": {
+                    "ID": "GiftTastePersonal1",
+                    "Weight": 15,
+                    "QuestionText": "{{i18n:AskForGiftTaste}}",
+                    "AnswerText": "{{i18n:DefaultPersonal.{{Random:{{Range:1,12}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Wizard loved false none}}}}",
+                    "CanRepeatQuestion": true
+                },
+                "GiftTasteFriend1": {
+                    "ID": "GiftTasteFriend1",
+                    "Weight": 10,
+                    "QuestionText": "{{i18n:AskForGiftSuggestion}}",
+                    "AnswerText": "{{i18n:DefaultFriend.{{Random:{{Range:1,11}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:{{Random:{{WizardFriends}}}} loved false none}}}}",
+                    "CanRepeatQuestion": true
+                }
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "spacechase0.SpaceCore/Questions",
+            "TargetField": ["Dwarf"],
+            "Entries": {
+                "GiftTastePersonal1": {
+                    "ID": "GiftTastePersonal1",
+                    "Weight": 15,
+                    "QuestionText": "{{i18n:AskForGiftTaste}}",
+                    "AnswerText": "{{i18n:DefaultPersonal.{{Random:{{Range:1,12}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Dwarf loved false none}}}}",
+                    "CanRepeatQuestion": true
+                }
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "spacechase0.SpaceCore/Questions",
+            "TargetField": ["Sandy"],
+            "Entries": {
+                "GiftTastePersonal1": {
+                    "ID": "GiftTastePersonal1",
+                    "Weight": 15,
+                    "QuestionText": "{{i18n:AskForGiftTaste}}",
+                    "AnswerText": "{{i18n:DefaultPersonal.{{Random:{{Range:1,12}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Sandy loved false none}}}}",
+                    "CanRepeatQuestion": true
+                },
+                // Emily
+                "GiftTasteRelative1": {
+                    "ID": "GiftTasteRelative1",
+                    "Weight": 10,
+                    "QuestionText": "{{i18n:AskForGiftSuggestion}}",
+                    "AnswerText": "{{i18n:DefaultRelative.{{Random:{{Range:1,11}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Sandy loved true none}}}}",
+                    "CanRepeatQuestion": true
+                }
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "spacechase0.SpaceCore/Questions",
+            "TargetField": ["Krobus"],
+            "Entries": {
+                "GiftTastePersonal1": {
+                    "ID": "GiftTastePersonal1",
+                    "Weight": 15,
+                    "QuestionText": "{{i18n:AskForGiftTaste}}",
+                    "AnswerText": "{{i18n:DefaultPersonal.{{Random:{{Range:1,12}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Krobus loved false none}}}}",
+                    "CanRepeatQuestion": true
+                },
+                // Maybe add Sen
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "spacechase0.SpaceCore/Questions",
+            "TargetField": ["Leo"],
+            "Entries": {
+                "GiftTastePersonal1": {
+                    "ID": "GiftTastePersonal1",
+                    "Weight": 15,
+                    "QuestionText": "{{i18n:AskForGiftTaste}}",
+                    "AnswerText": "{{i18n:DefaultPersonal.{{Random:{{Range:1,12}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:Leo loved false none}}}}",
+                    "CanRepeatQuestion": true
+                },
+                "GiftTasteFriend1": {
+                    "ID": "GiftTasteFriend1",
+                    "Weight": 10,
+                    "QuestionText": "{{i18n:AskForGiftSuggestion}}",
+                    "AnswerText": "{{i18n:DefaultFriend.{{Random:{{Range:1,11}}}}{{poohnhi.PoohCore/GetGiftTasteCPTokenFromSomeOne:{{Random: {{LeoFriends}}}} loved false none}}}}",
+                    "CanRepeatQuestion": true,
+                    "Condition": "PLAYER_HAS_MAIL Host leoMoved"
+                }
+            }
+        }
+    ]
+}

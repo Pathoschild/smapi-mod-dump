@@ -3,14 +3,23 @@
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
 		<EnableHarmony>true</EnableHarmony>
-		<Version>2.0.0</Version>
+		<LangVersion>Latest</LangVersion>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<Version>2.1.0</Version>
+		<Authors>tlitookilakin</Authors>
+		<Name>Happy Home Designer</Name>
+		<UniqueID>tlitookilakin.HappyHomeDesigner</UniqueID>
+		<Description>A mod that enhances the decorating experience by overhauling the furniture &amp; wallpaper catalogues.</Description>
+		<UpdateKeys>Nexus:19675, GitHub:tlitookilakin/HappyHomeDesigner</UpdateKeys>
+		<MinimumGameVersion_Behavior>Update</MinimumGameVersion_Behavior>
+		<MinimumApiVersion_Behavior>Update</MinimumApiVersion_Behavior>
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Leclair.Stardew.ModManifestBuilder" Version="2.3.1" />
 		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
+		<Reference Include="Newtonsoft.Json" HintPath="$(GamePath)\smapi-internal\Newtonsoft.Json.dll" private="false" />
 	</ItemGroup>
-
-	<PropertyGroup>
-		<GamePath>C:\Program Files (x86)\Steam\steamapps\common\Stardew Valley</GamePath>
-	</PropertyGroup>
 </Project>

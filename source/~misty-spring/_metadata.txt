@@ -12,11 +12,9 @@ mods:
    Spouses in Ginger Island
 
 latest commit:
-   commit f44e8e9e1f9e717d395433e206b24e9e5c7f700d
+   commit aa551442446f556aea61d941d8fcfe67da992f41
    Author: Mistyspring <105533011+misty-spring@users.noreply.github.com>
-   Date:   Tue Apr 23 17:26:54 2024 +0000
+   Date:   Mon May 27 22:42:19 2024 +0000
    
-       Create TreeSpawnData.cs
-       
-       Initial version, hasn't been tested yet
+       fix typo
    

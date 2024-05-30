@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Horse Flute Auto Mount",
+  "Author": "MercuryVN",
+  "Version": "0.1.0",
+  "Description": "Immediately jump on your horse after using horse flute",
+  "UniqueID": "MercuryVN.HorseFluteAutoMount",
+  "EntryDll": "HorseFluteAutoMount.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:24018" ]
+}

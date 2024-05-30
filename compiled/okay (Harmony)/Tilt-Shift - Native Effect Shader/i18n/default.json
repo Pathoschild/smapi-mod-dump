@@ -23,6 +23,9 @@
     "settings.enable-directionalFading.label": "Directional fading",
     "settings.enable-directionalFading.tooltip": "Fade the effect in the direction the player is facing",
 
+    "settings.enable-directionalFadingDuringEvents.label": "Enable during events",
+    "settings.enable-directionalFadingDuringEvents.tooltip": "Enable directional fading during events",
+
     "settings.directionalFading-time.label": "Fade time",
     "settings.directionalFading-time.tooltip": "How long the effect fades to the desired strength (Max. 1 second)",
 
@@ -39,7 +42,10 @@
     "settings.shader-strength.tooltip": "How much of the effect should be applied",
 
     "settings.shader-type.label": "Shader type",
-    "settings.shader-type.tooltip": "Gaussian blur results in a smoother blur. Box blur is faster",
+    "settings.shader-type.tooltip": "Gaussian blur results in a smoother blur. Box blur is faster. Chex is a fast 2D-only box-like blur type with reduced sample points in a diamond-shaped area (2D method is autoselected)",
+
+    "settings.shader-sigma.label": "Gaussian weight sigma",
+    "settings.shader-sigma.tooltip": "The sigma value that is used to calculate the weights for the Gaussian blur type",
 
     "settings.shader-method.label": "Shader method",
     "settings.shader-method.tooltip": "Automatic chooses the right method to minimize artifacts in certain situations and maximize performance where possible. Use Automatic or One-Pass (2D) if you encounter artifacts. Use Two-Pass (1D) for performance",

@@ -18,6 +18,8 @@ namespace QualityBait
 
         public bool BaitMakerQuality { get; set; } = true;
 
+        public bool ForceLowerQuality { get; set; } = true;
+
         [JsonIgnore]
         public double Chance => ChancePercentage / 100.0;
     }

@@ -1,0 +1,24 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ncarigon/StardewValleyMods
+**
+*************************************************/
+
+{
+	"press_Name": "ジュースプレス",
+	"press_Description": "くだものや野菜をジュースにする。",
+	"flavor_Name": "{0}{1}",
+
+	"config.PressRetainsQuality.name": "原料と同品質",
+	"config.PressRetainsQuality.description": "ジュースプレスから生産されるアイテムの品質が、原料と同じ品質になる。",
+	"config.UseNormalWineRecipe.name": "通常のワイン生産",
+	"config.UseNormalWineRecipe.description": "有効にすると、くだものを直接醸造ダルに入れてもワインを生産できる。",
+	"config.UseNormalBeerRecipe.name": "通常のビール生産",
+	"config.UseNormalBeerRecipe.description": "有効にすると、コムギを直接醸造ダルに入れてもビールを生産できる。",
+	"config.UseNormalPaleAleRecipe.name": "通常のペールエール生産",
+	"config.UseNormalPaleAleRecipe.description": "有効にすると、ホップを直接醸造ダルに入れてもペールエールを生産できる。"
+}

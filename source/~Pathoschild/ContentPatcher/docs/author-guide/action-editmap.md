@@ -63,7 +63,7 @@ field     | purpose
 field     | purpose
 --------- | -------
 `When`    | _(optional)_ Only apply the patch if the given [conditions](../author-guide.md#conditions) match.
-`LogName` | _(optional)_ A name for this patch to show in log messages. This is useful for understanding errors; if not specified, it'll default to a name like `entry #14 (EditImage Animals/Dinosaurs)`.
+`LogName` | _(optional)_ A name for this patch to show in log messages. This can be useful for understanding errors. If omitted, it defaults to a name like `EditMap Maps/Town`.
 `Update`  | _(optional)_ How often the patch fields should be updated for token changes. See [update rate](../author-guide.md#update-rate) for more info.
 
 </dd>
@@ -100,9 +100,19 @@ This field does _not_ support tokens, and capitalization doesn't matter.
 > * There's no need to set priorities relative to _your own_ patches, since you can just list them
 >   in the order they should be applied.
 
+  </tr>
+  <tr>
+  <td><code>TargetLocale</code></td>
+  <td>
+
+_(optional)_ The locale code to match in the asset name. For example, setting `"TargetLocale": "fr-FR"`
+will only edit the French localized form of the asset (e.g. `Maps/Town.fr-FR`). This can be
+an empty string to only edit the base unlocalized asset.
+
+If omitted, it's applied to all localized and unlocalized variants of the asset.
+
 </td>
 </table>
-
 </dd>
 </dl>
 
@@ -219,7 +229,7 @@ Here's how that would be merged with each patch mode (black areas are the empty 
 For example, this replaces the town square with the one in another map:
 ```js
 {
-    "Format": "2.0.0",
+    "Format": "2.1.0",
     "Changes": [
         {
             "Action": "EditMap",
@@ -302,7 +312,7 @@ For example, this changes the `Outdoors` tile for the farm cave and adds a warp 
 [map documentation](https://stardewvalleywiki.com/Modding:Maps) for the warp syntax):
 ```js
 {
-    "Format": "2.0.0",
+    "Format": "2.1.0",
     "Changes": [
         {
             "Action": "EditMap",
@@ -363,7 +373,7 @@ field | purpose
 For example, this extends the farm path one extra tile to the shipping bin:
 ```js
 {
-    "Format": "2.0.0",
+    "Format": "2.1.0",
     "Changes": [
         {
             "Action": "EditMap",
@@ -384,7 +394,7 @@ You can use tokens in all of the fields. For example, this adds a warp in front 
 that leads to a different location each day:
 ```js
 {
-    "Format": "2.0.0",
+    "Format": "2.1.0",
     "Changes": [
         {
             "Action": "EditMap",

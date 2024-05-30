@@ -1,10 +1,10 @@
 {
-  "General": 1,
-  "Combat": 1,
-  "Farming": 1,
-  "Fishing": 1,
-  "Mining": 1,
-  "Foraging": 1,
-  "Luck": 1,
+  "General": 1.0,
+  "Combat": 1.0,
+  "Farming": 1.0,
+  "Fishing": 1.0,
+  "Mining": 1.0,
+  "Foraging": 1.0,
+  "Luck": 1.0,
   "ReloadKey": "F9"
 }

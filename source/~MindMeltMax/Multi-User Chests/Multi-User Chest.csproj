@@ -4,6 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>Multi_User_Chest</RootNamespace>
     <LangVersion>Latest</LangVersion>
+    <EnableHarmony>True</EnableHarmony>
   </PropertyGroup>
 
   <ItemGroup>

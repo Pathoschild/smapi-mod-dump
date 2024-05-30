@@ -16,7 +16,8 @@
   "FlowersPerBoost": 2,
   "UseAnyFruitTrees": false,
   "BeePaths": true,
-  "ParticleCount": 20,
   "PathParticleCount": 5,
-  "AnythingHoney": false
+  "AnythingHoney": false,
+  "UseBushes": true,
+  "ModifyCustomBeehouses": true
 }

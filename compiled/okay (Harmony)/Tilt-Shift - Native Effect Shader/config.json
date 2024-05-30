@@ -4,15 +4,17 @@
   "enableInMines": true,
   "enableInEvents": false,
   "directionalFading": true,
-  "directionalFadingTime": 0.4,
+  "directionalFadingTime": 0.5,
   "directionalFadingMin": 0.0,
+  "directionalFadingDuringEvents": false,
   "blurRadius": 4,
-  "blurOffset": 0.2,
+  "blurOffset": 0.25,
   "effectStregth": 1.0,
   "passes": 1,
   "sampleOffset": 1.0,
   "disableOnWorkaround": false,
   "shaderType": "Gaussian",
   "shaderMethod": "Automatic",
-  "debug": false
+  "debug": false,
+  "sigma": 5.0
 }

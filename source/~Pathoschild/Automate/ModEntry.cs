@@ -103,6 +103,7 @@ namespace Pathoschild.Stardew.Automate
                 defaultFactory: new AutomationFactory(
                     config: () => this.Config,
                     monitor: this.Monitor,
+                    reflection: this.Helper.Reflection,
                     isBetterJunimosLoaded: helper.ModRegistry.IsLoaded("hawkfalcon.BetterJunimos")
                 ),
                 monitor: this.Monitor

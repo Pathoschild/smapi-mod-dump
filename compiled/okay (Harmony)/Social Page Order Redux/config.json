@@ -1,0 +1,14 @@
+{
+  "EnableMod": true,
+  "prevButton": "Up",
+  "nextButton": "Down",
+  "UseButton": true,
+  "UseDropdown": true,
+  "UseFilter": true,
+  "ButtonOffsetX": 0,
+  "ButtonOffsetY": 0,
+  "DropdownOffsetX": 0,
+  "DropdownOffsetY": 0,
+  "FilterOffsetX": 0,
+  "FilterOffsetY": 0
+}

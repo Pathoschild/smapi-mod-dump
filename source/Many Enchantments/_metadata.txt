@@ -6,9 +6,9 @@ mods:
    Many Enchantments
 
 latest commit:
-   commit 387966a0723ff01c5aa5206a35363cfdab645162
-   Author: SlivaStari <52631488+SlivaStari@users.noreply.github.com>
-   Date:   Sat May 29 17:53:28 2021 -0400
+   commit 62d181fedc5ae398b4bc3e24b5944f9ffee62d4f
+   Author: sliva <sliva@DESKTOP-7M27B1J>
+   Date:   Fri May 10 16:26:34 2024 -0400
    
-       Create LICENSE
+       Update to SDV 1.6 / SMAPI 4.0
    

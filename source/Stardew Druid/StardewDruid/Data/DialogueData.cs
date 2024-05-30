@@ -32,7 +32,7 @@ namespace StardewDruid.Data
         public static void QueryDisplay(QueryData queryData)
         {
 
-            Dictionary<int, Narrator> narrators = DialogueNarrator(queryData.name);
+            Dictionary<int, Narrator> narrators = DialogueNarrators(queryData.name);
 
             Dictionary<int, Dictionary<int, string>> cues = DialogueScene(queryData.name);
 
@@ -57,66 +57,68 @@ namespace StardewDruid.Data
 
         }
 
-        public static Dictionary<int, Narrator> DialogueNarrator(string scene)
+        public static Dictionary<int, Narrator> DialogueNarrators(string scene)
         {
             Dictionary<int, Narrator> sceneNarrators = new();
 
             switch (scene)
             {
 
-                case "challengeEarth":
-                case "challengeEarthTwo":
+                case "challengeWeald":
 
-                    sceneNarrators = new() { [0] = new("Maskbat", Color.White), };
-
-                    break;
-
-                case "challengeWater":
-                case "challengeWaterTwo":
-
-                    sceneNarrators = new() { [0] = new("Shadow Sergeant", Color.White), };
+                    sceneNarrators = new() { [0] = new("Clericbat", Color.DarkSlateGray), };
 
                     break;
 
-                case "challengeStarsTwo":
+                case "challengeMists":
+
+                    sceneNarrators = new() { 
+                        [0] = new("Shadow Sergeant", Color.DarkSlateGray), 
+                        [1] = new("Shadow Thug", Color.Navy),
+                        [2] = new("Shadow Leader", Color.Maroon),
+                        [3] = new("The Effigy", Color.Green),
+                    };
+
+                    break;
+
                 case "challengeStars":
 
-                    sceneNarrators = new() { [0] = new("Jellyking", Color.LightGoldenrodYellow), };
+                    sceneNarrators = new() { [0] = new("The Jellyking", Color.OrangeRed), };
 
                     break;
 
                 case "challengeMariner":
                 case "challengeMarinerTwo":
 
-                    sceneNarrators = new() { [0] = new("Phantom Mariner", Color.White), };
+                    sceneNarrators = new() { [0] = new("Phantom Mariner", Color.Blue), };
 
                     break;
 
                 case "challengeCanoli":
                 case "challengeCanoliTwo":
 
-                    sceneNarrators = new() { [0] = new("Phantom Gardener", Color.White), };
+                    sceneNarrators = new() { [0] = new("Phantom Gardener", Color.DarkSlateGray), };
 
                     break;
 
                 case "challengeMuseum":
                 case "challengeMueumTwo":
 
-                    sceneNarrators = new() { [0] = new("Gunther", Color.White), [1] = new("Phantom Dinosaur", Color.White), };
+                    sceneNarrators = new() { [0] = new("Gunther", Color.DarkSlateGray), [1] = new("Phantom Dinosaur", Color.DarkSlateGray), };
 
                     break;
 
                 case "challengeGemShrine":
                 case "challengeGemShrineTwo":
 
-                    sceneNarrators = new() { [0] = new("Phantom Voice", Color.White), };
+                    sceneNarrators = new() { [0] = new("Phantom Voice", Color.DarkSlateGray), };
 
                     break;
 
                 case "challengeSandDragon":
                 case "challengeSandDragonTwo":
 
-                    sceneNarrators = new() { [0] = new("Phantom Tyrant", Color.White), };
+                    sceneNarrators = new() { [0] = new("Phantom Tyrant", Color.DarkSlateGray), };
 
                     break;
 
@@ -131,7 +133,7 @@ namespace StardewDruid.Data
                 case "swordEther":
                 case "swordEtherTwo":
 
-                    sceneNarrators = new() { [0] = new("The Jester of Fate", new Color(1f, 0.8f, 0.4f, 1f)), [1] = new("Tyrannus Prime", Color.White), };
+                    sceneNarrators = new() { [0] = new("The Jester of Fate", new Color(1f, 0.8f, 0.4f, 1f)), [1] = new("Tyrannus Prime", Color.DarkSlateGray), };
 
                     break;
 
@@ -156,53 +158,62 @@ namespace StardewDruid.Data
             switch (scene)
             {
 
-                case "challengeEarth":
-                case "challengeEarthTwo":
+                case "challengeWeald":
 
                     sceneDialogue = new()
                     {
 
-                        [22] = new() { [0] = "...farmer...", },
-                        [24] = new() { [0] = "...you tresspass...", },
+                        [22] = new() { [0] = "trespasser", },
+                        [24] = new() { [0] = "filthy two legger", },
                         [26] = new() { [0] = "cheeep cheep", },
-                        [28] = new() { [0] = "...your kind...", },
-                        [30] = new() { [0] = "...defile waters...", },
+                        [28] = new() { [0] = "you and your kind", },
+                        [30] = new() { [0] = "have defiled the sacred waters", },
                         [32] = new() { [0] = "cheeep cheep", },
-                        [34] = new() { [0] = "Our Favoured Lady", },
-                        [37] = new() { [0] = "...is angry...", },
+                        [34] = new() { [0] = "our Lady of Mists", },
+                        [37] = new() { [0] = "demands retribution!", },
                         [39] = new() { [0] = "CHEEEP", },
-                        [56] = new() { [0] = "...rocks hurt...", },
+                        [56] = new() { [0] = "these damned rocks", },
                         [58] = new() { [0] = "CHEEE--- aack", },
                     };
 
                     break;
 
-                case "challengeWater":
-                case "challengeWaterTwo":
+                case "challengeMists":
 
                     sceneDialogue = new()
                     {
 
-                        [2] = new() { [0] = "discovery!", },
-                        [6] = new() { [0] = "ENGAGE", },
-                        [9] = new() { [0] = "secure the graveyard perimeter", },
-                        [12] = new() { [0] = "FIRE", },
-                        [15] = new() { [0] = "seal the crypt", },
-                        [18] = new() { [0] = "ENGAGE", },
-                        [21] = new() { [0] = "surround the farmer", },
-                        [24] = new() { [0] = "FIRE", },
-                        [27] = new() { [0] = "secure the ether stores", },
-                        [30] = new() { [0] = "ENGAGE", },
-                        [33] = new() { [0] = "there is no retreat for us", },
-                        [36] = new() { [0] = "the Deep One will know of our failure", },
-                        [39] = new() { [0] = "ADVANCE", },
-                        [56] = new() { [0] = "such power", },
-                        [58] = new() { [0] = "Lord Deep... forgive us", },
-                    };
+                        [2] = new() { [0] = "ah whats that then", },
+                        [4] = new() { [1] = "one of them twinkle fingers", },
+                        [6] = new() { [0] = "oh oh oh alright lads get em", },
+                        [9] = new() { [0] = "loading charge", },
+                        [11] = new() { [3] = "beware those explosive rounds",},
+                        [13] = new() { [0] = "blasted thing jammed!", },
+                        [18] = new() { [0] = "loading again", },
+                        [20] = new() { [3] = "we must prevent such callous destruction", },
+                        [22] = new() { [0] = "ah whiffed it", },
+                        [25] = new() { [0] = "stop waffling and pin them down", },
+                        [28] = new() { [1] = "its no good. Twinkly's too tricky", },
+                        [31] = new() { [0] = "ughhh... alright loading again", },
+                        [35] = new() { [0] = "I'M UNDER PRESSURE HERE", },
+                        [38] = new() { [1] = "dont feel so good bout this", },
+                        [40] = new() { [0] = "you'd rather anger the Deep one?", },
+                        [42] = new() { [1] = "sod that, I'd rather fight", },
+                        [44] = new() { [0] = "preparing incendiary", },
+                        [48] = new() { [0] = "this isn't going well", },
+                        [51] = new() { [2] = "attempting a capture are we", },
+                        [53] = new() { [3] = "that is the mercenary that hunted me", },
+                        [55] = new() { [0] = "trying, boss", },
+                        [57] = new() { [2] = "aim higher", },
+                        [59] = new() { [0] = "uh, sorry boss", },
+                        [61] = new() { [2] = "we're too exposed here, call them all back", },
+                        [63] = new() { [0] = "you heard the boss!", },
+                        [65] = new() { [2] = "watch yourself, farmer", },
 
+                    };
+                    
                     break;
 
-                case "challengeStarsTwo":
                 case "challengeStars":
 
                     sceneDialogue = new()

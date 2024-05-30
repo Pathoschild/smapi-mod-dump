@@ -157,7 +157,7 @@ public class CategoryRuleHandler : DynamicTypeHandler<CategoryFilterInfo>, IOpti
 			return default;
 
 		string? rawInput = (string?) token;
-		if (string.IsNullOrEmpty(rawInput) || ! int.TryParse(rawInput, out int category))
+		if (string.IsNullOrEmpty(rawInput) || !int.TryParse(rawInput, out int category))
 			return default;
 
 		return new CategoryFilterInfo(category);

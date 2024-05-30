@@ -28,6 +28,7 @@ namespace MailFrameworkMod.ContentPack
         public string CustomTextColorName;
         internal Color? CustomTextColor;
         public string UpperRightCloseButton;
+        public ReplyConfig ReplyConfig;
         public bool Repeatable;
         public string Date;
         public List<int> Days;

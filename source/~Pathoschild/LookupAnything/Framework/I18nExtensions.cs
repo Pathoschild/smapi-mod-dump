@@ -17,7 +17,6 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Netcode;
 using Pathoschild.Stardew.LookupAnything.Framework.Constants;
-using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.GameData.WildTrees;
@@ -33,6 +32,13 @@ namespace Pathoschild.Stardew.LookupAnything.Framework
         /*********
         ** Public methods
         *********/
+        /// <summary>Get a separated list of values (like "A, B, C") using the separator for the current language.</summary>
+        /// <param name="values">The values to list.</param>
+        public static string List(IEnumerable<object> values)
+        {
+            return string.Join(I18n.Generic_ListSeparator(), values);
+        }
+
         /// <summary>Get a translation for an enum value.</summary>
         /// <param name="stage">The tree growth stage.</param>
         public static string For(WildTreeGrowthStage stage)
@@ -100,31 +106,6 @@ namespace Pathoschild.Stardew.LookupAnything.Framework
                 yield return I18n.GetSeasonName(season);
         }
 
-        /// <summary>The overridden translations for location names.</summary>
-        public static class LocationOverrides
-        {
-            /// <summary>The translated name for a location, or the internal name if no translation is available.</summary>
-            public static string LocationName(string locationName)
-            {
-                return I18n.Translations!.Get($"location.{locationName}").Default(locationName);
-            }
-
-            /// <summary>The translated name for a fishing area.</summary>
-            public static string AreaName(string locationName, string id)
-            {
-                // mine level
-                if (string.Equals(locationName, "UndergroundMine", StringComparison.OrdinalIgnoreCase))
-                    return I18n.Location_UndergroundMine_Level(level: id);
-
-                // dynamic area override
-                Translation areaTranslation = I18n.Translations!.Get(int.TryParse(id, out int _)
-                    ? $"location.{locationName}.fish-area-{id}"
-                    : $"location.{locationName}.{id}");
-                return areaTranslation
-                    .Default(I18n.Location_UnknownFishArea(locationName: I18n.LocationOverrides.LocationName(locationName), id: id));
-            }
-        }
-
         /// <summary>Get a human-readable representation of a value.</summary>
         /// <param name="value">The underlying value.</param>
         public static string? Stringify(object? value)
@@ -182,7 +163,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework
                             parts.Add(I18n.Generic_Hours(span.Hours));
                         if (span.Minutes > 0)
                             parts.Add(I18n.Generic_Minutes(span.Minutes));
-                        return string.Join(", ", parts);
+                        return I18n.List(parts);
                     }
                 case Vector2 vector:
                     return $"({vector.X}, {vector.Y})";
@@ -222,7 +203,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework
                 case IEnumerable array when value is not string:
                     {
                         string[] values = (from val in array.Cast<object>() select I18n.Stringify(val) ?? "<null>").ToArray()!;
-                        return "(" + string.Join(", ", values) + ")";
+                        return "(" + I18n.List(values) + ")";
                     }
 
                 default:

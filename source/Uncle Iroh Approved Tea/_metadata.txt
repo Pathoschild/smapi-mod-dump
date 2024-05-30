@@ -6,9 +6,9 @@ mods:
    Uncle Iroh Approved Tea
 
 latest commit:
-   commit 7925d5cf92477e222198afbb49f33a321b409511
+   commit d2f127d9a866ea42a47369f456a8e1d879045c6f
    Author: Manon Lefebvre <manonalefebvre@gmail.com>
-   Date:   Wed Apr 24 07:24:07 2024 -0700
+   Date:   Thu May 16 09:11:21 2024 -0700
    
-       fixed dried goji berry prices, added russian translation; thanks @kuwhio
+       fixed grains versions, added spanish to uncle iroh approved tea, and fixed cooking recipes for tea
    

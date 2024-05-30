@@ -70,13 +70,13 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Tiles
             ModConfig config = this.Config();
 
             if (this.IsCrystalCavePuzzle(location, tile, out int? crystalId))
-                return new CrystalCavePuzzleSubject(this.GameHelper, location, tile, showRaw, config.ProgressionMode, crystalId);
+                return new CrystalCavePuzzleSubject(this.GameHelper, location, tile, showRaw, config.ShowPuzzleSolutions, crystalId);
 
             if (this.GetIsIslandMermaidPuzzle(location, tile))
-                return new IslandMermaidPuzzleSubject(this.GameHelper, location, tile, showRaw, config.ProgressionMode);
+                return new IslandMermaidPuzzleSubject(this.GameHelper, location, tile, showRaw, config.ShowPuzzleSolutions);
 
             if (this.IsIslandShrinePuzzle(location, tile))
-                return new IslandShrinePuzzleSubject(this.GameHelper, location, tile, showRaw, config.ProgressionMode);
+                return new IslandShrinePuzzleSubject(this.GameHelper, location, tile, showRaw, config.ShowPuzzleSolutions);
 
             if (showRaw)
                 return new TileSubject(this.GameHelper, location, tile, true);

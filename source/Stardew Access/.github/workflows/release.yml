@@ -1,0 +1,148 @@
+##################################################
+##
+## You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+## for queries and analysis.
+##
+## This is *not* the original file, and not necessarily the latest version.
+## Source repository: https://github.com/stardew-access/stardew-access
+##
+##################################################
+
+name: Release
+
+# Refs:
+# Using act with github assets: https://github.com/nektos/act/issues/329#issuecomment-1905955589
+# ACT (for testing workflows locally): https://nektosact.com/
+# Example commands:
+# $ docker run -d --name artifact-server -p 8080:8080 --add-host host.docker.internal:host-gateway -e AUTH_KEY=foo ghcr.io/jefuller/artifact-server:latest
+# $ sudo act --env ACTIONS_RUNTIME_URL=http://host.docker.internal:8080/ --env ACTIONS_RUNTIME_TOKEN=foo --env ACTIONS_CACHE_URL=http://host.docker.internal:8080/ --artifact-server-path act_out -W ./.github/workflows/release.yml
+
+# Can only be called manually from the actions tab on github repo.
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'The semantic release version'
+        required: false
+        default: 'auto-fetch'
+        type: string
+      pre-release:
+        description: 'Set as pre-release i.e., beta or alpha'
+        required: false
+        default: 'auto'
+        type: choice
+        options:
+          - auto
+          - true
+          - false
+      set-latest:
+        description: 'Set as latest on github and nexus'
+        required: false
+        default: false
+        type: boolean
+      nexus-main-vortex:
+        description: 'Set as main vortex file on nexus'
+        required: false
+        default: false
+        type: boolean
+      github-upload:
+        description: 'Whether to upload on github or not'
+        required: false
+        default: true
+        type: boolean
+      nexus-upload:
+        description: 'Whether to upload on nexus or not'
+        required: false
+        default: true
+        type: boolean
+
+jobs:
+  build:
+    name: Build
+    uses: ./.github/workflows/build.yml
+
+  publish:
+    name: Publish
+    needs: build
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    env:
+      NEXUSMOD_API_KEY: ${{ secrets.NEXUSMOD_API_KEY }}
+      NEXUSMOD_COOKIE_SID_DEVELOP: ${{ secrets.NEXUSMOD_COOKIE_SID_DEVELOP }}
+      NEXUSMOD_MODID: 16205
+    steps:
+      - name: Pull source code
+        uses: actions/checkout@v4
+
+      # Ref: https://github.com/actions/download-artifact
+      - name: Download artifacts from build workflow run
+        uses: actions/download-artifact@v4
+        with:
+          name: stardew-access-nightly
+          path: act_out/
+
+      # Ref: https://github.com/khanshoaib3/minecraft-access/blob/bbe8bd7b97f960ad9fe48a36e69da2d4b6edadb8/.github/workflows/release.yml#L80
+      - name: Set environment variables
+        run: |
+          for f in act_out/*zip; do if [[ $f == *'debug'* ]]; then echo DEBUG_FILE=$f >> $GITHUB_ENV; else echo MAIN_FILE=$f >> $GITHUB_ENV; fi; done
+          if ${{ inputs.version != 'auto-fetch' }}; then RELEASE_TAG=${{ inputs.version }};
+          else RELEASE_TAG=v$( jq -r '.Version' ./stardew-access/manifest.json ); fi
+          echo RELEASE_TAG=$RELEASE_TAG >> $GITHUB_ENV
+          if ${{ inputs.pre-release == 'auto' }}; then if [[ $RELEASE_TAG == *'beta'* ]] || [[ $RELEASE_TAG == *'alpha'* ]]; then PRE_RELEASE=true; else PRE_RELEASE=false; fi;
+          else if ${{ inputs.pre-release == 'true' }}; then PRE_RELEASE=true; else PRE_RELEASE=false; fi; fi
+          echo PRE_RELEASE=$PRE_RELEASE >> $GITHUB_ENV
+          echo NEXUSMOD_NAME=Stardew Access $RELEASE_TAG >> $GITHUB_ENV
+          echo "NEXUSMOD_VERSION=$( echo $RELEASE_TAG | cut -c 2- )" >> $GITHUB_ENV
+          echo "GH_TITLE=$( if $PRE_RELEASE; then echo 'Beta '; fi )Release ${RELEASE_TAG}" >> $GITHUB_ENV
+          echo "NEXUSMOD_DESC=Uploaded to nexus by github actions at: $( date ).$( if ${{ inputs.github-upload }}; then echo Checkout the changlog at: https://github.com/khanshoaib3/stardew-access/releases/tag/$( echo $RELEASE_TAG ); fi )" >> $GITHUB_ENV
+
+      - name: Rename build zips if necessary
+        if: inputs.version != 'auto-fetch'
+        run: |
+          for f in act_out/*zip; do fname=act_out/stardew-access-$( echo ${{ env.RELEASE_TAG }} | cut -c 2- )$( if [[ $f == *'debug'* ]]; then echo -debug; fi ).zip; echo $fname; mv "${f}" "${fname}"; done
+          for f in act_out/*zip; do if [[ $f == *'debug'* ]]; then echo DEBUG_FILE=$f >> $GITHUB_ENV; else echo MAIN_FILE=$f >> $GITHUB_ENV; fi; done
+
+      # - name: Test envs
+      #   run: |
+      #     echo ${{ env.MAIN_FILE }}
+      #     echo ${{ env.DEBUG_FILE }}
+      #     echo ${{ env.RELEASE_TAG }}
+      #     echo ${{ env.PRE_RELEASE }}
+      #     echo ${{ env.GH_TITLE }}
+      #     echo ${{ env.NEXUSMOD_NAME }}
+      #     printf "${{ env.NEXUSMOD_DESC }}\n"
+      #     echo ${{ env.NEXUSMOD_VERSION }}
+      #     echo ${{ env.NEXUSMOD_MODID }}
+
+      # Ref: https://github.com/softprops/action-gh-release
+      - name: Upload on GitHub
+        if: inputs.github-upload
+        uses: softprops/action-gh-release@v2
+        with:
+          body: This is temporary and will be changed soon...
+          prerelease: ${{ env.PRE_RELEASE }}
+          files: |
+            ${{ env.MAIN_FILE }}
+            ${{ env.DEBUG_FILE }}
+          name: ${{ env.GH_NAME }}
+          fail_on_unmatched_files: true
+          tag_name: ${{ env.RELEASE_TAG }}
+          generate_release_notes: true
+          make_latest: ${{ inputs.set-latest }}
+
+      - name: Install dotnet
+        if: inputs.nexus-upload
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '6.0.x'
+
+      # Refs
+      # DRMU: https://github.com/Digitalroot-Valheim/Digitalroot.ModUploader
+      # Github ternary expression: https://docs.github.com/en/actions/learn-github-actions/expressions#example
+      - name: Upload on Nexus
+        if: inputs.nexus-upload
+        run: |
+          dotnet tool install -g Digitalroot.ModUploader
+          drmu nexusmods check
+          drmu nexusmods upload ${{ env.NEXUSMOD_MODID }} "${{ env.MAIN_FILE }}" -f "${{ env.NEXUSMOD_NAME }}" -v "${{ env.NEXUSMOD_VERSION }}" -g stardewvalley -t Main -d "${{ env.NEXUSMOD_DESC }}" -dmfu ${{ inputs.set-latest && '' || '-dvu' }} ${{ inputs.nexus-main-vortex && '' || '-dmv' }}

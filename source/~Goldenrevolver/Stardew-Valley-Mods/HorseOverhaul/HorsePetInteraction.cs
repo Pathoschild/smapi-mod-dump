@@ -69,9 +69,9 @@ namespace HorseOverhaul
                     }
                 }
 
-                if (Context.IsWorldReady && Context.CanPlayerMove && Context.IsPlayerFree && mod.Config.SaddleBag)
+                if (Context.IsWorldReady && Context.CanPlayerMove && Context.IsPlayerFree)
                 {
-                    if (horseW.SaddleBag != null)
+                    if (mod.Config.SaddleBag && SaddleBagAccess.HasAccessToSaddleBag(horse) && horseW.SaddleBag != null)
                     {
                         OpenSaddleBagWithDelay(horseW);
 
@@ -84,11 +84,12 @@ namespace HorseOverhaul
         }
 
         // based on Chest.ShowMenu, but only allows interacting with content after one frame delay to prevent immediately transfering one item (mostly when using controller)
+        // also uses the context of type Stable instead of type Chest
         public static void OpenSaddleBagWithDelay(HorseWrapper horseW)
         {
             //Game1.activeClickableMenu = new ItemGrabMenu(
             Game1.activeClickableMenu = new HighlightDelayedItemGrabMenu(1,
-                horseW.SaddleBag.GetItemsForPlayer(), reverseGrab: false, showReceivingMenu: true, InventoryMenu.highlightAllItems, horseW.SaddleBag.grabItemFromInventory, null, horseW.SaddleBag.grabItemFromChest, snapToBottom: false, canBeExitedWithKey: true, playRightClickSound: true, allowRightClick: true, showOrganizeButton: true, 1, horseW.SaddleBag.fridge.Value ? null : horseW.SaddleBag, -1, horseW.SaddleBag);
+                horseW.SaddleBag.GetItemsForPlayer(), reverseGrab: false, showReceivingMenu: true, InventoryMenu.highlightAllItems, horseW.SaddleBag.grabItemFromInventory, null, horseW.SaddleBag.grabItemFromChest, snapToBottom: false, canBeExitedWithKey: true, playRightClickSound: true, allowRightClick: true, showOrganizeButton: true, 1, horseW.SaddleBag.fridge.Value ? null : horseW.SaddleBag, -1, horseW.Stable);
         }
 
         public static bool CheckPetInteraction(HorseOverhaul mod, Farmer who, int mouseX, int mouseY, bool ignoreMousePosition)

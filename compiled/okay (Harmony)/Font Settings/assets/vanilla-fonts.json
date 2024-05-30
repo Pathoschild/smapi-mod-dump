@@ -91,7 +91,7 @@
       "Lang": "zh",
       "Locale": "zh-CN",
       "InGameType": "SmallFont",
-      "FontFilePath": "KNMaiyuan-Regular.ttf",
+      "FontFilePath": "NotoSansCJKsc-Bold.otf",
       "FontIndex": 0,
       "FontSize": 28.0,
       "Spacing": -1.0,
@@ -104,9 +104,9 @@
       "Lang": "zh",
       "Locale": "zh-CN",
       "InGameType": "DialogueFont",
-      "FontFilePath": "KNMaiyuan-Regular.ttf",
+      "FontFilePath": "NotoSansCJKsc-Bold.otf",
       "FontIndex": 0,
-      "FontSize": 32.0,
+      "FontSize": 37.0,
       "Spacing": 0.0,
       "LineSpacing": 38
     },
@@ -117,12 +117,12 @@
       "Lang": "zh",
       "Locale": "zh-CN",
       "InGameType": "SpriteText",
-      "FontFilePath": "KNMaiyuan-Regular.ttf",
+      "FontFilePath": "NotoSansCJKsc-Bold.otf",
       "FontIndex": 0,
-      "FontSize": 64.0,
-      "Spacing": -2.0,
-      "LineSpacing": 82,
-      "PixelZoom": 1.0
+      "FontSize": 34.0,
+      "Spacing": -1.0,
+      "LineSpacing": 33,
+      "PixelZoom": 1.5
     },
 
 

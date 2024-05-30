@@ -14,12 +14,18 @@
     "config.show-all-key.tooltip": "Hotkey to show all ranges",
     "config.highlight-building-on-mouseover": "Highlight buildings on mouseover",
     "config.highlight-building-on-mouseover.tooltip": "If true then highlighters for buildings (e.g., Junimo Huts) run when the mouse is pointing at the building.",
+
     "config.highlight-action-location": "Show at action location",
     "config.highlight-action-location.tooltip": "If the currently held object has a highlighter, show its range at the location where the object will be placed if you press the action button.",
     "config.highlight-action-location-style.Never": "Never",
     "config.highlight-action-location-style.WhenMouseHidden": "When mouse cursor is hidden",
     "config.highlight-action-location-style.Always": "Always",
 
+    "config.hide-at-mouse-location-on-movement": "Hide at mouse location\n on player movement",
+    "config.hide-at-mouse-location-on-movement.tooltip": "If the currently held object has a highlighter, do not show it at the mouse location if the player has moved more recently than the mouse.",
+
+    "config.show-overlaps": "Show overlapping ranges",
+    "config.show-overlaps.tooltip": "Shows when like-colored ranges overlap.  Disabling this will decrease performance and may cause lag.",
 
     "config.Junimo": "Junimo Huts",
     "config.Junimo.enable.tooltip": "Enable Junimo Hut range highlighting",
@@ -31,6 +37,10 @@
     "config.sprinkler.hotkey.tooltip": "Hold this key to show sprinkler ranges",
     "config.sprinkler.show-others.tooltip": "Show ranges of already placed sprinklers when holding a sprinkler.",
     "config.sprinkler.tint.tooltip": "Color of the highlight for sprinkler range",
+    "config.sprinkler-mod-compatibility": "Sprinkler Mod Compatibility",
+    "config.sprinkler-mod-compatibility_tooltip": "Determining what tiles to highlight for sprinklers is faster if it can assume no mods have changed or added sprinkler shapes.",
+    "config.sprinkler-mod-compatibility-option.Faster": "Faster",
+    "config.sprinkler-mod-compatibility-option.MoreCompatible": "More Compatible",
 
     "config.scarecrow": "Scarecrows",
     "config.scarecrow.enable.tooltip": "Enable scarecrow range highlighting",

@@ -1,0 +1,45 @@
+{
+  "Config.PreciseFurniture.EnableMod.Name": "Enable Mod",
+  "Config.PreciseFurniture.EnableMod.Description": "Enables the mod",
+
+  "Config.PreciseFurniture.MoveCursor.Name": "Move Cursor with Furniture",
+  "Config.PreciseFurniture.MoveCursor.Description": "When moving furniture, the cursor moves with it",
+
+  "Config.PreciseFurniture.BlacklistPreventsPickup.Name": "Locking Prevents Pickup",
+  "Config.PreciseFurniture.BlacklistPreventsPickup.Description": "Prevents picking up locked furniture",
+
+  "Config.PreciseFurniture.RaiseButton.Name": "Raise Button",
+  "Config.PreciseFurniture.RaiseButton.Description": "Keybind for raising furniture",
+
+  "Config.PreciseFurniture.LowerButton.Name": "Lower Button",
+  "Config.PreciseFurniture.LowerButton.Description": "Keybind for lowering furniture",
+
+  "Config.PreciseFurniture.LeftButton.Name": "Left Button",
+  "Config.PreciseFurniture.LeftButton.Description": "Keybind for moving furniture left",
+
+  "Config.PreciseFurniture.RightButton.Name": "Right Button",
+  "Config.PreciseFurniture.RightButton.Description": "Keybind for moving furniture right",
+
+  "Config.PreciseFurniture.BlacklistKey.Name": "Lock Furniture Button",
+  "Config.PreciseFurniture.BlacklistKey.Description": "Keybind for locking furniture",
+
+  "Config.PreciseFurniture.PassableKey.Name": "Passable Furniture Button",
+  "Config.PreciseFurniture.PassableKey.Description": "Keybind for disabling the hitbox on furniture",
+
+  "Config.PreciseFurniture.ModKey.Name": "Speed Modifier Button",
+  "Config.PreciseFurniture.ModKey.Description": "Keybind for increasing the move speed",
+
+  "Config.PreciseFurniture.ModSpeed.Name": "Speed Modifier",
+  "Config.PreciseFurniture.ModSpeed.Description": "How much the mod button should increase move speed by",
+
+  "Config.PreciseFurniture.MoveSpeed.Name": "Ticks Per Move",
+  "Config.PreciseFurniture.MoveSpeed.Description": "How often furniture should move when holding down the move keys",
+
+  // Player Messages
+  "Message.PreciseFurniture.AddPassable": "{{furnitureName}} is now passable",
+  "Message.PreciseFurniture.RemovePassable": "Removed {{furnitureName}} from the passable list",
+  "Message.PreciseFurniture.AddBlacklist": "{{furnitureName}} is now locked",
+  "Message.PreciseFurniture.RemoveBlacklist": "{{furnitureName}} is now unlocked",
+  "Message.PreciseFurniture.IsBlacklisted": "{{furnitureName}} is locked",
+  "Message.PreciseFurniture.PickupBlacklist": "You cannot pickup locked furniture"
+}

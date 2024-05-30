@@ -6,9 +6,11 @@ mods:
    Recipe Tracker
 
 latest commit:
-   commit 12c24cf6acf137a01b46c7527b068cb98097564a
-   Author: Nox Kimaera <maximillianmor@gmail.com>
-   Date:   Sat Apr 20 20:44:46 2024 +0400
+   commit 08c03a64d2643562c4cacdb760e2be1dade7aaf2
+   Author: Max Balushkin <maximillianmor@gmail.com>
+   Date:   Sat May 4 18:09:05 2024 +0400
    
-       Bumps version (1.0.4)
+       Adds quest tracking (#5)
+       
+       * Adds quest tracking
    

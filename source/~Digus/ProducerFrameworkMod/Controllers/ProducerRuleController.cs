@@ -142,6 +142,10 @@ namespace ProducerFrameworkMod.Controllers
                     {
                         producer.showNextIndex.Value = producerConfig.AlternateFrameProducing;
                     }
+                    else if (producer.GetMachineData() is { ShowNextIndexWhileWorking: true })
+                    {
+                        producer.showNextIndex.Value = true;
+                    }
 
                     if (producerRule.PlacingAnimation.HasValue && !noSoundAndAnimation)
                     {
@@ -180,6 +184,7 @@ namespace ProducerFrameworkMod.Controllers
             producer.readyForHarvest.Value = false;
             producer.showNextIndex.Value = false;
             producer.MinutesUntilReady = -1;
+            producer.ResetParentSheetIndex();
 
             if (ProducerController.GetProducerConfig(producer.QualifiedItemId) is ProducerConfig producerConfig && producerConfig.LightSource?.AlwaysOn == true)
             {

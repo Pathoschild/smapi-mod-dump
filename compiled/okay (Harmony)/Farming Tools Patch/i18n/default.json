@@ -1,0 +1,61 @@
+{
+  //Notifications In-Game
+  "longer": "Longer Reach",
+  "shorter": "Shorter Reach",
+  "wider": "Wider Radius",
+  "narrower": "Narrower Radius",
+
+  "affect-default": "Adjusting...",
+  "affect-copper": "Adjusting Copper",
+  "affect-steel": "Adjusting Steel",
+  "affect-gold": "Adjusting Gold",
+  "affect-iridium": "Adjusting Iridium",
+
+  "reset-notify": "Tools AOE reset to defaults",
+
+  //GMCM Hotkey Section
+  "hotkey-options": "Hotkey Options",
+  "hotkey-toggle": "Toggle Hotkeys",
+  "hktoggle-tooltip": "Check to enable hotkeys, uncheck to disable",
+
+  "length-inc-btn": "Increase AOE Length",
+  "length-ib-tooltip": "Add tiles to the reach of your tool's area of effect",
+
+  "radius-inc-btn": "Increase AOE Radius",
+  "radius-ib-tooltip": "Add tiles laterally to your tool's area of effect",
+
+  "length-dec-btn": "Decrease AOE Length",
+  "length-db-tooltip": "Remove tiles from the reach of your tool's area of effect",
+
+  "radius-dec-btn": "Decrease AOE Radius",
+  "radius-db-tooltip": "Remove tiles laterally from your tool's area of effect",
+
+  "cycle-charge-lvl": "Cycle Charge Level",
+  "cycle-cl-tooltip": "Cycle (one way) through the power levels to adjust their area of effect",
+
+  "reset-default": "Reload Default AOE Values",
+  "reset-tooltip": "Holding the Cycle Charge Level key for this many seconds will reset the mod's values to default",
+
+  //Iridium (level 4) Options
+  "iridium-section": "Iridium Tools",
+  "iridium-bool": "Modify Iridium Tools",
+
+  //Gold (level 3) Options
+  "gold-section": "Gold Tools",
+  "gold-bool": "Modify Gold Tools",
+
+  //Steel (level 2) Options
+  "steel-section": "Steel Tools",
+  "steel-bool": "Modify Steel Tools",
+
+  //Copper (level 1) Options
+  "copper-section": "Copper Tools",
+  "copper-bool": "Modify Copper Tools",
+
+  //Generic Tool Options
+  "tool-bool-tooltip": "Check to use the below settings, uncheck to use vanilla values",
+  "tool-length": "Length",
+  "tool-l-tooltip": "Number of tiles away the tool will reach",
+  "tool-radius": "Radius",
+  "tool-r-tooltip": "Number of parallel lines on each side of the tool's reach"
+}

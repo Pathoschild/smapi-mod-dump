@@ -1,0 +1,10 @@
+﻿{
+    "Name": "StardewRPC",
+    "Author": "ElocinDev",
+    "Version": "1.0.0",
+    "Description": "Add a bit more personality to your game with a configurable Discord Rich Presence!",
+    "UniqueID": "elocindev.stardewrpc",
+    "EntryDll": "StardewRPC.dll",
+    "MinimumApiVersion": "3.0.0",
+    "UpdateKeys": []
+}

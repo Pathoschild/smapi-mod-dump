@@ -16,6 +16,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Pathoschild.Stardew.Common;
 using Pathoschild.Stardew.Common.Utilities;
+using StardewModdingAPI;
 using StardewValley;
 using SObject = StardewValley.Object;
 
@@ -33,6 +34,9 @@ namespace Pathoschild.Stardew.Automate.Framework
         /// <summary>The number of milliseconds to pause machines when they crash.</summary>
         private readonly int MachinePauseMilliseconds = 30000;
 
+        /// <summary>Encapsulates monitoring and logging.</summary>
+        private readonly IMonitor Monitor;
+
         /// <summary>Machines which are temporarily paused, with the game time in milliseconds when their pause expires.</summary>
         private readonly Dictionary<IMachine, double> MachinePauseExpiries = new(new ObjectReferenceComparer<IMachine>());
 
@@ -44,6 +48,19 @@ namespace Pathoschild.Stardew.Automate.Framework
 
         /// <summary>The tiles covered by this machine group.</summary>
         private readonly HashSet<Vector2> Tiles;
+
+        /****
+        ** Pooled instances
+        ** (These just minimize object allocations, and aren't used to store state between ticks.)
+        ****/
+        /// <summary>The pre-allocated list used to store machines which have output ready during the current automation tick.</summary>
+        private readonly List<IMachine> PooledOutputReady = new();
+
+        /// <summary>The pre-allocated list used to store machines which have input ready during the current automation tick.</summary>
+        private readonly List<IMachine> PooledInputReady = new();
+
+        /// <summary>A pre-allocated set used to store machine IDs that should be ignored for input during the current automation tick.</summary>
+        private readonly HashSet<string> PooledIgnoreMachinesForInput = new();
 
 
         /*********
@@ -75,12 +92,14 @@ namespace Pathoschild.Stardew.Automate.Framework
         /// <param name="containers">The containers in the group.</param>
         /// <param name="tiles">The tiles comprising the group.</param>
         /// <param name="buildStorage">Build a storage manager for the given containers.</param>
-        public MachineGroup(string? locationKey, IEnumerable<IMachine> machines, IEnumerable<IContainer> containers, IEnumerable<Vector2> tiles, Func<IContainer[], StorageManager> buildStorage)
+        /// <param name="monitor">Encapsulates monitoring and logging.</param>
+        public MachineGroup(string? locationKey, IEnumerable<IMachine> machines, IEnumerable<IContainer> containers, IEnumerable<Vector2> tiles, Func<IContainer[], StorageManager> buildStorage, IMonitor monitor)
         {
             this.LocationKey = locationKey;
             this.Machines = machines.ToArray();
             this.Containers = containers.ToArray();
             this.Tiles = new HashSet<Vector2>(tiles);
+            this.Monitor = monitor;
 
             this.IsJunimoGroup = this.Containers.Any(p => p.IsJunimoChest);
             this.StorageManager = buildStorage(this.GetUniqueContainers(this.Containers));
@@ -98,9 +117,13 @@ namespace Pathoschild.Stardew.Automate.Framework
         public void Automate()
         {
             IStorage storage = this.StorageManager;
-            double curTime = Game1.currentGameTime.TotalGameTime.TotalMilliseconds;
+
+            // if a chest is locked (e.g. player has it open), pause machines to avoid losing items in update collisions
+            if (storage.HasLockedContainers())
+                return;
 
             // clear expired timers
+            double curTime = Game1.currentGameTime.TotalGameTime.TotalMilliseconds;
             if (this.MachinePauseExpiries.Count > 0)
             {
                 IMachine[] expired = this.MachinePauseExpiries.Where(p => curTime >= p.Value).Select(p => p.Key).ToArray();
@@ -115,8 +138,10 @@ namespace Pathoschild.Stardew.Automate.Framework
             }
 
             // get machines ready for input/output
-            IList<IMachine> outputReady = new List<IMachine>();
-            IList<IMachine> inputReady = new List<IMachine>();
+            List<IMachine> outputReady = this.PooledOutputReady;
+            List<IMachine> inputReady = this.PooledInputReady;
+            outputReady.Clear();
+            inputReady.Clear();
             foreach (IMachine machine in this.Machines)
             {
                 if (this.MachinePauseExpiries.ContainsKey(machine))
@@ -169,32 +194,38 @@ namespace Pathoschild.Stardew.Automate.Framework
                 }
                 catch (Exception ex)
                 {
-                    string error = $"Failed to automate machine '{machine.MachineTypeID}' at {machine.Location?.Name} (tile: {machine.TileArea.X}, {machine.TileArea.Y}). An error occurred while ";
+                    string action;
                     if (output == null)
-                        error += "retrieving its output.";
+                        action = "retrieving its output";
                     else
                     {
-                        error += $"storing its output item {output.Sample.QualifiedItemId} ('{output.Sample.Name}'";
+                        action = $"storing its output item {output.Sample.QualifiedItemId} ('{output.Sample.Name}'";
                         if (output.Sample is SObject outputObj && CommonHelper.IsItemId(outputObj.preservedParentSheetIndex.Value))
-                            error += $", preserved item {outputObj.preservedParentSheetIndex.Value}";
-                        error += ").";
+                            action += $", preserved item {outputObj.preservedParentSheetIndex.Value}";
+                        action += ")";
                     }
-                    error += $" Machine paused for {this.MachinePauseMilliseconds / 1000}s.";
 
-                    this.MachinePauseExpiries[machine] = curTime + this.MachinePauseMilliseconds;
-                    throw new InvalidOperationException(error, ex);
+                    this.OnMachineCrashed(machine, action, curTime, ex);
                 }
             }
 
             // process input
-            HashSet<string> ignoreMachines = new();
+            HashSet<string> ignoreMachines = this.PooledIgnoreMachinesForInput;
+            ignoreMachines.Clear();
             foreach (IMachine machine in inputReady)
             {
                 if (ignoreMachines.Contains(machine.MachineTypeID))
                     continue;
 
-                if (!machine.SetInput(storage))
-                    ignoreMachines.Add(machine.MachineTypeID); // if the machine can't process available input, no need to ask every instance of its type
+                try
+                {
+                    if (!machine.SetInput(storage))
+                        ignoreMachines.Add(machine.MachineTypeID); // if the machine can't process available input, no need to ask every instance of its type
+                }
+                catch (Exception ex)
+                {
+                    this.OnMachineCrashed(machine, "setting its input", curTime, ex);
+                }
             }
         }
 
@@ -211,6 +242,21 @@ namespace Pathoschild.Stardew.Automate.Framework
             return containers
                 .Where(container => seenInventories.Add(container.InventoryReferenceId))
                 .ToArray();
+        }
+
+        /// <summary>Handle a machine which threw an exception during processing.</summary>
+        /// <param name="machine">The machine which threw an exception.</param>
+        /// <param name="action">A human-readable phrase indicating what the machine was doing when it failed (like "setting its input").</param>
+        /// <param name="curTime">The current game time in milliseconds, used to set the machine's pause expiry.</param>
+        /// <param name="exception">The exception that was thrown.</param>
+        private void OnMachineCrashed(IMachine machine, string action, double curTime, Exception exception)
+        {
+            this.Monitor.Log(
+                $"Failed to automate machine '{machine.MachineTypeID}' at {machine.Location.Name} (tile: {machine.TileArea.X}, {machine.TileArea.Y}). An error occurred while {action}. Machine paused for {this.MachinePauseMilliseconds / 1000}s.\n{exception}",
+                LogLevel.Error
+            );
+
+            this.MachinePauseExpiries[machine] = curTime + this.MachinePauseMilliseconds;
         }
     }
 }

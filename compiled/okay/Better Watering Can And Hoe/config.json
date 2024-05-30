@@ -1,0 +1,11 @@
+{
+  "BetterWateringCanModEnabled": true,
+  "BetterHoeModEnabled": true,
+  "SelectionOpenKey": "R",
+  "WateringCanAlwaysHighestOption": false,
+  "HoeAlwaysHighestOption": false,
+  "WateringCanSelectTemporary": false,
+  "HoeSelectTemporary": false,
+  "WateringCanTimerStart": 3600,
+  "HoeTimerStart": 3600
+}

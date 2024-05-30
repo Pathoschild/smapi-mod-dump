@@ -26,8 +26,14 @@ namespace Pathoschild.Stardew.LookupAnything.Framework
         /// <summary>The key bindings.</summary>
         public ModConfigKeys Controls { get; set; } = new();
 
-        /// <summary>Whether to hide content until the player has discovered it in-game (where applicable).</summary>
-        public bool ProgressionMode { get; set; }
+        /// <summary>Whether to show gift tastes which the player hasn't learned about in-game yet (e.g. from dialogue text or experimenting).</summary>
+        public bool ShowUnknownGiftTastes { get; set; } = true;
+
+        /// <summary>Whether to show recipes the player hasn't learned in-game yet.</summary>
+        public bool ShowUnknownRecipes { get; set; } = true;
+
+        /// <summary>Whether to show puzzle solutions.</summary>
+        public bool ShowPuzzleSolutions { get; set; } = true;
 
         /// <summary>Whether to highlight item gift tastes which haven't been revealed in the NPC profile.</summary>
         public bool HighlightUnrevealedGiftTastes { get; set; }

@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using EnaiumToolKit.Framework.Extensions;
 using EnaiumToolKit.Framework.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -18,7 +19,7 @@ namespace EnaiumToolKit.Framework.Screen.Components;
 
 public class Slot<T> : Component where T : Slot<T>.Entry
 {
-    public List<T> Entries;
+    public readonly List<T> Entries;
 
 
     public int SlotHeight;
@@ -40,7 +41,7 @@ public class Slot<T> : Component where T : Slot<T>.Entry
 
     public override void Render(SpriteBatch b)
     {
-        Hovered = Render2DUtils.IsHovered(Game1.getMouseX(), Game1.getMouseY(), X, Y, Width, Height);
+        Hovered = Bounds.Contains(Game1.getMouseX(), Game1.getMouseY());
 
         for (int i = _index, j = 0;
              j < (Entries.Count >= _maxEntry ? _maxEntry : Entries.Count);

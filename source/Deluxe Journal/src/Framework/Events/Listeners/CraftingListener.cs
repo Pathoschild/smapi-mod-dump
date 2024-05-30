@@ -14,6 +14,7 @@ using StardewValley;
 namespace DeluxeJournal.Framework.Listeners
 {
     /// <summary>Listens for Quest.type_crafting completion checks.</summary>
+    [Obsolete]
     internal class CraftingListener : QuestEventListener
     {
         public event EventHandler<ItemReceivedEventArgs>? ItemCrafted;
@@ -26,7 +27,7 @@ namespace DeluxeJournal.Framework.Listeners
         {
             if (item is SObject crafted)
             {
-                ItemCrafted?.Invoke(null, new ItemReceivedEventArgs(crafted, 1));
+                ItemCrafted?.Invoke(null, new ItemReceivedEventArgs(Game1.player, crafted, 1));
             }
         }
     }

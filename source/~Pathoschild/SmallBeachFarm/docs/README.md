@@ -18,8 +18,6 @@ You can optionally enable islands and beach sounds.
   * [Enable the farm type](#enable-the-farm-type)
   * [Highlights](#highlights)
 * [Configure](#configure)
-  * [In-game settings](#in-game-settings)
-  * [`config.json` file](#configjson-file)
 * [FAQs](#faqs)
 * [Compiling from source](#compiling-from-source)
 * [See also](#see-also)
@@ -85,53 +83,14 @@ Tips:
   > ![](screenshots/automate-crabpots.png)
 
 ## Configure
-### In-game settings
-If you have [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098) installed,
-you can click the cog button (⚙) on the title screen to configure the mod. Hover the cursor over
-a field for details, or see the next section.
+If you install [Generic Mod Config Menu][], you can click the cog button (⚙) on the title screen
+to configure the mod. Hover the cursor over a field for details, or see the next section.
 
-![](screenshots/generic-config-menu.png)
-
-### `config.json` file
-The mod creates a `config.json` file in its mod folder the first time you run it. You can open that
-file in a text editor to configure the mod.
-
-Here's what you can change:
-
-<dl>
-<dt>farm options:</dt>
-<dd>
-
-setting                       | default | what it affects
-:---------------------------- | :------ | :------------------
-`UseBeachMusic`               | `false` | Whether to use the beach's background music (i.e. wave sounds) on the beach farm.
-`DefaultSpawnMonstersAtNight` | `false` | The default value for the 'spawn monsters at night' option when creating a new save.
-
-<dt>farm layout:</dt>
-<dd>
-
-setting           | default | what it affects
-:---------------- | :------ | :------------------
-`AddCampfire`     | `true`  | Whether to add a functional campfire in front of the farmhouse.
-`AddFishingPier`  | `false`  | Whether to add a pier at the water's edge where you can fish.
-`EnableIslands`   | `false` | Whether to add ocean islands with extra land area.
-`ShippingBinPath` | `true`  | Whether to place the stone path tiles in front of the default shipping bin position.
-
-</dd>
-</dd>
-<dt>farm positions:</dt>
-<dd>
-
-setting                     | default | what it affects
-:-------------------------- | :------ | :------------------
-`CustomFishingPierPosition` | `0, 0`  | The [tile position](https://stardewvalleywiki.com/Modding:Modder_Guide/Game_Fundamentals#Tiles) where the fishing pier should be added, if enabled. Set to `0, 0` to position it automatically.
-
-</dd>
-</dl>
+> ![](screenshots/generic-config-menu.png)
 
 ## FAQs
 ### Compatibility
-This is compatible with Stardew Valley 1.5.6+ on Linux/Mac/Windows, both single-player and
+This is compatible with Stardew Valley 1.6+ on Linux/macOS/Windows, both single-player and
 multiplayer. It can't be combined with other mods that replace the same farm.
 
 The farm map will recolor automatically if you have one of these installed:
@@ -176,3 +135,5 @@ Special instructions for Small Beach Farm:
 * Initial farm maps commissioned from [Opalie](https://www.nexusmods.com/stardewvalley/users/38947035)!
 * [release notes](release-notes.md)
 * [Nexus mod](http://www.nexusmods.com/stardewvalley/mods/3750)
+
+[Generic Mod Config Menu]: https://www.nexusmods.com/stardewvalley/mods/5098

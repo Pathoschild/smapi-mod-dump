@@ -43,4 +43,7 @@ public class Category {
 	[JsonIgnore]
 	public List<IRecipe>? CachedRecipes { get; set; }
 
+	[JsonIgnore]
+	public HashSet<IRecipe>? CachedHiddenRecipes { get; set; }
+
 }

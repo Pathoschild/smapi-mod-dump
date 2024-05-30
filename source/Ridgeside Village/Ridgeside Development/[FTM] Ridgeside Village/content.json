@@ -77,6 +77,7 @@
           "WeatherYesterday": [],
           "WeatherToday": [],
           "WeatherTomorrow": [],
+          "GameStateQueries": [],
           "CPConditions": {},
           "EPUPreconditions": [],
           "LimitedNumberOfSpawns": null
@@ -169,6 +170,7 @@
           "WeatherYesterday": [],
           "WeatherToday": [],
           "WeatherTomorrow": [],
+          "GameStateQueries": [],
           "CPConditions": {},
           "EPUPreconditions": [],
           "LimitedNumberOfSpawns": null
@@ -240,6 +242,7 @@
           "WeatherYesterday": [],
           "WeatherToday": [],
           "WeatherTomorrow": [],
+          "GameStateQueries": [],
           "CPConditions": {},
           "EPUPreconditions": [],
           "LimitedNumberOfSpawns": null
@@ -302,6 +305,7 @@
           "WeatherYesterday": [],
           "WeatherToday": [],
           "WeatherTomorrow": [],
+          "GameStateQueries": [],
           "CPConditions": {},
           "EPUPreconditions": [],
           "LimitedNumberOfSpawns": null
@@ -558,6 +562,7 @@
           "WeatherYesterday": [],
           "WeatherToday": [],
           "WeatherTomorrow": [],
+          "GameStateQueries": [],
           "CPConditions": {},
           "EPUPreconditions": [],
           "LimitedNumberOfSpawns": null
@@ -572,9 +577,11 @@
           680,
           413,
           273,
-          681,
+          {
+            "category": "item",
+            "name": "Rain Totem"
+          },
           815,
-          926,
           399,
           591,
           597
@@ -586,9 +593,11 @@
           680,
           413,
           273,
-          681,
+          {
+            "category": "item",
+            "name": "Rain Totem"
+          },
           815,
-          926,
           421,
           593,
           376
@@ -600,9 +609,11 @@
           680,
           413,
           273,
-          681,
+          {
+            "category": "item",
+            "name": "Rain Totem"
+          },
           815,
-          926,
           281,
           421,
           595
@@ -614,9 +625,11 @@
           680,
           413,
           273,
-          681,
+          {
+            "category": "item",
+            "name": "Rain Totem"
+          },
           815,
-          926,
           440,
           444,
           84
@@ -835,26 +848,43 @@
           "WeatherYesterday": [],
           "WeatherToday": [],
           "WeatherTomorrow": [],
-          "CPConditions": {},
-          "EPUPreconditions": [
-            "SkillLevel combat 3/r 0.75",
-            "SkillLevel foraging 3/r 0.75"
+          "GameStateQueries": [
+            "PLAYER_COMBAT_LEVEL Current 3, PLAYER_FORAGING_LEVEL Current 3, RANDOM 0.75"
           ],
+          "CPConditions": {},
+          "EPUPreconditions": [],
           "LimitedNumberOfSpawns": null
         },
         "DaysUntilSpawnsExpire": 1
       },
       {
         "SpringItemIndex": [
-          529,
-          530,
-          531,
-          532,
-          533,
-          534,
+          {
+            "category": "Ring",
+            "name": "Amethyst Ring"
+          },
+          {
+            "category": "Ring",
+            "name": "Topaz Ring"
+          },
+          {
+            "category": "Ring",
+            "name": "Aquamarine Ring"
+          },
+          {
+            "category": "Ring",
+            "name": "Jade Ring"
+          },
+          {
+            "category": "Ring",
+            "name": "Emerald Ring"
+          },
+          {
+            "category": "Ring",
+            "name": "Ruby Ring"
+          },
           437,
           439,
-          688,
           96,
           97,
           98,
@@ -867,15 +897,32 @@
           "Mistbloom Syrup"
         ],
         "SummerItemIndex": [
-          529,
-          530,
-          531,
-          532,
-          533,
-          534,
+          {
+            "category": "Ring",
+            "name": "Amethyst Ring"
+          },
+          {
+            "category": "Ring",
+            "name": "Topaz Ring"
+          },
+          {
+            "category": "Ring",
+            "name": "Aquamarine Ring"
+          },
+          {
+            "category": "Ring",
+            "name": "Jade Ring"
+          },
+          {
+            "category": "Ring",
+            "name": "Emerald Ring"
+          },
+          {
+            "category": "Ring",
+            "name": "Ruby Ring"
+          },
           437,
           439,
-          688,
           96,
           97,
           98,
@@ -888,15 +935,32 @@
           "Mistbloom Syrup"
         ],
         "FallItemIndex": [
-          529,
-          530,
-          531,
-          532,
-          533,
-          534,
+          {
+            "category": "Ring",
+            "name": "Amethyst Ring"
+          },
+          {
+            "category": "Ring",
+            "name": "Topaz Ring"
+          },
+          {
+            "category": "Ring",
+            "name": "Aquamarine Ring"
+          },
+          {
+            "category": "Ring",
+            "name": "Jade Ring"
+          },
+          {
+            "category": "Ring",
+            "name": "Emerald Ring"
+          },
+          {
+            "category": "Ring",
+            "name": "Ruby Ring"
+          },
           437,
           439,
-          688,
           96,
           97,
           98,
@@ -909,15 +973,32 @@
           "Mistbloom Syrup"
         ],
         "WinterItemIndex": [
-          529,
-          530,
-          531,
-          532,
-          533,
-          534,
+          {
+            "category": "Ring",
+            "name": "Amethyst Ring"
+          },
+          {
+            "category": "Ring",
+            "name": "Topaz Ring"
+          },
+          {
+            "category": "Ring",
+            "name": "Aquamarine Ring"
+          },
+          {
+            "category": "Ring",
+            "name": "Jade Ring"
+          },
+          {
+            "category": "Ring",
+            "name": "Emerald Ring"
+          },
+          {
+            "category": "Ring",
+            "name": "Ruby Ring"
+          },
           437,
           439,
-          688,
           96,
           97,
           98,
@@ -1143,11 +1224,11 @@
           "WeatherYesterday": [],
           "WeatherToday": [],
           "WeatherTomorrow": [],
-          "CPConditions": {},
-          "EPUPreconditions": [
-            "SkillLevel combat 5/r 0.75",
-            "SkillLevel foraging 5/r 0.75"
+          "GameStateQueries": [
+            "PLAYER_COMBAT_LEVEL Current 5, PLAYER_FORAGING_LEVEL Current 5, RANDOM 0.75"
           ],
+          "CPConditions": {},
+          "EPUPreconditions": [],
           "LimitedNumberOfSpawns": null
         },
         "DaysUntilSpawnsExpire": 1
@@ -1161,12 +1242,21 @@
           604,
           446,
           279,
-          859,
+          {
+            "category": "Ring",
+            "name": "Lucky Ring"
+          },
           872,
           879,
-          887,
+          {
+            "category": "Ring",
+            "name": "Immunity Band"
+          },
           891,
-          "Warp Totem: Ridgeside"
+          {
+            "category": "item",
+            "name": "Warp Totem: Ridgeside"
+          }
         ],
         "SummerItemIndex": [
           74,
@@ -1176,12 +1266,21 @@
           604,
           446,
           279,
-          859,
+          {
+            "category": "Ring",
+            "name": "Lucky Ring"
+          },
           872,
           879,
-          887,
+          {
+            "category": "Ring",
+            "name": "Immunity Band"
+          },
           891,
-          "Warp Totem: Ridgeside"
+          {
+            "category": "item",
+            "name": "Warp Totem: Ridgeside"
+          }
         ],
         "FallItemIndex": [
           74,
@@ -1191,12 +1290,21 @@
           604,
           446,
           279,
-          859,
+          {
+            "category": "Ring",
+            "name": "Lucky Ring"
+          },
           872,
           879,
-          887,
+          {
+            "category": "Ring",
+            "name": "Immunity Band"
+          },
           891,
-          "Warp Totem: Ridgeside"
+          {
+            "category": "item",
+            "name": "Warp Totem: Ridgeside"
+          }
         ],
         "WinterItemIndex": [
           74,
@@ -1206,12 +1314,21 @@
           604,
           446,
           279,
-          859,
+          {
+            "category": "Ring",
+            "name": "Lucky Ring"
+          },
           872,
           879,
-          887,
+          {
+            "category": "Ring",
+            "name": "Immunity Band"
+          },
           891,
-          "Warp Totem: Ridgeside"
+          {
+            "category": "item",
+            "name": "Warp Totem: Ridgeside"
+          }
         ],
         "UniqueAreaID": "RSV RidgeForest God-Tier Treasures",
         "MapName": "Custom_Ridgeside_RidgeForest",
@@ -1427,10 +1544,11 @@
           "WeatherYesterday": [],
           "WeatherToday": [],
           "WeatherTomorrow": [],
-          "CPConditions": {},
-          "EPUPreconditions": [
-            "SkillLevel combat 10/SkillLevel foraging 10/r 0.75"
+          "GameStateQueries": [
+            "PLAYER_COMBAT_LEVEL Current 10, PLAYER_FORAGING_LEVEL Current 10, RANDOM 0.75"
           ],
+          "CPConditions": {},
+          "EPUPreconditions": [],
           "LimitedNumberOfSpawns": null
         },
         "DaysUntilSpawnsExpire": 1
@@ -1658,6 +1776,7 @@
             "Storm"
           ],
           "WeatherTomorrow": [],
+          "GameStateQueries": [],
           "CPConditions": {},
           "EPUPreconditions": [],
           "LimitedNumberOfSpawns": null
@@ -1707,6 +1826,7 @@
             "Snow"
           ],
           "WeatherTomorrow": [],
+          "GameStateQueries": [],
           "CPConditions": {},
           "EPUPreconditions": [],
           "LimitedNumberOfSpawns": null
@@ -1766,6 +1886,7 @@
           "WeatherYesterday": [],
           "WeatherToday": [],
           "WeatherTomorrow": [],
+          "GameStateQueries": [],
           "CPConditions": {},
           "EPUPreconditions": [],
           "LimitedNumberOfSpawns": null
@@ -1825,6 +1946,7 @@
           "WeatherYesterday": [],
           "WeatherToday": [],
           "WeatherTomorrow": [],
+          "GameStateQueries": [],
           "CPConditions": {},
           "EPUPreconditions": [],
           "LimitedNumberOfSpawns": null
@@ -1875,6 +1997,7 @@
           "WeatherYesterday": [],
           "WeatherToday": [],
           "WeatherTomorrow": [],
+          "GameStateQueries": [],
           "CPConditions": {},
           "EPUPreconditions": [],
           "LimitedNumberOfSpawns": null
@@ -1924,6 +2047,7 @@
             "Snow"
           ],
           "WeatherTomorrow": [],
+          "GameStateQueries": [],
           "CPConditions": {},
           "EPUPreconditions": [],
           "LimitedNumberOfSpawns": null
@@ -2024,10 +2148,14 @@
           "WeatherYesterday": [],
           "WeatherToday": [],
           "WeatherTomorrow": [],
-          "CPConditions": {},
-          "EPUPreconditions": [
-            "q 751600642/!q 751600641/r 0.67"
+          "GameStateQueries": [
+            "RANDOM 0.67"
           ],
+          "CPConditions": {
+            "HasDialogueAnswer": "751600642",
+            "HasDialogueAnswer|contains=751600641": "false"
+          },
+          "EPUPreconditions": [],
           "LimitedNumberOfSpawns": null
         },
         "DaysUntilSpawnsExpire": 14
@@ -2126,10 +2254,12 @@
           "WeatherYesterday": [],
           "WeatherToday": [],
           "WeatherTomorrow": [],
-          "CPConditions": {},
-          "EPUPreconditions": [
-            "q 751600641/!q 751600642/r 0.67"
-          ],
+          "GameStateQueries": [],
+          "CPConditions": {
+            "HasDialogueAnswer": "751600641",
+            "HasDialogueAnswer|contains=751600642": "false"
+          },
+          "EPUPreconditions": [],
           "LimitedNumberOfSpawns": null
         },
         "DaysUntilSpawnsExpire": 14
@@ -2169,8 +2299,8 @@
         ],
         "UniqueAreaID": "RSV Summit Farm Initial Debris",
         "MapName": "Custom_Ridgeside_SummitFarm",
-        "MinimumSpawnsPerDay": 500,
-        "MaximumSpawnsPerDay": 500,
+        "MinimumSpawnsPerDay": 15,
+        "MaximumSpawnsPerDay": 20,
         "IncludeTerrainTypes": [
           "Dirt",
           "Grass"
@@ -2185,7 +2315,11 @@
           "90,46/92,79",
           "89,64/92,79",
           "88,67/92,79",
-          "70,42/71,45"
+          "70,42/71,45",
+          "18,47/18,47",
+          "22,40/23,41",
+          "77,48/77,48",
+          "46,73/49,79"
         ],
         "StrictTileChecking": "High",
         "SpawnTiming": {
@@ -2203,10 +2337,11 @@
           "WeatherYesterday": [],
           "WeatherToday": [],
           "WeatherTomorrow": [],
-          "CPConditions": {},
-          "EPUPreconditions": [
-            "Hl OddJobsNotice"
+          "GameStateQueries": [
+            "!PLAYER_HAS_MAIL Host OddJobsNotice"
           ],
+          "CPConditions": {},
+          "EPUPreconditions": [],
           "LimitedNumberOfSpawns": 1
         },
         "DaysUntilSpawnsExpire": 0
@@ -2246,8 +2381,8 @@
         ],
         "UniqueAreaID": "RSV Summit Farm Monthly Debris",
         "MapName": "Custom_Ridgeside_SummitFarm",
-        "MinimumSpawnsPerDay": 100,
-        "MaximumSpawnsPerDay": 200,
+        "MinimumSpawnsPerDay": 10,
+        "MaximumSpawnsPerDay": 15,
         "IncludeTerrainTypes": [
           "Dirt",
           "Grass"
@@ -2262,7 +2397,11 @@
           "90,46/92,79",
           "89,64/92,79",
           "88,67/92,79",
-          "70,42/71,45"
+          "70,42/71,45",
+          "18,47/18,47",
+          "22,40/23,41",
+          "77,48/77,48",
+          "46,73/49,79"
         ],
         "StrictTileChecking": "High",
         "SpawnTiming": {
@@ -2280,10 +2419,11 @@
           "WeatherYesterday": [],
           "WeatherToday": [],
           "WeatherTomorrow": [],
-          "CPConditions": {},
-          "EPUPreconditions": [
-            "Hn OddJobsNotice/Hl RSV.HasGoldClock/u 1"
+          "GameStateQueries": [
+            "PLAYER_HAS_MAIL Host OddJobsNotice, !PLAYER_HAS_MAIL Host RSV.HasGoldClock"
           ],
+          "CPConditions": {},
+          "EPUPreconditions": [],
           "LimitedNumberOfSpawns": null
         },
         "DaysUntilSpawnsExpire": 0
@@ -2347,7 +2487,12 @@
           "131,110/131,110",
           "46,70/49,79",
           "16,47/22,49",
-          "75,48/49,50"
+          "75,48/49,50",
+          "70,42/71,45",
+          "18,47/18,47",
+          "22,40/23,41",
+          "77,48/77,48",
+          "46,73/49,79"
         ],
         "StrictTileChecking": "High",
         "SpawnTiming": {
@@ -2365,10 +2510,11 @@
           "WeatherYesterday": [],
           "WeatherToday": [],
           "WeatherTomorrow": [],
-          "CPConditions": {},
-          "EPUPreconditions": [
-            "Hn OddJobsNotice"
+          "GameStateQueries": [
+            "PLAYER_HAS_MAIL Host OddJobsNotice"
           ],
+          "CPConditions": {},
+          "EPUPreconditions": [],
           "LimitedNumberOfSpawns": null
         },
         "DaysUntilSpawnsExpire": 1
@@ -2431,10 +2577,11 @@
           "WeatherYesterday": [],
           "WeatherToday": [],
           "WeatherTomorrow": [],
-          "CPConditions": {},
-          "EPUPreconditions": [
-            "!e 75160377"
+          "GameStateQueries": [
+            "!PLAYER_HAS_SEEN_EVENT Current 75160377"
           ],
+          "CPConditions": {},
+          "EPUPreconditions": [],
           "LimitedNumberOfSpawns": 1
         },
         "DaysUntilSpawnsExpire": 0
@@ -2449,8 +2596,8 @@
         "RelatedSkill": "Foraging",
         "UniqueAreaID": "RSV Summit Farm large objects",
         "MapName": "Custom_Ridgeside_SummitFarm",
-        "MinimumSpawnsPerDay": 25,
-        "MaximumSpawnsPerDay": 30,
+        "MinimumSpawnsPerDay": 10,
+        "MaximumSpawnsPerDay": 12,
         "IncludeTerrainTypes": [
           "Dirt"
         ],
@@ -2474,7 +2621,12 @@
           "131,110/131,110",
           "46,70/49,79",
           "16,47/22,49",
-          "75,48/49,50"
+          "75,48/49,50",
+          "70,42/71,45",
+          "18,47/18,47",
+          "22,40/23,41",
+          "77,48/77,48",
+          "46,73/49,79"
         ],
         "StrictTileChecking": "Maximum",
         "SpawnTiming": {
@@ -2492,10 +2644,11 @@
           "WeatherYesterday": [],
           "WeatherToday": [],
           "WeatherTomorrow": [],
-          "CPConditions": {},
-          "EPUPreconditions": [
-            "Hl OddJobsNotice"
+          "GameStateQueries": [
+            "!PLAYER_HAS_MAIL Host OddJobsNotice"
           ],
+          "CPConditions": {},
+          "EPUPreconditions": [],
           "LimitedNumberOfSpawns": 1
         },
         "DaysUntilSpawnsExpire": 0
@@ -2554,6 +2707,7 @@
           "WeatherYesterday": [],
           "WeatherToday": [],
           "WeatherTomorrow": [],
+          "GameStateQueries": [],
           "CPConditions": {},
           "EPUPreconditions": [],
           "LimitedNumberOfSpawns": null
@@ -2649,10 +2803,11 @@
           "WeatherYesterday": [],
           "WeatherToday": [],
           "WeatherTomorrow": [],
-          "CPConditions": {},
-          "EPUPreconditions": [
-            "Hn RSV.SummitOreArea/r 0.67"
+          "GameStateQueries": [
+            "PLAYER_HAS_MAIL Host RSV.SummitOreArea, RANDOM 0.67"
           ],
+          "CPConditions": {},
+          "EPUPreconditions": [],
           "LimitedNumberOfSpawns": null
         },
         "DaysUntilSpawnsExpire": 14
@@ -2764,10 +2919,11 @@
           "WeatherYesterday": [],
           "WeatherToday": [],
           "WeatherTomorrow": [],
-          "CPConditions": {},
-          "EPUPreconditions": [
-            "!HasItem Pale Candelabrum"
+          "GameStateQueries": [
+            "!PLAYER_HAS_ITEM Any Rafseazz.RSVCP_Pale_Candelabrum"
           ],
+          "CPConditions": {},
+          "EPUPreconditions": [],
           "LimitedNumberOfSpawns": null
         },
         "DaysUntilSpawnsExpire": 1
@@ -2816,10 +2972,11 @@
           "WeatherYesterday": [],
           "WeatherToday": [],
           "WeatherTomorrow": [],
-          "CPConditions": {},
-          "EPUPreconditions": [
-            "!HasItem Everfrost Stone"
+          "GameStateQueries": [
+            "!PLAYER_HAS_ITEM Any Rafseazz.RSVCP_Everfrost_Stone"
           ],
+          "CPConditions": {},
+          "EPUPreconditions": [],
           "LimitedNumberOfSpawns": null
         },
         "DaysUntilSpawnsExpire": 1
@@ -3052,10 +3209,11 @@
           "WeatherYesterday": [],
           "WeatherToday": [],
           "WeatherTomorrow": [],
-          "CPConditions": {},
-          "EPUPreconditions": [
-            "!HasItem Ancient Music Box"
+          "GameStateQueries": [
+            "!PLAYER_HAS_ITEM Any Rafseazz.RSVCP_Ancient_Music_Box"
           ],
+          "CPConditions": {},
+          "EPUPreconditions": [],
           "LimitedNumberOfSpawns": null
         },
         "DaysUntilSpawnsExpire": 1
@@ -3288,12 +3446,13 @@
           "WeatherYesterday": [],
           "WeatherToday": [],
           "WeatherTomorrow": [],
+          "GameStateQueries": [
+            "!PLAYER_HAS_ITEM Any Rafseazz.RSVCP_Ancient_Music_Box"
+          ],
           "CPConditions": {
             "SkillLevel:Combat": "8, 9, 10"
           },
-          "EPUPreconditions": [
-            "!HasItem Ancient Music Box"
-          ],
+          "EPUPreconditions": [],
           "LimitedNumberOfSpawns": null
         },
         "DaysUntilSpawnsExpire": 1
@@ -3556,10 +3715,11 @@
           "WeatherYesterday": [],
           "WeatherToday": [],
           "WeatherTomorrow": [],
-          "CPConditions": {},
-          "EPUPreconditions": [
-            "!HasItem Village Hero Sculpture"
+          "GameStateQueries": [
+            "!PLAYER_HAS_ITEM Any Rafseazz.RSVCP_Village_Hero_Sculpture"
           ],
+          "CPConditions": {},
+          "EPUPreconditions": [],
           "LimitedNumberOfSpawns": null
         },
         "DaysUntilSpawnsExpire": null
@@ -3617,10 +3777,11 @@
           "WeatherYesterday": [],
           "WeatherToday": [],
           "WeatherTomorrow": [],
-          "CPConditions": {},
-          "EPUPreconditions": [
-            "!HasItem Ancient Music Box"
+          "GameStateQueries": [
+            "!PLAYER_HAS_ITEM Any Rafseazz.RSVCP_Ancient_Music_Box"
           ],
+          "CPConditions": {},
+          "EPUPreconditions": [],
           "LimitedNumberOfSpawns": null
         },
         "DaysUntilSpawnsExpire": 1
@@ -3665,10 +3826,11 @@
           "WeatherYesterday": [],
           "WeatherToday": [],
           "WeatherTomorrow": [],
-          "CPConditions": {},
-          "EPUPreconditions": [
-            "!HasItem Pale Candelabrum"
+          "GameStateQueries": [
+            "!PLAYER_HAS_ITEM Any Rafseazz.RSVCP_Pale_Candelabrum"
           ],
+          "CPConditions": {},
+          "EPUPreconditions": [],
           "LimitedNumberOfSpawns": null
         },
         "DaysUntilSpawnsExpire": 1
@@ -3902,6 +4064,7 @@
           "WeatherYesterday": [],
           "WeatherToday": [],
           "WeatherTomorrow": [],
+          "GameStateQueries": [],
           "CPConditions": {},
           "EPUPreconditions": [],
           "LimitedNumberOfSpawns": null
@@ -3952,10 +4115,11 @@
           "WeatherYesterday": [],
           "WeatherToday": [],
           "WeatherTomorrow": [],
-          "CPConditions": {},
-          "EPUPreconditions": [
-            "k 75160263"
+          "GameStateQueries": [
+            "!PLAYER_HAS_SEEN_EVENT Current 75160263"
           ],
+          "CPConditions": {},
+          "EPUPreconditions": [],
           "LimitedNumberOfSpawns": null
         },
         "DaysUntilSpawnsExpire": 1
@@ -4004,10 +4168,11 @@
           "WeatherYesterday": [],
           "WeatherToday": [],
           "WeatherTomorrow": [],
-          "CPConditions": {},
-          "EPUPreconditions": [
-            "k 75160263"
+          "GameStateQueries": [
+            "!PLAYER_HAS_SEEN_EVENT Current 75160263"
           ],
+          "CPConditions": {},
+          "EPUPreconditions": [],
           "LimitedNumberOfSpawns": null
         },
         "DaysUntilSpawnsExpire": 1
@@ -4061,10 +4226,11 @@
           "WeatherYesterday": [],
           "WeatherToday": [],
           "WeatherTomorrow": [],
-          "CPConditions": {},
-          "EPUPreconditions": [
-            "k 75160263"
+          "GameStateQueries": [
+            "!PLAYER_HAS_SEEN_EVENT Current 75160263"
           ],
+          "CPConditions": {},
+          "EPUPreconditions": [],
           "LimitedNumberOfSpawns": null
         },
         "DaysUntilSpawnsExpire": 1
@@ -4146,10 +4312,11 @@
           "WeatherYesterday": [],
           "WeatherToday": [],
           "WeatherTomorrow": [],
-          "CPConditions": {},
-          "EPUPreconditions": [
-            "k 75160263"
+          "GameStateQueries": [
+            "!PLAYER_HAS_SEEN_EVENT Current 75160263"
           ],
+          "CPConditions": {},
+          "EPUPreconditions": [],
           "LimitedNumberOfSpawns": null
         },
         "DaysUntilSpawnsExpire": null
@@ -4207,10 +4374,11 @@
           "WeatherYesterday": [],
           "WeatherToday": [],
           "WeatherTomorrow": [],
-          "CPConditions": {},
-          "EPUPreconditions": [
-            "k 75160263"
+          "GameStateQueries": [
+            "!PLAYER_HAS_SEEN_EVENT Current 75160263"
           ],
+          "CPConditions": {},
+          "EPUPreconditions": [],
           "LimitedNumberOfSpawns": null
         },
         "DaysUntilSpawnsExpire": 1

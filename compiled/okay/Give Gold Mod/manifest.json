@@ -1,0 +1,10 @@
+{
+  "Name": "GiveGoldMod",
+  "Author": "missgamergrl",
+  "Version": "1.0.0",
+  "Description": "Pressing G on keyboard instantly gives you gold",
+  "UniqueID": "missgamergrl.GiveGoldMod",
+  "EntryDll": "GiveGoldMod.dll",
+  "MinimumApiVersion": "3.8.0",
+  "UpdateKeys": []
+}

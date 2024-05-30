@@ -25,7 +25,7 @@ public class LayerDataConverter : JsonConverter {
 	private static readonly DiscriminatingConverter<BaseLayerData> Converter;
 
 	static LayerDataConverter() {
-		Converter = new("Type", Types);
+		Converter = new("Type", Types, "Custom");
 		Converter.PopulateTypes();
 	}
 

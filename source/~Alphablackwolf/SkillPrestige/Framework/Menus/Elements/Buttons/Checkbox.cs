@@ -18,9 +18,6 @@ namespace SkillPrestige.Framework.Menus.Elements.Buttons
 {
     internal class Checkbox : Button
     {
-        /*********
-        ** Fields
-        *********/
         private const int PixelsWide = 9;
         private static int Width => PixelsWide * Game1.pixelZoom;
         private bool IsChecked;
@@ -29,16 +26,8 @@ namespace SkillPrestige.Framework.Menus.Elements.Buttons
         protected override string HoverText => string.Empty;
         protected override string Text { get; }
 
-
-        /*********
-        ** Accessors
-        *********/
         public delegate void ClickCallback(bool isChecked);
 
-
-        /*********
-        ** Public methods
-        *********/
         public Checkbox(bool isChecked, string text, Rectangle bounds, ClickCallback onClickCallback)
         {
             this.IsChecked = isChecked;

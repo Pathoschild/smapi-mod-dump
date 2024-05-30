@@ -24,6 +24,7 @@
     ** Section titles
     ****/
     "config.main-options": "Основные настройки",
+    "config.audio": "Audio", // TODO
     "config.controls": "Управление",
     "config.axe": "Возможности топора",
     "config.hoe": "Возможности мотыги",
@@ -34,6 +35,13 @@
     "config.melee-sword": "Возможности мечей",
     "config.other-tools": "Остальные инструменты",
     "config.custom-tools": "Пользовательские инструменты",
+
+
+    /****
+    ** Warnings
+    ****/
+    // TODO
+    "config.questable-tractor-warning": "You have Questable Tractor installed. That mod works by overriding the tractor settings, so it may reset changes you make here.",
 
 
     /****
@@ -48,15 +56,12 @@
     "config.magnetic-radius.name": "Радиус магнетизма",
     "config.magnetic-radius.tooltip": "Радиус подбора предметов (более высокие значения притягивают предметы издалека). Значение по умолчанию {{defaultValue}}.",
 
-    // TODO
-    "config.tractor-sounds.name": "Sound Effects",
-    "config.tractor-sounds.tooltip": "Which sound effects to play while riding the tractor. Changes may not fully take effect until you reload the save. Default {{defaultValue}}.",
-    "config.tractor-sounds.value.None": "no sounds",
-    "config.tractor-sounds.value.Horse": "horse sounds",
-    "config.tractor-sounds.value.Tractor": "tractor sounds",
-
     "config.build-price.name": "Стоимость строительства",
     "config.build-price.tooltip": "Цена покупки в золоте гаража для трактора. По умолчанию {{defaultValue}}з.",
+
+    // TODO
+    "config.require-build-materials.name": "Require Build Materials",
+    "config.require-build-materials.tooltip": "Whether you need to provide materials to build a tractor garage, in addition to the gold price.",
 
     "config.can-summon-without-garage.name": "Возможность вызывать без гаража",
     "config.can-summon-without-garage.tooltip": "Возможность вызывать трактор без постройки гаража (по горячей клавише).",
@@ -66,6 +71,20 @@
 
     "config.highlight-radius.name": "Выделение радиуса (отладка)",
     "config.highlight-radius.tooltip": "При езде на тракторе визуально показывает радиус действия трактора (параметр \"радиус воздействия\").",
+
+
+    /****
+    ** Audio
+    ****/
+    // TODO
+    "config.tractor-sounds.name": "Sound Effects",
+    "config.tractor-sounds.tooltip": "Which sound effects to play while riding the tractor. Changes may not fully take effect until you reload the save. Default {{defaultValue}}.",
+    "config.tractor-sounds.value.None": "no sounds",
+    "config.tractor-sounds.value.Horse": "horse sounds",
+    "config.tractor-sounds.value.Tractor": "tractor sounds",
+
+    "config.tractor-volume.name": "Sound Effects Volume",
+    "config.tractor-volume.tooltip": "The volume level for the tractor sound effects. Default {{defaultValue}}%.",
 
 
     /****
@@ -111,6 +130,14 @@
     "config.harvest-fruit-trees.name": "Сбор урожая фруктовых деревьев",
     "config.harvest-fruit-trees.tooltip": "Будет собирать урожай с фруктовых деревьев.",
 
+    // TODO
+    "config.harvest-tree-moss.name": "Harvest Tree Moss",
+    "config.harvest-tree-moss.tooltip": "Whether to collect moss from trees.",
+
+    // TODO
+    "config.harvest-tree-seeds.name": "Harvest Tree Seeds",
+    "config.harvest-tree-seeds.tooltip": "Whether to collect seeds from trees.",
+
 
     /****
     ** Crops/forage/grass
@@ -133,8 +160,11 @@
     "config.harvest-forage.name": "Собираемые предметы",
     "config.harvest-forage.tooltip": "Будет собирать дикие растения, морские раковины и т.д. ",
 
-    "config.harvest-grass.name": "Покос травы",
-    "config.harvest-grass.tooltip": "Будет скашивать траву. Если у вас есть свободное место в силосной башне, то будет собирать сено.",
+    "config.harvest-blue-grass.name": "Покос синей травы",
+    "config.harvest-blue-grass.tooltip": "Будет скашивать синюю траву. Если у вас есть свободное место в силосной башне, то будет собирать сено.",
+
+    "config.harvest-non-blue-grass.name": "Покос не синей травы",
+    "config.harvest-non-blue-grass.tooltip": "Будет скашивать не синюю траву. Если у вас есть свободное место в силосной башне, то будет собирать сено.",
 
 
     /****
@@ -155,6 +185,10 @@
 
     "config.dig-artifact-spots.name": "Выкапывание артефактов",
     "config.dig-artifact-spots.tooltip": "Выкапывает землю с червями.",
+
+    // TODO
+    "config.dig-seed-spots.name": "Dig Seed Spots",
+    "config.dig-seed-spots.tooltip": "Whether to dig up seed spots.",
 
     "config.clear-tilled-dirt.name": "Очистка вспаханной земли",
     "config.clear-tilled-dirt.tooltip": "Очищает вспаханную землю от сорняков.",

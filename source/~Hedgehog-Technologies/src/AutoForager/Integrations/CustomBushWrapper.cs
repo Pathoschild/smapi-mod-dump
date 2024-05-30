@@ -15,7 +15,8 @@ using StardewModdingAPI;
 using StardewValley.GameData;
 using StardewValley;
 using StardewValley.TerrainFeatures;
-using AutoForager.Extensions;
+using HedgeTech.Common.Extensions;
+using HedgeTech.Common.Interfaces;
 
 namespace AutoForager.Integrations
 {
@@ -182,15 +183,5 @@ namespace AutoForager.Integrations
 		/// <param name="drops">When this method returns, contains the items produced by the custom bush.</param>
 		/// <returns>true if the drops associated with the given id is found; otherwise, false.</returns>
 		public bool TryGetDrops(string id, out IList<ICustomBushDrop>? drops);
-	}
-
-	public interface IContentPatcherApi
-	{
-		/*********
-        ** Accessors
-        *********/
-		/// <summary>Whether the conditions API is initialized and ready for use.</summary>
-		/// <remarks>Due to the Content Patcher lifecycle, the conditions API becomes available roughly two ticks after the <see cref="IGameLoopEvents.GameLaunched"/> event.</remarks>
-		bool IsConditionsApiReady { get; }
 	}
 }

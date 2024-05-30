@@ -11,7 +11,7 @@
 {
   "Name": "Multi-User Chest",
   "Author": "MindMeltMax",
-  "Version": "1.0.6",
+  "Version": "1.0.10",
   "Description": "Allows multiple people to open a chest at the same time",
   "UniqueID": "MindMeltMax.MUC",
   "EntryDll": "Multi-User Chest.dll",

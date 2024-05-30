@@ -14,6 +14,8 @@ using StardewModdingAPI.Utilities;
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using StardewValley;
+using StardewValley.Menus;
 
 
 namespace RidgesideVillage
@@ -45,6 +47,7 @@ namespace RidgesideVillage
         List<Dependency> missing_dependencies = new List<Dependency>();
         List<Dependency> outdated_dependencies = new List<Dependency>();
         List<Dependency> missing_parents = new List<Dependency>();
+        private List<string> outdatedRSVComponents = new();
 
         public bool checkInstallation(IModHelper Helper)
         {
@@ -99,10 +102,22 @@ namespace RidgesideVillage
             if (hasAllDependencies && !helper.ModRegistry.IsLoaded("Rafseazz.RSVCP"))
                 isInstalledCorrectly = false;
 
-            if (!isInstalledCorrectly || !hasAllDependencies)
-                helper.Events.GameLoop.GameLaunched += OnGameLaunched;
+            string[] oldMods = new[] { "Rafseazz.RSVJA", "Rafseazz.RSVSAAT", "Rafseazz.RSVSTF", "Rafseazz.RSVMFM" };
 
-            return isInstalledCorrectly && hasAllDependencies;
+            foreach (var mod in oldMods)
+            {
+                if (helper.ModRegistry.IsLoaded(mod))
+                {
+                    outdatedRSVComponents.Add(mod);
+                }
+            }
+
+            if (!isInstalledCorrectly || !hasAllDependencies || outdatedRSVComponents.Count != 0)
+            {
+                helper.Events.GameLoop.GameLaunched += OnGameLaunched;
+            }
+
+            return isInstalledCorrectly && hasAllDependencies && outdatedRSVComponents.Count == 0;
         }
 
         public bool TheseModsLoaded(string mods)
@@ -122,6 +137,7 @@ namespace RidgesideVillage
         [EventPriority(EventPriority.Low)]
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {
+            string message = "";
             for(int i=0; i<3; i++)
             {
                 Log.Error(BOLDLINE);
@@ -175,6 +191,19 @@ namespace RidgesideVillage
                         Log.Error(INDENT + dependency.url);
                 }
             }
+
+            if (this.outdatedRSVComponents.Any())
+            {
+                Log.Error("");
+                message +=
+                    "Some old RSV components from 1.5.6 are still installed which will cause issues. Remove the following folders and restart the game:\n";
+                foreach(var modComponent in outdatedRSVComponents)
+                {
+                    string modabbreviation = modComponent.Replace("Rafseazz.RSV", "");
+                    message += "[" + modabbreviation + "]Ridgeside Village"+ "\n";
+                    Log.Error($"The outdated RSV component {modComponent} is still installed. Remove it and restart the game.");
+                }
+            }
             if (!isInstalledCorrectly)
             {
                 Log.Error("");
@@ -192,8 +221,9 @@ namespace RidgesideVillage
             {
                 Log.Error(BOLDLINE);
             }
+            Game1.activeClickableMenu =
+                new DialogueBox(helper.Translation.Get("ErrorMessage") + "\n" + message);
         }
-
         
     }
 

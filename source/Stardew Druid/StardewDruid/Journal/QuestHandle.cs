@@ -15,6 +15,7 @@ using StardewDruid.Compat.v100;
 using StardewDruid.Data;
 using StardewDruid.Dialogue;
 using StardewDruid.Event;
+using StardewDruid.Event.Challenge;
 using StardewDruid.Event.Scene;
 using StardewDruid.Location;
 using StardewModdingAPI;
@@ -27,12 +28,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using xTile.Layers;
-using xTile.ObjectModel;
-using xTile.Tiles;
-using static StardewValley.Menus.CharacterCustomization;
 
 
 namespace StardewDruid.Journal
@@ -53,12 +48,12 @@ namespace StardewDruid.Journal
             weald_challenge,
             mists_weapon,
             mists_lessons,
+            quest_effigy,
             mists_challenge,
             stars_weapon,
             stars_lessons,
             stars_challenge,
             stars_threats,
-            effigy_heart,
             jester,
             fates_weapon,
             fates_lessons,
@@ -72,25 +67,41 @@ namespace StardewDruid.Journal
 
         }
 
-        public Dictionary<milestones, List<string>> milestoneQuests = new()
+        public static Dictionary<milestones, List<string>> milestoneQuests = new()
         {
 
             [milestones.effigy] = new() { "approachEffigy", },
             [milestones.weald_weapon] = new() { "swordWeald", },
-            [milestones.weald_lessons] = new() { "wealdOne", "wealdTwo", "wealdThree", "wealdFour", "wealdFive", },
+            [milestones.weald_lessons] = new() { wealdOne, wealdTwo, wealdThree, wealdFour, wealdFive, },
             [milestones.weald_challenge] = new() { "challengeWeald", },
+            [milestones.mists_weapon] = new() { "swordMists" },
+            [milestones.mists_lessons] = new() { mistsOne, mistsTwo, mistsThree, mistsFour, },
+            [milestones.quest_effigy] = new() { "questEffigy", },
+            [milestones.mists_challenge] = new() { "challengeMists", },
 
         };
 
-        public static string clearLesson = "wealdOne";
+        public const string startJourney = "startJourney";
 
-        public static string bushLesson = "wealdTwo";
+        public const string wealdOne = "clearance";
 
-        public static string spawnLesson = "wealdThree";
+        public const string wealdTwo = "wildbounty";
 
-        public static string cropLesson = "wealdFour";
+        public const string wealdThree = "wildgrowth";
 
-        public static string rockLesson = "wealdFive";
+        public const string wealdFour = "cultivate";
+
+        public const string wealdFive = "rockfall";
+
+        public const string mistsOne = "sunder";
+
+        public const string mistsTwo = "artifice";
+
+        public const string mistsThree = "fishing";
+
+        public const string mistsFour = "smite";
+
+        public const string questEffigy = "questEffigy";
 
         public QuestHandle()
         {
@@ -98,7 +109,7 @@ namespace StardewDruid.Journal
             quests = QuestData.QuestList();
 
             effects = EffectsData.EffectList();
-        
+
         }
 
         // ----------------------------------------------------------------------
@@ -191,7 +202,16 @@ namespace StardewDruid.Journal
 
                 QuestProgress progress = pair.Value;
 
-                if (progress.status >= 1)
+                if (!quests.ContainsKey(id))
+                {
+
+                    continue;
+
+                }
+
+                int requirement = quests[id].type == Quest.questTypes.lesson ? 1 : 2;
+
+                if (progress.status >= requirement)
                 {
 
                     if (effects.ContainsKey(id))
@@ -244,11 +264,11 @@ namespace StardewDruid.Journal
                 return;
 
             }
-            
+
+            Implement(startJourney);
+
             foreach (KeyValuePair<string, QuestProgress> pair in Mod.instance.save.progress)
             {
-
-                Quest quest = quests[pair.Key];
 
                 string id = pair.Key;
 
@@ -257,29 +277,30 @@ namespace StardewDruid.Journal
                 if(progress.delay > 0)
                 {
 
-                    Mod.instance.save.progress[id].delay -= 1;
-
-                    progress.delay--;
+                    progress.delay -= 4;
 
                 }
+
+                if (!quests.ContainsKey(pair.Key))
+                {
+
+                    continue;
+
+                }
+
+                Quest quest = quests[pair.Key];
 
                 if (progress.status == 0 && progress.delay <= 0)
                 {
 
-                    if (quest.give == Quest.questGivers.dialogue && !Mod.instance.Config.autoProgress)
+                    if(quest.give != Quest.questGivers.dialogue || Mod.instance.Config.autoProgress)
                     {
-
-                        DialogueBefore(id);
-
-                    }
-                    else
-                    {
-
-                        Mod.instance.save.progress[id].status = 1;
 
                         progress.status = 1;
 
                     }
+
+                    DialogueBefore(id,progress.status);
 
                 }
 
@@ -311,10 +332,40 @@ namespace StardewDruid.Journal
 
             }
 
-            foreach (string questId in milestoneQuests[milestone])
+            foreach(KeyValuePair<milestones,List<string>> mile in milestoneQuests)
             {
+                
+                if (mile.Key == milestone)
+                {
+                    foreach (string questId in mile.Value)
+                    {
 
-                AssignQuest(questId,false);
+                        if (quests[questId].give == Quest.questGivers.dialogue)
+                        {
+
+                            Mod.instance.save.progress[questId] = new();
+                        }
+                        else
+                        {
+
+                            Mod.instance.save.progress[questId] = new(1);
+
+                        }
+
+                    }
+
+                    break;
+
+                }
+
+                foreach (string questId in mile.Value)
+                {
+
+                    Mod.instance.save.progress[questId] = new(2);
+
+                }
+
+                Mod.instance.save.milestone = mile.Key;
 
             }
 
@@ -332,18 +383,19 @@ namespace StardewDruid.Journal
 
             }
 
-            if (quests[questId].delay > 0)
+            if (!quests.ContainsKey(questId))
             {
 
-                Mod.instance.save.progress[questId] = new(0, quests[questId].delay);
+                return;
 
             }
-            else if (quests[questId].give == Quest.questGivers.dialogue)
+
+            if (quests[questId].give == Quest.questGivers.dialogue)
             {
 
                 Mod.instance.save.progress[questId] = new();
 
-                DialogueBefore(questId);
+                DialogueBefore(questId,0);
 
             }
             else
@@ -351,9 +403,9 @@ namespace StardewDruid.Journal
 
                 Mod.instance.save.progress[questId] = new(1);
 
-                Initialise(questId);
+                DialogueBefore(questId,1);
 
-                Mod.instance.CastMessage("Druid journal (" + Mod.instance.Config.journalButtons.ToString() + ") has been updated");
+                Initialise(questId);
 
             }
 
@@ -374,20 +426,34 @@ namespace StardewDruid.Journal
 
                 Mod.instance.save.progress[questId].status = 2;
 
+                DialogueAfter(questId);
+
                 Implement(questId);
 
-                Graduate(questId);
-
-                DialogueAfter(questId);
+                OnComplete(questId);
 
             }
 
-            Mod.instance.CastMessage(quests[questId].title + " quest complete", 1);
+            Mod.instance.CastMessage(quests[questId].title + " quest complete", 1, true);
 
             if (quests[questId].reward > 0)
             {
 
-                Game1.player.Money += quests[questId].reward;
+                Game1.player.Money += (int)(quests[questId].reward * Mod.instance.Config.adjustRewards / 100);
+
+            }
+
+        }
+
+        public void DelayQuest(string questId)
+        {
+
+            if (Context.IsMainPlayer)
+            {
+
+                Mod.instance.save.progress[questId].status = 0;
+
+                Mod.instance.save.progress[questId].delay = 1;
 
             }
 
@@ -402,7 +468,7 @@ namespace StardewDruid.Journal
 
             }
 
-            if (Mod.instance.save.progress[quest].status > 1)
+            if (Mod.instance.save.progress[quest].status != 1)
             {
 
                 return -1;
@@ -424,7 +490,7 @@ namespace StardewDruid.Journal
 
             }
 
-            int portion = (limit / 5);
+            int portion = (limit / 2);
 
             if (portion != 0)
             {
@@ -459,7 +525,7 @@ namespace StardewDruid.Journal
             if (Mod.instance.save.progress.ContainsKey(quest))
             {
 
-                return (Mod.instance.save.progress[quest].status > 1);
+                return (Mod.instance.save.progress[quest].status >= 2);
 
             }
 
@@ -484,14 +550,14 @@ namespace StardewDruid.Journal
         public bool IsGiven(string quest)
         {
 
-            return Mod.instance.save.progress.ContainsKey(quest);
+            if (Mod.instance.save.progress.ContainsKey(quest))
+            {
 
-        }
+                return (Mod.instance.save.progress[quest].status >= 1);
 
-        public void NewStart()
-        {
+            }
 
-            Promote((milestones)1);
+            return false;
 
         }
 
@@ -521,13 +587,43 @@ namespace StardewDruid.Journal
                 
                 case "approachEffigy":
 
-                    new ApproachEffigy().EventSetup(origin, questId, trigger);
+                    new Event.Scene.ApproachEffigy().EventSetup(origin, questId, trigger);
 
                     return true;
 
                 case "swordWeald":
 
                     new Event.Sword.SwordWeald().EventSetup(origin, questId, trigger);
+
+                    return true;
+
+                case "challengeWeald":
+
+                    new Event.Challenge.ChallengeWeald().EventSetup(origin, questId, trigger);
+
+                    return true;
+
+                case "swordMists":
+
+                    new Event.Sword.SwordMists().EventSetup(origin, questId, trigger);
+
+                    return true;
+
+                case questEffigy:
+
+                    new Event.Scene.QuestEffigy().EventSetup(origin, questId, trigger);
+
+                    return true;
+
+                case "challengeMists":
+
+                    new Event.Challenge.ChallengeMists().EventSetup(origin, questId, trigger);
+
+                    return true;
+
+                case "relicsMists":
+
+                    new Event.Relics.RelicsMists().EventSetup(origin, questId, trigger);
 
                     return true;
 
@@ -543,24 +639,104 @@ namespace StardewDruid.Journal
             switch (questId)
             {
 
+                case startJourney:
+
+                    LocationData.DruidLocations(LocationData.druid_grove_name);
+
+                    return;
+
                 case "approachEffigy":
 
-                    LocationData.DruidEdit();
+                    Character.Character.mode effigyMode = Mod.instance.save.characters.ContainsKey(CharacterData.characters.Effigy) ? Mod.instance.save.characters[CharacterData.characters.Effigy] : Character.Character.mode.home;
 
-                    CharacterData.CharacterLoad(CharacterData.characters.effigy, Character.Character.mode.home);
+                    CharacterData.CharacterLoad(CharacterData.characters.Effigy, effigyMode);
 
                     return;
 
                 case "swordWeald":
 
-                    Mod.instance.save.rite = Rite.rites.weald;
+                    (Mod.instance.locations[LocationData.druid_grove_name] as Grove).AddDialogueTiles();
 
                     return;
+
+                case "challengeWeald":
+
+                    LocationData.DruidLocations(LocationData.druid_atoll_name);
+
+                    Mod.instance.relicsData.ReliquaryUpdate(IconData.relics.minister_mitre.ToString());
+
+                    return;
+
+                case "swordMists":
+
+                    (Mod.instance.locations[LocationData.druid_atoll_name] as Atoll).AddDialogueTiles();
+
+                    return;
+
+                case questEffigy:
+
+                    Mod.instance.relicsData.ReliquaryUpdate(IconData.relics.effigy_crest.ToString());
+
+                    return;
+
             }
 
         }
 
-        public bool Graduate(string questId)
+        public void OnAccept(string questId)
+        {
+
+            switch (questId)
+            {
+
+                case wealdTwo:
+
+                    Mod.instance.save.progress[wealdThree] = new(0, 1);
+
+                    return;
+
+                case wealdThree:
+
+                    Mod.instance.save.progress[wealdFour] = new(0, 1);
+
+                    return;
+
+                case wealdFour:
+
+                    Mod.instance.save.progress[wealdFive] = new(0, 1);
+
+                    return;
+
+                case wealdFive:
+
+                    Mod.instance.save.progress["wealdChallenge"] = new(0, 1);
+
+                    return;
+
+                case mistsTwo:
+
+                    Mod.instance.save.progress[mistsThree] = new(0, 1);
+
+                    return;
+
+                case mistsThree:
+
+                    Mod.instance.save.progress[mistsFour] = new(0, 1);
+
+                    return;
+
+                case mistsFour:
+
+                    Mod.instance.save.progress[questEffigy] = new(0, 1);
+
+                    return;
+
+
+            }
+
+        }
+
+        public void OnComplete(string questId)
         {
 
             switch (questId)
@@ -570,33 +746,114 @@ namespace StardewDruid.Journal
 
                     AssignQuest("swordWeald");
 
-                    Mod.instance.save.milestone = milestones.effigy;
+                    Milecrossed(milestones.effigy);
 
-                    return true;
+                    return;
 
                 case "swordWeald":
 
-                    AssignQuest(clearLesson);
+                    Milecrossed(milestones.weald_weapon);
 
-                    AssignQuest(bushLesson);
+                    AssignQuest(wealdOne);
 
-                    AssignQuest(spawnLesson);
+                    Mod.instance.save.progress[wealdTwo] = new(0, 1);
 
-                    AssignQuest(cropLesson);
+                    Mod.instance.save.rite = Rite.rites.weald;
 
-                    AssignQuest(rockLesson);
+                    return;
 
-                    return true;
+                case wealdOne:
+                case wealdTwo:
+                case wealdThree:
+                case wealdFour:
+                case wealdFive:
+
+                    if (!IsComplete(wealdOne)){ return; }
+                    if (!IsComplete(wealdTwo)) { return; }
+                    if (!IsComplete(wealdThree)) { return; }
+                    if (!IsComplete(wealdFour)) { return; }
+                    if (!IsComplete(wealdFive)) { return; }
+
+                    Milecrossed(milestones.weald_lessons);
+
+                    return;
+
+                case "challengeWeald":
+
+                    Milecrossed(milestones.weald_challenge);
+
+                    AssignQuest("swordMists");
+
+                    break;
+
+                case "swordMists":
+
+                    Milecrossed(milestones.mists_weapon);
+
+                    AssignQuest(mistsOne);
+
+                    Mod.instance.save.progress[mistsTwo] = new(0, 1);
+
+                    Mod.instance.save.rite = Rite.rites.mists;
+
+                    break;
+
+                case mistsOne:
+                case mistsTwo:
+                case mistsThree:
+                case mistsFour:
+
+                    if(questId == mistsTwo)
+                    {
+                        ModUtility.LearnRecipe();
+                    }
+
+                    if (!IsComplete(mistsOne)) { return; }
+                    if (!IsComplete(mistsTwo)) { return; }
+                    if (!IsComplete(mistsThree)) { return; }
+                    if (!IsComplete(mistsFour)) { return; }
+
+                    Milecrossed(milestones.mists_lessons);
+
+                    return;
+
+                case "questEffigy":
+
+                    Milecrossed(milestones.quest_effigy);
+
+                    Mod.instance.save.progress["challengeMists"] = new(0, 1);
+
+                    return;
+
+                case "challengeMists":
+
+                    Milecrossed(milestones.mists_challenge);
+
+                    AssignQuest("swordStars");
+
+                    break;
 
             }
 
-            return true;
+            return;
+
+        }
+
+        public void Milecrossed(milestones milestone)
+        {
+
+            if(milestone > Mod.instance.save.milestone)
+            {
+
+                Mod.instance.save.milestone = milestone;
+
+            }
 
         }
 
         // ----------------------------------------------------------------------
         
-        public void DialogueBefore(string questId)
+        public void DialogueBefore(string questId, int context)
         {
 
             if (quests[questId].before.Count > 0)
@@ -615,13 +872,13 @@ namespace StardewDruid.Journal
                     if (!Mod.instance.dialogue.ContainsKey(special.Key))
                     {
 
-                        Mod.instance.dialogue[special.Key] = new(Mod.instance.characters[special.Key]);
+                        Mod.instance.dialogue[special.Key] = new(special.Key);
 
                     }
 
                     special.Value.questId = questId;
 
-                    special.Value.questContext = 0;
+                    special.Value.questContext = context;
 
                     Mod.instance.dialogue[special.Key].AddSpecialDialogue(questId, special.Value);
 
@@ -654,7 +911,7 @@ namespace StardewDruid.Journal
             if (quests[questId].after.Count > 0)
             {
 
-                foreach (KeyValuePair<CharacterData.characters, DialogueSpecial> special in quests[questId].before)
+                foreach (KeyValuePair<CharacterData.characters, DialogueSpecial> special in quests[questId].after)
                 {
 
                     if (Mod.instance.dialogue.ContainsKey(special.Key))
@@ -674,7 +931,7 @@ namespace StardewDruid.Journal
 
         }
 
-        public void DialogueCheck(string questId, int context, StardewDruid.Character.Character character, int answer = 0)
+        public void DialogueCheck(string questId, int context, CharacterData.characters characterType, int answer = 0)
         {
 
             if(context != 0) {  return; }
@@ -689,9 +946,9 @@ namespace StardewDruid.Journal
 
                     Mod.instance.save.progress[questId].delay = 0;
 
-                    Initialise(questId);
+                    OnAccept(questId);
 
-                    Mod.instance.CastMessage("Driud journal (" + Mod.instance.Config.journalButtons.ToString() + ") has been updated");
+                    Initialise(questId);
 
                 }
 

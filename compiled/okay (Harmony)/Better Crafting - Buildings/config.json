@@ -4,5 +4,7 @@
   "CostCurrency": 100,
   "RefundMaterial": 0,
   "RefundCurrency": 0,
-  "AllowMovingUnfinishedGreenhouse": false
+  "AllowMovingUnfinishedGreenhouse": false,
+  "AllowHouseUpgrades": false,
+  "AllowHouseRenovation": false
 }

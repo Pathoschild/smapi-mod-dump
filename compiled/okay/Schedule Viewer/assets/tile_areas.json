@@ -1,0 +1,350 @@
+{
+  "AbigailBedroom": {
+    "Npcs": [ "Abigail" ],
+    "DisplayName": "Abigail's Bedroom",
+    "Location": "SeedShop",
+    "TileRectangle": {
+      "X": 1,
+      "Y": 4,
+      "Width": 15,
+      "Height": 8
+    }
+  },
+  "AlexBedroom": {
+    "Npcs": [ "Alex" ],
+    "DisplayName": "Alex's Bedroom",
+    "Location": "JoshHouse",
+    "TileRectangle": {
+      "X": 10,
+      "Y": 4,
+      "Width": 14,
+      "Height": 6
+    }
+  },
+  "CarolinePierreBedroom": {
+    "Npcs": [ "Caroline", "Pierre" ],
+    "DisplayName": "Caroline and Pierre's Bedroom",
+    "Location": "SeedShop",
+    "TileRectangle": {
+      "X": 18,
+      "Y": 4,
+      "Width": 11,
+      "Height": 8
+    }
+  },
+  "CarolineSunroom": {
+    "Npcs": [ "Caroline" ],
+    "DisplayName": "tile_area.Sunroom",
+    "Location": "Sunroom",
+    "OverrideLocationName": true
+  },
+  "ClintBedroom": {
+    "Npcs": [ "Clint" ],
+    "DisplayName": "Clint's Bedroom",
+    "Location": "Blacksmith",
+    "TileRectangle": {
+      "X": 1,
+      "Y": 4,
+      "Width": 11,
+      "Height": 6
+    }
+  },
+  "DemetriusRobinBedroom": {
+    "Npcs": [ "Robin", "Demetrius" ],
+    "DisplayName": "Demetrius and Robin's Bedroom",
+    "Location": "ScienceHouse",
+    "TileRectangle": {
+      "X": 13,
+      "Y": 4,
+      "Width": 11,
+      "Height": 7
+    }
+  },
+  "ElliottBedroom": {
+    "Npcs": [ "Elliott" ],
+    "DisplayName": "Elliott's Bedroom",
+    "Location": "ElliottHouse"
+  },
+  "EmilyBedroom": {
+    "Npcs": [ "Emily" ],
+    "DisplayName": "Emily's Bedroom",
+    "Location": "HaleyHouse",
+    "TileRectangle": {
+      "X": 12,
+      "Y": 4,
+      "Width": 12,
+      "Height": 9
+    }
+  },
+  "EvelynGeorgeBedroom": {
+    "Npcs": [ "Evelyn", "George" ],
+    "DisplayName": "Evelyn and George's Bedroom",
+    "Location": "JoshHouse",
+    "TileRectangle": {
+      "X": 1,
+      "Y": 3,
+      "Width": 6,
+      "Height": 7
+    }
+  },
+  "GusBedroom": {
+    "Npcs": [ "Gus" ],
+    "DisplayName": "Gus's Bedroom",
+    "Location": "Saloon",
+    "TileRectangle": {
+      "X": 14,
+      "Y": 4,
+      "Width": 11,
+      "Height": 6
+    }
+  },
+  "HaleyBedroom": {
+    "Npcs": [ "Haley" ],
+    "DisplayName": "Haley's Bedroom",
+    "Location": "HaleyHouse",
+    "TileRectangle": {
+      "X": 1,
+      "Y": 4,
+      "Width": 9,
+      "Height": 10
+    }
+  },
+  "HarveyBedroom": {
+    "Npcs": [ "Harvey" ],
+    "DisplayName": "tile_area.HarveyRoom",
+    "Location": "HarveyRoom",
+    "OverrideLocationName": true
+  },
+  "JasBedroom": {
+    "Npcs": [ "Jas" ],
+    "DisplayName": "Jas's Bedroom",
+    "Location": "AnimalShop",
+    "TileRectangle": {
+      "X": 1,
+      "Y": 4,
+      "Width": 8,
+      "Height": 9
+    }
+  },
+  "JodiKentBedroom": {
+    "Npcs": [ "Jodi", "Kent" ],
+    "DisplayName": "Jodi and Kent's Bedroom",
+    "Location": "SamHouse",
+    "TileRectangle": {
+      "X": 17,
+      "Y": 4,
+      "Width": 12,
+      "Height": 4
+    }
+  },
+  "LeahBedroom": {
+    "Npcs": [ "Leah" ],
+    "DisplayName": "Leah's Bedroom",
+    "Location": "LeahHouse"
+  },
+  "LewisBedroom": {
+    "Npcs": [ "Lewis" ],
+    "DisplayName": "Lewis's Bedroom",
+    "Location": "ManorHouse",
+    "TileRectangle": {
+      "X": 16,
+      "Y": 4,
+      "Width": 8,
+      "Height": 6
+    }
+  },
+  "MarnieBedroom": {
+    "Npcs": [ "Marnie" ],
+    "DisplayName": "Marnie's Bedroom",
+    "Location": "AnimalShop",
+    "TileRectangle": {
+      "X": 11,
+      "Y": 4,
+      "Width": 8,
+      "Height": 9
+    }
+  },
+  "MaruBedroom": {
+    "Npcs": [ "Maru" ],
+    "DisplayName": "Maru's Bedroom",
+    "Location": "ScienceHouse",
+    "TileRectangle": {
+      "X": 1,
+      "Y": 4,
+      "Width": 10,
+      "Height": 7
+    }
+  },
+  "PennyBedroom": {
+    "Npcs": [ "Penny" ],
+    "DisplayName": "Penny's Bedroom",
+    "Location": "Trailer",
+    "TileRectangle": {
+      "X": 1,
+      "Y": 4,
+      "Width": 6,
+      "Height": 7
+    }
+  },
+  "SamBedroom": {
+    "Tiles": [
+      {
+        "X": 13,
+        "Y": 12
+      },
+      {
+        "X": 13,
+        "Y": 13
+      },
+      {
+        "X": 12,
+        "Y": 12
+      },
+      {
+        "X": 12,
+        "Y": 13
+      },
+      {
+        "X": 12,
+        "Y": 14
+      }
+    ],
+    "Npcs": [ "Sam" ],
+    "DisplayName": "Sam's Bedroom",
+    "Location": "SamHouse",
+    "TileRectangle": {
+      "X": 14,
+      "Y": 12,
+      "Width": 10,
+      "Height": 7
+    }
+  },
+  "SebastianBedroom": {
+    "Npcs": [ "Sebastian" ],
+    "DisplayName": "tile_area.SebastianRoom",
+    "Location": "SebastianRoom",
+    "OverrideLocationName": true
+  },
+  "ShaneBedroom": {
+    "Npcs": [ "Shane" ],
+    "DisplayName": "Shane's Bedroom",
+    "Location": "AnimalShop",
+    "TileRectangle": {
+      "X": 21,
+      "Y": 4,
+      "Width": 8,
+      "Height": 10
+    }
+  },
+  "VincentBedroom": {
+    "Npcs": [ "Vincent" ],
+    "DisplayName": "Vincent's Bedroom",
+    "Location": "SamHouse",
+    "TileRectangle": {
+      "X": 8,
+      "Y": 19,
+      "Width": 5,
+      "Height": 5
+    }
+  },
+  "Club": {
+    "DisplayName": "tile_area.Club",
+    "Location": "Club",
+    "OverrideLocationName": true
+  },
+  "IslandEast": {
+    "DisplayName": "tile_area.IslandEast",
+    "Location": "IslandEast",
+    "OverrideLocationName": true
+  },
+  "IslandHut": {
+    "DisplayName": "tile_area.IslandHut",
+    "Location": "IslandHut",
+    "OverrideLocationName": true
+  },
+  "IslandNorth": {
+    "DisplayName": "tile_area.IslandNorth",
+    "Location": "IslandNorth",
+    "OverrideLocationName": true
+  },
+  "IslandSouth": {
+    "DisplayName": "tile_area.IslandSouth",
+    "Location": "IslandSouth",
+    "OverrideLocationName": true
+  },
+  "IslandWest": {
+    "DisplayName": "tile_area.IslandWest",
+    "Location": "IslandWest",
+    "OverrideLocationName": true
+  },
+  "LeoTreeHouse": {
+    "DisplayName": "tile_area.LeoTreeHouse",
+    "Location": "LeoTreeHouse",
+    "OverrideLocationName": true
+  },
+  "QiNutRoom": {
+    "DisplayName": "Strings\\WorldMap:GingerIsland_West_QiWalnutRoom",
+    "Location": "QiNutRoom",
+    "OverrideLocationName": true
+  },
+  "SandyHouse": {
+    "DisplayName": "tile_area.SandyHouse",
+    "Location": "SandyHouse",
+    "OverrideLocationName": true
+  },
+  "SkullCave": {
+    "DisplayName": "tile_area.SkullCave",
+    "Location": "SkullCave",
+    "OverrideLocationName": true
+  },
+  "WitchSwamp": {
+    "DisplayName": "tile_area.WitchSwamp",
+    "Location": "WitchSwamp",
+    "OverrideLocationName": true
+  },
+  "WitchWarpCave": {
+    "DisplayName": "tile_area.WitchWarpCave",
+    "Location": "WitchWarpCave",
+    "OverrideLocationName": true
+  },
+  "TownIceCreamStand": {
+    "DisplayName": "tile_area.TownIceCreamStand",
+    "Location": "Town",
+    "TileRectangle": {
+      "X": 85,
+      "Y": 89,
+      "Width": 6,
+      "Height": 5
+    }
+  },
+  "TownPlayground": {
+    "DisplayName": "tile_area.TownPlayground",
+    "Location": "Town",
+    "TileRectangle": {
+      "X": 11,
+      "Y": 9,
+      "Width": 17,
+      "Height": 9
+    }
+  },
+  "TownSquare": {
+    "DisplayName": "tile_area.TownSquare",
+    "Location": "Town",
+    "TileRectangle": {
+      "X": 22,
+      "Y": 62,
+      "Width": 16,
+      "Height": 13
+    }
+  },
+  "TownWaterFountain": {
+    "DisplayName": "tile_area.TownWaterFountain",
+    "Location": "Town",
+    "TileRectangle": {
+      "X": 20,
+      "Y": 21,
+      "Width": 14,
+      "Height": 12
+    }
+  }
+}

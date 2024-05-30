@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/21280
 IDs: Zamiel.EatDrinkFromInventory
-update keys: GitHub:Zamiell/stardew-valley-mods, Nexus:21280
+update keys: Nexus:21280, GitHub:Zamiell/stardew-valley-mods

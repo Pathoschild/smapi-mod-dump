@@ -13,53 +13,33 @@ namespace StardewMods.BetterChests.Framework.Services.Features;
 using StardewModdingAPI.Utilities;
 using StardewMods.BetterChests.Framework.Interfaces;
 using StardewMods.BetterChests.Framework.Models.Events;
+using StardewMods.Common.Helpers;
 using StardewMods.Common.Interfaces;
 using StardewMods.Common.Models;
-using StardewMods.Common.Services;
-using StardewMods.Common.Services.Integrations.BetterChests.Enums;
-using StardewMods.Common.Services.Integrations.BetterChests.Interfaces;
+using StardewMods.Common.Services.Integrations.BetterChests;
 using StardewMods.Common.Services.Integrations.FauxCore;
 
 /// <summary>Restricts what items can be added into a chest.</summary>
 internal sealed class CategorizeChest : BaseFeature<CategorizeChest>
 {
-    private static readonly Lazy<List<Item>> AllItems = new(
-        () =>
-        {
-            return ItemRegistry
-                .ItemTypes.SelectMany(
-                    itemType => itemType
-                        .GetAllIds()
-                        .Select(localId => ItemRegistry.Create(itemType.Identifier + localId)))
-                .ToList();
-        });
-
     private readonly PerScreen<List<Item>> cachedItems = new(() => []);
-    private readonly ICacheTable<ISearchExpression?> cachedSearches;
-    private readonly MenuManager menuManager;
-    private readonly SearchHandler searchHandler;
+    private readonly IExpressionHandler expressionHandler;
+    private readonly MenuHandler menuHandler;
 
     /// <summary>Initializes a new instance of the <see cref="CategorizeChest" /> class.</summary>
-    /// <param name="cacheManager">Dependency used for managing cache tables.</param>
     /// <param name="eventManager">Dependency used for managing events.</param>
-    /// <param name="menuManager">Dependency used for managing the current menu.</param>
-    /// <param name="log">Dependency used for logging debug information to the console.</param>
-    /// <param name="manifest">Dependency for accessing mod manifest.</param>
+    /// <param name="expressionHandler">Dependency used for parsing expressions.</param>
+    /// <param name="menuHandler">Dependency used for managing the current menu.</param>
     /// <param name="modConfig">Dependency used for accessing config data.</param>
-    /// <param name="searchHandler">Dependency used for handling search.</param>
     public CategorizeChest(
-        CacheManager cacheManager,
         IEventManager eventManager,
-        MenuManager menuManager,
-        ILog log,
-        IManifest manifest,
-        IModConfig modConfig,
-        SearchHandler searchHandler)
-        : base(eventManager, log, manifest, modConfig)
+        IExpressionHandler expressionHandler,
+        MenuHandler menuHandler,
+        IModConfig modConfig)
+        : base(eventManager, modConfig)
     {
-        this.cachedSearches = cacheManager.GetCacheTable<ISearchExpression?>();
-        this.menuManager = menuManager;
-        this.searchHandler = searchHandler;
+        this.expressionHandler = expressionHandler;
+        this.menuHandler = menuHandler;
     }
 
     /// <inheritdoc />
@@ -85,11 +65,39 @@ internal sealed class CategorizeChest : BaseFeature<CategorizeChest>
         this.Events.Unsubscribe<SearchChangedEventArgs>(this.OnSearchChanged);
     }
 
+    private bool CanAcceptItem(IStorageContainer container, Item item, out bool accepted)
+    {
+        accepted = false;
+        var includeStacks = container.CategorizeChestIncludeStacks == FeatureOption.Enabled;
+        var hasStacks = container.Items.ContainsId(item.QualifiedItemId);
+        if (includeStacks && hasStacks)
+        {
+            accepted = true;
+            return true;
+        }
+
+        // Cannot handle if there is no search term
+        if (string.IsNullOrWhiteSpace(container.CategorizeChestSearchTerm))
+        {
+            return false;
+        }
+
+        // Cannot handle if search term is invalid
+        if (!this.expressionHandler.TryParseExpression(container.CategorizeChestSearchTerm, out var searchExpression))
+        {
+            return false;
+        }
+
+        // Check if item matches search expressions
+        accepted = searchExpression.Equals(item);
+        return true;
+    }
+
     private void OnItemHighlighting(ItemHighlightingEventArgs e)
     {
-        var top = this.menuManager.Top.Container;
-        if (e.Container == this.menuManager.Bottom.Container
-            && top?.Options is
+        var top = this.menuHandler.Top.Container;
+        if (e.Container == this.menuHandler.Bottom.Container
+            && top is
             {
                 CategorizeChest: FeatureOption.Enabled,
                 CategorizeChestBlockItems: FeatureOption.Enabled,
@@ -104,12 +112,9 @@ internal sealed class CategorizeChest : BaseFeature<CategorizeChest>
         }
 
         // Unhighlight items not actually in container
-        if (e.Container == this.menuManager.Top.Container && this.cachedItems.Value.Any())
+        if (e.Container == top && !e.Container.Items.Contains(e.Item))
         {
-            if (!e.Container.Items.Contains(e.Item))
-            {
-                e.UnHighlight();
-            }
+            e.UnHighlight();
         }
     }
 
@@ -117,7 +122,9 @@ internal sealed class CategorizeChest : BaseFeature<CategorizeChest>
     private void OnItemsDisplaying(ItemsDisplayingEventArgs e)
     {
         // Append searched items to the end of the list
-        if (e.Container == this.menuManager.Top.Container && this.cachedItems.Value.Any())
+        if (e.Container == this.menuHandler.Top.Container
+            && e.Container.CategorizeChest is FeatureOption.Enabled
+            && this.cachedItems.Value.Any())
         {
             e.Edit(items => items.Concat(this.cachedItems.Value.Except(e.Container.Items)));
         }
@@ -127,8 +134,7 @@ internal sealed class CategorizeChest : BaseFeature<CategorizeChest>
     private void OnItemTransferring(ItemTransferringEventArgs e)
     {
         // Only test if categorize is enabled
-        if (e.Into.Options.CategorizeChest != FeatureOption.Enabled
-            || !this.CanAcceptItem(e.Into, e.Item, out var accepted))
+        if (e.Into.CategorizeChest != FeatureOption.Enabled || !this.CanAcceptItem(e.Into, e.Item, out var accepted))
         {
             return;
         }
@@ -137,7 +143,7 @@ internal sealed class CategorizeChest : BaseFeature<CategorizeChest>
         {
             e.AllowTransfer();
         }
-        else if (e.Into.Options.CategorizeChestBlockItems == FeatureOption.Enabled)
+        else if (e.Into.CategorizeChestBlockItems == FeatureOption.Enabled)
         {
             e.PreventTransfer();
         }
@@ -145,50 +151,12 @@ internal sealed class CategorizeChest : BaseFeature<CategorizeChest>
 
     private void OnSearchChanged(SearchChangedEventArgs e)
     {
-        if (e.SearchExpression is null)
+        if (e.SearchExpression is null || string.IsNullOrWhiteSpace(e.SearchTerm))
         {
             this.cachedItems.Value = [];
             return;
         }
 
-        this.cachedItems.Value = [..CategorizeChest.AllItems.Value.Where(e.SearchExpression.PartialMatch)];
-    }
-
-    private bool CanAcceptItem(IStorageContainer container, Item item, out bool accepted)
-    {
-        accepted = false;
-        var includeStacks = container.Options.CategorizeChestIncludeStacks == FeatureOption.Enabled;
-        var hasStacks = container.Items.ContainsId(item.QualifiedItemId);
-        if (includeStacks && hasStacks)
-        {
-            accepted = true;
-            return true;
-        }
-
-        // Cannot handle if there is no search term
-        if (string.IsNullOrWhiteSpace(container.Options.CategorizeChestSearchTerm))
-        {
-            return false;
-        }
-
-        // Retrieve search expression from cache or generate a new one
-        if (!this.cachedSearches.TryGetValue(container.Options.CategorizeChestSearchTerm, out var searchExpression))
-        {
-            this.cachedSearches.AddOrUpdate(
-                container.Options.CategorizeChestSearchTerm,
-                this.searchHandler.TryParseExpression(container.Options.CategorizeChestSearchTerm, out searchExpression)
-                    ? searchExpression
-                    : null);
-        }
-
-        // Cannot handle if search term is invalid
-        if (searchExpression is null)
-        {
-            return false;
-        }
-
-        // Check if item matches search expressions
-        accepted = searchExpression.PartialMatch(item);
-        return true;
+        this.cachedItems.Value = [..ItemRepository.GetItems(e.SearchExpression.Equals)];
     }
 }

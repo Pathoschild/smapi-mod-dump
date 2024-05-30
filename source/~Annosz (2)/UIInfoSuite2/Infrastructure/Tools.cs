@@ -9,16 +9,16 @@
 *************************************************/
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Extensions;
 using StardewValley.GameData.Crops;
 using StardewValley.GameData.FruitTrees;
 using StardewValley.Menus;
 using StardewValley.TerrainFeatures;
-using UIInfoSuite2.Compatibility;
 using SObject = StardewValley.Object;
 
 namespace UIInfoSuite2.Infrastructure;
@@ -51,45 +51,20 @@ public static class Tools
 
   public static SObject? GetHarvest(Item item)
   {
-    if (item is SObject { Category: SObject.SeedsCategory } seedsObject && seedsObject.ItemId != Crop.mixedSeedsId)
+    if (item is not SObject { Category: SObject.SeedsCategory } seedsObject || seedsObject.ItemId == Crop.mixedSeedsId)
     {
-      if (seedsObject.IsFruitTreeSapling() && FruitTree.TryGetData(item.ItemId, out FruitTreeData? fruitTreeData))
-      {
-        // TODO support multiple items returned
-        return ItemRegistry.Create<SObject>(fruitTreeData.Fruit[0].ItemId);
-      }
+      return null;
+    }
 
-      if (ModEntry.DGA.IsCustomObject(item, out DynamicGameAssetsHelper? dgaHelper))
-      {
-        try
-        {
-          return dgaHelper.GetSeedsHarvest(item);
-        }
-        catch (Exception e)
-        {
-          string? itemId = null;
-          try
-          {
-            itemId = dgaHelper.GetFullId(item);
-          }
-          catch (Exception catchException)
-          {
-            ModEntry.MonitorObject.Log(catchException.ToString());
-          }
+    if (seedsObject.IsFruitTreeSapling() && FruitTree.TryGetData(item.ItemId, out FruitTreeData? fruitTreeData))
+    {
+      // TODO support multiple items returned
+      return ItemRegistry.Create<SObject>(fruitTreeData.Fruit[0].ItemId);
+    }
 
-          ModEntry.MonitorObject.LogOnce(
-            $"An error occured while fetching the harvest for {itemId ?? "unknownItem"}",
-            LogLevel.Error
-          );
-          ModEntry.MonitorObject.Log(e.ToString(), LogLevel.Debug);
-          return null;
-        }
-      }
-
-      if (Crop.TryGetData(item.ItemId, out CropData cropData) && cropData.HarvestItemId is not null)
-      {
-        return ItemRegistry.Create<SObject>(cropData.HarvestItemId);
-      }
+    if (Crop.TryGetData(item.ItemId, out CropData cropData) && cropData.HarvestItemId is not null)
+    {
+      return ItemRegistry.Create<SObject>(cropData.HarvestItemId);
     }
 
     return null;
@@ -192,5 +167,86 @@ public static class Tools
         destColors[idx] = sourcePixel;
       }
     }
+  }
+
+  public static IEnumerable<int> GetDaysFromCondition(GameStateQuery.ParsedGameStateQuery parsedGameStateQuery)
+  {
+    HashSet<int> days = new();
+    if (parsedGameStateQuery.Query.Length < 2)
+    {
+      return days;
+    }
+
+    string queryStr = parsedGameStateQuery.Query[0];
+    if (!"day_of_month".Equals(queryStr, StringComparison.OrdinalIgnoreCase))
+    {
+      return days;
+    }
+
+    for (var i = 1; i < parsedGameStateQuery.Query.Length; i++)
+    {
+      string dayStr = parsedGameStateQuery.Query[i];
+      if ("even".Equals(dayStr, StringComparison.OrdinalIgnoreCase))
+      {
+        days.AddRange(Enumerable.Range(1, 28).Where(x => x % 2 == 0));
+        continue;
+      }
+
+      if ("odd".Equals(dayStr, StringComparison.OrdinalIgnoreCase))
+      {
+        days.AddRange(Enumerable.Range(1, 28).Where(x => x % 2 != 0));
+        continue;
+      }
+
+      try
+      {
+        int parsedInt = int.Parse(dayStr);
+        days.Add(parsedInt);
+      }
+      catch (Exception)
+      {
+        // ignored
+      }
+    }
+
+    return parsedGameStateQuery.Negated ? Enumerable.Range(1, 28).Where(x => !days.Contains(x)).ToHashSet() : days;
+  }
+
+  public static int? GetNextDayFromCondition(string? condition, bool includeToday = true)
+  {
+    HashSet<int> days = new();
+    if (condition == null)
+    {
+      return null;
+    }
+
+    GameStateQuery.ParsedGameStateQuery[]? conditionEntries = GameStateQuery.Parse(condition);
+
+    foreach (GameStateQuery.ParsedGameStateQuery parsedGameStateQuery in conditionEntries)
+    {
+      days.AddRange(GetDaysFromCondition(parsedGameStateQuery));
+    }
+
+    days.RemoveWhere(day => day < Game1.dayOfMonth || (!includeToday && day == Game1.dayOfMonth));
+
+    return days.Count == 0 ? null : days.Min();
+  }
+
+  public static int? GetLastDayFromCondition(string? condition)
+  {
+    HashSet<int> days = new();
+    if (condition == null)
+    {
+      return null;
+    }
+
+    GameStateQuery.ParsedGameStateQuery[]? conditionEntries = GameStateQuery.Parse(condition);
+
+    foreach (GameStateQuery.ParsedGameStateQuery parsedGameStateQuery in conditionEntries)
+    {
+      days.AddRange(GetDaysFromCondition(parsedGameStateQuery));
+    }
+
+    return days.Count == 0 ? null : days.Max();
   }
 }

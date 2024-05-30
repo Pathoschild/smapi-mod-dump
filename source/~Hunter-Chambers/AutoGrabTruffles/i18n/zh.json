@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Hunter-Chambers/StardewValleyMods
+**
+*************************************************/
+
+{
+  "config.apply-profession-label": "应用{{professionName}}职业加成：",
+  "config.whose-to-apply-label": "{{professionName}}职业加成应用于：",
+  "config.gatherer": "收集者",
+  "config.botanist": "植物学家",
+  "config.gain-xp-label": "经验获取：",
+  "config.who-gains-xp-label":  "谁获取经验：",
+  "config.update-game-stats": "更新游戏状态：",
+  "config.disabled-message": "该模组的配置由农场主持人控制"
+}

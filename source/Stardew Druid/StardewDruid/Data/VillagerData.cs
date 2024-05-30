@@ -54,15 +54,24 @@ namespace StardewDruid.Data
 
         }
 
-        public static List<string> CustomReaction(string rite, string name)
+        public static void CommunityFriendship(string id = "mountain", int friendship = 250)
+        {
+
+            List<string> NPCIndex = VillagerData.VillagerIndex(id);
+
+            ModUtility.UpdateFriendship(Game1.player, NPCIndex, friendship);
+
+        }
+
+        public static List<string> CustomReaction(ReactionData.reactions react, string name)
         {
 
             List<string> reaction = new();
 
-            switch (rite)
+            switch (react)
             {
 
-                case "stars":
+                case ReactionData.reactions.stars:
 
                     switch (name)
                     {
@@ -109,7 +118,7 @@ namespace StardewDruid.Data
 
                     break;
 
-                case "mists":
+                case ReactionData.reactions.mists:
 
                     switch (name)
                     {

@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-#nullable enable
+#if COMMON_BCINVENTORY
 
 using System.Collections.Generic;
 
@@ -143,3 +143,5 @@ public interface IInventoryProvider {
 	int GetActualCapacity(object obj, GameLocation? location, Farmer? who);
 
 }
+
+#endif

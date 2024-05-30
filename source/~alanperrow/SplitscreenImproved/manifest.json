@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/alanperrow/StardewModding
+**
+*************************************************/
+
+{
+	"Name": "Splitscreen Improved",
+	"Author": "gaussfire",
+	"Version": "1.0.0",
+	"Description": "Improves splitscreen gameplay. Adds splitscreen layouts, fixes issues such as music not playing, and other tweaks.",
+	"UniqueID": "gaussfire.SplitscreenImproved",
+	"EntryDll": "SplitscreenImproved.dll",
+	"MinimumApiVersion": "4.0.7",
+	"UpdateKeys": [ "Nexus:24507" ]
+}

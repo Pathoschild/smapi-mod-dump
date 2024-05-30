@@ -8,9 +8,11 @@ mods:
    Easy Fishin'
 
 latest commit:
-   commit 249fd5fd86e6c3d977bb2acf16582f14bf3bbef3
-   Author: hunter-chambers <hrchambers.333@gmail.com>
-   Date:   Thu Apr 25 18:15:59 2024 -0500
+   commit b664ba93fb67b200ba50c6e9eb883f51ca6069a1
+   Author: Hunter-Chambers <58852966+Hunter-Chambers@users.noreply.github.com>
+   Date:   Mon May 20 21:00:20 2024 -0500
    
-       set fish quality as well when setting perfect catch
+       Merge pull request #1 from chguw/master
+       
+       Add a Chinese translation
    

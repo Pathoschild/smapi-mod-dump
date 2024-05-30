@@ -12,13 +12,16 @@ namespace HorseOverhaul
 {
     using HarmonyLib;
     using Microsoft.Xna.Framework;
+    using StardewModdingAPI;
     using StardewValley;
     using StardewValley.TerrainFeatures;
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
     using System.Reflection.Emit;
     using xTile.Dimensions;
+    using xTile.Tiles;
 
     internal class InteractPatches
     {
@@ -119,12 +122,14 @@ namespace HorseOverhaul
                     instructionsList[foundTerrainFeature + 8].labels.Add(returnTrueLabel);
 
                     var foundTerrainFeatureInsert = new CodeInstruction(OpCodes.Call,
-                        AccessTools.Method(typeof(InteractPatches), nameof(InteractWithTerrainFeatureWhileRiding)));
+                        AccessTools.Method(typeof(InteractPatches), nameof(InteractWithTerrainFeatureOrTrashCanWhileRiding)));
 
                     var instructionsToInsert = new CodeInstruction[]
                     {
                         new CodeInstruction(OpCodes.Ldarg_0),
                         new CodeInstruction(OpCodes.Ldarg_1),
+                        new CodeInstruction(OpCodes.Ldarg_2),
+                        new CodeInstruction(OpCodes.Ldarg_3),
                         foundTerrainFeatureInsert,
                         new CodeInstruction(OpCodes.Brtrue, returnTrueLabel)
                     };
@@ -193,7 +198,7 @@ namespace HorseOverhaul
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("SMAPI.CommonErrors", "AvoidImplicitNetFieldCast:Netcode types shouldn't be implicitly converted", Justification = "No other choice")]
-        public static bool InteractWithTerrainFeatureWhileRiding(GameLocation location, Location tileLocation)
+        public static bool InteractWithTerrainFeatureOrTrashCanWhileRiding(GameLocation location, Location tileLocation, xTile.Dimensions.Rectangle viewport, Farmer who)
         {
             if (!mod.Config.EnableLimitedInteractionWhileRiding)
             {
@@ -241,7 +246,94 @@ namespace HorseOverhaul
                 }
             }
 
+            if (mod.Config.InteractWithTrashCansWhileRiding)
+            {
+                return TryCheckForTrashCan(location, tileLocation, viewport, who);
+            }
+
             return false;
+        }
+
+        private static bool TryCheckForTrashCan(GameLocation location, Location tileLocation, xTile.Dimensions.Rectangle viewport, Farmer who)
+        {
+            var layer = location.Map.GetLayer("Buildings");
+
+            if (layer == null)
+            {
+                return false;
+            }
+
+            Tile tile = layer.PickTile(new Location(tileLocation.X * 64, tileLocation.Y * 64), viewport.Size);
+
+            if (tile != null && tile.Properties.TryGetValue("Action", out xTile.ObjectModel.PropertyValue propValueAction))
+            {
+                if (propValueAction != null)
+                {
+                    return TryInteractWithTrashCan(location, propValueAction, who, tileLocation);
+                }
+            }
+            else
+            {
+                // don't reuse propValueAction, as it would cause an implicit cast null reference exception
+                string stringAction = location.doesTileHaveProperty(tileLocation.X, tileLocation.Y, "Action", "Buildings");
+
+                if (stringAction != null)
+                {
+                    return TryInteractWithTrashCan(location, stringAction, who, tileLocation);
+                }
+            }
+
+            return false;
+        }
+
+        private static readonly FieldInfo tileActionsInfo = AccessTools.Field(typeof(GameLocation), "registeredTileActions");
+
+        private static bool TryInteractWithTrashCan(GameLocation location, string unsplitAction, Farmer who, Location tileLocation)
+        {
+            if (!who.IsLocalPlayer)
+            {
+                return false;
+            }
+
+            string[] action = ArgUtility.SplitBySpace(unsplitAction);
+
+            if (location.ShouldIgnoreAction(action, who, tileLocation))
+            {
+                return false;
+            }
+
+            if (!ArgUtility.TryGet(action, 0, out var actionType, out var actionTypeError))
+            {
+                location.LogTileActionError(action, tileLocation.X, tileLocation.Y, actionTypeError);
+                return false;
+            }
+
+            if (actionType != "Garbage")
+            {
+                return false;
+            }
+
+            var registeredTileActions = (Dictionary<string, Func<GameLocation, string[], Farmer, Point, bool>>)tileActionsInfo.GetValue(location);
+
+            if (registeredTileActions.TryGetValue(actionType, out _))
+            {
+                mod.DebugLog("Found registered 'Garbage' tile action handler, skipping horse interaction");
+                return false;
+            }
+
+            if (!ArgUtility.TryGet(action, 1, out var id, out var garbageIdError))
+            {
+                location.LogTileActionError(action, tileLocation.X, tileLocation.Y, garbageIdError);
+                return false;
+            }
+
+            location.CheckGarbage(id, new Vector2(tileLocation.X, tileLocation.Y), who, playAnimations: true, reactNpcs: true, delegate (string garbageError)
+            {
+                mod.Monitor.Log($"Ignored invalid 'Action Garbage {id}' property: {garbageError}.", LogLevel.Warn);
+            });
+            Game1.haltAfterCheck = false;
+
+            return true;
         }
     }
 }

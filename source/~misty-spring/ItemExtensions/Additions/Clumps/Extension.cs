@@ -112,7 +112,7 @@ public static class ExtensionClump
 
         if(clump.health.Value <= 0.0)
         {
-            return;
+            return false;
         }
         
         if (resource.Tool != "vanilla" && !GeneralResource.ToolMatches(t, resource))

@@ -8,12 +8,6 @@
 **
 *************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using Leclair.Stardew.Common.Serialization.Converters;
 
 using Microsoft.Xna.Framework;
@@ -23,7 +17,7 @@ using Newtonsoft.Json;
 namespace Leclair.Stardew.CloudySkies.LayerData;
 
 [DiscriminatedType("Rain")]
-public record RainLayerData : BaseLayerData {
+public record RainLayerData : BaseLayerData, IRainLayerData {
 
 	public string? Texture { get; set; }
 

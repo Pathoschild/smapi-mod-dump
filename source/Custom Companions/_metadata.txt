@@ -6,9 +6,9 @@ mods:
    Custom Companions
 
 latest commit:
-   commit 14ddd6704f1b88f48ffbe8fb02973b5fcbaeeb77
+   commit 9778707f9c98f2b3e763887b40b5671c7ea9d42f
    Author: Floogen <31755155+Floogen@users.noreply.github.com>
-   Date:   Fri Mar 22 22:57:40 2024 -0500
+   Date:   Thu May 16 19:35:15 2024 -0500
    
-       v4.0.1 released
+       v4.1.1 released
    

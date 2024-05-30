@@ -1,0 +1,104 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/lisyce/SDV_Allergies_Mod
+**
+*************************************************/
+
+{
+  "Changes": [
+    {
+      "LogName": "Add flour context tag (Cornucopia_BuckwheatFlour)",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "TargetField": [ "Cornucopia_BuckwheatFlour", "ContextTags" ],
+      "Entries": {
+        "#-1": "BarleyZP.BzpAllergies_FlourIngredient"
+      }
+    },
+    {
+      "LogName": "Add flour context tag (Cornucopia_SemolinaFlour)",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "TargetField": [ "Cornucopia_SemolinaFlour", "ContextTags" ],
+      "Entries": {
+        "#-1": "BarleyZP.BzpAllergies_FlourIngredient"
+      }
+    },
+    {
+      "LogName": "Add plant milk context tag (Cornucopia_Oats)",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "TargetField": [ "Cornucopia_Oats", "ContextTags" ],
+      "Entries": {
+        "#-1": "BarleyZP.BzpAllergies_PlantMilkIngredient"
+      }
+    },
+    {
+      "LogName": "Add plant milk context tag (Cornucopia_Soybeans)",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "TargetField": [ "Cornucopia_Soybeans", "ContextTags" ],
+      "Entries": {
+        "#-1": "BarleyZP.BzpAllergies_PlantMilkIngredient"
+      }
+    },
+    {
+      "LogName": "Add plant milk context tag (Cornucopia_Pecan)",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "TargetField": [ "Cornucopia_Pecan", "ContextTags" ],
+      "Entries": {
+        "#-1": "BarleyZP.BzpAllergies_PlantMilkIngredient"
+      }
+    },
+    {
+      "LogName": "Add plant milk context tag (Cornucopia_Peanut)",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "TargetField": [ "Cornucopia_Peanut", "ContextTags" ],
+      "Entries": {
+        "#-1": "BarleyZP.BzpAllergies_PlantMilkIngredient"
+      }
+    },
+    {
+      "LogName": "Add plant milk context tag (Cornucopia_Almond)",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "TargetField": [ "Cornucopia_Almond", "ContextTags" ],
+      "Entries": {
+        "#-1": "BarleyZP.BzpAllergies_PlantMilkIngredient"
+      }
+    },
+    {
+      "LogName": "Add plant milk context tag (Cornucopia_Cashew)",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "TargetField": [ "Cornucopia_Cashew", "ContextTags" ],
+      "Entries": {
+        "#-1": "BarleyZP.BzpAllergies_PlantMilkIngredient"
+      }
+    },
+    {
+      "LogName": "Add plant milk context tag (Cornucopia_Pistachio)",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "TargetField": [ "Cornucopia_Pistachio", "ContextTags" ],
+      "Entries": {
+        "#-1": "BarleyZP.BzpAllergies_PlantMilkIngredient"
+      }
+    },
+    {
+      "LogName": "Add plant milk context tag (Cornucopia_Walnut)",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "TargetField": [ "Cornucopia_Walnut", "ContextTags" ],
+      "Entries": {
+        "#-1": "BarleyZP.BzpAllergies_PlantMilkIngredient"
+      }
+    }
+  ]
+}

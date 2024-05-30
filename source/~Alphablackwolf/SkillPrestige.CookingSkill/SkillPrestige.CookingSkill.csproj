@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="CookingSkill" HintPath="$(GamePath)\Mods\CookingSkill\CookingSkill.dll" Private="False" />
-    <Reference Include="SpaceCore" HintPath="$(GamePath)\Mods\SpaceCore\SpaceCore.dll" Private="False" />
+    <Reference Include="CookingSkill" HintPath="$(GameModsPath)\CookingSkill\CookingSkill.dll" Private="False" />
+    <Reference Include="SpaceCore" HintPath="$(GameModsPath)\SpaceCore\SpaceCore.dll" Private="False" />
   </ItemGroup>
 </Project>

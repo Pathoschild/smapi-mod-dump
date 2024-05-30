@@ -78,9 +78,11 @@ mods:
    Throwable Axe
 
 latest commit:
-   commit 3d24e0d6918f30c5d3905e6b2a596e794e2c084b
-   Author: Casey Warrington <spacechase0.and.cat@gmail.com>
-   Date:   Sun Apr 21 22:51:32 2024 -0500
+   commit 83a9d10d04d89833c73b1594542b680deaa47d1f
+   Author: Casey W <spacechase0@users.noreply.github.com>
+   Date:   Sun Apr 28 22:13:19 2024 -0500
    
-       JA and SpaceCore update versions and minor fixes
+       Merge pull request #456 from Pet-Slime/Sewer-statue-fix
+       
+       [Spacecore] Fixed Statue of uncertainty
    

@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-#nullable enable
+#if COMMON_BCINVENTORY
 
 using System.Collections.Generic;
 
@@ -20,7 +20,7 @@ using StardewValley.Network;
 
 namespace Leclair.Stardew.Common.Inventory;
 
-public struct WorkingInventory : IBCInventory {
+public readonly struct WorkingInventory : IBCInventory {
 
 	public object Object { get; }
 	public IInventoryProvider Provider { get; }
@@ -49,3 +49,5 @@ public struct WorkingInventory : IBCInventory {
 	public void CleanInventory() => Provider.CleanInventory(Object, Location, Player);
 	public int GetActualCapacity() => Provider.GetActualCapacity(Object, Location, Player);
 }
+
+#endif

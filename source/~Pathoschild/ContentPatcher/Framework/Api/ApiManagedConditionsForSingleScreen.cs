@@ -17,7 +17,7 @@ using ContentPatcher.Framework.Tokens;
 
 namespace ContentPatcher.Framework.Api
 {
-    /// <summary>A set of parsed conditions linked to the Content Patcher context for an API consumer, which assume they're always run on the same screen.</summary>
+    /// <summary>A set of parsed conditions linked to the Content Patcher context for an API consumer. This implementation assumes it's always run on the same screen.</summary>
     internal class ApiManagedConditionsForSingleScreen : IManagedConditions
     {
         /*********
@@ -40,7 +40,7 @@ namespace ContentPatcher.Framework.Api
         ** Accessors
         *********/
         /// <inheritdoc />
-        [MemberNotNullWhen(false, nameof(ApiManagedConditions.ValidationError))]
+        [MemberNotNullWhen(false, nameof(ApiManagedConditionsForSingleScreen.ValidationError))]
         public bool IsValid { get; }
 
         /// <inheritdoc />

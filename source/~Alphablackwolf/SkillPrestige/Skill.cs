@@ -17,6 +17,7 @@ using SkillPrestige.Menus;
 using SkillPrestige.Mods;
 using SkillPrestige.Professions;
 using SkillPrestige.SkillTypes;
+using SpaceCore;
 using StardewValley;
 using StardewValley.Menus;
 
@@ -25,9 +26,6 @@ namespace SkillPrestige
     /// <summary>Represents a skill in Stardew Valley.</summary>
     public class Skill
     {
-        /*********
-        ** Accessors
-        *********/
         /// <summary>Metadata about a skill type.</summary>
         public SkillType Type { get; init; }
 
@@ -39,9 +37,6 @@ namespace SkillPrestige
 
         /// <summary>The texture for the skill icon.</summary>
         public Texture2D SkillIconTexture { get; init; } = Game1.buffsIcons;
-
-        /// <summary>The one-based index of where the skill appears on the screen (e.g. Farming is 1 and Fishing is 4). If your mod is creating a skill, you will need to detect where in the list your mod's skill(s) will be.</summary>
-        public int SkillScreenPosition { get; init; }
 
         /// <summary>An action to set the skill's level. For the unmodded game, this sets the relevant player field (e.g. <see cref="Farmer.farmingLevel"/>). If you are implementing this class for your mod it should be whatever would be needed to set the skill level to a given integer.</summary>
         public Action<int> SetSkillLevel;
@@ -60,8 +55,11 @@ namespace SkillPrestige
         /// <summary>An action triggered when prestiging is done. This allows extra handling if something else needs to be reset.</summary>
         public Action OnPrestige { get; init; }
 
-        /// <summary>The management class for any level up menu.</summary>
-        public LevelUpManager LevelUpManager { get; init; }
+        public bool NewLevelForSkillExists()
+        {
+            return Game1.player.newLevels.Any(point => point.X == this.Type.Ordinal && point.Y > 0)
+                   || typeof(Skills).GetStaticField<List<KeyValuePair<string, int>>>("NewLevels").Any(x => x.Key == this.Type.SpaceCoreSkillId);
+        }
 
         /// <summary>The default skills available in the unmodded game.</summary>
         public static IEnumerable<Skill> DefaultSkills => new List<Skill>
@@ -69,7 +67,6 @@ namespace SkillPrestige
             new()
             {
                 Type = SkillType.Farming,
-                SkillScreenPosition = 1,
                 SourceRectangleForSkillIcon = new Rectangle(0, 0, 16, 16),
                 Professions = Profession.FarmingProfessions,
                 SetSkillLevel = level => Game1.player.farmingLevel.Value = level,
@@ -78,7 +75,6 @@ namespace SkillPrestige
             new()
             {
                 Type = SkillType.Fishing,
-                SkillScreenPosition = 4,
                 SourceRectangleForSkillIcon = new Rectangle(16, 0, 16, 16),
                 Professions = Profession.FishingProfessions,
                 SetSkillLevel = level => Game1.player.fishingLevel.Value = level,
@@ -87,7 +83,6 @@ namespace SkillPrestige
             new()
             {
                 Type = SkillType.Foraging,
-                SkillScreenPosition = 3,
                 SourceRectangleForSkillIcon = new Rectangle(80, 0, 16, 16),
                 Professions = Profession.ForagingProfessions,
                 SetSkillLevel = level => Game1.player.foragingLevel.Value = level,
@@ -96,7 +91,6 @@ namespace SkillPrestige
             new()
             {
                 Type = SkillType.Mining,
-                SkillScreenPosition = 2,
                 SourceRectangleForSkillIcon = new Rectangle(32, 0, 16, 16),
                 Professions = Profession.MiningProfessions,
                 SetSkillLevel = level => Game1.player.miningLevel.Value = level,
@@ -105,7 +99,6 @@ namespace SkillPrestige
             new()
             {
                 Type = SkillType.Combat,
-                SkillScreenPosition = 5,
                 SourceRectangleForSkillIcon = new Rectangle(128, 16, 16, 16),
                 Professions = Profession.CombatProfessions,
                 SetSkillLevel = level => Game1.player.combatLevel.Value = level,
@@ -113,22 +106,27 @@ namespace SkillPrestige
             }
         };
 
+        private static List<Skill> _allSkills;
         /// <summary>Returns all skills loaded and registered into this mod, default and mod.</summary>
         public static IEnumerable<Skill> AllSkills
         {
             get
             {
+                if (_allSkills is not null && _allSkills.Any()) return _allSkills;
                 var skills = new List<Skill>(DefaultSkills);
                 var addedSkills = ModHandler.GetAddedSkills().ToList();
                 if (addedSkills.Any())
                     skills.AddRange(addedSkills);
-                return skills;
+                _allSkills = skills;
+                return _allSkills;
             }
         }
 
-        /*********
-        ** Public methods
-        *********/
+        public static void InvalidateSkillsList()
+        {
+            _allSkills = null;
+        }
+
         /// <summary>Construct an instance.</summary>
         public Skill()
         {
@@ -143,20 +141,20 @@ namespace SkillPrestige
                     Game1.player.gainExperience(this.Type.Ordinal, exp);
                 }
             };
-            this.LevelUpManager = new LevelUpManager
-            {
-                IsMenu = menu => menu.GetType() == typeof(LevelUpMenu) && this.Type!.Ordinal == (int)Game1.activeClickableMenu.GetInstanceField("currentSkill"),
-                GetLevel = () => (int)(Game1.activeClickableMenu as LevelUpMenu).GetInstanceField("currentLevel"),
-                CreateNewLevelUpMenu = (skill, level) => new LevelUpMenuDecorator<LevelUpMenu>(
-                    skill: skill,
-                    level: level,
-                    internalMenu: new LevelUpMenu(skill.Type.Ordinal, level),
-                    professionsToChooseInternalName: "professionsToChoose",
-                    leftProfessionDescriptionInternalName: "leftProfessionDescription",
-                    rightProfessionDescriptionInternalName: "rightProfessionDescription",
-                    getProfessionDescription: LevelUpMenu.getProfessionDescription
-                )
-            };
+            // this.LevelUpManager = new LevelUpManager
+            // {
+            //     IsMenu = menu => menu.GetType() == typeof(LevelUpMenu) && this.Type!.Ordinal == (int)Game1.activeClickableMenu.GetInstanceField("currentSkill"),
+            //     GetLevel = () => (int)(Game1.activeClickableMenu as LevelUpMenu).GetInstanceField("currentLevel"),
+            //     CreateNewLevelUpMenu = (skill, level) => new LevelUpMenuDecorator<LevelUpMenu>(
+            //         skill: skill,
+            //         level: level,
+            //         internalMenu: new LevelUpMenu(skill.Type.Ordinal, level),
+            //         professionsToChooseInternalName: "professionsToChoose",
+            //         leftProfessionDescriptionInternalName: "leftProfessionDescription",
+            //         rightProfessionDescriptionInternalName: "rightProfessionDescription",
+            //         getProfessionDescription: LevelUpMenu.getProfessionDescription
+            //     )
+            // };
         }
 
         /// <summary>Get the unique IDs for the skill's professions.</summary>

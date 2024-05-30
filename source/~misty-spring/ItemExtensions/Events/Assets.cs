@@ -32,16 +32,43 @@ public static class Assets
             Parser.Resources(clumps);
         }
         
+        if(e.NamesWithoutLocale.Any(a => a.Name.Equals($"Mods/{Id}/Mines/Terrain")))
+        {
+            var trees = Helper.GameContent.Load<Dictionary<string, TerrainSpawnData>>($"Mods/{Id}/Mines/Terrain");
+            Parser.Terrain(trees);
+        }
+
         //don't reload if on title screen
         if (!Context.IsWorldReady)
             return;
         
+        //drops
         if (e.NamesWithoutLocale.Any(a => a.Name.Equals($"Mods/{Id}/Panning")))
         {
             var panData = Helper.GameContent.Load<Dictionary<string, PanningData>>($"Mods/{Id}/Panning");
             Parser.Panning(panData);
         }
-        
+
+        //drops
+        if (e.NamesWithoutLocale.Any(a => a.Name.Equals($"Mods/{Id}/Treasure")))
+        {
+            ModEntry.Treasure = Helper.GameContent.Load<Dictionary<string, ExtraSpawn>>($"Mods/{Id}/Treasure");
+        }
+
+        if (e.NamesWithoutLocale.Any(a => a.Name.Equals($"Mods/{Id}/Train")))
+        {
+            var trainData = Helper.GameContent.Load<Dictionary<string, TrainDropData>>($"Mods/{Id}/Train");
+            Parser.Train(trainData);
+        }
+
+        if (e.NamesWithoutLocale.Any(a => a.Name.Equals($"Mods/{Id}/MixedSeeds")))
+        {
+            //get menu actions
+            var seeds = Helper.GameContent.Load<Dictionary<string, List<MixedSeedData>>>($"Mods/{Id}/MixedSeeds");
+            Parser.MixedSeeds(seeds);
+        }
+
+        //etc
         if (e.NamesWithoutLocale.Any(a => a.Name.Equals($"Mods/{Id}/Data")))
         {
             var objectData = Helper.GameContent.Load<Dictionary<string, ItemData>>($"Mods/{Id}/Data");
@@ -53,20 +80,6 @@ public static class Assets
             //get menu actions
             var animations = Helper.GameContent.Load<Dictionary<string, FarmerAnimation>>($"Mods/{Id}/EatingAnimations");
             Parser.EatingAnimations(animations);
-        }
-
-        if (e.NamesWithoutLocale.Any(a => a.Name.Equals($"Mods/{Id}/MenuActions")))
-        {
-            //get menu actions
-            var itemActionsRaw = Helper.GameContent.Load<Dictionary<string, List<MenuBehavior>>>($"Mods/{Id}/MenuActions");
-            Parser.ItemActions(itemActionsRaw);
-        }
-        
-        if (e.NamesWithoutLocale.Any(a => a.Name.Equals($"Mods/{Id}/MixedSeeds")))
-        {
-            //get menu actions
-            var seeds = Helper.GameContent.Load<Dictionary<string, List<MixedSeedData>>>($"Mods/{Id}/MixedSeeds");
-            Parser.MixedSeeds(seeds);
         }
     }
 
@@ -148,10 +161,10 @@ public static class Assets
         }
         
         //menu actions / object behavior
-        if (e.NameWithoutLocale.IsEquivalentTo($"Mods/{Id}/MenuActions", true))
+        if (e.NameWithoutLocale.StartsWith($"Mods/{Id}/MenuActions/"))
         {
             e.LoadFrom(
-                () => new Dictionary<string, List<MenuBehavior>>
+                () => new Dictionary<string, MenuBehavior>
                 {
                     { "None", new() }
                 },
@@ -173,7 +186,23 @@ public static class Assets
                 () => new Dictionary<string, PanningData>(),
                 AssetLoadPriority.Low);
         }
-        
+
+        //fishing treasure
+        if (e.NameWithoutLocale.IsEquivalentTo($"Mods/{Id}/Treasure", true))
+        {
+            e.LoadFrom(
+                () => new Dictionary<string, ExtraSpawn>(),
+                AssetLoadPriority.Low);
+        }
+
+        //train
+        if (e.NameWithoutLocale.IsEquivalentTo($"Mods/{Id}/Train", true))
+        {
+            e.LoadFrom(
+                () => new Dictionary<string, TrainDropData>(),
+                AssetLoadPriority.Low);
+        }
+
         //resources
         if (e.NameWithoutLocale.IsEquivalentTo($"Mods/{Id}/Resources", true))
         {
@@ -181,7 +210,14 @@ public static class Assets
                 () => new Dictionary<string, ResourceData>(),
                 AssetLoadPriority.Low);
         }
-        
+
+        if (e.NameWithoutLocale.IsEquivalentTo($"Mods/{Id}/Mines/Terrain", true))
+        {
+            e.LoadFrom(
+                () => new Dictionary<string, TerrainSpawnData>(),
+                AssetLoadPriority.Low);
+        }
+
         //texture
         if (e.NameWithoutLocale.IsEquivalentTo($"Mods/{Id}/Textures/Drink", true))
         {

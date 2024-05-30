@@ -18,7 +18,6 @@ using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.GameData.Buildings;
-using StardewValley.GameData.HomeRenovations;
 using System;
 using System.Collections.Generic;
 using System.Linq;

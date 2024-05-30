@@ -43,6 +43,13 @@ namespace StardewDruid.Character
         public override void draw(SpriteBatch b, float alpha = 1f)
         {
             
+            if (Utility.isOnScreen(Position, 128))
+            {
+
+                DrawEmote(b);
+
+            }
+
             if (Context.IsMainPlayer && drawSlave)
             {
                 
@@ -65,7 +72,7 @@ namespace StardewDruid.Character
                 
                 Point standingPixel = base.StandingPixel;
                 
-                Vector2 vector = Game1.GlobalToLocal(new Vector2(standingPixel.X, standingPixel.Y - 128f));
+                Vector2 vector = Game1.GlobalToLocal(new Vector2(standingPixel.X, standingPixel.Y - 144f));
                 
                 if (textAboveHeadStyle == 0)
                 {

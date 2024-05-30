@@ -3,20 +3,31 @@
   
   "config.fertilizer_mode.title": "Fertilizer Mode",
   "config.fertilizer_mode.tooltip.choose": "Choose your fertilizer application mode: \n",
-  "config.fertilizer_mode.tooltip.multi-fertilizer-stack": "multi-fertilizer-stack: Allows you to mix different types of fertilizers with varied levels on a single crop space.\n",
-  "config.fertilizer_mode.tooltip.multi-fertilizer-single-level": "multi-fertilizer-single-level: Allows you to mix different types of fertilizers but only at a single level on a crop space.\n",
-  "config.fertilizer_mode.tooltip.single-fertilizer-replace": "single-fertilizer-replace: Allows you to replace a single type of fertilizer at any time on a crop space.\n",
-  "config.fertilizer_mode.tooltip.single-fertilizer-stack": "single-fertilizer-stack: Allows you to stack a single type of fertilizer with different levels on a crop space.\n",
-  "config.fertilizer_mode.tooltip.vanilla": "Vanilla: Default Stardew Valley fertilizer behavior.\n",
+  "config.fertilizer_mode.tooltip.multi-fertilizer-stack": "Allows you to mix different types of fertilizers with varied levels on a single crop space.\n",
+  "config.fertilizer_mode.tooltip.multi-fertilizer-single-level": "Allows you to mix different types of fertilizers but only at a single level on a crop space.\n",
+  "config.fertilizer_mode.tooltip.single-fertilizer-replace": "Allows you to replace a single type of fertilizer at any time on a crop space.\n",
+  "config.fertilizer_mode.tooltip.single-fertilizer-stack": "Allows you to stack a single type of fertilizer with different levels on a crop space.\n",
+  "config.fertilizer_mode.tooltip.vanilla": "Default Stardew Valley fertilizer behavior.\n",
   "config.fertilizer_mode.tooltip.note": "Note: This config only applies when you use fertilizer.\n      If you've already mixed fertilizer on a tile and then disable this option, \n      those tiles will still work as per the previous setting.",
+  "config.fertilizer_mode.option.multi-fertilizer-stack": "multi-fertilizer-stack",
+  "config.fertilizer_mode.option.multi-fertilizer-single-level": "multi-fertilizer-single-level",
+  "config.fertilizer_mode.option.single-fertilizer-replace": "single-fertilizer-replace",
+  "config.fertilizer_mode.option.single-fertilizer-stack": "single-fertilizer-stack",
+  "config.fertilizer_mode.option.vanilla": "Vanilla",
+  
+  "config.replace_high_tier.title": "Replace High-tier fertilizer",
+  "config.replace_high_tier.tooltip": "Whether replace mode can downgrade fertilizer.",
   
   "config.enable_fertilizer_anytime.title": "Enable Fertilizer Anytime",
   "config.enable_fertilizer_anytime.tooltip": "Allows you to apply fertilizer to a crop space that already has crops on it.",
   
   "config.keep_fertilizer_across_season.title": "Keep Fertilizer Across Season",
   "config.keep_fertilizer_across_season.tooltip": "Allow fertilizers to not disappear between seasons.",
-  
-  
+
+  "config.fertilizer_alpha.title": "Fertilizer alpha",
+  "config.fertilizer_alpha.tooltip": "Transparency of fertilizer sprite; default 255; range 0-255",
+
+
   "config.section.speed_fertilizer": "Speed Fertilizer",
   
   "config.affect_multi_harvest.title": "Affect Multi-Harvest",
@@ -43,6 +54,9 @@
   
   "config.section.quality_fertilizer": "Quality Fertilizer",
   
+  "config.fix_multi_drop.title": "Fix Multi Drop Bug",
+  "config.fix_multi_drop.tooltip": "In vanilla only the first piece of multi drop crops harvested that day will get the bonus.\nThis patch fixes this bug and make it so that every drop would have the same quality as the first one.",
+
   "config.basic_fertilizer_bonus.title": "Basic Fertilizer Bonus",
   "config.basic_fertilizer_bonus.tooltip": "Modify the quality bonus from Basic Fertilizer; default 1",
   

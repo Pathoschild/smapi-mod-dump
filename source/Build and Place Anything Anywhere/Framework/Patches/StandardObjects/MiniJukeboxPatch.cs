@@ -8,33 +8,26 @@
 **
 *************************************************/
 
-using HarmonyLib;
+using Common.Helpers;
 using StardewValley;
-using StardewModdingAPI;
-using StardewValley.Objects;
 using StardewValley.Menus;
+using StardewValley.Objects;
 using System.Collections.Generic;
-using System;
 
 namespace AnythingAnywhere.Framework.Patches.StandardObjects
 {
-    internal class MiniJukeboxPatch : PatchTemplate
+    internal sealed class MiniJukeboxPatch : PatchHelper
     {
-        private readonly Type _object = typeof(MiniJukebox);
-
-        internal MiniJukeboxPatch(IMonitor modMonitor, IModHelper modHelper) : base(modMonitor, modHelper)
+        internal MiniJukeboxPatch() : base(typeof(MiniJukebox)) { }
+        internal void Apply()
         {
-
-        }
-        internal void Apply(Harmony harmony)
-        {
-            harmony.Patch(AccessTools.Method(_object, nameof(MiniJukebox.checkForAction), new[] { typeof(Farmer), typeof(bool) }), prefix: new HarmonyMethod(GetType(), nameof(CheckForActionPrefix)));
+            Patch(PatchType.Prefix, nameof(MiniJukebox.checkForAction), nameof(CheckForActionPrefix), [typeof(Farmer), typeof(bool)]);
         }
 
         // Enable jukebox functionality outside of the farm
         private static bool CheckForActionPrefix(MiniJukebox __instance, Farmer who, ref bool __result, bool justCheckingForActivity = false)
         {
-            if (!ModEntry.modConfig.EnableJukeboxFunctionality)
+            if (!ModEntry.Config.EnableJukeboxFunctionality)
             {
                 return true; //run the original method
             }

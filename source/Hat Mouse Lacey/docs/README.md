@@ -134,9 +134,17 @@ More config settings may be added in future releases.
 
 ## Compatibility
 
-**This list is unchanged since the 1.1.3 release for SDV 1.5.6. I have not
-re-evaluated other mods for compatibility yet, since I'm still playing 1.6
-mostly unmodded. I will update this in the future as time permits.**
+Newly updated compatibility patches:
+
+* &check; [Stardew Valley Expanded](https://www.nexusmods.com/stardewvalley/mods/3753)\
+    Added fixes for things that broke in 1.6. Should still be fully compatible.
+* &check; [Hat Mouse and Friends](https://www.nexusmods.com/stardewvalley/mods/17364)\
+    Implemented compatibility with Doragoun's cooperation. The lore doesn't make sense,
+    but you get to have more mice.
+* &check; [They Deserve It Too](https://www.nexusmods.com/stardewvalley/mods/20414)\
+    Works alongside Hat Mouse and Friends.
+
+Compatibility status as of version 1.1.3/SDV 1.5.6:
 
 &check; Fully supported\
 &rarrc; Partial or in-progress\
@@ -152,8 +160,6 @@ game, but please let me know if they do.
     Lacey attends the RSV festivals.
 * &check; [East Scarp](https://www.nexusmods.com/stardewvalley/mods/5787)\
     I have not tested all additional content, so some problems may remain.
-* &check; [Stardew Valley Expanded](https://www.nexusmods.com/stardewvalley/mods/3753)\
-    Now fully compatible. More tweaks and tie-ins may come later.
 * &check; Multiple popular map recolors:\
     [DaisyNiko's Earthy Recolour](https://www.nexusmods.com/stardewvalley/mods/5255)\
     [Vibrant Pastoral Recolor](https://www.nexusmods.com/stardewvalley/mods/6367)\
@@ -178,8 +184,6 @@ game, but please let me know if they do.
 * &cross; Mods which add an interior map to the shack\
     (incompatible vision; EWONTFIX)
 * &cross; [Hat Shop Restoration](https://www.nexusmods.com/stardewvalley/mods/17291)\
-    (incompatible vision; EWONTFIX)
-* &cross; [Hat Mouse and Friends](https://www.nexusmods.com/stardewvalley/mods/17364)\
     (incompatible vision; EWONTFIX)
 * &cross; [Fashion Mouse](https://www.nexusmods.com/stardewvalley/mods/17502)\
     (incompatible vision; EWONTFIX)

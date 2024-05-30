@@ -1,0 +1,18 @@
+﻿{
+  "Name": "Pet's Enhanced Mod - An overhaul for pets",
+  "Author": "Sunken_Lace",
+  "Version": "0.1.92",
+  "Description": "Makes pets more special by making them smarter.",
+  "UniqueID": "Sunken_Lace.PetsEnhancedCode",
+  "EntryDll": "Pet's Enhanced Mod.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:24026" ],
+  "Dependencies": [
+    {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "MinimumVersion": "2.0.0",
+      "IsRequired": true
+    }
+  ]
+
+}

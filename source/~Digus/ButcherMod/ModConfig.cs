@@ -31,6 +31,8 @@ namespace AnimalHusbandryMod
         public bool DisableMeatFromDinosaur;
         public double PercentualAjustOnFriendshipInscreaseFromProfessions = 0.25;
         public bool DisableContestBonus;
+        public bool DisableFeedingBasketLetter;
+        public bool DisableInseminationSyringeLetter;
         public bool DisableMeatToolLetter;
         public bool DisableMeatButton;
         public bool DisableMeatInBlundle;

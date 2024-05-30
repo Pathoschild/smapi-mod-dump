@@ -11,7 +11,6 @@
 namespace StardewMods.ToolbarIcons.Framework;
 
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using StardewMods.Common.Interfaces;
 using StardewMods.Common.Services;
 using StardewMods.Common.Services.Integrations.FauxCore;
@@ -23,8 +22,8 @@ using StardewMods.ToolbarIcons.Framework.Services;
 public sealed class ToolbarIconsApi : IToolbarIconsApi
 {
     private readonly BaseEventManager eventManager;
-    private readonly IGameContentHelper gameContentHelper;
-    private readonly ILog log;
+    private readonly IIconRegistry iconRegistry;
+    private readonly Dictionary<string, string> ids = [];
     private readonly IModInfo modInfo;
     private readonly string prefix;
     private readonly ToolbarManager toolbarManager;
@@ -33,27 +32,24 @@ public sealed class ToolbarIconsApi : IToolbarIconsApi
 
     /// <summary>Initializes a new instance of the <see cref="ToolbarIconsApi" /> class.</summary>
     /// <param name="modInfo">Mod info from the calling mod.</param>
-    /// <param name="eventSubscriber">Dependency used for subscribing to events.</param>
-    /// <param name="gameContentHelper">Dependency used for loading game assets.</param>
-    /// <param name="log">Dependency used for monitoring and logging.</param>
-    /// <param name="toolbarManager">Dependency for managing the toolbar icons.</param>
+    /// <param name="eventManager">Dependency used for managing events.</param>
+    /// <param name="iconRegistry">Dependency used for registering and retrieving icons.</param>
+    /// <param name="toolbarManager">Dependency used for adding or removing icons on the toolbar.</param>
     internal ToolbarIconsApi(
         IModInfo modInfo,
-        IEventSubscriber eventSubscriber,
-        IGameContentHelper gameContentHelper,
-        ILog log,
+        IEventManager eventManager,
+        IIconRegistry iconRegistry,
         ToolbarManager toolbarManager)
     {
         // Init
         this.modInfo = modInfo;
-        this.gameContentHelper = gameContentHelper;
-        this.log = log;
+        this.iconRegistry = iconRegistry;
         this.toolbarManager = toolbarManager;
         this.prefix = this.modInfo.Manifest.UniqueID + "/";
-        this.eventManager = new BaseEventManager(log, modInfo.Manifest);
+        this.eventManager = new BaseEventManager();
 
         // Events
-        eventSubscriber.Subscribe<IIconPressedEventArgs>(this.OnIconPressed);
+        eventManager.Subscribe<IIconPressedEventArgs>(this.OnIconPressed);
     }
 
     /// <inheritdoc />
@@ -61,7 +57,7 @@ public sealed class ToolbarIconsApi : IToolbarIconsApi
     {
         add
         {
-            this.log.WarnOnce(
+            Log.WarnOnce(
                 "{0} uses deprecated code. {1} event is deprecated. Please subscribe to the {2} event instead.",
                 this.modInfo.Manifest.Name,
                 nameof(this.ToolbarIconPressed),
@@ -73,15 +69,35 @@ public sealed class ToolbarIconsApi : IToolbarIconsApi
     }
 
     /// <inheritdoc />
-    public void AddToolbarIcon(string id, string texturePath, Rectangle? sourceRect, string? hoverText) =>
-        this.toolbarManager.AddToolbarIcon(
-            $"{this.prefix}{id}",
-            () => this.gameContentHelper.Load<Texture2D>(texturePath),
-            sourceRect,
-            hoverText);
+    public void AddToolbarIcon(string id, string texturePath, Rectangle? sourceRect, string? hoverText)
+    {
+        var uniqueId = $"{this.prefix}{id}";
+        this.ids.Add(uniqueId, id);
+        this.iconRegistry.AddIcon(uniqueId, texturePath, sourceRect ?? new Rectangle(0, 0, 16, 16));
+        this.toolbarManager.AddIcon(uniqueId, hoverText);
+    }
 
     /// <inheritdoc />
-    public void RemoveToolbarIcon(string id) => this.toolbarManager.RemoveToolbarIcon($"{this.prefix}{id}");
+    public void AddToolbarIcon(IIcon icon, string? hoverText)
+    {
+        this.ids.Add(icon.UniqueId, icon.Id);
+        this.toolbarManager.AddIcon(icon.UniqueId, hoverText);
+    }
+
+    /// <inheritdoc />
+    public void RemoveToolbarIcon(string id)
+    {
+        var uniqueId = $"{this.prefix}{id}";
+        this.ids.Remove(uniqueId);
+        this.toolbarManager.RemoveIcon(uniqueId);
+    }
+
+    /// <inheritdoc />
+    public void RemoveToolbarIcon(IIcon icon)
+    {
+        this.ids.Remove(icon.UniqueId);
+        this.toolbarManager.RemoveIcon(icon.UniqueId);
+    }
 
     /// <inheritdoc />
     public void Subscribe(Action<IIconPressedEventArgs> handler) => this.eventManager.Subscribe(handler);
@@ -91,12 +107,11 @@ public sealed class ToolbarIconsApi : IToolbarIconsApi
 
     private void OnIconPressed(IIconPressedEventArgs e)
     {
-        if (!e.Id.StartsWith(this.prefix, StringComparison.OrdinalIgnoreCase))
+        if (!this.ids.TryGetValue(e.Id, out var id))
         {
             return;
         }
 
-        var id = e.Id[this.prefix.Length..];
         this.eventManager.Publish<IIconPressedEventArgs, IconPressedEventArgs>(new IconPressedEventArgs(id, e.Button));
 
         if (this.toolbarIconPressed is null)
@@ -112,7 +127,7 @@ public sealed class ToolbarIconsApi : IToolbarIconsApi
             }
             catch (Exception ex)
             {
-                this.log.Error(
+                Log.Error(
                     "{0} failed in {1}: {2}",
                     this.modInfo.Manifest.Name,
                     nameof(this.ToolbarIconPressed),

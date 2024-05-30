@@ -11,6 +11,9 @@
   "Config.UseVanillaMenu.Name": "Use Vanilla Menu",
   "Config.UseVanillaMenu.Description": "Whether or not to use the vanilla menu for the Special Items & Powers tab. If enabled, the custom menu from Special Power Utilities will not be used. You will not see categories and any powers marked unavailable by mod authors will not be visible to you. However, any effects will still be applied.",
   
+  "Config.StripelessBooks.Name": "Stripeless Books",
+  "Config.StripelessBooks.Description": "Whether or not to remove the two stripes from the books in the animation that plays when you read a book.",
+  
   "HoverText.StardewValley": "Stardew Valley",
   "HoverText.Misc": "Miscellaneous",
   "HoverText.Unavailable": "Unavailable"

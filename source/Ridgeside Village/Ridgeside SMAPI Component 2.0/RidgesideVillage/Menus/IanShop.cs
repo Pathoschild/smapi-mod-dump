@@ -20,6 +20,7 @@ using Microsoft.Xna.Framework;
 using StardewValley.Menus;
 using StardewValley.TerrainFeatures;
 using StardewModdingAPI.Utilities;
+using StardewValley.Mods;
 
 namespace RidgesideVillage
 {
@@ -41,7 +42,7 @@ namespace RidgesideVillage
             Monitor = ModInstance.Monitor;
 
             Helper.Events.GameLoop.DayStarted += OnDayStarted;
-            TileActionHandler.RegisterTileAction("IanCounter", OpenIanMenu);
+            GameLocation.RegisterTileAction("IanCounter", OpenIanMenu);
         }
 
         [EventPriority(EventPriority.High)]
@@ -168,11 +169,12 @@ namespace RidgesideVillage
             modData.Remove(willFixFences);
         }
 
-        private static void OpenIanMenu(string tileActionString, Vector2 position)
+        private static bool OpenIanMenu(GameLocation location, string[] arg2, Farmer farmer, Point point)
         {
-            OpenIanMenu(tileActionString);
+            OpenIanMenu();
+            return true;
         }
-        private static void OpenIanMenu(string tileActionString = "")
+        private static void OpenIanMenu()
         {
             bool isSomeoneHere = UtilFunctions.IsSomeoneHere(8, 13, 2, 2);
             if (isSomeoneHere)
@@ -215,12 +217,12 @@ namespace RidgesideVillage
                 }
             };
 
-            if (Game1.MasterPlayer.eventsSeen.Contains(RSVConstants.E_SUMMITUNLOCK))
+            if (Game1.MasterPlayer.mailReceived.Contains(RSVConstants.M_ODDJOBNOTICE))
             {
                 responses.Insert(3, new Response("renovate", Helper.Translation.Get("IanShop.SummitFarm")));
                 responseActions.Insert(3, delegate { RenovateOptions(); });
             }
-            Game1.activeClickableMenu = new DialogueBoxWithActions(Helper.Translation.Get("IanShop.Open"), responses, responseActions);
+            Game1.activeClickableMenu = new DialogueBoxWithActions(Helper.Translation.Get("IanShop.Open"), responses.ToArray(), responseActions);
         }
 
         private static void PetAnimalsMenu()
@@ -267,7 +269,7 @@ namespace RidgesideVillage
                         IanCounterMenu();
                     }
                 };
-                Game1.activeClickableMenu = new DialogueBoxWithActions(Helper.Translation.Get("IanShop.PetAnimalsMenu"), responses, responseActions);
+                Game1.activeClickableMenu = new DialogueBoxWithActions(Helper.Translation.Get("IanShop.PetAnimalsMenu"), responses.ToArray(), responseActions);
             }
             else if (n <= 0)
             {
@@ -317,7 +319,7 @@ namespace RidgesideVillage
                 }
             };
 
-            Game1.activeClickableMenu = new DialogueBoxWithActions(Helper.Translation.Get("IanShop.WaterPlantsMenu"), responses, responseActions);
+            Game1.activeClickableMenu = new DialogueBoxWithActions(Helper.Translation.Get("IanShop.WaterPlantsMenu"), responses.ToArray(), responseActions);
         }
       
         private static void FixFencesMenu()
@@ -368,7 +370,7 @@ namespace RidgesideVillage
                         IanCounterMenu();
                     }
                 };
-                Game1.activeClickableMenu = new DialogueBoxWithActions(Helper.Translation.Get("IanShop.FixFencesMenu"), responses, responseActions);
+                Game1.activeClickableMenu = new DialogueBoxWithActions(Helper.Translation.Get("IanShop.FixFencesMenu"), responses.ToArray(), responseActions);
             }
             else
             {
@@ -386,13 +388,13 @@ namespace RidgesideVillage
             else if (!Game1.MasterPlayer.mailReceived.Contains(RSVConstants.M_MINECARTSFIXED))
             {
                 worker.CurrentDialogue.Clear();
-                worker.CurrentDialogue.Push(new Dialogue(Helper.Translation.Get("IanShop.BrokenCarts"), worker));
+                worker.CurrentDialogue.Push(new Dialogue(worker,"", Helper.Translation.Get("IanShop.BrokenCarts")));
                 Game1.drawDialogue(worker);
             }
             else if (Game1.MasterPlayer.activeDialogueEvents.TryGetValue(RSVConstants.CT_ACTIVECONSTRUCTION, out int value) && value > 0)
             {
                 worker.CurrentDialogue.Clear();
-                worker.CurrentDialogue.Push(new Dialogue(Helper.Translation.Get("IanShop.AlreadyBuilding"), worker));
+                worker.CurrentDialogue.Push(new Dialogue(worker,"", Helper.Translation.Get("IanShop.AlreadyBuilding")));
                 Game1.drawDialogue(worker);
             }
             else

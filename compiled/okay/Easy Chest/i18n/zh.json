@@ -4,5 +4,7 @@
   "config.name.EasyChestKey": "快捷键",
   "config.tips.EasyChestKey": "远程打开箱子的快捷键",
   "config.name.ChestSortBy": "排序方式",
-  "config.tips.ChestSortBy": "鼠标滚轮切换箱子的顺序"
+  "config.tips.ChestSortBy": "鼠标滚轮切换箱子的顺序",
+  "config.name.ShowChestInfo": "显示宝箱信息",
+  "config.tips.ShowChestInfo": "在左上角浮层显示宝箱信息"
 }

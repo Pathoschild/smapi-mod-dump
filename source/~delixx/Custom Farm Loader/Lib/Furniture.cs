@@ -88,7 +88,7 @@ namespace Custom_Farm_Loader.Lib
                             furniture.Rotations = int.Parse(value);
                             break;
                         case "type":
-                            furniture.Type = UtilityMisc.parseEnum<FurnitureType>(value);
+                            furniture.Type = UtilityMisc.parseEnum<FurnitureType>(value.Replace(" ", ""));
                             break;
                         case "position":
                             furniture.Position = new Vector2(int.Parse(value.Split(",")[0]), int.Parse(value.Split(",")[1]));
@@ -126,7 +126,7 @@ namespace Custom_Farm_Loader.Lib
 
                     switch (name.ToLower()) {
                         case "id":
-                            id = ItemObject.MapNameToItemId(value);
+                            id = value;
                             break;
                         case "amount":
                             amount = int.Parse(value);
@@ -282,29 +282,31 @@ namespace Custom_Farm_Loader.Lib
                         location.furniture.Last().heldObject.Value = HeldObject.objectFactory(Position);
                     break;
 
-                case FurnitureType.Chest or FurnitureType.Dungeon_Chest
-                        or FurnitureType.Giftbox or FurnitureType.Purple_Giftbox or FurnitureType.Blue_Giftbox or FurnitureType.Trashcan_Giftbox or FurnitureType.Brown_Giftbox:
+                case FurnitureType.Chest or FurnitureType.DungeonChest
+                        or FurnitureType.Giftbox or FurnitureType.PurpleGiftbox or FurnitureType.BlueGiftbox or FurnitureType.TrashcanGiftbox or FurnitureType.BrownGiftbox:
                     Chest chest = null;
                     var items = new List<Item>();
                     Items.ForEach(item => {
+                        var id = ItemObject.MapNameToItemId(item.Id);
+
                         items.Add(
-                        item.Id.Trim().First() == '(' ?
-                        ItemRegistry.Create(item.Id, item.Amount, item.Quality)
-                        : new StardewValley.Object(item.Id, item.Amount, quality: item.Quality) { HasBeenInInventory = false });
+                        id.Trim().First() == '(' ?
+                        ItemRegistry.Create(id, item.Amount, item.Quality)
+                        : new StardewValley.Object(id, item.Amount, quality: item.Quality) { HasBeenInInventory = false });
                     });
 
-                    if (Type == FurnitureType.Giftbox || Type == FurnitureType.Purple_Giftbox || Type == FurnitureType.Blue_Giftbox
-                        || Type == FurnitureType.Brown_Giftbox || Type == FurnitureType.Trashcan_Giftbox) {
+                    if (Type == FurnitureType.Giftbox || Type == FurnitureType.PurpleGiftbox || Type == FurnitureType.BlueGiftbox
+                        || Type == FurnitureType.BrownGiftbox || Type == FurnitureType.TrashcanGiftbox) {
                         int giftboxIndex = Type switch {
-                            FurnitureType.Brown_Giftbox => 4,
-                            FurnitureType.Trashcan_Giftbox => 3,
-                            FurnitureType.Blue_Giftbox => 2,
-                            FurnitureType.Purple_Giftbox => 1,
+                            FurnitureType.BrownGiftbox => 4,
+                            FurnitureType.TrashcanGiftbox => 3,
+                            FurnitureType.BlueGiftbox => 2,
+                            FurnitureType.PurpleGiftbox => 1,
                             FurnitureType.Giftbox or _ => 0
                         };
                         chest = new Chest(items, Position, true, giftboxIndex: giftboxIndex);
 
-                    } else if (Type == FurnitureType.Dungeon_Chest) {
+                    } else if (Type == FurnitureType.DungeonChest) {
                         chest = new Chest(items, Position, false, giftboxIndex: 0);
 
                     } else if (Type == FurnitureType.Chest) {

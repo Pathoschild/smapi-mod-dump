@@ -1,0 +1,23 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/lisyce/SDV_Allergies_Mod
+**
+*************************************************/
+
+{
+    "(O)340": "Mel",
+    "(O)348": "Vinho",
+    "(O)350": "Suco",
+    "(O)342": "Geléias_e_Picles",
+    "(O)344": "Geléias_e_Picles",
+    "(O)447": "Ovas_Maturadas",
+    "(O)812": "Ovas",
+    "(O)SmokedFish": "Peixe_Defumado",
+    "(O)DriedMushrooms": "Desidratados",
+    "(O)DriedFruit": "Fruta_Seca",
+    "pet": "Animais#Gato_ou_Cachorro"
+}

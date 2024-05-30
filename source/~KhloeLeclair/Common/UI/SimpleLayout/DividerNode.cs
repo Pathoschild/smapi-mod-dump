@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-#nullable enable
+#if COMMON_SIMPLELAYOUT
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -48,7 +48,6 @@ public class DividerNode : ISimpleNode {
 	}
 
 	public Vector2 GetSize(SpriteFont defaultFont, Vector2 containerSize) {
-		int thickness = Thick ? 16 : 8;
 		return Parent.Direction switch {
 			LayoutDirection.Horizontal => new Vector2(16, 0),
 			_ => new Vector2(0, Thick ? 16 : 8)
@@ -116,3 +115,5 @@ public class DividerNode : ISimpleNode {
 			);
 	}
 }
+
+#endif

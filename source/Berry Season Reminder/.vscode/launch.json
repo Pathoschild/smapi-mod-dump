@@ -13,14 +13,14 @@
 	"configurations": [
 		{
 			"name": "Run",
-			"type": "clr",
+			"type": "cppvsdbg",
 			"request": "launch",
-			"preLaunchTask": "mybuild",
+			"preLaunchTask": "build",
 			"program": "C:/progra~2/Steam/steamapps/common/starde~1/StardewModdingAPI.exe",
 			"cwd": "C:/progra~2/Steam/steamapps/common/starde~1/",
 			"args":[],
 			"console": "externalTerminal",
-			"stopAtEntry": true,
+			"stopAtEntry": false,
 			"internalConsoleOptions": "neverOpen"
 		}
 	]

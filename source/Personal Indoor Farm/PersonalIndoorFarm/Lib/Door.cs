@@ -67,6 +67,10 @@ namespace PersonalIndoorFarm.Lib
                 original: AccessTools.DeclaredMethod(typeof(Furniture), nameof(Furniture.checkForAction), new[] { typeof(Farmer), typeof(bool) }),
                 prefix: new HarmonyMethod(typeof(Door).GetMethod(nameof(checkForAction_Prefix)), priority: Priority.First)
             );
+            harmony.Patch(
+                original: AccessTools.DeclaredMethod(typeof(Furniture), nameof(Furniture.draw), new[] { typeof(SpriteBatch), typeof(int), typeof(int), typeof(float) }),
+                postfix: new HarmonyMethod(typeof(Door).GetMethod(nameof(draw_Postfix)))
+            );
 
             Helper.Events.GameLoop.DayStarted -= DayStarted;
         }
@@ -108,7 +112,7 @@ namespace PersonalIndoorFarm.Lib
                 doorId = "Vanilla." + itemId;
                 return true;
 
-            } else if(Config.UseVMVDoors && VMVDoors.Contains(itemId)) {
+            } else if (Config.UseVMVDoors && VMVDoors.Contains(itemId)) {
                 doorId = itemId;
                 return true;
             }
@@ -125,6 +129,16 @@ namespace PersonalIndoorFarm.Lib
             }
 
             var owner = Game1.getFarmerMaybeOffline(fh.OwnerId);
+            if (fh.IsOwnedByCurrentPlayer && Game1.player.CurrentItem?.QualifiedItemId == Key.QualifiedItemId) {
+                Key.useOnDoor(owner, doorId);
+                return;
+            }
+
+            if (!fh.IsOwnedByCurrentPlayer && Key.isDoorLocked(owner, doorId)) {
+                Game1.showRedMessage(Helper.Translation.Get("Door.Locked"));
+                return;
+            }
+
             if (!fh.IsOwnedByCurrentPlayer && !Game1.getOnlineFarmers().Contains(owner)) {
                 Game1.showRedMessage(Helper.Translation.Get("Door.Offline"));
                 return;
@@ -200,6 +214,15 @@ namespace PersonalIndoorFarm.Lib
             }
 
             return ret;
+        }
+
+        public static void draw_Postfix(Furniture __instance, SpriteBatch spriteBatch, int x, int y, float alpha = 1f)
+        {
+            if (!isDimensionDoor(__instance.ItemId, out string doorId))
+                return;
+
+            if (Game1.currentLocation is FarmHouse fh && Game1.player.CurrentItem?.QualifiedItemId == Key.QualifiedItemId)
+                Key.drawOverlay(spriteBatch, __instance, doorId, Game1.getFarmerMaybeOffline(fh.OwnerId));
         }
     }
 }

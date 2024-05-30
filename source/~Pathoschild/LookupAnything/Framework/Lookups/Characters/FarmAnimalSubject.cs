@@ -142,7 +142,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Characters
                 factors.Add(I18n.Animal_Complaints_NotPetted());
 
             // return factors
-            return string.Join(", ", factors);
+            return I18n.List(factors);
         }
     }
 }

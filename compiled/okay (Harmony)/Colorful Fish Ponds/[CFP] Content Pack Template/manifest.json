@@ -1,0 +1,17 @@
+{
+  "Name": "Fish Pond Color Test",
+  "Author": "rokugin",
+  "Version": "1.0.0",
+  "Description": "Test to see if my content pack works.",
+  "UniqueID": "rokugin.fishpondtest",
+  "UpdateKeys": [],
+  "Dependencies": [
+    {
+      "UniqueID": "TheUniqueIDOfTheModYouWantToRequireDependencyFor"
+    }
+  ],
+  "ContentPackFor": {
+    "UniqueID": "rokugin.colorfulfishponds",
+    "MinimumVersion": "1.0.0"
+  }
+}

@@ -352,6 +352,7 @@ namespace Swim
                 {
                     SMonitor.Log($"Clearing overlay objects from GameLocation {location.Name} ");
                     location.overlayObjects.Clear();
+                    location.numberOfSpawnedObjectsOnMap = 0;
                 }
                 if (kvp.Value.Features.Contains("OceanTreasure"))
                 {
@@ -431,8 +432,11 @@ namespace Swim
                 SwimDialog.OldMarinerDialogue(resps[resp].responseKey);
                 return;
             }
+        }
 
-            if (e.Button == Config.DiveKey && Game1.activeClickableMenu == null && !Game1.player.UsingTool && ModEntry.diveMaps.ContainsKey(Game1.player.currentLocation.Name) && ModEntry.diveMaps[Game1.player.currentLocation.Name].DiveLocations.Count > 0)
+        public static void Input_ButtonsChanged(object sender, ButtonsChangedEventArgs e)
+        {
+            if (Config.DiveKey.JustPressed() && Game1.activeClickableMenu == null && Context.IsPlayerFree && Context.CanPlayerMove && ModEntry.diveMaps.ContainsKey(Game1.player.currentLocation.Name) && ModEntry.diveMaps[Game1.player.currentLocation.Name].DiveLocations.Count > 0)
             {
                 SMonitor.Log("Trying to dive!");
                 Point pos = Game1.player.TilePoint;
@@ -472,7 +476,7 @@ namespace Swim
                 return;
             }
 
-            if (e.Button == Config.SwimKey && Game1.activeClickableMenu == null && (!Game1.player.swimming.Value || !Config.ReadyToSwim) && !isJumping.Value)
+            if (Config.SwimKey.JustPressed() && Game1.activeClickableMenu == null && (!Game1.player.swimming.Value || !Config.ReadyToSwim) && !isJumping.Value)
             {
                 Config.ReadyToSwim = !Config.ReadyToSwim;
                 SHelper.WriteConfig(Config);
@@ -480,7 +484,7 @@ namespace Swim
                 return;
             }
 
-            if (e.Button == Config.SwimSuitKey && Game1.activeClickableMenu == null)
+            if (Config.SwimSuitKey.JustPressed() && Game1.activeClickableMenu == null)
             {
                 Config.SwimSuitAlways = !Config.SwimSuitAlways;
                 SHelper.WriteConfig(Config);
@@ -493,7 +497,6 @@ namespace Swim
                 }
                 return;
             }
-
         }
 
         public static void GameLoop_UpdateTicked(object sender, UpdateTickedEventArgs e)
@@ -570,7 +573,16 @@ namespace Swim
                 Game1.player.position.Value = new Vector2(endJumpLoc.Value.X - (difx * completed), endJumpLoc.Value.Y - (dify * completed) - (float)Math.Sin(completed * Math.PI) * 64);
                 return;
             }
+
             if (!SwimUtils.CanSwimHere())
+                return;
+
+            if (!Context.IsPlayerFree)
+            {
+                return;
+            }
+
+            if (Game1.player.swimming.Value && tryToWarp()) // Returns true if it is warping
                 return;
 
             if (Game1.player.swimming.Value && !SwimUtils.IsInWater() && !isJumping.Value)
@@ -606,14 +618,6 @@ namespace Swim
                     Game1.player.changeIntoSwimsuit();
             }
 
-            if (!Context.IsPlayerFree)
-            {
-                return;
-            }
-
-            if (Game1.player.swimming.Value && tryToWarp()) // Returns true if it is warping
-                return;
-
             if (Game1.player.swimming.Value)
             {
                 if (SwimUtils.IsWearingScubaGear() && !Config.SwimSuitAlways && SwimUtils.IsMapUnderwater(Game1.currentLocation.Name))
@@ -643,8 +647,7 @@ namespace Swim
                     }
                 }
 
-                Game1.player.canOnlyWalk = !Config.AllowActionsWhileInSwimsuit;
-                if(Game1.player.running && !Config.AllowRunningWhileInSwimsuit && !SwimUtils.IsWearingScubaGear())
+                if(Game1.player.running)
                 {
                     Game1.player.setRunning(false);
                 }
@@ -660,7 +663,7 @@ namespace Swim
             bool didJump = tryToJumpInDirection(direction); // Try to jump in the direction the player is facing
 
             // If we didn't just jump, 
-            if (!didJump && SHelper.Input.IsDown(Config.ManualJumpButton) && SwimUtils.isMouseButton(Config.ManualJumpButton) && Config.EnableClickToSwim)
+            if (!didJump && Config.ManualJumpButton.IsDown() && SwimUtils.isMouseButtonDown(Config.ManualJumpButton) && Config.EnableClickToSwim)
             {
                 try
                 {

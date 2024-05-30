@@ -9,17 +9,16 @@
 *************************************************/
 
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
+using Leclair.Stardew.Common;
 using Leclair.Stardew.Common.Events;
 
-using StardewValley;
 using StardewModdingAPI;
-using StardewValley.Internal;
-using StardewValley.TokenizableStrings;
+
+using StardewValley;
 using StardewValley.Network;
-using System.Linq;
-using Microsoft.Xna.Framework.Input;
-using System.Text;
 
 namespace Leclair.Stardew.CloudySkies;
 
@@ -27,9 +26,63 @@ public partial class ModEntry {
 
 	[ConsoleCommand("cs_reload", "Force the current weather layers and effects to be recreated.")]
 	public void ReloadCommand(string name, string[] args) {
-		UncacheLayers();
+		UncacheLayers(null, true);
 		Log($"Invalidated weather cache.", LogLevel.Info);
 	}
+
+	[ConsoleCommand("cs_history", "View the recorded weather history.")]
+	public void HistoryCommand(string name, string[] args) {
+
+		LoadWeatherHistory();
+
+		List<string[]> table = new();
+
+		int minDay = int.MaxValue;
+		int maxDay = int.MinValue;
+
+		string[] headers = new string[1 + WeatherHistory.Count];
+		headers[0] = "Date";
+		int j = 1;
+
+		foreach (var pair in WeatherHistory) {
+			headers[j] = pair.Key;
+			j++;
+			foreach (int day in pair.Value.Keys) {
+				if (minDay > day)
+					minDay = day;
+				if (maxDay < day)
+					maxDay = day;
+			}
+		}
+
+		for (int i = minDay; i <= maxDay; i++) {
+			string[] row = new string[1 + WeatherHistory.Count];
+			table.Add(row);
+
+			var date = new WorldDate {
+				TotalDays = i
+			};
+			row[0] = date.Localize();
+
+			j = 1;
+			foreach (var pair in WeatherHistory) {
+
+				if (!pair.Value.TryGetValue(i, out string? weather))
+					weather = "---";
+
+				row[j] = weather;
+				j++;
+			}
+		}
+
+		StringBuilder sb = new();
+		sb.AppendLine("Recorded Weather History:");
+
+		LogTable(sb, headers, table);
+
+		Log(sb.ToString(), LogLevel.Info);
+	}
+
 
 	[ConsoleCommand("cs_list", "List the available weather Ids.")]
 	public void ListCommand(string name, string[] args) {
@@ -76,7 +129,7 @@ public partial class ModEntry {
 
 			table.Add([
 				entry.Key,
-				TokenParser.ParseText(entry.Value.DisplayName ?? ""),
+				TokenizeText(entry.Value.DisplayName ?? ""),
 				$"{layerCount}",
 				$"{effectCount}",
 				string.Join(", ", contextWeather.Where(x => x.Value.Weather == entry.Key).Select(x => x.Key)),
@@ -106,7 +159,7 @@ public partial class ModEntry {
 			return;
 		}
 
-		if (!Context.IsMainPlayer) { 
+		if (!Context.IsMainPlayer) {
 			Log($"Only the host can do this.", LogLevel.Error);
 			return;
 		}
@@ -120,7 +173,41 @@ public partial class ModEntry {
 		// Have a little fun.
 		SObject? item = ItemRegistry.Create("(O)789") as SObject; // ItemQueryResolver.TryResolveRandomItem("ALL_ITEMS", new ItemQueryContext()) as SObject;
 
-		UseWeatherTotem(Game1.player, input, item);
+		UseWeatherTotem(Game1.player, input, item, bypassChecks: true);
+	}
+
+	[ConsoleCommand("cs_fix_green_rain", "Remove lingering green rain effects from maps.")]
+	public void FixGreenRainCommand(string name, string[] args) {
+		if (!Context.IsWorldReady) {
+			Log($"Load the game first.", LogLevel.Error);
+			return;
+		}
+
+		if (!Game1.IsMasterGame) {
+			Log($"Only the host can do this.", LogLevel.Error);
+			return;
+		}
+
+		IEnumerable<GameLocation>? locations = null;
+
+		var parser = ArgumentParser.New()
+			.AddPositional<IEnumerable<GameLocation>>("Locations", val => locations = val);
+
+		if (!parser.TryParse(args, out string? error)) {
+			Log(error, LogLevel.Error);
+			return;
+		}
+
+		locations ??= CommonHelper.EnumerateLocations();
+
+		int count = 0;
+		if (locations is not null)
+			foreach (var location in locations) {
+				location.performDayAfterGreenRainUpdate();
+				count++;
+			}
+
+		Log($"Updated {count} locations.", LogLevel.Info);
 	}
 
 }

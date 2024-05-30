@@ -1,0 +1,16 @@
+{
+  // Basic
+  "LineSprinkler.DisplayName": "Линейный спринклер",
+  "LineSprinkler.Description": "Поливает 4 клетки по прямой каждое утро.",
+  // Quality
+  "QualityLineSprinkler.DisplayName": "Высококачественный линейный спринклер",
+  "QualityLineSprinkler.Description": "Поливает 8 клеток по прямой каждое утро.",
+  // Iridium
+  "IridiumLineSprinkler.DisplayName": "Иридиевый линейный спринклер",
+  "IridiumLineSprinkler.Description": "Поливает 24 клетки по прямой каждое утро.",
+
+  // Config
+  "Controls": "Управление",
+  "RotateSprinklerKeybind": "Вращать спринклер",
+  "RotateSprinklerKeybind.Tooltip": "Для поворота на 90° вправо нажмите эту клавишу перед размещением спринклера или удерживая курсор над размещённым спринклером."
+}

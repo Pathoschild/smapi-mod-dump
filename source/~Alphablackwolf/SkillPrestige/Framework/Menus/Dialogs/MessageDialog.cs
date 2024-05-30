@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using SkillPrestige.Framework.InputHandling;
@@ -22,18 +23,11 @@ namespace SkillPrestige.Framework.Menus.Dialogs
     /// <summary>Represents a message dialog box to display information to the user.</summary>
     internal class MessageDialog : IClickableMenu, IInputHandler
     {
-        /*********
-        ** Fields
-        *********/
         private bool ButtonInstantiated;
         private int DebounceTimer = 10;
         private TextureButton OkayButton;
         private readonly string Message;
 
-
-        /*********
-        ** Public methods
-        *********/
         public override void draw(SpriteBatch spriteBatch)
         {
             if (this.DebounceTimer > 0)
@@ -71,9 +65,6 @@ namespace SkillPrestige.Framework.Menus.Dialogs
             this.OkayButton.OnButtonPressed(e, isClick);
         }
 
-        /*********
-        ** Protected methods
-        *********/
         protected MessageDialog(Rectangle bounds, string message)
             : base(bounds.X, bounds.Y, bounds.Width, bounds.Height, true)
         {
@@ -109,9 +100,21 @@ namespace SkillPrestige.Framework.Menus.Dialogs
             Logger.LogVerbose("Message Dialog - Instantiating Okay button...");
             const int buttonSize = Game1.tileSize;
             var okayButtonBounds = new Rectangle(this.xPositionOnScreen + this.width + Game1.tileSize / 4, this.yPositionOnScreen + this.height - buttonSize, buttonSize, buttonSize);
-            this.OkayButton = new TextureButton(okayButtonBounds, Game1.mouseCursors, new Rectangle(128, 256, 64, 64), this.Okay);
+            this.OkayButton = new TextureButton(okayButtonBounds, Game1.mouseCursors, new Rectangle(128, 256, 64, 64), this.Okay)
+                {
+                    ClickableTextureComponent =
+                    {
+                        myID = 1
+                    }
+                };
             Logger.LogVerbose("Message Dialog - Okay button instantiated.");
-
+            this.upperRightCloseButton.downNeighborID = this.OkayButton.ClickableTextureComponent.myID;
+            this.OkayButton.ClickableTextureComponent.upNeighborID = this.upperRightCloseButton.myID;
+            this.allClickableComponents = new List<ClickableComponent>
+            {
+                this.upperRightCloseButton,
+                this.OkayButton.ClickableTextureComponent
+            };
         }
     }
 }

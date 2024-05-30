@@ -11,10 +11,10 @@
 {
   "Name": "Transparency Settings",
   "Author": "Esca",
-  "Version": "1.0.0",
+  "Version": "1.2.0",
   "Description": "Adds settings to control the transparency of trees and other large objects.",
   "UniqueID": "Esca.TransparencySettings",
   "EntryDll": "TransparencySettings.dll",
-  "MinimumApiVersion": "3.0.0-beta",
+  "MinimumApiVersion": "4.0.0",
   "UpdateKeys": [ "Nexus:8891", "GitHub:Esca-MMC/TransparencySettings", "ModDrop:971985" ]
 }

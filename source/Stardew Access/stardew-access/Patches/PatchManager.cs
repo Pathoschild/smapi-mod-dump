@@ -75,6 +75,7 @@ internal class PatchManager
             new PondQueryMenuPatch(),
             new PrizeTicketMenuPatch(),
             new PurchaseAnimalsMenuPatch(),
+            new RenovateMenuPatch(),
             new ShippingMenuPatch(),
             new TitleTextInputMenuPatch(),
             // Quest Patches

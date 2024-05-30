@@ -23,6 +23,7 @@ namespace ScheduleViewer
         }
 
         public SButton ShowSchedulesKey { get; set; } = SButton.V;
+        public bool UseAddress { get; set; } = true;
         public bool DisableHover { get; set; } = false;
         public bool UseLargerFontForScheduleDetails { get; set; } = false;
         public SortType NPCSortOrder { get; set; } = SortType.AlphabeticalAscending;

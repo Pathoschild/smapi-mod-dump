@@ -10,6 +10,7 @@
 
 using FashionSense.Framework.Interfaces.API;
 using FashionSense.Framework.Models.Appearances.Accessory;
+using FashionSense.Framework.Models.Appearances.Body;
 using FashionSense.Framework.Models.Appearances.Generic;
 using FashionSense.Framework.Models.Appearances.Hair;
 using FashionSense.Framework.Models.Appearances.Hat;
@@ -234,6 +235,9 @@ namespace FashionSense.Framework.Models.Appearances
                     break;
                 case HairModel hairModel:
                     packType = IApi.Type.Hair;
+                    break;
+                case BodyModel bodyModel:
+                    packType = IApi.Type.Player;
                     break;
             }
 

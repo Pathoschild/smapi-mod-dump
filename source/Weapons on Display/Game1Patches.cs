@@ -16,6 +16,7 @@ using StardewValley.Quests;
 using StardewValley.Locations;
 using StardewValley.Objects;
 using System.Collections.Generic;
+using StardewValley.GameData.Objects;
 
 namespace WeaponsOnDisplay
 {
@@ -37,7 +38,6 @@ namespace WeaponsOnDisplay
 
 		public static bool pressActionButton_Prefix(KeyboardState currentKBState, MouseState currentMouseState, GamePadState currentPadState, ref bool __result)
 		{
-
 			if (Game1.IsChatting)
 			{
 				currentKBState = default(KeyboardState);
@@ -64,12 +64,12 @@ namespace WeaponsOnDisplay
 				Game1.oldPadState = currentPadState;
 				if (consume)
 				{
-					Game1.playSound("dialogueCharacterClose");
+					Game1.playSound("dialogueCharacterClose", null);
 					__result = false;
 					return false;
 				}
 			}
-			if (Game1.dialogueUp && Game1.numberOfSelectedItems == -1)
+			if (Game1.dialogueUp)
 			{
 				if (Game1.isQuestion)
 				{
@@ -158,8 +158,7 @@ namespace WeaponsOnDisplay
 						__result = false;
 						return false;
 					}
-					Game1.tvStation = -1;
-					if (Game1.currentSpeaker != null && !Game1.currentSpeaker.Name.Equals("Gunther") && !Game1.eventUp && !Game1.currentSpeaker.doingEndOfRouteAnimation)
+					if (Game1.currentSpeaker != null && !Game1.currentSpeaker.Name.Equals("Gunther") && !Game1.eventUp && !Game1.currentSpeaker.doingEndOfRouteAnimation.Value)
 					{
 						Game1.currentSpeaker.doneFacingPlayer(Game1.player);
 					}
@@ -180,11 +179,11 @@ namespace WeaponsOnDisplay
 						}
 					}
 					Game1.questionChoices.Clear();
-					Game1.playSound("smallSelect");
+					Game1.playSound("smallSelect", null);
 				}
 				else
 				{
-					Game1.playSound("smallSelect");
+					Game1.playSound("smallSelect", null);
 					Game1.currentDialogueCharacterIndex = 0;
 					Game1.dialogueTyping = true;
 					checkIfDialogueIsQuestion();
@@ -192,37 +191,26 @@ namespace WeaponsOnDisplay
 				Game1.oldKBState = currentKBState;
 				Game1.oldMouseState = Game1.input.GetMouseState();
 				Game1.oldPadState = currentPadState;
-				if (Game1.questOfTheDay != null && (bool)Game1.questOfTheDay.accepted && Game1.questOfTheDay is SocializeQuest)
+				if (Game1.questOfTheDay != null && Game1.questOfTheDay.accepted.Value && Game1.questOfTheDay is SocializeQuest)
 				{
 					((SocializeQuest)Game1.questOfTheDay).checkIfComplete(null, -1, -1);
 				}
-				_ = Game1.afterDialogues;
 				__result = false;
 				return false;
 			}
-			if (Game1.currentBillboard != 0)
+			if (!Game1.player.UsingTool && (!Game1.eventUp || (Game1.currentLocation.currentEvent != null && Game1.currentLocation.currentEvent.playerControlSequence)) && !Game1.fadeToBlack)
 			{
-				Game1.currentBillboard = 0;
-				Game1.player.CanMove = true;
-				Game1.oldKBState = currentKBState;
-				Game1.oldMouseState = Game1.input.GetMouseState();
-				Game1.oldPadState = currentPadState;
-				__result = false;
-				return false;
-			}
-			if (!Game1.player.UsingTool && !Game1.pickingTool && !Game1.menuUp && (!Game1.eventUp || (Game1.currentLocation.currentEvent != null && Game1.currentLocation.currentEvent.playerControlSequence)) && !Game1.nameSelectUp && Game1.numberOfSelectedItems == -1 && !Game1.fadeToBlack)
-			{
-				if (Game1.wasMouseVisibleThisFrame && Game1.currentLocation is IAnimalLocation)
+				if (Game1.wasMouseVisibleThisFrame && Game1.currentLocation.animals.Length > 0)
 				{
 					Vector2 mousePosition = new Vector2(Game1.getOldMouseX() + Game1.viewport.X, Game1.getOldMouseY() + Game1.viewport.Y);
 					if (Utility.withinRadiusOfPlayer((int)mousePosition.X, (int)mousePosition.Y, 1, Game1.player))
 					{
-						if ((Game1.currentLocation as IAnimalLocation).CheckPetAnimal(mousePosition, Game1.player))
+						if (Game1.currentLocation.CheckPetAnimal(mousePosition, Game1.player))
 						{
 							__result = true;
 							return false;
 						}
-						if (Game1.didPlayerJustRightClick(ignoreNonMouseHeldInput: true) && (Game1.currentLocation as IAnimalLocation).CheckInspectAnimal(mousePosition, Game1.player))
+						if (Game1.didPlayerJustRightClick(ignoreNonMouseHeldInput: true) && Game1.currentLocation.CheckInspectAnimal(mousePosition, Game1.player))
 						{
 							__result = true;
 							return false;
@@ -231,9 +219,11 @@ namespace WeaponsOnDisplay
 				}
 				Vector2 grabTile = new Vector2(Game1.getOldMouseX() + Game1.viewport.X, Game1.getOldMouseY() + Game1.viewport.Y) / 64f;
 				Vector2 cursorTile = grabTile;
+				bool non_directed_tile = false;
 				if (!Game1.wasMouseVisibleThisFrame || Game1.mouseCursorTransparency == 0f || !Utility.tileWithinRadiusOfPlayer((int)grabTile.X, (int)grabTile.Y, 1, Game1.player))
 				{
 					grabTile = Game1.player.GetGrabTile();
+					non_directed_tile = true;
 				}
 
 				bool was_character_at_grab_tile = false;
@@ -266,13 +256,9 @@ namespace WeaponsOnDisplay
 					__result = false;
 					return false;
 				}
-				if (!was_character_at_grab_tile)
+				if (!was_character_at_grab_tile && Game1.player.currentLocation.isCharacterAtTile(grabTile) != null)
 				{
-					NPC grab_tile_character = Game1.player.currentLocation.isCharacterAtTile(grabTile);
-					if (grab_tile_character != null && grab_tile_character != null)
-					{
-						was_character_at_grab_tile = true;
-					}
+					was_character_at_grab_tile = true;
 				}
 				bool isPlacingObject = false;
 				if (Game1.player.ActiveObject != null && !(Game1.player.ActiveObject is Furniture))
@@ -298,6 +284,10 @@ namespace WeaponsOnDisplay
 
 					int stack = placedItem.Stack;
 					Game1.isCheckingNonMousePlacement = !Game1.IsPerformingMousePlacement();
+					if (non_directed_tile)
+					{
+						Game1.isCheckingNonMousePlacement = true;
+					}
 					if (Game1.isOneOfTheseKeysDown(currentKBState, Game1.options.actionButton))
 					{
 						Game1.isCheckingNonMousePlacement = true;
@@ -327,31 +317,7 @@ namespace WeaponsOnDisplay
 					grabTile.Y += 1f;
 					if (Game1.player.FacingDirection >= 0 && Game1.player.FacingDirection <= 3)
 					{
-						Vector2 normalized_offset2 = grabTile - Game1.player.getTileLocation();
-						if (normalized_offset2.X > 0f || normalized_offset2.Y > 0f)
-						{
-							normalized_offset2.Normalize();
-						}
-						if (Vector2.Dot(Utility.DirectionsTileVectors[Game1.player.FacingDirection], normalized_offset2) >= 0f && Game1.tryToCheckAt(grabTile, Game1.player))
-						{
-							__result = false;
-							return false;
-						}
-					}
-					if (Game1.player.ActiveObject != null && Game1.player.ActiveObject is Furniture && !Game1.eventUp)
-					{
-						(Game1.player.ActiveObject as Furniture).rotate();
-						Game1.playSound("dwoop");
-						Game1.oldKBState = currentKBState;
-						Game1.oldMouseState = Game1.input.GetMouseState();
-						Game1.oldPadState = currentPadState;
-						__result = false;
-						return false;
-					}
-					grabTile.Y -= 2f;
-					if (Game1.player.FacingDirection >= 0 && Game1.player.FacingDirection <= 3 && !was_character_at_grab_tile)
-					{
-						Vector2 normalized_offset = grabTile - Game1.player.getTileLocation();
+						Vector2 normalized_offset = grabTile - Game1.player.Tile;
 						if (normalized_offset.X > 0f || normalized_offset.Y > 0f)
 						{
 							normalized_offset.Normalize();
@@ -362,42 +328,82 @@ namespace WeaponsOnDisplay
 							return false;
 						}
 					}
-					if (Game1.player.ActiveObject != null && Game1.player.ActiveObject is Furniture && !Game1.eventUp)
+					if (!Game1.eventUp)
 					{
-						(Game1.player.ActiveObject as Furniture).rotate();
-						Game1.playSound("dwoop");
-						Game1.oldKBState = currentKBState;
-						Game1.oldMouseState = Game1.input.GetMouseState();
-						Game1.oldPadState = currentPadState;
-						__result = false;
-						return false;
+						Furniture furniture = Game1.player.ActiveObject as Furniture;
+						if (furniture != null)
+						{
+							furniture.rotate();
+							Game1.playSound("dwoop", null);
+							Game1.oldKBState = currentKBState;
+							Game1.oldMouseState = Game1.input.GetMouseState();
+							Game1.oldPadState = currentPadState;
+							__result = false;
+							return false;
+						}
 					}
-					grabTile = Game1.player.getTileLocation();
+					grabTile.Y -= 2f;
+					if (Game1.player.FacingDirection >= 0 && Game1.player.FacingDirection <= 3 && !was_character_at_grab_tile)
+					{
+						Vector2 normalized_offset = grabTile - Game1.player.Tile;
+						if (normalized_offset.X > 0f || normalized_offset.Y > 0f)
+						{
+							normalized_offset.Normalize();
+						}
+						if (Vector2.Dot(Utility.DirectionsTileVectors[Game1.player.FacingDirection], normalized_offset) >= 0f && Game1.tryToCheckAt(grabTile, Game1.player))
+						{
+							__result = false;
+							return false;
+						}
+					}
+					if (!Game1.eventUp)
+					{
+						Furniture furniture = Game1.player.ActiveObject as Furniture;
+						if (furniture != null)
+						{
+							furniture.rotate();
+							Game1.playSound("dwoop", null);
+							Game1.oldKBState = currentKBState;
+							Game1.oldMouseState = Game1.input.GetMouseState();
+							Game1.oldPadState = currentPadState;
+							__result = false;
+							return false;
+						}
+					}
+					grabTile = Game1.player.Tile;
 					if (Game1.tryToCheckAt(grabTile, Game1.player))
 					{
 						__result = false;
 						return false;
 					}
-					if (Game1.player.ActiveObject != null && Game1.player.ActiveObject is Furniture && !Game1.eventUp)
+					if (!Game1.eventUp)
 					{
-						(Game1.player.ActiveObject as Furniture).rotate();
-						Game1.playSound("dwoop");
-						Game1.oldKBState = currentKBState;
-						Game1.oldMouseState = Game1.input.GetMouseState();
-						Game1.oldPadState = currentPadState;
-						__result = false;
-						return false;
+						Furniture furniture = Game1.player.ActiveObject as Furniture;
+						if (furniture != null)
+						{
+							furniture.rotate();
+							Game1.playSound("dwoop", null);
+							Game1.oldKBState = currentKBState;
+							Game1.oldMouseState = Game1.input.GetMouseState();
+							Game1.oldPadState = currentPadState;
+							__result = false;
+							return false;
+						}
 					}
 				}
-				if (!Game1.player.isEating && Game1.player.ActiveObject != null && !Game1.dialogueUp && !Game1.eventUp && !Game1.player.canOnlyWalk && !Game1.player.FarmerSprite.PauseForSingleAnimation && !Game1.fadeToBlack && Game1.player.ActiveObject.Edibility != -300 && Game1.didPlayerJustRightClick(ignoreNonMouseHeldInput: true))
+				if (!Game1.player.isEating && Game1.player.ActiveObject != null && !Game1.dialogueUp && !Game1.eventUp && !Game1.player.canOnlyWalk && !Game1.player.FarmerSprite.PauseForSingleAnimation && !Game1.fadeToBlack && Game1.player.ActiveObject.Edibility != -300 && Game1.didPlayerJustRightClick(true))
 				{
-					if (Game1.player.team.SpecialOrderRuleActive("SC_NO_FOOD") && Game1.player.currentLocation is MineShaft && (Game1.player.currentLocation as MineShaft).getMineArea() == 121)
+					if (Game1.player.team.SpecialOrderRuleActive("SC_NO_FOOD", null))
 					{
-						Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString("Strings\\StringsFromCSFiles:Object.cs.13053"), 3));
-						__result = false;
-						return false;
+						MineShaft mineShaft = Game1.player.currentLocation as MineShaft;
+						if (mineShaft != null && mineShaft.getMineArea(-1) == 121)
+						{
+							Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString("Strings\\StringsFromCSFiles:Object.cs.13053"), 3));
+							__result = false;
+							return false;
+						}
 					}
-					if (Game1.buffsDisplay.hasBuff(25) && Game1.player.ActiveObject != null && !Game1.player.ActiveObject.HasContextTag("ginger_item"))
+					if (Game1.player.hasBuff("25") && Game1.player.ActiveObject != null && !Game1.player.ActiveObject.HasContextTag("ginger_item"))
 					{
 						Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString("Strings\\StringsFromCSFiles:Nauseous_CantEat"), 3));
 						__result = false;
@@ -406,7 +412,24 @@ namespace WeaponsOnDisplay
 					Game1.player.faceDirection(2);
 					Game1.player.itemToEat = Game1.player.ActiveObject;
 					Game1.player.FarmerSprite.setCurrentSingleAnimation(304);
-					Game1.currentLocation.createQuestionDialogue((Game1.objectInformation[Game1.player.ActiveObject.parentSheetIndex].Split('/').Length > 6 && Game1.objectInformation[Game1.player.ActiveObject.parentSheetIndex].Split('/')[6].Equals("drink")) ? Game1.content.LoadString("Strings\\StringsFromCSFiles:Game1.cs.3159", Game1.player.ActiveObject.DisplayName) : Game1.content.LoadString("Strings\\StringsFromCSFiles:Game1.cs.3160", Game1.player.ActiveObject.DisplayName), Game1.currentLocation.createYesNoResponses(), "Eat");
+					if (Game1.objectData.TryGetValue(Game1.player.ActiveObject.ItemId, out ObjectData objectData))
+					{
+						GameLocation currentLocation = Game1.currentLocation;
+						string question;
+						if (objectData.IsDrink)
+						{
+							Object.PreserveType? value = Game1.player.ActiveObject.preserve.Value;
+							Object.PreserveType preserveType = Object.PreserveType.Pickle;
+							if (!(value.GetValueOrDefault() == preserveType & value != null))
+							{
+								question = Game1.content.LoadString("Strings\\StringsFromCSFiles:Game1.cs.3159", Game1.player.ActiveObject.DisplayName);
+								goto IL_BFB;
+							}
+						}
+						question = Game1.content.LoadString("Strings\\StringsFromCSFiles:Game1.cs.3160", Game1.player.ActiveObject.DisplayName);
+					IL_BFB:
+						currentLocation.createQuestionDialogue(question, Game1.currentLocation.createYesNoResponses(), "Eat");
+					}
 					Game1.oldKBState = currentKBState;
 					Game1.oldMouseState = Game1.input.GetMouseState();
 					Game1.oldPadState = currentPadState;
@@ -414,17 +437,7 @@ namespace WeaponsOnDisplay
 					return false;
 				}
 			}
-			else if (Game1.numberOfSelectedItems != -1)
-			{
-				Game1.tryToBuySelectedItems();
-				Game1.playSound("smallSelect");
-				Game1.oldKBState = currentKBState;
-				Game1.oldMouseState = Game1.input.GetMouseState();
-				Game1.oldPadState = currentPadState;
-				__result = false;
-				return false;
-			}
-			if (Game1.player.CurrentTool != null && Game1.player.CurrentTool is MeleeWeapon && Game1.player.CanMove && !Game1.player.canOnlyWalk && !Game1.eventUp && !Game1.player.onBridge && Game1.didPlayerJustRightClick(ignoreNonMouseHeldInput: true))
+			if (Game1.player.CurrentTool is MeleeWeapon && Game1.player.CanMove && !Game1.player.canOnlyWalk && !Game1.eventUp && !Game1.player.onBridge.Value && Game1.didPlayerJustRightClick(true))
 			{
 				((MeleeWeapon)Game1.player.CurrentTool).animateSpecialMove(Game1.player);
 				__result = false;

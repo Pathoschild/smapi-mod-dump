@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#if COMMON_SPOOKYACTION
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,18 +21,21 @@ using HarmonyLib;
 #endif
 
 using Leclair.Stardew.Common.Events;
+#if DEBUG && COMMON_SIMPLELAYOUT
 using Leclair.Stardew.Common.UI;
+
+using StardewModdingAPI.Utilities;
+#endif
 
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
 
 using StardewValley;
 using StardewValley.Network;
 
 namespace Leclair.Stardew.Common;
 
-public class SpookyActionAtADistance: EventSubscriber<ModSubscriber> {
+public class SpookyActionAtADistance : EventSubscriber<ModSubscriber> {
 
 	private static SpookyActionAtADistance? Instance;
 
@@ -61,7 +66,7 @@ public class SpookyActionAtADistance: EventSubscriber<ModSubscriber> {
 				original: AccessTools.Method(typeof(NetMutex), nameof(NetMutex.Update), [typeof(FarmerCollection)]),
 				transpiler: new HarmonyMethod(typeof(SpookyActionAtADistance), nameof(Mutex_Update_Transpiler))
 			);
-		} catch(Exception ex) {
+		} catch (Exception ex) {
 			Mod.Log("An error occurred while registering a harmony patch for the NetMutex.Update", LogLevel.Warn, ex);
 		}
 
@@ -70,24 +75,24 @@ public class SpookyActionAtADistance: EventSubscriber<ModSubscriber> {
 				original: AccessTools.Method(typeof(Game1), "_UpdateLocation"),
 				transpiler: new HarmonyMethod(typeof(SpookyActionAtADistance), nameof(Game1_UpdateLocation_Transpiler))
 			);
-		} catch(Exception ex) {
+		} catch (Exception ex) {
 			Mod.Log("An error occurred while registering a harmony patch for the Game1._UpdateLocation", LogLevel.Warn, ex);
 		}
 
-#if DEBUG
+#if DEBUG && COMMON_SIMPLELAYOUT
 		try {
 			harmony.Patch(
 				original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.UpdateWhenCurrentLocation)),
 				postfix: new HarmonyMethod(typeof(SpookyActionAtADistance), nameof(GameLocation_Update_Postfix))
 			);
-		} catch(Exception ex) {
+		} catch (Exception ex) {
 			Mod.Log("An error occurred while registering a harmony patch for the GameLocation.UpdateWhenCurrentLocation", LogLevel.Warn, ex);
 		}
 #endif
 
 	}
 
-#if DEBUG
+#if DEBUG && COMMON_SIMPLELAYOUT
 	[Subscriber]
 	private void OnRendered(object? sender, RenderedHudEventArgs e) {
 
@@ -136,7 +141,7 @@ public class SpookyActionAtADistance: EventSubscriber<ModSubscriber> {
 		if (exited)
 			return;
 
-		foreach(string name in wanted) {
+		foreach (string name in wanted) {
 			var loc = Game1.getLocationFromName(name);
 			if (loc is null)
 				continue;
@@ -154,10 +159,10 @@ public class SpookyActionAtADistance: EventSubscriber<ModSubscriber> {
 
 		bool inserted = false;
 
-		for(int i = 0; i < instrs.Length; i++) {
+		for (int i = 0; i < instrs.Length; i++) {
 			CodeInstruction in0 = instrs[i];
 
-			if (! inserted && i + 4 < instrs.Length) {
+			if (!inserted && i + 4 < instrs.Length) {
 				CodeInstruction in1 = instrs[i + 1];
 				CodeInstruction in2 = instrs[i + 2];
 				CodeInstruction in3 = instrs[i + 3];
@@ -169,7 +174,7 @@ public class SpookyActionAtADistance: EventSubscriber<ModSubscriber> {
 				//     location.UpdateWhenCurrentLocation(time);
 				// }
 
-				if (   in0.opcode == OpCodes.Ldloc_0
+				if (in0.opcode == OpCodes.Ldloc_0
 					&& in1.opcode == OpCodes.Brfalse_S
 					&& in2.opcode == OpCodes.Ldarg_1
 					&& in3.opcode == OpCodes.Ldarg_2
@@ -209,10 +214,10 @@ public class SpookyActionAtADistance: EventSubscriber<ModSubscriber> {
 
 		var instrs = instructions.ToArray();
 
-		for(int i = 0; i < instrs.Length; i++) {
+		for (int i = 0; i < instrs.Length; i++) {
 			CodeInstruction in0 = instrs[i];
 
-			if ( i + 2 < instrs.Length ) {
+			if (i + 2 < instrs.Length) {
 				CodeInstruction in1 = instrs[i + 1];
 				CodeInstruction in2 = instrs[i + 2];
 
@@ -293,7 +298,7 @@ public class SpookyActionAtADistance: EventSubscriber<ModSubscriber> {
 	[Subscriber]
 	private void OnLocationListChange(object? sender, LocationListChangedEventArgs e) {
 		// Remove any locations that were removed from our watching lists.
-		foreach(var loc in e.Removed) {
+		foreach (var loc in e.Removed) {
 			string name = loc.NameOrUniqueName;
 
 			if (!OpenedLocations.TryGetValue(name, out var players))
@@ -301,7 +306,7 @@ public class SpookyActionAtADistance: EventSubscriber<ModSubscriber> {
 
 			OpenedLocations.Remove(name);
 
-			foreach(long player in players) {
+			foreach (long player in players) {
 				if (PlayerLocations.TryGetValue(player, out var watched)) {
 					watched.Remove(name);
 					if (watched.Count == 0)
@@ -323,8 +328,8 @@ public class SpookyActionAtADistance: EventSubscriber<ModSubscriber> {
 			Mod.Log($"Got Watch from {e.FromPlayerID}: {joined}", LogLevel.Trace);
 			AddWatches(e.FromPlayerID, msg.locations);
 
-			
-		} else if ( e.Type == "SpookyAction:Unwatch") {
+
+		} else if (e.Type == "SpookyAction:Unwatch") {
 			UpdateWatching msg = e.ReadAs<UpdateWatching>();
 
 			string joined = string.Join(", ", msg.locations);
@@ -350,7 +355,7 @@ public class SpookyActionAtADistance: EventSubscriber<ModSubscriber> {
 
 		List<string> added = new();
 
-		foreach(string? location in locations) {
+		foreach (string? location in locations) {
 			if (string.IsNullOrEmpty(location))
 				continue;
 
@@ -383,13 +388,13 @@ public class SpookyActionAtADistance: EventSubscriber<ModSubscriber> {
 		if (!PlayerLocations.TryGetValue(playerId, out var watched))
 			return removed;
 
-		foreach(string? location in locations) {
-			if (! string.IsNullOrEmpty(location) && watched.Remove(location)) {
+		foreach (string? location in locations) {
+			if (!string.IsNullOrEmpty(location) && watched.Remove(location)) {
 				removed.Add(location!);
 
 				if (OpenedLocations.TryGetValue(location, out var watchers)) {
 					watchers.Remove(playerId);
-					if ( watchers.Count == 0 )
+					if (watchers.Count == 0)
 						OpenedLocations.Remove(location);
 				}
 			}
@@ -478,3 +483,4 @@ public class SpookyActionAtADistance: EventSubscriber<ModSubscriber> {
 
 }
 
+#endif

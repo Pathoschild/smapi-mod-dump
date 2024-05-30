@@ -438,6 +438,11 @@ namespace FarmTypeManager
                         monster = new RockCrab(tile);
                         (monster as RockCrab).makeStickBug();
                         break;
+                    case "trufflecrab":
+                    case "truffle crab":
+                        monster = new RockCrab(tile, "Truffle Crab");
+                        monster.HideShadow = true; //hide shadow, making them look more like "real" truffles
+                        break;
                     case "rockgolem":
                     case "rock golem":
                     case "stonegolem":

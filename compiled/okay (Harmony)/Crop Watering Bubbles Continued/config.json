@@ -2,9 +2,9 @@
   "ModEnabled": true,
   "RequireKeyPress": false,
   "OnlyWhenWatering": false,
-  "IncludeGiantable": false,
-  "RepeatInterval": 0,
+  "IncludeGiantable": true,
+  "RepeatInterval": 3,
   "OpacityPercent": 75,
-  "SizePercent": 75,
-  "PressKeys": "V"
+  "SizePercent": 100,
+  "PressKeys": "LeftShift + OemPeriod"
 }

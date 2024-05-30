@@ -1,0 +1,43 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/jasisco5/UncannyValleyMod
+**
+*************************************************/
+
+{
+  "Shops": [
+    {
+      "ShopName": "UV_WizardApprenticeShop",
+      "StoreCurrency": "Money",
+      "CategoriesToSellHere":[ 
+		-79,
+		-81
+      ],
+      "PortraitPath": "assets/shop.png",
+      "Quote": "Some items for your adventure.",
+      "MaxNumItemsSoldInStore": 2147483647,
+      "DefaultSellPriceMultiplier": 1.0,
+      "ItemStocks": [
+		{
+          "ItemType": "Object",
+		  "JAPacks": ["UncannyValley.UncannyValleyPotions"],
+          "StockItemCurrency": "Money",
+		  "StockPrice": 250,
+          "Stock": 3
+        },
+		{
+          "ItemType": "Object",
+		  "ItemNames": ["Life Elixir","LifeElixir"],
+          "StockItemCurrency": "Money",
+		  "StockPrice": 200,
+          "Stock": 2
+        }
+      ],
+      "ClosedMessage": "ClosedMessage: This store should never be closed, this message indicates something went very wrong",
+    }
+  ]
+}

@@ -1,28 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
-        <LangVersion>latest</LangVersion>
-        <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
-        <RootNamespace>$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
-        <TranslationClassBuilder_AddGetByKey>true</TranslationClassBuilder_AddGetByKey>
-        <EnableHarmony>true</EnableHarmony>
-    </PropertyGroup>
-
-    <ItemGroup>
-        <AdditionalFiles Remove="i18n\default.json" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-        <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
-        <PackageReference Include="Pathoschild.Stardew.ModTranslationClassBuilder" Version="2.0.1" />
-    </ItemGroup>
-
-    <ProjectExtensions>
-        <VisualStudio>
-            <UserProperties manifest_1json__JsonSchema="" />
-        </VisualStudio>
-    </ProjectExtensions>
-
+  <!-- Project properties -->
+  <PropertyGroup>
+    <EnableHarmony>true</EnableHarmony>
+    <CommonPatches>true</CommonPatches>
+  </PropertyGroup>
+  
+  <!-- Import Common targets -->
+  <Import Project="Framework\Common\common.targets" />
+  
 </Project>

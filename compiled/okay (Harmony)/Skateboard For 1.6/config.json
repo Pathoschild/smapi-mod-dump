@@ -1,0 +1,8 @@
+{
+  "ModEnabled": true,
+  "RideButton": "MouseRight",
+  "MaxSpeed": 10.0,
+  "Acceleration": 1.0,
+  "Deceleration": 0.5,
+  "CraftingRequirements": "709 4 337 1 335 1 338 1 92 10"
+}

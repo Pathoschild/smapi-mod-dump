@@ -1,0 +1,16 @@
+{
+  "Name": "ThinkingTime",
+  "Author": "PokeBenji",
+  "Version": "1.0.1",
+  "Description": "A mod that pauses the game when idle and can unpause while fishing.",
+  "UniqueID": "PokeBenji.ThinkingTime",
+  "EntryDll": "ThinkingTime.dll",
+  "MinimumApiVersion": "3.8.0",
+  "UpdateKeys": [ "Nexus:24457" ],
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.GenericModConfigMenu",
+      "IsRequired": false
+    }
+  ]
+}

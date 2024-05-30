@@ -30,7 +30,7 @@ public class ModEntry : Mod
     public override void Entry(IModHelper helper)
     {
         Config = helper.ReadConfig<Config>();
-        helper.Events.Input.ButtonPressed += OnButtonPress;
+        helper.Events.Input.ButtonsChanged += OnButtonsChanged;
     }
 
     public static void ConfigReload()
@@ -39,13 +39,13 @@ public class ModEntry : Mod
         GetInstance().Helper.ReadConfig<Config>();
     }
 
-    private void OnButtonPress(object? sender, ButtonPressedEventArgs e)
+    private void OnButtonsChanged(object? sender, ButtonsChangedEventArgs e)
     {
         if (!Context.IsWorldReady)
             return;
         if (!Context.IsPlayerFree)
             return;
-        if (e.Button != Config.OpenTeleport)
+        if (!Config.OpenTeleport.JustPressed())
             return;
         Game1.activeClickableMenu = new TeleportPointScreen();
     }

@@ -1,0 +1,8 @@
+﻿{
+	// Relocate animal
+	"RelocateAnimalMenu.ChooseLocation": "Where do you want to relocate the animal?",
+
+	// Relocate building
+	"RelocateBuildingMenu.ChooseLocation": "Where do you want to relocate the building?",
+	"RelocateBuildingMessage.CannotRelocate": "This building cannot be relocated to another location"
+}

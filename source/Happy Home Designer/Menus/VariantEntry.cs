@@ -58,6 +58,7 @@ namespace HappyHomeDesigner.Menus
 			HasVariants = false;
 		}
 
+		/// <returns>All variants of this item. Only valid if HasVariants is true</returns>
 		public abstract IReadOnlyList<VariantEntry<T>> GetVariants();
 
 		public void Draw(SpriteBatch b, int x, int y)
@@ -72,6 +73,7 @@ namespace HappyHomeDesigner.Menus
 				b.Draw(Catalog.MenuTexture, new Rectangle(x + 5, y + 5, 18, 18), favRibbon, Color.White);
 		}
 
+		/// <inheritdoc/>
 		public virtual string GetName()
 		{
 			return Item.DisplayName + '|' + Item.ItemId;
@@ -92,7 +94,10 @@ namespace HappyHomeDesigner.Menus
 			return Favorited;
 		}
 
+		/// <returns>A new instance of the item or object this entry represents</returns>
 		public abstract T GetOne();
+
+		/// <summary>Determines whether or not an item can be spawned in a specific location</summary>
 		public abstract bool CanPlace();
 	}
 }

@@ -6,5 +6,9 @@
   "CriticalHealthWarningMessage": "Health CRITICAL",
   "CriticalHealthWarningThreshhold": 20,
   "AttentionInterval": 5,
-  "AttentionScreenGlow": true
+  "AttentionScreenGlow": true,
+  "AlertLocations": [
+    "UndergroundMine",
+    "VolcanoDungeon"
+  ]
 }

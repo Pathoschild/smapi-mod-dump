@@ -9,6 +9,7 @@
 *************************************************/
 
 using ItemExtensions.Models.Enums;
+using StardewValley;
 
 namespace ItemExtensions.Models.Contained;
 
@@ -32,7 +33,7 @@ public class MineSpawn
     internal List<string> RealFloors { get; set; } = new();
     public double SpawnFrequency { get; set; } = 0.1;
     public double AdditionalChancePerLevel { get; set; }
-    internal int LastFrenzy { get; set; } = -1;
+    internal (int, Season) LastFrenzy { get; set; } = (-1, Season.Spring);
 
     public void Parse(IEnumerable<string> floors)
     {

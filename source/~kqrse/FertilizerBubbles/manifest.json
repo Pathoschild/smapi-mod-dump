@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/kqrse/StardewValleyMods
+**
+*************************************************/
+
+{
+  "Name": "Fertilizer Bubbles",
+  "Author": "temisthem",
+  "Version": "1.0.0",
+  "Description": "I can finally stop squinting at soil.",
+  "UniqueID": "tem696969696969.FertilizerBubbles",
+  "EntryDll": "FertilizerBubbles.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:23307" ]
+}

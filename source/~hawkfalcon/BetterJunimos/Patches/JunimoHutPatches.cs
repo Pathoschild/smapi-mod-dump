@@ -50,7 +50,7 @@ namespace BetterJunimos.Patches {
         private static bool SearchAroundHut(JunimoHut hut) {
             var id = Util.GetHutIdFromHut(hut);
             var radius = Util.CurrentWorkingRadius;
-            GameLocation farm = Game1.getFarm();
+            GameLocation farm = Game1.currentLocation;
 
             // SearchHutGrid manages hut.lastKnownCropLocation and Util.Abilities.lastKnownCropLocations
             var foundWork = SearchHutGrid(hut, radius, farm, id);

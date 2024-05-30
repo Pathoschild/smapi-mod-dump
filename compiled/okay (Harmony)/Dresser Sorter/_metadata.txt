@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/24443
+IDs: idermailer.dresserSorter
+update keys: Nexus:24443, GitHub:idermailer/DresserSorter

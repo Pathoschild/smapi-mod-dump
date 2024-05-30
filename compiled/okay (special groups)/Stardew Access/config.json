@@ -83,6 +83,7 @@
   "LocationKey": "LeftAlt + K",
   "MoneyKey": "R",
   "TimeNSeasonKey": "Q",
+  "RepeatLastTextKey": "LeftAlt + Space, RightAlt + Space",
   "VerboseCoordinates": true,
   "SnapMouse": true,
   "Warning": true,
@@ -98,5 +99,6 @@
   "EnableCheats": false,
   "MacSpeechRate": 220.0,
   "MaximumFishingDifficulty": 999,
-  "FixFishingMotionType": 999
+  "FixFishingMotionType": 999,
+  "Use24HourFormat": false
 }

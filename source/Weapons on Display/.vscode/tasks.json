@@ -12,32 +12,14 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
-			"label": "mybuild",
-			"command": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\BuildTools\\MSBuild\\Current\\Bin\\MSBuild.exe",
+			"label": "build",
+			"command": "dotnet build /property:GenerateFullPaths=true",
 			"type": "shell",
-			"args": [
-				"WeaponsOnDisplay.csproj",
-				"/t:Rebuild",
-				"/p:Configuration=Debug",
-				"/p:Platform=AnyCPU"
-			],
-			"problemMatcher": {
-				"fileLocation": "absolute",
-				"applyTo": "allDocuments",
-				"pattern":[
-					{
-						"regexp": "^\\s*([^\\s].*)\\((\\d+,\\d+)\\):\\s*([^\\s]*)\\s(.*)$",
-						"file": 1,
-						"location": 2,
-						"severity": 3,
-						"message": 4
-					}
-				]
+			"group": "build",
+			"presentation": {
+				"reveal": "silent"
 			},
-			"group": {
-				"kind": "build",
-				"isDefault": true
-			}
+			"problemMatcher": "$msCompile"
 		}
 	]
 }

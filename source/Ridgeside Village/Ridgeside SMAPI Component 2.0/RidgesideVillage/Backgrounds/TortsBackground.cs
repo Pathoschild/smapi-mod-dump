@@ -58,8 +58,8 @@ namespace RidgesideVillage
             Helper.Events.Display.RenderedWorld += OnRenderedWorld;
         }
 
-        public TortsBackground()
-        : base(new Color(0, 0, 12), false)
+        public TortsBackground(GameLocation location)
+        : base(location, new Color(0, 0, 12), false)
         {
             Log.Trace($"RSV: Creating Torts bg");
             //torts = Helper.ModContent.Load<Texture2D>("assets/Torts.png");
@@ -74,6 +74,7 @@ namespace RidgesideVillage
                 totalNumberOfLoops = 99999,
             };
             */
+
         }
 
         public void Update(xTile.Dimensions.Rectangle viewport)

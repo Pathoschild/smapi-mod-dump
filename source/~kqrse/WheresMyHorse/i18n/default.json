@@ -1,0 +1,24 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/kqrse/StardewValleyMods
+**
+*************************************************/
+
+{
+  "enabled": "Enabled",
+  "render-on-top": "Render bubble on top",
+  "disable-on-mount": "Disable emote on mount",
+  "disable-on-map-change": "Disable on map change",
+  "only-my-horse": "Only display for my horse",
+  "always-render": "Always display emote",
+  "do-emote-key": "Do Emote Key",
+  "emote-interval": "Emote Interval (ms)",
+  "bubble-y-offset": "Bubble Y Offset",
+  "bubble-x-offset": "Bubble X Offset",
+  "opacity": "Opacity",
+  "bubble-size": "Bubble Size"
+}

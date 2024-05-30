@@ -12,48 +12,55 @@ using HappyHomeDesigner.Framework;
 using HarmonyLib;
 using StardewValley;
 using StardewValley.Objects;
+using System.Collections.Generic;
+using System.Reflection.Emit;
 
 namespace HappyHomeDesigner.Patches
 {
 	internal class ItemCloneFix
 	{
+		public static bool suppress_reduce = false;
+
 		public static void Apply(Harmony harmony)
 		{
 			harmony.TryPatch(
-				typeof(Farmer).GetMethod(nameof(Farmer.reduceActiveItemByOne)), 
-				prefix: new(typeof(ItemCloneFix), nameof(Prefix))
+				typeof(Farmer).GetMethod(nameof(Farmer.removeItemFromInventory)), 
+				prefix: new(typeof(ItemCloneFix), nameof(RemoveTempItem))
 			);
-
 			harmony.TryPatch(
-				typeof(Furniture).GetMethod(nameof(Furniture.performObjectDropInAction)), 
-				prefix: new(typeof(ItemCloneFix), nameof(BeforeDropIn)), 
-				postfix: new(typeof(ItemCloneFix), nameof(AfterDropIn))
+				typeof(Farmer).GetMethod(nameof(Farmer.reduceActiveItemByOne)), 
+				prefix: new(typeof(ItemCloneFix), nameof(CheckReduceItem))
+			);
+			harmony.TryPatch(
+				typeof(Utility).GetMethod(nameof(Utility.tryToPlaceItem)), 
+				postfix: new(typeof(ItemCloneFix), nameof(AfterTryPlace)),
+				prefix: new(typeof(ItemCloneFix), nameof(BeforeTryPlace))
 			);
 		}
 
-		private static bool Prefix(Farmer __instance)
+		private static void BeforeTryPlace(Item item)
 		{
-			if (__instance.TemporaryItem is null)
-				return true;
+			suppress_reduce = item is Furniture;
+		}
 
-			if (--__instance.TemporaryItem.Stack is <= 0)
+		private static void AfterTryPlace()
+		{
+			suppress_reduce = false;
+		}
+
+		private static bool CheckReduceItem()
+		{
+			return !suppress_reduce;
+		}
+
+		private static bool RemoveTempItem(Farmer __instance, Item which)
+		{
+			if (__instance.TemporaryItem != which)
+				return true;
+			else
 				__instance.TemporaryItem = null;
 
 			return false;
-		}
-
-		private static void BeforeDropIn(Item dropInItem, Farmer who, out Furniture __state)
-		{
-			__state = who.TemporaryItem as Furniture;
-		}
-
-		private static void AfterDropIn(Item dropInItem, Farmer who, Furniture __state)
-		{
-			if (__state is not null && who.TemporaryItem != __state)
-			{
-				__state.Stack = 1;
-				who.TemporaryItem = __state;
-			}
 		}
 	}
 }

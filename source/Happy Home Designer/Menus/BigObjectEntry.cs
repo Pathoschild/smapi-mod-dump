@@ -25,12 +25,15 @@ namespace HappyHomeDesigner.Menus
 		public BigObjectEntry(SObject Item, Season season, string seasonName, ICollection<string> favorites) : 
 			base(Item, season, seasonName, favorites, "Craftable_"){}
 
+		/// <inheritdoc/>
 		public override bool CanPlace()
 			=> true;
 
+		/// <inheritdoc/>
 		public override SObject GetOne()
 			=> Item.getOne() as SObject;
 
+		/// <inheritdoc/>
 		public override IReadOnlyList<VariantEntry<SObject>> GetVariants()
 		{
 			if (!HasVariants)

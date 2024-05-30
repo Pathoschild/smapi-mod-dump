@@ -59,7 +59,7 @@ namespace Unlockable_Bundles
 
         public override object GetApi()
         {
-            ModAPI = new UnlockableBundlesAPI();
+            ModAPI ??= new UnlockableBundlesAPI();
             return ModAPI;
         }
     }

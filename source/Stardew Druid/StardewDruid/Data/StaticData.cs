@@ -29,22 +29,60 @@ namespace StardewDruid.Data
 
         public Dictionary<string, QuestProgress> progress;
 
-        public Dictionary<string, Character.Character.mode> characters;
+        public Dictionary<CharacterData.characters, Character.Character.mode> characters;
+
+        public Dictionary<CharacterData.characters, List<ItemData>> chests;
 
         public Dictionary<int,Rite.rites> attunement;
 
+        public Dictionary<HerbalData.herbals, int> herbalism;
+
+        public Dictionary<string, int> reliquary;
+
         public QuestHandle.milestones milestone;
+
+        public int set;
 
         public StaticData()
         {
 
-            version = 220;
+            version = Mod.instance.version;
+
             id = Game1.player.UniqueMultiplayerID;
+
             rite = Rite.rites.none;
+
             progress = new();
+
             characters = new();
+
+            chests = new();
+
             attunement = new();
+
+            herbalism = new();
+
+            reliquary = new();
+
             milestone = QuestHandle.milestones.none;
+
+            set = 0;
+
+        }
+
+    }
+
+    class ItemData
+    {
+
+        public string id;
+
+        public int quality;
+
+        public int stack;
+
+        public ItemData()
+        {
 
         }
 

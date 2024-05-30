@@ -10,14 +10,15 @@
 
 namespace StardewMods.BetterChests.Framework.Services.Features;
 
-using Microsoft.Xna.Framework;
 using StardewModdingAPI.Events;
+using StardewMods.BetterChests.Framework.Enums;
 using StardewMods.BetterChests.Framework.Interfaces;
 using StardewMods.BetterChests.Framework.Models.Containers;
 using StardewMods.BetterChests.Framework.Services.Factory;
+using StardewMods.Common.Helpers;
 using StardewMods.Common.Interfaces;
-using StardewMods.Common.Services.Integrations.BetterChests.Enums;
-using StardewMods.Common.Services.Integrations.BetterChests.Interfaces;
+using StardewMods.Common.Services;
+using StardewMods.Common.Services.Integrations.BetterChests;
 using StardewMods.Common.Services.Integrations.BetterCrafting;
 using StardewMods.Common.Services.Integrations.FauxCore;
 using StardewMods.Common.Services.Integrations.ToolbarIcons;
@@ -29,42 +30,38 @@ internal sealed class CraftFromChest : BaseFeature<CraftFromChest>
 {
     private static CraftFromChest instance = null!;
 
-    private readonly AssetHandler assetHandler;
     private readonly BetterCraftingIntegration betterCraftingIntegration;
     private readonly BetterCraftingInventoryProvider betterCraftingInventoryProvider;
     private readonly ContainerFactory containerFactory;
+    private readonly IIconRegistry iconRegistry;
     private readonly IInputHelper inputHelper;
     private readonly ToolbarIconsIntegration toolbarIconsIntegration;
 
     /// <summary>Initializes a new instance of the <see cref="CraftFromChest" /> class.</summary>
-    /// <param name="assetHandler">Dependency used for handling assets.</param>
     /// <param name="betterCraftingIntegration">Dependency for Better Crafting integration.</param>
     /// <param name="betterCraftingInventoryProvider">Dependency used for providing inventories to Better Crafting.</param>
     /// <param name="containerFactory">Dependency used for accessing containers.</param>
     /// <param name="eventManager">Dependency used for managing events.</param>
+    /// <param name="iconRegistry">Dependency used for registering and retrieving icons.</param>
     /// <param name="inputHelper">Dependency used for checking and changing input state.</param>
-    /// <param name="log">Dependency used for logging debug information to the console.</param>
-    /// <param name="manifest">Dependency for accessing mod manifest.</param>
     /// <param name="modConfig">Dependency used for accessing config data.</param>
     /// <param name="toolbarIconsIntegration">Dependency for Toolbar Icons integration.</param>
     public CraftFromChest(
-        AssetHandler assetHandler,
         BetterCraftingIntegration betterCraftingIntegration,
         BetterCraftingInventoryProvider betterCraftingInventoryProvider,
         ContainerFactory containerFactory,
         IEventManager eventManager,
+        IIconRegistry iconRegistry,
         IInputHelper inputHelper,
-        ILog log,
-        IManifest manifest,
         IModConfig modConfig,
         ToolbarIconsIntegration toolbarIconsIntegration)
-        : base(eventManager, log, manifest, modConfig)
+        : base(eventManager, modConfig)
     {
         CraftFromChest.instance = this;
-        this.assetHandler = assetHandler;
         this.betterCraftingIntegration = betterCraftingIntegration;
         this.betterCraftingInventoryProvider = betterCraftingInventoryProvider;
         this.containerFactory = containerFactory;
+        this.iconRegistry = iconRegistry;
         this.inputHelper = inputHelper;
         this.toolbarIconsIntegration = toolbarIconsIntegration;
 
@@ -78,104 +75,106 @@ internal sealed class CraftFromChest : BaseFeature<CraftFromChest>
     /// <inheritdoc />
     protected override void Activate()
     {
+        if (!this.betterCraftingIntegration.IsLoaded)
+        {
+            return;
+        }
+
         // Events
         this.Events.Subscribe<ButtonsChangedEventArgs>(this.OnButtonsChanged);
 
+        this.betterCraftingIntegration.Api.RegisterInventoryProvider(
+            typeof(BuildingContainer),
+            this.betterCraftingInventoryProvider);
+
+        this.betterCraftingIntegration.Api.RegisterInventoryProvider(
+            typeof(ChestContainer),
+            this.betterCraftingInventoryProvider);
+
+        this.betterCraftingIntegration.Api.RegisterInventoryProvider(
+            typeof(FarmerContainer),
+            this.betterCraftingInventoryProvider);
+
+        this.betterCraftingIntegration.Api.RegisterInventoryProvider(
+            typeof(FridgeContainer),
+            this.betterCraftingInventoryProvider);
+
+        this.betterCraftingIntegration.Api.RegisterInventoryProvider(
+            typeof(FurnitureContainer),
+            this.betterCraftingInventoryProvider);
+
+        this.betterCraftingIntegration.Api.RegisterInventoryProvider(
+            typeof(NpcContainer),
+            this.betterCraftingInventoryProvider);
+
+        this.betterCraftingIntegration.Api.RegisterInventoryProvider(
+            typeof(ObjectContainer),
+            this.betterCraftingInventoryProvider);
+
+        this.betterCraftingIntegration.Api.MenuPopulateContainers += this.OnMenuPopulateContainers;
+
         // Integrations
-        if (this.betterCraftingIntegration.IsLoaded)
+        if (!this.toolbarIconsIntegration.IsLoaded)
         {
-            this.betterCraftingIntegration.Api.RegisterInventoryProvider(
-                typeof(BuildingContainer),
-                this.betterCraftingInventoryProvider);
-
-            this.betterCraftingIntegration.Api.RegisterInventoryProvider(
-                typeof(ChestContainer),
-                this.betterCraftingInventoryProvider);
-
-            this.betterCraftingIntegration.Api.RegisterInventoryProvider(
-                typeof(ChildContainer),
-                this.betterCraftingInventoryProvider);
-
-            this.betterCraftingIntegration.Api.RegisterInventoryProvider(
-                typeof(FarmerContainer),
-                this.betterCraftingInventoryProvider);
-
-            this.betterCraftingIntegration.Api.RegisterInventoryProvider(
-                typeof(FridgeContainer),
-                this.betterCraftingInventoryProvider);
-
-            this.betterCraftingIntegration.Api.RegisterInventoryProvider(
-                typeof(ObjectContainer),
-                this.betterCraftingInventoryProvider);
-
-            this.betterCraftingIntegration.Api.MenuPopulateContainers += this.OnMenuPopulateContainers;
+            return;
         }
 
-        if (this.toolbarIconsIntegration.IsLoaded)
-        {
-            this.toolbarIconsIntegration.Api.AddToolbarIcon(
-                this.Id,
-                this.assetHandler.Icons.Name.BaseName,
-                new Rectangle(32, 0, 16, 16),
-                I18n.Button_CraftFromChest_Name());
-
-            this.toolbarIconsIntegration.Api.Subscribe(this.OnIconPressed);
-        }
+        this.toolbarIconsIntegration.Api.Subscribe(this.OnIconPressed);
+        this.toolbarIconsIntegration.Api.AddToolbarIcon(
+            this.iconRegistry.Icon(InternalIcon.Craft),
+            I18n.Button_CraftFromChest_Name());
     }
 
     /// <inheritdoc />
     protected override void Deactivate()
     {
+        if (!this.betterCraftingIntegration.IsLoaded)
+        {
+            return;
+        }
+
         // Events
         this.Events.Unsubscribe<ButtonsChangedEventArgs>(this.OnButtonsChanged);
 
         // Integrations
-        if (this.betterCraftingIntegration.IsLoaded)
+        this.betterCraftingIntegration.Api.UnregisterInventoryProvider(typeof(BuildingContainer));
+        this.betterCraftingIntegration.Api.UnregisterInventoryProvider(typeof(ChestContainer));
+        this.betterCraftingIntegration.Api.UnregisterInventoryProvider(typeof(FarmerContainer));
+        this.betterCraftingIntegration.Api.UnregisterInventoryProvider(typeof(FridgeContainer));
+        this.betterCraftingIntegration.Api.UnregisterInventoryProvider(typeof(FurnitureContainer));
+        this.betterCraftingIntegration.Api.UnregisterInventoryProvider(typeof(NpcContainer));
+        this.betterCraftingIntegration.Api.UnregisterInventoryProvider(typeof(ObjectContainer));
+        this.betterCraftingIntegration.Api.MenuPopulateContainers -= this.OnMenuPopulateContainers;
+
+        if (!this.toolbarIconsIntegration.IsLoaded)
         {
-            this.betterCraftingIntegration.Api.UnregisterInventoryProvider(typeof(BuildingContainer));
-            this.betterCraftingIntegration.Api.UnregisterInventoryProvider(typeof(ChestContainer));
-            this.betterCraftingIntegration.Api.UnregisterInventoryProvider(typeof(ChildContainer));
-            this.betterCraftingIntegration.Api.UnregisterInventoryProvider(typeof(FarmerContainer));
-            this.betterCraftingIntegration.Api.UnregisterInventoryProvider(typeof(FridgeContainer));
-            this.betterCraftingIntegration.Api.UnregisterInventoryProvider(typeof(ObjectContainer));
-            this.betterCraftingIntegration.Api.MenuPopulateContainers -= this.OnMenuPopulateContainers;
+            return;
         }
 
-        if (this.toolbarIconsIntegration.IsLoaded)
-        {
-            this.toolbarIconsIntegration.Api.RemoveToolbarIcon(this.Id);
-            this.toolbarIconsIntegration.Api.Unsubscribe(this.OnIconPressed);
-        }
+        this.toolbarIconsIntegration.Api.Unsubscribe(this.OnIconPressed);
+        this.toolbarIconsIntegration.Api.RemoveToolbarIcon(this.iconRegistry.Icon(InternalIcon.Craft));
     }
-
-    private static bool DefaultPredicate(IStorageContainer container) =>
-        container is not FarmerContainer
-        && container.Options.CraftFromChest is not (RangeOption.Disabled or RangeOption.Default)
-        && container.Items.Count > 0
-        && !CraftFromChest.instance.Config.CraftFromChestDisableLocations.Contains(Game1.player.currentLocation.Name)
-        && !(CraftFromChest.instance.Config.CraftFromChestDisableLocations.Contains("UndergroundMine")
-            && Game1.player.currentLocation is MineShaft)
-        && container.Options.CraftFromChest.WithinRange(
-            container.Options.CraftFromChestDistance,
-            container.Location,
-            container.TileLocation);
 
     private static bool CookingPredicate(IStorageContainer container) =>
         container is not FarmerContainer
-        && container.Options.CookFromChest is not (RangeOption.Disabled or RangeOption.Default)
+        && container.CookFromChest is not RangeOption.Disabled
         && container.Items.Count > 0
         && !CraftFromChest.instance.Config.CraftFromChestDisableLocations.Contains(Game1.player.currentLocation.Name)
         && !(CraftFromChest.instance.Config.CraftFromChestDisableLocations.Contains("UndergroundMine")
             && Game1.player.currentLocation is MineShaft)
-        && container.Options.CookFromChest.WithinRange(-1, container.Location, container.TileLocation);
+        && container.CookFromChest.WithinRange(-1, container.Location, container.TileLocation);
 
-    private void OnGameLaunched(GameLaunchedEventArgs obj)
-    {
-        if (!this.betterCraftingIntegration.IsLoaded)
-        {
-            this.Log.Warn("Better Crafting is not loaded. CraftFromChest will not be active.");
-        }
-    }
+    private static bool DefaultPredicate(IStorageContainer container) =>
+        container is not FarmerContainer
+        && container.CraftFromChest is not RangeOption.Disabled
+        && container.Items.Count > 0
+        && !CraftFromChest.instance.Config.CraftFromChestDisableLocations.Contains(Game1.player.currentLocation.Name)
+        && !(CraftFromChest.instance.Config.CraftFromChestDisableLocations.Contains("UndergroundMine")
+            && Game1.player.currentLocation is MineShaft)
+        && container.CraftFromChest.WithinRange(
+            container.CraftFromChestDistance,
+            container.Location,
+            container.TileLocation);
 
     private void OnButtonsChanged(ButtonsChangedEventArgs e)
     {
@@ -194,9 +193,17 @@ internal sealed class CraftFromChest : BaseFeature<CraftFromChest>
             false);
     }
 
+    private void OnGameLaunched(GameLaunchedEventArgs obj)
+    {
+        if (!this.betterCraftingIntegration.IsLoaded)
+        {
+            Log.Warn("Better Crafting is not loaded. CraftFromChest will not be active.");
+        }
+    }
+
     private void OnIconPressed(IIconPressedEventArgs e)
     {
-        if (e.Id == this.Id)
+        if (e.Id == this.iconRegistry.Icon(InternalIcon.Craft).Id)
         {
             this.betterCraftingIntegration.Api!.OpenCraftingMenu(
                 false,
@@ -217,15 +224,14 @@ internal sealed class CraftFromChest : BaseFeature<CraftFromChest>
 
         if (location.Objects.TryGetValue(position, out var obj) && obj is Workbench)
         {
-            var storageOptions = this.containerFactory.GetStorageOptions(obj);
             predicate = container => container is not FarmerContainer
-                && container.Options.CraftFromChest is not (RangeOption.Disabled or RangeOption.Default)
+                && container.CraftFromChest is not RangeOption.Disabled
                 && !CraftFromChest.instance.Config.CraftFromChestDisableLocations.Contains(
                     Game1.player.currentLocation.Name)
                 && !(CraftFromChest.instance.Config.CraftFromChestDisableLocations.Contains("UndergroundMine")
                     && Game1.player.currentLocation is MineShaft)
-                && storageOptions.CraftFromChest.WithinRange(
-                    storageOptions.CraftFromChestDistance,
+                && container.CraftFromChest.WithinRange(
+                    container.CraftFromChestDistance,
                     container.Location,
                     container.TileLocation);
         }

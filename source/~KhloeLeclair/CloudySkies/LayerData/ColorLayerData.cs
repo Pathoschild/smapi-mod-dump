@@ -8,12 +8,6 @@
 **
 *************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using Leclair.Stardew.Common.Serialization.Converters;
 
 using Microsoft.Xna.Framework;
@@ -24,7 +18,7 @@ namespace Leclair.Stardew.CloudySkies.LayerData;
 
 
 [DiscriminatedType("Color")]
-public record ColorLayerData : BaseLayerData {
+public record ColorLayerData : BaseLayerData, IColorLayerData {
 
 	[JsonConverter(typeof(ColorConverter))]
 	public Color? Color { get; set; }

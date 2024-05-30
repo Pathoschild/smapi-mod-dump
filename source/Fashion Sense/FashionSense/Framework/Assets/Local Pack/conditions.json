@@ -1,0 +1,120 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Floogen/FashionSense
+**
+*************************************************/
+
+{
+  "IsOutdoorsAndHasPrecipitation": [
+    {
+      "Name": "IsOutdoors",
+      "Value": true
+    },
+    {
+      "GroupName": "HasPrecipitation",
+      "Value": true
+    }
+  ],
+  "IsOutdoorsAndNoPrecipitation": [
+    {
+      "Name": "IsOutdoors",
+      "Value": true
+    },
+    {
+      "GroupName": "HasPrecipitation",
+      "Value": false
+    }
+  ],
+  "HasPrecipitation": [
+    {
+      "Name": "IsRaining",
+      "Value": true,
+      "Independent": true
+    },
+    {
+      "Name": "IsSnowing",
+      "Value": true,
+      "Independent": true
+    }
+  ],
+  "IsOutdoorsAndRaining": [
+    {
+      "Name": "IsOutdoors",
+      "Value": true
+    },
+    {
+      "Name": "IsRaining",
+      "Value": true
+    }
+  ],
+  "IsOutdoorsAndNotRaining": [
+    {
+      "Name": "IsOutdoors",
+      "Value": true
+    },
+    {
+      "Name": "IsRaining",
+      "Value": false
+    }
+  ],
+  "IsDarkOutAndWalking": [
+    {
+      "Name": "IsDarkOut",
+      "Value": true
+    },
+    {
+      "Name": "IsWalking",
+      "Value": true
+    }
+  ],
+  "IsEatingOrDrinking": [
+    {
+      "Name": "IsDrinking",
+      "Value": true,
+      "Independent": true
+    },
+    {
+      "Name": "IsEating",
+      "Value": true,
+      "Independent": true
+    }
+  ],
+  "IsIdle": [
+    {
+      "Name": "CurrentFarmerFrame",
+      "Value": 0,
+      "Independent": true
+    },
+    {
+      "Name": "CurrentFarmerFrame",
+      "Value": 6,
+      "Independent": true
+    },
+    {
+      "Name": "CurrentFarmerFrame",
+      "Value": 12,
+      "Independent": true
+    }
+  ],
+  "IsPlayingFlute": [
+    {
+      "Name": "CurrentFarmerFrame",
+      "Value": 98,
+      "Independent": true
+    },
+    {
+      "Name": "CurrentFarmerFrame",
+      "Value": 99,
+      "Independent": true
+    },
+    {
+      "Name": "CurrentFarmerFrame",
+      "Value": 100,
+      "Independent": true
+    }
+  ]
+}

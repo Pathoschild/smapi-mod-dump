@@ -18,6 +18,7 @@ using ContentPatcher.Framework.Tokens.ValueProviders;
 using ContentPatcher.Framework.Tokens.ValueProviders.ModConvention;
 using Pathoschild.Stardew.Common.Utilities;
 using StardewModdingAPI;
+using IApiManagedTokenString = ContentPatcher.IManagedTokenString;
 
 namespace ContentPatcher.Framework
 {
@@ -48,6 +49,9 @@ namespace ContentPatcher.Framework
         /// <summary>Parse raw conditions for an API consumer.</summary>
         private readonly ParseConditionsDelegate ParseConditionsImpl;
 
+        /// <summary>Parse a raw token string for an API consumer.</summary>
+        private readonly ParseTokenStringDelegate ParseTokenStringImpl;
+
 
         /*********
         ** Accessors
@@ -57,7 +61,7 @@ namespace ContentPatcher.Framework
 
 
         /*********
-        ** Public delegates
+        ** Delegates
         *********/
         /// <summary>Parse raw conditions for an API consumer.</summary>
         /// <param name="manifest">The manifest of the mod parsing the conditions.</param>
@@ -65,6 +69,13 @@ namespace ContentPatcher.Framework
         /// <param name="formatVersion">The format version for which to parse conditions.</param>
         /// <param name="assumeModIds">The unique IDs of mods whose custom tokens to allow in the <paramref name="rawConditions"/>.</param>
         internal delegate IManagedConditions ParseConditionsDelegate(IManifest manifest, InvariantDictionary<string?>? rawConditions, ISemanticVersion formatVersion, string[]? assumeModIds = null);
+
+        /// <summary>Parse a raw token string for an API consumer.</summary>
+        /// <param name="manifest">The manifest of the mod parsing the token string.</param>
+        /// <param name="rawTokenString">The raw token string to parse.</param>
+        /// <param name="formatVersion">The format version for which to parse the token string.</param>
+        /// <param name="assumeModIds">The unique IDs of mods whose custom tokens to allow in the <paramref name="rawTokenString"/>.</param>
+        internal delegate IApiManagedTokenString ParseTokenStringDelegate(IManifest manifest, string rawTokenString, ISemanticVersion formatVersion, string[]? assumeModIds = null);
 
 
         /*********
@@ -77,7 +88,8 @@ namespace ContentPatcher.Framework
         /// <param name="addModToken">The action to add a mod token.</param>
         /// <param name="isConditionsApiReady">Whether the conditions API is initialized and ready for use.</param>
         /// <param name="parseConditions">Parse raw conditions for an API consumer.</param>
-        internal ContentPatcherAPI(string contentPatcherID, IMonitor monitor, IReflectionHelper reflection, Action<ModProvidedToken> addModToken, Func<bool> isConditionsApiReady, ParseConditionsDelegate parseConditions)
+        /// <param name="parseTokenString">Parse a raw token string for an API consumer.</param>
+        internal ContentPatcherAPI(string contentPatcherID, IMonitor monitor, IReflectionHelper reflection, Action<ModProvidedToken> addModToken, Func<bool> isConditionsApiReady, ParseConditionsDelegate parseConditions, ParseTokenStringDelegate parseTokenString)
         {
             this.ContentPatcherID = contentPatcherID;
             this.Monitor = monitor;
@@ -85,6 +97,7 @@ namespace ContentPatcher.Framework
             this.AddModToken = addModToken;
             this.IsConditionsApiReadyImpl = isConditionsApiReady;
             this.ParseConditionsImpl = parseConditions;
+            this.ParseTokenStringImpl = parseTokenString;
         }
 
         /// <inheritdoc />
@@ -105,6 +118,22 @@ namespace ContentPatcher.Framework
                ? new(rawConditions)
                : null;
             return this.ParseConditionsImpl(manifest, conditions, formatVersion, assumeModIds);
+        }
+
+        /// <inheritdoc />
+        public IApiManagedTokenString ParseTokenString(IManifest manifest, string rawValue, ISemanticVersion formatVersion, string[]? assumeModIds = null)
+        {
+            // validate lifecycle
+            if (!this.IsConditionsApiReady)
+                throw new InvalidOperationException($"'{manifest.Name}' accessed Content Patcher's token string API before it was ready to use. (For mod authors: see the documentation on {nameof(IContentPatcherAPI)}.{nameof(IContentPatcherAPI.IsConditionsApiReady)} for details.)");
+
+            // validate dependency on Content Patcher
+            if (!manifest.HasDependency(this.ContentPatcherID, out ISemanticVersion? minVersion, canBeOptional: false))
+                throw new InvalidOperationException($"'{manifest.Name}' must list Content Patcher as a required dependency in its manifest.json to access the token string API.");
+            if (minVersion == null || minVersion.IsOlderThan("2.1.0"))
+                throw new InvalidOperationException($"'{manifest.Name}' must specify Content Patcher 2.1.0 as the minimum required version in its manifest.json to access the token string API.");
+
+            return this.ParseTokenStringImpl(manifest, rawValue, formatVersion, assumeModIds);
         }
 
         /// <inheritdoc />

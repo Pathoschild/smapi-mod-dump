@@ -6,9 +6,11 @@ mods:
    Automate Tool Swap
 
 latest commit:
-   commit 4055f45d7030b064bb6c40e9fecfc296ee42cdc3
+   commit c0445e265fd5078584a59eff03ee545d23d8117c
    Author: CauÃ£ Oliveira <101019088+Caua-Oliveira@users.noreply.github.com>
-   Date:   Tue Apr 23 22:08:38 2024 -0300
+   Date:   Sat May 25 00:35:42 2024 -0300
    
-       Update manifest.json
+       1.3.3
+       
+       now it works with tractor mod again
    

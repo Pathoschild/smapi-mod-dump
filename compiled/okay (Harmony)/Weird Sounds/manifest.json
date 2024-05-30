@@ -1,0 +1,13 @@
+{
+  "Name": "WeirdSounds",
+  "Author": "mori_sensei",
+  "Version": "1.0.3",
+  "Description": "What happened to this game?",
+  "UniqueID": "mori_sensei.WeirdSounds",
+  "EntryDll": "WeirdSounds.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:23848" ],
+  "Dependencies": [
+
+]
+}

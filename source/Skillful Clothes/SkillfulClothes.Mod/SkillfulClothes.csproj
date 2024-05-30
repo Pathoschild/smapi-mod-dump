@@ -3,7 +3,7 @@
   <PropertyGroup>
     <AssemblyName>SkillfulClothes</AssemblyName>
     <RootNamespace>SkillfulClothes</RootNamespace>
-    <Version>1.5.2</Version>
+    <Version>1.5.3</Version>
     <TargetFramework>net6.0</TargetFramework>
     <EnableHarmony>true</EnableHarmony>
     <PathMap>$(MSBuildProjectDirectory)=$(MSBuildProjectName)</PathMap>
@@ -29,12 +29,6 @@
     <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
       <_Parameter1>SkillfulClothes.Test</_Parameter1>
     </AssemblyAttribute>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="manifest.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 </Project>

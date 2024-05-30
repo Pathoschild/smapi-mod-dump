@@ -85,7 +85,7 @@ namespace AnimalHusbandryMod
 
                 if (!DataLoader.ModConfig.DisableMeat)
                 {
-                    ModHelper.ConsoleCommands.Add("player_addallmeatrecipes", "Add all meat recipes to the player.", DataLoader.RecipeLoader.AddAllMeatRecipes);
+                    ModHelper.ConsoleCommands.Add("player_addallmeatrecipes", "Add all meat recipes to the player.", RecipesLoader.AddAllMeatRecipes);
                     if (DataLoader.ModConfig.Softmode)
                     {
                         ModHelper.ConsoleCommands.Add("player_addmeatwand", "Add Meat Wand to inventory.", (n, d) => Game1.player.addItemToInventory(ToolsFactory.GetMeatCleaver()));
@@ -148,10 +148,7 @@ namespace AnimalHusbandryMod
                         original: AccessTools.Method(typeof(SObject), nameof(SObject.sellToStorePrice)),
                         prefix: new HarmonyMethod(typeof(MeatOverrides), nameof(MeatOverrides.sellToStorePrice))
                     );
-                }
 
-                if (!DataLoader.ModConfig.DisableMeat)
-                {
                     harmony.Patch(
                         original: AccessTools.Method(typeof(SObject), nameof(SObject.isPotentialBasicShipped)),
                         prefix: new HarmonyMethod(typeof(MeatOverrides), nameof(MeatOverrides.isPotentialBasicShipped))
@@ -160,6 +157,12 @@ namespace AnimalHusbandryMod
                         original: AccessTools.Method(typeof(SObject), nameof(SObject.countsForShippedCollection)),
                         prefix: new HarmonyMethod(typeof(MeatOverrides), nameof(MeatOverrides.countsForShippedCollection))
                     );
+
+                    harmony.Patch(
+                        original: AccessTools.Method(typeof(SObject), "readBook"),
+                        postfix: new HarmonyMethod(typeof(MeatOverrides), nameof(MeatOverrides.ReadBook))
+                    );
+
                     harmony.Patch(
                         original: AccessTools.Method(typeof(TrashBear), "updateItemWanted"),
                         prefix: new HarmonyMethod(typeof(TrashBearOverrides), nameof(TrashBearOverrides.updateItemWanted))
@@ -402,6 +405,7 @@ namespace AnimalHusbandryMod
             FarmerLoader.MoveOldPregnancyData();
             FarmerLoader.MoveOldAnimalStatusData();
             DataLoader.ToolsLoader.LoadMail();
+            RecipesLoader.LoadMails();
             DataLoader.AnimalData.FillLikedTreatsIds();
             EventsLoader.EventListener();
         }

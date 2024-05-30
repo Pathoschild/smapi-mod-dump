@@ -18,17 +18,10 @@ namespace SkillPrestige.Framework.Commands
     // ReSharper disable once UnusedMember.Global - referenced via reflection
     internal class GetAllProfessionsCommand : SkillPrestigeCommand
     {
-        /*********
-        ** Public methods
-        *********/
         /// <summary>Construct an instance.</summary>
         public GetAllProfessionsCommand()
             : base("player_getallprofessions", "Returns a list of all professions the player has.\n\nUsage: player_getallprofessions", testingCommand: true) { }
 
-
-        /*********
-        ** Protected methods
-        *********/
         /// <summary>Applies the effect of a command when it is called from the console.</summary>
         protected override void Apply(string[] args)
         {

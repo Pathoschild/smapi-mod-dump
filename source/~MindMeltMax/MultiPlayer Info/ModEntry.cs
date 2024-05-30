@@ -14,9 +14,9 @@ using StardewModdingAPI.Events;
 using StardewValley;
 using System;
 using System.Linq;
-using Newtonsoft.Json;
 using System.Collections.Generic;
-using Microsoft.Xna.Framework.Input;
+using StardewModdingAPI.Utilities;
+using StardewValley.Menus;
 
 namespace MPInfo
 {
@@ -33,11 +33,12 @@ namespace MPInfo
         internal static ModEntry Instance;
         internal static Config Config = null!;
 
-        private int lastMaxHealth;
-        private int lastHealth;
-        private bool enabled;
+        private readonly PerScreen<PlayerInfo> infoCache = new(() => new());
+
+        private bool enabled = true;
 
         public bool IsEnabled => enabled;
+        private PerScreen<int> playersOnline = new(() => -1); //Might not need perscreen, since it's only set and checked by the host, will probably make int in next update
 
         public override void Entry(IModHelper helper)
         {
@@ -50,32 +51,30 @@ namespace MPInfo
 
             helper.Events.Input.ButtonPressed += OnButtonPressed;
 
-            helper.Events.Multiplayer.PeerConnected += OnPlayerJoin;
-            helper.Events.Multiplayer.PeerDisconnected += OnPlayerLeave;
             helper.Events.Multiplayer.ModMessageReceived += OnMultiplayerDataReceived;
 
-            helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
-            helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
+            helper.Events.GameLoop.DayStarted += OnDayStarted;
+            helper.Events.GameLoop.DayEnding += (_, _) => Game1.player.modData.Remove(ModManifest.UniqueID);
+            helper.Events.GameLoop.ReturnedToTitle += (_, _) => playersOnline.Value = -1;
 
             Patches.Apply(ModManifest.UniqueID);
         }
 
         internal void ForceUpdate()
         {
-            var ids = JsonConvert.SerializeObject(Helper.Multiplayer.GetConnectedPlayers().Select(x => x.PlayerID));
-            Helper.Multiplayer.SendMessage(ids, "MPInfo.ForceUpdate", new[] { ModManifest.UniqueID });
+            infoCache.Value = new(Game1.player);
+            Game1.player.modData[ModManifest.UniqueID] = infoCache.Value.Serialize();
+            Helper.Multiplayer.SendMessage("", "MPInfo.ForceUpdate", [ModManifest.UniqueID]);
             ResetDisplays();
         }
 
-        private void ResetDisplays(IEnumerable<long>? playerIds = null)
+        private void ResetDisplays()
         {
-            var displays = Game1.onScreenMenus.OfType<PlayerInfoBox>().ToArray();
-            for (int i = 0; i < displays.Length; i++)
-                Game1.onScreenMenus.Remove(displays[i]);
+            Game1.onScreenMenus = new List<IClickableMenu>(Game1.onScreenMenus.Where(x => x is not PlayerInfoBox));
             if (Config.ShowSelf)
                 Game1.onScreenMenus.Add(new PlayerInfoBox(Game1.player));
-            foreach (var player in playerIds ?? Helper.Multiplayer.GetConnectedPlayers().Select(x => x.PlayerID))
-                Game1.onScreenMenus.Add(new PlayerInfoBox(Game1.getFarmer(player)));
+            foreach (var player in Helper.Multiplayer.GetConnectedPlayers())
+                Game1.onScreenMenus.Add(new PlayerInfoBox(Game1.getFarmer(player.PlayerID)));
             PlayerInfoBox.RedrawAll();
         }
 
@@ -87,57 +86,57 @@ namespace MPInfo
 
             configMenu.Register(
                 mod: ModManifest,
-                reset: () => Config = new Config(),
+                reset: () => Config = new(),
                 save: () => Helper.WriteConfig(Config)
             );
 
             configMenu.AddBoolOption(
                 mod: ModManifest,
-                name: () => "Enabled",
+                name: () => Helper.Translation.Get("Config.Enabled.Name"),
                 tooltip: () => "",
                 getValue: () => Config.Enabled,
                 setValue: value =>
                 {
                     Config.Enabled = enabled = value;
-                    PlayerInfoBox.RedrawAll();
+                    ResetDisplays();
                 }
             );
             configMenu.AddKeybind(
                 mod: ModManifest,
-                name: () => "Button to toggle display",
-                tooltip: () => "",
+                name: () => Helper.Translation.Get("Config.ToggleButton.Name"),
+                tooltip: () => Helper.Translation.Get("Config.ToggleButton.Description"),
                 getValue: () => Config.ToggleButton,
                 setValue: value => Config.ToggleButton = value
             );
             configMenu.AddBoolOption(
                 mod: ModManifest,
-                name: () => "Show Self",
-                tooltip: () => "",
+                name: () => Helper.Translation.Get("Config.ShowSelf.Name"),
+                tooltip: () => Helper.Translation.Get("Config.ShowSelf.Description"),
                 getValue: () => Config.ShowSelf,
                 setValue: value =>
                 {
                     Config.ShowSelf = value;
-                    PlayerInfoBox.RedrawAll();
+                    ResetDisplays();
                 }
             );
             configMenu.AddBoolOption(
                 mod: ModManifest,
-                name: () => "Show Host Crown",
-                tooltip: () => "",
+                name: () => Helper.Translation.Get("Config.ShowHostCrown.Name"),
+                tooltip: () => Helper.Translation.Get("Config.ShowHostCrown.Description"),
                 getValue: () => Config.ShowHostCrown,
                 setValue: value => Config.ShowHostCrown = value
             );
             configMenu.AddBoolOption(
                 mod: ModManifest,
-                name: () => "Hide Health and Stamina Bars",
+                name: () => Helper.Translation.Get("Config.HideBars.Name"),
                 tooltip: () => "",
                 getValue: () => Config.HideHealthBars,
                 setValue: value => Config.HideHealthBars = value
             );
             configMenu.AddTextOption(
                 mod: ModManifest,
-                name: () => "Position of boxes",
-                tooltip: () => "",
+                name: () => Helper.Translation.Get("Config.PositionBoxes.Name"),
+                tooltip: () => Helper.Translation.Get("Config.PositionBoxes.Description"),
                 getValue: () => Enum.GetName(Config.Position)!,
                 setValue: value =>
                 {
@@ -148,8 +147,8 @@ namespace MPInfo
             );
             configMenu.AddNumberOption(
                 mod: ModManifest,
-                name: () => "X Offset",
-                tooltip: () => "Offset the boxes horizontally",
+                name: () => Helper.Translation.Get("Config.XOffset.Name"),
+                tooltip: () => Helper.Translation.Get("Config.XOffset.Description"),
                 getValue: () => Config.XOffset,
                 setValue: value =>
                 {
@@ -159,8 +158,8 @@ namespace MPInfo
             );
             configMenu.AddNumberOption(
                 mod: ModManifest,
-                name: () => "Y Offset",
-                tooltip: () => "Offset the boxes vertically",
+                name: () => Helper.Translation.Get("Config.YOffset.Name"),
+                tooltip: () => Helper.Translation.Get("Config.YOffset.Description"),
                 getValue: () => Config.YOffset,
                 setValue: value =>
                 {
@@ -170,8 +169,8 @@ namespace MPInfo
             );
             configMenu.AddNumberOption(
                 mod: ModManifest,
-                name: () => "Space Between",
-                tooltip: () => "The distance between displays",
+                name: () => Helper.Translation.Get("Config.SpaceBetween.Name"),
+                tooltip: () => Helper.Translation.Get("Config.SpaceBetween.Description"),
                 getValue: () => Config.SpaceBetween,
                 setValue: value =>
                 {
@@ -181,16 +180,16 @@ namespace MPInfo
              );
         }
 
-        public void OnButtonPressed(object sender, ButtonPressedEventArgs e)
+        public void OnButtonPressed(object? sender, ButtonPressedEventArgs e)
         {
             if (e.Button == Config.ToggleButton)
                 enabled = !enabled;
         }
 
-        private void OnSaveLoaded(object? sender, SaveLoadedEventArgs e)
+        private void OnDayStarted(object? sender, DayStartedEventArgs e)
         {
-            lastHealth = Game1.player.health;
-            lastMaxHealth = Game1.player.maxHealth;
+            infoCache.Value = new(Game1.player);
+            Game1.player.modData[ModManifest.UniqueID] = infoCache.Value.Serialize();
             ResetDisplays();
         }
 
@@ -198,50 +197,42 @@ namespace MPInfo
         {
             if (!Context.IsWorldReady)
                 return;
-
-            if (Game1.player.health != lastHealth)
-                Helper.Multiplayer.SendMessage(Game1.player.health, "MPInfo.Health", new[] { ModManifest.UniqueID });
-            if (Game1.player.maxHealth != lastMaxHealth)
-                Helper.Multiplayer.SendMessage(Game1.player.maxHealth, "MPInfo.MaxHealth", new[] { ModManifest.UniqueID });
-        }
-
-        private void OnPlayerJoin(object? sender, PeerConnectedEventArgs e)
-        {
+            if (!infoCache.Value.IsMatch(Game1.player))
+            {
+                infoCache.Value = new(Game1.player);
+                Game1.player.modData[ModManifest.UniqueID] = infoCache.Value.Serialize();
+                ResetDisplays();
+            }
             if (!Context.IsMainPlayer)
                 return;
-            ForceUpdate();
-        }
-
-        private void OnPlayerLeave(object? sender, PeerDisconnectedEventArgs e)
-        {
-            if (!Context.IsMainPlayer)
-                return;
-            ForceUpdate();
+            if (playersOnline.Value != Game1.numberOfPlayers())
+            {
+                playersOnline.Value = Game1.numberOfPlayers();
+                ForceUpdate();
+            }
         }
 
         private void OnMultiplayerDataReceived(object? sender, ModMessageReceivedEventArgs e)
         {
-            if (e.FromModID != Helper.ModRegistry.ModID)
+            if (e.FromModID != Helper.ModRegistry.ModID || e.Type != "MPInfo.ForceUpdate")
                 return;
 
-            var display = (PlayerInfoBox?)Game1.onScreenMenus.FirstOrDefault(x => x is PlayerInfoBox pib && pib.Who.UniqueMultiplayerID == e.FromPlayerID);
+            infoCache.Value = new(Game1.player);
+            Game1.player.modData[ModManifest.UniqueID] = infoCache.Value.Serialize();
+            ResetDisplays();
+
+            /*var display = (PlayerInfoBox?)Game1.onScreenMenus.FirstOrDefault(x => x is PlayerInfoBox pib && pib.Who.UniqueMultiplayerID == e.FromPlayerID);
             if (display is null && e.Type != "MPInfo.ForceUpdate")
                 return;
 
             switch (e.Type)
             {
-                case "MPInfo.Health":
-                    display!.Who.health = lastHealth = e.ReadAs<int>();
-                    break;
-                case "MPInfo.MaxHealth":
-                    display!.Who.maxHealth = lastMaxHealth = e.ReadAs<int>();
-                    break;
                 case "MPInfo.ForceUpdate": //Let updateticked handle the messages
-                    lastHealth = -1;
-                    lastMaxHealth = -1;
-                    ResetDisplays(JsonConvert.DeserializeObject<IEnumerable<long>>(e.ReadAs<string>())?.Where(x => x != Game1.player.UniqueMultiplayerID)?.Append(e.FromPlayerID));
+                    infoCache.Value = new(Game1.player);
+                    Game1.player.modData[ModManifest.UniqueID] = infoCache.Value.Serialize();
+                    ResetDisplays();
                     break;
-            }
+            }*/
         }
     }
 }

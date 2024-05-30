@@ -143,15 +143,9 @@ namespace CustomCrystalariumMod
                             {
                                 who.addItemByMenuIfNecessary(currentObject.getOne());
                             }
-                            if (object1 != null)
-                            {
-                                __instance.lastInputItem.Value = object1.getOne();
-                                __instance.lastInputItem.Value.Stack = 1;
-                            }
-                            else
-                            {
-                                __instance.lastInputItem.Value = null;
-                            }
+                            __instance.lastInputItem.Value = __instance.heldObject.Value.getOne();
+                            __instance.lastInputItem.Value.Stack = 1;
+                            
                             __instance.initializeLightSource(__instance.TileLocation, false);
                             var machineData = __instance.GetMachineData();
                             if (machineData?.LoadEffects != null)

@@ -27,66 +27,48 @@ using StardewValley.Objects;
 /// <summary>Represents a manager for managing garbage cans in a game.</summary>
 internal sealed class GarbageCanManager : BaseService<GarbageCanManager>
 {
-    private readonly AssetHandler assetHandler;
     private readonly PerScreen<NPC?> currentNpc = new();
+    private readonly Dictionary<string, FoundGarbageCan> foundGarbageCans;
     private readonly Dictionary<string, GameLocation?> foundLocations = [];
     private readonly PerScreen<GarbageCan?> garbageCanOpened = new();
     private readonly Dictionary<string, GarbageCan> garbageCans = [];
+    private readonly IIconRegistry iconRegistry;
     private readonly IInputHelper inputHelper;
     private readonly IModConfig modConfig;
     private readonly IReflectedField<Multiplayer> multiplayer;
     private readonly ToolbarIconsIntegration toolbarIconsIntegration;
 
     /// <summary>Initializes a new instance of the <see cref="GarbageCanManager" /> class.</summary>
-    /// <param name="assetHandler">Dependency used for handling assets.</param>
-    /// <param name="eventSubscriber">Dependency used for subscribing to events.</param>
+    /// <param name="eventManager">Dependency used for managing events.</param>
+    /// <param name="foundGarbageCans">The discovered garbage cans.</param>
+    /// <param name="iconRegistry">Dependency used for registering and retrieving icons.</param>
     /// <param name="inputHelper">Dependency used for checking and changing input state.</param>
-    /// <param name="log">Dependency used for logging debug information to the console.</param>
-    /// <param name="manifest">Dependency for accessing mod manifest.</param>
     /// <param name="modConfig">Dependency used for accessing config data.</param>
-    /// <param name="reflectionHelper">Dependency used for reflecting into external code.</param>
+    /// <param name="reflectionHelper">Dependency used for reflecting into non-public code.</param>
     /// <param name="toolbarIconsIntegration">Dependency for Toolbar Icons integration.</param>
     public GarbageCanManager(
-        AssetHandler assetHandler,
-        IEventSubscriber eventSubscriber,
+        IEventManager eventManager,
+        Dictionary<string, FoundGarbageCan> foundGarbageCans,
+        IIconRegistry iconRegistry,
         IInputHelper inputHelper,
-        ILog log,
-        IManifest manifest,
         IModConfig modConfig,
         IReflectionHelper reflectionHelper,
         ToolbarIconsIntegration toolbarIconsIntegration)
-        : base(log, manifest)
     {
         // Init
-        this.assetHandler = assetHandler;
+        this.foundGarbageCans = foundGarbageCans;
+        this.iconRegistry = iconRegistry;
         this.inputHelper = inputHelper;
         this.modConfig = modConfig;
         this.toolbarIconsIntegration = toolbarIconsIntegration;
         this.multiplayer = reflectionHelper.GetField<Multiplayer>(typeof(Game1), "multiplayer");
 
         // Events
-        eventSubscriber.Subscribe<GameLaunchedEventArgs>(this.OnGameLaunched);
-        eventSubscriber.Subscribe<MenuChangedEventArgs>(this.OnMenuChanged);
-        eventSubscriber.Subscribe<ButtonPressedEventArgs>(this.OnButtonPressed);
-        eventSubscriber.Subscribe<DayEndingEventArgs>(this.OnDayEnding);
-        eventSubscriber.Subscribe<DayStartedEventArgs>(this.OnDayStarted);
-    }
-
-    private void OnGameLaunched(GameLaunchedEventArgs e)
-    {
-        // Integrations
-        if (!this.toolbarIconsIntegration.IsLoaded)
-        {
-            return;
-        }
-
-        this.toolbarIconsIntegration.Api.AddToolbarIcon(
-            this.Id,
-            this.assetHandler.IconTexturePath,
-            new Rectangle(0, 0, 16, 16),
-            I18n.Button_GarbageFill_Name());
-
-        this.toolbarIconsIntegration.Api.Subscribe(this.OnIconPressed);
+        eventManager.Subscribe<GameLaunchedEventArgs>(this.OnGameLaunched);
+        eventManager.Subscribe<MenuChangedEventArgs>(this.OnMenuChanged);
+        eventManager.Subscribe<ButtonPressedEventArgs>(this.OnButtonPressed);
+        eventManager.Subscribe<DayEndingEventArgs>(this.OnDayEnding);
+        eventManager.Subscribe<DayStartedEventArgs>(this.OnDayStarted);
     }
 
     private void OnButtonPressed(ButtonPressedEventArgs e)
@@ -95,7 +77,7 @@ internal sealed class GarbageCanManager : BaseService<GarbageCanManager>
             || !e.Button.IsActionButton()
             || !Game1.currentLocation.Objects.TryGetValue(e.Cursor.GrabTile, out var obj)
             || obj is not Chest chest
-            || !chest.modData.TryGetValue(this.ModId + "/WhichCan", out var whichCan)
+            || !chest.modData.TryGetValue(Mod.Id + "/WhichCan", out var whichCan)
             || !this.garbageCans.TryGetValue(whichCan, out var garbageCan))
         {
             return;
@@ -163,7 +145,7 @@ internal sealed class GarbageCanManager : BaseService<GarbageCanManager>
     private void OnDayStarted(DayStartedEventArgs e)
     {
         // Add garbage cans
-        foreach (var (whichCan, foundGarbageCan) in this.assetHandler.FoundGarbageCans)
+        foreach (var (whichCan, foundGarbageCan) in this.foundGarbageCans)
         {
             if (this.garbageCans.ContainsKey(whichCan))
             {
@@ -172,7 +154,7 @@ internal sealed class GarbageCanManager : BaseService<GarbageCanManager>
 
             if (!this.TryCreateGarbageCan(foundGarbageCan, out var garbageCan))
             {
-                this.assetHandler.InvalidateGarbageCan(whichCan);
+                foundGarbageCan.IsValid = false;
                 continue;
             }
 
@@ -187,13 +169,28 @@ internal sealed class GarbageCanManager : BaseService<GarbageCanManager>
                 garbageCan.EmptyTrash();
             }
 
-            garbageCan.AddLoot(this.Log);
+            garbageCan.AddLoot();
         }
+    }
+
+    private void OnGameLaunched(GameLaunchedEventArgs e)
+    {
+        // Integrations
+        if (!this.toolbarIconsIntegration.IsLoaded)
+        {
+            return;
+        }
+
+        this.toolbarIconsIntegration.Api.AddToolbarIcon(
+            this.iconRegistry.Icon("GarbageCan"),
+            I18n.Button_GarbageFill_Name());
+
+        this.toolbarIconsIntegration.Api.Subscribe(this.OnIconPressed);
     }
 
     private void OnIconPressed(IIconPressedEventArgs e)
     {
-        if (e.Id != this.Id)
+        if (e.Id != this.iconRegistry.Icon("GarbageCan").Id)
         {
             return;
         }
@@ -202,10 +199,10 @@ internal sealed class GarbageCanManager : BaseService<GarbageCanManager>
         {
             if (Game1.currentLocation.Objects.TryGetValue(pos, out var obj)
                 && obj is Chest chest
-                && chest.modData.TryGetValue(this.ModId + "/WhichCan", out var whichCan)
+                && chest.modData.TryGetValue(Mod.Id + "/WhichCan", out var whichCan)
                 && this.garbageCans.TryGetValue(whichCan, out var garbageCan))
             {
-                garbageCan.AddLoot(this.Log, ItemRegistry.Create("(H)66"));
+                garbageCan.AddLoot(ItemRegistry.Create("(H)66"));
             }
         }
     }
@@ -238,21 +235,21 @@ internal sealed class GarbageCanManager : BaseService<GarbageCanManager>
 
         if (location is null)
         {
-            this.Log.Trace("Unable to find location for Garbage Can {0}", foundGarbageCan.WhichCan);
+            Log.Trace("Unable to find location for Garbage Can {0}", foundGarbageCan.WhichCan);
             garbageCan = null;
             return false;
         }
 
         // Remove existing garbage can
         if (location.Objects.TryGetValue(foundGarbageCan.TilePosition, out var obj)
-            && obj.modData.ContainsKey(this.ModId + "/WhichCan"))
+            && obj.modData.ContainsKey(Mod.Id + "/WhichCan"))
         {
             location.Objects.Remove(foundGarbageCan.TilePosition);
         }
 
         // Attempt to place item
-        var item = this.assetHandler.GarbageCan;
-        this.Log.Trace(
+        var item = (SObject)ItemRegistry.Create($"(BC){Mod.Id}/GarbageCan");
+        Log.Trace(
             "Placing Garbage Can {0} at {1} ({2})",
             foundGarbageCan.WhichCan,
             location.Name,
@@ -266,15 +263,15 @@ internal sealed class GarbageCanManager : BaseService<GarbageCanManager>
             || !location.Objects.TryGetValue(foundGarbageCan.TilePosition, out obj)
             || obj is not Chest chest)
         {
-            this.Log.Trace("Unable to place Garbage Can");
+            Log.Trace("Unable to place Garbage Can");
             garbageCan = null;
             return false;
         }
 
         // Update chest
-        chest.GlobalInventoryId = this.ModId + "-" + foundGarbageCan.WhichCan;
+        chest.GlobalInventoryId = Mod.Id + "-" + foundGarbageCan.WhichCan;
         chest.playerChoiceColor.Value = Color.DarkGray;
-        chest.modData[this.ModId + "/WhichCan"] = foundGarbageCan.WhichCan;
+        chest.modData[Mod.Id + "/WhichCan"] = foundGarbageCan.WhichCan;
         chest.modData["Pathoschild.ChestsAnywhere/IsIgnored"] = "true";
         chest.modData["furyx639.BetterChests/StorageName"] = $"{I18n.GarbageCan_Name()} {foundGarbageCan.WhichCan}";
 

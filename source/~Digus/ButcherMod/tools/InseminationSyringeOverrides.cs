@@ -341,7 +341,7 @@ namespace AnimalHusbandryMod.tools
 
         public static bool IsEggAnimal(FarmAnimal animal)
         {
-            return animal.GetAnimalData().EggItemIds?.Count > 0;
+            return animal.GetAnimalData().EggItemIds?.Count > 0 || (bool)animal.Name?.Contains("Chicken");
         }
     }
 }

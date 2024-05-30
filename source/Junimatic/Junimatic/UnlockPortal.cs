@@ -57,16 +57,6 @@ namespace NermNermNerm.Junimatic
             this.mod.Helper.Events.GameLoop.DayEnding += this.GameLoop_DayEnding;
             this.mod.Helper.Events.GameLoop.DayStarted += this.GameLoop_DayStarted;
 
-            // For testing only.
-            this.mod.Helper.Events.Input.ButtonPressed += (object? sender, ButtonPressedEventArgs e) =>
-            {
-                if (e.Button == SButton.Home)
-                {
-                    // delete the old portal and the traces in the ModData too?
-                    this.PlacePortalRemains();
-                }
-            };
-
             mod.PetFindsThings.AddObjectFinder(OldJunimoPortalQiid, .02);
         }
 
@@ -76,15 +66,18 @@ namespace NermNermNerm.Junimatic
         {
             if (e.Added.Any(i => i.QualifiedItemId == OldJunimoPortalQiid))
             {
-                if (e.Player.IsMainPlayer)
+                if (!e.Player.IsMainPlayer)
+                {
+                    Game1.addHUDMessage(new HUDMessage("Give the strange little structure to the host player - only the host can advance this quest.  (Put it in a chest for them.)") { noIcon = true });
+                }
+                else if (!this.IsUnlocked && !e.Player.questLog.Any(q => q.id.Value == OldJunimoPortalQuest))
                 {
                     e.Player.addQuest(OldJunimoPortalQuest);
                 }
                 else
                 {
-                    Game1.addHUDMessage(new HUDMessage("Give the strange little structure to the host player - only the host can advance this quest.  (Put it in a chest for them.)") { noIcon = true });
+                    this.LogWarning($"Player received a {OldJunimoPortalQiid} when they've already got or have completed the quest");
                 }
-                var myItem = (StardewValley.Object)e.Added.First(i => i.QualifiedItemId == OldJunimoPortalQiid);
             }
         }
 
@@ -124,7 +117,7 @@ namespace NermNermNerm.Junimatic
                 e.Edit(editor =>
                 {
                     IDictionary<string, string> data = editor.AsDictionary<string, string>().Data;
-                    data[OldJunimoPortalQuest] = "Basic/The strange little structure/I found the remnants of what looks like a little buildling.  It smells like it has some Forest Magic in it./Bring the remnants of the strange little structure to the wizard./null/-1/0/-1/false";
+                    data[OldJunimoPortalQuest] = "Basic/The Strange Little Structure/You found the remnants of what looks like a little building.  It smells like it has some Forest Magic in it./Bring the remnants of the strange little structure to the wizard./null/-1/0/-1/false";
                 });
             }
         }
@@ -222,7 +215,12 @@ end warpOut";
 
         private void GameLoop_DayEnding(object? sender, DayEndingEventArgs e)
         {
-            if (Game1.isRaining && Game1.Date.TotalDays > 7 && !Game1.MasterPlayer.modData.ContainsKey(ModDataKey_PlacedOldPortal))
+            if (Game1.isRaining // TODO: Consider + && it won't rain tomorrow
+                && Game1.IsMasterGame
+                && Game1.Date.TotalDays >= 7
+                && !Game1.MasterPlayer.modData.ContainsKey(ModDataKey_PlacedOldPortal)
+                && !this.IsUnlocked
+                && !Game1.player.questLog.Any(q => q.id.Value == OldJunimoPortalQuest))
             {
                 this.PlacePortalRemains();
             }

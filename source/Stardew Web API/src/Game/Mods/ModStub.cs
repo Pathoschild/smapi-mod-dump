@@ -26,5 +26,5 @@ public class ModStub
     public string Description => _modInfo.Manifest.Description;
     public string Author => _modInfo.Manifest.Author;
     public string Version => _modInfo.Manifest.Version.ToString();
-    public string Url => $"/mods/{UniqueId}";
+    public string Url => $"/api/v1/mods/{UniqueId}";
 }

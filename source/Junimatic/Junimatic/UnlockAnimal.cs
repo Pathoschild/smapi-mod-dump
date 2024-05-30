@@ -232,8 +232,8 @@ end";
 
         private void EditQuests(IDictionary<string, string> data)
         {
-            data[CollectLostChickenQuest] = "Basic/Chicken Round-Up/Marnie says there's a lost chicken in the forest south of her farm.  I don't think I've lost any chickens, but I should have a look anyway./Enter the Cindersnap Forest during the day./null/-1/0/-1/false";
-            data[RescueCindersnapJunimoQuest] = "Basic/Help the Junimo Go Home/I found a lost Junimo in the Cindersnap Forest - I need to help it get home./Enter the Cindersnap Forest during the day with a Junimo Portal in your inventory./null/-1/0/-1/false";
+            data[CollectLostChickenQuest] = "Basic/Chicken Round-Up/Marnie thinks one of your chickens has escaped  the forest south of her farm; you should investigate./Enter the Cindersnap Forest during the day./null/-1/0/-1/false";
+            data[RescueCindersnapJunimoQuest] = "Basic/Help the Junimo Go Home/Help the Junimo in the Cindersnap Forest get home./Enter the Cindersnap Forest during the day with a Junimo Portal in your inventory./null/-1/0/-1/false";
         }
 
         public void WriteToLog(string message, LogLevel level, bool isOnceOnly)

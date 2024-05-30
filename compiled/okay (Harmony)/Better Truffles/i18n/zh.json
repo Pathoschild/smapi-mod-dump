@@ -1,0 +1,10 @@
+﻿{
+  "enabled": "启用",
+  "pigs-dig-in-grass": "猪在草地里挖土",
+  "show-bubbles": "显示气泡",
+  "render-on-top": "在顶部渲染气泡",
+  "bubble-y-offset": "气泡Y偏移",
+  "bubble-x-offset": "气泡X偏移",
+  "opacity": "透明度",
+  "bubble-size": "气泡大小"
+}

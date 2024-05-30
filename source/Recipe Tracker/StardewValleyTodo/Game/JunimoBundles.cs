@@ -35,18 +35,18 @@ namespace StardewValleyTodo.Game {
         }
 
         private void Startup() {
-            _communityCenter = Game1.getLocationFromName("CommunityCenter") as CommunityCenter;
+            _communityCenter = (CommunityCenter) Game1.getLocationFromName("CommunityCenter");
             _junimoBundles = new List<JunimoBundle>();
 
             var raw = Game1.content.Load<Dictionary<string, string>>("Data\\Bundles");
 
             foreach (var rawBundle in raw) {
                 // Bulletin Board/35
-                var parsedKey = BundleStringParser.parseKey(rawBundle.Key);
+                var parsedKey = BundleStringParser.ParseKey(rawBundle.Key);
                 var roomId = parsedKey.SpriteIndex;
 
                 // Fodder/BO 104 1/262 10 0 178 10 0 613 3 0/3///Кормовой
-                var parsedValue = BundleStringParser.parseValue(rawBundle.Value);
+                var parsedValue = BundleStringParser.ParseValue(rawBundle.Value);
                 var ingredientsString = parsedValue.Ingredients;
                 var slots = parsedValue.NumberOfItems;
                 var localeName = parsedValue.DisplayName;
@@ -78,7 +78,7 @@ namespace StardewValleyTodo.Game {
                     bundle.Slots = bundle.Ingredients.Count;
                 }
 
-                if (netbundle.All(x => x == true)) {
+                if (netbundle.All(x => x)) {
                     bundle.IsComplete = true;
                 }
             }
@@ -96,7 +96,7 @@ namespace StardewValleyTodo.Game {
                     }
                 }
 
-                if (bundle.Ingredients.Where(x => x.IsDonated).Count() >= bundle.Slots) {
+                if (bundle.Ingredients.Count(x => x.IsDonated) >= bundle.Slots) {
                     bundle.IsComplete = true;
                     BundleCompleted?.Invoke(this, bundle);
                 }

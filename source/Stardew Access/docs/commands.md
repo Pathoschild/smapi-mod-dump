@@ -8,54 +8,47 @@ for queries and analysis.**
 
 # Commands
 
-This page contains the list of all commands added by the mod.
-You can install the [Chat Commands](https://www.nexusmods.com/stardewvalley/mods/2092) mod which will enable entering
-the commands from the in-game chat box instead of using the terminal.
-For a list of commands added by SMAPI, you can visit the [Console commands](https://stardewvalleywiki.com/Modding:Console_commands) page.
+This page contains the list of all commands added by Stardew Access.
+For a list of SMAPI commands, visit the [Console commands](https://stardewvalleywiki.com/Modding:Console_commands) page. You **must** have the Console Commands mod. If you have removed it, get it back by reinstalling SMAPI.
 
 ## Table Of Contents
 
-* [Custom Commands List](#custom-commands-list)
-    * [Read tile related](#read-tile-related)
-    * [Building related](#building-related)
-    * [Other](#other)
-    * [Radar related](#radar-related)
-* [Other Pages](#other-pages)
+- [Tile Reader Commands](#tile-reader-commands)
+- [Building Commands](#building-commands)
+- [Narration & Verbosity Commands](#narration--verbosity-commands)
+- [Radar Commands](#radar-commands)
+- [Miscellaneous Commands](#miscellaneous-commands)
+- [Other Pages](#other-pages)
 
-## Custom Commands List
-
-### Read tile related
+## Tile Reader Commands
 
 | Command  | Description                                    |
 |----------|------------------------------------------------|
 | readtile | Toggle Read Tile feature                       |
+| snapmouse  | Toggle Snap Mouse Feature                                        |
 | flooring | Toggle reading flooring                        |
 | watered  | Toggle speaking watered or unwatered for crops |
 
-### Building related
+## Building Commands
 
 | Command   | Description                                                                                         | Special Syntax (If any)                  | Argument details (If any)                                                                                                         | Example      |
 |-----------|-----------------------------------------------------------------------------------------------------|------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------|--------------|
-| mark      | Marks the player's position for use in building construction in Carpenter Menu                      | mark [Index:number]                      | Index: the index at which we want to save the position. From 0 to 9 only                                                          | mark 0       |
+| mark      | Marks the player's current position at a specified index                      | mark [Index:number]                      | Index: the desired index to save the position (0 - 9)                                                          | mark 0       |
 | marklist  | List all marked positions                                                                           |                                          |                                                                                                                                   | marklist     |
-| buildlist | List all buildings for selection for upgrading/demolishing/painting                                 |                                          |                                                                                                                                   | buildlist    |
-| buildsel  | Select the building index which you want to upgrade, demolish and paint.                            | buildsel [Index:number]                  | Index: the index of the building we want to select, use buildlist command to list the buildings with their index                  | buildsel 3   |
-| buildsel  | Select the marked position index where we want to construct the building.                           | buildsel [Index:number]                  | Index: the index of the marked position, use marklist command to list the marked positions with their index                       | buildsel 0   |
-| buildsel  | Select the building index along with a index of marked position where we want to move the building. | buildsel [Index1:number] [Index2:number] | Index1: the index of the building we want to select. Index2: the index of the marked position where we want to move the building. | buildsel 3 0 |
+| buildlist | List all buildings for selection                                 |                                          |                                                                                                                                   | buildlist    |
+| buildsel  | Select the index of a building to place a farm animal in the desired building                            | buildsel [Index:number]                  | Index: the index of the building we want to select, use buildlist command to list the buildings with their index                  | buildsel 3   |
 
-### Other
+## Narration & Verbosity Commands
 
 | Command    | Description                                                      |
 |------------|------------------------------------------------------------------|
-| snapmouse  | Toggle Snap Mouse Feature                                        |
+| rlt ``<index>`` | Repeats the last phrase narrated. ``<index>`` specifies how many phrases before the latest are skipped when repeating |
 | hnspercent | Toggle between speaking in percentage or full health and stamina |
 | warning    | Toggle warnings feature                                          |
 | tts        | Toggles the screen reader/tts                                    |
 | refsr      | Refreshes screen reader                                          |
-| refst      | (Temporarily disabled) Refreshes static tiles json file          |
-| refmc      | Refreshes mod config json file                                   |
 
-### Radar related
+## Radar Commands
 
 | Command  | Description                                                    |
 |----------|----------------------------------------------------------------|
@@ -75,6 +68,13 @@ For a list of commands added by SMAPI, you can visit the [Console commands](http
 | rflist   | List all the focus in the radar feature                        |
 | rfclear  | Remove all keys from the focus list in the radar feature       |
 | rfcount  | Number of focus in the radar feature                           |
+
+## Miscellaneous Commands
+
+| Command    | Description                                                      |
+|------------|------------------------------------------------------------------|
+| refst      | (Temporarily disabled) Refreshes static tiles json file          |
+| refmc      | Refreshes mod config json file                                   |
 
 ## Other Pages
 

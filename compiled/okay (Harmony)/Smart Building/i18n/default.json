@@ -35,6 +35,7 @@
     "smart-building.settings.optional-keybinds.object-layer": "Object layer",
     "smart-building.settings.optional-keybinds.floor-layer": "Floor layer",
     "smart-building.settings.optional-keybinds.furniture-layer": "Furniture layer",
+    "smart-building.settings.optional-keybinds.controller-press-button": "Press current button",
     "smart-building.settings.optional-toggles.title": "Optional Toggles",
     "smart-building.settings.optional-toggles.show-build-queue": "Show build queue",
     "smart-building.settings.optional-toggles.instantly-build": "Instantly build",

@@ -51,6 +51,7 @@ internal class ShowRobinBuildingStatusIcon : IDisposable
     _helper.Events.GameLoop.DayStarted -= OnDayStarted;
     _helper.Events.Display.RenderingHud -= OnRenderingHud;
     _helper.Events.Display.RenderedHud -= OnRenderedHud;
+    _helper.Events.GameLoop.OneSecondUpdateTicked -= OnTickInRobinHouse;
 
     if (showRobinBuildingStatus)
     {
@@ -59,11 +60,22 @@ internal class ShowRobinBuildingStatusIcon : IDisposable
       _helper.Events.GameLoop.DayStarted += OnDayStarted;
       _helper.Events.Display.RenderingHud += OnRenderingHud;
       _helper.Events.Display.RenderedHud += OnRenderedHud;
+      _helper.Events.GameLoop.OneSecondUpdateTicked += OnTickInRobinHouse;
     }
   }
 #endregion
 
 #region Event subscriptions
+
+  public void OnTickInRobinHouse(object? sender, OneSecondUpdateTickedEventArgs e)
+  {
+    if (Game1.currentLocation?.Name != "ScienceHouse")
+    {
+      return;
+    }
+    UpdateRobinBuindingStatusData();
+  }
+
   private void OnDayStarted(object sender, DayStartedEventArgs e)
   {
     UpdateRobinBuindingStatusData();
@@ -104,7 +116,7 @@ internal class ShowRobinBuildingStatusIcon : IDisposable
 
     if (remainingDays <= 0)
     {
-      Building? building = Game1.getFarm().buildings.FirstOrDefault(b => b.isUnderConstruction(false));
+      Building? building = Game1.GetBuildingUnderConstruction();
 
       if (building is not null)
       {

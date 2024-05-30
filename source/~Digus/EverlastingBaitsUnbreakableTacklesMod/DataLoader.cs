@@ -17,6 +17,7 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Quests;
+using static StardewValley.LocationRequest;
 
 namespace EverlastingBaitsAndUnbreakableTacklesMod
 {
@@ -40,7 +41,7 @@ namespace EverlastingBaitsAndUnbreakableTacklesMod
             Helper.Events.Content.AssetRequested += this.Edit;
 
 
-            MailDao.SaveLetter
+            MailRepository.SaveLetter
             (
                 new Letter
                 (
@@ -51,10 +52,10 @@ namespace EverlastingBaitsAndUnbreakableTacklesMod
                 )
             );
 
-            AddLetter(BaitTackle.EverlastingBait, (l)=> !ModConfig.DisableBaits && Game1.player.FishingLevel >= 10 && CheckNpcFriendship("Willy", 10) && !Game1.player.craftingRecipes.ContainsKey(BaitTackle.EverlastingBait.GetDescription()));
-            AddLetter(BaitTackle.EverlastingWildBait, (l)=> !ModConfig.DisableBaits && Game1.player.craftingRecipes.ContainsKey("Wild Bait") && Game1.player.craftingRecipes.ContainsKey(BaitTackle.EverlastingBait.GetDescription()) && Game1.player.craftingRecipes[BaitTackle.EverlastingBait.GetDescription()] > 0 && CheckNpcFriendship("Linus", 10) && !Game1.player.craftingRecipes.ContainsKey(BaitTackle.EverlastingWildBait.GetDescription()));
-            AddLetter(BaitTackle.EverlastingMagnet, (l)=> !ModConfig.DisableBaits && Game1.player.FishingLevel >= 10  && CheckNpcFriendship("Wizard", 10) && !Game1.player.craftingRecipes.ContainsKey(BaitTackle.EverlastingMagnet.GetDescription()), null,2);
-            MailDao.SaveLetter
+            AddLetter(BaitTackle.EverlastingBait, (l)=> !ModConfig.DisableBaits && Game1.player.FishingLevel >= 10 && CheckNpcFriendship("Willy", 10) && !Game1.player.craftingRecipes.ContainsKey(BaitTackle.EverlastingBait.Description));
+            AddLetter(BaitTackle.EverlastingWildBait, (l)=> !ModConfig.DisableBaits && Game1.player.craftingRecipes.ContainsKey("Wild Bait") && Game1.player.craftingRecipes.ContainsKey(BaitTackle.EverlastingBait.Description) && Game1.player.craftingRecipes[BaitTackle.EverlastingBait.Description] > 0 && CheckNpcFriendship("Linus", 10) && !Game1.player.craftingRecipes.ContainsKey(BaitTackle.EverlastingWildBait.Description));
+            AddLetter(BaitTackle.EverlastingMagnet, (l)=> !ModConfig.DisableBaits && Game1.player.FishingLevel >= 10  && CheckNpcFriendship("Wizard", 10) && !Game1.player.craftingRecipes.ContainsKey(BaitTackle.EverlastingMagnet.Description), null,2);
+            MailRepository.SaveLetter
             (
                 new Letter
                 (
@@ -67,53 +68,74 @@ namespace EverlastingBaitsAndUnbreakableTacklesMod
             AddLetter
             (
                 BaitTackle.UnbreakableSpinner
-                , (l) => !ModConfig.DisableTackles && Game1.player.achievements.Contains(21) && Game1.player.FishingLevel >= 8 && CheckNpcFriendship("Willy", 6) && CheckNpcFriendship("Clint", 6) && !Game1.player.craftingRecipes.ContainsKey(BaitTackle.UnbreakableSpinner.GetDescription())
+                , (l) => !ModConfig.DisableTackles && Game1.player.achievements.Contains(21) && Game1.player.FishingLevel >= 8 && CheckNpcFriendship("Willy", 6) && CheckNpcFriendship("Clint", 6) && !Game1.player.craftingRecipes.ContainsKey(BaitTackle.UnbreakableSpinner.Description)
                 , (l) => LoadTackleQuest(BaitTackle.UnbreakableSpinner)
             );
             AddLetter
             (
                 BaitTackle.UnbreakableLeadBobber
-                , (l) => !ModConfig.DisableTackles && Game1.player.mailReceived.Contains(BaitTackle.UnbreakableSpinner.GetQuestName()) && !Game1.player.craftingRecipes.ContainsKey(BaitTackle.UnbreakableLeadBobber.GetDescription())
+                , (l) => !ModConfig.DisableTackles && Game1.player.mailReceived.Contains(BaitTackle.UnbreakableSpinner.GetQuestName()) && !Game1.player.craftingRecipes.ContainsKey(BaitTackle.UnbreakableLeadBobber.Description)
                 , (l) => LoadTackleQuest(BaitTackle.UnbreakableLeadBobber)
             );
             AddLetter
             (
                 BaitTackle.UnbreakableTrapBobber
-                , (l) => !ModConfig.DisableTackles && Game1.player.mailReceived.Contains(BaitTackle.UnbreakableLeadBobber.GetQuestName()) && !Game1.player.craftingRecipes.ContainsKey(BaitTackle.UnbreakableTrapBobber.GetDescription())
+                , (l) => !ModConfig.DisableTackles && Game1.player.mailReceived.Contains(BaitTackle.UnbreakableLeadBobber.GetQuestName()) && !Game1.player.craftingRecipes.ContainsKey(BaitTackle.UnbreakableTrapBobber.Description)
                 , (l) => LoadTackleQuest(BaitTackle.UnbreakableTrapBobber)
             );
             AddLetter
             (
+                BaitTackle.UnbreakableSonarBobber
+                , (l) => !ModConfig.DisableTackles && Game1.player.mailReceived.Contains(BaitTackle.UnbreakableTrapBobber.GetQuestName()) && !Game1.player.craftingRecipes.ContainsKey(BaitTackle.UnbreakableSonarBobber.Description) && !Game1.player.mailReceived.Contains(BaitTackle.UnbreakableCorkBobber.GetQuestName())
+                , (l) => LoadTackleQuest(BaitTackle.UnbreakableSonarBobber)
+            );
+            MailRepository.SaveLetter
+            (
+                new Letter(
+                    BaitTackle.UnbreakableSonarBobber + "LostRecipe"
+                    , I18N.Get(BaitTackle.UnbreakableSonarBobber + ".LostLetter")
+                    , BaitTackle.UnbreakableSonarBobber.Description
+                    , (l) => !ModConfig.DisableTackles && Game1.player.craftingRecipes.ContainsKey(BaitTackle.UnbreakableCorkBobber.Description) && !Game1.player.craftingRecipes.ContainsKey(BaitTackle.UnbreakableSonarBobber.Description)
+                    , (l) => LoadTackleQuest(BaitTackle.UnbreakableSonarBobber)
+                    , 0
+                )
+                {
+                    Title = I18N.Get(BaitTackle.UnbreakableSonarBobber + ".Name")
+                }
+            );
+
+            AddLetter
+            (
                 BaitTackle.UnbreakableCorkBobber
-                , (l) => !ModConfig.DisableTackles && Game1.player.mailReceived.Contains(BaitTackle.UnbreakableTrapBobber.GetQuestName()) && !Game1.player.craftingRecipes.ContainsKey(BaitTackle.UnbreakableCorkBobber.GetDescription())
+                , (l) => !ModConfig.DisableTackles && Game1.player.mailReceived.Contains(BaitTackle.UnbreakableSonarBobber.GetQuestName()) && !Game1.player.craftingRecipes.ContainsKey(BaitTackle.UnbreakableCorkBobber.Description)
                 , (l) => LoadTackleQuest(BaitTackle.UnbreakableCorkBobber)
             );
             AddLetter
             (
                 BaitTackle.UnbreakableTreasureHunter
-                , (l) => !ModConfig.DisableTackles && Game1.player.mailReceived.Contains(BaitTackle.UnbreakableCorkBobber.GetQuestName()) && !Game1.player.craftingRecipes.ContainsKey(BaitTackle.UnbreakableTreasureHunter.GetDescription())
+                , (l) => !ModConfig.DisableTackles && Game1.player.mailReceived.Contains(BaitTackle.UnbreakableCorkBobber.GetQuestName()) && !Game1.player.craftingRecipes.ContainsKey(BaitTackle.UnbreakableTreasureHunter.Description)
                 , (l) => LoadTackleQuest(BaitTackle.UnbreakableTreasureHunter)
             );
             AddLetter
             (
                 BaitTackle.UnbreakableBarbedHook
-                , (l) => !ModConfig.DisableTackles && Game1.player.mailReceived.Contains(BaitTackle.UnbreakableTreasureHunter.GetQuestName()) && !Game1.player.craftingRecipes.ContainsKey(BaitTackle.UnbreakableBarbedHook.GetDescription())
+                , (l) => !ModConfig.DisableTackles && Game1.player.mailReceived.Contains(BaitTackle.UnbreakableTreasureHunter.GetQuestName()) && !Game1.player.craftingRecipes.ContainsKey(BaitTackle.UnbreakableBarbedHook.Description)
                 , (l) => LoadTackleQuest(BaitTackle.UnbreakableBarbedHook)
             );
             AddLetter
             (
                 BaitTackle.UnbreakableDressedSpinner
-                , (l) => !ModConfig.DisableTackles && Game1.player.mailReceived.Contains(BaitTackle.UnbreakableBarbedHook.GetQuestName()) && !Game1.player.craftingRecipes.ContainsKey(BaitTackle.UnbreakableDressedSpinner.GetDescription())
+                , (l) => !ModConfig.DisableTackles && Game1.player.mailReceived.Contains(BaitTackle.UnbreakableBarbedHook.GetQuestName()) && !Game1.player.craftingRecipes.ContainsKey(BaitTackle.UnbreakableDressedSpinner.Description)
                 , (l) => LoadTackleQuest(BaitTackle.UnbreakableDressedSpinner)
             );
-            MailDao.SaveLetter
+            MailRepository.SaveLetter
             (
                 new Letter
                 (
                     "UnbreakableTackleReward"
                     , I18N.Get("UnbreakableTackleReward.Letter")
-                    , new List<Item> { new StardewValley.Object(74,1) }
-                    , (l) => !ModConfig.DisableTackles && Game1.player.mailReceived.Contains(BaitTackle.UnbreakableDressedSpinner.GetQuestName()) && !Game1.player.mailReceived.Contains(l.Id)
+                    , new List<Item> { ItemRegistry.Create("(O)74") }
+                    , (l) => !ModConfig.DisableTackles && Game1.player.mailReceived.Contains(BaitTackle.UnbreakableDressedSpinner.GetQuestName()) && Game1.player.mailReceived.Contains(BaitTackle.UnbreakableSonarBobber.GetQuestName()) && !Game1.player.mailReceived.Contains(l.Id)
                     , (l) =>
                     {
                         Game1.player.mailReceived.Add(l.Id);
@@ -141,7 +163,7 @@ namespace EverlastingBaitsAndUnbreakableTacklesMod
         public static void LoadTackleQuest(BaitTackle baitTackle)
         {
             Quest quest = new Quest();
-            quest.id.Value = (int)baitTackle;
+            quest.id.Value = baitTackle.Id;
             quest.questType.Value = 1;
             LoadQuestText(quest);
             quest.showNew.Value = true;
@@ -154,13 +176,13 @@ namespace EverlastingBaitsAndUnbreakableTacklesMod
 
         private static void LoadQuestText(Quest quest)
         {
-            BaitTackle baitTackle = (BaitTackle)quest.id.Value;
-            string baitTackleName = I18N.Get($"{baitTackle.ToString()}.Name");
+            BaitTackle baitTackle = BaitTackle.GetFromId(quest.id.Value);
+            string baitTackleName = I18N.Get($"{baitTackle}.Name");
             quest.questTitle = baitTackleName;
             quest.questDescription = I18N.Get("Quest.Description", new {Item = baitTackleName});
             string questObjective;
-            if (Game1.player.craftingRecipes.ContainsKey(baitTackle.GetDescription()) &&
-                Game1.player.craftingRecipes[baitTackle.GetDescription()] > 0)
+            if (Game1.player.craftingRecipes.ContainsKey(baitTackle.Description) &&
+                Game1.player.craftingRecipes[baitTackle.Description] > 0)
             {
                 questObjective = "Quest.LastObjective";
             }
@@ -174,7 +196,10 @@ namespace EverlastingBaitsAndUnbreakableTacklesMod
 
         private void AddLetter(BaitTackle baitTackle, Func<Letter, bool> condition, Action<Letter> callback = null,int whichBG = 0)
         {
-            MailDao.SaveLetter(new Letter(baitTackle.ToString() + "Recipe", I18N.Get(baitTackle.ToString() + ".Letter"), baitTackle.GetDescription(), condition, callback, whichBG));
+            MailRepository.SaveLetter(new Letter(baitTackle + "Recipe", I18N.Get(baitTackle + ".Letter"), baitTackle.Description, condition, callback, whichBG)
+            {
+                Title = I18N.Get(baitTackle + ".Name")
+            });
         }
         
         public void Edit(object sender, AssetRequestedEventArgs e)
@@ -195,6 +220,7 @@ namespace EverlastingBaitsAndUnbreakableTacklesMod
                         AddRecipeData(data, BaitTackle.UnbreakableSpinner, CraftingData.UnbreakableSpinner);
                         AddRecipeData(data, BaitTackle.UnbreakableLeadBobber, CraftingData.UnbreakableLeadBobber);
                         AddRecipeData(data, BaitTackle.UnbreakableTrapBobber, CraftingData.UnbreakableTrapBobber);
+                        AddRecipeData(data, BaitTackle.UnbreakableSonarBobber, CraftingData.UnbreakableSonarBobber);
                         AddRecipeData(data, BaitTackle.UnbreakableCorkBobber, CraftingData.UnbreakableCorkBobber);
                         AddRecipeData(data, BaitTackle.UnbreakableTreasureHunter, CraftingData.UnbreakableTreasureHunter);
                         AddRecipeData(data, BaitTackle.UnbreakableBarbedHook, CraftingData.UnbreakableBarbedHook);
@@ -206,16 +232,13 @@ namespace EverlastingBaitsAndUnbreakableTacklesMod
 
         private string AddRecipeData(IDictionary<string, string> data, BaitTackle baitTackle, string recipe)
         {
-            return data[baitTackle.GetDescription()] =  GetRecipeString(recipe, baitTackle);
+            return data[baitTackle.Description] =  GetRecipeString(recipe, baitTackle);
         }
 
         private string GetRecipeString(string recipe, BaitTackle baitTackle)
         {
-            var recipeString = $"{recipe}/Home/{(int)baitTackle} 1/false/null";
-            if (LocalizedContentManager.CurrentLanguageCode != LocalizedContentManager.LanguageCode.en)
-            {
-                recipeString += "/" + I18N.Get($"{baitTackle.ToString()}.Name");
-            }
+            var recipeName = I18N.Get($"{baitTackle}.Name");
+            var recipeString = $"{recipe}/Home/{baitTackle.Id} 1/false/null/{recipeName}";
             return recipeString;
         }
 
@@ -238,29 +261,41 @@ namespace EverlastingBaitsAndUnbreakableTacklesMod
             GenericModConfigMenuApi api = Helper.ModRegistry.GetApi<GenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
             if (api != null)
             {
-                api.RegisterModConfig(manifest, () => DataLoader.ModConfig = new ModConfig(), () => Helper.WriteConfig(DataLoader.ModConfig));
+                api.Register(manifest, () => DataLoader.ModConfig = new ModConfig(), () => Helper.WriteConfig(DataLoader.ModConfig));
 
-                api.RegisterSimpleOption(manifest, "Disable Baits", "Disable all features related to everlasting baits. You won't receive letters about it, the crafting recipes won't show, and existing everlasting baits will be consumed as normal.", () => DataLoader.ModConfig.DisableBaits, (bool val) =>
-                {
-                    if(DataLoader.ModConfig.DisableBaits != val) DataLoader.Helper.GameContent.InvalidateCache(CraftingrecipesAssetName);
-                    DataLoader.ModConfig.DisableBaits = val;
-                });
+                api.AddBoolOption(
+                    manifest
+                    , () => DataLoader.ModConfig.DisableBaits
+                    , (bool val) =>
+                    {
+                        if(DataLoader.ModConfig.DisableBaits != val) DataLoader.Helper.GameContent.InvalidateCache(CraftingrecipesAssetName);
+                        DataLoader.ModConfig.DisableBaits = val;
+                    }
+                    , ()=> "Disable Baits"
+                    , ()=> "Disable all features related to everlasting baits. You won't receive letters about it, the crafting recipes won't show, and existing everlasting baits will be consumed as normal."
+                );
 
-                api.RegisterSimpleOption(manifest, "Disable Tackles", "Disable features related to everlasting baits. You won't receive letters starting quests, the crafting recipes won't show, and existing unbreakable tackles will wear out. Active quests will still show and be able to be ended if existing tackles.", () => DataLoader.ModConfig.DisableTackles, (bool val) =>
-                {
-                    if (DataLoader.ModConfig.DisableTackles != val) DataLoader.Helper.GameContent.InvalidateCache(CraftingrecipesAssetName);
-                    DataLoader.ModConfig.DisableTackles = val;
-                });
+                api.AddBoolOption
+                (
+                    manifest
+                    , () => DataLoader.ModConfig.DisableTackles
+                    , (bool val) =>
+                    {
+                        if (DataLoader.ModConfig.DisableTackles != val) DataLoader.Helper.GameContent.InvalidateCache(CraftingrecipesAssetName);
+                        DataLoader.ModConfig.DisableTackles = val;
+                    }
+                    , () => "Disable Tackles"
+                    , () => "Disable features related to everlasting baits. You won't receive letters starting quests, the crafting recipes won't show, and existing unbreakable tackles will wear out. Active quests will still show and be able to be ended if existing tackles."
+                );
+                api.AddSectionTitle(manifest, () => "Iridium Quality Fish:", () => "Properties for iridium quality fish functionality added by this mod.");
 
-                api.RegisterLabel(manifest, "Iridium Quality Fish:", "Properties for iridium quality fish functionality added by this mod.");
+                api.AddBoolOption(manifest, () => DataLoader.ModConfig.DisableIridiumQualityFish, (bool val) => DataLoader.ModConfig.DisableIridiumQualityFish = val, () => "Disable", () => "You won't get any extra chance to catch iridium quality fish, nor you will receive Linus letter about it.");
 
-                api.RegisterSimpleOption(manifest, "Disable", "You won't get any extra chance to catch iridium quality fish, nor you will receive Linus letter about it.", () => DataLoader.ModConfig.DisableIridiumQualityFish, (bool val) => DataLoader.ModConfig.DisableIridiumQualityFish = val);
+                api.AddBoolOption(manifest, () => DataLoader.ModConfig.IridiumQualityFishOnlyWithIridiumQualityBait, (bool val) => DataLoader.ModConfig.IridiumQualityFishOnlyWithIridiumQualityBait = val, () => "Only With Everlasting Baits", () => "You will only have an extra chance for iridium quality fish if using iridium quality baits.");
 
-                api.RegisterSimpleOption(manifest, "Only With Everlasting Baits", "You will only have an extra chance for iridium quality fish if using iridium quality baits.", () => DataLoader.ModConfig.IridiumQualityFishOnlyWithIridiumQualityBait, (bool val) => DataLoader.ModConfig.IridiumQualityFishOnlyWithIridiumQualityBait = val);
+                api.AddBoolOption(manifest, () => DataLoader.ModConfig.IridiumQualityFishOnlyWithWildBait, (bool val) => DataLoader.ModConfig.IridiumQualityFishOnlyWithWildBait = val, () => "Only With Wild Bait", () => "You will only have an extra chance to get iridium quality fish using wild bait.");
 
-                api.RegisterSimpleOption(manifest, "Only With Wild Bait", "You will only have an extra chance to get iridium quality fish using wild bait.", () => DataLoader.ModConfig.IridiumQualityFishOnlyWithWildBait, (bool val) => DataLoader.ModConfig.IridiumQualityFishOnlyWithWildBait = val);
-
-                api.RegisterSimpleOption(manifest, "Minimum Size", "Set a minimum size for the extra chance to get be iridium quality fish. It does not change the chance for it to be iridium quality(fishSize/2), it just enable the fish to be iridium quality after its bigger than the size chosen.", () => DataLoader.ModConfig.IridiumQualityFishMinimumSize, (float val) => DataLoader.ModConfig.IridiumQualityFishMinimumSize = val);
+                api.AddNumberOption(manifest, () => DataLoader.ModConfig.IridiumQualityFishMinimumSize, (float val) => DataLoader.ModConfig.IridiumQualityFishMinimumSize = val, () => "Minimum Size", () => "Set a minimum size for the extra chance to get be iridium quality fish. It does not change the chance for it to be iridium quality(fishSize/2), it just enable the fish to be iridium quality after its bigger than the size chosen.");
             }
         }
     }

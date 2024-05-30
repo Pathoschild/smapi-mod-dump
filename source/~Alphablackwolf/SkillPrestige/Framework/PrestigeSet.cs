@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using SkillPrestige.Logging;
 using SkillPrestige.Mods;
 using SkillPrestige.SkillTypes;
 
@@ -20,9 +21,46 @@ namespace SkillPrestige.Framework
     [Serializable]
     internal class PrestigeSet
     {
-        /*********
-        ** Accessors
-        *********/
+        public static PrestigeSet Instance { get; set; }
+
+        public static Action Save;
+        public static Func<PrestigeSet> Read;
+
+        public static void Load()
+        {
+            Instance ??= Read();
+        }
+        public static bool TryLoad()
+        {
+            try
+            {
+                Instance ??= Read();
+                return Instance is not null;
+            }
+            catch(Exception exception)
+            {
+                Logger.LogInformation($"attempted data read for singular data, read failed: {Environment.NewLine} {exception.Message} {Environment.NewLine} {exception.StackTrace}");
+                return false;
+            }
+
+        }
+
+        public static bool TryRead()
+        {
+            try
+            {
+                Read();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        public static void UnLoad()
+        {
+            Instance = null;
+        }
         public IEnumerable<Prestige> Prestiges { get; set; }
 
         /// <summary>the default prestige set that contains prestiges for each of the skills in the unmodded version Stardew Valley.</summary>
@@ -52,10 +90,8 @@ namespace SkillPrestige.Framework
             };
 
         /// <summary>Returns all prestige set loaded and registered into this mod, default and mod.</summary>
-        public static PrestigeSet CompleteEmptyPrestigeSet
+        public static PrestigeSet CompleteEmptyPrestigeSet()
         {
-            get
-            {
                 var prestiges = DefaultPrestiges;
                 var addedPrestiges = ModHandler.GetAddedEmptyPrestiges().ToList();
                 if (addedPrestiges.Any())
@@ -64,8 +100,6 @@ namespace SkillPrestige.Framework
                 {
                     Prestiges = prestiges
                 };
-
-            }
         }
     }
 }

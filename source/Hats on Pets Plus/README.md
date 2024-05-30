@@ -15,7 +15,7 @@ In this documentation, I will assume that you are making a Content Patcher mod t
 
 If you didn't do this part yet, I suggest that you do so before working on the hat placement, as the knowledge you'll gain by doing this will help you better understand this documentation.  
 
-### 1. How to register my mod for Hats On Pets Plus
+### 1. How to use Hats On Pets Plus in my mod
 
 To configure your mod to use this framework, you will only need to edit the content.json file of your Content Patcher project, and add an EditData action that will look like this :  
 ```
@@ -43,6 +43,11 @@ The data for drawing hats on your custom Pet and Breed is represented in the fol
 {
     "Type": <Type>,
     "BreedId": <BreedId>,
+    "BreedIdList": [
+        <BreedId1>,
+        <BreedId2>,
+        ...
+    ]
     "Sprites": [
         {
             "SpriteId": <SpriteId>,
@@ -63,7 +68,9 @@ Signification of each field :
 | Field Name | Field Type | Optional | Default value | Description                                          |
 | :------------------ | :------: | :----: | ----: | :---- |
 | Type       | String | **No** | - | The pet Type, can be "Cat", "Dog" (case sensitive) or any other vanilla or custom pet type |
-| BreedId       | String | **No** | - | The breed ID of the pet, for vanilla pets it's a number in a string (ex : "2") |
+|        |  | | | **You must set at least one of the two following fields** (if both are set, they will both be used) |
+| BreedId       | String | **Partially** | - | The breed ID of the pet, for vanilla pets it's a number in a string (ex: `"2"`) |
+| BreedIdList       | String Array | **Partially** | - | An array of breed IDs, if you want to set hat data for multiple breeds at once (ex: `["0","1", ...]`) |
 | **For each sprite :** | | | | |
 | SpriteId       | Int | **No** | - | The sprite number on the sprite sheet (it starts from 0 on the upper left corner and goes left to right then top to bottom) |
 | HatOffSetX       | Float | Yes | 0 | The X offset of the hat from the center of the sprite, can be negative |
@@ -142,21 +149,18 @@ This functionnality might get expanded in the future to allow multiple default b
 
 When choosing which data to use, Hats On Pets Plus will check things in this order :  
 
-1. Is this any data defined for Hats On Pets Plus for this pet and breed ? If yes, go to the next step. If no, defer to vanilla logic (draw hats only on dogs and cats with vanilla values)
+1. Is there any data defined for Hats On Pets Plus specifically for this pet and breed ? If yes, go to the next step. If no, defer to vanilla logic (draw hats only on cats and dogs with vanilla values)
 2. Is there a data block specified for the current sprite and flipped value for this pet and breed ? If yes, use this block. If no, go to the next step
-3. Is there a block specified as default for this pet and breed ? If yes, use this block. If no, default to the vanilla logic (which means trying to draw a hat with vanilla data on horses, cats and dogs, and do not attempt to draw a hat on any other pet)
+3. Is there a block specified as default for this pet and breed ? If yes, use this block. If no, default to the vanilla logic for drawing hats (which means trying to draw a hat with vanilla data for cats and dogs, and to draw a hat with some vanilla default value for other pets)
 
-#### 3.e How to reload the data without relaunching the game / How to use the hopp_reload command ?
+#### 3.e How to reload the data without relaunching the game ?
 
-Version 1.0.2 of Hats On Pets Plus added a command to reload your custom hat data without having to relaunch your game.  
+Version 1.0.3 of Hats On Pets Plus simplified how to reload your custom hat data !  
 
-Follow these steps to reload your data (keep in mind that doing this if you currently are in the main menu of the game might not work, as some of the framework data is only initialized once you have loaded a save file) :  
+In order to reload your data once you have modified it in the game mods folder, you only need to run the following command in the SMAPI console :   
+`patch reload <yourModId>`
 
-1. Replace the content.json file (or at least the part that contain the EditData action related to custom hat data on pets) in your Stardew Valley mod files (in Mods/YourMod) with the one you're currently working on
-2. In the SMAPI console (or in the ingame chat if you use the Chat Commands mod/tool), run the following command : `patch reload <yourModId>` . (This command tells Content Patcher to reload your data)
-3. In the same console, run the following command : `hopp_reload` .  (This command tells Hats On Pet Plus to empty his cache and go reload custom hat data from other mods)
-
-Tip : You can use the up/down arrow key in the console to navigate your command history, so you don't have to type out the whole command(s) everytime you want to use them (as long as you don't close the game).  
+(If you still use version 1.0.2 of Hats On Pets Plus, you also need to run the 'hopp_reload' command that was made obsolete and removed in v1.0.3, but I suggest that you update Hats On Pets Plus to the latest version)
 
 #### 3.f Any additional question or issues ?
 
@@ -167,7 +171,7 @@ I will try to keep this documentation up to date and expand on it (with more tip
 
 Mod author : Syma  
 Mod contributor : Elizabethcd  
-For their help : Elizabethcd, the wonderful people of the Stardew Valley modding channel on the community Discord server
+For their help : Elizabethcd, Shockah and the wonderful people of the Stardew Valley modding channel on the community Discord server
 
 ## Current and future TODO list
 

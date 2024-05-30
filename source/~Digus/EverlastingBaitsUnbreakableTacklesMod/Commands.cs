@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using EverlastingBaitsAndUnbreakableTacklesMod.utility;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
@@ -29,12 +30,12 @@ namespace EverlastingBaitsAndUnbreakableTacklesMod
         {
             if (Context.IsWorldReady)
             {
-                foreach (BaitTackle baitTackle in Enum.GetValues(typeof(BaitTackle)))
+                foreach (BaitTackle baitTackle in Enumeration.GetAll<BaitTackle>())
                 {
-                    if (!Game1.player.craftingRecipes.ContainsKey(baitTackle.GetDescription()))
+                    if (!Game1.player.craftingRecipes.ContainsKey(baitTackle.Description))
                     {
-                        Game1.player.craftingRecipes.Add(baitTackle.GetDescription(), 0);
-                        ModMonitor.Log($"Added {baitTackle.GetDescription()} recipe to the player.", LogLevel.Info);
+                        Game1.player.craftingRecipes.Add(baitTackle.Description, 0);
+                        ModMonitor.Log($"Added {baitTackle.Description} recipe to the player.", LogLevel.Info);
                     }
                 }
             }
@@ -53,7 +54,7 @@ namespace EverlastingBaitsAndUnbreakableTacklesMod
                     IList<Item> baitsTackles = new List<Item>();
                     foreach (BaitTackle baitTackle in Enum.GetValues(typeof(BaitTackle)))
                     {
-                        baitsTackles.Add(new StardewValley.Object((int) baitTackle, 1, false, -1, 4));
+                        baitsTackles.Add(ItemRegistry.Create(baitTackle.Id, 1,4));
                     }
 
                     Game1.activeClickableMenu = new ItemGrabMenu(baitsTackles);
@@ -76,11 +77,11 @@ namespace EverlastingBaitsAndUnbreakableTacklesMod
                 if (args.Length > 0)
                 {
                     string tackleName = String.Join(" ", args);
-                    BaitTackle? baitTackle = BaitTackleExtension.GetFromDescription(tackleName);
-                    if (baitTackle.HasValue)
+                    BaitTackle baitTackle = BaitTackle.GetFromDescription(tackleName);
+                    if (baitTackle != null)
                     {
-                        DataLoader.LoadTackleQuest(baitTackle.Value);
-                        ModMonitor.Log($"Quest for {baitTackle.Value.GetDescription()} added to the player.",
+                        DataLoader.LoadTackleQuest(baitTackle);
+                        ModMonitor.Log($"Quest for {baitTackle.Description} added to the player.",
                             LogLevel.Info);
                     }
                     else
@@ -107,7 +108,7 @@ namespace EverlastingBaitsAndUnbreakableTacklesMod
                 List<Quest> questsToRemove = new List<Quest>();
                 foreach (Quest quest in Game1.player.questLog)
                 {
-                    if (quest.id.Value == 0
+                    if ((string.IsNullOrEmpty(quest.id.Value) || quest.id.Value == "0")
                         && quest._currentObjective == ""
                         && quest._questDescription == ""
                         && quest._questTitle == "")

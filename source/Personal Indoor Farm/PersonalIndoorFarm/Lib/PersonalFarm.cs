@@ -92,8 +92,8 @@ namespace PersonalIndoorFarm.Lib
             var asset = Helper.GameContent.Load<Dictionary<string, PersonalFarmModel>>(AssetRequested.FarmsAsset);
 
             if (!asset.TryGetValue(pid, out var model)) {
-                Monitor.LogOnce($"Invalid Personal Farm ID: {pid}", LogLevel.Error);
-                return null;
+                Monitor.LogOnce($"Invalid PIF Room ID: {pid}", LogLevel.Error);
+                throw new MissingRoomException(pid);
             }
 
             return model;
@@ -178,9 +178,11 @@ namespace PersonalIndoorFarm.Lib
             if (location is null) {
                 var createLocationData = getCreateLocationData(pid, who);
                 location = Game1.CreateGameLocation(locationKey, createLocationData);
-                Game1.locations.Add(location);
 
             }
+
+            if(!Game1.locations.Contains(location))
+                Game1.locations.Add(location);
 
             location.modData[OwnerKey] = who.UniqueMultiplayerID.ToString();
             location.modData[BaseFarmerPidKey] = pid;

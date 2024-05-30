@@ -4,5 +4,9 @@
   "Config.SpecialOrderUnlockDay": "特别订单解锁日期",
   "Config.EnableRewardsMultiplier": "启用奖励倍率",
   "Config.RewardsMultiplier": "奖励倍率",
-  "Config.SpecialOrderRefreshEveryday": "特别订单每日刷新"
+  "Config.SpecialOrderRefreshEveryday": "特别订单每日刷新",
+  "Config.SpecialOrderRefreshEveryday.desc": "特别订单现在每日刷新，同时添加按钮到菜单方便手动刷新",
+  "Config.RefreshBtnHoverText": "刷新",
+  "Config.DurationTweak": "任务期限修正",
+  "Config.DurationTweak.desc": "修改任务期限，现在你拥有正真的7/14/28天去完成任务。"
 }

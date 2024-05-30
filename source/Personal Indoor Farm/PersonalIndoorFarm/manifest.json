@@ -11,7 +11,7 @@
 {
   "Name": "Personal Indoor Farm",
   "Author": "DeLiXx",
-  "Version": "1.0.3",
+  "Version": "1.0.5",
   "Description": "Framework for personal indoor farms",
   "UniqueID": "DLX.PIF",
   "EntryDll": "PersonalIndoorFarm.dll",

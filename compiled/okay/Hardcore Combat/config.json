@@ -1,0 +1,12 @@
+{
+  "difficulty": "Normal",
+  "slimedDebuff": false,
+  "darknessDebuff": false,
+  "weaknessDebuff": false,
+  "monsterMuskDebuff": false,
+  "nauseatedDebuff": false,
+  "tipsyDebuff": false,
+  "burntDebuff": false,
+  "spookedDebuff": false,
+  "jinxedDebuff": false
+}

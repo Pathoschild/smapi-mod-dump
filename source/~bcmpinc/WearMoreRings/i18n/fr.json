@@ -1,0 +1,17 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/bcmpinc/StardewHack
+**
+*************************************************/
+
+{
+    // Translation provided by: fs_echo7
+    DestroyRingChestsCommand: "Supprime tous les coffres utilisés pour stocker des bagues. Tout objet contenu à l'intérieur sera laché à vos pieds.",
+    OpenForgeCommand: "Ouvre le menu forge",
+    RingsName: "Rings", RingsTooltip: "Combien d'emplacements de bagues sont disponibles", 
+    BonusTrinketName: "Bonus trinket", BonusTrinketTooltip: "Si vous obtenez deux emplacements de trinket pour le prix d'un",
+}

@@ -6,11 +6,9 @@ mods:
    Farmtronics
 
 latest commit:
-   commit 139181c59a06b30916b3ae06c2c5c706a3844c29
+   commit f920eaac724629ab782e9b30c3eaabfa9a2106eb
    Author: JoeStrout <joe@strout.net>
-   Date:   Sat Jul 1 06:07:43 2023 -0700
+   Date:   Mon May 13 20:05:01 2024 -0700
    
-       Merge pull request #78 from TSRBerry/nuget-miniscript
-       
-       Migrate to NuGet.org miniscript package
+       Tweaked log messages for battery use.
    

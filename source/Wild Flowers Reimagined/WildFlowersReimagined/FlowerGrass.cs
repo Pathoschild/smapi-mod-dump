@@ -13,17 +13,24 @@ using StardewValley.TerrainFeatures;
 using Netcode;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Xml.Serialization;
+using StardewValley.Tools;
+using System;
 
 namespace WildFlowersReimagined
 {
+    [XmlType("Mods_jppWildFlowersReimagined_FlowerGrass")]
     public class FlowerGrass : Grass
     {
+        [XmlIgnore]
         private readonly HoeDirt fakeDirt = new();
 
-        private readonly NetRef<Crop> netCrop = new();
-        
+        public readonly NetRef<Crop> netCrop = new(new());
+
+        [XmlIgnore]
         private List<Action<GameLocation, Vector2>> queuedActions = new();
 
+        [XmlIgnore]
         public Crop Crop
         {
             get
@@ -36,12 +43,49 @@ namespace WildFlowersReimagined
             }
         }
 
+        [XmlIgnore]
+        public override GameLocation Location
+        {
+            get
+            {
+                return base.Location;
+            }
+            set
+            {
+                base.Location = value;
+                if (netCrop.Value != null)
+                {
+                    netCrop.Value.currentLocation = value;
+                }
+            }
+        }
+
+
+        [XmlElement("tile")]
+        public readonly NetVector2 netTile = new NetVector2();
+
+        public override Vector2 Tile
+        {
+            get
+            {
+                return this.netTile.Value;
+            }
+            set
+            {
+                this.netTile.Value = value;
+                if (netCrop.Value != null)
+                {
+                    netCrop.Value.tilePosition = value;
+                }
+            }
+        }
+
         public FlowerGrassConfig FlowerGrassConfig { get; set; }
 
         public override void initNetFields()
         {
             base.initNetFields();
-            base.NetFields.AddField(netCrop, "netCrop");
+            base.NetFields.AddField(netCrop, "netCrop").AddField(netTile, "netTile");
             netCrop.Interpolated(interpolate: false, wait: false);
             netCrop.OnConflictResolve += delegate (Crop rejected, Crop accepted)
             {
@@ -56,22 +100,45 @@ namespace WildFlowersReimagined
                 }
             };
 
+            netCrop.fieldChangeVisibleEvent += delegate
+            {
+                if (netCrop.Value != null)
+                {
+                    netCrop.Value.Dirt = fakeDirt;
+                    netCrop.Value.currentLocation = Location;
+                    netCrop.Value.updateDrawMath(Tile);
+                }
+            };
+
         }
 
         public FlowerGrass() : base()
         {
             Location = Game1.currentLocation;
-            FlowerGrassConfig = new FlowerGrassConfig();
+            FlowerGrassConfig = ModEntry.ConfigLoadedFlowerConfig();
         }
 
         public FlowerGrass(int which, int numberOfWeeds, Crop crop, FlowerGrassConfig flowerGrassConfig) : this()
         {
+            //Location = Game1.currentLocation;
             grassType.Value = (byte)which;
-            loadSprite();
             this.numberOfWeeds.Value = numberOfWeeds;
             this.Crop = crop;
+            loadSprite();
             this.FlowerGrassConfig = flowerGrassConfig;
 
+        }
+
+        public override void loadSprite()
+        {
+            base.loadSprite();
+            Crop?.updateDrawMath(Tile);
+        }
+
+        public override void performPlayerEntryAction()
+        {
+            base.performPlayerEntryAction();
+            Crop?.updateDrawMath(Tile);
         }
 
         public override void draw(SpriteBatch spriteBatch)
@@ -84,6 +151,23 @@ namespace WildFlowersReimagined
             }
         }
 
+        public override void dayUpdate()
+        {
+            base.dayUpdate();
+            if (this.Crop != null)
+            {
+                Crop.newDay(0);
+            }
+            
+            // kill at the end of the season???
+            //GameLocation location = Location;
+            //if ((bool)location.isOutdoors && location.GetSeason() == Season.Winter && crop != null && !crop.isWildSeedCrop() && !crop.IsInSeason(location))
+            //{
+            //    destroyCrop(showAnimation: false);
+            //}
+
+        }
+
         /// <summary>
         /// Method for harvesting the flowers, 
         /// </summary>
@@ -91,8 +175,27 @@ namespace WildFlowersReimagined
         /// <param name="useScythe">if it was scythe or hand. The game code has different behaviors for this</param>
         private void Harvest(Vector2 tileLocation, bool useScythe)
         {
-            this.Crop.harvest((int)tileLocation.X, (int)tileLocation.Y, fakeDirt, isForcedScytheHarvest: useScythe);
-            this.Crop = null;
+            var successful = this.Crop.harvest((int)tileLocation.X, (int)tileLocation.Y, fakeDirt, isForcedScytheHarvest: useScythe);
+            if (successful)
+            {
+                this.Crop = null;
+            }
+            else
+            {
+                // handle special case of re-growable flowers
+                var cropData = this.Crop.GetData();
+                if (this.Crop.dayOfCurrentPhase.Value > 0 && cropData.RegrowDays >= 0)
+                {
+                    // this means we are on a crop with regrow
+                    // If the player doesn't want to keep the crop delete it, as the change of dayOfCurrentPhase means it was added to
+                    // the inventory
+                    if (!this.FlowerGrassConfig.KeepRegrowFlower)
+                    {
+                        this.Crop = null;
+                    }
+
+                }
+            }
         }
 
         public override bool performUseAction(Vector2 tileLocation)
@@ -112,6 +215,23 @@ namespace WildFlowersReimagined
                 Harvest(tileLocation, true);
             }
             return base.performToolAction(tool, damage, tileLocation);
+        }
+
+        public string ToDebugString()
+        {
+            var flowerStr = "None";
+            if (this.Crop != null)
+            {
+                flowerStr = $"{this.Crop.DrawnCropTexture} ::: {this.Crop.forageCrop.Value} ::: {this.Crop.flip.Value} ::: {this.Crop.sourceRect}";
+            }
+
+            var location = "?";
+            if (this.Location != null)
+            {
+                location = this.Location.NameOrUniqueName;
+            }
+            
+            return $"{this.Tile}@{location} :: {this.numberOfWeeds} :: {this.texture.Value} :: {flowerStr}";
         }
 
 

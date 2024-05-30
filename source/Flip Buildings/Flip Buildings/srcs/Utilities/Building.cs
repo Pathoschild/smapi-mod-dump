@@ -13,6 +13,7 @@ using StardewValley;
 using StardewValley.Objects;
 using StardewValley.Buildings;
 using StardewValley.Locations;
+using StardewValley.GameData.Buildings;
 
 namespace FlipBuildings.Utilities
 {
@@ -64,10 +65,11 @@ namespace FlipBuildings.Utilities
 		public static void Flip(Building building)
 		{
 			GameLocation location = building.GetParentLocation();
+			BuildingData buildingData = building.GetData();
 
 			building.ReloadBuildingData();
 			building.updateInteriorWarps();
-			if (building.GetData().Name.Equals("Farmhouse"))
+			if (buildingData is not null && buildingData.Name.Equals("Farmhouse"))
 			{
 				Game1.getFarm().UnsetFarmhouseValues();
 			}
@@ -154,6 +156,7 @@ namespace FlipBuildings.Utilities
 					farmAnimal.FacingDirection = farmAnimal.FacingDirection == 1 ? 3 : farmAnimal.FacingDirection == 3 ? 1 : farmAnimal.FacingDirection;
 				}
 			}
+			CompatibilityUtility.InvokeSFBuildingExtensionsResetLightMethod(building, location);
 		}
 
 		public static bool CanBeFlipped(Building building)
@@ -207,6 +210,7 @@ namespace FlipBuildings.Utilities
 				if (building != null)
 				{
 					Rectangle buildingRect = new(building.tileX.Value * 64, building.tileY.Value * 64, building.tilesWide.Value * 64, building.tilesHigh.Value * 64);
+
 					foreach (Farmer farmer in Game1.getOnlineFarmers())
 					{
 						if (farmer.GetBoundingBox().Intersects(buildingRect))
@@ -215,13 +219,6 @@ namespace FlipBuildings.Utilities
 						}
 					}
 				}
-				return false;
-			}
-
-			// Temporary restriction to vanilla buildings
-			if (building.buildingType.Value != "Junimo Hut" && building.buildingType.Value != "Earth Obelisk" && building.buildingType.Value != "Water Obelisk" && building.buildingType.Value != "Desert Obelisk" && building.buildingType.Value != "Island Obelisk" && building.buildingType.Value != "Gold Clock" && building.buildingType.Value != "Coop" && building.buildingType.Value != "Barn" && building.buildingType.Value != "Well" && building.buildingType.Value != "Silo" && building.buildingType.Value != "Mill" && building.buildingType.Value != "Shed" && building.buildingType.Value != "Fish Pond" && building.buildingType.Value != "Cabin" && building.buildingType.Value != "Pet Bowl" && building.buildingType.Value != "Stable" && building.buildingType.Value != "Slime Hutch" && building.buildingType.Value != "Big Coop" && building.buildingType.Value != "Deluxe Coop" && building.buildingType.Value != "Big Barn" && building.buildingType.Value != "Deluxe Barn" && building.buildingType.Value != "Big Shed" && building.buildingType.Value != "Shipping Bin" && building.buildingType.Value != "Farmhouse" && building.buildingType.Value != "Greenhouse")
-			{
-				cannotFlipMessage = "The mod is temporarily restricted to vanilla buildings";
 				return false;
 			}
 

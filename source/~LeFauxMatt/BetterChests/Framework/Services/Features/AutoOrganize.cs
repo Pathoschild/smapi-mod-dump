@@ -14,9 +14,8 @@ using StardewModdingAPI.Events;
 using StardewMods.BetterChests.Framework.Interfaces;
 using StardewMods.BetterChests.Framework.Services.Factory;
 using StardewMods.Common.Interfaces;
-using StardewMods.Common.Services.Integrations.BetterChests.Enums;
-using StardewMods.Common.Services.Integrations.BetterChests.Interfaces;
-using StardewMods.Common.Services.Integrations.FauxCore;
+using StardewMods.Common.Services;
+using StardewMods.Common.Services.Integrations.BetterChests;
 using StardewValley.Menus;
 
 /// <summary>Automatically organizes items between chests during sleep.</summary>
@@ -27,19 +26,15 @@ internal sealed class AutoOrganize : BaseFeature<AutoOrganize>
 
     /// <summary>Initializes a new instance of the <see cref="AutoOrganize" /> class.</summary>
     /// <param name="containerFactory">Dependency used for accessing containers.</param>
-    /// <param name="containerHandler">Dependency used for handling operations between containers.</param>
+    /// <param name="containerHandler">Dependency used for handling operations by containers.</param>
     /// <param name="eventManager">Dependency used for managing events.</param>
-    /// <param name="log">Dependency used for logging debug information to the console.</param>
-    /// <param name="manifest">Dependency for accessing mod manifest.</param>
     /// <param name="modConfig">Dependency used for accessing config data.</param>
     public AutoOrganize(
         ContainerFactory containerFactory,
         ContainerHandler containerHandler,
         IEventManager eventManager,
-        ILog log,
-        IManifest manifest,
         IModConfig modConfig)
-        : base(eventManager, log, manifest, modConfig)
+        : base(eventManager, modConfig)
     {
         this.containerHandler = containerHandler;
         this.containerFactory = containerFactory;
@@ -59,8 +54,8 @@ internal sealed class AutoOrganize : BaseFeature<AutoOrganize>
     private void OrganizeAll()
     {
         var containerGroupsTo = this
-            .containerFactory.GetAll(container => container.Options.AutoOrganize == FeatureOption.Enabled)
-            .GroupBy(container => (int)container.Options.StashToChestPriority)
+            .containerFactory.GetAll(container => container.AutoOrganize == FeatureOption.Enabled)
+            .GroupBy(container => (int)container.StashToChestPriority)
             .ToDictionary(containerGroup => containerGroup.Key, group => group.ToList());
 
         var containerGroupsFrom = new Dictionary<int, List<IStorageContainer>>();
@@ -94,7 +89,6 @@ internal sealed class AutoOrganize : BaseFeature<AutoOrganize>
                         var containerFrom = containersFrom[indexFrom];
                         if (!this.containerHandler.Transfer(containerFrom, containerTo, out var amounts))
                         {
-                            containersFrom.RemoveAt(indexFrom);
                             continue;
                         }
 
@@ -102,7 +96,7 @@ internal sealed class AutoOrganize : BaseFeature<AutoOrganize>
                         {
                             if (amount > 0)
                             {
-                                this.Log.Info(
+                                Log.Info(
                                     "{0}: {{ Item: {1}, Quantity: {2}, From: {3}, To: {4} }}",
                                     this.Id,
                                     name,

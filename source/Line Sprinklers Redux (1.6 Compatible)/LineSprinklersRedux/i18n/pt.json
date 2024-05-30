@@ -1,0 +1,26 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/rtrox/LineSprinklersRedux
+**
+*************************************************/
+
+{
+  // Basic
+  "LineSprinkler.DisplayName": "Aspersor em Linha",
+  "LineSprinkler.Description": "Irriga 4 azulejos em linha reta em uma direção todas as manhãs.",
+  // Quality
+  "QualityLineSprinkler.DisplayName": "Aspersor em Linha de Qualidade",
+  "QualityLineSprinkler.Description": "Irriga 8 azulejos em linha reta em uma direção todas as manhãs.",
+  // Iridium
+  "IridiumLineSprinkler.DisplayName": "Aspersor em Linha de Irídio",
+  "IridiumLineSprinkler.Description": "Irriga 24 azulejos em linha reta em uma direção todas as manhãs.",
+
+  // Config
+  "Controls": "Controles",
+  "RotateSprinklerKeybind": "Girar Aspersor",
+  "RotateSprinklerKeybind.Tooltip": "Pressionar esta tecla enquanto segura um aspersor ou passa o cursor sobre um aspersor colocado irá girá-lo 90° para a direita."
+}

@@ -8,6 +8,19 @@ for queries and analysis.**
 
 # Custom Bush Change Log
 
+## 1.2.2 (Unreleased)
+
+### Changed
+
+* Updated for FauxCore 1.2.0.
+* Generate a default name/description if one is not provided.
+
+## 1.2.1 (May 1, 2024)
+
+### Added
+
+* Added new API method for retrieving the Id of a Custom Bush.
+
 ## 1.2.0 (April 15, 2024)
 
 ### Added

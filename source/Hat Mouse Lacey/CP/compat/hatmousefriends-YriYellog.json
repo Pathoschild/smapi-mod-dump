@@ -1,0 +1,42 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ichortower/HatMouseLacey
+**
+*************************************************/
+
+{
+  "Changes": [
+    {
+      "Target": "LooseSprites/Cursors",
+      "Action": "EditImage",
+      "FromFile": "assets/textures/yellogstorefront_all.png",
+      "FromArea": {"X": 0, "Y": 0, "Width": 64, "Height": 17},
+      "ToArea": {"X": 600, "Y": 1957, "Width": 64, "Height": 17}
+    },
+    {
+      "Target": "LooseSprites/Cursors",
+      "Action": "EditImage",
+      "FromFile": "assets/textures/yellogstorefront_all.png",
+      "FromArea": {"X": 0, "Y": 17, "Width": 32, "Height": 15},
+      "ToArea": {"X": 600, "Y": 1974, "Width": 32, "Height": 15}
+    },
+    {
+      "Target": "LooseSprites/Cursors",
+      "Action": "EditImage",
+      "FromFile": "assets/textures/yellogstorefront_all.png",
+      "FromArea": {"X": 45, "Y": 17, "Width": 19, "Height": 15},
+      "ToArea": {"X": 645, "Y": 1974, "Width": 19, "Height": 15}
+    },
+    {
+      "Target": "LooseSprites/Cursors",
+      "Action": "EditImage",
+      "FromFile": "assets/textures/yellogstorefront_all.png",
+      "FromArea": {"X": 32, "Y": 25, "Width": 13, "Height": 7},
+      "ToArea": {"X": 632, "Y": 1982, "Width": 13, "Height": 7}
+    }
+  ]
+}

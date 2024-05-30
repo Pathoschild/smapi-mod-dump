@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/23872
+IDs: ofts.toolAss
+update keys: Nexus:23872, GitHub:ofts-cqm/ToolAssembly

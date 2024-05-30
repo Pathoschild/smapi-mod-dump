@@ -6,11 +6,11 @@ mods:
    KeyBind UI
 
 latest commit:
-   commit 142882a05f25f8f9f9ddd22e5ccda5ba16719ae2
+   commit 71bbb21f180468f779b02664c95d364ee042ff91
    Author: Enaium <32991121+Enaium@users.noreply.github.com>
-   Date:   Wed Mar 27 21:58:06 2024 +0800
+   Date:   Wed May 15 00:35:09 2024 +0800
    
-       Merge pull request #1 from Enaium-StardewValleyMods/develop
+       Merge pull request #2 from Enaium/develop
        
-       update to 1.6
+       support for live change key
    

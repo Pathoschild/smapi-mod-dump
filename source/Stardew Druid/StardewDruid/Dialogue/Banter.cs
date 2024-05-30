@@ -14,6 +14,7 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using StardewValley.Extensions;
 using StardewValley.Menus;
+using StardewValley.Network;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -69,12 +70,16 @@ namespace StardewDruid.Dialogue
 
                 Vector2 vector = new Vector2(titleSafeArea.Center.X - ((messOffset + nameOffset + 16) / 2), titleSafeArea.Bottom - (height * 2.5f) - 162);
 
-                Utility.drawTextWithShadow(b, useName, Game1.smallFont, vector, color * transparency, 1.4f, 1f, -1, -1, transparency);
+                float width = (messOffset + nameOffset + 32);
+
+                Utility.DrawSquare(b, new((int)(titleSafeArea.Center.X - width / 2), (int)(titleSafeArea.Bottom - (height * 2.5) - 164), (int)width, 48), 2, color * 0.75f, color * 0.5f);
+
+                b.DrawString(Game1.smallFont, useName, vector, Color.White * transparency, 0f, Vector2.Zero, 1.4f, SpriteEffects.None, 1f);
 
                 Vector2 vectortwo = new Vector2(titleSafeArea.Center.X + ((messOffset + nameOffset + 16) / 2) - messOffset, titleSafeArea.Bottom - (height * 2.5f) - 160);
 
-                Utility.drawTextWithShadow(b, banterText, Game1.smallFont, vectortwo, Color.White * transparency, 1.25f, 1f, -1, -1, transparency);
-            
+                b.DrawString(Game1.smallFont, banterText, vectortwo, Color.White * transparency, 0f, Vector2.Zero, 1.25f, SpriteEffects.None, 1f);
+
             }
 
             if (banterType == 1)
@@ -84,9 +89,13 @@ namespace StardewDruid.Dialogue
 
                 float height = (4000 - timeLeft) / 100;
 
+                float width = (messOffset + 32);
+
+                Utility.DrawSquare(b, new((int)(titleSafeArea.Center.X - width / 2), (int)(titleSafeArea.Bottom - (height * 2.5) - 164), (int)width, 48), 1, color * 0.75f, color * 0.5f);
+
                 Vector2 vectortwo = new Vector2(titleSafeArea.Center.X - (messOffset / 2), titleSafeArea.Bottom - (height * 2.5f) - 160);
 
-                Utility.drawTextWithShadow(b, banterText, Game1.smallFont, vectortwo, color * transparency, 1.25f, 1f, -1, -1, transparency);
+                b.DrawString(Game1.smallFont, banterText, vectortwo, Color.White * transparency, 0f, Vector2.Zero, 1.25f, SpriteEffects.None, 1f);
 
             }
 

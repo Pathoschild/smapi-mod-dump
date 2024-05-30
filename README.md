@@ -2,9 +2,9 @@ This repository contains all SMAPI mods in the [SMAPI compatibility list](https:
 It's used to update that page, find mods using specific APIs, etc.
 
 ## Mod stats
-* Last updated 2024-04-26 (SMAPI 4.0.8 and Stardew Valley 1.6.5).
-* 2594 mods in the SMAPI compatibility list.
-* 1726 mods (67%) have a source code repo, with 996 (58%) in a multi-mod repo and 730 (42%) in a single-mod repo.
+* Last updated 2024-05-30 (SMAPI 4.0.8 and Stardew Valley 1.6.8).
+* 2697 mods in the SMAPI compatibility list.
+* 1779 mods (66%) have a source code repo, with 1021 (57%) in a multi-mod repo and 758 (43%) in a single-mod repo.
 
 ## What's in this repository
 ### `compiled`

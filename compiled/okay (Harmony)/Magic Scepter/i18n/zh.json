@@ -1,12 +1,26 @@
 {
   "dialog.title": "选择位置:",
-  "dialog.location.farm": "农场",
-  "dialog.location.beach": "沙滩",
-  "dialog.location.mountain": "深山",
-  "dialog.location.desert": "沙漠",
-  "dialog.location.island": "姜岛",
-  "dialog.location.islandFarm": "姜岛农舍",
-  "dialog.location.miniObelisk": "迷你图腾尖塔",
-  "dialog.location.miniObeliskNumber": "迷你图腾尖塔 #{{number}}",
-  "dialog.cancel": "取消"
+
+  "common.save": "保存",
+  "common.cancel": "取消",
+
+  "configuration-menu.title": "配置",
+
+  "settings-menu.title": "设置",
+
+  "configuration-menu.button-hover.rename": "更改名称",
+  "configuration-menu.button-hover.hidden": "隐藏",
+  "configuration-menu.button-hover.visible": "可见",
+  "configuration-menu.button-hover.move-up": "向上移动",
+  "configuration-menu.button-hover.move-down": "向下移动",
+
+  "rename-menu.reset-to-default": "恢复默认",
+
+  "teleport-scroll.farm": "农场",
+  "teleport-scroll.beach": "沙滩",
+  "teleport-scroll.mountain": "深山",
+  "teleport-scroll.desert": "沙漠",
+  "teleport-scroll.island": "姜岛",
+  "teleport-scroll.island-farm": "姜岛农舍",
+  "teleport-scroll.mini-obelisk": "迷你图腾尖塔"
 }

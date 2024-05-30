@@ -6,9 +6,9 @@ mods:
    Item Bags
 
 latest commit:
-   commit 6a6a99a79662a92f20a98d6bf7c63df2bd2a44b9
+   commit 0597e434162499b8c7032ece29426cf98cba6d26
    Author: Kevin Augustino <kevinaugustino@hotmail.com>
-   Date:   Tue Apr 23 21:00:58 2024 -0400
+   Date:   Thu May 16 07:22:57 2024 -0400
    
-       Improve logic for detecting if a shipping bin menu is open when Chests Anywhere mod is installed.
+       Fix OmniBag description
    

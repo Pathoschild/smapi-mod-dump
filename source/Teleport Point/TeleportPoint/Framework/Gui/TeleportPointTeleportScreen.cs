@@ -12,55 +12,51 @@ using EnaiumToolKit.Framework.Screen;
 using EnaiumToolKit.Framework.Screen.Elements;
 using StardewValley;
 
-namespace TeleportPoint.Framework.Gui
+namespace TeleportPoint.Framework.Gui;
+
+public class TeleportPointTeleportScreen : ScreenGui
 {
-    public class TeleportPointTeleportScreen : ScreenGui
+    public TeleportPointTeleportScreen()
     {
-        public TeleportPointTeleportScreen()
-        {
-            AddElement(new Label(Get("teleportPoint.label.teleportPointList.title"),
-                Get("teleportPoint.label.teleportPointList.title")));
+        AddElement(new Label(Get("teleportPoint.label.teleportPointList.title"),
+            Get("teleportPoint.label.teleportPointList.title")));
 
-            foreach (var variable in ModEntry.Config.TeleportData)
+        foreach (var variable in ModEntry.Config.TeleportData)
+        {
+            AddElement(new Button($"{Get("teleportPoint.button.teleport.title")}:{variable.Name}",
+                $"{Get("teleportPoint.button.teleport.title")}:{variable.Name}")
             {
-                AddElement(new Button($"{Get("teleportPoint.button.teleport.title")}:{variable.Name}",
-                    $"{Get("teleportPoint.button.teleport.title")}:{variable.Name}")
+                OnLeftClicked = () =>
                 {
-                    OnLeftClicked = () => { Teleport(variable.LocationName, variable.TileX, variable.TileY); }
-                });
-            }
-        }
-
-        private void Teleport(string locationName, float tileX, float tileY)
-        {
-            Game1.exitActiveMenu();
-            Game1.player.swimming.Value = false;
-            Game1.player.changeOutOfSwimSuit();
-            Game1.warpFarmer(locationName, (int)tileX, (int)tileY, false);
-        }
-
-        private string Get(string key)
-        {
-            return ModEntry.GetInstance().Helper.Translation.Get(key);
+                    Game1.exitActiveMenu();
+                    Game1.warpFarmer(variable.LocationName, (int)variable.TileX, (int)variable.TileY,
+                        Game1.player.getFacingDirection());
+                }
+            });
         }
     }
 
-    public class TeleportData
+    private string Get(string key)
     {
-        public string Name { get; }
+        return ModEntry.GetInstance().Helper.Translation.Get(key);
+    }
+}
 
-        public string LocationName { get; }
+public class TeleportData
+{
+    public string Name { get; }
 
-        public float TileX { get; }
+    public string LocationName { get; }
 
-        public float TileY { get; }
+    public float TileX { get; }
 
-        public TeleportData(string name, string locationName, float tileX, float tileY)
-        {
-            Name = name;
-            LocationName = locationName;
-            TileX = tileX;
-            TileY = tileY;
-        }
+    public float TileY { get; }
+
+    public TeleportData(string name, string locationName, float tileX, float tileY)
+    {
+        Name = name;
+        LocationName = locationName;
+        TileX = tileX;
+        TileY = tileY;
     }
 }

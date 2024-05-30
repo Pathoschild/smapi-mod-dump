@@ -1,0 +1,7 @@
+{
+  "clockMode": 0,
+  "decrementSpeedKeybind": "OemComma",
+  "incrementSpeedKeybind": "OemPeriod",
+  "resetSpeedKeybind": "OemSemicolon",
+  "cycleClockModeKeybind": "OemQuotes"
+}

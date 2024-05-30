@@ -6,9 +6,9 @@ mods:
    Community Center Helper
 
 latest commit:
-   commit f4f8fe67cdad9eecf975952f80c4878b82395daf
+   commit 213c2fedcd709880b8fbfdfec10609d10036eebc
    Author: vgperson <vgboy2002@yahoo.com>
-   Date:   Fri Apr 19 19:55:35 2024 -0700
+   Date:   Thu Apr 25 23:44:41 2024 -0700
    
-       Added Custom CCB to and reordered list of supported mods
+       1.5.1 update (a few Cornucopia fixes)
    

@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-#nullable enable
+#if COMMON_SIMPLELAYOUT
 
 using System;
 
@@ -20,14 +20,14 @@ using StardewValley;
 
 namespace Leclair.Stardew.Common.UI.SimpleLayout;
 
-public struct FallbackItem : ISimpleNode {
+public readonly struct FallbackItem : ISimpleNode {
 
 	public Item Value { get; }
 	public Alignment Alignment { get; }
 	public float Scale { get; }
 	public bool DrawQuantity { get; }
 	public bool DrawLabel { get; }
-	public bool DeferSize => false;
+	public readonly bool DeferSize => false;
 
 	public FallbackItem(Item value, Alignment alignment = Alignment.None, float scale = 4, bool drawQuantity = false, bool drawLabel = false) {
 		Value = value;
@@ -37,7 +37,7 @@ public struct FallbackItem : ISimpleNode {
 		DrawLabel = drawLabel;
 	}
 
-	public Vector2 GetSize(SpriteFont defaultFont, Vector2 containerSize) {
+	public readonly Vector2 GetSize(SpriteFont defaultFont, Vector2 containerSize) {
 
 		float height = 16 * Scale;
 		float width = height;
@@ -52,7 +52,7 @@ public struct FallbackItem : ISimpleNode {
 		return new Vector2(width, height);
 	}
 
-	public void Draw(SpriteBatch batch, Vector2 position, Vector2 size, Vector2 containerSize, float alpha, SpriteFont defaultFont, Color? defaultColor, Color? defaultShadowColor) {
+	public readonly void Draw(SpriteBatch batch, Vector2 position, Vector2 size, Vector2 containerSize, float alpha, SpriteFont defaultFont, Color? defaultColor, Color? defaultShadowColor) {
 
 		float itemSize = 16 * Scale;
 
@@ -117,3 +117,5 @@ public struct FallbackItem : ISimpleNode {
 		}
 	}
 }
+
+#endif

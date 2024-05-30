@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/23423
+IDs: JonathanFeenstra.AutoStackBait
+update keys: Nexus:23423, GitHub:JonathanFeenstra/Auto-StackBait

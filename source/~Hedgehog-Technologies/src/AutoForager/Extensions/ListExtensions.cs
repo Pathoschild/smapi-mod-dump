@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using HedgeTech.Common.Extensions;
 using StardewModdingAPI;
 using AutoForager.Classes;
 
@@ -26,12 +27,25 @@ namespace AutoForager.Extensions
 			items.Add(newItem);
 		}
 
-		public static void AddDistinct<T>(this List<T> items, T newItem)
-			where T : notnull
+		public static void AddOrMergeCustomFieldsRange(this List<ForageableItem> items, IEnumerable<ForageableItem> newItems)
 		{
-			if (items.Any(i => i.Equals(newItem))) return;
-
-			items.Add(newItem);
+			foreach (var newItem in newItems)
+			{
+				if (items.TryGetItem(newItem.QualifiedItemId, out var oldItem))
+				{
+					if (newItem.CustomFields.Count > 0)
+					{
+						foreach (var kvp in newItem.CustomFields)
+						{
+							oldItem?.CustomFields.TryAdd(kvp.Key, kvp.Value);
+						}
+					}
+				}
+				else
+				{
+					items.AddDistinct(newItem);
+				}
+			}
 		}
 
 		public static IOrderedEnumerable<IGrouping<string, ForageableItem>> GroupByCategory(this List<ForageableItem> list, IModHelper helper, string? categoryKey = null, IComparer<string>? comparer = null)
@@ -78,13 +92,6 @@ namespace AutoForager.Extensions
 			}
 
 			return false;
-		}
-
-		public static bool IsNullOrEmpty<T>(this List<T>? list)
-		{
-			if (list is null) return true;
-
-			return !list.Any();
 		}
 	}
 }

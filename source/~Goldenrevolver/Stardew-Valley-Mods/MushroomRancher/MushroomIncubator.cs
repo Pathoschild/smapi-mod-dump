@@ -109,6 +109,7 @@ namespace MushroomRancher
                         ShowNextIndexWhenReady = false,
                         AllowFairyDust = false,
                         IsIncubator = false, // this is not a bug, slime incubators are also not "incubators"
+                        OnlyCompleteOvernight = true,
                         ClearContentsOvernightCondition = null,
                         StatsToIncrementWhenLoaded = null,
                         StatsToIncrementWhenHarvested = null,

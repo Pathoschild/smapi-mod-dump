@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-using System;
-
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -155,7 +153,7 @@ public class CustomDebris {
 			Vector2.Zero,
 			scale,
 			effects,
-			1E-06f
+			1E-06F
 		);
 	}
 

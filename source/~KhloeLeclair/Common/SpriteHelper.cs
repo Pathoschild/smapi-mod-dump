@@ -433,7 +433,7 @@ public static class SpriteHelper {
 		return null;*/
 	}
 
-	public static SpriteInfo? GetSprite(Item? item) {
+	public static SpriteInfo? GetSprite(Item? item, bool withQuality = true) {
 		if (item is null)
 			return null;
 
@@ -455,7 +455,8 @@ public static class SpriteHelper {
 				return new SpriteInfo(
 					texture,
 					baseSource,
-					baseColor: co.color.Value
+					baseColor: co.color.Value,
+					quality: withQuality ? co.Quality : 0
 				);
 
 			} else {
@@ -464,16 +465,20 @@ public static class SpriteHelper {
 					texture,
 					baseSource,
 					overlaySource: data.GetSourceRect(1, co.ParentSheetIndex),
-					overlayColor: co.color.Value
+					overlayColor: co.color.Value,
+					quality: withQuality ? co.Quality : 0
 				);
 			}
 		}
+
+		// TODO: CombinedRing
 
 		// Assume for now that other objects will only have a texture + rect.
 		// TODO: Actually put effort in.
 		return new SpriteInfo(
 			data.GetTexture(),
-			data.GetSourceRect()
+			data.GetSourceRect(),
+			quality: withQuality ? item.Quality : 0
 		);
 
 		/*

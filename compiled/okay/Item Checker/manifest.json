@@ -1,0 +1,9 @@
+{
+	"Name": "ItemChecker",
+	"Author": "Hitaxas",
+	"Version": "1.5",
+	"Description": "Adds a new GSQ and trigger action for use with other mods",
+	"UniqueID": "Hitaxas.Items.DLL",
+	"EntryDLL": "Item Checker.dll",
+	"UpdateKeys": [ "Nexus: 24305" ]
+}

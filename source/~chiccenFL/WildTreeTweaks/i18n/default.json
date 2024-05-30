@@ -1,0 +1,39 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/chiccenFL/StardewValleyMods
+**
+*************************************************/
+
+{
+  "EnableMod": "Enable Mod",
+  "OnlyOnFarm": "Only On Farm",
+  "OnlyOnFarm.1": "Enable to only apply custom settings to trees growing on your farm.",
+  "GrowthChance": "Growth Chance",
+  "GrowthChance.1": "The chance trees have to grow to the next stage overnight. 0 (will never grow) to 1 (will grow every night).",
+  "GrowInWinter": "Trees Grow In Winter",
+  "GrowInWinter.1": "Even without fertilizer!",
+  "GrowNearTrees": "Allow Growth Near Trees",
+  "GrowNearTrees.1": "When enabled, allow trees to grow even if another fully grown tree is in an adjacent tile. Normal tree growth is blocked at growth stage 4.",
+  "MossFromMature": "Moss When Mature",
+  "MossfromMature.1": "Trees dont typically produce moss until they are quite old. Enable to have them able to produce moss as soon as they are grown.",
+  "WoodMulti": "Wood Multiplier",
+  "WoodMulti.1": "Multiply how much wood trees produce when cut down. If increased, it is highly recommended to keep this multiplier below 5, as anything more gets pretty ridiculous.",
+  "MysterChance": "Mystery Box Chance",
+  "MysteryChance.1": "Chance of dropping a mystery box when chopping trees. Default = 0.5% (0.005)",
+  "BookChanceBool": "Enable Book Drop Change",
+  "BookChanceBool.1": "Enable the setting which changes the chance a woodcutting book is dropped when chopping a tree.",
+  "BookChance": "Book Chance",
+  "BookChance.1": "Chance of dropping a woodcutting book when chopping a tree. Vastly modifies chance logic, requires Book Drop Change enabled.",
+  "Health": "Health",
+  "Health.1": "How much health a tree has. In other words, how many axe hits it will take to break, even with a basic axe.",
+  "SeedChance": "Seed Chance",
+  "SeedChance.1": "The chance for a tree to drop a seed when shaken, daily. Seed Chop Chance scales with this.",
+  "SeedSpread": "Seed Spread Chance",
+  "SeedSpread.1": "Daily chance that random seeds will spread from trees.",
+  "Debug": "Debug Logs",
+  "Debug.1": "For SMAPI debugging logs. Enable before generating a SMAPI log and posting a bug report."
+}

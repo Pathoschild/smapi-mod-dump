@@ -18,14 +18,14 @@
   "ui.main-menu.font.keep-orig": "Manter Original",
   "ui.main-menu.refresh-fonts": "Atualizar Lista de Fontes",
   "ui.main-menu.font-from-pack": "(do pacote '{{packName}}')",
-  "ui.main-menu.font-size": "Tamanho da Fonte",
+  "ui.main-menu.font-size": "Tam. Fonte",
 
   "ui.main-menu.section.advanced": "Avançado",
   "ui.main-menu.spacing": "Espaçamento",
-  "ui.main-menu.line-spacing": "Espaçamento de Linhas",
-  "ui.main-menu.x-offset": "Deslocamento X",
-  "ui.main-menu.y-offset": "Deslocamento Y",
-  "ui.main-menu.pixel-zoom": "Zoom de Pixels",
+  "ui.main-menu.line-spacing": "Espç. Linha",
+  "ui.main-menu.x-offset": "Desloc. X",
+  "ui.main-menu.y-offset": "Desloc. Y",
+  "ui.main-menu.pixel-zoom": "Zoom PX",
   "ui.main-menu.vanilla-example": "Padrão",
   "ui.main-menu.current-example": "Atual",
 
@@ -70,10 +70,10 @@
   "ui.export-menu.export": "Exportar",
   "ui.export-menu.cancel": "Cancelar",
 
-  "config.section-color-and-shadow": "Color & Shadow", // TODO
+  "config.section-color-and-shadow": "Cor & Sombras",
   "config.disable-text-shadow": "Desativar sombra de texto",
   "config.disable-text-shadow.description": "Se deve ocultar a sombra da fonte.",
-  "config.color-format": "\n\nInsira um valor hexadecimal:\nAABBGGRR\nexemplo: Azul Índigo (R=63, G=72, B=204, A=255)\n => FFCC483F", // TODO: edit
+  "config.color-format": "\n\nFormato: R G B A\nexemplo: Azul Índigo (R=63, G=72, B=204, A=255)\n => 63 72 204 255",
   "config.text-color": "Cor do Texto",
   "config.text-color.description": "Configura a cor do texto padrão do jogo.",
   "config.text-color-dialogue": "Cor do texto de diálogo",
@@ -81,43 +81,43 @@
   "config.shadow-color": "Cor da sombra do texto",
   "config.shadow-color.description": "Configura a cor da sombra do texto padrão do jogo.",
 
-  "config.section-compatibility": "Compatibility", // TODO
+  "config.section-compatibility": "Compatibilidade",
   "config.enable-latin-dialogue-font": "Fonte de diálogo personalizada para línguas latinas",
-  "config.enable-latin-dialogue-font.description": "Se deve ativar a fonte de diálogo personalizada em idiomas latinos. Idioma Latino: idioma que contém apenas caracteres latinos. O idioma atual ({{locale}}) é um idioma latino: {{isLatinLanguage}}",
+  "config.enable-latin-dialogue-font.description": "Se as fontes de diálogo personalizadas devem ser ativadas em idiomas latinos. Idioma Latino: idioma que contém apenas caracteres latinos. O idioma atual ({{locale}}) é um idioma latino: {{isLatinLanguage}}",
   "config.edit-mode": "Modo de edição",
-  "config.edit-mode.description": "Ativa o Modo de edição, se marcado. ou modo de carregamento, se desmarcado.\nO modo de edição melhora a compatibilidade dos mods e evita conflitos quando vários mods carregam a mesma fonte.",
+  "config.edit-mode.description": "Ativa o Modo de edição, se marcado. ou modo de carregamento.\nO modo de edição melhora a compatibilidade dos mods e evita conflitos quando vários mods carregam a mesma fonte.",
   "config.edit-prio": "Prioridade de edição",
   "config.edit-prio.description": "Prioridade para editar fontes. Quanto maior o valor, mais lentamente as fontes serão editadas.\nAlcance: [{{minValue}}, {{maxValue}}]\nPadrão: 0",
 
-  "config.section-ui": "UI", // TODO
+  "config.section-ui": "Interface de Usuário",
   "config.font-menu-key": "Abrir Menu de Fontes",
   "config.font-menu-key.description": "Cria um atalho para abrir o menu de configurações de fonte.",
   "config.example-text": "Texto de Exemplo",
-  "config.example-text.description": "Texto de exemplo personalizado. Mantenha isso desativado, a menos que você realmente queira o seu, o mod tem um integrado.",
+  "config.example-text.description": "Texto de exemplo personalizado. Mantenha isso desativado, a menos que você realmente queira o seu próprio texto, o mod tem um integrado.",
   "config.min-font-size": "Tamanho mínimo da fonte",
-  "config.min-font-size.description": "Min reachable value of font size UI control.", // TODO
+  "config.min-font-size.description": "Valor mínimo aplicável ao tamanho de fonte no controle Tam. Fonte da interface de usuário.",
   "config.max-font-size": "Tamanho máximo da fonte",
-  "config.max-font-size.description": "Max reachable value of font size UI control.", // TODO
+  "config.max-font-size.description": "Valor máximo aplicável ao tamanho de fonte no controle Tam. Fonte da interface de usuário.",
   "config.min-spacing": "Espaçamento mínimo",
-  "config.min-spacing.description": "Min reachable value of spacing UI control.", // TODO
+  "config.min-spacing.description": "Valor mínimo aplicável ao controle Espaçamento na interface de usuário.",
   "config.max-spacing": "Espaçamento máximo",
-  "config.max-spacing.description": "Max reachable value of spacing UI control.", // TODO
-  "config.min-line-spacing": "Espaçamento de linhas mínimo",
-  "config.min-line-spacing.description": "Min reachable value of line spacing UI control.", // TODO
-  "config.max-line-spacing": "Espaçamento de linhas máximo",
-  "config.max-line-spacing.description": "Max reachable value of line spacing UI control.", // TODO
+  "config.max-spacing.description": "Valor máximo aplicável ao controle Espaçamento na interface de usuário.",
+  "config.min-line-spacing": "Espaçamento mínimo de linhas",
+  "config.min-line-spacing.description": "Valor mínimo aplicável ao controle Espç. Linha na interface de usuário.",
+  "config.max-line-spacing": "Espaçamento máximo de linhas",
+  "config.max-line-spacing.description": "Valor máximo aplicável ao controle Espç. Linha na interface de usuário.",
   "config.min-offset-x": "Deslocamento X mínimo",
-  "config.min-offset-x.description": "Min reachable value of X-offset UI control.", // TODO
+  "config.min-offset-x.description": "Valor mínimo aplicável ao controle Desloc. X na interface de usuário.",
   "config.max-offset-x": "Deslocamento X máximo",
-  "config.max-offset-x.description": "Max reachable value of X-offset UI control.", // TODO
+  "config.max-offset-x.description": "Valor máximo aplicável ao controle Desloc. X na interface de usuário.",
   "config.min-offset-y": "Deslocamento Y mínimo",
-  "config.min-offset-y.description": "Min reachable value of Y-offset UI control.", // TODO
+  "config.min-offset-y.description": "Valor mínimo aplicável ao controle Desloc. Y na interface de usuário.",
   "config.max-offset-y": "Deslocamento Y máximo",
-  "config.max-offset-y.description": "Max reachable value of Y-offset UI control.", // TODO
-  "config.min-pixel-zoom": "Zoom de pixels mínimo",
-  "config.min-pixel-zoom.description": "Min reachable value of pixel zoom UI control.", // TODO
-  "config.max-pixel-zoom": "Zoom de pixels máximo",
-  "config.max-pixel-zoom.description": "Max reachable value of pixel zoom UI control.", // TODO
+  "config.max-offset-y.description": "Valor máximo aplicável ao controle Desloc. Y na interface de usuário.",
+  "config.min-pixel-zoom": "Zoom de pixel mínimo",
+  "config.min-pixel-zoom.description": "Valor mínimo aplicável ao controle Zoom PX na interface de usuário.",
+  "config.max-pixel-zoom": "Zoom de pixel máximo",
+  "config.max-pixel-zoom.description": "Valor máximo aplicável ao controle Zoom PX na interface de usuário.",
 
   "misc.mod-file-not-found": "Não foi possível encontrar \"{{filePath}}\", que faz parte de arquivos de mod. Baixe o mod novamente para resolver este problema."
 }

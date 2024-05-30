@@ -33,7 +33,7 @@ namespace Unlockable_Bundles.Lib
 
         public static void Initialize()
         {
-            BGTexture = Helper.ModContent.Load<Texture2D>("assets\\BundleOverviewBG.png");
+            BGTexture = Helper.GameContent.Load<Texture2D>("UnlockableBundles/UI/BundleOverviewBG");
         }
 
         private Rectangle ScrollBarRunner;
@@ -218,6 +218,7 @@ namespace Unlockable_Bundles.Lib
             Game1.playSound("shwip");
             Bundles = ShopObject.getAll();
             Bundles.RemoveAll(el => !el.WasDiscovered);
+
             DescriptionScrollIndex = 0;
             SplitPreviewDescription = new string[] { };
 
@@ -227,6 +228,14 @@ namespace Unlockable_Bundles.Lib
 
             if (Bundles.Count == 1)
                 selectListElement(Bundles.First());
+
+            if(!Context.IsMainPlayer!) {
+                var existing = new Dictionary<string, string>();
+                foreach (var bundle in Bundles)
+                    existing.Add(bundle.Unlockable.ID, bundle.Unlockable.LocationUnique);
+                Helper.Multiplayer.SendMessage(existing, "OverviewMenuRequestMissing", modIDs: new[] { ModManifest.UniqueID }, playerIDs: new[] { Game1.MasterPlayer.UniqueMultiplayerID });
+            }
+                
         }
 
         public void updatePosition()
@@ -617,6 +626,26 @@ namespace Unlockable_Bundles.Lib
         public bool isScrollbarDrawn() => Bundles.Count > ListElementsPerPage;
         public bool hasNextDescriptionRow() => SplitPreviewDescription.Length > DescriptionScrollIndex + DescriptionRowsPerPage;
         public bool hasNextRequirementPage() => CurrentBundle?.Unlockable._price.Pairs.Count() > ((RequirementPageIndex + 1) * RequirementsPerPage);
+
+        public void appendMissingBundles(List<UnlockableModel> unlockables)
+        {
+            if (unlockables.Count == 0)
+                return;
+
+            foreach(var unlockable in unlockables) {
+                var shop = new ShopObject(new Unlockable(unlockable));
+                shop.TileLocation = unlockable.ShopPosition; //Not necessarily true due to unlockable.AlternativeShopPositions, but it's good enough for now
+                Bundles.Add(shop);
+
+            }
+
+            ListElement.Clear();
+            createClickTableTextures();
+            setScrollBarToCurrentIndex();
+
+            if (Bundles.Count == 1)
+                selectListElement(Bundles.First());
+        }
     }
 }
 

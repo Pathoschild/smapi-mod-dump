@@ -27,6 +27,7 @@ namespace ContentPatcher.Framework.Patches
         /// <param name="indexPath">The path of indexes from the root <c>content.json</c> to this patch; see <see cref="IPatch.IndexPath"/>.</param>
         /// <param name="path">The path to the patch from the root content file.</param>
         /// <param name="assetName">The normalized asset name to intercept.</param>
+        /// <param name="assetLocale">The locale code in the target asset's name to match. See <see cref="IPatch.TargetAsset"/> for more info.</param>
         /// <param name="localAsset">The asset key to load from the content pack instead.</param>
         /// <param name="priority">The priority for this patch when multiple patches apply.</param>
         /// <param name="updateRate">When the patch should be updated.</param>
@@ -35,12 +36,13 @@ namespace ContentPatcher.Framework.Patches
         /// <param name="migrator">The aggregate migration which applies for this patch.</param>
         /// <param name="parentPatch">The parent patch for which this patch was loaded, if any.</param>
         /// <param name="parseAssetName">Parse an asset name.</param>
-        public LoadPatch(int[] indexPath, LogPathBuilder path, IManagedTokenString assetName, IManagedTokenString localAsset, AssetLoadPriority priority, UpdateRate updateRate, IEnumerable<Condition> conditions, IContentPack contentPack, IRuntimeMigration migrator, IPatch? parentPatch, Func<string, IAssetName> parseAssetName)
+        public LoadPatch(int[] indexPath, LogPathBuilder path, IManagedTokenString assetName, IManagedTokenString? assetLocale, IManagedTokenString localAsset, AssetLoadPriority priority, UpdateRate updateRate, IEnumerable<Condition> conditions, IContentPack contentPack, IRuntimeMigration migrator, IPatch? parentPatch, Func<string, IAssetName> parseAssetName)
             : base(
                 indexPath: indexPath,
                 path: path,
                 type: PatchType.Load,
                 assetName: assetName,
+                assetLocale: assetLocale,
                 priority: (int)priority,
                 updateRate: updateRate,
                 conditions: conditions,

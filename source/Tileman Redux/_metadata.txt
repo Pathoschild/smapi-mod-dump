@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/Freaksaus/Tileman-Redux
+   Git: https://github.com/Freaksaus/Tileman-Redux.git
+
+mods:
+   Tileman Redux
+
+latest commit:
+   commit d68e755e16930c834a909dc94430b1eb8bcef920
+   Author: Freek <Freek@DESKTOP-8GESIS2>
+   Date:   Wed May 22 19:35:16 2024 +0200
+   
+       Version 1.0.7
+   

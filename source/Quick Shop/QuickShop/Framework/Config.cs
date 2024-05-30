@@ -9,10 +9,15 @@
 *************************************************/
 
 using StardewModdingAPI;
+using StardewModdingAPI.Utilities;
 
 namespace QuickShop.Framework;
 
 public class Config
 {
-    public SButton OpenQuickShop { get; set; } = SButton.M;
+    public static Config Default { get; } = new();
+    public KeybindList OpenQuickShop { get; set; } = new(SButton.M);
+    public bool AllowToolUpgradeAgain { get; set; } = false;
+    
+    public bool AllowBuildingAgain { get; set; } = false;
 }

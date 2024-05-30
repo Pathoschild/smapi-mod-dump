@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Netcode;
 using StardewDruid.Cast;
+using StardewDruid.Cast.Mists;
 using StardewDruid.Cast.Weald;
 using StardewDruid.Data;
 using StardewDruid.Event;
@@ -27,19 +28,18 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using static StardewDruid.Data.CharacterData;
+using System.Linq;
 
 namespace StardewDruid.Character
 {
     public class Effigy : StardewDruid.Character.Character
     {
-        new public CharacterData.characters characterType = CharacterData.characters.effigy;
+        new public CharacterData.characters characterType = CharacterData.characters.Effigy;
 
-        public List<Vector2> ritesDone;
-        public int riteIcon;
-        public bool showIcon;
+        public List<Vector2> ritesDone = new();
 
-        public Texture2D iconsTexture;
+        public Texture2D weaponTexture;
+        public Dictionary<int, List<Rectangle>> weaponFrames;
 
         public Texture2D swipeTexture;
         public Dictionary<int, List<Rectangle>> swipeFrames;
@@ -48,443 +48,144 @@ namespace StardewDruid.Character
         {
         }
 
-        public Effigy(characters type)
+        public Effigy(CharacterData.characters type)
           : base(type)
         {
 
             
         }
 
-        protected override void initNetFields()
-        {
-            base.initNetFields();
-
-        }
 
         public override void LoadOut()
         {
+            base.LoadOut();
 
-            LoadBase();
+            specialScheme = IconData.schemes.stars;
 
-            characterTexture = CharacterData.CharacterTexture(characterType);
+            weaponTexture = Mod.instance.Helper.ModContent.Load<Texture2D>(Path.Combine("Images", "WeaponSword.png"));
 
-            haltFrames = FrameSeries(32, 32, 0, 0, 1);
-
-            walkFrames = FrameSeries(32, 32, 0, 128, 6, haltFrames);
-
-            walkLeft = 1;
-
-            walkRight = 4;
-
-            specialScheme = SpellHandle.schemes.stars;
-
-            idleFrames = new()
+            weaponFrames = new()
             {
-                [0] = new()
-                {
-                    new Rectangle(128, 0, 32, 32),
-                    new Rectangle(160, 0, 32, 32),
-                },
-                [1] = new()
-                {
-                    new Rectangle(128, 0, 32, 32),
-                    new Rectangle(160, 0, 32, 32),
-                },
-                [2] = new()
-                {
-                    new Rectangle(128, 0, 32, 32),
-                    new Rectangle(160, 0, 32, 32),
-                },
-                [3] = new()
-                {
-                    new Rectangle(128, 0, 32, 32),
-                    new Rectangle(160, 0, 32, 32),
-                },
-            };
-
-            specialFrames = new()
-            {
-                [0] = new()
-                {
-
-                    new(64, 64, 32, 32),
-                    new(96, 64, 32, 32),
-
-                },
-                [1] = new()
-                {
-
-                    new(64, 32, 32, 32),
-                    new(96, 32, 32, 32),
-
-                },
-                [2] = new()
-                {
-
-                    new(64, 0, 32, 32),
-                    new(96, 0, 32, 32),
-
-                },
-                [3] = new()
-                {
-
-                    new(64, 96, 32, 32),
-                    new(96, 96, 32, 32),
-
-                },
-
-            };
-
-            workFrames = specialFrames;
-
-            specialInterval = 30;
-            specialCeiling = 1;
-            specialFloor = 1;
-
-            dashCeiling = 10;
-            dashFloor = 0;
-
-            dashFrames = new()
-            {
-                [0] = new()
-                {
-                    new(0, 192, 32, 32),
-                    new(32, 64, 32, 32),
-                    new(32, 64, 32, 32),
-                    new(32, 64, 32, 32),
-                    new(32, 64, 32, 32),
-                    new(32, 64, 32, 32),
-                    new(32, 64, 32, 32),
-                    new(32, 64, 32, 32),
-                    new(96,192,32,32),
-                    new(128,192,32,32),
-                    new(160,192,32,32),
-                },
-                [1] = new()
-                {
-                    new(0, 160, 32, 32),
-                    new(32, 32, 32, 32),
-                    new(32, 32, 32, 32),
-                    new(32, 32, 32, 32),
-                    new(32, 32, 32, 32),
-                    new(32, 32, 32, 32),
-                    new(32, 32, 32, 32),
-                    new(32, 32, 32, 32),
-                    new(96,160,32,32),
-                    new(128,160,32,32),
-                    new(160,160,32,32),
-                },
-                [2] = new()
-                {
-                    new(0, 128, 32, 32),
-                    new(32, 0, 32, 32),
-                    new(32, 0, 32, 32),
-                    new(32, 0, 32, 32),
-                    new(32, 0, 32, 32),
-                    new(32, 0, 32, 32),
-                    new(32, 0, 32, 32),
-                    new(32, 0, 32, 32),
-                    new(96,128,32,32),
-                    new(128,128,32,32),
-                    new(160,128,32,32),
-                },
-                [3] = new()
-                {
-                    new(0, 224, 32, 32),
-                    new(32, 96, 32, 32),
-                    new(32, 96, 32, 32),
-                    new(32, 96, 32, 32),
-                    new(32, 96, 32, 32),
-                    new(32, 96, 32, 32),
-                    new(32, 96, 32, 32),
-                    new(32, 96, 32, 32),
-                    new(96,224,32,32),
-                    new(128,224,32,32),
-                    new(160,224,32,32),
-                },
-            };
-
-            sweepFrames = new()
-            {
-                [0] = new()
-                {
-                    new Rectangle(128, 320, 64, 64),
-                    new Rectangle(192, 320, 64, 64),
-                    new Rectangle(0, 320, 64, 64),
-                    new Rectangle(64, 320, 64, 64),
-                },
-                [1] = new()
-                {
-                    new Rectangle(0, 384, 64, 64),
-                    new Rectangle(64, 384, 64, 64),
-                    new Rectangle(128, 384, 64, 64),
-                    new Rectangle(192, 384, 64, 64),
-                },
-                [2] = new()
-                {
-                    new Rectangle(0, 256, 64, 64),
-                    new Rectangle(64, 256, 64, 64),
-                    new Rectangle(128, 256, 64, 64),
-                    new Rectangle(192, 256, 64, 64),
-                },
-                [3] = new()
-                {
-                    new Rectangle(0, 320, 64, 64),
-                    new Rectangle(64, 320, 64, 64),
-                    new Rectangle(128, 320, 64, 64),
-                    new Rectangle(192, 320, 64, 64),
-                },
-            };
-
-            swipeTexture = Mod.instance.Helper.ModContent.Load<Texture2D>(Path.Combine("Images", "Swipe.png"));
-
-            swipeFrames = new()
-            {
-                [0] = new()
-                {
-                    new Rectangle(128, 64, 64, 64),
-                    new Rectangle(192, 64, 64, 64),
-                    new Rectangle(0, 64, 64, 64),
-                    new Rectangle(64, 64, 64, 64),
-                },
-                [1] = new()
-                {
-                    new Rectangle(0, 128, 64, 64),
-                    new Rectangle(64, 128, 64, 64),
-                    new Rectangle(128, 128, 64, 64),
-                    new Rectangle(192, 128, 64, 64),
-                },
-                [2] = new()
+                [256] = new()
                 {
                     new Rectangle(0, 0, 64, 64),
                     new Rectangle(64, 0, 64, 64),
                     new Rectangle(128, 0, 64, 64),
                     new Rectangle(192, 0, 64, 64),
+                    new Rectangle(0, 192, 64, 64),
+                    new Rectangle(64, 192, 64, 64),
+                    new Rectangle(128, 192, 64, 64),
+                    new Rectangle(192, 192, 64, 64),
                 },
-                [3] = new()
+                [288] = new()
+                {
+                    new Rectangle(0, 128, 64, 64),
+                    new Rectangle(64, 128, 64, 64),
+                    new Rectangle(128, 128, 64, 64),
+                    new Rectangle(192, 128, 64, 64),
+                    new Rectangle(0, 256, 64, 64),
+                    new Rectangle(64, 256, 64, 64),
+                    new Rectangle(128, 256, 64, 64),
+                    new Rectangle(192, 256, 64, 64),
+                },
+                [320] = new()
                 {
                     new Rectangle(0, 64, 64, 64),
                     new Rectangle(64, 64, 64, 64),
                     new Rectangle(128, 64, 64, 64),
                     new Rectangle(192, 64, 64, 64),
+                    new Rectangle(0, 320, 64, 64),
+                    new Rectangle(64, 320, 64, 64),
+                    new Rectangle(128, 320, 64, 64),
+                    new Rectangle(64, 320, 64, 64),
                 },
             };
 
-            ritesDone = new List<Vector2>();
+            swipeTexture = Mod.instance.Helper.ModContent.Load<Texture2D>(Path.Combine("Images", "WeaponSwipe.png"));
 
-            //iconsTexture = Mod.instance.Helper.ModContent.Load<Texture2D>(Path.Combine("Images", "Icons.png"));
-
-            iconsTexture = Mod.instance.Helper.ModContent.Load<Texture2D>(Path.Combine("Images", "EffigyIcon.png"));
-
-            loadedOut = true;
-
-        }
-
-        public override void draw(SpriteBatch b, float alpha = 1f)
-        {
-
-            if (IsInvisible || !Utility.isOnScreen(Position, 128))
+            swipeFrames = new()
             {
-                return;
-            }
-
-            if (characterTexture == null)
-            {
-
-                return;
-
-            }
-
-            Vector2 localPosition = getLocalPosition(Game1.viewport);
-
-            float drawLayer = (float)StandingPixel.Y / 10000f;
-
-            DrawEmote(b);
-
-            if (netStandbyActive.Value)
-            {
-
-                DrawStandby(b, localPosition, drawLayer);
-
-                return;
-
-            } else if (netHaltActive.Value)
-            {
-
-                b.Draw(
-                    characterTexture,
-                    localPosition - new Vector2(32, 64f),
-                    haltFrames[netDirection.Value][0],
-                    Color.White,
-                    0f,
-                    Vector2.Zero,
-                    4f,
-                    (netDirection.Value % 2 == 0 && netAlternative.Value == 3) ? SpriteEffects.FlipHorizontally : SpriteEffects.None,
-                    drawLayer
-                );
-
-            }
-            else if (netSweepActive.Value)
-            {
-
-                b.Draw(
-                     characterTexture,
-                     localPosition - new Vector2(96, 128f),
-                     sweepFrames[netDirection.Value][sweepFrame],
-                     Color.White,
-                     0f,
-                     Vector2.Zero,
-                     4f,
-                     (netDirection.Value % 2 == 0 && netAlternative.Value == 3) ? SpriteEffects.FlipHorizontally : SpriteEffects.None,
-                     drawLayer
-                 );
-
-                b.Draw(
-                     swipeTexture,
-                     localPosition - new Vector2(96, 128f),
-                     swipeFrames[netDirection.Value][sweepFrame],
-                     Color.White * 0.5f,
-                     0f,
-                     Vector2.Zero,
-                     4f,
-                     (netDirection.Value % 2 == 0 && netAlternative.Value == 3) ? SpriteEffects.FlipHorizontally : SpriteEffects.None,
-                     drawLayer
-                 );
-
-            }
-            else if (netSpecialActive.Value)
-            {
-
-                b.Draw(
-                    characterTexture,
-                    localPosition - new Vector2(32, 64f),
-                    specialFrames[netDirection.Value][specialFrame],
-                    Color.White,
-                    0.0f,
-                    Vector2.Zero,
-                    4f,
-                    (netDirection.Value % 2 == 0 && netAlternative.Value == 3) ? (SpriteEffects)1 : 0,
-                    drawLayer
-                );
-
-            }
-            else if (netDashActive.Value)
-            {
-
-                b.Draw(
-                    characterTexture,
-                    localPosition - new Vector2(32, 64f + dashHeight) ,
-                    dashFrames[netDirection.Value][dashFrame],
-                    Color.White,
-                    0f,
-                    Vector2.Zero,
-                    4f,
-                    (netDirection.Value % 2 == 0 && netAlternative.Value == 3) ? SpriteEffects.FlipHorizontally : SpriteEffects.None,
-                    drawLayer
-                );
-
-            }
-            else
-            {
-
-                if (TightPosition() && currentLocation.IsOutdoors && (idleTimer > 0) && !netSceneActive.Value)
+                [256] = new()
                 {
+                    new Rectangle(0, 0, 64, 64),
+                    new Rectangle(64, 0, 64, 64),
+                    new Rectangle(128, 0, 64, 64),
+                    new Rectangle(192, 0, 64, 64),
+                    new Rectangle(0, 192, 64, 64),
+                    new Rectangle(64, 192, 64, 64),
+                    new Rectangle(128, 192, 64, 64),
+                    new Rectangle(192, 192, 64, 64),
+                },
+                [288] = new()
+                {
+                    new Rectangle(0, 128, 64, 64),
+                    new Rectangle(64, 128, 64, 64),
+                    new Rectangle(128, 128, 64, 64),
+                    new Rectangle(192, 128, 64, 64),
+                    new Rectangle(0, 256, 64, 64),
+                    new Rectangle(64, 256, 64, 64),
+                    new Rectangle(128, 256, 64, 64),
+                    new Rectangle(192, 256, 64, 64),
+                },
+                [320] = new()
+                {
+                    new Rectangle(0, 64, 64, 64),
+                    new Rectangle(64, 64, 64, 64),
+                    new Rectangle(128, 64, 64, 64),
+                    new Rectangle(192, 64, 64, 64),
 
-                    DrawStandby(b, localPosition, drawLayer);
-
-                    return;
-
-                }
-
-                b.Draw(
-                    characterTexture,
-                    localPosition - new Vector2(32, 64f),
-                    walkFrames[netDirection.Value][moveFrame],
-                    Color.White,
-                    0f,
-                    Vector2.Zero,
-                    4f,
-                    (netDirection.Value % 2 == 0 && netAlternative.Value == 3) ? SpriteEffects.FlipHorizontally : SpriteEffects.None,
-                    drawLayer
-                );
-
-            }
-
-            DrawShadow(b, localPosition, drawLayer);
-
-            DrawIcon(b, localPosition, drawLayer);
-
-        }
-
-        public override Rectangle GetBoundingBox()
-        {
-
-            return new Rectangle((int)Position.X + 8, (int)Position.Y + 8, 48, 48);
+                },
+            };
 
         }
+        
 
-        public override Rectangle GetHitBox()
-        {
-            return new Rectangle((int)Position.X - 32, (int)Position.Y - 32, 128, 128);
-        }
-
-        public void DrawIcon(SpriteBatch b, Vector2 localPosition, float drawLayer)
+        public override void DrawWeapon(SpriteBatch b, Vector2 spriteVector, float drawLayer, Rectangle frame)
         {
             
-            if (netDirection.Value != 0)
+            b.Draw(
+                 weaponTexture,
+                 spriteVector - new Vector2(64, 64f),
+                 weaponFrames[frame.Y][frame.X == 0 ? 0 : frame.X/32],
+                 Color.White,
+                 0f,
+                 Vector2.Zero,
+                 4f,
+                 (netDirection.Value % 2 == 0 && netAlternative.Value == 3) || netDirection.Value == 3 ? SpriteEffects.FlipHorizontally : SpriteEffects.None,
+                 drawLayer + 0.0001f
+             );
+
+            int swipeIndex = frame.X == 0 ? 0 : frame.X / 32;
+
+            if(swipeFrames[frame.Y].Count <= swipeIndex)
             {
-            
+
                 return;
-            
+
             }
 
-            /*int riteIcon;
-
-            switch (Mod.instance.CurrentBlessing())
+            if(netSmashActive.Value && netDashProgress.Value < 2)
             {
 
-                case "mists":
-                    riteIcon = 2;
-                    break;
-                case "stars":
-                    riteIcon = 3;
-                    break;
-                case "fates":
-                    riteIcon = 4;
-                    break;
-                case "ether":
-                    riteIcon = 6;
-                    break;
-                default: // weald
-                    riteIcon = 1;
-                    break;
+                return;
 
-            }*/
-
-            Vector2 offset = new(21, -16);
-
-            if (netDashActive.Value)
-            {
-
-                offset.Y -= dashHeight;
             }
 
             b.Draw(
-                iconsTexture,
-                localPosition + offset,
-                //new Rectangle((riteIcon % 4) * 8, (riteIcon / 4) * 8, 8, 8),
-                new(0,0,12,12),
-                Color.White*0.65f,
-                0f,
-                new Vector2(0, 0),
-                2f,
-                SpriteEffects.None,
-                drawLayer + 0.0001f
-            );
+                 swipeTexture,
+                 spriteVector - new Vector2(64, 64f),
+                 swipeFrames[frame.Y][swipeIndex],
+                 Color.White * 0.65f,
+                 0f,
+                 Vector2.Zero,
+                 4f,
+                 (netDirection.Value % 2 == 0 && netAlternative.Value == 3) || netDirection.Value == 3 ? SpriteEffects.FlipHorizontally : SpriteEffects.None,
+                 drawLayer + 0.0002f
+             );
 
         }
 
-        public void DrawStandby(SpriteBatch b, Vector2 localPosition, float drawLayer)
+        public override void DrawStandby(SpriteBatch b, Vector2 localPosition, float drawLayer)
         {
 
             int chooseFrame = IdleFrame();
@@ -514,6 +215,21 @@ namespace StardewDruid.Character
             );
 
             return;
+
+        }
+
+        public int IdleFrame()
+        {
+
+            int interval = 12000 / idleFrames[0].Count();
+
+            int timeLapse = (int)(Game1.currentGameTime.TotalGameTime.TotalMilliseconds % 12000);
+
+            if (timeLapse == 0) { return 0; }
+
+            int frame = (int)timeLapse / interval;
+
+            return frame;
 
         }
 
@@ -578,14 +294,17 @@ namespace StardewDruid.Character
 
         public override bool TargetWork()
         {
-            
-            //Vector2.op_Division(roamVectors[roamIndex], 64f);
-
-            string location = currentLocation.Name;
 
             if (Game1.currentSeason == "winter")
             {
                 return false;
+            }
+
+            if(!currentLocation.IsFarm && !currentLocation.IsGreenhouse)
+            {
+
+                return false;
+
             }
 
             if (currentLocation.objects.Count() < 0)
@@ -618,6 +337,8 @@ namespace StardewDruid.Character
 
                             ResetActives();
 
+                            LookAtTarget(scarevector * 64,true);
+
                             netSpecialActive.Set(true);
 
                             netWorkActive.Set(true);
@@ -625,6 +346,8 @@ namespace StardewDruid.Character
                             specialTimer = 90;
 
                             workVector = scarevector;
+
+                            ritesDone.Add(scarevector);
 
                             return true;
 
@@ -649,7 +372,15 @@ namespace StardewDruid.Character
                 if (currentLocation.Name == Game1.player.currentLocation.Name && Utility.isOnScreen(Position, 128))
                 {
 
-                    Mod.instance.iconData.DecorativeIndicator(currentLocation, Position, IconData.decorations.weald, 1f);
+                    Mod.instance.iconData.DecorativeIndicator(currentLocation, Position, IconData.decorations.weald, 3f, new());
+
+                    TemporaryAnimatedSprite skyAnimation = Mod.instance.iconData.SkyIndicator(currentLocation, Position, IconData.skies.valley, 1f, new() { interval = 1000, });
+
+                    skyAnimation.scaleChange = 0.002f;
+
+                    skyAnimation.motion = new(-0.064f, -0.064f);
+
+                    skyAnimation.timeBasedMotion = true;
 
                     Game1.player.currentLocation.playSound("discoverMineral", null, 1000);
 
@@ -657,204 +388,29 @@ namespace StardewDruid.Character
 
             }
 
-            if(specialTimer != 50)
+            if(specialTimer == 50 && !Mod.instance.Config.disableSeeds)
             {
 
-                return;
+                Cultivate cultivateEvent = new();
+
+                cultivateEvent.EventSetup(workVector * 64, "effigy_cultivate_" + workVector.ToString());
+
+                cultivateEvent.inabsentia = true;
+
+                cultivateEvent.EventActivate();
 
             }
 
-            Vector2 vector2 = workVector;
-
-            if (!Mod.instance.targetCasts.ContainsKey(currentLocation.Name))
+            if(specialTimer == 20)
             {
 
-                Mod.instance.targetCasts[currentLocation.Name] = new();
+                Artifice artificeHandle = new();
+
+                artificeHandle.ArtificeScarecrow(currentLocation, workVector);
 
             }
-
-            bool Reseed = !Mod.instance.EffectDisabled("Seeds");
-
-            List<CastHandle> casts = new();
-
-            for (int level = 1; level < (Mod.instance.PowerLevel + 2); level++)
-            {
-
-                foreach (Vector2 tileWithinRadius in ModUtility.GetTilesWithinRadius(currentLocation, vector2, level))
-                {
-
-                    if (Mod.instance.targetCasts[currentLocation.Name].ContainsKey(tileWithinRadius))
-                    {
-
-                        continue;
-
-                    }
-
-                    if (currentLocation.terrainFeatures.ContainsKey(tileWithinRadius))
-                    {
-
-                        if (currentLocation.terrainFeatures[tileWithinRadius] is StardewValley.TerrainFeatures.HoeDirt hoeDirtFeature)
-                        {
-
-                            if (hoeDirtFeature.crop != null)
-                            {
-
-                                StardewDruid.Cast.Weald.Crop cropHustle = new(tileWithinRadius, Reseed, true);
-
-                                cropHustle.targetLocation = currentLocation;
-
-                                casts.Add(cropHustle);
-
-                                Mod.instance.targetCasts[currentLocation.Name][tileWithinRadius] = "Crop" + hoeDirtFeature.crop.indexOfHarvest.Value.ToString();
-
-                            }
-
-                        }
-
-
-                    }
-
-                }
-
-            }
-
-            string location = currentLocation.Name;
-
-            for (int radius = 0; radius < 9; radius++)
-            {
-
-                List<Vector2> radii = ModUtility.GetTilesWithinRadius(currentLocation, vector2, radius);
-
-                foreach (Vector2 radiiVector in radii)
-                {
-
-                    if (!Mod.instance.targetCasts.ContainsKey(location))
-                    {
-
-                        Mod.instance.targetCasts[location] = ModUtility.LocationTargets(currentLocation);
-                    }
-
-                    if (Mod.instance.targetCasts[location].ContainsKey(radiiVector))
-                    {
-                        continue;
-                    }
-
-                    if (currentLocation.terrainFeatures.ContainsKey(radiiVector))
-                    {
-
-                        if (currentLocation.terrainFeatures[radiiVector] is StardewValley.TerrainFeatures.FruitTree fruitTree)
-                        {
-
-                            if (fruitTree.stump.Value)
-                            {
-
-                                continue;
-
-                            }
-
-                            if (fruitTree.growthStage.Value < 4)
-                            {
-
-                                fruitTree.dayUpdate();
-
-                            }
-                            else if (!Game1.IsWinter)
-                            {
-                                Debris debris;
-
-                                if ((int)fruitTree.struckByLightningCountdown.Value > 0)
-                                {
-                                    debris = new Debris("382", new Vector2(radiiVector.X * 64f + 32f, (radiiVector.Y - 3f) * 64f + 32f), Game1.player.Position)
-                                    {
-                                        itemQuality = 0,
-                                    };
-                                }
-                                else
-                                {
-
-                                    FruitTreeData data = fruitTree.GetData();
-
-                                    Item item = null;
-
-                                    if (data?.Fruit != null)
-                                    {
-
-                                        foreach (FruitTreeFruitData item2 in data.Fruit)
-                                        {
-
-                                            item = ItemQueryResolver.TryResolveRandomItem(item2, new ItemQueryContext(currentLocation, null, null), avoidRepeat: false, null, null, null, delegate (string query, string error) { });
-
-                                        }
-
-                                    }
-
-                                    if (item == null)
-                                    {
-
-                                        continue;
-
-                                    }
-
-                                    int itemQuality = 0;
-
-                                    if ((int)fruitTree.daysUntilMature.Value <= -112)
-                                    {
-                                        itemQuality = 1;
-                                    }
-
-                                    if ((int)fruitTree.daysUntilMature.Value <= -224)
-                                    {
-                                        itemQuality = 2;
-                                    }
-
-                                    if ((int)fruitTree.daysUntilMature.Value <= -336)
-                                    {
-                                        itemQuality = 4;
-                                    }
-
-                                    if ((int)fruitTree.struckByLightningCountdown.Value > 0)
-                                    {
-                                        itemQuality = 0;
-                                    }
-
-                                    debris = new Debris(item, new Vector2(radiiVector.X * 64f + 32f, (radiiVector.Y - 3f) * 64f + 32f), Game1.player.Position)
-                                    {
-                                        itemQuality = itemQuality,
-                                    };
-
-                                }
-
-                                debris.Chunks[0].xVelocity.Value += (float)Game1.random.Next(-10, 11) / 10f;
-
-                                debris.chunkFinalYLevel = (int)(radiiVector.Y * 64f + 64f);
-
-                                currentLocation.debris.Add(debris);
-                            }
-
-                            Mod.instance.targetCasts[location][radiiVector] = "Tree";
-
-                        }
-
-                    }
-
-                }
-
-            }
-
-            if (casts.Count != 0)
-            {
-
-                foreach (Cast.CastHandle effect in casts)
-                {
-
-                    effect.CastEffect();
-                }
-            }
-
-            ritesDone.Add(vector2);
 
         }
-
 
     }
 

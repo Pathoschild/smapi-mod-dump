@@ -10,6 +10,10 @@
 
 #nullable enable
 
+#if COMMON_CRAFTING
+
+using System.Collections.Generic;
+
 using StardewValley;
 using StardewValley.Menus;
 
@@ -68,3 +72,27 @@ public interface IGlobalPerformCraftEvent : IPerformCraftEvent {
 	IRecipe Recipe { get; }
 
 }
+
+/// <summary>
+/// A further extended IGlobalPerformCraftEvent subclass that includes
+/// a list of the matching ingredients being consumed. This is necessary
+/// because adding this to the existing model would break Pintail's
+/// proxying, for some reason.
+/// </summary>
+public interface IGlobalPerformCraftEventV2 : IGlobalPerformCraftEvent {
+
+	/// <summary>
+	/// A dictionary for looking up matching ingredient items.
+	/// If an <see cref="IIngredient"/> does not have an entry in this
+	/// list, then that ingredient does not support the ingredient
+	/// matching feature.
+	///
+	/// You may remove an item from the list to prevent it from
+	/// being consumed.
+	/// </summary>
+	IReadOnlyDictionary<IIngredient, List<Item>> MatchingItems { get; }
+
+}
+
+
+#endif

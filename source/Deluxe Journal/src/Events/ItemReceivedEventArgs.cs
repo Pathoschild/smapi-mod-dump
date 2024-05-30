@@ -14,14 +14,18 @@ namespace DeluxeJournal.Events
 {
     public class ItemReceivedEventArgs : EventArgs
     {
-        /// <summary>Item received.</summary>
-        public SObject Item { get; }
+        /// <summary>The player who received the item stack.</summary>
+        public Farmer Player { get; }
 
-        /// <summary>Number of items received (equivalent to Item.Stack).</summary>
+        /// <summary>Item received.</summary>
+        public Item Item { get; }
+
+        /// <summary>Number of items received. May differ from Item.Stack if it was split between stacks or the inventory was full.</summary>
         public int Count { get; }
 
-        public ItemReceivedEventArgs(SObject item, int count)
+        public ItemReceivedEventArgs(Farmer player, Item item, int count)
         {
+            Player = player;
             Item = item;
             Count = count;
         }

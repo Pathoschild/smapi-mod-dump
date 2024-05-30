@@ -17,9 +17,6 @@ namespace SkillPrestige.Framework
     [Serializable]
     internal class ModConfig
     {
-        /*********
-        ** Accessors
-        *********/
         /// <summary>The logging verbosity for the mod. A log level set to Verbose will log all entries.</summary>
         public LogLevel LogLevel { get; set; } = LogLevel.Warning;
 

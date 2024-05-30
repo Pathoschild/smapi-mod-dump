@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>library</OutputType>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <EnableHarmony>true</EnableHarmony>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="Portraiture">
+        <HintPath>..\..\Software\Steam\steamapps\common\Stardew Valley\mods\Portraiture\Portraiture.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+</Project>

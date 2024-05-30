@@ -181,15 +181,11 @@ namespace SmartBuilding.Utilities
                 return ItemType.GrassStarter;
             if (itemName.Equals("Crab Pot"))
                 return ItemType.CrabPot;
-            if (item.Type == "Crafting" && item.Category == -74)
+            else if (item.Category == -74 && item.isSapling())
             {
                 return ItemType.Sapling;
             }
-            else if (item.Type == "Basic" && item.Category == -74)
-            {
-                return ItemType.Sapling;
-            }
-            else if (item.Type.Equals("Seeds") || item.Type.Equals("Seed") || item.Category.Equals(-74))
+            else if (item.Category.Equals(-74) && item.HasContextTag("category_seeds"))
             {
                 return ItemType.Seed;
             }

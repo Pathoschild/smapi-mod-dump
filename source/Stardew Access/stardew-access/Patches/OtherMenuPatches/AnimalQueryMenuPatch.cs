@@ -68,17 +68,19 @@ namespace stardew_access.Patches
             }
         }
 
-        private static void NarrateAnimalDetailsOnKeyPress( FarmAnimal ___animal, string ___parentName)
+        private static void NarrateAnimalDetailsOnKeyPress(FarmAnimal ___animal, string ___parentName)
         {
             bool isPrimaryInfoKeyPressed = MainClass.Config.PrimaryInfoKey.JustPressed();
             if (!isPrimaryInfoKeyPressed | isNarratingAnimalInfo)
                 return;
 
             isNarratingAnimalInfo = true;
-            
+
             string name = ___animal.displayName;
             string type = ___animal.displayType;
             int age = (___animal.GetDaysOwned() + 1) / 28 + 1;
+            bool isAgeInDays = age <= 1;
+            age = age <= 1 ? ___animal.GetDaysOwned() + 1 : age;
             string parent = "null";
 
             if (___parentName != null)
@@ -100,16 +102,17 @@ namespace stardew_access.Patches
             }
 
             MainClass.ScreenReader.TranslateAndSay("menu-animal_query-animal_info", true, new
-                {
-                    name,
-                    type,
-                    is_baby = ___animal.isBaby() ? 1 : 0,
-                    heart_count = heartCount,
-                    age,
-                    parent_name = parent,
-                    mood = ___animal.getMoodMessage(),
-                    has_received_animal_cracker = ___animal.hasEatenAnimalCracker.Value ? 1 : 0,
-                },
+            {
+                name,
+                type,
+                is_baby = ___animal.isBaby() ? 1 : 0,
+                heart_count = heartCount,
+                is_age_in_days = isAgeInDays ? 1 : 0,
+                age,
+                parent_name = parent,
+                mood = ___animal.getMoodMessage(),
+                has_received_animal_cracker = ___animal.hasEatenAnimalCracker.Value ? 1 : 0,
+            },
                 TranslationCategory.Menu);
             Task.Delay(200).ContinueWith(_ => { isNarratingAnimalInfo = false; }); // Adds delay
         }

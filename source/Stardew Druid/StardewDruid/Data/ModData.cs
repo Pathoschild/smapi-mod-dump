@@ -26,43 +26,65 @@ namespace StardewDruid.Data
 
         public KeybindList effectsButtons { get; set; }
 
+        public KeybindList relicsButtons { get; set; }
+
+        public KeybindList herbalismButtons { get; set; }
+
         public bool disableHands { get; set; }
-
-        public bool slotAttune { get; set; }
-
-        public bool slotFreedom { get; set; }
 
         public bool autoProgress { get; set; }
 
-        public int newProgress { get; set; }
+        public int setMilestone { get; set; }
+
+        public bool setOnce { get; set; }
 
         public bool maxDamage { get; set; }
 
-        public string combatDifficulty { get; set; }
-
-        public int meteorBehaviour { get; set; }
-
         public int adjustRewards { get; set; }
 
-        public string colourPreference { get; set; }
+        public string combatDifficulty { get; set; }
 
-        public bool cardinalMovement { get; set; }
+        public bool slotAttune { get; set; }
 
         public bool slotConsume { get; set; }
 
-        public bool consumeRoughage { get; set; }
+        public bool slotFreedom { get; set; }
 
-        public bool consumeQuicksnack { get; set; }
+        public string slotOne { get; set; }
 
-        public bool consumeCaffeine { get; set; }
+        public string slotTwo { get; set; }
+
+        public string slotThree { get; set; }
+
+        public string slotFour { get; set; }
+
+        public string slotFive { get; set; }
+
+        public string slotSix { get; set; }
+
+        public string slotSeven { get; set; }
+
+        public string slotEight { get; set; }
+
+        public string slotNine { get; set; }
+
+        public string slotTen { get; set; }
+
+        public string slotEleven { get; set; }
+
+        public string slotTwelve { get; set; }
+
+        public int cultivateBehaviour { get; set; }
+
+        public int meteorBehaviour { get; set; }
+
+        public bool cardinalMovement { get; set; }
 
         public bool castAnywhere { get; set; }
 
         public bool reverseJournal { get; set; }
 
         public bool activeJournal { get; set; }
-
-        public bool partyHats { get; set; }
 
         public bool disableSeeds { get; set; }
 
@@ -79,25 +101,36 @@ namespace StardewDruid.Data
             specialButtons = KeybindList.Parse("MouseRight,X,ControllerY");
             journalButtons = KeybindList.Parse("K");
             effectsButtons = KeybindList.Parse("L");
-            disableHands = false;
-            slotAttune = false;
-            slotFreedom = false;
-            autoProgress = false;
-            maxDamage = false;
-            combatDifficulty = "medium";
-            meteorBehaviour = 1;
-            adjustRewards = 100;
-            colourPreference = "Red";
-            cardinalMovement = false;
-            newProgress = -1;
-            slotConsume = false;
-            consumeRoughage = true;
-            consumeQuicksnack = true;
-            consumeCaffeine = true;
-            castAnywhere = false;
+            relicsButtons = KeybindList.Parse("I");
+            herbalismButtons = KeybindList.Parse("O");
             reverseJournal = false;
             activeJournal = true;
-            partyHats = false;
+            disableHands = false;
+            autoProgress = false;
+            setMilestone = 0;
+            setOnce = false;
+            maxDamage = false;
+            adjustRewards = 100;
+            combatDifficulty = "medium";
+            slotAttune = true;
+            slotConsume = true;
+            slotFreedom = false;
+            slotOne = "weald";
+            slotTwo = "mists";
+            slotThree = "stars";
+            slotFour = "fates";
+            slotFive = "ether";
+            slotSix = "none";
+            slotSeven = "none";
+            slotEight = "none";
+            slotNine = "lunch";
+            slotTen = "lunch";
+            slotEleven = "lunch";
+            slotTwelve = "lunch";
+            cultivateBehaviour = 1;
+            meteorBehaviour = 1;
+            cardinalMovement = false;
+            castAnywhere = false;
             disableSeeds = false;
             disableFish = false;
             disableTrees = false;

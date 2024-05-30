@@ -1,7 +1,7 @@
 {
   "Name": "AutoGrab Truffles",
   "Author": "Frostiverse",
-  "Version": "1.0.2",
+  "Version": "1.1.0",
   "Description": "Auto-Grabbers inside of barns with pigs will collect the truffles that the pigs of that barn find anywhere on your farm.",
   "UniqueID": "Frostiverse.AutoGrabTruffles",
   "EntryDll": "AutoGrabTruffles.dll",

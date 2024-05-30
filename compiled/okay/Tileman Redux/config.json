@@ -2,7 +2,9 @@
   "ToggleOverlayKey": "G",
   "ToggleOverlayModeKey": "H",
   "ChangeDifficultyKey": "None",
+  "BuyLocationTilesKey": "None",
   "TilePrice": 1,
   "TilePriceRaise": 0.0008,
-  "DifficultyMode": 1
+  "DifficultyMode": 1,
+  "BuyTileWhenCollidingWithoutMoney": false
 }

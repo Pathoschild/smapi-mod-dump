@@ -25,7 +25,7 @@ using System.Xml.Serialization;
 using Unlockable_Bundles.Lib.Enums;
 using StardewValley.Network;
 using static Unlockable_Bundles.ModEntry;
-
+using Unlockable_Bundles.NetLib;
 
 namespace Unlockable_Bundles.Lib
 {
@@ -54,19 +54,32 @@ namespace Unlockable_Bundles.Lib
 
         public bool IsPlayerNearby;
         private NetBool _wasDiscovered = new NetBool();
-        public bool WasDiscovered { get => _wasDiscovered.Value; set => _wasDiscovered.Value = value; }
+        public bool WasDiscovered
+        {
+            get {
+                return _wasDiscovered.Value;
+            }
+            set => _wasDiscovered.Value = value;
+        }
         public static Texture2D BundleDiscoveredAnimation;
         public static TemporaryAnimatedSpriteList TemporaryAnimatedSprites = new();
         private bool TexturesWereSet = false; //Relevant for multiplayer where Unlockable isn't set when creating the object
         public static void Initialize()
         {
-            BundleDiscoveredAnimation = Helper.ModContent.Load<Texture2D>("assets/BundleDiscoveredAnimation.png");
+            BundleDiscoveredAnimation = Helper.GameContent.Load<Texture2D>("UnlockableBundles/UI/BundleDiscoveredAnimation");
             Helper.Events.Display.Rendered += drawTemporaryAnimatedSprites;
         }
         public ShopObject()
         {
             ItemId = "DLX.Bundles.ShopObject";
             setEvents();
+        }
+
+        public ShopObject(Unlockable unlockable)
+        {
+            ItemId = "DLX.Bundles.ShopObject";
+            _unlockable.Set(unlockable);
+            setTextures();
         }
 
         public ShopObject(Vector2 tileLocation, Unlockable unlockable)
@@ -186,6 +199,9 @@ namespace Unlockable_Bundles.Lib
             Texture2D texture;
             var color = Color.White;
 
+            if (!TexturesWereSet)
+                setTextures();
+
             if (OverviewTexture is not null) {
                 texture = OverviewTexture.Texture;
                 sourceRectangle = OverviewTexture.getOffsetRectangle();
@@ -272,20 +288,18 @@ namespace Unlockable_Bundles.Lib
         }
 
         //Only the main players could easily allocate a list of all shop objects, so instead of handling complex caching we minimize the usage of this method and cache results
+        //Multiplayer clients may not even have the objects loaded
         public static List<ShopObject> getAll()
         {
             List<ShopObject> list = new();
 
-            foreach (var loc in Game1.locations) {
-                foreach (var building in loc.buildings.Where(el => el.isUnderConstruction() && el.indoors.Value != null))
-                    foreach (var obj in building.indoors.Value.Objects.Values.Where(el => el is ShopObject))
-                        if (!list.Contains(obj))
-                            list.Add(obj as ShopObject);
-
+            Utility.ForEachLocation((loc) => {
                 foreach (var obj in loc.Objects.Values.Where(el => el is ShopObject))
                     if (!list.Contains(obj))
                         list.Add(obj as ShopObject);
-            }
+
+                return true;
+            }, true, false);
 
             return list;
         }
@@ -307,15 +321,22 @@ namespace Unlockable_Bundles.Lib
 
         private void _wasDiscovered_fieldChangeEvent(NetBool field, bool oldValue, bool newValue)
         {
-            if (!Multiplayer.IsScreenReady.Value)
+            if (!Context.IsMainPlayer)
                 return;
 
             if (oldValue == newValue)
                 return;
 
-            ModData.setDiscovered(Unlockable.ID, Unlockable.LocationUnique, newValue);
+            var data = new BundleDiscoveredTransferModel() { id = Unlockable.ID, location = Unlockable.LocationUnique, value = newValue };
+            Helper.Multiplayer.SendMessage(data, "BundleDiscovered", modIDs: new[] { ModManifest.UniqueID });
+            setDiscovered(Unlockable.ID, Unlockable.LocationUnique, newValue);
+        }
 
-            if (newValue && ShopPlacement.HasDayStarted) {
+        public static void setDiscovered(string id, string location, bool value)
+        {
+            ModData.setDiscovered(id, location, value);
+
+            if (value && ShopPlacement.HasDayStarted) {
                 if (Context.ScreenId == 0)
                     Game1.playSound("ub_pageflip");
 
@@ -333,8 +354,6 @@ namespace Unlockable_Bundles.Lib
                     });
             }
         }
-
-
         private static void drawTemporaryAnimatedSprites(object sender, StardewModdingAPI.Events.RenderedEventArgs e)
         {
             for (int k = TemporaryAnimatedSprites.Count - 1; k >= 0; k--) {

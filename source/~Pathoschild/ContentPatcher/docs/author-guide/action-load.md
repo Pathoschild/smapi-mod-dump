@@ -46,7 +46,7 @@ field     | purpose
 field     | purpose
 --------- | -------
 `When`    | _(optional)_ Only apply the patch if the given [conditions](../author-guide.md#conditions) match.
-`LogName` | _(optional)_ A name for this patch to show in log messages. This is useful for understanding errors; if not specified, it'll default to a name like `entry #14 (EditImage Animals/Dinosaurs)`.
+`LogName` | _(optional)_ A name for this patch to show in log messages. This can be useful for understanding errors. If omitted, it defaults to a name like `Load Data/Achievements`.
 `Update`  | _(optional)_ How often the patch fields should be updated for token changes. See [update rate](../author-guide.md#update-rate) for more info.
 
 </dd>
@@ -83,10 +83,19 @@ pack.
 
 This field does _not_ support tokens, and capitalization doesn't matter.
 
-</td>
   </tr>
-</table>
+  <tr>
+  <td><code>TargetLocale</code></td>
+  <td>
 
+_(optional)_ The locale code to match in the asset name. For example, setting `"TargetLocale": "fr-FR"`
+will only load the French localized form of the asset (e.g. `Data/Achievements.fr-FR`). This can be
+an empty string to only load the base unlocalized asset.
+
+If omitted, it's applied to all localized and unlocalized variants of the asset.
+
+</td>
+</table>
 </dd>
 </dl>
 
@@ -94,7 +103,7 @@ This field does _not_ support tokens, and capitalization doesn't matter.
 This replaces Abigail's portraits with your own image (see [NPC modding](https://stardewvalleywiki.com/Modding:NPC_data)):
 ```js
 {
-    "Format": "2.0.0",
+    "Format": "2.1.0",
     "Changes": [
         {
             "Action": "Load",
@@ -109,7 +118,7 @@ You can list any number of load patches, as long as each asset is only loaded by
 
 ```js
 {
-    "Format": "2.0.0",
+    "Format": "2.1.0",
     "Changes": [
         {
             "Action": "Load",
@@ -130,7 +139,7 @@ files at once:
 
 ```js
 {
-    "Format": "2.0.0",
+    "Format": "2.1.0",
     "Changes": [
         {
             "Action": "Load",
@@ -144,7 +153,7 @@ files at once:
 You can use `Priority` to have an optional load (e.g. if it'll still work when another mod loads it first):
 ```js
 {
-    "Format": "2.0.0",
+    "Format": "2.1.0",
     "Changes": [
         {
             "Action": "Load",

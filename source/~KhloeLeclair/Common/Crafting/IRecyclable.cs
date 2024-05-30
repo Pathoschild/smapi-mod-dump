@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#if COMMON_CRAFTING
+
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -77,3 +79,6 @@ public interface IRecyclable {
 	}
 
 }
+
+
+#endif

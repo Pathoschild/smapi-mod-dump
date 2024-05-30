@@ -262,7 +262,7 @@
                 "HasMod |contains=DaisyNiko.SVR3": "true"
             },
         },
-        //Forest SE
+        //Forest SE Vanilla
         {
             "Action": "EditMap",
             "Target": "Maps/Forest",
@@ -282,10 +282,10 @@
             "PatchMode": "Replace",
             "When": {
                 "EnableForestSE": true,
-                "HasMod |contains=DaisyNiko.SVR3": "false"
+                "HasMod |contains=DaisyNiko.SVR3,SYS.AB": "false"
             },
         },
-        //Forest SE Tile Properties
+        //Forest SE Vanilla Tile Properties 
         {
             "Action": "EditMap",
             "Target": "Maps/Forest",
@@ -302,7 +302,7 @@
             ],
             "When": {
                 "EnableForestSE": true,
-                "HasMod |contains=DaisyNiko.SVR3": "false"
+                "HasMod |contains=DaisyNiko.SVR3,SYS.AB": "false"
             },
         },
         //Forest SE SVR3
@@ -348,7 +348,49 @@
                 "HasMod |contains=DaisyNiko.SVR3": "true"
             },
         },
-		
+        //Forest SE Abandoned Bride
+        {
+            "Action": "EditMap",
+            "Target": "Maps/Forest",
+            "FromFile": "assets/Cart.tmx",
+            "FromArea": {
+                "X": 0,
+                "Y": 0,
+                "Width": 1,
+                "Height": 2
+            },
+            "ToArea": {
+                "X": 102,
+                "Y": 72,
+                "Width": 1,
+                "Height": 2
+            },
+            "PatchMode": "Overlay",
+            "When": {
+                "EnableForestSE": true,
+                "HasMod |contains=SYS.AB": "true"
+            },
+        },
+        //Forest SE Abandoned Bride Tile Properties
+        {
+            "Action": "EditMap",
+            "Target": "Maps/Forest",
+            "MapTiles": [{
+                    "Position": {
+                        "X": "102",
+                        "Y": "73"
+                    },
+                    "Layer": "Buildings",
+                    "SetProperties": {
+                        "Action": "MinecartTransport Default ForestSE",
+                    },
+                },
+            ],
+            "When": {
+                "EnableForestSE": true,
+                "HasMod |contains=SYS.AB": "true"
+            },
+        },		
         //Ginger Island North Cave
         {
             "Action": "EditMap",
@@ -429,6 +471,47 @@
             ],
             "When": {
                 "EnableGingerIslandCaldera": true,
+            },
+        },
+        //Ginger Island Farm
+        {
+            "Action": "EditMap",
+            "Target": "Maps/Island_W",
+            "FromFile": "assets/IslandCartEntrance.tmx",
+            "FromArea": {
+                "X": 0,
+                "Y": 0,
+                "Width": 3,
+                "Height": 4
+            },
+            "ToArea": {
+                "X": 62,
+                "Y": 40,
+                "Width": 3,
+                "Height": 4
+            },
+            "PatchMode": "Overlay",
+            "When": {
+                "EnableGingerIslandFarm": true,
+            },
+        },
+        //Ginger Island Farm Tile Properties
+        {
+            "Action": "EditMap",
+            "Target": "Maps/Island_W",
+            "MapTiles": [{
+                    "Position": {
+                        "X": "63",
+                        "Y": "43"
+                    },
+                    "Layer": "Buildings",
+                    "SetProperties": {
+                        "Action": "MinecartTransport Default IslandFarm",
+                    },
+                },
+            ],
+            "When": {
+                "EnableGingerIslandFarm": true,
             },
         },
         //Mountain SVE
@@ -683,7 +766,7 @@
                 "Height": 2
             },
             "ToArea": {
-                "X": 48,
+                "X": 46,
                 "Y": 3,
                 "Width": 1,
                 "Height": 2
@@ -700,7 +783,7 @@
             "Target": "Maps/Woods",
             "MapTiles": [{
                     "Position": {
-                        "X": "48",
+                        "X": "46",
                         "Y": "4"
                     },
                     "Layer": "Buildings",
@@ -1472,6 +1555,174 @@
                 "HasMod |contains=A_TK.FarmProjectForaging, A_TK.FarmProjectForaging.LE": "true"
             },
 			"Priority": "Late",
+        },
+        //Grampleton Fields West SVE
+        {
+            "Action": "EditMap",
+            "Target": "Maps/Custom_GrampletonFields",
+            "FromFile": "assets/Cart.tmx",
+            "FromArea": {
+                "X": 0,
+                "Y": 0,
+                "Width": 1,
+                "Height": 2
+            },
+            "ToArea": {
+                "X": 2,
+                "Y": 108,
+                "Width": 1,
+                "Height": 2
+            },
+            "PatchMode": "Overlay",
+            "When": {
+                "EnableGrampletonFields": true,
+                "HasMod |contains=flashshifter.GrampletonFields": "true"
+            },
+        },
+        //Grampleton Fields West SVE Tile Properties
+        {
+            "Action": "EditMap",
+            "Target": "Maps/Custom_GrampletonFields",
+            "MapTiles": [{
+                    "Position": {
+                        "X": "2",
+                        "Y": "109"
+                    },
+                    "Layer": "Buildings",
+                    "SetProperties": {
+                        "Action": "MinecartTransport Default GrampletonFieldsW",
+                    },
+                },
+            ],
+            "When": {
+                "EnableGrampletonFields": true,
+                "HasMod |contains=flashshifter.GrampletonFields": "true"
+            },
+        },	
+        //Grampleton Fields East SVE
+        {
+            "Action": "EditMap",
+            "Target": "Maps/Custom_GrampletonFields",
+            "FromFile": "assets/Cart.tmx",
+            "FromArea": {
+                "X": 0,
+                "Y": 0,
+                "Width": 1,
+                "Height": 2
+            },
+            "ToArea": {
+                "X": 160,
+                "Y": 42,
+                "Width": 1,
+                "Height": 2
+            },
+            "PatchMode": "Overlay",
+            "When": {
+                "EnableGrampletonFields": true,
+                "HasMod |contains=flashshifter.GrampletonFields": "true"
+            },
+        },
+        //Grampleton Fields East SVE Tile Properties
+        {
+            "Action": "EditMap",
+            "Target": "Maps/Custom_GrampletonFields",
+            "MapTiles": [{
+                    "Position": {
+                        "X": "160",
+                        "Y": "43"
+                    },
+                    "Layer": "Buildings",
+                    "SetProperties": {
+                        "Action": "MinecartTransport Default GrampletonFieldsE",
+                    },
+                },
+            ],
+            "When": {
+                "EnableGrampletonFields": true,
+                "HasMod |contains=flashshifter.GrampletonFields": "true"
+            },
+        },
+        //Grampleton Fields East SVE
+        {
+            "Action": "EditMap",
+            "Target": "Maps/Custom_GrampletonFields",
+            "FromFile": "assets/Cart.tmx",
+            "FromArea": {
+                "X": 0,
+                "Y": 0,
+                "Width": 1,
+                "Height": 2
+            },
+            "ToArea": {
+                "X": 163,
+                "Y": 135,
+                "Width": 1,
+                "Height": 2
+            },
+            "PatchMode": "Overlay",
+            "When": {
+                "EnableGrampletonFields": true,
+                "HasMod |contains=flashshifter.GrampletonFields": "true"
+            },
+        },
+        //Grampleton Fields South SVE Tile Properties
+        {
+            "Action": "EditMap",
+            "Target": "Maps/Custom_GrampletonFields",
+            "MapTiles": [{
+                    "Position": {
+                        "X": "163",
+                        "Y": "136"
+                    },
+                    "Layer": "Buildings",
+                    "SetProperties": {
+                        "Action": "MinecartTransport Default GrampletonFieldsS",
+                    },
+                },
+            ],
+            "When": {
+                "EnableGrampletonFields": true,
+                "HasMod |contains=flashshifter.GrampletonFields": "true"
+            },
+        },
+        //Modest Farm Cave Tile Properties
+        {
+            "Action": "EditMap",
+            "Target": "Maps/FarmCave",
+            "MapTiles": [{
+                    "Position": {
+                        "X": "15",
+                        "Y": "6"
+                    },
+                    "Layer": "Buildings",
+                    "SetProperties": {
+                        "Action": "MinecartTransport Default ModestFarmCave",
+                    },
+                },
+            ],
+            "When": {
+                "EnableModestFarmCave": true,
+                "HasMod |contains=Inkubus.ModestCave": "true",
+            },
+        },
+        {
+            "Action": "EditMap",
+            "Target": "Maps/FarmCave",
+            "MapTiles": [{
+                    "Position": {
+                        "X": "16",
+                        "Y": "6"
+                    },
+                    "Layer": "Buildings",
+                    "SetProperties": {
+                        "Action": "MinecartTransport Default ModestFarmCave",
+                    },
+                },
+            ],
+            "When": {
+                "EnableModestFarmCave": true,
+                "HasMod |contains=Inkubus.ModestCave": "true",
+            },
         },
     ]
 }

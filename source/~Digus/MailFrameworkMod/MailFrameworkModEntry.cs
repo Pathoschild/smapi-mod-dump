@@ -76,6 +76,11 @@ namespace MailFrameworkMod
                 original: AccessTools.Method(typeof(CollectionsPage), nameof(CollectionsPage.receiveLeftClick)),
                 prefix: new HarmonyMethod(typeof(MailController), nameof(MailController.receiveLeftClick))
             );
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.answerDialogueAction)),
+                prefix: new HarmonyMethod(typeof(ReplyController), nameof(ReplyController.answerDialogueAction))
+            );
         }
 
         /// <summary>

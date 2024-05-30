@@ -9,8 +9,44 @@
 *************************************************/
 
 {
-  "Format": "1.22.0",
+  "Format": "2.0.0",
   "Changes": [
+    // Content Patcher ring creation
+    {
+      "Action": "Load",
+      "Target": "CustomCompanions/Rings/PeacefulEnd.ContentPatcherForCustomCompanions/ExampleRing",
+      "FromFile": "Assets/example_ring.png"
+    },
+    {
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "Entries": {
+        "PeacefulEnd.ContentPatcherForCustomCompanions_ExampleContentPatcherRing": {
+          "Name": "PeacefulEnd.ContentPatcherForCustomCompanions_ExampleContentPatcherRing",
+          "DisplayName": "Example Custom Companion Ring",
+          "Description": "An example ring for Custom Companions.",
+          "Type": "Ring",
+          "Category": 0,
+          "Price": 0,
+          "Texture": "CustomCompanions/Rings/PeacefulEnd.ContentPatcherForCustomCompanions/ExampleRing",
+          "SpriteIndex": 0,
+          "Buffs": null,
+          "ExcludeFromFishingCollection": true,
+          "ExcludeFromShippingCollection": true,
+          "ExcludeFromRandomSale": true,
+          "CustomFields": {
+            "PeacefulEnd.CustomCompanions/Companions/Variety": 2,
+
+            "PeacefulEnd.CustomCompanions/Companions/0/Id": "ExampleAuthor.ExamplePack.ExampleFlyingCompanion",
+            "PeacefulEnd.CustomCompanions/Companions/0/NumberToSummon": 1,
+
+            "PeacefulEnd.CustomCompanions/Companions/1/Id": "ExampleAuthor.ExamplePack.ExampleFirefly",
+            "PeacefulEnd.CustomCompanions/Companions/1/NumberToSummon": 3
+          }
+        }
+      }
+    },
+    // Map spawns
     {
       "Action": "EditData",
       "Target": "{{PeacefulEnd.CustomCompanions/Companions:ExampleAuthor.ExamplePack.ExampleAlternativeWanderWalkingCow}}",

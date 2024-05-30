@@ -51,7 +51,7 @@ public class RecipeManager : BaseManager {
 	// cheaper recipe while the other player should not.
 
 	private readonly PerScreen<int> CraftingCount = new(() => 0);
-	private readonly PerScreen<int> CookingCount = new(() =>0);
+	private readonly PerScreen<int> CookingCount = new(() => 0);
 
 	private readonly PerScreen<Dictionary<string, IRecipe>> CraftingRecipesByName = new(() => new());
 	private readonly PerScreen<Dictionary<string, IRecipe>> CookingRecipesByName = new(() => new());
@@ -88,9 +88,6 @@ public class RecipeManager : BaseManager {
 	private readonly Dictionary<string, Func<string>> API_DisplayName_Cooking = new();
 	private readonly Dictionary<string, Func<string>> API_DisplayName_Crafting = new();
 
-	// Dynamic Buff Rules
-	private readonly Dictionary<string, BuffRuleHandler> BuffRules = new();
-
 	public bool DefaultsLoaded = false;
 
 	public RecipeManager(ModEntry mod) : base(mod) {
@@ -113,7 +110,7 @@ public class RecipeManager : BaseManager {
 
 	[Subscriber]
 	private void OnAssetInvalidated(object? sender, AssetsInvalidatedEventArgs e) {
-		foreach(var name in e.NamesWithoutLocale) {
+		foreach (var name in e.NamesWithoutLocale) {
 			if (name.IsEquivalentTo(CATEGORY_PATH)) {
 				DefaultsLoaded = false;
 				DefaultCraftingCategories = null;
@@ -125,12 +122,6 @@ public class RecipeManager : BaseManager {
 				break;
 			}
 		}
-	}
-
-	[Subscriber]
-	private void OnAssetReady(object? sender, AssetReadyEventArgs e) {
-		if (BuffRules.Count > 0 && (e.Name.IsEquivalentTo(@"Data/Objects") || e.Name.IsEquivalentTo(@"Data/Buffs")))
-			LoadBuffRules();
 	}
 
 	[Subscriber]
@@ -198,7 +189,7 @@ public class RecipeManager : BaseManager {
 		string path = $"savedata/seenrecipes/{Constants.SaveFolderName}.json";
 		try {
 			Mod.Helper.Data.WriteJsonFile(path, SeenRecipes);
-		} catch(Exception ex) {
+		} catch (Exception ex) {
 			Log($"There was an issue writing seen recipes to {path}.", LogLevel.Error, ex);
 		}
 	}
@@ -215,7 +206,7 @@ public class RecipeManager : BaseManager {
 
 		try {
 			data = Mod.Helper.Data.ReadJsonFile<Dictionary<long, HashSet<string>>>(path);
-		} catch(Exception ex) {
+		} catch (Exception ex) {
 			Log($"The {path} file is invalid or corrupt.", LogLevel.Error, ex);
 			data = null;
 		}
@@ -232,7 +223,7 @@ public class RecipeManager : BaseManager {
 	#region Recipe Handling
 
 	public List<IRecipe> GetRecipes(bool cooking) {
-		if (! RecipesLoaded.Value || CraftingCount.Value != CraftingRecipe.craftingRecipes.Count || CookingCount.Value != CraftingRecipe.cookingRecipes.Count) {
+		if (!RecipesLoaded.Value || CraftingCount.Value != CraftingRecipe.craftingRecipes.Count || CookingCount.Value != CraftingRecipe.cookingRecipes.Count) {
 			if (CraftingCount.Value != 0 || CookingCount.Value != 0)
 				Log("Recipe count changed. Re-caching recipes.", LogLevel.Info);
 			LoadRecipes();
@@ -296,7 +287,7 @@ public class RecipeManager : BaseManager {
 		List<NPC> chars;
 		try {
 			chars = Utility.getAllCharacters();
-		} catch(Exception ex) {
+		} catch (Exception ex) {
 			Log($"Unable to get character list due to error. Gift tastes will not function.\nDetails: {ex}", LogLevel.Warn, ex);
 			return null;
 		}
@@ -304,11 +295,13 @@ public class RecipeManager : BaseManager {
 		List<NPC> loves = new();
 		List<NPC> likes = new();
 
+		bool show_all = Mod.Config.EffectiveShowAllTastes;
+
 		foreach (NPC npc in chars) {
 			if (!npc.CanSocialize)
 				continue;
 
-			if (!Mod.Config.ShowAllTastes && !Game1.player.hasGiftTasteBeenRevealed(npc, item.ItemId))
+			if (!show_all && !Game1.player.hasGiftTasteBeenRevealed(npc, item.ItemId))
 				continue;
 
 			int taste;
@@ -378,7 +371,7 @@ public class RecipeManager : BaseManager {
 			},
 			UseRules = useRules,
 			DynamicRules = rules?.
-				Select(x => DynamicRuleData.FromGeneric(x)).ToList()
+				Select(x => UpdateRuleData(x)).ToList()
 		};
 
 		if (recipeNames is not null)
@@ -408,7 +401,7 @@ public class RecipeManager : BaseManager {
 			},
 			UseRules = useRules,
 			DynamicRules = rules?.
-				Select(x => DynamicRuleData.FromGeneric(x)).ToList()
+				Select(x => UpdateRuleData(x)).ToList()
 		};
 
 		if (recipeNames is not null)
@@ -474,7 +467,7 @@ public class RecipeManager : BaseManager {
 			LoadCategories();
 
 		long id = who.UniqueMultiplayerID;
-		Category[]? result = null;
+		Category[]? result;
 		AppliedStuff? applied = null;
 
 		if (cooking) {
@@ -487,7 +480,7 @@ public class RecipeManager : BaseManager {
 				applied = defs.Crafting;
 		}
 
-		result ??= (cooking ? DefaultCookingCategories : DefaultCraftingCategories) ?? Array.Empty<Category>();
+		result ??= (cooking ? DefaultCookingCategories : DefaultCraftingCategories) ?? [];
 
 		if (ApplyCategoryChanges(ref result, ref applied, cooking ? API_Cooking : API_Crafting)) {
 			// If we've made changes, store them.
@@ -513,7 +506,7 @@ public class RecipeManager : BaseManager {
 		}
 
 		timer.Stop();
-		Log($"Loaded categories after {timer.ElapsedMilliseconds}ms.", LogLevel.Debug);
+		Log($"Loaded categories after {timer.ElapsedMilliseconds}ms.", LogLevel.Trace);
 
 		return result;
 	}
@@ -529,7 +522,7 @@ public class RecipeManager : BaseManager {
 		List<Category> working = new(existing);
 
 		// Add new categories first.
-		foreach(var cat in added.AddedCategories.Values) {
+		foreach (var cat in added.AddedCategories.Values) {
 			if (cat.Id is null || applied.AddedCategories.Contains(cat.Id))
 				continue;
 
@@ -545,10 +538,11 @@ public class RecipeManager : BaseManager {
 					Path = cat.Icon.Path,
 					Rect = cat.Icon.Rect,
 					Scale = cat.Icon.Scale,
+					Frames = cat.Icon.Frames
 				},
 				UseRules = cat.UseRules,
 				DynamicRules = cat.DynamicRules?.
-					Select(x => DynamicRuleData.FromGeneric(x)).ToList()
+					Select(x => UpdateRuleData(x)).ToList()
 			};
 
 			if (cat.Recipes is not null)
@@ -564,7 +558,7 @@ public class RecipeManager : BaseManager {
 		}
 
 		// Add and remove recipes.
-		foreach(var cat in working) {
+		foreach (var cat in working) {
 			if (cat.Id is null)
 				continue;
 
@@ -581,8 +575,7 @@ public class RecipeManager : BaseManager {
 					appliedRecipes.Add(recipe);
 					changed = true;
 
-					if (cat.Recipes is null)
-						cat.Recipes = new();
+					cat.Recipes ??= new();
 					if (!cat.Recipes.Contains(recipe))
 						cat.Recipes.Add(recipe);
 				}
@@ -628,7 +621,7 @@ public class RecipeManager : BaseManager {
 				CookingCategories.Remove(id);
 				if (AppliedDefaults.TryGetValue(id, out var applied))
 					applied.Cooking = new();
-					
+
 				AppliedDefaults.Remove(id);
 			} else
 				CookingCategories[id] = array;
@@ -648,6 +641,9 @@ public class RecipeManager : BaseManager {
 	#region Dynamic Rules
 
 	private void RegisterDefaultRuleHandlers() {
+		RegisterRuleHandler("Buff", new BuffRuleHandler(Mod));
+		RegisterRuleHandler("GiftLove", new GiftTasteRuleHandler(Mod, GiftTaste.Love));
+		RegisterRuleHandler("GiftLike", new GiftTasteRuleHandler(Mod, GiftTaste.Like));
 		RegisterRuleHandler("Category", new CategoryRuleHandler(Mod));
 		RegisterRuleHandler("ContextTag", new ContextTagRuleHandler(Mod));
 		RegisterRuleHandler("Edible", new EdibleRuleHandler());
@@ -662,68 +658,6 @@ public class RecipeManager : BaseManager {
 		RegisterRuleHandler("Storage", new StorageRuleHandler());
 		RegisterRuleHandler("Sprinkler", new SprinklerRuleHandler());
 		RegisterRuleHandler("Light", new LightRuleHandler());
-		RegisterRuleHandler("BuffFarming", new BuffRuleHandler(BuffRuleHandler.FARMING));
-		RegisterRuleHandler("BuffFishing", new BuffRuleHandler(BuffRuleHandler.FISHING));
-		RegisterRuleHandler("BuffMining", new BuffRuleHandler(BuffRuleHandler.MINING));
-		RegisterRuleHandler("BuffLuck", new BuffRuleHandler(BuffRuleHandler.LUCK));
-		RegisterRuleHandler("BuffForaging", new BuffRuleHandler(BuffRuleHandler.FORAGING));
-		RegisterRuleHandler("BuffMaxEnergy", new BuffRuleHandler(BuffRuleHandler.MAX_ENERGY));
-		RegisterRuleHandler("BuffMagnetism", new BuffRuleHandler(BuffRuleHandler.MAGNETISM));
-		RegisterRuleHandler("BuffSpeed", new BuffRuleHandler(BuffRuleHandler.SPEED));
-		RegisterRuleHandler("BuffDefense", new BuffRuleHandler(BuffRuleHandler.DEFENSE));
-		RegisterRuleHandler("BuffAttack", new BuffRuleHandler(BuffRuleHandler.ATTACK));
-		//RegisterRuleHandler("BuffGarlic", new SingleItemRuleHandler(772));
-		RegisterRuleHandler("BuffLife", new SingleItemRuleHandler(773));
-		RegisterRuleHandler("BuffMuscle", new SingleItemRuleHandler(351));
-		//RegisterRuleHandler("BuffSquidInk", new SingleItemRuleHandler(921));
-		RegisterRuleHandler("BuffMonsterMusk", new SingleItemRuleHandler(879));
-		LoadBuffRules();
-	}
-
-	private static readonly Dictionary<string, string> RuleNameOverrides = new() {
-		{ "23", "BuffGarlic" },
-		{ "28", "BuffSquidInk" }
-	};
-
-	private void LoadBuffRules() {
-
-		var buffData = DataLoader.Buffs(Game1.content);
-		var objects = DataLoader.Objects(Game1.content);
-
-		// Get all buffs that objects have that aren't Drink or Food, that
-		// have an Id, and that aren't a debuff.
-		var buffs = objects.Values
-			.Where(obj => obj.Buffs is not null && obj.Buffs.Count > 0)
-			.SelectMany(obj => obj.Buffs)
-			.Where(buff => buff.Id != "Drink" && buff.Id != "Food" && !buff.IsDebuff && !string.IsNullOrEmpty(buff.BuffId));
-
-		var existing = BuffRules.Keys.ToHashSet();
-
-		// Now, for each one, make a rule.
-		foreach(var buff in buffs) {
-			if (existing.Remove(buff.BuffId))
-				continue;
-
-			if (!buffData.TryGetValue(buff.BuffId, out var data))
-				continue;
-
-			var handler = BuffRules[buff.BuffId] = new BuffRuleHandler(buff.BuffId, data);
-
-			if (!RuleNameOverrides.TryGetValue(buff.BuffId, out string? key))
-				key = $"Buff:{buff.BuffId}";
-
-			RegisterRuleHandler(key, handler);
-		}
-
-		// For any buffs we didn't see.
-		foreach(string BuffId in existing) {
-			if (!RuleNameOverrides.TryGetValue(BuffId, out string? key))
-				key = $"Buff:{BuffId}";
-
-			UnregisterRuleHandler(key);
-			BuffRules.Remove(BuffId);
-		}
-
 	}
 
 	public bool RegisterRuleHandler(string key, IDynamicRuleHandler handler) {
@@ -746,6 +680,59 @@ public class RecipeManager : BaseManager {
 		return invalidRuleHandler;
 	}
 
+	private static DynamicRuleData UpdateRuleData(IDynamicRuleData data) {
+		if (data.Id.StartsWith("scbuff:"))
+			return new() {
+				Id = "Buff",
+				Fields = {
+					{ "Input", $"sc:{data.Id[7..]}" }
+				}
+			};
+
+		else if (data.Id.StartsWith("Buff:"))
+			return new() {
+				Id = "Buff",
+				Fields = {
+					{ "Input", data.Id[5..] }
+				}
+			};
+
+		else if (data.Id == "BuffGarlic")
+			return new() {
+				Id = "Buff",
+				Fields = {
+					{ "Input", "23" }
+				}
+			};
+
+		else if (data.Id == "BuffSquidInk")
+			return new() {
+				Id = "Buff",
+				Fields = {
+					{ "Input", "28" }
+				}
+			};
+
+		else if (data.Id.StartsWith("Buff") && BuffRuleHandler.StatMap.ContainsKey(data.Id[4..]))
+			return new() {
+				Id = "Buff",
+				Fields = {
+					{ "Input", $"stat:{data.Id[4..]}" }
+				}
+			};
+
+		if (data is DynamicRuleData ruleData)
+			return ruleData;
+
+		return DynamicRuleData.FromGeneric(data);
+	}
+
+	private static readonly Dictionary<string, string> LegacySingleItemRules = new() {
+		{ "BuffLife", "773" },
+		{ "BuffMuscle", "351" },
+		{ "BuffMonsterMusk", "879" }
+	};
+
 	public (IDynamicRuleHandler, object?, DynamicRuleData)[]? HydrateDynamicRules(IEnumerable<DynamicRuleData>? ruleData) {
 		if (ruleData is null)
 			return null;
@@ -765,7 +752,11 @@ public class RecipeManager : BaseManager {
 				}
 
 				result.Add((handler, state, rule));
-			} else
+
+			} else if (LegacySingleItemRules.TryGetValue(rule.Id, out string? item))
+				result.Add((new SingleItemRuleHandler(item), null, rule));
+
+			else
 				result.Add((invalidRuleHandler, invalidRuleHandler.ParseState(rule), rule));
 		}
 
@@ -835,7 +826,7 @@ public class RecipeManager : BaseManager {
 		CraftingRecipe raw;
 		try {
 			raw = new(name, cooking);
-		} catch(Exception ex) {
+		} catch (Exception ex) {
 			Log($"An error occurred creating a crafting recipe instance for \"{name}\" (cooking:{cooking}). The recipe will be skipped.", LogLevel.Warn, ex);
 			return null;
 		}
@@ -872,7 +863,7 @@ public class RecipeManager : BaseManager {
 
 		try {
 			return GetBaseRecipe(raw);
-		} catch(Exception ex) {
+		} catch (Exception ex) {
 			Log($"An error occurred creating a recipe instance for \"{name}\" (cooking:{cooking}). The recipe will be skipped.", LogLevel.Warn, ex);
 			return null;
 		}
@@ -914,7 +905,7 @@ public class RecipeManager : BaseManager {
 
 			var recipes = provider.GetAdditionalRecipes(true);
 			if (recipes != null)
-				foreach(IRecipe recipe in recipes) {
+				foreach (IRecipe recipe in recipes) {
 					if (recipe == null)
 						continue;
 
@@ -987,7 +978,7 @@ public class RecipeManager : BaseManager {
 		//CraftingRecipes.Value.Sort((a, b) => a.SortValue.CompareTo(b.SortValue));
 
 		timer.Stop();
-		Log($"Loaded {CookingRecipes.Value.Count} cooking recipes and {CraftingRecipes.Value.Count} crafting recipes in {timer.ElapsedMilliseconds}ms.", LogLevel.Debug);
+		Log($"Loaded {CookingRecipes.Value.Count} cooking recipes and {CraftingRecipes.Value.Count} crafting recipes in {timer.ElapsedMilliseconds}ms.", LogLevel.Trace);
 	}
 
 	private Dictionary<string, Category> HydrateCategories(IEnumerable<Category> categories, string source, Dictionary<string, Category>? byID = null) {
@@ -999,6 +990,12 @@ public class RecipeManager : BaseManager {
 			} catch (Exception ex) {
 				Log($"Skipping bad category in {source}.", LogLevel.Warn, ex);
 			}
+		}
+
+		foreach (Category cat in byID.Values) {
+			if (cat.DynamicRules is not null)
+				for (int i = 0; i < cat.DynamicRules.Count; i++)
+					cat.DynamicRules[i] = UpdateRuleData(cat.DynamicRules[i]);
 		}
 
 		return byID;
@@ -1131,7 +1128,7 @@ public class RecipeManager : BaseManager {
 		if (data == null)
 			return;
 
-		Log($"Loaded category data file after {timer.ElapsedMilliseconds}ms.", LogLevel.Debug);
+		Log($"Loaded category data file after {timer.ElapsedMilliseconds}ms.", LogLevel.Trace);
 
 		foreach (KeyValuePair<long, Categories> entry in data) {
 			if (entry.Value == null)
@@ -1166,7 +1163,7 @@ public class RecipeManager : BaseManager {
 		}
 
 		timer.Stop();
-		Log($"Finished hydrating category data file after {timer.ElapsedMilliseconds}ms.", LogLevel.Debug);
+		Log($"Finished hydrating category data file after {timer.ElapsedMilliseconds}ms.", LogLevel.Trace);
 	}
 
 	private CPCategories LoadDefaultsFromFiles() {
@@ -1256,18 +1253,28 @@ public class RecipeManager : BaseManager {
 			if (cat.Icon != null)
 				existing.Icon = cat.Icon;
 
+			// Dynamic Rules
+			if (cat.UseRules)
+				existing.UseRules = true;
+
+			if (cat.DynamicRules != null && cat.DynamicRules.Count > 0) {
+				// TODO: Better merge logic.
+				existing.DynamicRules ??= new();
+				foreach (var rule in cat.DynamicRules)
+					existing.DynamicRules.Add(rule);
+			}
+
 			// Merge Recipes
-			if (existing.Recipes is null)
-				existing.Recipes = new();
+			existing.Recipes ??= new();
 
 			// Unwanted Recipes -- Old Style
-			if (cat.UnwantedRecipes != null && cat.UnwantedRecipes.Length > 0) { 
-				foreach(string recipe in cat.UnwantedRecipes)
+			if (cat.UnwantedRecipes != null && cat.UnwantedRecipes.Length > 0) {
+				foreach (string recipe in cat.UnwantedRecipes)
 					existing.Recipes.Remove(recipe);
 			}
 
 			// New Recipes
-			if (cat.Recipes != null && cat.Recipes.Count > 0) { 
+			if (cat.Recipes != null && cat.Recipes.Count > 0) {
 				foreach (string recipe in cat.Recipes) {
 					if (string.IsNullOrEmpty(recipe))
 						continue;
@@ -1341,7 +1348,7 @@ public class RecipeManager : BaseManager {
 
 		try {
 			return factory is null ? recipe : (IRecipe) factory.ObtainProxy(Mod.GetProxyManager()!, unboxed);
-		} catch(Exception) {
+		} catch (Exception) {
 			return recipe;
 		}
 	}

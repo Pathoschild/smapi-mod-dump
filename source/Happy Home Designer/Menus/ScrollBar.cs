@@ -42,6 +42,8 @@ namespace HappyHomeDesigner.Menus
 			}
 		}
 		private int columns = 1;
+
+		/// <summary>Number of rows visible to the user</summary>
 		public int VisibleRows
 		{
 			get => visibleRows;
@@ -53,7 +55,11 @@ namespace HappyHomeDesigner.Menus
 			}
 		}
 		private int visibleRows = 0;
+
+		/// <summary>Number of rows to offset by</summary>
 		public int Offset { get; private set; }
+
+		/// <summary>Number of cells to offset by</summary>
 		public int CellOffset { get; private set; }
 
 		private int height = 1;
@@ -70,9 +76,6 @@ namespace HappyHomeDesigner.Menus
 
 		public void Draw(SpriteBatch batch)
 		{
-			// debug
-			//batch.Draw(Game1.staminaRect, scroller, Color.Blue);
-
 			if (VisibleRows < Rows)
 			{
 				if (height is >= 256)
@@ -93,6 +96,7 @@ namespace HappyHomeDesigner.Menus
 			}
 		}
 
+		/// <summary>Advance the index by a number of rows</summary>
 		public void AdvanceRows(int count)
 		{
 			int oldOffset = Offset;

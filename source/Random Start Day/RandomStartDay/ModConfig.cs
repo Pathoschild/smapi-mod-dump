@@ -26,6 +26,7 @@ class ModConfig
 
     public bool UseWheatSeeds { get; set; }
     public bool UseWinter28toYear1 { get; set; }
+    public bool TVRecipeWithSeasonContext { get; set; }
 
     public ModConfig()
     {
@@ -36,5 +37,6 @@ class ModConfig
 
         this.UseWheatSeeds = true;
         this.UseWinter28toYear1 = true;
+        this.TVRecipeWithSeasonContext = true;
     }
 }

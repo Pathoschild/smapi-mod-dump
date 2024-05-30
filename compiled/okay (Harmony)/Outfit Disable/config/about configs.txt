@@ -1,0 +1,23 @@
+When you install this mod and run the game, json files will be created with the following content.
+
+{
+  "Default": false,
+  "ExceptionsList": {}
+}
+
+* true or false: Outfit is disabled when value is true.
+* "Default": Applies to all NPCs, who is not in exceptions.
+* "ExceptionsList": Applicable NPCs are applied as defined in the exception, regardless of the value of Default.
+
+You can write exceptions like following format:
+
+{
+  "Default": false,
+  "ExceptionsList": {
+    "Abigail": true,
+    "Alex": false,
+    "(WhoeverYouWant)": (true or false)
+  }
+}
+
+There is no limit to the size of the list.

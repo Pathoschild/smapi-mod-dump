@@ -1,0 +1,10 @@
+{
+  "Name": "Continuous Music",
+  "Author": "exhaustors",
+  "Version": "1.0.0",
+  "Description": "Play more music during the day.",
+  "UniqueID": "exhaustors.ContinuousMusic",
+  "EntryDll": "ContinuousMusic.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:24348" ]
+}

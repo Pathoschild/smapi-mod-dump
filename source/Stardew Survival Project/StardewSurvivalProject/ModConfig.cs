@@ -94,6 +94,8 @@ namespace StardewSurvivalProject
         public double EnvironmentBaseTemperature { get; set; } = 25;
         public double DefaultDayNightCycleTemperatureDiffScale { get; set; } = 4;
         public double DefaultTemperatureFluctuationScale { get; set; } = 1;
+        public double IndoorTemperatureMultiplier { get; set; } = 0.9;
+        public double FarmIndoorTemperatureMultiplier { get; set; } = 0.5;
         //seasonal multiplier
         public double SpringSeasonTemperatureMultiplier { get; set; } = 0.9;
         public double SummerSeasonTemperatureMultiplier { get; set; } = 1.1;

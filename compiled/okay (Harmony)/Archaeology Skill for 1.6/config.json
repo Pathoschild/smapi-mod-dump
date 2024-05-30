@@ -3,5 +3,9 @@
   "ExperienceFromArtifactSpots": 10,
   "ExperienceFromPanSpots": 20,
   "ExperienceFromMinesDigging": 5,
-  "ExperienceFromWaterShifter": 2
+  "ExperienceFromWaterShifter": 2,
+  "ExperienceFromResearchTable": 10,
+  "ExperienceFromAncientBattery": 10,
+  "ExperienceFromPreservationChamber": 10,
+  "ExperienceFromHPreservationChamber": 20
 }

@@ -44,7 +44,8 @@ namespace AnimalHusbandryMod.meats
                 DisplayName = i18n.Get($"Meat.{value}.Name"),
                 Description = i18n.Get($"Meat.{value}.Description"),
                 Category = -14,
-                Type = "Basic"
+                Type = "Basic",
+                ContextTags = new List<string>() { "meat_item" }
             };
         }        
     }

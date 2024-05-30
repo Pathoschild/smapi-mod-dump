@@ -9,6 +9,7 @@
 
     // generic values
     "generic.unknown": "未知",
+    "generic.list-separator": "、", // text between listed values (like ", " in "A, B, C")
 
     // generic field values
     "generic.percent": "{{percent}}%",
@@ -27,7 +28,7 @@
     "generic.price": "{{price}}金",
     "generic.price-for-quality": "{{price}}金（{{quality}}）",
     "generic.price-for-stack": "{{count}}个，总共价值{{price}}金",
-    "generic.show-x-results": "show {{count}} results", // TODO
+    "generic.show-x-results": "显示 {{count}} 个结果",
 
     // types
     "type.building": "建筑",
@@ -98,31 +99,19 @@
     "data.item.box.description": "打碎之后可以获得各种物品。",
 
     // location names
-    "location.backwoods": "边远森林",
-    "location.beach": "海滩",
     "location.beach.east-pier": "海滩（码头东侧）",
     "location.bugLand": "突变虫穴",
-    "location.busStop": "巴士站",
-    "location.desert": "沙漠",
     "location.desert.topPond": "沙漠池塘",
-    "location.farm": "农场",
     "location.farmCave": "农场洞穴",
     "location.farmHouse": "农舍",
-    "location.forest": "煤矿森林",
     "location.forest.island-tip": "煤矿森林（河流小岛南端）",
     "location.forest.lake": "煤矿森林（湖泊）",
     "location.forest.river": "煤矿森林（河流）",
-    "location.mountain": "深山",
-    "location.railroad": "铁路",
-    "location.sewer": "下水道",
     "location.submarine": "夜市潜艇",
-    "location.town": "鹈鹕镇",
     "location.town.northmost-bridge": "鹈鹕镇（北部桥区）",
-    "location.tunnel": "巴士隧道",
     "location.undergroundMine": "矿井",
     "location.undergroundMine.level": "矿井层数：{{level}}",
     "location.witchSwamp": "女巫的沼泽",
-    "location.woods": "秘密森林",
 
     "location.caldera": "姜岛火山口",
     "location.islandEast": "姜岛东部",
@@ -134,7 +123,31 @@
     "location.islandWest.freshwater": "姜岛西部（淡水）",
     "location.islandWest.ocean": "姜岛西部（海洋）",
 
+    "location.fish-area": "{{locationName}} ({{areaName}})",
     "location.unknown-fish-area": "{{locationName}}（钓鱼区 {{id}}）",
+
+
+    /*********
+    ** Conditions & context tags
+    *********/
+    // TODO
+    "condition-or-context-tag.negate": "除了{{value}}",
+
+    "condition.item-type.input": "input item",
+    "condition.item-type.target": "target item",
+
+    "condition.item-context-tag": "{{item}} has context tag {{tags}}",
+    "condition.item-context-tags": "{{item}} has context tags {{tags}}",
+    "condition.item-context-tag.value": "'{{tag}}'", // the format of each context tag in the list (each context tag isn't translated)
+
+    "condition.item-edibility.edible": "{{item}} is edible",
+    "condition.item-edibility.min": "{{item}} has edibility of {{min}} or more",
+    "condition.item-edibility.range": "{{item}} has edibility of {{min}} to {{max}}",
+
+    "context-tag.bone": "骨头（任意）",
+    "context-tag.egg": "鸡蛋（任意）",
+    "context-tag.large-egg": "大鸡蛋（任意）",
+    "context-tag.preserved-item": "preserved {{name}}", // TODO
 
 
     /*********
@@ -316,9 +329,13 @@
     "item.needed-for.gourmet-chef": "美食大厨成就（烹饪{{recipes}}）",
     "item.needed-for.craft-master": "制造大师成就（制造{{recipes}}）",
     "item.needed-for.quests": "当前任务（{{quests}}）",
+    "item.unknown-recipes": "{{count}}个未知配方",
     "item.sells-to.shipping-box": "出货箱",
     "item.recipes-for-ingredient.entry": "{{name}}（需要{{count}}）",
     "item.recipes-for-machine.multiple-items": "{{name}} x{{count}}",
+    "item.recipes-for-machine.same-as-input": "[与输入相同]", // e.g. crystalarium produces same item that was put in
+    "item.recipes-for-machine.conditions": "[条件: {{conditions}}]",
+    "item.recipes-for-machine.too-complex": "一些生产规则因太复杂而无法显示",
     "item.number-owned.summary": "你目前拥有的总数为{{count}}",
     "item.number-crafted.summary": "你已制造{{count}}个此物",
 
@@ -539,7 +556,7 @@
 
     // values
     "puzzle.solution.solved": "谜题已解决！",
-    "puzzle.solution.hidden": "在进度模式下谜题解决方法不可见",
+    "puzzle.solution.hidden": "谜题解决方法根据您的设置隐藏",
 
 
     /*********
@@ -645,10 +662,21 @@
     *********/
     // main options
     "config.title.main-options": "常规",
-    "config.progression-mode.name": "进度模式",
-    "config.progression-mode.desc": "是否隐藏某些内容(如礼物品位和谜题解决方法)，直到你在游戏中发现它",
     "config.force-full-screen.name": "强制全屏",
     "config.force-full-screen.desc": "是否全屏显示查询结果窗口，这对查看数据挖掘字段时非常有用",
+
+    // progression mode
+    // TODO
+    "config.title.progression": "进度模式",
+
+    "config.progression.show-unknown-gift-tastes.name": "Show unknown gift tastes",
+    "config.progression.show-unknown-gift-tastes.desc": "Whether to show gift tastes you haven't learned about in-game yet (e.g. from dialogue text or experimenting).",
+
+    "config.progression.show-unknown-recipes.name": "Show unknown recipes",
+    "config.progression.show-unknown-recipes.desc": "Whether to show recipes you haven't learned in-game yet.",
+
+    "config.progression.show-puzzle-solutions.name": "Show puzzle solutions",
+    "config.progression.show-puzzle-solutions.desc": "Whether to show puzzle solutions.",
 
     // gift tastes
     "config.title.gift-tastes": "礼物品位",
@@ -668,6 +696,17 @@
 
     "config.highlight-unrevealed-gift-tastes.name": "加粗显示未揭露的礼物",
     "config.highlight-unrevealed-gift-tastes.desc": "是否加粗显示未揭露的礼物品位",
+
+    // collapse fields
+    "config.title.collapse-fields": "折叠大型字段",
+
+    "config.collapse-fields.enabled.name": "启用",
+    "config.collapse-fields.enabled.desc": "是否折叠大型字段。当启用时，查找菜单会用'显示X个结果'的链接来替代大型字段，点击该字段会显示全部信息。",
+
+    "config.collapse-fields.building-recipes.name": "建筑查看: 生产规则",
+    "config.collapse-fields.item-recipes.name": "物品查看: 配方",
+    "config.collapse-fields.npc-gift-tastes.name": "NPC查看: 礼物品味",
+    "config.collapse-fields.any.desc": "如果某个字段包含的信息数量超过你所设置的值，查找菜单会用'显示X个结果'的链接来替代该字段。",
 
     // advanced options
     "config.title.advanced-options": "高级",

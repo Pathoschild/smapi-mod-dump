@@ -9,34 +9,45 @@
 *************************************************/
 
 {
-	"Changes": [
-		{
-			"Target": "Maps/{{season}}_outdoorsTileSheet",
-			"Action": "EditImage",
-			"FromFile": "assets/textures/waybackhouse_notwinter.png",
-			"FromArea": {"X": 0, "Y": 0, "Width": 101, "Height": 52},
-			"ToArea": {"X": 290, "Y": 1212, "Width": 101, "Height": 52},
-			"PatchMode": "Overlay",
-			"When": {
-				"Season": "spring, summer, fall"
-			}
-		},
-		{
-			"Target": "Maps/{{season}}_outdoorsTileSheet",
-			"Action": "EditImage",
-			"FromFile": "assets/textures/waybackhouse_winter.png",
-			"FromArea": {"X": 0, "Y": 0, "Width": 101, "Height": 52},
-			"ToArea": {"X": 290, "Y": 1212, "Width": 101, "Height": 52},
-			"PatchMode": "Overlay",
-			"When": {
-				"Season": "winter"
-			}
-		},
-		{
-			"Target": "LooseSprites/Cursors",
-			"Action": "EditImage",
-			"FromFile": "assets/textures/waybackstorefront_all.png",
-			"ToArea": {"X": 600, "Y": 1957, "Width": 64, "Height": 32}
-		}
-	]
+  "Changes": [
+    {
+      "Target": "Maps/{{season}}_outdoorsTileSheet",
+      "Action": "EditImage",
+      "FromFile": "assets/textures/waybackhouse_notwinter.png",
+      "FromArea": {"X": 0, "Y": 0, "Width": 101, "Height": 52},
+      "ToArea": {"X": 290, "Y": 1212, "Width": 101, "Height": 52},
+      "PatchMode": "Overlay",
+      "When": {
+        "Season": "spring, summer, fall"
+      }
+    },
+    {
+      "Target": "Maps/{{season}}_outdoorsTileSheet",
+      "Action": "EditImage",
+      "FromFile": "assets/textures/waybackhouse_winter.png",
+      "FromArea": {"X": 0, "Y": 0, "Width": 101, "Height": 52},
+      "ToArea": {"X": 290, "Y": 1212, "Width": 101, "Height": 52},
+      "PatchMode": "Overlay",
+      "When": {
+        "Season": "winter"
+      }
+    },
+    {
+      "Target": "LooseSprites/Cursors",
+      "Action": "EditImage",
+      "FromFile": "assets/textures/waybackstorefront_all.png",
+      "ToArea": {"X": 600, "Y": 1957, "Width": 64, "Height": 32},
+      "When": {
+        "HasMod |contains=Dora.HatMouseAndFriends": false
+      }
+    },
+    {
+      "Action": "Include",
+      "FromFile": "compat/hatmousefriends-{{MatchRetexture}}.json",
+      "When": {
+        "HasMod |contains=Dora.HatMouseAndFriends": true,
+        "HasFile:{{FromFile}}": true
+      }
+    }
+  ]
 }

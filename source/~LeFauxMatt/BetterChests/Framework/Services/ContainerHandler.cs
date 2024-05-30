@@ -11,14 +11,18 @@
 namespace StardewMods.BetterChests.Framework.Services;
 
 using HarmonyLib;
+using StardewMods.BetterChests.Framework.Models.Containers;
 using StardewMods.BetterChests.Framework.Models.Events;
 using StardewMods.BetterChests.Framework.Services.Factory;
 using StardewMods.Common.Enums;
+using StardewMods.Common.Helpers;
 using StardewMods.Common.Interfaces;
 using StardewMods.Common.Models;
 using StardewMods.Common.Services;
-using StardewMods.Common.Services.Integrations.BetterChests.Interfaces;
+using StardewMods.Common.Services.Integrations.BetterChests;
 using StardewMods.Common.Services.Integrations.FauxCore;
+using StardewMods.Common.Services.Integrations.GenericModConfigMenu;
+using StardewValley.Menus;
 using StardewValley.Objects;
 
 /// <summary>Responsible for handling containers.</summary>
@@ -26,29 +30,32 @@ internal sealed class ContainerHandler : BaseService<ContainerHandler>
 {
     private static ContainerHandler instance = null!;
 
+    private readonly ConfigManager configManager;
     private readonly ContainerFactory containerFactory;
-    private readonly IEventPublisher eventPublisher;
+    private readonly IEventManager eventManager;
+    private readonly GenericModConfigMenuIntegration genericModConfigMenuIntegration;
     private readonly IReflectionHelper reflectionHelper;
 
     /// <summary>Initializes a new instance of the <see cref="ContainerHandler" /> class.</summary>
+    /// <param name="configManager">Dependency used for managing config data.</param>
     /// <param name="containerFactory">Dependency used for accessing containers.</param>
-    /// <param name="eventPublisher">Dependency used for publishing events.</param>
-    /// <param name="log">Dependency used for logging debug information to the console.</param>
-    /// <param name="manifest">Dependency for accessing mod manifest.</param>
+    /// <param name="eventManager">Dependency used for managing events.</param>
+    /// <param name="genericModConfigMenuIntegration">Dependency for Generic Mod Config Menu integration.</param>
     /// <param name="patchManager">Dependency used for managing patches.</param>
-    /// <param name="reflectionHelper">Dependency used for reflecting into external code.</param>
+    /// <param name="reflectionHelper">Dependency used for reflecting into non-public code.</param>
     public ContainerHandler(
+        ConfigManager configManager,
         ContainerFactory containerFactory,
-        IEventPublisher eventPublisher,
-        ILog log,
-        IManifest manifest,
+        IEventManager eventManager,
+        GenericModConfigMenuIntegration genericModConfigMenuIntegration,
         IPatchManager patchManager,
         IReflectionHelper reflectionHelper)
-        : base(log, manifest)
     {
         ContainerHandler.instance = this;
+        this.configManager = configManager;
         this.containerFactory = containerFactory;
-        this.eventPublisher = eventPublisher;
+        this.eventManager = eventManager;
+        this.genericModConfigMenuIntegration = genericModConfigMenuIntegration;
         this.reflectionHelper = reflectionHelper;
 
         // Patches
@@ -84,7 +91,7 @@ internal sealed class ContainerHandler : BaseService<ContainerHandler>
     /// <param name="item">The item to add.</param>
     /// <param name="allowByDefault">Indicates whether it should be allowed by default.</param>
     /// <param name="force">Indicates whether it should be a forced attempt.</param>
-    /// <returns>true if the item can be added; otherwise, false.</returns>
+    /// <returns><c>true</c> if the item can be added; otherwise, <c>false</c>.</returns>
     public bool CanAddItem(IStorageContainer to, Item item, bool allowByDefault = false, bool force = false)
     {
         var hasItem = to.Items.ContainsId(item.QualifiedItemId);
@@ -101,7 +108,7 @@ internal sealed class ContainerHandler : BaseService<ContainerHandler>
             itemTransferringEventArgs.AllowTransfer();
         }
 
-        this.eventPublisher.Publish(itemTransferringEventArgs);
+        this.eventManager.Publish(itemTransferringEventArgs);
 
         // Automatically block if prevented
         if (itemTransferringEventArgs.IsPrevented)
@@ -113,13 +120,135 @@ internal sealed class ContainerHandler : BaseService<ContainerHandler>
         return force || itemTransferringEventArgs.IsAllowed;
     }
 
+    /// <summary>Configure the container.</summary>
+    /// <param name="container">The container to configure.</param>
+    public void Configure(IStorageContainer container)
+    {
+        if (!this.genericModConfigMenuIntegration.IsLoaded)
+        {
+            return;
+        }
+
+        Log.Info("{0}: Configuring {1}", this.Id, container);
+
+        var gmcm = this.genericModConfigMenuIntegration.Api;
+        var options = new DefaultStorageOptions();
+        container.ActualOptions.CopyTo(options);
+        var parentOptions = container.GetParentOptions();
+        this.genericModConfigMenuIntegration.Register(() => new DefaultStorageOptions().CopyTo(options), Save);
+
+        gmcm.AddSectionTitle(Mod.Manifest, () => container.DisplayName, container.ToString!);
+
+        gmcm.AddTextOption(
+            Mod.Manifest,
+            () => options.StorageName,
+            value => options.StorageName = value,
+            I18n.Config_StorageName_Name,
+            I18n.Config_StorageName_Tooltip);
+
+        gmcm.AddTextOption(
+            Mod.Manifest,
+            () => options.StorageIcon,
+            value => options.StorageIcon = value,
+            I18n.Config_StorageIcon_Name,
+            I18n.Config_StorageIcon_Tooltip);
+
+        // Access Chest Priority
+        if (container.AccessChest is not RangeOption.Disabled)
+        {
+            gmcm.AddNumberOption(
+                Mod.Manifest,
+                () => options.AccessChestPriority,
+                value => options.AccessChestPriority = value,
+                I18n.Config_AccessChestPriority_Name,
+                I18n.Config_AccessChestPriority_Tooltip);
+        }
+
+        // Stash to Chest Priority
+        if (container.StashToChest is not RangeOption.Disabled)
+        {
+            gmcm.AddNumberOption(
+                Mod.Manifest,
+                () => (int)options.StashToChestPriority,
+                value => options.StashToChestPriority = (StashPriority)value,
+                I18n.Config_StashToChestPriority_Name,
+                I18n.Config_StashToChestPriority_Tooltip,
+                -3,
+                3,
+                1,
+                Localized.FormatStashPriority);
+        }
+
+        // Categorize Chest
+        if (container.CategorizeChest is not FeatureOption.Disabled)
+        {
+            gmcm.AddTextOption(
+                Mod.Manifest,
+                () => options.CategorizeChestSearchTerm,
+                value => options.CategorizeChestSearchTerm = value,
+                I18n.Config_CategorizeChestSearchTerm_Name,
+                I18n.Config_CategorizeChestSearchTerm_Tooltip);
+
+            gmcm.AddTextOption(
+                Mod.Manifest,
+                () => options.CategorizeChestIncludeStacks.ToStringFast(),
+                value => options.CategorizeChestIncludeStacks = FeatureOptionExtensions.TryParse(value, out var option)
+                    ? option
+                    : FeatureOption.Default,
+                I18n.Config_CategorizeChestIncludeStacks_Name,
+                I18n.Config_CategorizeChestIncludeStacks_Tooltip,
+                FeatureOptionExtensions.GetNames(),
+                Localized.FormatOption(parentOptions?.CategorizeChestIncludeStacks));
+        }
+
+        gmcm.AddPageLink(Mod.Manifest, "Main", I18n.Section_Main_Name, I18n.Section_Main_Description);
+        this.configManager.AddMainOption(
+            Mod.Manifest,
+            "Main",
+            I18n.Section_Main_Name,
+            options,
+            parentOptions: parentOptions);
+
+        gmcm.OpenModMenu(Mod.Manifest);
+        return;
+
+        void Save()
+        {
+            Log.Trace("Config changed: {0}\n{1}", container, options);
+            options.CopyTo(container);
+
+            if (container is ChestContainer chestContainer)
+            {
+                chestContainer.Chest.fridge.Value = container.CookFromChest is not RangeOption.Disabled;
+            }
+        }
+    }
+
+    /// <summary>Sort a a container.</summary>
+    /// <param name="container">The container to sort.</param>
+    /// <param name="reverse">Indicates whether to reverse the sort order.</param>
+    public void Sort(IStorageContainer container, bool reverse = false)
+    {
+        var containerSortingEventArgs = new ContainerSortingEventArgs(container);
+        ItemGrabMenu.organizeItemsInList(container.Items);
+        this.eventManager.Publish(containerSortingEventArgs);
+
+        if (!reverse)
+        {
+            return;
+        }
+
+        var copy = container.Items.Reverse().ToList();
+        container.Items.OverwriteWith(copy);
+    }
+
     /// <summary>Transfers items from one container to another.</summary>
     /// <param name="from">The container to transfer items from.</param>
     /// <param name="to">The container to transfer items to.</param>
     /// <param name="amounts">Output parameter that contains the transferred item amounts.</param>
     /// <param name="force">Indicates whether to attempt to force the transfer.</param>
     /// <param name="existingOnly">Indicates whether to only transfer to existing stacks.</param>
-    /// <returns>true if the transfer was successful; otherwise, false.</returns>
+    /// <returns><c>true</c> if the transfer was successful; otherwise, <c>false</c>.</returns>
     public bool Transfer(
         IStorageContainer from,
         IStorageContainer to,
@@ -145,7 +274,7 @@ internal sealed class ContainerHandler : BaseService<ContainerHandler>
                     itemTransferringEventArgs.AllowTransfer();
                 }
 
-                this.eventPublisher.Publish(itemTransferringEventArgs);
+                this.eventManager.Publish(itemTransferringEventArgs);
 
                 // Automatically block if prevented
                 if (itemTransferringEventArgs.IsPrevented)

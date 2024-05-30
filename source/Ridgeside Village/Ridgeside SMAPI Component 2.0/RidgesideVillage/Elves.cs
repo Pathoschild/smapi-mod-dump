@@ -32,10 +32,10 @@ namespace RidgesideVillage
         {
             Helper = ModInstance.Helper;
             Monitor = ModInstance.Monitor;
-            TileActionHandler.RegisterTileAction("RSVUndreyaSched", RSVUndreyaSched);
+            GameLocation.RegisterTileAction("RSVUndreyaSched", RSVUndreyaSched);
         }
 
-        private static void RSVUndreyaSched(string tileActionString, Vector2 position)
+        private static bool RSVUndreyaSched(GameLocation location, string[] arg2, Farmer farmer, Point point)
         {
             if (!Game1.player.IsMainPlayer)
             {
@@ -59,7 +59,7 @@ namespace RidgesideVillage
                         },
                         delegate{}
                     };
-                        Game1.activeClickableMenu = new DialogueBoxWithActions(Helper.Translation.Get("RSV.UndreyaSchedStop"), responses, responseActions);
+                        Game1.activeClickableMenu = new DialogueBoxWithActions(Helper.Translation.Get("RSV.UndreyaSchedStop"), responses.ToArray(), responseActions);
                 }
                 else if (Game1.player.mailReceived.Contains(RSVConstants.M_UNDREYAHOME))
                 {
@@ -77,9 +77,11 @@ namespace RidgesideVillage
                         },
                         delegate{}
                     };
-                    Game1.activeClickableMenu = new DialogueBoxWithActions(Helper.Translation.Get("RSV.UndreyaSchedStart"), responses, responseActions);
+                    Game1.activeClickableMenu = new DialogueBoxWithActions(Helper.Translation.Get("RSV.UndreyaSchedStart"), responses.ToArray(), responseActions);
                 }
             }
+
+            return true;
         }
 
 

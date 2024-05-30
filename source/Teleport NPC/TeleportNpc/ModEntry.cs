@@ -29,16 +29,16 @@ public class ModEntry : Mod
     public override void Entry(IModHelper helper)
     {
         _config = helper.ReadConfig<Config>();
-        helper.Events.Input.ButtonPressed += OnButtonPress;
+        helper.Events.Input.ButtonsChanged += ButtonsChanged;
     }
 
-    private void OnButtonPress(object? sender, ButtonPressedEventArgs e)
+    private void ButtonsChanged(object? sender, ButtonsChangedEventArgs e)
     {
         if (!Context.IsWorldReady)
             return;
         if (!Context.IsPlayerFree)
             return;
-        if (e.Button != _config.OpenTeleport)
+        if (!_config.OpenTeleport.JustPressed())
             return;
         Game1.activeClickableMenu = new TeleportNpcScreen();
     }

@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-#nullable enable
+#if (COMMON_SIMPLELAYOUT || COMMON_FLOW)
 
 using System;
 using System.Collections.Generic;
@@ -18,7 +18,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Leclair.Stardew.Common.UI;
 
-public struct TextStyle {
+public readonly struct TextStyle {
 
 	public readonly static TextStyle EMPTY = new();
 	public readonly static TextStyle BOLD = new(bold: true);
@@ -37,8 +37,9 @@ public struct TextStyle {
 	public bool? Strikethrough { get; }
 	public bool? Underline { get; }
 	public float? Scale { get; }
+	public float? Opacity { get; }
 
-	public TextStyle(Color? color = null, Color? backgroundColor = null, bool? prismatic = null, SpriteFont? font = null, bool? fancy = null, bool? junimo = null, bool? shadow = null, Color? shadowColor = null, bool? bold = null, bool? strikethrough = null, bool? underline = null, bool? invert = null, float? scale = null) {
+	public TextStyle(Color? color = null, Color? backgroundColor = null, bool? prismatic = null, SpriteFont? font = null, bool? fancy = null, bool? junimo = null, bool? shadow = null, Color? shadowColor = null, bool? bold = null, bool? strikethrough = null, bool? underline = null, bool? invert = null, float? scale = null, float? opacity = null) {
 		Fancy = fancy;
 		Junimo = junimo;
 		Bold = bold;
@@ -52,6 +53,7 @@ public struct TextStyle {
 		Strikethrough = strikethrough;
 		Underline = underline;
 		Invert = invert;
+		Opacity = opacity;
 	}
 
 	/// <summary>
@@ -64,7 +66,7 @@ public struct TextStyle {
 	/// <param name="font"></param>
 	/// <param name="color"></param>
 	/// <param name="shadowColor"></param>
-	public TextStyle(TextStyle existing, SpriteFont? font, Color? color, Color? backgroundColor, Color? shadowColor, float? scale) {
+	public TextStyle(TextStyle existing, SpriteFont? font, Color? color, Color? backgroundColor, Color? shadowColor) {
 		Fancy = existing.Fancy;
 		Junimo = existing.Junimo;
 		Bold = existing.Bold;
@@ -74,13 +76,14 @@ public struct TextStyle {
 		BackgroundColor = backgroundColor;
 		Prismatic = existing.Prismatic;
 		Font = font;
-		Scale = scale;
+		Scale = existing.Scale;
 		Strikethrough = existing.Strikethrough;
 		Underline = existing.Underline;
 		Invert = existing.Invert;
+		Opacity = existing.Opacity;
 	}
 
-	public TextStyle(TextStyle existing, Color? color = null, Color? backgroundColor = null, bool? prismatic = null, SpriteFont? font = null, bool? fancy = null, bool? junimo = null, bool? shadow = null, Color? shadowColor = null, bool? bold = null, bool? strikethrough = null, bool? underline = null, bool? invert = null, float? scale = null) {
+	public TextStyle(TextStyle existing, Color? color = null, Color? backgroundColor = null, bool? prismatic = null, SpriteFont? font = null, bool? fancy = null, bool? junimo = null, bool? shadow = null, Color? shadowColor = null, bool? bold = null, bool? strikethrough = null, bool? underline = null, bool? invert = null, float? scale = null, float? opacity = null) {
 		Fancy = fancy ?? existing.Fancy;
 		Junimo = junimo ?? existing.Junimo;
 		Bold = bold ?? existing.Bold;
@@ -94,7 +97,9 @@ public struct TextStyle {
 		Strikethrough = strikethrough ?? existing.Strikethrough;
 		Underline = underline ?? existing.Underline;
 		Invert = invert ?? existing.Invert;
+		Opacity = opacity ?? existing.Opacity;
 	}
+
 
 	public bool HasShadow() {
 		return Shadow ?? true;
@@ -148,7 +153,8 @@ public struct TextStyle {
 			   EqualityComparer<SpriteFont>.Default.Equals(Font, style.Font) &&
 			   Strikethrough == style.Strikethrough &&
 			   Underline == style.Underline &&
-			   Scale == style.Scale;
+			   Scale == style.Scale &&
+			   Opacity == style.Opacity;
 	}
 
 	public override int GetHashCode() {
@@ -166,6 +172,7 @@ public struct TextStyle {
 		hash.Add(Strikethrough);
 		hash.Add(Underline);
 		hash.Add(Scale);
+		hash.Add(Opacity);
 		return hash.ToHashCode();
 	}
 
@@ -179,3 +186,5 @@ public struct TextStyle {
 
 	#endregion
 }
+
+#endif

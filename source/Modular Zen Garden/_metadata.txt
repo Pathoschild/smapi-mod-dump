@@ -6,9 +6,9 @@ mods:
    Modular Zen Garden
 
 latest commit:
-   commit f1685b75b49d5638f77b6dbfd0b2307844772dbb
+   commit 1651783437e2bc5ad1744abb288ece0c09390da6
    Author: leroymilo <adriaanboxmail@gmail.com>
-   Date:   Sat Apr 20 13:25:38 2024 +0900
+   Date:   Wed May 8 12:26:58 2024 +0900
    
-       added 2 medium gardens
+       updated manifest
    

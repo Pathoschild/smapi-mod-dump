@@ -2,7 +2,7 @@
     This file defines the colors shown in the Data Layers UI.
 
     You can use any color value defined here:
-    https://stardewvalleywiki.com/Modding:Migrate_to_Stardew_Valley_1.6#Color_fields
+    https://stardewvalleywiki.com/Modding:Common_data_field_types#Color
 */
 
 {

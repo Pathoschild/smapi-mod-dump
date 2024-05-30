@@ -21,17 +21,10 @@ namespace SkillPrestige.Framework.Commands
     // ReSharper disable once UnusedMember.Global - referenced via reflection
     internal class ResetAllProfessionsCommand : SkillPrestigeCommand
     {
-        /*********
-        ** Public methods
-        *********/
         /// <summary>Construct an instance.</summary>
         public ResetAllProfessionsCommand()
             : base("player_resetallprofessions", "Resets professions from all profession mods to only be a single profession tree for each skill.\n\nUsage: player_resetallprofessions") { }
 
-
-        /*********
-        ** Protected methods
-        *********/
         /// <summary>Applies the effect of a command when it is called from the console.</summary>
         protected override void Apply(string[] args)
         {

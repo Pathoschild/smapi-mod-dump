@@ -19,6 +19,38 @@ namespace HorseOverhaul
 {
     internal class StableOverlayTextures
     {
+        private static readonly Color darkBlueWater = new Color(101, 81, 112);
+        private static readonly Color blueWater = new Color(116, 116, 173);
+        private static readonly Color lightBlueWater = new Color(149, 149, 119);
+
+        private static readonly HashSet<int> bucketPositions = new(){
+            4085,
+            4086,
+            4087,
+            4147,
+            4148,
+            4149,
+            4150,
+            4151,
+            4152,
+            4210,
+            4211,
+            4212,
+            4213,
+            4214,
+            4215,
+            4216,
+            4275,
+            4276,
+            4277,
+            4278,
+            4279,
+            4280,
+            4341,
+            4342,
+            4343
+        };
+
         public static Texture2D GetCurrentStableTexture(HorseOverhaul mod)
         {
             if (mod.UsingMyStableTextures)
@@ -42,7 +74,7 @@ namespace HorseOverhaul
             }
         }
 
-        internal static Texture2D MergeTextures(IRawTextureData overlay, Texture2D oldTexture)
+        internal static Texture2D MergeTextures(IRawTextureData overlay, Texture2D oldTexture, bool isEmptyLumiBucket = false)
         {
             if (overlay == null || oldTexture == null)
             {
@@ -90,6 +122,19 @@ namespace HorseOverhaul
 
                 if (newValue.A != 0)
                 {
+                    // checking for seasonal foliage in code, because I don't want to do 12 permutations of overlays
+                    if (isEmptyLumiBucket && bucketPositions.Contains(i))
+                    {
+                        var pixelToOverride = origData[i + pixelOffset];
+
+                        if (pixelToOverride != darkBlueWater
+                            && pixelToOverride != blueWater
+                            && pixelToOverride != lightBlueWater)
+                        {
+                            continue;
+                        }
+                    }
+
                     origData[i + pixelOffset] = newValue;
                 }
             }
@@ -209,7 +254,11 @@ namespace HorseOverhaul
                 {
                     var dict = mod.ReadConfigFile("config.json", path.GetValue(data) as string, new[] { "stableOption" }, data.Manifest.Name, false);
 
-                    SetupGwenTextures(mod, dict);
+                    var lastNotBugged = new SemanticVersion("2.0");
+
+                    bool hasSwappedTwoAndThree = data.Manifest.Version.IsNewerThan(lastNotBugged);
+
+                    SetupGwenTextures(mod, dict, hasSwappedTwoAndThree);
 
                     return;
                 }
@@ -227,7 +276,11 @@ namespace HorseOverhaul
 
                     if (dict["buildingsReplaced"].Contains("stable"))
                     {
-                        SetupGwenTextures(mod, dict);
+                        var firstBugged = new SemanticVersion("2.0");
+
+                        bool hasSwappedTwoAndThree = !data.Manifest.Version.IsOlderThan(firstBugged);
+
+                        SetupGwenTextures(mod, dict, hasSwappedTwoAndThree);
 
                         return;
                     }
@@ -282,6 +335,30 @@ namespace HorseOverhaul
                 }
             }
 
+            if (mod.Helper.ModRegistry.IsLoaded("Lumisteria.LumisteriaBuildings"))
+            {
+                var data = mod.Helper.ModRegistry.Get("Lumisteria.LumisteriaBuildings");
+
+                var path = data.GetType().GetProperty("DirectoryPath");
+
+                if (path != null && path.GetValue(data) != null)
+                {
+                    var dict = mod.ReadConfigFile("config.json", path.GetValue(data) as string, new[] { "StyleStable" }, data.Manifest.Name, false);
+
+                    if (dict["StyleStable"].ToLower() != "none")
+                    {
+                        mod.SeasonalVersion = SeasonalVersion.Lumi;
+
+                        mod.FilledTroughOverlay = GetPreferredFilledTroughOverlay(mod, "assets/overlay_empty_{option}.png");
+                        mod.EmptyTroughOverlay = mod.Helper.ModContent.Load<IRawTextureData>($"assets/overlay_empty_both.png");
+
+                        mod.RepairTroughOverlay = mod.Helper.ModContent.Load<IRawTextureData>($"assets/overlay_fixed_filled_lumi.png");
+
+                        return;
+                    }
+                }
+            }
+
             // no compatible texture mod found, so we will use mine
             mod.UsingMyStableTextures = true;
 
@@ -289,17 +366,31 @@ namespace HorseOverhaul
             mod.FilledTroughOverlay = GetPreferredFilledTroughOverlay(mod, "assets/overlay_empty_{option}.png");
         }
 
-        private static void SetupGwenTextures(HorseOverhaul mod, Dictionary<string, string> dict)
+        private static void SetupGwenTextures(HorseOverhaul mod, Dictionary<string, string> dict, bool useSwappedTwoAndThree = false)
         {
-            if (dict["stableOption"] == "4")
+            string stableOption = dict["stableOption"];
+
+            if (useSwappedTwoAndThree)
             {
-                mod.FilledTroughOverlay = mod.Helper.ModContent.Load<IRawTextureData>($"assets/gwen/overlay_{dict["stableOption"]}_full.png");
+                if (stableOption == "2")
+                {
+                    stableOption = "3";
+                }
+                else if (stableOption == "3")
+                {
+                    stableOption = "2";
+                }
             }
 
-            mod.EmptyTroughOverlay = mod.Helper.ModContent.Load<IRawTextureData>($"assets/gwen/overlay_{dict["stableOption"]}.png");
+            if (stableOption == "4")
+            {
+                mod.FilledTroughOverlay = mod.Helper.ModContent.Load<IRawTextureData>($"assets/gwen/overlay_{stableOption}_full.png");
+            }
+
+            mod.EmptyTroughOverlay = mod.Helper.ModContent.Load<IRawTextureData>($"assets/gwen/overlay_{stableOption}.png");
 
             mod.SeasonalVersion = SeasonalVersion.Gwen;
-            mod.GwenOption = dict["stableOption"];
+            mod.GwenOption = stableOption;
         }
 
         private static void SetupLilyTextures(HorseOverhaul mod, Dictionary<string, string> dict)

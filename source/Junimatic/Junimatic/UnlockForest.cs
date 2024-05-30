@@ -172,8 +172,8 @@ namespace NermNermNerm.Junimatic
                 e.Edit(editor =>
                 {
                     IDictionary<string, string> data = editor.AsDictionary<string, string>().Data;
-                    data[GrowMysticTreeQuest] = "Basic/Plant the Mystic Seed/Linus gave me some tree seeds...  Do the Junimos talk to him too?/Grow a Mystic Tree and 2 Mahogony Trees to adulthood on your farm./null/-1/0/-1/false";
-                    data[MeetLinusQuestKey] = "Basic/Meet Linus/Have dinner with Linus in the Secret Woods/Enter the secret woods on a sunny day between 6 and 11pm./null/-1/0/-1/false";
+                    data[GrowMysticTreeQuest] = "Basic/Plant The Mystic Seed/Linus gave you some tree seeds...  Do the Junimos talk to him too?/Grow a Mystic Tree and 2 Mahogony Trees to adulthood on your farm./null/-1/0/-1/false";
+                    data[MeetLinusQuestKey] = "Basic/Meet Linus In The Secret Woods/Have dinner with Linus in the Secret Woods/Enter the secret woods on a sunny day between 6 and 11pm./null/-1/0/-1/false";
                 });
             }
             else if (e.NameWithoutLocale.IsEquivalentTo("Data/Mail"))

@@ -11,7 +11,9 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
-using DeluxeJournal.Tasks;
+using DeluxeJournal.Task;
+
+using static DeluxeJournal.Task.TaskParameterAttribute;
 
 namespace DeluxeJournal.Menus.Components
 {
@@ -22,28 +24,64 @@ namespace DeluxeJournal.Menus.Components
 
         public TaskParser TaskParser { get; }
 
-        public string Label { get; set; }
+        public string Label { get; set; } = string.Empty;
 
-        public string TextWithParse
-        {
-            get
-            {
-                return Text;
-            }
-
-            set
-            {
-                Text = value;
-                UpdateParameter();
-            }
-        }
-
-        public TaskParameterTextBox(TaskParameter parameter, Texture2D? textBoxTexture, Texture2D? caretTexture, SpriteFont font, Color textColor, ITranslationHelper translation) :
-            base(textBoxTexture, caretTexture, font, textColor)
+        public TaskParameterTextBox(TaskParameter parameter, Task.TaskFactory factory, Texture2D? textBoxTexture, Texture2D? caretTexture, SpriteFont font, Color textColor, ITranslationHelper translation)
+            : base(textBoxTexture, caretTexture, font, textColor)
         {
             TaskParameter = parameter;
-            TaskParser = new TaskParser(translation);
-            Label = string.Empty;
+            TaskParser = new TaskParser(translation, new()
+            {
+                EnableFuzzySearch = true,
+                IgnoreItems = !parameter.Attribute.Tag.Equals(TaskParameterTag.ItemList),
+                IgnoreNpcs = !parameter.Attribute.Tag.Equals(TaskParameterTag.NpcName),
+                IgnoreBuildings = !parameter.Attribute.Tag.Equals(TaskParameterTag.Building),
+                IgnoreFarmAnimals = !parameter.Attribute.Tag.Equals(TaskParameterTag.FarmAnimalList),
+                SetItemCategoryObject = parameter.Attribute.Constraints.HasFlag(Constraint.SObject),
+                SetItemCategoryBigCraftable = parameter.Attribute.HasAnyConstraint(Constraint.SObject ^ Constraint.Craftable),
+                SetItemCategoryCraftable = parameter.Attribute.Constraints.HasFlag(Constraint.Craftable),
+                SetItemCategoryTool = parameter.Attribute.Constraints.HasFlag(Constraint.Upgradable)
+            })
+            {
+                Factory = factory
+            };
+
+            TaskParser.ApplyParameterValue(parameter);
+            FillWithParsedText(true);
+        }
+
+        /// <summary>Fill the text field with text and parse it.</summary>
+        /// <param name="text">Text to parse.</param>
+        /// <inheritdoc cref="FillWithParsedText(bool)"/>
+        public bool FillWithParsedText(string text, bool caseSensitive = false)
+        {
+            Text = text;
+            return FillWithParsedText(caseSensitive);
+        }
+
+        /// <summary>Fill the text field with the display name provided by the parser.</summary>
+        /// <param name="caseSensitive">Include letter case when checking if the text was changed.</param>
+        /// <returns><c>true</c> if the text was changed and <c>false</c> if it remained the same.</returns>
+        public bool FillWithParsedText(bool caseSensitive = false)
+        {
+            string previous = Text;
+
+            Text = TaskParameter.Attribute.Tag switch
+            {
+                TaskParameterTag.ItemList => TaskParser.ProxyItemDisplayName,
+                TaskParameterTag.NpcName => TaskParser.NpcDisplayName,
+                TaskParameterTag.Building => TaskParser.BuildingDisplayName,
+                TaskParameterTag.FarmAnimalList => TaskParser.FarmAnimalDisplayName,
+                TaskParameterTag.Count => TaskParser.Count.ToString(),
+                _ => string.Empty
+            };
+
+            if (!caseSensitive)
+            {
+                return previous.ToLower() != Text.ToLower();
+            }
+
+            return previous != Text;
         }
 
         public override void RecieveTextInput(char inputChar)
@@ -62,31 +100,30 @@ namespace DeluxeJournal.Menus.Components
         {
             base.RecieveCommandInput(command);
 
-            if (command == '\b')
+            switch (command)
             {
-                UpdateParameter();
+                case '\b':
+                    UpdateParameter();
+                    break;
             }
         }
 
         private void UpdateParameter()
         {
-            TaskParser.Parse(Text);
-            
-            if (!TaskParser.SetParameterValue(TaskParameter))
+            if (string.IsNullOrEmpty(Text))
             {
-                if (TaskParameter.Type == typeof(string))
-                {
-                    TaskParameter.Value = Text.Trim();
-                }
-                else if (TaskParameter.Type == typeof(int) && int.TryParse(Text.Trim(), out int num))
-                {
-                    TaskParameter.Value = num;
-                }
-                else
-                {
-                    TaskParameter.Value = null;
-                }
+                ClearParameterValue();
             }
+            else if (!TaskParser.Parse(Text, TaskParser.ParseMode.UpdateFactory))
+            {
+                TaskParameter.Value = null;
+            }
+        }
+
+        private void ClearParameterValue()
+        {
+            TaskParameter.Value = null;
+            TaskParser.ApplyParameterValue(TaskParameter);
         }
     }
 }

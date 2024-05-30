@@ -9,6 +9,24 @@ for queries and analysis.**
 
 # Release Notes
 
+## Version 4.2.0
+
+### User-visible Changes
+
+* Added "Sprinkler Mod Compatibility" option.  The default ("more compatible") changes
+  the way that sprinkler ranges are calculated so that it is likely that it will
+  automatically be correct even if mods have changed the shape of sprinkler ranges
+  (on either the existing sprinkler objects or new ones added by the mod).  This is a
+  more expensive calculation, so there is an option to revert to the old behavior ("faster").
+
+* Added the "show overlaps" option (defaulting to true).  If this is disabled then
+  overlapping range tiles of the same color will be converted into just one highlight tile
+  of that color.  This is a relatively expensive operation; disabling this option may
+  result in decreased performance and lag.
+
+* Added an option to hide the held item's highlight at the mouse location if the player
+  has moved more recently than the mouse has moved.  (Defaults to true)
+
 ## Version 4.1.1
 
 ### User-visible Changes

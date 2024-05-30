@@ -6,9 +6,9 @@ mods:
    Let's Move It
 
 latest commit:
-   commit 94b091cd75abf649feb76bcd7f7c3af5033d4dbc
+   commit 8eabd222b4470eeeec3bb4e9b356fddf1655d3bb
    Author: Exblosis <7541956+Exblosis@users.noreply.github.com>
-   Date:   Tue Apr 16 19:02:39 2024 +0200
+   Date:   Wed May 29 19:33:46 2024 +0200
    
-       Fix overwrite in Multiplayer
+       Fixed toolbar text rendering
    

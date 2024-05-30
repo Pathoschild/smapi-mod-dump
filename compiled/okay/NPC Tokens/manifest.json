@@ -1,0 +1,16 @@
+{
+  "Name": "NPC Tokens",
+  "Author": "siliconmodding",
+  "Version": "1.0.1",
+  "Description": "Custom Content Patcher tokens for NPCs.",
+  "UniqueID": "siliconmodding.NPCTokens",
+  "EntryDll": "NPCTokens.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:23637" ],
+  "Dependencies": [
+    {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "IsRequired": false
+    }
+  ]
+}

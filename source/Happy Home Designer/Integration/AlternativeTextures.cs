@@ -10,8 +10,11 @@
 
 using HappyHomeDesigner.Framework;
 using HappyHomeDesigner.Patches;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Mods;
 using StardewValley.Objects;
 using System;
 using System.Collections;
@@ -34,6 +37,9 @@ namespace HappyHomeDesigner.Integration
 		public static Func<string, string, string, bool> HasVariant;
 		public static Action<Furniture, Season, List<Furniture>> VariantsOfFurniture;
 		public static Action<StardewValley.Object, Season, List<StardewValley.Object>> VariantsOfCraftable;
+
+		public delegate void TextureSourceGetter(ModDataDictionary data, Rectangle defaultRect, ref Texture2D texture, ref Rectangle source);
+		public static TextureSourceGetter GetTextureSource;
 
 		internal static void Init(IModHelper helper)
 		{
@@ -73,6 +79,10 @@ namespace HappyHomeDesigner.Integration
 			else if (!TryBindVariantsOf(manager, "Craftable_", out VariantsOfCraftable))
 				error = "Failed to bind Craftable variants.";
 
+			// bind texture getter
+			else if (!BindTextureGetter(manager))
+				error = "Failed to bind alternate texture getter";
+
 
 			if (error is null)
 			{
@@ -86,6 +96,85 @@ namespace HappyHomeDesigner.Integration
 			}
 		}
 
+		private static bool BindTextureGetter(FieldInfo manager)
+		{
+			/*
+			* GetTextureSource(data, defaultRect, ref texture, ref source) {
+			*	if (data.TryGetValue("AlternativeTextureName", out var id)) {
+			*		var model = manager.GetSpecificTextureModel(id);
+			*		if (model is not null) {
+			*			var variant = int.Parse(data["AlternativeTextureVariation"]);
+			*			source.X -= defaultRect.X;
+			*			source.Y = model.GetTextureOffset(textureVariation);
+			*			texture = textureModel.GetTexture(textureVariation);
+			*		}
+			*	}
+			* }
+			*/
+
+			var data = Expression.Parameter(typeof(ModDataDictionary));
+			var defaultRect = Expression.Parameter(typeof(Rectangle));
+			var texture = Expression.Parameter(typeof(Texture2D).MakeByRefType());
+			var source = Expression.Parameter(typeof(Rectangle).MakeByRefType());
+
+			var getter = manager.FieldType.GetMethod("GetSpecificTextureModel");
+
+			var id = Expression.Variable(typeof(string));
+			var model = Expression.Variable(getter.ReturnType);
+			var variant = Expression.Variable(typeof(int));
+
+			var body = Expression.Block([id, model, variant], [
+				Expression.IfThen(
+					Expression.Call(
+						data, typeof(ModDataDictionary).GetMethod(nameof(ModDataDictionary.TryGetValue)),
+						Expression.Constant("AlternativeTextureName"), id
+					),
+					Expression.IfThen(
+						Expression.NotEqual(
+							Expression.Assign(model, 
+								Expression.Call(Expression.Field(null, manager), getter, id)
+							),
+							Expression.Constant(null)
+						),
+						Expression.Block(
+							Expression.Assign(variant, 
+								Expression.Call(typeof(int).GetMethod(nameof(int.Parse), [typeof(string)]), 
+									Expression.Call(
+										data, 
+										typeof(ModDataDictionary).GetMethod("get_Item"),
+										Expression.Constant("AlternativeTextureVariation")
+									)
+								)
+							),
+							Expression.AddAssign(
+								Expression.Field(source, nameof(Rectangle.X)),
+								Expression.Negate(Expression.Field(defaultRect, nameof(Rectangle.X)))
+							),
+							Expression.Assign(
+								Expression.Field(source, nameof(Rectangle.Y)),
+								Expression.Call(model, model.Type.GetMethod("GetTextureOffset", [typeof(int)]), variant)
+							),
+							Expression.Assign(
+								texture,
+								Expression.Call(model, model.Type.GetMethod("GetTexture", [typeof(int)]), variant)
+							)
+						)
+					)
+				)
+			]);
+
+			try
+			{
+				GetTextureSource = Expression.Lambda<TextureSourceGetter>(body, data, defaultRect, texture, source).Compile();
+			} catch (Exception ex)
+			{
+				ModEntry.monitor.Log(ex.ToString(), LogLevel.Trace);
+				return false;
+			}
+
+			return true;
+		}
+
 		private static bool BindHasVariant(FieldInfo manager)
 		{
 			/*
@@ -94,7 +183,7 @@ namespace HappyHomeDesigner.Integration
 			*		AlternativeTextures.textureManager.DoesObjectHaveAlternativeTexture(name + "_" + season)
 			*/
 
-			var getter = manager.FieldType.GetMethod("DoesObjectHaveAlternativeTexture", new[] { typeof(string), typeof(bool) });
+			var getter = manager.FieldType.GetMethod("DoesObjectHaveAlternativeTexture", [typeof(string), typeof(bool)]);
 			var name = Expression.Parameter(typeof(string));
 			var season = Expression.Parameter(typeof(string));
 			var id = Expression.Parameter(typeof(string));

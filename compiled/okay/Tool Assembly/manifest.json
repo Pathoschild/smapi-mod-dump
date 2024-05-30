@@ -1,0 +1,10 @@
+{
+  "Name": "Tool Assembly",
+  "Author": "OFTS_CQM",
+  "Version": "0.4.1-beta.1",
+  "Description": "A master tool can do everything",
+  "UniqueID": "ofts.toolAss",
+  "EntryDll": "Tool Assembly.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:23872", "GitHub:ofts-cqm/ToolAssembly" ]
+}

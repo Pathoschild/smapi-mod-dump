@@ -1,0 +1,31 @@
+{
+  "resetRerollsKeybind": "None",
+  "useTrueRandom": false,
+  "sv_refresh_schedule": [
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+  ],
+  "sv_allowReroll": true,
+  "sv_infiniteReroll": false,
+  "sv_maxRerollCount": 2,
+  "qi_refresh_schedule": [
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+  ],
+  "qi_allowReroll": true,
+  "qi_infiniteReroll": false,
+  "qi_maxRerollCount": 1,
+  "de_allowReroll": false,
+  "de_infiniteReroll": false,
+  "de_maxRerollCount": 1
+}

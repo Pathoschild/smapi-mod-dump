@@ -1,0 +1,19 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/poohnhi/PoohCore
+**
+*************************************************/
+
+{
+    "$schema": "https://smapi.io/schemas/i18n.json",
+    "WnSWinnie.DisplayName": "Winnie",
+    "WnSWinnie.DailyDialogue.1": "Hi. This should be the first time we talk.$1",
+    "WnSWinnie.DailyDialogue.2": "This is the second time we talk.$14",
+    "WnSWinnie.DailyDialogue.3": "Didn't expect to talk with you 3 times already.$10",
+    "WnSWinnie.DailyDialogue.4": "Do you know that 4 is considered a unfortunate number? It rhythms with \"death\" in some language.$2",
+    "WnSWinnie.DailyDialogue.5": "I believe this is the last unique dialogue. After today, I will repeat randomly all the previous dialogues.$13",
+}

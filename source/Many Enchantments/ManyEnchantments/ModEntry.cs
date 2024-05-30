@@ -16,7 +16,8 @@ using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Tools;
-using Harmony;
+using StardewValley.Enchantments;
+using HarmonyLib;
 
 namespace ManyEnchantments
 {
@@ -37,7 +38,7 @@ namespace ManyEnchantments
         private void OnGameLaunched(object sender, EventArgs e)
         {
             // Override Tool & ForgeMenu functionality
-            var harmony = HarmonyInstance.Create("Stari.ManyEnchantments");
+            var harmony = new Harmony("Stari.ManyEnchantments");
             harmony.Patch(
                 original: AccessTools.Method(typeof(Tool), nameof(Tool.AddEnchantment)),
                 prefix: new HarmonyMethod(typeof(ModEntry), nameof(ModEntry.AddEnchantment_Prefix))
@@ -123,7 +124,7 @@ namespace ManyEnchantments
         {
             try
             {
-                if (right_item != null && Utility.IsNormalObjectAtParentSheetIndex(right_item, 72))
+                if (right_item != null && right_item.QualifiedItemId == "(O)72") // Diamond
                 {
                     if (left_item != null && left_item is Tool)
                     {
@@ -155,7 +156,8 @@ namespace ManyEnchantments
                     if (__instance.leftIngredientSpot.item is MeleeWeapon)
                     {
                         MeleeWeapon weapon = __instance.leftIngredientSpot.item as MeleeWeapon;
-                        if (Game1.player.couldInventoryAcceptThisObject(848, (__instance.leftIngredientSpot.item as MeleeWeapon).GetTotalForgeLevels() * 5 + ((__instance.leftIngredientSpot.item as MeleeWeapon).GetTotalForgeLevels() - 1) * 2))
+                        // "(O)848" are shards for the refund.
+                        if (Game1.player.couldInventoryAcceptThisItem("(O)848", weapon.GetTotalForgeLevels() * 5 + (weapon.GetTotalForgeLevels() - 1) * 2)) 
                         {
                             bool has_enchantment = false;
                             foreach (BaseEnchantment enchantment in weapon.enchantments)

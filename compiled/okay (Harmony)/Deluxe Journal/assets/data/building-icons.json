@@ -1,0 +1,98 @@
+﻿{
+	"Farmhouse": {
+		"SpriteIndex": 0,
+		"Tier": 0
+	},
+	"Barn": {
+		"SpriteIndex": 1,
+		"Tier": 1
+	},
+	"Big Barn": {
+		"SpriteIndex": 2,
+		"Tier": 2
+	},
+	"Deluxe Barn": {
+		"SpriteIndex": 3,
+		"Tier": 3
+	},
+	"Coop": {
+		"SpriteIndex": 4,
+		"Tier": 1
+	},
+	"Big Coop": {
+		"SpriteIndex": 5,
+		"Tier": 2
+	},
+	"Deluxe Coop": {
+		"SpriteIndex": 6,
+		"Tier": 3
+	},
+	"Shed": {
+		"SpriteIndex": 7,
+		"Tier": 1
+	},
+	"Big Shed": {
+		"SpriteIndex": 8,
+		"Tier": 2
+	},
+	"Cabin": {
+		"SpriteIndex": 9,
+		"Tier": 0
+	},
+	"Silo": {
+		"SpriteIndex": 10,
+		"Tier": 0
+	},
+	"Stable": {
+		"SpriteIndex": 11,
+		"Tier": 0
+	},
+	"Slime Hutch": {
+		"SpriteIndex": 12,
+		"Tier": 0
+	},
+	"Well": {
+		"SpriteIndex": 13,
+		"Tier": 0
+	},
+	"Fish Pond": {
+		"SpriteIndex": 14,
+		"Tier": 0
+	},
+	"Mill": {
+		"SpriteIndex": 15,
+		"Tier": 0
+	},
+	"Shipping Bin": {
+		"SpriteIndex": 16,
+		"Tier": 0
+	},
+	"Pet Bowl": {
+		"SpriteIndex": 17,
+		"Tier": 0
+	},
+	"Junimo Hut": {
+		"SpriteIndex": 18,
+		"Tier": 0
+	},
+	"Gold Clock": {
+		"SpriteIndex": 19,
+		"Tier": 0
+	},
+	"Earth Obelisk": {
+		"SpriteIndex": 20,
+		"Tier": 0
+	},
+	"Water Obelisk": {
+		"SpriteIndex": 21,
+		"Tier": 0
+	},
+	"Desert Obelisk": {
+		"SpriteIndex": 22,
+		"Tier": 0
+	},
+	"Island Obelisk": {
+		"SpriteIndex": 23,
+		"Tier": 0
+	}
+}

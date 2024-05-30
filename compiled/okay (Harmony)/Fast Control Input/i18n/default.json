@@ -1,0 +1,6 @@
+{
+    "Config.ActionButton.Name": "Action Button Speed",
+    "Config.ActionButton.Tooltip": "How fast the game response to the action button input.",
+    "Config.UseToolButton.Name": "Use Tool Button Speed",
+    "Config.UseToolButton.Tooltip": "How fast the game response to the use tool button input."
+}

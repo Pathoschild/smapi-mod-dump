@@ -1,0 +1,59 @@
+{
+  "dialog.title": "Wybierz cel:",
+  
+  "common.save": "Zapisz",
+  "common.cancel": "Anuluj",
+
+  "configuration-menu.title": "Konfiguracja",
+  "configuration-menu.button-hover.hidden": "Ukryty",
+  "configuration-menu.button-hover.visible": "Widoczny",
+  "configuration-menu.button-hover.rename": "Zmień nazwę",
+  "configuration-menu.button-hover.keybind": "Dodaj skrót",
+  "configuration-menu.button-hover.keybind-current": "Obecny: {{key}}",
+  "configuration-menu.button-hover.move-up": "Do góry",
+  "configuration-menu.button-hover.move-down": "W dół",
+  "configuration-menu.move-up.message": "Zwój {{name}} został przesnięty w górę",
+  "configuration-menu.move-down.message": "Zwój {{name}} został przesnięty w dół",
+  "configuration-menu.hidden.message": "Zwój {{name}} został ukryty",
+  "configuration-menu.visible.message": "Zwój {{name}} został odkryty",
+
+  "keybind-menu.current-key": "Zmiana skrótu: {{key}}",
+  "keybind-menu.no-key": "(Nic)",
+  "keybind-menu.instruction": "Naciśnij nowy skrót...",
+  "keybind-menu.message.success": "Skrót {{key}} został przypisan do {{name}}",
+  "keybind-menu.message.clear": "Skrót został wyczyszczony",
+  "keybind-menu.message.invalid-key": "Nie możesz użyć tego skrótu",
+  "keybind-menu.message.key-already-exists": "Skrót jest już przypisany do {{name}}",
+
+  "rename-menu.title": "Ustaw nową nazwę",
+  "rename-menu.reset-to-default": "Przywróć nazwę domyślną",
+  "rename-menu.message.default": "Nazwa domyślna została przywrócona",
+  "rename-menu.message.success": "Nazwa została zmieniona na {{name}}",
+  
+  "settings-menu.title": "Ustawienia",
+  "settings-menu.option.old-dialog.label": "Użyj trybu menu dialogowego",
+  "settings-menu.option.adjust-teleport-menu.label": "Dostosuj menu teleportacji",
+  "settings-menu.option.reset-settings.label": "Zresetuj ustawienia",
+  "settings-menu.option.reset-settings.message": "Ustawienia zostały zresetowane",
+  "settings-menu.option.reset-configuration.label": "Zresetuj konfigurację",
+  "settings-menu.option.reset-configuration.message": "Konfiguracja została zresetowana",
+  "settings-menu.option.reset-keybinds.label": "Zresetuj skróty",
+  "settings-menu.option.reset-keybinds.message": "Skróty zostały zresetowane",
+
+  "teleport-menu-settings.title": "Ustawienia menu teleportacji",
+  "teleport-menu-settings.radius": "Promień",
+  "teleport-menu-settings.scale": "Skala",
+  "teleport-menu-settings.selected-scale": "Skala zaznaczonego zwoju",
+  "teleport-menu-settings.reset.label": "Zresetuj ustawienia",
+  "teleport-menu-settings.reset.message": "Ustawienia menu teleportacji zostały zresetowane",
+
+  "teleport-menu.title": "Wybierz zwój",
+
+  "teleport-scroll.farm": "Farma",
+  "teleport-scroll.beach": "Plaża",
+  "teleport-scroll.mountain": "Góra",
+  "teleport-scroll.desert": "Pustynia",
+  "teleport-scroll.island": "Imbirowa wyspa",
+  "teleport-scroll.island-farm": "Farma na wyspie",
+  "teleport-scroll.mini-obelisk": "Mini-Obelisk"
+}

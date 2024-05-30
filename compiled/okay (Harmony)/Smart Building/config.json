@@ -27,6 +27,7 @@
   "HoldToMoveMenu": "MouseMiddle",
   "IdentifyItem": "LeftControl + LeftShift + J",
   "IdentifyProducer": "LeftControl + LeftShift + K",
+  "PressButton": "ControllerX",
   "InsertTool": "None",
   "InstantlyBuild": false,
   "LessRestrictiveBedPlacement": false,

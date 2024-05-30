@@ -4,15 +4,16 @@ urls:
 
 mods:
    Ferngill Simple Economy
+   Scaring - Thieving Skill
    Stardew Valley Balance Overhaul
    Ui Info Suite 2
 
 latest commit:
-   commit 8c650efd003bb01b5fdb3f7bf453d4b0060fbf8f
+   commit 4b2cdbcb1ab28261e7e04fc47dc8875027f142bb
    Author: Drew Hoener <drewhoener@gmail.com>
-   Date:   Tue Apr 23 21:22:58 2024 -0400
+   Date:   Wed May 29 16:03:27 2024 -0400
    
-       Merge pull request #481 from Zamiell/fert
+       Merge pull request #546 from drewhoener/master
        
-       feat: show fertilizer
+       v2.3.4 PR 1
    

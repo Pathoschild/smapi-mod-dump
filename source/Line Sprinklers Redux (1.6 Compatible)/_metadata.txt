@@ -1,0 +1,20 @@
+urls:
+   web: https://github.com/rtrox/LineSprinklersRedux
+   Git: https://github.com/rtrox/LineSprinklersRedux.git
+
+mods:
+   Line Sprinklers Redux (1.6 Compatible)
+
+latest commit:
+   commit 1b61f422e50dd1b1f2b84a264fbd51f2895f61f8
+   Author: Kevin Marrec <kevin@marrec.io>
+   Date:   Wed May 29 17:48:32 2024 +0200
+   
+       Add French Translation (#2)
+       
+       * feat: add fr translation
+       
+       * Update fr.json
+       
+       * Update fr.json
+   

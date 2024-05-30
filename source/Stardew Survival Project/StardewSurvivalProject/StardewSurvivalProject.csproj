@@ -28,7 +28,7 @@
     <None Update="healingItemData.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="LocationEnvironmentData.json">
+    <None Update="locationEnvironmentData.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="tempControlObjectData.json">

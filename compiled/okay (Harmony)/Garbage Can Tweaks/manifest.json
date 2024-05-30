@@ -1,0 +1,22 @@
+{
+  "Name": "Garbage Can Tweaks",
+  "Author": "chiccen",
+  "Version": "1.0.0",
+  "Description": "Changes some behavior to make garbage cans a little more useful!",
+  "UniqueID": "chiccen.GarbageCanTweaks",
+  "EntryDll": "GarbageCanTweaks.dll",
+  "MinimumApiVersion": "3.15.0",
+  "ModUpdater": {
+    "Repository": "StardewValleyMods",
+    "User": "chiccen",
+    "Directory": "_releases",
+    "ModFolder": "GarbageCanTweaks" // remove this line for most cases, only needed if repository is overarching "Stardew Valley Mods" repo or otherwise not its own repo
+  },
+  "UpdateKeys": [ "Nexus:24410" ],
+  "Dependencies": [
+    {
+      "UniqueID": "Platonymous.ModUpdater",
+      "IsRequired": false
+    }
+  ]
+}

@@ -9,6 +9,10 @@ for queries and analysis.**
 
 # Release Notes
 
+## Version 2.1.2
+
+* Updated French translation from nexusmods user Caranud
+
 ## Version 2.1.1
 
 * Updated French translation from Tenebrosful

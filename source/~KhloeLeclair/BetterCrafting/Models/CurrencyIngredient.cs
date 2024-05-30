@@ -10,7 +10,6 @@
 
 #nullable enable
 
-using System;
 using System.Collections.Generic;
 
 using Leclair.Stardew.Common.Crafting;

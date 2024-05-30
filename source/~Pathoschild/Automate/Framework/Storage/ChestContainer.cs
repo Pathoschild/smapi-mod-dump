@@ -50,6 +50,9 @@ namespace Pathoschild.Stardew.Automate.Framework.Storage
         public bool IsJunimoChest => this.Chest.SpecialChestType == Chest.SpecialChestTypes.JunimoChest;
 
         /// <inheritdoc />
+        public bool IsLocked => this.Chest.GetMutex().IsLocked();
+
+        /// <inheritdoc />
         public GameLocation Location { get; }
 
         /// <inheritdoc />

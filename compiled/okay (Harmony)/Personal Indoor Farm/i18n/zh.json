@@ -5,8 +5,10 @@
 	"DoorAttic.Name": "维度之门 - 阁楼",
 	"DoorLoft.Name": "维度之门 - 楼上",
 	"DoorCellar.Name": "维度之门 - 酒窖",
+	"DoorSpa.Name": "维度之门 - 温泉",
 	"Door.Empty": "门后什么都没有",
 	"Door.Offline": "当你的朋友不在时，你不应该四处窥探！",
+	"Door.Locked": "这扇门是锁着的",
 	"Painting.Name": "季节绘画",
 	"Synchronizer.Name": "空间时间同步器",
 	"Synchronizer.Description": "将您的个人维度与鹈鹕镇日期同步",
@@ -17,4 +19,6 @@
 	"VoidSeal.Buff.Name": "内在虚空",
 	"VoidSeal.Buff.Description": "我感觉很......空虚",
 	"NoContentPacks": "你有了门，却没有与之配套的房间内容包",
+	"Key.Name": "虚空钥匙",
+	"Key.Description": "个人层面的上锁和解锁",
 }

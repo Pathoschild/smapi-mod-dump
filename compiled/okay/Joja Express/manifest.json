@@ -1,0 +1,10 @@
+{
+  "Name": "Joja Express",
+  "Author": "OFTS_CQM",
+  "Version": "0.3.1-beta.1",
+  "Description": "Do you like online shopping? I LOVE online shopping --- Joja Online Store Department Manager",
+  "UniqueID": "ofts.jojaExp",
+  "EntryDll": "JojaExpress.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:23614", "GitHub:ofts-cqm/SDV_JojaExpress" ]
+}

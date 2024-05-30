@@ -19,20 +19,17 @@ namespace SkillPrestige.SkillTypes
     [Serializable]
     public partial class SkillType
     {
-        /*********
-        ** Accessors
-        *********/
         // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Local - setter used by deserializer.
-        public string Name { get; private set; }
+        public string Name { get; set; }
 
         /// <summary>The ordinal and lookup used to get the skill type from Stardew Valley.</summary>
         // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Local - setter used by deserializer.
-        public int Ordinal { get; private set; }
+        public int Ordinal { get; set; }
 
 
-        /*********
-        ** Public methods
-        *********/
+        //spacecore skill identifier
+        public string SpaceCoreSkillId { get; set; }
+
         public SkillType() { }
 
         // ReSharper disable once MemberCanBeProtected.Global - this time resharper is just out of it's gourd. this is used publically.
@@ -79,10 +76,6 @@ namespace SkillPrestige.SkillTypes
             return !(left == right);
         }
 
-
-        /*********
-        ** Private methods
-        *********/
         static SkillType()
         {
             Logger.LogInformation("Registering skill types...");

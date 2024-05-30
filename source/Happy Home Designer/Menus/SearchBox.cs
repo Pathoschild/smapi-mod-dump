@@ -63,7 +63,10 @@ namespace HappyHomeDesigner.Menus
 		}
 
 		public bool ContainsPoint(int x, int y)
-			=> x >= X - 16 && y >= Y - 16 && x <= X + Width + 16 && y <= Y + Height + 16;
+			=>	x >= X - 16 && 
+				y >= Y - 16 && 
+				x <= X + Width + 16 && 
+				y <= Y + Height + 16;
 
 		public override void RecieveTextInput(char input)
 		{

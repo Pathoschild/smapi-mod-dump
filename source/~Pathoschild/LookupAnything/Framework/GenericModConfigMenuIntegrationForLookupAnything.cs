@@ -54,16 +54,31 @@ namespace Pathoschild.Stardew.LookupAnything.Framework
                 // main options
                 .AddSectionTitle(I18n.Config_Title_MainOptions)
                 .AddCheckbox(
-                    name: I18n.Config_ProgressionMode_Name,
-                    tooltip: I18n.Config_ProgressionMode_Desc,
-                    get: config => config.ProgressionMode,
-                    set: (config, value) => config.ProgressionMode = value
-                )
-                .AddCheckbox(
                     name: I18n.Config_ForceFullScreen_Name,
                     tooltip: I18n.Config_ForceFullScreen_Desc,
                     get: config => config.ForceFullScreen,
                     set: (config, value) => config.ForceFullScreen = value
+                )
+
+                // progression mode
+                .AddSectionTitle(I18n.Config_Title_Progression)
+                .AddCheckbox(
+                    name: I18n.Config_Progression_ShowUnknownGiftTastes_Name,
+                    tooltip: I18n.Config_Progression_ShowUnknownGiftTastes_Desc,
+                    get: config => config.ShowUnknownGiftTastes,
+                    set: (config, value) => config.ShowUnknownGiftTastes = value
+                )
+                .AddCheckbox(
+                    name: I18n.Config_Progression_ShowUnknownRecipes_Name,
+                    tooltip: I18n.Config_Progression_ShowUnknownRecipes_Desc,
+                    get: config => config.ShowUnknownRecipes,
+                    set: (config, value) => config.ShowUnknownRecipes = value
+                )
+                .AddCheckbox(
+                    name: I18n.Config_Progression_ShowPuzzleSolutions_Name,
+                    tooltip: I18n.Config_Progression_ShowPuzzleSolutions_Desc,
+                    get: config => config.ShowPuzzleSolutions,
+                    set: (config, value) => config.ShowPuzzleSolutions = value
                 )
 
                 // gift tastes
@@ -118,6 +133,14 @@ namespace Pathoschild.Stardew.LookupAnything.Framework
                     tooltip: I18n.Config_CollapseFields_Enabled_Desc,
                     get: config => config.CollapseLargeFields.Enabled,
                     set: (config, value) => config.CollapseLargeFields.Enabled = value
+                )
+                .AddNumberField(
+                    name: I18n.Config_CollapseFields_BuildingRecipes_Name,
+                    tooltip: I18n.Config_CollapseFields_Any_Desc,
+                    get: config => config.CollapseLargeFields.BuildingRecipes,
+                    set: (config, value) => config.CollapseLargeFields.BuildingRecipes = value,
+                    min: 1,
+                    max: 1000
                 )
                 .AddNumberField(
                     name: I18n.Config_CollapseFields_ItemRecipes_Name,

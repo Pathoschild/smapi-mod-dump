@@ -1,0 +1,18 @@
+urls:
+   web: https://github.com/daleao/sdv
+   Git: https://github.com/daleao/sdv.git
+
+mods:
+   Aquarism
+   Chargeable Resource Tools
+   DaLionheart
+   Serfdom
+   Walk Of Life - Rebirth
+
+latest commit:
+   commit 95ae6f198220ba1a844114376f8fa3c3c813e949
+   Author: Mat L <2775342-daleao@users.noreply.gitlab.com>
+   Date:   Wed May 29 17:45:32 2024 -0300
+   
+       prfs 0.2.10, pnds 1.0.3, core 1.1.2
+   

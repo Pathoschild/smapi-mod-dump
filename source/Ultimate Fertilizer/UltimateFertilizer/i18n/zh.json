@@ -25,11 +25,20 @@
   "config.fertilizer_mode.option.single-fertilizer-stack": "单肥料堆叠",
   "config.fertilizer_mode.option.vanilla": "原版",
 
+  "config.replace_high_tier.title": "替换高级肥料",
+  "config.replace_high_tier.tooltip": "替换模式是否可以降级肥料。",
+
   "config.enable_fertilizer_anytime.title": "随时启用肥料",
   "config.enable_fertilizer_anytime.tooltip": "允许你在已经有作物的田上施用肥料。",
 
   "config.keep_fertilizer_across_season.title": "跨季节保留肥料",
   "config.keep_fertilizer_across_season.tooltip": "允许肥料在季节更替时不消失。",
+
+  "config.fertilizer_alpha.title": "肥料透明度",
+  "config.fertilizer_alpha.tooltip": "肥料的透明度；默认255；范围0-255",
+
+  "config.debug_mode.title": "调试模式",
+  "config.debug_mode.tooltip": "启用调试输出到控制台",
 
 
   "config.section.speed_fertilizer": "生长激素",
@@ -57,6 +66,9 @@
 
 
   "config.section.quality_fertilizer": "质量肥料",
+
+  "config.fix_multi_drop.title": "修复多掉落植物",
+  "config.fix_multi_drop.tooltip": "在原版多掉落植物只有第一个能享受到质量肥料加成，\n这补丁使得剩余的其他物品都会有第一个的质量",
 
   "config.basic_fertilizer_bonus.title": "初级肥料加成",
   "config.basic_fertilizer_bonus.tooltip": "修改初级肥料的质量加成；默认 1",

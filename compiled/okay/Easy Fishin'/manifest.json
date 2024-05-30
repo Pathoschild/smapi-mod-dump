@@ -1,7 +1,7 @@
 {
   "Name": "Easy Fishin'",
   "Author": "Frostiverse",
-  "Version": "1.0.0",
+  "Version": "1.0.1",
   "Description": "Allows you to instantly catch fish and treasure, and ensures you never run out of bait and tackle.",
   "UniqueID": "Frostiverse.EasyFishin",
   "EntryDll": "EasyFishin.dll",

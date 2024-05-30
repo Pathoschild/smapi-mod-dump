@@ -10,18 +10,19 @@
 
 using System;
 using System.Collections.Generic;
-
-using Leclair.Stardew.Common.Events;
+using System.Linq;
 
 using Leclair.Stardew.BetterCrafting.Models;
-using StardewValley.Menus;
+using Leclair.Stardew.Common;
+using Leclair.Stardew.Common.Events;
 using Leclair.Stardew.Common.UI;
 using Leclair.Stardew.Common.UI.FlowNode;
+
 using Microsoft.Xna.Framework;
-using StardewValley;
 using Microsoft.Xna.Framework.Graphics;
-using Leclair.Stardew.Common;
-using System.Linq;
+
+using StardewValley;
+using StardewValley.Menus;
 
 namespace Leclair.Stardew.BetterCrafting.Menus;
 
@@ -65,18 +66,10 @@ public class RulePickerDialog : MenuSubscriber<ModEntry> {
 
 		var entries = Mod.Recipes.GetRuleHandlers().ToList();
 		entries.Sort((a, b) => {
-			bool aBuff = a.Key.Contains("buff", StringComparison.OrdinalIgnoreCase);
-			bool bBuff = b.Key.Contains("buff", StringComparison.OrdinalIgnoreCase);
-
-			if (aBuff && !bBuff)
-				return 1;
-			if (!aBuff && bBuff)
-				return -1;
-
 			return a.Value.DisplayName.CompareTo(b.Value.DisplayName);
 		});
 
-		foreach(var entry in entries) {
+		foreach (var entry in entries) {
 			string id = entry.Key;
 			var handler = entry.Value;
 

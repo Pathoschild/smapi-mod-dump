@@ -158,6 +158,8 @@ namespace FarmTypeManager
                         case "magma cap":
                         case "stickbug":
                         case "stick bug":
+                        case "trufflecrab":
+                        case "truffle crab":
                         case "rockgolem":
                         case "rock golem":
                         case "stonegolem":

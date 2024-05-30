@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/23496
+IDs: Senofu.EasyUpgrade
+update keys: Nexus:23496

@@ -9,7 +9,6 @@
 *************************************************/
 
 using EnaiumToolKit.Framework.Screen;
-using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Characters;
 using StardewValley.Monsters;
@@ -21,49 +20,23 @@ public class TeleportNpcScreen : ScreenGui
 {
     public TeleportNpcScreen()
     {
-        foreach (var npc in Utility.getAllCharacters())
+        foreach (var npc in Utility.getAllCharacters().Where(it => it is not Monster).OrderByDescending(it =>
+                 {
+                     if (!it.CanReceiveGifts()) return it is Horse or Child or Pet ? int.MaxValue : -1;
+                     return Game1.player.friendshipData.TryGetValue(it.Name, out var data) ? data.Points : 0;
+                 }))
         {
-            var type = GetCharacterType(npc);
-            if (type == null || npc.currentLocation == null)
-                continue;
-            var tile = npc.TilePoint;
-
             AddElement(new NpcButton(
                 $"{ModEntry.GetInstance().Helper.Translation.Get("button.teleport")}{npc.displayName}",
                 $"{ModEntry.GetInstance().Helper.Translation.Get("button.teleport")}{npc.displayName}", npc)
             {
-                OnLeftClicked = () => { Teleport(npc.currentLocation.Name, tile.X, tile.Y); }
+                OnLeftClicked = () =>
+                {
+                    Game1.exitActiveMenu();
+                    Game1.warpFarmer(npc.currentLocation.Name, npc.TilePoint.X, npc.TilePoint.Y,
+                        Game1.player.getFacingDirection());
+                }
             });
         }
     }
-
-    private void Teleport(string locationName, int tileX, int tileY)
-    {
-        Game1.exitActiveMenu();
-        Game1.player.swimming.Value = false;
-        Game1.player.changeOutOfSwimSuit();
-        Game1.warpFarmer(locationName, tileX, tileY, false);
-    }
-
-    private CharacterType? GetCharacterType(NPC npc)
-    {
-        if (npc is Monster)
-            return null;
-        if (npc is Horse)
-            return CharacterType.Horse;
-        if (npc is Pet)
-            return CharacterType.Pet;
-        return CharacterType.Villager;
-    }
-}
-
-public enum CharacterType
-{
-    Player = 1,
-
-    Horse = 2,
-
-    Pet = 3,
-
-    Villager = 4
 }

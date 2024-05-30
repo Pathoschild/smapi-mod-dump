@@ -12,86 +12,58 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
-using Microsoft.Xna.Framework;
 
-namespace CommunityCenterAnywhere
+namespace CommunityCenterAnywhere;
+
+public class ModEntry : Mod
 {
-    public class ModEntry : Mod
+    //dictionary structure:
+    //{0: {0: false}, {1: false}, {2: false}, {3: false},
+    // 1: {0: false}, {2: false}, {4: false}, ...}
+    private Dictionary<int, MenuBundles> menuBundles = new();
+    public override void Entry(IModHelper helper)
     {
+        helper.Events.Display.MenuChanged += this.OnMenuChanged;
+        helper.Events.GameLoop.UpdateTicked += this.OnUpdateTicked;
+    }
 
-        public static ModConfig Config;
-        public override void Entry(IModHelper helper)
-        {
-            Config = Helper.ReadConfig<ModConfig>();
-            if (!Config.EnableMod)
-                return;
-            helper.Events.Display.MenuChanged += OnMenuUpdate;
-            helper.Events.GameLoop.GameLaunched += OnGameLaunched;
-        }
-        private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
-        {
-            // get Generic Mod Config Menu's API (if it's installed)
-            var configMenu = Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
-            if (configMenu is null)
-                return;
+    private void OnMenuChanged(object sender, MenuChangedEventArgs e)
+    {
+        if (!Context.IsWorldReady || e.NewMenu is not JunimoNoteMenu menu)
+            return;
 
-            // register mod
-            configMenu.Register(
-                mod: ModManifest,
-                reset: () => Config = new ModConfig(),
-                save: () => Helper.WriteConfig(Config)
-            );
+        var menuBundle = new MenuBundles(menu);
+        menuBundles[menu.whichArea] = menuBundle;
 
-            configMenu.AddBoolOption(
-                mod: ModManifest,
-                name: () => "Mod Enabled?",
-                getValue: () => Config.EnableMod,
-                setValue: value => Config.EnableMod = value
-            );
+    }
 
-            configMenu.AddBoolOption(
-                mod: ModManifest,
-                name: () => "Warping Enabled?",
-                tooltip: () => "Disables warping to the Community Center; this allows your game to softlock if you are not careful with bundle completion",
-                getValue: () => Config.PlayerWarping,
-                setValue: value => Config.PlayerWarping = value
-            );
-        }
+    private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
+    {
+        //Need to be in the Community Center menu
+        if (!Context.IsWorldReady || Game1.activeClickableMenu is not JunimoNoteMenu)
+            return;
+        
+        var menu = Game1.activeClickableMenu as JunimoNoteMenu;
+        
+        //A key is not immediately found, I think because the OnUpdateTicked is faster than OnMenuChanged by 1 tick
+        if (!menuBundles.ContainsKey(menu.whichArea)) return;
 
-        private Vector2 playerTile;
-        private GameLocation playerLocation;
-        private void OnMenuUpdate(object sender, MenuChangedEventArgs e)
-        {
+        var currentBundle = menu.currentPageBundle;
+        var menuBundle = menuBundles[menu.whichArea];
+        
+        //If deposits are not allowed, we don't need to bother updating anything,
+        //since the player can't interact with the bundle
+        //this prevents "infinite" loops in the update functions below
+        if (!menuBundle.depositsAllowed || currentBundle == null) return;
 
-            if (!Context.IsWorldReady)
-                return;
-
-            //warp the player back to their original location when they are done
-            if (e.OldMenu is JunimoNoteMenu && (!(e.NewMenu is JunimoNoteMenu)) && (!(playerLocation.name.Value is "CommunityCenter")) && Config.PlayerWarping)
-                Game1.warpFarmer(playerLocation.name, (int)playerTile.X, (int)playerTile.Y, Game1.player.facingDirection);
-
-            if (e.NewMenu is JunimoNoteMenu menu)
-            {
-                //update player location only if they have not previously been in the Community Center menu
-                if (!(e.OldMenu is JunimoNoteMenu))
-                {
-                    playerTile = Game1.player.getTileLocation();
-                    playerLocation = Game1.player.currentLocation;
-                }
-
-                //warp the player to the Community Center so that bundle completion will be counted
-                if (!(Game1.player.currentLocation.name.Value is "CommunityCenter") && Config.PlayerWarping)
-                    Game1.warpFarmer(Game1.getLocationFromName("CommunityCenter").name, 32, 18, Game1.player.facingDirection);
-
-                foreach (Bundle bundle in menu.bundles)
-                {
-                    if (bundle.name is "2,500g" || bundle.name is "5,000g" || bundle.name is "10,000g" || bundle.name is "25,000g")
-                        menu.purchaseButton = new ClickableTextureComponent(new Rectangle(menu.xPositionOnScreen + 800, menu.yPositionOnScreen + 504, 260, 72), menu.noteTexture, new Rectangle(517, 286, 65, 20), 4f);
-
-                    bundle.depositsAllowed = true;
-                }
-
-            }
-        }
+        //remove bundle from menuBundles if completed
+        menuBundle.OnBundleComplete(currentBundle);
+        
+        //update deposit status if only 1 item is needed to complete a menu bundle
+        menuBundle.OnMenuBundleAlmostComplete(menu);
+        
+        //Allow deposits for the current bundle
+        menuBundle.AllowDeposits(menu, currentBundle);
+        
     }
 }

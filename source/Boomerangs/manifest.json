@@ -11,7 +11,7 @@
 {
     "Name": "Boomerangs",
     "Author": "Arannya",
-    "Version": "2.0",
+    "Version": "2.1",
     "UniqueID": "Arannya.Weapons.Boomerangs",
     "UpdateKeys": ["Nexus:22724"],
     "EntryDll": "Boomerang.dll",

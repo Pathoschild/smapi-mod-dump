@@ -1,0 +1,65 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/lisyce/SDV_Allergies_Mod
+**
+*************************************************/
+
+{
+  "harvey-letter": "@,^I heard that you experienced an allergic reaction the other day.^You should come by the clinic sometime and get some medicine so it doesn't happen again!^I've enclosed some Allergy Medicine to get you by until you can stop in.^^-Dr. Harvey%item object BarleyZP.BzpAllergies_AllergyMedicine 1%%[#]Harvey's Allergy Medicine",
+
+  "dialogue.abigail": "You look a little green... did you eat something?",
+  "dialogue.alex": "Yikes! You don't look so good...$7",
+  "dialogue.caroline": "Are you feeling OK? Maybe some tea would help.[614]",
+  "dialogue.clint": "%Clint seems concerned for you.$2",
+  "dialogue.demetrius": "Oh wow! Looks like you're having a reaction!$6#$b#I wonder if I could study a sample of what you ate...$0",
+  "dialogue.elliot": "Are you unwell? Perhaps you should relax by the sea for a bit.",
+  "dialogue.emily": "Oh! You've definitely got some bad energy surrounding you today!$6",
+  "dialogue.evelyn": "Oh, my dear. Let me get you something from the medicine cabinet.[BarleyZP.BzpAllergies_AllergyMedicine]#$e#Don't tell George. He doesn't think I should be buying this 'newfangled medicine', as he likes to say.",
+  "dialogue.george": "Hmmph... Young people these days get sick so easily.#$b#Nobody had any 'allergies' when I was a kid.",
+  "dialogue.gus": "If you're sick, you should get some rest. I better not see you at the saloon if you should be in bed!$3",
+  "dialogue.haley": "Ew, are you sick? Don't get me infected too!$12",
+  "dialogue.haley-m": "Honey, are you alright?$12",
+  "dialogue.harvey": "Are you having an allergic reaction? Why didn't you come to me sooner!$8#$b#Here, drink this and you should feel much better.[BarleyZP.BzpAllergies_AllergyMedicine]#$0",
+  "dialogue.jas": "Umm... Are you ok?$b#$3",
+  "dialogue.jodi": "Are you alright? I always tell my boys to make sure they get lots of rest when they're sick.",
+  "dialogue.kent": "Woah... I haven't seen a reaction like that since my buddy ate the Algae Soup overseas.$4",
+  "dialogue.krobus": "It really is true that some humans get sick when they eat certain foods...$7",
+  "dialogue.leah": "Did you eat some bad mushrooms? You've got to be careful foraging for your own food!$6",
+  "dialogue.leo": "Your green face is scaring the birds...$3",
+  "dialogue.lewis": "You know overreacting like that isn't going to get you out of paying taxes.$5",
+  "dialogue.linus": "You look a bit under the weather.",
+  "dialogue.marnie": "Eek! Are you having an allergic reaction?$4",
+  "dialogue.maru": "If you've got an allergy, you should get some medicine from the clinic.$3",
+  "dialogue.pam": "You look like you had too much to drink last night. I know that feeling, farmer.",
+  "dialogue.penny": "Oh... I used to get allergies like that too when I was a kid! Be careful of what you eat!$12",
+  "dialogue.pierre": "Hmmm... Maybe I should start selling some allergy relief too.$1",
+  "dialogue.robin": "Are you having a reaction? Make sure you're reading the labels on what you eat.",
+  "dialogue.sam": "Dude, I get pollen allergies myself, but definitely not as bad as that!$8",
+  "dialogue.sebastian": "Hey... Are you feeling alright?",
+  "dialogue.shane": "You look hungover. Don't make it a habit.$2",
+  "dialogue.vincent": "Woah... That's the face I make when I eat a bug that doesn't taste good.$3",
+  "dialogue.willy": "You look a bit seasick, son.^You look a bit seasick, lass.$2",
+  "dialogue.wizard": "Did you tamper with culinary magic? You look ill.",
+
+  "obj.allergy-medicine.name": "Allergy Medicine",
+  "obj.allergy-medicine.desc": "Drink for relief from an allergic reaction. Can be consumed even when nauseous.",
+  "obj.lactase-pills.name": "Lactase Pills",
+  "obj.lactase-pills.desc": "Eat before consuming dairy if you're allergic for temporary protection.",
+  "obj.plantmilk.name": "Plant Milk",
+  "obj.plantmilk.desc": "A dairy-free alternative for cooking.",
+  "obj.gf-flour.name": "Gluten Free Flour",
+  "obj.gf-flour.desc": "A gluten-free alternative for cooking.",
+  "obj.allergy-teach-book.name": "All About Allergies",
+  "obj.allergy-teach-book.desc": "Helps you discover one of your food allergies.",
+  "obj.allergy-cookbook.name": "Allergy-Sensitive Cooking",
+  "obj.allergy-cookbook.desc": "Learn to cook foods that are safe to eat when you have allergies.",
+
+  "recipe.milksub": "Milk Substitute",
+  "recipe.flour-any": "Flour (Any)",
+  "recipe.egg-any": "Egg (Any)",
+  "recipe.milk-any": "Milk (Any)"
+}

@@ -11,7 +11,8 @@
 {
   "$schema": "https://smapi.io/schemas/manifest.json",
   "Name": "[AF] Wild Flowers of Ferngill Forage",
-  "Description": "Forage added by Wild Flowers of Ferngill",
+  // https://www.nexusmods.com/stardewvalley/mods/8828
+  "Description": "Forage added by Nrc5Skyrim's Wild Flowers of Ferngill",
   "Author": "Jag3Dagster",
   "UniqueID": "HedgehogTechnologies.FoFWildFlowersForageAF",
   "Version": "1.0.0",

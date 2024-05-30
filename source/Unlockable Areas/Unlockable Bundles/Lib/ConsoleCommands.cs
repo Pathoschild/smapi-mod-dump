@@ -106,6 +106,7 @@ namespace Unlockable_Bundles.Lib
 
                 case "bed":
                     Game1.currentLocation.furniture.Add(new StardewValley.Objects.BedFurniture("2048", Game1.player.Tile)); break;
+
                 case "warptohost":
                     Helper.Multiplayer.SendMessage("", "DebugWarpToHost", modIDs: new[] { ModManifest.UniqueID });  break;
 

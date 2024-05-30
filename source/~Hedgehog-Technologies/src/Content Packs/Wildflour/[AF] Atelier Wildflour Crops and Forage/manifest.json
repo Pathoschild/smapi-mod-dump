@@ -10,11 +10,13 @@
 
 {
   "$schema": "https://smapi.io/schemas/manifest.json",
-  "Name": "[AF] Atelier Wildflour Crops and Forage",
-  "Description": "Forage added by Atelier Wildflour Crops and Forage",
+  "Name": "[AF] Wildflour's Atelier Goods (previously Crops and Forage)",
+  // https://www.nexusmods.com/stardewvalley/mods/14653 - Obsolete
+  // https://www.nexusmods.com/stardewvalley/mods/22728 - Updated / 100% compatibility is not guaranteed
+  "Description": "Forage added by Wildflour's Atelier Goods",
   "Author": "Jag3Dagster",
   "UniqueID": "HedgehogTechnologies.AWCropsAndForageAF",
-  "Version": "1.0.0",
+  "Version": "1.0.1",
   "MinimumApiVersion": "4.0",
   "ContentPackFor": {
     "UniqueID": "HedgehogTechnologies.AutoForager",

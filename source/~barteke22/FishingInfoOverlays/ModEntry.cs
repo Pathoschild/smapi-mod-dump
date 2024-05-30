@@ -117,7 +117,7 @@ namespace StardewMods
             GenericMC.AddNumberOption(ModManifest, () => config.BarTopLeftLocationY[screen], (int val) => config.BarTopLeftLocationY[screen] = val,
                 () => translate.Get("GenericMC.barPosY"), () => translate.Get("GenericMC.barPosYDesc"), 0);
             GenericMC.AddNumberOption(ModManifest, () => config.BarScale[screen], (float val) => config.BarScale[screen] = val,
-                () => translate.Get("GenericMC.barScale"), () => translate.Get("GenericMC.barScaleDesc"), 0.05f, 5f, 0.1f);
+                () => translate.Get("GenericMC.barScale"), () => translate.Get("GenericMC.barScaleDesc"), 0.1f, 5f, 0.1f);
             GenericMC.AddNumberOption(ModManifest, () => config.BarMaxIcons[screen], (int val) => config.BarMaxIcons[screen] = val,
                 () => translate.Get("GenericMC.barMaxIcons"), () => translate.Get("GenericMC.barMaxIconsDesc"), 4, 500);
             GenericMC.AddNumberOption(ModManifest, () => config.BarMaxIconsPerRow[screen], (int val) => config.BarMaxIconsPerRow[screen] = val,

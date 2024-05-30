@@ -23,5 +23,12 @@
   },
   "RightClickItemLock": {},
   "MiddleClickItemLock": {},
-  "ShortcutButtons": []
+  "Controls": {
+    "LeftShortcut": "None",
+    "LeftShortcut2": "None",
+    "RightShortcut": "None",
+    "RightShortcut2": "None",
+    "MiddleShortcut": "None",
+    "MiddleShortcut2": "None"
+  }
 }

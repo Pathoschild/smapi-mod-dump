@@ -15,6 +15,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CustomCrystalariumMod.integrations;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
 using StardewValley;
@@ -161,7 +163,7 @@ namespace CustomCrystalariumMod
             }
             else
             {
-                var pair = Game1.objectData.FirstOrDefault(o => o.Value.Name.Equals(identifier));
+                var pair = Game1.objectData.FirstOrDefault(o => identifier.Equals(o.Value.Name));
                 if (pair.Value != null)
                 {
                     return ItemRegistry.QualifyItemId(pair.Key);
@@ -177,23 +179,23 @@ namespace CustomCrystalariumMod
             {
                 api.Register(manifest, () => DataLoader.ModConfig = new ModConfig(), () => Helper.WriteConfig(DataLoader.ModConfig));
 
-                api.RegisterSimpleOption(manifest, "Disable Letter", "You won't receive the letter about how the Crystalarium can clone Prismatic Shards and can be tuned to clone more stuff. Needs to restart.", () => DataLoader.ModConfig.DisableLetter, (bool val) => DataLoader.ModConfig.DisableLetter = val);
+                api.AddBoolOption(manifest, () => DataLoader.ModConfig.DisableLetter, (bool val) => DataLoader.ModConfig.DisableLetter = val, () => "Disable Letter", () => "You won't receive the letter about how the Crystalarium can clone Prismatic Shards and can be tuned to clone more stuff. Needs to restart.");
 
-                api.RegisterSimpleOption(manifest, "Clone Every Object", "Crystalarium will be able to clone every object.", () => DataLoader.ModConfig.EnableCrystalariumCloneEveryObject, (bool val) => DataLoader.ModConfig.EnableCrystalariumCloneEveryObject = val);
+                api.AddBoolOption(manifest, () => DataLoader.ModConfig.EnableCrystalariumCloneEveryObject, (bool val) => DataLoader.ModConfig.EnableCrystalariumCloneEveryObject = val, () => "Clone Every Object", () => "Crystalarium will be able to clone every object.");
 
-                api.RegisterSimpleOption(manifest, "Default Cloning Time", "Cloning time in minutes that will be used for non declared objects.", () => DataLoader.ModConfig.DefaultCloningTime, (int val) => DataLoader.ModConfig.DefaultCloningTime = val);
+                api.AddNumberOption(manifest, () => DataLoader.ModConfig.DefaultCloningTime, (int val) => DataLoader.ModConfig.DefaultCloningTime = val, () => "Default Cloning Time", () => "Cloning time in minutes that will be used for non declared objects.");
 
-                api.RegisterSimpleOption(manifest, "Override Cloner Config", "If checked the mod will use the below properties instead of the ones defined for each cloner.", () => DataLoader.ModConfig.OverrideContentPackGetObjectProperties, (bool val) => DataLoader.ModConfig.OverrideContentPackGetObjectProperties = val);
+                api.AddBoolOption(manifest, () => DataLoader.ModConfig.OverrideContentPackGetObjectProperties, (bool val) => DataLoader.ModConfig.OverrideContentPackGetObjectProperties = val, () => "Override Cloner Config", () => "If checked the mod will use the below properties instead of the ones defined for each cloner.");
 
-                api.RegisterSimpleOption(manifest, "Keep Quality", "If checked the mod will keep the quality of items placed in the crystalarium.", () => DataLoader.ModConfig.KeepQuality, (bool val) => DataLoader.ModConfig.KeepQuality = val);
+                api.AddBoolOption(manifest, () => DataLoader.ModConfig.KeepQuality, (bool val) => DataLoader.ModConfig.KeepQuality = val, () => "Keep Quality", () => "If checked the mod will keep the quality of items placed in the crystalarium.");
 
-                api.RegisterSimpleOption(manifest, "Block Change", "You won't be able to change the object inside. You will need to remove the cloner from the ground.", () => DataLoader.ModConfig.BlockChange, (bool val) => DataLoader.ModConfig.BlockChange = val);
+                api.AddBoolOption(manifest, () => DataLoader.ModConfig.BlockChange, (bool val) => DataLoader.ModConfig.BlockChange = val, () => "Block Change", () => "You won't be able to change the object inside. You will need to remove the cloner from the ground.");
 
-                api.RegisterLabel(manifest, "Get Object Back Properties:", "Properties that affect what happen to the object you place into cloners.");
+                api.AddSectionTitle(manifest, () => "Get Object Back Properties:", () => "Properties that affect what happen to the object you place into cloners.");
 
-                api.RegisterSimpleOption(manifest, "On Change", "Get the object back when changing the object being cloned or removing the cloner from the ground.", () => DataLoader.ModConfig.GetObjectBackOnChange, (bool val) => DataLoader.ModConfig.GetObjectBackOnChange = val);
+                api.AddBoolOption(manifest, () => DataLoader.ModConfig.GetObjectBackOnChange, (bool val) => DataLoader.ModConfig.GetObjectBackOnChange = val, () => "On Change", () => "Get the object back when changing the object being cloned or removing the cloner from the ground.");
 
-                api.RegisterSimpleOption(manifest, "Immediately", "Get the object back immediately after placing it into the cloner. If set, the mod will ignore the 'On Change' property.", () => DataLoader.ModConfig.GetObjectBackImmediately, (bool val) => DataLoader.ModConfig.GetObjectBackImmediately = val);
+                api.AddBoolOption(manifest, () => DataLoader.ModConfig.GetObjectBackImmediately, (bool val) => DataLoader.ModConfig.GetObjectBackImmediately = val, () => "Immediately", () => "Get the object back immediately after placing it into the cloner. If set, the mod will ignore the 'On Change' property.");
             }
 
         }

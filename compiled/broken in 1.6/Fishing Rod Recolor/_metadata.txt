@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/8835
-IDs: Stashek.FishingRodRecolor
-update keys: Nexus:8835

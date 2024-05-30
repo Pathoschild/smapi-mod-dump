@@ -1,0 +1,17 @@
+{
+    "Name": "Fast Control Input",
+    "Author": "weizinai",
+    "Version": "0.1.0",
+    "Description": "A mod allows you to speed up the game's response to player input.",
+    "UniqueID": "weizinai.FastControlInput",
+    "EntryDll": "FastControlInput.dll",
+    "UpdateKeys": [
+        "Nexus:24324"
+    ],
+    "Dependencies": [
+        {
+            "UniqueID": "spacechase0.GenericModConfigMenu",
+            "IsRequired": false
+        }
+    ]
+}

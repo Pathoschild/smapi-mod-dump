@@ -1,0 +1,17 @@
+{
+  "Name": "Precise Furniture",
+  "Author": "Espy",
+  "Version": "1.1.1",
+  "Description": "Move furniture pixel by pixel",
+  "UniqueID": "Espy.PreciseFurniture",
+  "EntryDll": "PreciseFurniture.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:23488" ],
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.GenericModConfigMenu",
+      "MinimumVersion": "1.12.0",
+      "IsRequired": false
+    }
+  ]
+}

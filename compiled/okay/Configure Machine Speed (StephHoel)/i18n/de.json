@@ -1,0 +1,39 @@
+{
+  "message": "Machine Speed Configuration Reloaded",
+
+  "ConfigTitleGeneralOptions": "Maschinen-Geschwindigkeit Einstellungen",
+  "ConfigUpdateIntervalName": "Updateintervall",
+  "ConfigReloadConfigKeyName": "Konfiguration neu laden (Taste)",
+  "ConfigTimeName": "Zeit",
+  "ConfigPercentName": "Prozent benutzen?",
+
+  "BeeHouse": "Bienenhaus",
+  "Cask": "Reifefass",
+  "CharcoalKiln": "Kohlebrennofen",
+  "CheesePress": "Käsepresse",
+  "Crystalarium": "Kristallarium",
+  "Furnace": "Schmelzofen",
+  "HeavyFurnace": "Schwerer Ofen",
+  "Incubator": "Brutkasten",
+  "Keg": "Fass",
+  "LightningRod": "Blitzableiter",
+  "Loom": "Webstuhl",
+  "MayonnaiseMachine": "Mayonnaise-Maschine",
+  "OilMaker": "Ölpresse",
+  "PreservesJar": "Einmachgefäß",
+  "RecyclingMachine": "Recycle-Maschine",
+  "SeedMaker": "Saatguterzeuger",
+  "SlimeEggPress": "Schleim-Eierpresse",
+  "SlimeIncubator": "Schleimbrutkasten",
+  "Tapper": "Zapfhahn",
+  "WormBin": "Wurmeimer",
+  "FishSmoker": "Fischräucherer",
+  "Dehydrator": "Dehydrator",
+  "SolarPanel": "Solarpanel",
+  "OstrichIncubator": "Straußenbrutkasten",
+  "HeavyTapper": "Schwerer Zapfhahn",
+  "BoneMill": "Knochenmühle",
+  "GeodeCrusher": "Geoden Brecher"
+
+
+}

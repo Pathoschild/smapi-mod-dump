@@ -1,0 +1,38 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/LeFauxMatt/StardewMods
+**
+*************************************************/
+
+{
+  "Changes": [
+    {
+      "LogName": "FauxCore Icon for LookupAnything.Search",
+      "Action": "EditData",
+      "Target": "furyx639.FauxCore/Icons",
+      "Entries": {
+        "{{ModId}}/LookupAnything.Search": {
+          "Area": { "X": 48, "Y": 16, "Width": 16, "Height": 16 },
+          "Path": "{{InternalAssetKey: assets/icons.png}}"
+        }
+      }
+    },
+    {
+      "LogName": "Toolbar Icon for LookupAnything.Search",
+      "Action": "EditData",
+      "Target": "furyx639.ToolbarIcons/Data",
+      "Entries": {
+        "{{ModId}}/LookupAnything.Search": {
+          "ModId": "Pathoschild.LookupAnything",
+          "Type": "Method",
+          "ExtraData": "TryToggleSearch",
+          "HoverText": "{{i18n: button.LookupAnything}}"
+        }
+      }
+    }
+  ]
+}

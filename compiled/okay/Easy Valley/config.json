@@ -12,5 +12,6 @@
   "EnchantmentToolPrice": 5000,
   "EnableElevator": false,
   "DesertElevatorMaxLevel": 100,
-  "EnableUnlockRecipes": false
+  "EnableUnlockRecipes": false,
+  "EnableInfiniteMagnet": false
 }

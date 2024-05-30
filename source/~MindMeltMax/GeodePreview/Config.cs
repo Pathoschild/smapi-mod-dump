@@ -25,5 +25,7 @@ namespace GeodePreview
         public int Offset { get; set; } = 1;
 
         public bool ShowMuseumHint { get; set; } = true;
+
+        public bool ShowMysteryboxPreview { get; set; } = true;
     }
 }

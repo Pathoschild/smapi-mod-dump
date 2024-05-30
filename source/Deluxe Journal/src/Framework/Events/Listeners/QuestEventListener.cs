@@ -14,6 +14,7 @@ using StardewValley.Quests;
 namespace DeluxeJournal.Framework.Listeners
 {
     /// <summary>Quest event listener base class.</summary>
+    [Obsolete]
     internal abstract class QuestEventListener : Quest
     {
         public QuestEventListener(int questType)
@@ -32,7 +33,7 @@ namespace DeluxeJournal.Framework.Listeners
             return true;
         }
 
-        public override bool checkIfComplete(NPC? npc = null, int index = -1, int count = -1, Item? item = null, string? str = null)
+        public override bool checkIfComplete(NPC? npc = null, int index = -1, int count = -1, Item? item = null, string? str = null, bool probe = false)
         {
             OnChecked(npc, index, count, item, str);
             return false;

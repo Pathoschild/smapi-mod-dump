@@ -9,6 +9,11 @@ for queries and analysis.**
 [← back to readme](README.md)
 
 # Release notes
+## 1.13.14
+Released 22 May 2024 for SMAPI 4.0.0 or later.
+
+* Improved translations. Thanks to mitekano23 (updated Japanese)!
+
 ## 1.13.13
 Released 04 April 2024 for SMAPI 4.0.0 or later.
 

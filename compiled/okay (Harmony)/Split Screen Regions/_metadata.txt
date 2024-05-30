@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/23669
+IDs: Espy.SplitScreenRegions
+update keys: Nexus:23669

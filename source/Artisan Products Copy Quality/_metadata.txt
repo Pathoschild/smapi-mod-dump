@@ -6,9 +6,9 @@ mods:
    Artisan Products Copy Quality
 
 latest commit:
-   commit 02556173692dc93bf587cd9fa6743aa0fff5044f
+   commit a6da48ed01880fa8c9cb22e81f807d5c13882064
    Author: justastranger <justastrangerlica@gmail.com>
-   Date:   Sun Mar 31 23:04:25 2024 -0500
+   Date:   Thu May 23 10:49:11 2024 -0500
    
-       Add GMCM dependency
+       Fix potential issue with config
    

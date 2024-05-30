@@ -15,9 +15,6 @@ namespace SkillPrestige.Framework.InputHandling
     /// <summary>A component which can handle user input.</summary>
     internal interface IInputHandler
     {
-        /*********
-        ** Methods
-        *********/
         /// <summary>Raised after the player moves the in-game cursor.</summary>
         /// <param name="e">The event data.</param>
         void OnCursorMoved(CursorMovedEventArgs e);

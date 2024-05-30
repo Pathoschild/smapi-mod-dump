@@ -1,0 +1,38 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/perkmi/Always-On-Server-for-Multiplayer
+**
+*************************************************/
+
+{
+  "serverHotKey": "F9",
+  "profitmargin": 100,
+  "upgradeHouse": 0,
+  "petname": "Perkele",
+  "farmcavechoicemushrooms": false,
+  "communitycenterrun": true,
+  "timeOfDayToSleep": 2200,
+  "lockPlayerChests": false,
+  "clientsCanPause": false,
+  "copyInviteCodeToClipboard": true,
+  "festivalsOn": true,
+  "eggHuntCountDownConfig": 60,
+  "flowerDanceCountDownConfig": 60,
+  "luauSoupCountDownConfig": 60,
+  "jellyDanceCountDownConfig": 60,
+  "grangeDisplayCountDownConfig": 60,
+  "iceFishingCountDownConfig": 60,
+  "endofdayTimeOut": 300,
+  "fairTimeOut": 1200,
+  "spiritsEveTimeOut": 900,
+  "winterStarTimeOut": 900,
+  "eggFestivalTimeOut": 120,
+  "flowerDanceTimeOut": 120,
+  "luauTimeOut": 120,
+  "danceOfJelliesTimeOut": 120,
+  "festivalOfIceTimeOut": 120
+}

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/24325
+IDs: PokeBenji.DialogueKeys
+update keys: Nexus:24325

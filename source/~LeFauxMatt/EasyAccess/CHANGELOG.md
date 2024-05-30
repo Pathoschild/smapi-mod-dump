@@ -8,6 +8,17 @@ for queries and analysis.**
 
 # Easy Access Change Log
 
+## 2.2.0 (Unreleased)
+
+### Added
+
+* Added support for moss.
+
+### Changed
+
+* Updated for FauxCore 1.2.0.
+* If config file is missing, it will attempt to restore from global data.
+
 ## 2.1.4 (April 12, 2024)
 
 ### Changed

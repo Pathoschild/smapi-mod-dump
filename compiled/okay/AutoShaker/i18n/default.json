@@ -1,7 +1,9 @@
 ﻿{
-  "Action.Shake.Future": "Shake",
   "Action.Dig.Future": "Dig Up",
+  "Action.Forage.Future": "Forage",
+  "Action.Shake.Future": "Shake",
 
+  "Category.Animal": "Animals",
   "Category.Beach": "Beach",
   "Category.BushBlooms": "Bush Blooms",
   "Category.CustomBushes": "Custom Bushes",
@@ -45,6 +47,8 @@
 
   "Option.FruitsReadyToShake.Name": "Minimum Fruits Ready to Shake",
   "Option.FruitsReadyToShake.Tooltip": "Minimum amount of fruits a Fruit Tree should have ready before the AutoForager shakes the tree.",
+  "Option.IgnoreMushroomLogTrees.Name": "Skip Moss-Covered Trees near{{whitespace}}Mushroom Logs?",
+  "Option.IgnoreMushroomLogTrees.Tooltip": "Whether or not to skip harvesting Moss from trees that are near enough to contribute to a Mushroom log.",
   "Option.IsForagerActive.Name": "Forager Is Active?",
   "Option.IsForagerActive.Tooltip": "Whether or not the Auto Forager will shake trees and bushes and forage for objects.",
   "Option.RequireHoe.Name": "Require Hoe for Ginger roots,{{whitespace}}Artifact Spots, and Seed Spots?",
@@ -74,7 +78,9 @@
   "Reward.Buried.Items": "Buried Items",
   "Reward.Buried.Seeds": "Buried Seeds",
   "Reward.GoldenWalnuts": "Golden Walnuts",
+  "Reward.Mushrooms": "Mushrooms",
   "Reward.Salmonberries": "Salmonberries",
+  "Reward.TappedTree": "Tree Byproducts",
   "Reward.TeaLeaves": "Tea Leaves",
 
   "Section.Bushes.Text": "Bush Toggles",
@@ -90,8 +96,12 @@
   "Subject.Bushes": "bushes",
   "Subject.BushBloomSchedules": "bush bloom schedules",
   "Subject.GingerRoots": "Ginger roots",
+  "Subject.MushroomBoxes": "Mushroom Boxes",
+  "Subject.MushroomLogs": "Mushroom Logs",
   "Subject.SalmonberryBushes": "Salmonberry bushes",
   "Subject.SeedSpot": "Seed Spot",
+  "Subject.SpawnableForageIds": "spawnable forage ids",
+  "Subject.Tappers": "Tappers",
   "Subject.TeaBushes": "Tea bushes",
   "Subject.WalnutBushes": "Walnut bushes"
 }

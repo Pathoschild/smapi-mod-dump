@@ -11,9 +11,9 @@ mods:
    Visible Artifact Spots
 
 latest commit:
-   commit 98df3479b3c8dfa2b88ad23c6e7038a0497155a2
+   commit 13a026626f20302b6f5b9d081d24372cf5475a92
    Author: Zamiell <5511220+Zamiell@users.noreply.github.com>
-   Date:   Thu Apr 18 10:13:01 2024 -0400
+   Date:   Tue Apr 30 12:18:11 2024 -0400
    
-       fix: show tillable tiles is more accurate
+       fix: silo hotkey
    

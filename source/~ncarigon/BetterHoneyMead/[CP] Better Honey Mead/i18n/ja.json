@@ -1,0 +1,16 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ncarigon/StardewValleyMods
+**
+*************************************************/
+
+{
+    "config.EnableColoredSprites.name": "色付きスプライトを有効にする",
+    "config.EnableColoredSprites.description": "ハチミツとはちみつ酒に、原料の色に応じたスプライトを使用する。",
+    "config.MeadRetainsQuality.name": "原料と同品質",
+    "config.MeadRetainsQuality.description": "生産されるはちみつ酒の品質が、原料のハチミツと同じ品質になる。"
+}

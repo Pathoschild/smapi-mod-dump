@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tocseoj.Stardew.BigCropBonu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MossyTreeBubble", "MossyTreeBubble\MossyTreeBubble.csproj", "{61B7D188-A30C-4695-B41E-95A4B0F96A00}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StardewShuffle", "StardewShuffle\StardewShuffle.csproj", "{1BDA9D0C-9DCA-4C10-B621-9600608B63DE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{61B7D188-A30C-4695-B41E-95A4B0F96A00}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{61B7D188-A30C-4695-B41E-95A4B0F96A00}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{61B7D188-A30C-4695-B41E-95A4B0F96A00}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1BDA9D0C-9DCA-4C10-B621-9600608B63DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BDA9D0C-9DCA-4C10-B621-9600608B63DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BDA9D0C-9DCA-4C10-B621-9600608B63DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BDA9D0C-9DCA-4C10-B621-9600608B63DE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -117,75 +117,20 @@
         {
             "Action": "EditData",
             "Target": "Data/Machines",
-            "TargetField": [ "(BC)12", "OutputRules", "Default_Honey", "OutputItem", "#0" ],
+            "TargetField": [ "(BC)12", "OutputRules", "Default_Honey", "OutputItem", "(O)459" ],
             "Entries": {
+                "ObjectInternalName": "(O)459_{0}",
+                "ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_Flavor %PRESERVED_DISPLAY_NAME %DISPLAY_NAME]",
+                "PreserveId": "DROP_IN_PRESERVE",
+                "CopyPrice": true,
                 "CopyColor": true,
-                "CopyQuality": true,
-                "PreserveId": "DROP_IN_PRESERVE"
-            }
-        },
-        {
-            "Action": "EditData",
-            "Target": "Data/Machines",
-            "TargetField": [ "(BC)12", "OutputRules", "Default_Honey", "OutputItem", "#0" ],
-            "Entries": {
-                "CopyQuality": true
-            },
-            "When": {
-                "MeadRetainsQuality": "true"
-            }
-        },
-        {
-            "Action": "EditData",
-            "Target": "Data/Machines",
-            "TargetField": [ "(BC)12", "OutputRules", "Default_Honey", "Triggers", "#0" ],
-            "Entries": {
-                "RequiredTags": [ "preserve_sheet_index_-1" ]
-            }
-        },
-        {
-            "Action": "EditData",
-            "Target": "Data/Machines",
-            "TargetField": [ "(BC)12", "OutputRules" ],
-            "Entries": {
-                "Flavored_Honey": {
-                    "Id": "Flavored_Honey",
-                    "Triggers": [
-                        {
-                            "RequiredItemId": "(O)340",
-                            "RequiredTags": [ "!preserve_sheet_index_-1" ]
-                        }
-                    ],
-                    "OutputItem": [
-                        {
-                            "Id": "(O)459",
-                            "ItemId": "(O)459",
-                            "ObjectInternalName": "(O)459_{0}",
-                            "ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_Flavor %PRESERVED_DISPLAY_NAME %DISPLAY_NAME]",
-                            "PreserveId": "DROP_IN_PRESERVE",
-                            "CopyPrice": true,
-                            "CopyColor": true,
-                            "PriceModifiers": [
-                                {
-                                    "Modification": "Multiply",
-                                    "Amount": 2.0
-                                }
-                            ]
-                        }
-                    ],
-                    "MinutesUntilReady": 600
-                }
-            }
-        },
-        {
-            "Action": "EditData",
-            "Target": "Data/Machines",
-            "TargetField": [ "(BC)12", "OutputRules", "Flavored_Honey", "OutputItem", "#0" ],
-            "Entries": {
-                "CopyQuality": true
-            },
-            "When": {
-                "MeadRetainsQuality": "true"
+                "CopyQuality": "{{MeadRetainsQuality}}",
+                "PriceModifiers": [
+                    {
+                        "Modification": "Multiply",
+                        "Amount": 2.0
+                    }
+                ]
             }
         }
     ]

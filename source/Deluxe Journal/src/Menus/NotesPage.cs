@@ -31,13 +31,13 @@ namespace DeluxeJournal.Menus
         private int _saveTimeSeconds;
         private bool _dirty;
 
-        public NotesPage(Rectangle bounds, Texture2D tabTexture, ITranslationHelper translation) :
-            this("notes", translation.Get("ui.tab.notes"), bounds.X, bounds.Y, bounds.Width, bounds.Height, tabTexture, new Rectangle(32, 0, 16, 16), translation)
+        public NotesPage(Rectangle bounds, Texture2D tabTexture, ITranslationHelper translation)
+            : this("notes", translation.Get("ui.tab.notes"), bounds.X, bounds.Y, bounds.Width, bounds.Height, tabTexture, new Rectangle(32, 0, 16, 16))
         {
         }
 
-        public NotesPage(string name, string title, int x, int y, int width, int height, Texture2D tabTexture, Rectangle tabSourceRect, ITranslationHelper translation) :
-            base(name, title, x, y, width, height, tabTexture, tabSourceRect, translation)
+        public NotesPage(string name, string title, int x, int y, int width, int height, Texture2D tabTexture, Rectangle tabSourceRect)
+            : base(name, title, x, y, width, height, tabTexture, tabSourceRect)
         {
             _textBox = new MultilineTextBox(
                 new Rectangle(xPositionOnScreen + 30, yPositionOnScreen + 32, width - 60, height - 64),
@@ -59,6 +59,7 @@ namespace DeluxeJournal.Menus
 
         public override void OnHidden()
         {
+            Save();
             _textBox.Selected = false;
         }
 
@@ -69,12 +70,7 @@ namespace DeluxeJournal.Menus
 
         public override bool readyToClose()
         {
-            if (_dirty)
-            {
-                _dirty = false;
-                Save();
-            }
-
+            Save();
             return base.readyToClose();
         }
 
@@ -142,15 +138,19 @@ namespace DeluxeJournal.Menus
 
         public override void receiveKeyPress(Keys key)
         {
-            if (Game1.options.SnappyMenus && !overrideSnappyMenuCursorMovementBan())
-            {
-                applyMovementKey(key);
-            }
-
             if (_textBox.Selected)
             {
+                if (Game1.options.SnappyMenus && !overrideSnappyMenuCursorMovementBan())
+                {
+                    applyMovementKey(key);
+                }
+
                 _dirty = true;
                 _saveTimeSeconds = _totalTimeSeconds + 3;
+            }
+            else
+            {
+                base.receiveKeyPress(key);
             }
 
             if (key == Keys.Escape)
@@ -190,7 +190,6 @@ namespace DeluxeJournal.Menus
 
             if (_dirty && _saveTimeSeconds < _totalTimeSeconds)
             {
-                _dirty = false;
                 Save();
             }
         }
@@ -209,7 +208,11 @@ namespace DeluxeJournal.Menus
 
         private void Save()
         {
-            DeluxeJournalMod.Instance?.SaveNotes(_textBox.RawText);
+            if (_dirty)
+            {
+                _dirty = false;
+                DeluxeJournalMod.Instance?.SaveNotes(_textBox.RawText);
+            }
         }
     }
 }

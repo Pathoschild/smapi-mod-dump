@@ -14,6 +14,7 @@
     ** Section titles
     ****/
     "config.main-options": "Opzioni principali",
+    "config.audio": "Audio",
     "config.controls": "Controlli",
     "config.axe": "Caratteristiche dell'ascia",
     "config.hoe": "Caratteristiche dalla zappa",
@@ -24,6 +25,12 @@
     "config.melee-sword": "Caratteristiche della spada",
     "config.other-tools": "Altri attrezzi",
     "config.custom-tools": "Attrezzi personalizzati",
+
+
+    /****
+    ** Warnings
+    ****/
+    "config.questable-tractor-warning": "Hai installato Questable Tractor. La mod sovrascrive le impostazioni del trattore, quindi potrebbe resettare le modifiche apportate qui.",
 
 
     /****
@@ -38,14 +45,12 @@
     "config.magnetic-radius.name": "Raggio magnetico",
     "config.magnetic-radius.tooltip": "La quantità di magnetismo dell'oggetto (valori più alti attirano gli oggetti più lontani). Predefinito {{defaultValue}}.",
 
-    "config.tractor-sounds.name": "Effetti Sonori",
-    "config.tractor-sounds.tooltip": "Quali effetti sonori riprodurre durante la guida del trattore. Le modifiche potrebbero non avere effetto fino a quando non si ricarica il salvataggio. Predefinito {{defaultValue}}.",
-    "config.tractor-sounds.value.None": "nessun rumore",
-    "config.tractor-sounds.value.Horse": "rumore di cavalli",
-    "config.tractor-sounds.value.Tractor": "rumore di trattore",
-
     "config.build-price.name": "Prezzo di costruzione",
     "config.build-price.tooltip": "Il prezzo dell'oro per acquistare un garage per trattori. Predefinito {{defaultValue}}g.",
+
+    // TODO
+    "config.require-build-materials.name": "Require Build Materials",
+    "config.require-build-materials.tooltip": "Whether you need to provide materials to build a tractor garage, in addition to the gold price.",
 
     "config.can-summon-without-garage.name": "Puoi evocarlo senza garage",
     "config.can-summon-without-garage.tooltip": "Scegli se sia possibile convocare un trattore temporaneo senza costruire prima un garage.",
@@ -55,6 +60,19 @@
 
     "config.highlight-radius.name": "Evidenzia raggio (Debug)",
     "config.highlight-radius.tooltip": "Scegli se evidenziare il raggio del trattore quando si guida, per aiutare a visualizzare l'opzione della distanza.",
+
+
+    /****
+    ** Audio
+    ****/
+    "config.tractor-sounds.name": "Effetti Sonori",
+    "config.tractor-sounds.tooltip": "Quali effetti sonori riprodurre durante la guida del trattore. Le modifiche potrebbero non avere effetto fino a quando non si ricarica il salvataggio. Predefinito {{defaultValue}}.",
+    "config.tractor-sounds.value.None": "nessun rumore",
+    "config.tractor-sounds.value.Horse": "rumore di cavalli",
+    "config.tractor-sounds.value.Tractor": "rumore di trattore",
+
+    "config.tractor-volume.name": "Volume effetti sonori",
+    "config.tractor-volume.tooltip": "Intensità del volume degli effetti sonori del trattore. Predefinito {{defaultValue}}%.",
 
 
     /****
@@ -100,6 +118,12 @@
     "config.harvest-fruit-trees.name": "Raccogli alberi da frutto",
     "config.harvest-fruit-trees.tooltip": "Scegli se vuoi raccogliere gli alberi da frutto.",
 
+    "config.harvest-tree-moss.name": "Raccogli muschio degli alberi",
+    "config.harvest-tree-moss.tooltip": "Scegli se vuoi raccogliere il muschio dagli alberi.",
+
+    "config.harvest-tree-seeds.name": "Raccogli semi degli alberi",
+    "config.harvest-tree-seeds.tooltip": "Scegli se vuoi raccogliere i semi dagli alberi.",
+
 
     /****
     ** Crops/forage/grass
@@ -122,8 +146,11 @@
     "config.harvest-forage.name": "Raccogli foraggio",
     "config.harvest-forage.tooltip": "Scegli se vuoi raccogliere il foraggio.",
 
-    "config.harvest-grass.name": "Raccogli erba",
-    "config.harvest-grass.tooltip": "Scegli se vuoi tagliare l'erba. Se hai spazio libero nel silo, ti dà fieno come al solito.",
+    "config.harvest-blue-grass.name": "Raccogli erba (Blu)",
+    "config.harvest-blue-grass.tooltip": "Scegli se vuoi tagliare l'erba blu. Se hai spazio libero nel silo, ti dà fieno come al solito.",
+
+    "config.harvest-non-blue-grass.name": "Raccogli erba (Non Blu)",
+    "config.harvest-non-blue-grass.tooltip": "Scegli se vuoi tagliare l'erba non blu. Se hai spazio libero nel silo, ti dà fieno come al solito.",
 
 
     /****
@@ -144,6 +171,9 @@
 
     "config.dig-artifact-spots.name": "Scava nei punti dei manufatti",
     "config.dig-artifact-spots.tooltip": "Scegli se vuoi scavare nei punti dei manufatti.",
+
+    "config.dig-seed-spots.name": "Scava nei punti di semina",
+    "config.dig-seed-spots.tooltip": "Scegli se vuoi scavare nei punti di semina.",
 
     "config.clear-tilled-dirt.name": "Elimina terra dissodata",
     "config.clear-tilled-dirt.tooltip": "Scegli se vuoi eliminare la terra dissodata.",

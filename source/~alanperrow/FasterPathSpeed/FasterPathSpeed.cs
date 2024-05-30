@@ -41,10 +41,14 @@ namespace FasterPathSpeed
                     && terrainFeature is Flooring flooring)
                 {
                     float pathSpeedBoost = GetPathSpeedBoostByFlooring(flooring);
+                    float mult = GetHorseSpeedMultiplier(who);
 
-                    float mult = (!Game1.eventUp && who.isRidingHorse())
-                        ? (ModEntry.Config.IsPathAffectHorseSpeed ? ModEntry.Config.HorsePathSpeedBuffModifier : 0f)
-                        : 1f;
+                    refMovementSpeed += (who.movementDirections.Count > 1) ? (0.7f * pathSpeedBoost * mult) : (pathSpeedBoost * mult);
+                }
+                else if (ModEntry.Config.IsTownPathSpeedBuff && IsFarmerOnTownPathTile(who))
+                {
+                    float pathSpeedBoost = ModEntry.Config.DefaultPathSpeedBuff;
+                    float mult = GetHorseSpeedMultiplier(who);
 
                     refMovementSpeed += (who.movementDirections.Count > 1) ? (0.7f * pathSpeedBoost * mult) : (pathSpeedBoost * mult);
                 }
@@ -75,6 +79,24 @@ namespace FasterPathSpeed
                 Flooring.townFlooring => ModEntry.Config.CustomPathSpeedBuffValues.StoneWalkwayFloor,
                 _ => ModEntry.Config.DefaultPathSpeedBuff,
             };
+        }
+
+        public static float GetHorseSpeedMultiplier(Farmer who) => (!Game1.eventUp && who.isRidingHorse())
+            ? (ModEntry.Config.IsPathAffectHorseSpeed ? ModEntry.Config.HorsePathSpeedBuffModifier : 0f)
+            : 1f;
+
+        public static bool IsFarmerOnTownPathTile(Farmer who)
+        {
+            // First, check if farmer is located on a tile from the Town tile sheet.
+            string tileSheetID = Game1.currentLocation.getTileSheetIDAt((int)who.Tile.X, (int)who.Tile.Y, "Back");
+            if (tileSheetID != "Town")
+            {
+                return false;
+            }
+
+            // HACK: Check if the Town tile that the farmer is standing on has a property "Type" with a value of "Stone".
+            //       This returns true for the stone town path tiles (also returns true for the stone bridges in town, but that's fine).
+            return Game1.currentLocation.doesEitherTileOrTileIndexPropertyEqual((int)who.Tile.X, (int)who.Tile.Y, "Type", "Back", "Stone");
         }
 
         public static void PostObjectPlacementAction(Object obj, ref bool refSuccess, GameLocation location, int x, int y, Farmer who)

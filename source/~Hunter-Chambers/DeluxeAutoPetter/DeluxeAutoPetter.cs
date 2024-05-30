@@ -9,21 +9,27 @@
 *************************************************/
 
 using DeluxeAutoPetter.helpers;
+using GenericModConfigMenu;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
+using StardewValley.Characters;
 
 namespace DeluxeAutoPetter
 {
     internal sealed class DeluxeAutoPetter : Mod
     {
         private static bool IS_DATA_LOADED = false;
+        private static DeluxeAutoPetterConfig? Config;
 
         public override void Entry(IModHelper helper)
         {
             I18n.Init(helper.Translation);
+            Config = helper.ReadConfig<DeluxeAutoPetterConfig>();
+
+            QuestDetails.Initialize(ModManifest.UniqueID);
 
             helper.Events.Multiplayer.ModMessageReceived += OnModMessageReceived;
             helper.Events.Multiplayer.PeerConnected += OnPeerConnected;
@@ -76,6 +82,8 @@ namespace DeluxeAutoPetter
             DeluxeAutoPetterDrawPatcher.Initialize(Monitor);
             Harmony harmony = new(ModManifest.UniqueID);
             DeluxeAutoPetterDrawPatcher.ApplyPatch(harmony);
+
+            CreateMenu();
         }
 
         private void OnUpdateTicked(object? sender, UpdateTickedEventArgs e)
@@ -105,17 +113,7 @@ namespace DeluxeAutoPetter
 
         private void OnSaveLoaded(object? sender, SaveLoadedEventArgs e)
         {
-            QuestDetails.Initialize(ModManifest.UniqueID);
-            QuestMail.Initialize(ModManifest.UniqueID);
-            ObjectDetails.Initialize(ModManifest.UniqueID, Helper.DirectoryPath);
-            ShopDetails.Initialize();
             MultiplayerHandler.Initialize(ModManifest.UniqueID);
-
-            QuestDetails.LoadQuest();
-            QuestMail.LoadMail(QuestMail.GetQuestMailID(), QuestMail.GetQuestMailDetails());
-            QuestMail.LoadMail(QuestMail.GetQuestRewardMailID(), QuestMail.GetQuestRewardMailDetails());
-            ObjectDetails.LoadObject();
-            ShopDetails.LoadShopItem();
 
             if (Context.IsMainPlayer)
             {
@@ -132,7 +130,7 @@ namespace DeluxeAutoPetter
 
             if (!QuestDetails.GetIsTriggered() && e.Added.Any(item => item.QualifiedItemId.Equals(QuestDetails.GetAutoPetterID())))
             {
-                e.Player.mailForTomorrow.Add(QuestMail.GetQuestMailID());
+                e.Player.mailForTomorrow.Add(QuestDetails.GetQuestMailID());
                 QuestDetails.SetIsTriggered(true);
             }
         }
@@ -141,17 +139,29 @@ namespace DeluxeAutoPetter
         {
             if (!Context.IsMainPlayer) return;
 
-            foreach (StardewValley.Buildings.Building building in Game1.getFarm().buildings)
+            Utility.ForEachLocation((GameLocation location) =>
             {
-                if (building.GetIndoors()?.Objects.Values.FirstOrDefault(sObject => sObject?.QualifiedItemId.Equals($"(BC){ObjectDetails.GetDeluxeAutoPetterID()}") ?? false, null) is not null)
+                if (location.Objects.Values.FirstOrDefault(sObject => sObject?.QualifiedItemId.Equals($"(BC){QuestDetails.GetDeluxeAutoPetterID()}") ?? false, null) is not null)
                 {
-                    foreach (FarmAnimal animal in  building.GetIndoors().Animals.Values)
+                    foreach (FarmAnimal animal in location.Animals.Values)
                     {
-                        animal.pet(Game1.getFarmer(animal.ownerID.Value), true);
-                        animal.pet(Game1.getFarmer(animal.ownerID.Value));
+                        if (!animal.wasPet.Value)
+                        {
+                            animal.pet(Game1.getFarmer(animal.ownerID.Value));
+                            animal.friendshipTowardFarmer.Value = Math.Min(1000, animal.friendshipTowardFarmer.Value + (Config is null ? 0 : Config.AdditionalFriendshipGain));
+                        }
+                    }
+                    foreach (NPC npc in location.characters)
+                    {
+                        if (npc is Pet pet)
+                        {
+                            pet.grantedFriendshipForPet.Set(true);
+                            pet.friendshipTowardFarmer.Value = Math.Min(1000, pet.friendshipTowardFarmer.Value + (Config is null ? 0 : Config.AdditionalFriendshipGain));
+                        }
                     }
                 }
-            }
+                return true;
+            });
         }
 
         private void OnDayEnding(object? sender, DayEndingEventArgs e)
@@ -159,6 +169,28 @@ namespace DeluxeAutoPetter
             if (!IS_DATA_LOADED && Context.IsMainPlayer) return;
             else if (Context.IsMainPlayer) MultiplayerHandler.SavePerPlayerQuestData(Helper);
             else Helper.Multiplayer.SendMessage(MultiplayerHandler.GetPlayerQuestData(Game1.player.UniqueMultiplayerID), nameof(MultiplayerHandler.QuestData), new[] { ModManifest.UniqueID });
+        }
+
+        private void CreateMenu()
+        {
+            IGenericModConfigMenuApi? configMenu = Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
+            if (configMenu is null || Config is null) return;
+
+            configMenu.Register(
+                mod: ModManifest,
+                reset: () => Config = new DeluxeAutoPetterConfig(),
+                save: () => Helper.WriteConfig(Config)
+            );
+
+            configMenu.AddNumberOption(
+                mod: ModManifest,
+                getValue: () => Config.AdditionalFriendshipGain,
+                setValue: value => Config.AdditionalFriendshipGain = value,
+                name: () => $"{I18n.Config_AdditionalFriendshipGain()}:",
+                min: 0,
+                max: 1000,
+                interval: 1
+            );
         }
     }
 }

@@ -1,12 +1,26 @@
 {
   "dialog.title": "場所を 選んでください:",
-  "dialog.location.farm": "牧場",
-  "dialog.location.beach": "ビーチ",
-  "dialog.location.mountain": "山",
-  "dialog.location.desert": "カリコ砂漠",
-  "dialog.location.island": "ジンジャーアイランドd",
-  "dialog.location.islandFarm": "島の農場",
-  "dialog.location.miniObelisk": "ミニオベリスク",
-  "dialog.location.miniObeliskNumber": "ミニオベリスク #{{number}}",
-  "dialog.cancel": "キャンセル"
+  
+  "common.save": "保存する",
+  "common.cancel": "キャンセル",
+  
+  "configuration-menu.title": "設定",
+  
+  "settings-menu.title": "設定",
+  
+  "configuration-menu.button-hover.rename": "名前を変更する",
+  "configuration-menu.button-hover.hidden": "隠された",
+  "configuration-menu.button-hover.visible": "表示される",
+  "configuration-menu.button-hover.move-up": "上に移動する",
+  "configuration-menu.button-hover.move-down": "下に移動する",
+  
+  "rename-menu.reset-to-default": "デフォルトにリセットする",
+  
+  "teleport-scroll.farm": "牧場",
+  "teleport-scroll.beach": "ビーチ",
+  "teleport-scroll.mountain": "山",
+  "teleport-scroll.desert": "カリコ砂漠",
+  "teleport-scroll.island": "ジンジャーアイランド",
+  "teleport-scroll.island-farm": "島の農場",
+  "teleport-scroll.mini-obelisk": "ミニオベリスク"
 }

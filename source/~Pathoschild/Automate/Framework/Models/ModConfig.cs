@@ -33,7 +33,7 @@ namespace Pathoschild.Stardew.Automate.Framework.Models
         public ModConfigKeys Controls { get; set; } = new();
 
         /// <summary>The in-game object names through which machines can connect.</summary>
-        public HashSet<string> ConnectorNames { get; set; } = new(StringComparer.OrdinalIgnoreCase) { "Workbench" };
+        public HashSet<string> ConnectorNames { get; set; } = new(StringComparer.OrdinalIgnoreCase);
 
         /// <summary>How Junimo huts should automate gems.</summary>
         /// <remarks>The <see cref="JunimoHutBehavior.AutoDetect"/> option is equivalent to <see cref="JunimoHutBehavior.Ignore"/>.</remarks>

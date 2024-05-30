@@ -10,6 +10,7 @@
 
 using System.Diagnostics;
 using System.Reflection;
+using EnaiumToolKit.Framework.Extensions;
 using EnaiumToolKit.Framework.Screen;
 using EnaiumToolKit.Framework.Screen.Components;
 using EnaiumToolKit.Framework.Utils;
@@ -25,32 +26,33 @@ namespace ModMenu.Framework.Screen;
 
 public class ModMenuScreen : GuiScreen
 {
-    private Slot<ModInfoSlot> _slot;
-    private Button _updateButton;
-    private Button _settingButton;
-    private Button _homePageButton;
-    private Button _issuesButton;
+    private Slot<ModInfoSlot> _slot = null!;
+    private Button _updateButton = null!;
+    private Button _settingButton = null!;
+    private Button _homePageButton = null!;
+    private Button _issuesButton = null!;
 
     protected override void Init()
     {
         var mods = new List<IModInfo>();
         mods.AddRange(ModEntry.GetInstance().Helper.ModRegistry.GetAll());
-        mods.Sort((m1, m2) => FontUtils.GetWidth(m2.Manifest.Name) - FontUtils.GetWidth(m1.Manifest.Name));
+        mods.Sort((m1, m2) => m2.Manifest.Name.Length - m1.Manifest.Name.Length);
 
-        _slot = new Slot<ModInfoSlot>("", "", 10, 50, FontUtils.GetWidth(mods[0].Manifest.Name),
-            (Game1.viewport.Height - 100) / 80 * 80, 80);
+        var measureString = Game1.dialogueFont.MeasureString(mods[0].Manifest.Name);
+        var slotHeight = (int)(measureString.Y * 2);
+        _slot = new Slot<ModInfoSlot>("", "", 10, 50,
+            (int)measureString.X + 30,
+            (Game1.graphics.GraphicsDevice.Viewport.Height - 100) / slotHeight * slotHeight, slotHeight);
 
 
         foreach (var variable in ModEntry.GetInstance().Helper.ModRegistry.GetAll())
         {
             ModMenuEntity? modMenuEntity = null;
 
-            var manifestExtraFields = variable.Manifest.ExtraFields;
-            if (manifestExtraFields.Count > 0 &&
-                manifestExtraFields.ContainsKey("Custom"))
+            if (variable.Manifest.ExtraFields.TryGetValue("Custom", out var field))
             {
                 var custom =
-                    JsonConvert.DeserializeObject<CustomEntity>(manifestExtraFields["Custom"].ToString());
+                    JsonConvert.DeserializeObject<CustomEntity>(field.ToString()!);
                 if (custom != null)
                 {
                     modMenuEntity = custom.ModMenu;
@@ -63,14 +65,18 @@ public class ModMenuScreen : GuiScreen
 
         _slot.SelectedEntry = _slot.Entries[0];
 
-        _homePageButton = new Button(GetTranslation("button.homePage"), "", Game1.viewport.Width - _slot.X - 220,
-            _slot.Height - 80, 200, 80);
-        _issuesButton = new Button(GetTranslation("button.issues"), "", Game1.viewport.Width - _slot.X - 440,
-            _slot.Height - 80, 200, 80);
-        _updateButton = new Button(GetTranslation("button.update"), "", Game1.viewport.Width - _slot.X - 440,
-            80, 200, 80);
-        _settingButton = new Button(GetTranslation("button.setting"), "", Game1.viewport.Width - _slot.X - 220,
-            80, 200, 80);
+        _homePageButton = new Button(GetTranslation("button.homePage"), "",
+            Game1.graphics.GraphicsDevice.Viewport.Width - _slot.X - 220,
+            _slot.Height - 200, 200, 80);
+        _issuesButton = new Button(GetTranslation("button.issues"), "",
+            Game1.graphics.GraphicsDevice.Viewport.Width - _slot.X - 440,
+            _slot.Height - 200, 200, 80);
+        _updateButton = new Button(GetTranslation("button.update"), "",
+            Game1.graphics.GraphicsDevice.Viewport.Width - _slot.X - 220,
+            _slot.Height - 100, 200, 80);
+        _settingButton = new Button(GetTranslation("button.setting"), "",
+            Game1.graphics.GraphicsDevice.Viewport.Width - _slot.X - 440,
+            _slot.Height - 100, 200, 80);
         AddComponentRange(_homePageButton, _issuesButton, _updateButton, _settingButton, _slot);
         base.Init();
     }
@@ -81,14 +87,16 @@ public class ModMenuScreen : GuiScreen
             ["GitHub"] = "https://github.com/{0}/releases",
             ["Chucklefish"] = "https://community.playstarbound.com/resources/{0}",
             ["ModDrop"] = "https://www.moddrop.com/stardew-valley/mods/{0}",
-            ["Nexus"] = "https://www.nexusmods.com/stardewvalley/mods/{0}"
+            ["Nexus"] = "https://www.nexusmods.com/stardewvalley/mods/{0}",
+            ["CurseForge"] = "https://www.curseforge.com/projects/{0}"
         };
 
     public override void draw(SpriteBatch b)
     {
-        var background = new Rectangle(_slot.X - 10, _slot.Y - 10, Game1.viewport.Width - _slot.X + 10,
+        var background = new Rectangle(_slot.X - 10, _slot.Y - 10,
+            Game1.graphics.GraphicsDevice.Viewport.Width - _slot.X + 10,
             _slot.Height + 20);
-        Render2DUtils.DrawBound(b, background.X, background.Y, background.Width, background.Height, Color.White);
+        b.DrawWindowTexture(background.X, background.Y, background.Width, background.Height, Color.White);
         if (_slot.SelectedEntry != null)
         {
             var texts = new List<string>
@@ -96,10 +104,8 @@ public class ModMenuScreen : GuiScreen
                 $"{GetTranslation("name")}:{_slot.SelectedEntry.ModInfo.Manifest.Name}",
                 $"{GetTranslation("author")}:{_slot.SelectedEntry.ModInfo.Manifest.Author}",
                 $"{GetTranslation("version")}:{_slot.SelectedEntry.ModInfo.Manifest.Version}",
-                $"{GetTranslation("description")}:"
+                $"{GetTranslation("description")}:{_slot.SelectedEntry.ModInfo.Manifest.Description}"
             };
-            texts.AddRange(Game1.parseText(_slot.SelectedEntry.ModInfo.Manifest.Description, Game1.dialogueFont,
-                background.Width - _slot.Width).Split('\n'));
             if (_slot.SelectedEntry.ModInfo.Manifest.Dependencies.Length > 0)
             {
                 texts.Add(
@@ -110,8 +116,9 @@ public class ModMenuScreen : GuiScreen
             var y = _slot.Y;
             foreach (var variable in texts)
             {
-                FontUtils.Draw(b, variable, _slot.X + _slot.Width, y);
-                y += FontUtils.GetHeight(variable);
+                b.DrawString(Game1.parseText(variable, Game1.dialogueFont, background.Width - _slot.Width),
+                    _slot.X + _slot.Width, y);
+                y += (int)Game1.dialogueFont.MeasureString(variable).Y;
             }
         }
 
@@ -167,7 +174,10 @@ public class ModMenuScreen : GuiScreen
 
                         if (type.Length == 1)
                         {
-                            OpenScreenGui(Activator.CreateInstance(type[0]) as IClickableMenu);
+                            if (Activator.CreateInstance(type[0]) is IClickableMenu menu)
+                            {
+                                OpenScreenGui(menu);
+                            }
                         }
                         else
                         {
@@ -256,8 +266,8 @@ public class ModMenuScreen : GuiScreen
 
     private class ModInfoSlot : Slot<ModInfoSlot>.Entry
     {
-        public IModInfo ModInfo;
-        public ModMenuEntity? ModMenu;
+        public readonly IModInfo ModInfo;
+        public readonly ModMenuEntity? ModMenu;
 
         public ModInfoSlot(IModInfo modInfo, ModMenuEntity? modMenu)
         {
@@ -267,14 +277,11 @@ public class ModMenuScreen : GuiScreen
 
         public override void Render(SpriteBatch b, int x, int y)
         {
-            Hovered = Render2DUtils.IsHovered(Game1.getMouseX(), Game1.getMouseY(), x, y, Width, Height);
-            FontUtils.Draw(b, ModInfo.Manifest.Name, x + 15, y + 10);
-            var desc = Game1.parseText(ModInfo.Manifest.Description, Game1.smallFont, Width - 15).Split('\n')[0];
-
-            Utility.drawTextWithShadow(b, desc, Game1.smallFont,
-                new Vector2(x + 15, y + 10 + 30), Game1.textColor, 1f,
-                -1f,
-                -1, -1, 0.0f);
+            Hovered = new Rectangle(x, y, Width, Height).Contains(Game1.getMouseX(), Game1.getMouseY());
+            b.DrawString(ModInfo.Manifest.Name, new Vector2(x + 15, y + 10));
+            var desc = Game1.parseText(ModInfo.Manifest.Description, Game1.smallFont, Width - 30).Split('\n')[0];
+            b.DrawString(desc, new Vector2(x + 15, y + Height - Game1.smallFont.MeasureString(desc).Y - 10),
+                font: Game1.smallFont);
         }
     }
 }

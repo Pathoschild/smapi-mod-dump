@@ -1,11 +1,9 @@
 {
   // UI //
   "Config.SectionTitle.General": "Ajustes generales",
-  // TODO /////////////////////////////////////////////////////////
-  "Config.SectionTitle.EnableDisable": "Enable / Disable Books",
-  "Config.SectionTitle.Prices": "Change Book Prices",
-  "Config.SectionTitle.Adjustments": "Adjust Book Powers",
-  /////////////////////////////////////////////////////////////////
+  "Config.SectionTitle.EnableDisable": "Activar / Desactivar libros",
+  "Config.SectionTitle.Prices": "Cambiar los precios de los libros",
+  "Config.SectionTitle.Adjustments": "Ajustar los poderes de los libros",
   "Config.SectionTitle.Debug": "Ajustes de depuración",
 
   // GENERAL CONFIG //
@@ -14,6 +12,9 @@
 
   "Config.General.Enabled.Name": "Activado",
   "Config.General.Enabled.Description": "Si se desactiva, este libro y sus beneficios no estarán disponibles.",
+
+  // TODO /////////////////////////////////////////////////////
+  "Config.General.Price.Description": "The price of this book when bought directly from a shop and not earned through other means. Integer values only.",
 
   // BOOK SETTINGS //
   "Config.Books.Luck.Title": "Suerte del principiante",
@@ -36,13 +37,20 @@
 
   "Config.Books.Popularity.Title": "Amistad 202",
   
-  // TODO /////////////////////////////////////////////////////////
-  "Config.Books.BusDriving.Title": "Bus Driving for Dummies",
+  "Config.Books.BusDriving.Title": "Conducción de autobús para principiantes",
 
-  "Config.Books.QiNotebook.Title": "Mr. Qi's Notebook",
-  "Config.Books.QiNotebookBonus.Name": "Qi Gem Chance",
-  "Config.Books.QiNotebookBonus.Description": "Percent chance that a Qi Gem will drop in addition to the usual odds.",
-  //////////////////////////////////////////////////////////////////
+  "Config.Books.QiNotebook.Title": "El cuaderno del Señor Qi",
+  "Config.Books.QiNotebookBonus.Name": "Probabilidad de Gema Qi",
+  "Config.Books.QiNotebookBonus.Description": "Porcentaje de probabilidad de que una gema Qi caiga además de las probabilidades habituales.",
+
+  "Config.Books.PetGifts.Title": "Refuerzo positivo",
+  
+  // TODO ///////////////////////////////////////
+  "Config.Books.CheatCodes.Title": "Secret Codes for Arcade Machines",
+  "Config.Books.CheatCodesRequirement.Name": "Junimo Kart Deaths Required",
+  "Config.Books.CheatCodesRequirement.Description": "The number of times you must die in Junimo Kart before the Secret Codes book becomes available.",
+  "Config.Books.CheatCodesBonus.Name": "Extra Lives",
+  "Config.Books.CheatCodesBonus.Description": "The number of extra lives you start Junimo Kart with.",
 
   // DEBUG SETTINGS //
   "Config.Debug.EnableDebugBook.Name": "Habilitar libro de depuración",

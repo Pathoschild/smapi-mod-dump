@@ -17,18 +17,11 @@ namespace SkillPrestige.Framework
     /// <summary>Handles experience adjustments for skills.</summary>
     internal static class ExperienceHandler
     {
-        /*********
-        ** Fields
-        *********/
         // ReSharper disable once InconsistentNaming
         private static bool _disableExperienceGains;
         private static bool ExperienceLoaded { get; set; }
         private static int[] LastExperiencePoints { get; set; }
 
-
-        /*********
-        ** Accessors
-        *********/
         public static bool DisableExperienceGains
         {
             private get => _disableExperienceGains;
@@ -41,10 +34,6 @@ namespace SkillPrestige.Framework
             }
         }
 
-
-        /*********
-        ** Public methods
-        *********/
         public static void ResetExperience()
         {
             ExperienceLoaded = false;
@@ -77,7 +66,7 @@ namespace SkillPrestige.Framework
                 int lastExperienceDetected = LastExperiencePoints[skillIndex];
                 int currentExperience = Game1.player.experiencePoints[skillIndex];
                 int gainedExperience = currentExperience - lastExperienceDetected;
-                decimal skillExperienceFactor = PrestigeSaveData.CurrentlyLoadedPrestigeSet.Prestiges.Single(x => x.SkillType.Ordinal == skillIndex).PrestigePoints * PerSaveOptions.Instance.ExperienceMultiplier;
+                decimal skillExperienceFactor = PrestigeSet.Instance.Prestiges.Single(x => x.SkillType.Ordinal == skillIndex).PrestigePoints * PerSaveOptions.Instance.ExperienceMultiplier;
                 if (gainedExperience <= 0 || skillExperienceFactor <= 0)
                     continue;
                 Logger.LogVerbose($"Detected {gainedExperience} experience gained in {Skill.AllSkills.Single(x => x.Type.Ordinal == skillIndex).Type.Name} skill.");

@@ -66,9 +66,9 @@ namespace HappyHomeDesigner.Patches
 		{
 			var il = new CodeMatcher(codes, gen);
 
-			var batchdraw = typeof(SpriteBatch).GetMethod(nameof(SpriteBatch.Draw), new[] {
+			var batchdraw = typeof(SpriteBatch).GetMethod(nameof(SpriteBatch.Draw), [
 				typeof(Texture2D), typeof(Vector2), typeof(Rectangle?), typeof(Color),
-				typeof(float), typeof(Vector2), typeof(float), typeof(SpriteEffects), typeof(float) });
+				typeof(float), typeof(Vector2), typeof(float), typeof(SpriteEffects), typeof(float) ]);
 
 			var flag = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
 
@@ -88,7 +88,7 @@ namespace HappyHomeDesigner.Patches
 					new CodeMatch(OpCodes.Callvirt, batchdraw)
 				)
 				.Advance(1)
-				.AddLabels(new[] { skip })
+				.AddLabels([skip])
 				.InsertAndAdvance(
 
 					// get config
@@ -147,15 +147,15 @@ namespace HappyHomeDesigner.Patches
 					new(OpCodes.Ldarg_2),
 					new(OpCodes.Ldc_R4, 32f),
 					new(OpCodes.Ldc_R4, 32f),
-					new(OpCodes.Newobj, typeof(Vector2).GetConstructor(new[] {typeof(float), typeof(float)})),
-					new(OpCodes.Call, typeof(Vector2).GetMethod("op_Addition", new[] {typeof(Vector2), typeof(Vector2)})),
+					new(OpCodes.Newobj, typeof(Vector2).GetConstructor([typeof(float), typeof(float)])),
+					new(OpCodes.Call, typeof(Vector2).GetMethod("op_Addition", [typeof(Vector2), typeof(Vector2)])),
 					// -- source
 					new(OpCodes.Ldloc, texStore),
 					new(OpCodes.Call, texStore.LocalType.GetMethod("get_Rect")),
 					// -- color
 					new(OpCodes.Ldarg_S, 7),
 					new(OpCodes.Ldarg_S, 4),
-					new(OpCodes.Call, typeof(Color).GetMethod("op_Multiply", new[] {typeof(Color), typeof(float)})),
+					new(OpCodes.Call, typeof(Color).GetMethod("op_Multiply", [typeof(Color), typeof(float)])),
 					// -- rotation
 					new(OpCodes.Ldc_R4, 0f),
 					// -- origin
@@ -171,7 +171,7 @@ namespace HappyHomeDesigner.Patches
 					new(OpCodes.Ldc_I4_2),
 					new(OpCodes.Div),
 					new(OpCodes.Conv_R4),
-					new(OpCodes.Newobj, typeof(Vector2).GetConstructor(new[] { typeof(float), typeof(float) })),
+					new(OpCodes.Newobj, typeof(Vector2).GetConstructor([typeof(float), typeof(float)])),
 					// -- scale
 					new(OpCodes.Ldarg_0),
 					new(OpCodes.Call, bedType.GetMethod("getScaleSize", flag)),

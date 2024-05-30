@@ -1,0 +1,65 @@
+{
+  "edibles": [
+    [
+      "Bramble Berry",
+      "10/15"
+    ],
+    [
+      "Crackle Apple",
+      "25/25"
+    ],
+    [
+      "Fizzling Berry",
+      "20/5"
+    ],
+    [
+      "Nimbus Berry",
+      "15/15"
+    ],
+    [
+      "Rose Pops",
+      "5/5"
+    ],
+    [
+      "Sol Berry",
+      "15/10"
+    ],
+    [
+      "Chestnut",
+      "30/5"
+    ],
+    ///烹饪
+    [
+      "Bramble Berry Muffin",
+      "45/15"
+    ],
+    [
+      "Chestnut and Cauliflower Soup",
+      "50/35"
+    ],
+    [
+      "Crackle Apple Buckle",
+      "40/15"
+    ],
+    [
+      "Fizzling Cake",
+      "40/20"
+    ],
+    [
+      "Nimbus Berry Crostatai",
+      "45/15"
+    ],
+    [
+      "Roast Chestnuts",
+      "40/5"
+    ],
+    [
+      "Rose Pops Donut",
+      "40/5"
+    ],
+    [
+      "Sol Berry and Cherry Tart",
+      "45/15"
+    ]
+  ]
+}

@@ -56,10 +56,21 @@ namespace StardewDruid.Data
 
          */
 
-        public static void ReactTo(NPC NPC, string cast, int friendship = 0, List<string> context = null)
+        public enum reactions
+        {
+            weald,
+            stars,
+            mists,
+            fates,
+            dragon,
+            jester,
+
+        }
+
+        public static void ReactTo(NPC NPC, reactions reaction, int friendship = 0, List<string> context = null)
         {
 
-            List<string> stringList = VillagerData.CustomReaction(cast, NPC.Name);
+            List<string> stringList = VillagerData.CustomReaction(reaction, NPC.Name);
 
             if (stringList.Count > 0)
             {
@@ -97,10 +108,10 @@ namespace StardewDruid.Data
 
             }
 
-            switch (cast)
+            switch (reaction)
             {
 
-                case "Ether":
+                case reactions.dragon:
 
                     if (Game1.player.friendshipData.ContainsKey(NPC.Name))
                     {
@@ -309,7 +320,7 @@ namespace StardewDruid.Data
 
                     break;
 
-                case "Fates":
+                case reactions.fates:
 
                     if (friendship >= 75)
                     {
@@ -567,7 +578,7 @@ namespace StardewDruid.Data
 
                     break;
 
-                case "Stars":
+                case reactions.stars:
 
                     NPC.doEmote(8, true);
 
@@ -626,7 +637,7 @@ namespace StardewDruid.Data
 
                     break;
 
-                case "Mists":
+                case reactions.mists:
 
                     NPC.doEmote(16, true);
 
@@ -689,109 +700,103 @@ namespace StardewDruid.Data
 
                     break;
 
-                case "Weald":
+                case reactions.weald:
 
-                    if (Game1.player.friendshipData.ContainsKey(NPC.Name))
+                    if (Game1.player.friendshipData[NPC.Name].Points >= 1500)
                     {
+                        NPC.doEmote(20, true);
 
-                        if (Game1.player.friendshipData[NPC.Name].Points >= 1500)
+                        switch (affinity)
                         {
-                            NPC.doEmote(20, true);
+                            case 0:
 
-                            switch (affinity)
-                            {
-                                case 0:
+                                stringList.Add("I give up trying to figure out how you're doing all this gardening.");
 
-                                    stringList.Add("I give up trying to figure out how you're doing all this gardening.");
+                                stringList.Add("You have flower petals all over you. It's ridiculous, but neat. $h");
 
-                                    stringList.Add("You have flower petals all over you. It's ridiculous, but neat. $h");
+                                break;
 
-                                    break;
+                            case 1:
 
-                                case 1:
+                                stringList.Add("You're really good with nature. $h");
 
-                                    stringList.Add("You're really good with nature. $h");
+                                break;
 
-                                    break;
+                            case 2:
 
-                                case 2:
+                                stringList.Add("I should visit the farm sometime, and see all the fantastic things you've brought to life. $l");
 
-                                    stringList.Add("I should visit the farm sometime, and see all the fantastic things you've brought to life. $l");
+                                break;
 
-                                    break;
-
-                                case 3:
+                            case 3:
 
 
-                                    stringList.Add("The " + place + " has never felt more alive than since you moved here. $l");
+                                stringList.Add("The " + place + " has never felt more alive than since you moved here. $l");
 
-                                    break;
+                                break;
 
-                                case 4:
+                            case 4:
 
-                                    stringList.Add("I've noticed that you have a special connection to the life force of the " + place + ". That means you have a special connection to all of us. $l");
+                                stringList.Add("I've noticed that you have a special connection to the life force of the " + place + ". That means you have a special connection to all of us. $l");
 
-                                    break;
+                                break;
 
-                                default:
+                            default:
 
-                                    stringList.Add("You have shown great aptitude for the sacred rites of the " + place + " Druids.");
+                                stringList.Add("You have shown great aptitude for the sacred rites of the " + place + " Druids.");
 
-                                    stringList.Add("The town doesn't know how blessed it is to have you here. $l");
+                                stringList.Add("The town doesn't know how blessed it is to have you here. $l");
 
-                                    break;
-
-                            }
+                                break;
 
                         }
 
-                        if (Game1.player.friendshipData[NPC.Name].Points >= 750)
+                    }
+                    else if (Game1.player.friendshipData[NPC.Name].Points >= 750)
+                    {
+
+                        NPC.doEmote(32, true);
+
+                        switch (affinity)
                         {
+                            case 0:
 
-                            NPC.doEmote(32, true);
+                                stringList.Add("Trees are sprouting everywhere. It's a phenomenon that I can't explain.");
 
-                            switch (affinity)
-                            {
-                                case 0:
+                                stringList.Add("It seems to coincide with your activity around town though. Do you have anything to say about that?");
 
-                                    stringList.Add("Trees are sprouting everywhere. It's a phenomenon that I can't explain.");
+                                break;
+                            case 1:
 
-                                    stringList.Add("It seems to coincide with your activity around town though. Do you have anything to say about that?");
+                                stringList.Add("The old folk think there some kind of forest spirit at work.");
 
-                                    break;
-                                case 1:
+                                break;
 
-                                    stringList.Add("The old folk think there some kind of forest spirit at work.");
+                            case 2:
 
-                                    break;
+                                stringList.Add("There are gardens sprouting up everywhere this season. $h");
 
-                                case 2:
+                                break;
 
-                                    stringList.Add("There are gardens sprouting up everywhere this season. $h");
+                            case 3:
 
-                                    break;
+                                stringList.Add("It's as if nature sings when you walk into town. $h");
 
-                                case 3:
+                                break;
 
-                                    stringList.Add("It's as if nature sings when you walk into town. $h");
+                            case 4:
 
-                                    break;
+                                stringList.Add("I saw the way you caught dinner from the stream yesterday.");
 
-                                case 4:
+                                stringList.Add("The fish must really love your voice.");
 
-                                    stringList.Add("I saw the way you caught dinner from the stream yesterday.");
+                                break;
 
-                                    stringList.Add("The fish must really love your voice.");
+                            default:
 
-                                    break;
+                                stringList.Add("The small creatures listen to the songs of the wild. $h");
 
-                                default:
-
-                                    stringList.Add("The small creatures listen to the songs of the wild. $h");
-
-                                    break;
-
-                            }
+                                break;
 
                         }
 
@@ -805,9 +810,21 @@ namespace StardewDruid.Data
 
                                 NPC.showTextAboveHead("Huh?");
 
-                                stringList.Add("Why are you speaking strange words and waving your hands like that.");
+                                switch (new Random().Next(2))
+                                {
 
-                                stringList.Add("Is it some kind of farmer ritual?");
+                                    case 0:
+
+                                        stringList.Add("Why are you speaking strange words and waving your hands like that. Is it some kind of farmer ritual?");
+
+                                        break;
+
+                                    default:
+
+                                        stringList.Add("I thought I saw someone throwing sticks and berries at you. But there was no one else around. Must have been my imagination.");
+
+                                        break;
+                                }
 
                                 break;
 
@@ -815,7 +832,21 @@ namespace StardewDruid.Data
 
                                 NPC.doEmote(8, true);
 
-                                stringList.Add("The flowers and birds have come back. I think the " + place + " is happy. $h");
+                                switch(new Random().Next(2))
+                                {
+
+                                    case 0:
+
+                                        stringList.Add("The flowers and birds have come back. I think the " + place + " is happy. $h");
+
+                                        break;
+
+                                    default:
+
+                                        stringList.Add("The air is light and sparkly today. $h");
+
+                                        break;
+                                }
 
                                 break;
 
@@ -864,7 +895,7 @@ namespace StardewDruid.Data
 
                     break;
 
-                case "Jester":
+                case reactions.jester:
 
                     NPC.doEmote(20, true);
 
@@ -880,6 +911,7 @@ namespace StardewDruid.Data
                 string str = stringList[index];
 
                 NPC.CurrentDialogue.Push(new StardewValley.Dialogue(NPC, "0", str));
+
             }
 
         }

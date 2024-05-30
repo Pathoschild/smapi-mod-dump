@@ -1,7 +1,7 @@
 ﻿{
     "Name": "Exp Control",
     "Author": "moonslime",
-    "Version": "1.0.1",
+    "Version": "1.1.0",
     "Description": "Allows increasing or decreasing how much exp you get for base skills.",
     "UniqueID": "moonslime.ExpControl",
     "EntryDll": "ExpControl.dll",

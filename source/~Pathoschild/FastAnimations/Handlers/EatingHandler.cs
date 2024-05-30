@@ -47,8 +47,7 @@ namespace Pathoschild.Stardew.FastAnimations.Handlers
             this.DisableConfirmation = disableConfirmation;
         }
 
-        /// <summary>Get whether the animation is currently active.</summary>
-        /// <param name="playerAnimationID">The player's current animation ID.</param>
+        /// <inheritdoc />
         public override bool IsEnabled(int playerAnimationID)
         {
             // to allow disabling the confirmation even if the animation isn't sped up, the handler is still called with multiplier ≤ 1
@@ -57,8 +56,7 @@ namespace Pathoschild.Stardew.FastAnimations.Handlers
                 || (this.DisableConfirmation && this.IsConfirmationShown(out _));
         }
 
-        /// <summary>Perform any logic needed on update while the animation is active.</summary>
-        /// <param name="playerAnimationID">The player's current animation ID.</param>
+        /// <inheritdoc />
         public override void Update(int playerAnimationID)
         {
             // disable confirmation

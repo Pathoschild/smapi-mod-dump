@@ -8,38 +8,26 @@
 **
 *************************************************/
 
-using HarmonyLib;
-using StardewValley;
-using StardewModdingAPI;
+using Common.Helpers;
 using StardewValley.Objects;
-using StardewValley.Menus;
-using System.Collections.Generic;
-using System;
 
 namespace AnythingAnywhere.Framework.Patches.StandardObjects
 {
-    internal class CaskPatch : PatchTemplate
+    internal sealed class CaskPatch : PatchHelper
     {
-        private readonly Type _object = typeof(Cask);
-
-        internal CaskPatch(IMonitor modMonitor, IModHelper modHelper) : base(modMonitor, modHelper)
+        internal CaskPatch() : base(typeof(Cask)) { }
+        internal void Apply()
         {
-
-        }
-        internal void Apply(Harmony harmony)
-        {
-            harmony.Patch(AccessTools.Method(_object, nameof(Cask.IsValidCaskLocation)), prefix: new HarmonyMethod(GetType(), nameof(IsValidCaskLocationPrefix)));
+            Patch(PatchType.Prefix, nameof(Cask.IsValidCaskLocation), nameof(IsValidCaskLocationPrefix));
         }
 
-        // Enable jukebox functionality outside of the farm
+        // Enable cask functionality outside of the farm
         private static bool IsValidCaskLocationPrefix(Cask __instance, ref bool __result)
         {
-            if (ModEntry.modConfig.EnableCaskFunctionality)
-            {
-                __result = true;
-                return false;
-            }
-            return true;
+            if (!ModEntry.Config.EnableCaskFunctionality) return true;
+
+            __result = true;
+            return false;
         }
     }
 }

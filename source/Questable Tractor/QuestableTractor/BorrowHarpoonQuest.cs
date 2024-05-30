@@ -53,7 +53,7 @@ namespace NermNermNerm.Stardew.QuestableTractor
             }
             else if (n.Name == "Willy" && this.State == BorrowHarpoonQuestState.GetThePole && Game1.player.currentLocation.Name == "FishShop")
             {
-                this.Spout(n, "Ah laddy...  I do think I know what you mighta hooked into and yer right that ya need a lot more pole than what you got.#$b#Here's a wee bit o' fishin' kit that my great great grandpappy used to land whales back before we knew better.#$b#I think ya will find it fit for tha purpose.");
+                this.Spout(n, "Ah laddy...  I do think I know what you mighta hooked into and yer right that ya need a lot more pole than what ya got.^Ah lass...  I do think I know what you mighta hooked into and yer right that ya need a lot more pole than what you got.#$b#Here's a wee bit o' fishin' kit that my great great grandpappy used to land whales back before we knew better.#$b#I think ya will find it fit for tha purpose.");
 
                 var harpoon = ItemRegistry.Create(BorrowHarpoonQuestController.HarpoonToolQiid);
                 harpoon.specialItem = true;
@@ -62,7 +62,7 @@ namespace NermNermNerm.Stardew.QuestableTractor
             }
             else if (n.Name == "Willy" && this.State == BorrowHarpoonQuestState.GetThePole && Game1.player.currentLocation.Name != "FishShop")
             {
-                this.Spout(n, "Ah laddy...  I do think I know what you mighta hooked into and yer right that ya need a lot more pole than what you got.#$b#Come visit me in my shop and I'll set you up with something that might work");
+                this.Spout(n, "Come visit me in my shop.  I've got a little somethin' behind the counter that might be just the thing you need.");
             }
         }
     }

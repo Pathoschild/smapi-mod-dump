@@ -11,7 +11,7 @@
 {
     "Name": "More Sensible Juices",
     "Author": "NCarigon",
-    "Version": "1.0.1",
+    "Version": "1.0.6",
     "Description": "Reworks how juices and wines are produced.",
     "UniqueID": "NCarigon.MoreSensibleJuices",
     "UpdateKeys": [ "nexus:23146" ],

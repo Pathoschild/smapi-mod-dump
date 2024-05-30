@@ -9,21 +9,34 @@
 *************************************************/
 
 using AutomateToolSwap;
+using Microsoft.Xna.Framework.Input;
+using StardewModdingAPI;
+using StardewModdingAPI.Utilities;
 using StardewValley;
-
 public class IndexSwitcher
 {
     public int currentIndex;
     public int lastIndex;
     public int auxIndex;
     public bool canSwitch;
+    public List<KeybindList> keys = new List<KeybindList>();
+
+
     public IndexSwitcher(int initialIndex)
     {
         currentIndex = initialIndex;
         lastIndex = initialIndex;
         auxIndex = initialIndex;
+
+        // Default game keys
+        // Botões padrão do jogo
+        keys.Add(KeybindList.Parse("ControllerX"));
+        keys.Add(KeybindList.Parse("C"));
+        keys.Add(KeybindList.Parse("MouseLeft"));
     }
 
+    // Changes the index of the player inventory, so it holds the desired item
+    // Troca o index do inventário do jogador, para que ele tenha o item desejado
     public async Task SwitchIndex(int newIndex)
     {
         lastIndex = Game1.player.CurrentToolIndex;
@@ -34,16 +47,31 @@ public class IndexSwitcher
         {
             await Waiter();
         }
-
     }
 
+    // Waits until the player can move or stops using the item and goes back to the last used index
+    // Espera até que o jogador possa se mover ou parar de usar o item e volta para o index usado anteriormente
     public async Task Waiter()
     {
-        await Task.Delay(500);
 
-        while (ModEntry.Config.SwapKey.IsDown())
-            if (!ModEntry.Config.SwapKey.IsDown())
-                break;
+        await Task.Delay(500);
+        if (ModEntry.Config.UseDifferentSwapKey)
+        {
+            while (ModEntry.Config.SwapKey.IsDown())
+                if (!ModEntry.Config.SwapKey.IsDown())
+                    break;
+        }
+        else
+        {
+            for (int i = 0; i < keys.Count; i++)
+            {
+                if (keys[i].IsDown())
+                    while (keys[i].IsDown())
+                        if (!keys[i].IsDown())
+                            break;
+            }
+        }
+
 
         while (!Game1.player.canMove)
             await Task.Delay(20);
@@ -52,6 +80,9 @@ public class IndexSwitcher
 
 
     }
+
+    // Goes back to last used index
+    // Vai para o index usado anteriormente
     public void GoToLastIndex()
     {
         auxIndex = Game1.player.CurrentToolIndex;

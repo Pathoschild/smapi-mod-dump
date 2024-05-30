@@ -99,6 +99,7 @@ namespace Swim
 
             helper.Events.GameLoop.UpdateTicked += SwimHelperEvents.GameLoop_UpdateTicked;
             helper.Events.Input.ButtonPressed += SwimHelperEvents.Input_ButtonPressed;
+            helper.Events.Input.ButtonsChanged += SwimHelperEvents.Input_ButtonsChanged;
             helper.Events.GameLoop.DayStarted += SwimHelperEvents.GameLoop_DayStarted;
             helper.Events.GameLoop.SaveLoaded += SwimHelperEvents.GameLoop_SaveLoaded;
             helper.Events.GameLoop.Saving += SwimHelperEvents.GameLoop_Saving;
@@ -312,7 +313,7 @@ namespace Swim
                 configMenu.AddNumberOption(
                     mod: ModEntry.context.ModManifest,
                     name: () => "Animation Patches",
-                    tooltip: () => "Dictates the level at which to modify the bathing suit animations. Default 2 (all modifications). \nWith level 0, the bathing suit will only be displayed when walking. With level 1, it will be displayed during most animations, although the arms may be weird. With level 2, the arms will look reasonable in most animations.",
+                    tooltip: () => "Dictates the level at which to modify the bathing suit animations. Default 2 (all modifications). With level 0, the bathing suit will only be displayed when walking. With level 1, it will be displayed during most animations, although the arms may be weird. With level 2, the arms will look reasonable in most animations.",
                     getValue: () => Config.AnimationPatches,
                     setValue: value => Config.AnimationPatches = value,
                     min: 0,
@@ -322,33 +323,40 @@ namespace Swim
 
                 #region Region: Key Binds.
 
-                configMenu.AddKeybind(
+                configMenu.AddKeybindList(
                     mod: ModEntry.context.ModManifest,
                     name: () => "Enable Auto-Swimming",
                     tooltip: () => "Enables and Disables auto-swimming option.",
                     getValue: () => Config.SwimKey,
                     setValue: value => Config.SwimKey = value
                 );
-                configMenu.AddKeybind(
+                configMenu.AddKeybindList(
                     mod: ModEntry.context.ModManifest,
                     name: () => "Toggle Swimsuit",
                     tooltip: () => "Change character cloth to swimsuit and vice versa.",
                     getValue: () => Config.SwimSuitKey,
                     setValue: value => Config.SwimSuitKey = value
                 );
-                configMenu.AddKeybind(
+                configMenu.AddKeybindList(
                     mod: ModEntry.context.ModManifest,
                     name: () => "Dive",
                     tooltip: () => "Change character cloth to swimsuit and vice versa.",
                     getValue: () => Config.DiveKey,
                     setValue: value => Config.DiveKey = value
                 );
-                configMenu.AddKeybind(
+                configMenu.AddKeybindList(
                     mod: ModEntry.context.ModManifest,
                     name: () => "Manual Jump",
                     tooltip: () => "Allow you to jump into the water by clicking a certain key.",
                     getValue: () => Config.ManualJumpButton,
                     setValue: value => Config.ManualJumpButton = value
+                );
+                configMenu.AddKeybindList(
+                    mod: ModEntry.context.ModManifest,
+                    name: () => "Prevent Jump",
+                    tooltip: () => "Prevents jumping into the water while held.",
+                    getValue: () => Config.PreventJumpButton,
+                    setValue: value => Config.PreventJumpButton = value
                 );
                 #endregion
 

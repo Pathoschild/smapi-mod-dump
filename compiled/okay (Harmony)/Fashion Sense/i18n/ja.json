@@ -18,6 +18,7 @@
   "ui.fashion_sense.title.pants": "パンツ",
   "ui.fashion_sense.title.sleeves": "袖",
   "ui.fashion_sense.title.sleevesAndShoes": "袖と靴",
+  "ui.fashion_sense.title.body": "体",
   "ui.fashion_sense.title.shoes": "靴",
   "ui.fashion_sense.title.mask_layer": "レイヤー",
 
@@ -55,6 +56,7 @@
   "ui.fashion_sense.start_with_hand_mirror": "手鏡を所持してスタート",
   "ui.fashion_sense.start_with_hand_mirror.description": "手鏡がゲーム開始の初日に送られてくる。",
   "ui.fashion_sense.color_override.shoes": "靴の色のオーバーライド",
+  "ui.fashion_sense.color_override.body": "体の色のオーバーライド",
   "ui.fashion_sense.search_button": "Fashion Sense packを検索。",
   "ui.fashion_sense.outfit_button": "服装セットにアクセス。",
   "ui.fashion_sense.color_copy_button": "現在の色をコピーする。",
@@ -73,5 +75,6 @@
   "ui.fashion_sense.color_info.accessory": "カラーオーバーレイはこのアクセサリーには影響しない。",
   "ui.fashion_sense.color_info.sleeves": "カラーオーバーレイはこの袖には影響しない。",
   "ui.fashion_sense.color_info.shoes": "カラーオーバーレイはこの靴には影響しない。",
+  "ui.fashion_sense.color_info.body": "カラーオーバーレイはこの体には影響しない。",
   "ui.fashion_sense.warning.hiding_player_sprite": "この外見はプレイヤーのベーススプライトを隠します。"
 }

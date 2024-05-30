@@ -43,95 +43,14 @@ before they're shipped overnight. (You can ship any number of items, but only th
 visible in the UI.)
 
 ## Configure
-### In-game settings
-If you have [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098) installed,
-you can click the cog button (⚙) on the title screen or the "mod options" button at the bottom of
-the in-game menu to configure the mod. Hover the cursor over a field for details, or see the next
-section.
+If you install [Generic Mod Config Menu][], you can click the cog button (⚙) on the title screen
+or the "mod options" button at the bottom of the in-game menu to configure the mod. Hover the
+cursor over a field for details.
 
-![](screenshots/generic-config-menu.png)
-
-### `config.json`
-The mod creates a `config.json` file in its mod folder the first time you run it. You can open that
-file in a text editor to configure the mod.
-
-These are the available settings:
-
-<table>
-<tr>
-  <th>setting</th>
-  <th>what it affects</th>
-</tr>
-
-<tr>
-  <td><code>Range</code></td>
-  <td>
-
-Default `Unlimited`. The range at which chests are accessible. The possible options are...
-
-* `Unlimited`: all chests.
-* `CurrentWorldArea`: chests in the current world area, based on these areas: beach, bus stop,
-  desert, farm, forest, mine, mountain, railroads, town, witch swamp.
-* `CurrentLocation`: chests in the current location.
-* `None`: can't remotely access any chest.
-
-  </td>
-</tr>
-
-<tr>
-  <td><code>Controls</code></td>
-  <td>
-
-The configured controller, keyboard, and mouse buttons (see [key bindings](https://stardewvalleywiki.com/Modding:Key_bindings)).
-The default button bindings are...
-
-action | keyboard | controller
------- | -------- | ----------
-toggle chest UI | `B` | _none_
-switch chest | `Left`, `Right`<br />or `LeftControl` + scroll mouse wheel | `LeftShoulder`, `RightShoulder`
-switch category | `Up`, `Down`<br />or `LeftAlt` + scroll mouse wheel | `LeftTrigger`, `RightTrigger`
-
-You can separate bindings with commas (like `B, LeftShoulder` for either one), and set multi-key
-bindings with plus signs (like `LeftShift + B`).
-
-  </td>
-</tr>
-
-<tr>
-  <td><code>ShowHoverTooltips</code></td>
-  <td>
-
-Default `true`. Whether to show the chest name in a tooltip when you point at a chest.
-
-  </td>
-</tr>
-
-<tr>
-  <td><code>EnableShippingBin</code></td>
-  <td>
-
-Default `true`. Whether to allow access to the shipping bin through Chests Anywhere.
-
-**Note:** this feature is disabled on Android due to compatibility issues.
-
-  </td>
-</tr>
-
-<tr>
-  <td><code>DisabledInLocations</code></td>
-  <td>
-
-The locations in which to disable remote chest lookups. You can use the
-[Debug Mode mod](https://www.nexusmods.com/stardewvalley/mods/679) to see the name of any in-game
-location, or get the location name for a chest from its edit screen. You can use
-`"UndergroundMine"` to match any level of the mines or skull caverns (except the entrance itself).
-
-  </td>
-</tr>
-</table>
+> ![](screenshots/generic-config-menu.png)
 
 ## Compatibility
-Chests Anywhere is compatible with Stardew Valley 1.5.6+ on Linux/Mac/Windows, both single-player and
+Chests Anywhere is compatible with Stardew Valley 1.6+ on Linux/macOS/Windows, both single-player and
 multiplayer.
 
 Multiplayer notes:
@@ -173,3 +92,5 @@ Here are the recognized options:
 * [Release notes](release-notes.md)
 * [Nexus mod](http://www.nexusmods.com/stardewvalley/mods/518)
 * This is an [open-source fork](https://github.com/VIspReaderUS/AccessChestAnywhere/issues/1) of the inactive [AccessChestAnywhere](https://github.com/VIspReaderUS/AccessChestAnywhere) mod. Versions 1.0 and 1.1 are from that mod.
+
+[Generic Mod Config Menu]: https://www.nexusmods.com/stardewvalley/mods/5098

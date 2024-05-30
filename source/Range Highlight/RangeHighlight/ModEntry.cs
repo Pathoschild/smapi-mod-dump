@@ -215,12 +215,17 @@ namespace RangeHighlight {
         internal Tuple<Color, bool[,]>? GetDefaultSprinklerHighlight(Item item) {
             if (item is StardewValley.Object obj) {
                 if (obj.IsSprinkler()) {
-                    int radius = obj.GetModifiedRadiusForSprinkler();
-                    if (radius < 0) {
-                        // nonsense
-                        return null;
+                    if (config.SprinklerModCompatibility == SprinklerModCompatibilityOption.Faster) {
+                        int radius = obj.GetModifiedRadiusForSprinkler();
+                        if (radius < 0) {
+                            // nonsense
+                            return null;
+                        }
+                        return new Tuple<Color, bool[,]>(config.SprinklerRangeTint, defaultShapes.GetSprinkler((uint)radius));
+                    } else {
+                        return new Tuple<Color, bool[,]>(config.SprinklerRangeTint,
+                            PointsToMask(obj.GetSprinklerTiles().ToArray(), (int)obj.TileLocation.X, (int)obj.TileLocation.Y));
                     }
-                    return new Tuple<Color, bool[,]>(config.SprinklerRangeTint, defaultShapes.GetSprinkler((uint)radius));
                 }
             }
             // Previous implementation:
@@ -236,6 +241,19 @@ namespace RangeHighlight {
             //    return new Tuple<Color, bool[,]>(config.SprinklerRangeTint, defaultShapes.GetSprinkler(itemName, hasPressureNozzleAttached));
             //}
             return null;
+        }
+        internal bool[,] PointsToMask(Vector2[] points, int originX = 0, int originY = 0) {
+            int maxX = 0;
+            int maxY = 0;
+            foreach (var point in points) {
+                maxX = Math.Max(maxX, Math.Abs((int)point.X - originX));
+                maxY = Math.Max(maxY, Math.Abs((int)point.Y - originY));
+            }
+            bool[,] result = new bool[maxX * 2 + 1, maxY * 2 + 1];
+            foreach (var point in points) {
+                result[(int)point.X - originX + maxX, (int)point.Y - originY + maxY] = true;
+            }
+            return result;
         }
         private void installDefaultHighlights() {
             api.AddBuildingRangeHighlighter("jltaylor-us.RangeHighlight/junimoHut",

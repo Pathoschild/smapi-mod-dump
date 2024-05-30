@@ -1,0 +1,10 @@
+{
+  "Name": "Safer Bombs",
+  "Author": "Dragoon23",
+  "Version": "1.0.0",
+  "Description": "Make bombs safer.",
+  "UniqueID": "Dragoon23.SaferBombs",
+  "EntryDll": "SaferBombs.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:23559" ]
+}

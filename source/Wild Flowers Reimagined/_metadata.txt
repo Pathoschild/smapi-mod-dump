@@ -6,11 +6,11 @@ mods:
    Wild Flowers Reimagined
 
 latest commit:
-   commit f8d4f30e7535172102c365eabc33e2d1fba91891
+   commit d8323da140fc0d5582cc44bfb7c735d9408fa6c5
    Author: JosÃ© Pablo Parajeles <josepabloparaj@gmail.com>
-   Date:   Tue Apr 16 22:17:21 2024 -0600
+   Date:   Thu May 23 22:28:37 2024 -0600
    
-       Add custom arg
+        *Note*: Swap the RNG
        
-       Allow easy config with stardrop
+       This changes the RNG from the global one to a local one to not affect any random event from the game directly
    

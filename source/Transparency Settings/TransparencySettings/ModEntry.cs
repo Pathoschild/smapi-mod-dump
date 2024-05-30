@@ -8,17 +8,9 @@
 **
 *************************************************/
 
-using Harmony;
-using Microsoft.Xna.Framework;
+using HarmonyLib;
 using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewValley;
-using StardewValley.Buildings;
-using StardewValley.Locations;
-using StardewValley.Menus;
 using System;
-using xTile.Dimensions;
-using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 namespace TransparencySettings
 {
@@ -46,13 +38,15 @@ namespace TransparencySettings
 
         private void ApplyHarmonyPatches()
         {
-            HarmonyInstance harmony = HarmonyInstance.Create(ModManifest.UniqueID); //create a Harmony instance for this mod
+            Harmony harmony = new Harmony(ModManifest.UniqueID); //create a Harmony instance for this mod
 
             //apply patches
-            HarmonyPatch_TreeTransparency.ApplyPatch(harmony, Helper, Monitor);
-            HarmonyPatch_FruitTreeTransparency.ApplyPatch(harmony, Helper, Monitor);
             HarmonyPatch_BuildingTransparency.ApplyPatch(harmony, Helper, Monitor);
             HarmonyPatch_BushTransparency.ApplyPatch(harmony, Helper, Monitor);
+            HarmonyPatch_FruitTreeTransparency.ApplyPatch(harmony, Helper, Monitor);
+            HarmonyPatch_GrassTransparency.ApplyPatch(harmony, Helper, Monitor);
+            HarmonyPatch_ObjectTransparency.ApplyPatch(harmony, Helper, Monitor);
+            HarmonyPatch_TreeTransparency.ApplyPatch(harmony, Helper, Monitor);
         }
     }
 }

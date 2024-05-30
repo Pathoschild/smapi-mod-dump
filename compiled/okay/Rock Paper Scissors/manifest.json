@@ -1,0 +1,11 @@
+﻿{
+  "Name": "Rock Paper Scissors",
+  "Author": "Spiderbuttons",
+  "Version": "1.0.0",
+  "Description": "Challenge your friends to a game of Rock Paper Scissors!",
+  "UniqueID": "Spiderbuttons.RockPaperScissors",
+  "EntryDll": "RockPaperScissors.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:23875" ],
+  "Dependencies": [ ]
+}

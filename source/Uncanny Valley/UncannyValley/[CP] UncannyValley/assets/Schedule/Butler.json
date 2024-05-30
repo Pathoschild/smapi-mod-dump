@@ -1,0 +1,30 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/jasisco5/UncannyValleyMod
+**
+*************************************************/
+
+/************************************************************************************************************************************************************
+*																																							*
+*																	Schedule																				*
+*																																							*
+*		This is required to have your character to move about Stardew Valley.  It can be a simple move to point A to point B, however						*
+*		you may also add animations that you create from animationDescriptions and your spritesheet.  There is also an option to give						*
+*		your NPC something to say in certain places. Below is a sample of Hiroshi's schedule.																*
+*																																							*
+*************************************************************************************************************************************************************/
+
+{
+	"spring": "610 Custom_Mansion_Interior 51 30 2/930 Custom_Mansion_Interior 61 36 1",
+	"summer": "610 Custom_Mansion_Interior 51 30 2",
+	"fall": "600 Custom_Mansion_Interior 51 30 2",
+	"winter": "600 Custom_Mansion_Interior 51 30 2",
+	"rain": "600 Custom_Mansion_Interior 51 30 2"
+}
+
+// First number is time (610 = 6:10) Name of map (BusStop = Bus Stop) and finally position X Y F where x is the X tile Coordinate, Y is the y coordinate and F is facing (0 = up, 1 = right, 2 = down, 3 = left)
+//after position will be animations covered in AnimationDescriptions. (sunbathe) followed by the schedule dialogue.  Note it's format.  If you have any questions please talk to me on Discord.

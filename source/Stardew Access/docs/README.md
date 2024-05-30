@@ -6,29 +6,23 @@ for queries and analysis.**
 
 ----
 
-# Introduction
+# Stardew Access
 
-Stardew Access is a [Stardew Valley](https://stardewvalley.net/) mod that focuses on making the game blind accessible for windows, linux and mac.
-The mod uses the [Tolk](https://github.com/ndarilek/tolk) library on windows, [libspeechdwrapper](https://github.com/khanshoaib3/libspeechdwrapper) on linux and [libspeak](https://github.com/Flameborn/libspeak) on mac for interacting with the active screen reader.
-The mod adds several features to help the player gather information regarding the surrounding and the player.
-It also patches the various menus and the fishing mini-game (more mini-games will be patched soon) to make them accessible.
+Stardew Access is a [Stardew Valley](https://stardewvalley.net/) mod that focuses on making the game accessible to blind screen reader users on Windows, Linux and Mac OS. It adds narration through the active screen reader to the game, the menus, the character dialogue, and more to give the player information about their farmer and the world around them.
+Nearby objects, monsters, and favorite locations are only a few keystrokes away with the object tracker.
+Planting, harvesting, construction, and mining are all made easy via narration of tiles and the tile reader.
+To interact with the active screen reader, Stardew Access uses the [Tolk](https://github.com/ndarilek/tolk) library on windows, [libspeechdwrapper](https://github.com/khanshoaib3/libspeechdwrapper) on Linux, and [libspeak](https://github.com/Flameborn/libspeak) on Mac OS.
 
-If you are a mod developer and want to integrate your mod with stardew access then checkout the [wiki page](https://github.com/khanshoaib3/stardew-access/wiki).
-
-## Other Pages
-
-- [Setup](setup.md)
-- [Features](features.md)
-- [Keybindings](keybindings.md)
-- [Commands](commands.md)
-- [Configs](config.md)
-- [Guides](guides.md)
+<!--todo: add this link to the wiki once there's info for developers. https://github.com/khanshoaib3/stardew-access/wiki-->
 
 ## Useful Links
 
-- [Stardew Valley Wiki](https://stardewvalleywiki.com/Stardew_Valley_Wiki) - has guides and info for everything in stardew valley though some things may not be accessible.
-- [Issues](https://github.com/khanshoaib3/stardew-access/issues) - post any bug or feature request here.
-- [Source Code](https://github.com/khanshoaib3/stardew-access) - contributions are always welcome!
+- [Stardew Valley Wiki](https://stardewvalleywiki.com/Stardew_Valley_Wiki)
+    - The official Stardew Valley wiki. It has guides and info for everything in Stardew valley though some things may not be screen-reader accessible.
+- [Issues](https://github.com/khanshoaib3/stardew-access/issues)
+    - post any bug or feature request here.
+- [Source Code](https://github.com/khanshoaib3/stardew-access)
+    - contributions are always welcome!
 - [Mod's Nexus Page](https://www.nexusmods.com/stardewvalley/mods/16205)
 - [Latest Release](https://github.com/khanshoaib3/stardew-access/releases/latest)
 - [Our Discord Server](https://discord.gg/yQjjsDqWQX)
@@ -63,3 +57,12 @@ You can contact us by pinging us on the [Playability](https://discord.gg/yQjjsDq
 or if you want to, you can also send me dm (my username: `theonewhoknocks3`).
 
 Additionally, my email is `shoaib.khan20@outlook.com`.
+
+## Other Pages
+
+- [Setup](setup.md)
+- [Features](features.md)
+- [Keybindings](keybindings.md)
+- [Commands](commands.md)
+- [Configs](config.md)
+- [Guides](guides.md)

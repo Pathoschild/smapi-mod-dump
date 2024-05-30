@@ -19,10 +19,10 @@ namespace HappyHomeDesigner.Patches
 {
 	internal class InventoryCombine
 	{
-		private static readonly (string slot, string held, string result)[] Fusions = { 
+		private static readonly (string slot, string held, string result)[] Fusions = [ 
 			("(F)1226", "(F)1308", "(F)" + AssetManager.CATALOGUE_ID),
 			("(F)" + AssetManager.CATALOGUE_ID, "(F)" + AssetManager.COLLECTORS_ID, "(F)" + AssetManager.DELUXE_ID)
-		};
+		];
 
 		public static void Apply(Harmony harmony)
 		{

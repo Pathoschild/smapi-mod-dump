@@ -1,0 +1,10 @@
+{
+  "Name": "Chest Values",
+  "Author": "MysticalAsian",
+  "Version": "1.0.0",
+  "Description": "Allows you to view the total value of all the items within a chest",
+  "UniqueID": "MysticalAsian.ChestValues",
+  "EntryDll": "sdv chest values.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:23878" ]
+}

@@ -1,0 +1,10 @@
+{
+  "AnimalsGoOutsideHorribleWeather": [],
+  "AnimalsGoOutsideBadWeather": [
+    "Pig"
+  ],
+  "AnimalsStayInside": [],
+  "DelayedPet": true,
+  "PigAnimalCrackerMultiplier": 2.0,
+  "NoTruffleLimit": true
+}

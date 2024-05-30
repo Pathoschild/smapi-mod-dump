@@ -6,6 +6,23 @@ for queries and analysis.**
 
 ----
 
+# 3.1.1
+- *Note*: Swap the RNG from the global one to a local one to not affect any random event from the game directly
+
+# 3.1.0
+- *New feature*: Added the KeepRegrowFlower option to either preserve or remove flowers that bloom multiple times (ex. Cornucopia Trellises flowers)
+
+# 3.0.0
+- *New feature*: Multiplayer support: Online multiplayer should be functional using Spacecore synchronization
+- *New Dependency* SpaceCore
+- *Minor fix* Set MinimumApiVersion to `4.0.0` to ensure it loads with Stardew 1.6
+
+# 2.3.0
+- *BUGFIX*: Fixes an issue where multiple flower ids have the same item data
+
+# 2.2.0 
+- *BUGFIX*: Fixes flower getting destroyed accidentally when inventory was full on harvest by hand
+
 # 2.1.0
 - *New Feature*: Adds option to try to spawn flowers in all locations, useful for mods like SVE
 - *BUGFIX*: Prevents multiplayer from crashing by disabling the mod outside the main client. Multiplayer support is been look at it, but it will take more time

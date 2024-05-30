@@ -11,7 +11,7 @@
 {
   "Name": "Integrated Minecarts (SMAPI Component)",
   "Author": "Jibb",
-  "Version": "4.2.1",
+  "Version": "4.3.0",
   "Description": "C# component of Integrated Minecarts",
   "UniqueID": "jibb.minecarts.C",
   "EntryDll": "IntegratedMinecarts.dll",

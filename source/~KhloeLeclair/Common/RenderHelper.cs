@@ -12,6 +12,7 @@
 
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -275,13 +276,13 @@ public static class RenderHelper {
 
 		Color c = color ?? Color.White;
 
-		for(int i = 0; i < inventory.capacity; i++) {
+		for (int i = 0; i < inventory.capacity; i++) {
 			int col = i % columns;
 			int row = i / columns;
 
 			Vector2 pos = new(
 				inventory.xPositionOnScreen + col * (64 + inventory.horizontalGap),
-				inventory.yPositionOnScreen + row * (64 + inventory.verticalGap) + (row-1) * 4 - ((i < columns && inventory.playerInventory && inventory.verticalGap == 0) ? 12 : 0)
+				inventory.yPositionOnScreen + row * (64 + inventory.verticalGap) + (row - 1) * 4 - ((i < columns && inventory.playerInventory && inventory.verticalGap == 0) ? 12 : 0)
 			);
 
 			b.Draw(texture, pos, source, c, 0f, Vector2.Zero, scale, SpriteEffects.None, 0.5f);
@@ -379,7 +380,7 @@ public static class RenderHelper {
 		batch.Draw(texture!, new Rectangle(x, y + 64, 64, height - 128), source.MiddleLeft, color.Value);
 
 		// Right Middle
-		batch.Draw(texture!, new Rectangle(x + width - 64, y +64, 64, height - 128), source.MiddleRight, color.Value);
+		batch.Draw(texture!, new Rectangle(x + width - 64, y + 64, 64, height - 128), source.MiddleRight, color.Value);
 
 	}
 
@@ -686,29 +687,48 @@ public static class RenderHelper {
 
 	}
 
-#endregion
+	#endregion
 
 	#region Scissor Rendering
 
+	private static readonly BindingFlags Flags = BindingFlags.Instance | BindingFlags.NonPublic;
+
+	[MemberNotNull(nameof(GetSortMode))]
+	[MemberNotNull(nameof(GetBlendState))]
+	[MemberNotNull(nameof(GetSamplerState))]
+	[MemberNotNull(nameof(GetDepthStencilState))]
+	[MemberNotNull(nameof(GetRasterizerState))]
+	[MemberNotNull(nameof(GetEffect))]
+	private static void LoadFields() {
+		Type SB = typeof(SpriteBatch);
+
+		GetSortMode ??= SB.GetField("_sortMode", Flags)!.CreateGetter<SpriteBatch, SpriteSortMode>();
+		GetBlendState ??= SB.GetField("_blendState", Flags)!.CreateGetter<SpriteBatch, BlendState>();
+		GetSamplerState ??= SB.GetField("_samplerState", Flags)!.CreateGetter<SpriteBatch, SamplerState>();
+		GetDepthStencilState ??= SB.GetField("_depthStencilState", Flags)!.CreateGetter<SpriteBatch, DepthStencilState>();
+		GetRasterizerState ??= SB.GetField("_rasterizerState", Flags)!.CreateGetter<SpriteBatch, RasterizerState>();
+		GetEffect ??= SB.GetField("_effect", Flags)!.CreateGetter<SpriteBatch, Effect>();
+
+	}
+
+	private static Func<SpriteBatch, SpriteSortMode>? GetSortMode;
+	private static Func<SpriteBatch, BlendState>? GetBlendState;
+	private static Func<SpriteBatch, SamplerState>? GetSamplerState;
+	private static Func<SpriteBatch, DepthStencilState>? GetDepthStencilState;
+	private static Func<SpriteBatch, RasterizerState>? GetRasterizerState;
+	private static Func<SpriteBatch, Effect>? GetEffect;
+
+
 	public static void WithScissor(SpriteBatch b, SpriteSortMode mode, Rectangle rectangle, Action action, RenderTarget2D? target = null) {
 
-		var smField = Helper?.Reflection.GetField<SpriteSortMode>(b, "_sortMode", false);
-		SpriteSortMode old_sort = smField?.GetValue() ?? mode;
+		LoadFields();
 
-		var bsField = Helper?.Reflection.GetField<BlendState>(b, "_blendState", false);
-		BlendState? old_blend = bsField?.GetValue();
-
-		var ssField = Helper?.Reflection.GetField<SamplerState>(b, "_samplerState", false);
-		SamplerState? old_sampler = ssField?.GetValue();
-
-		var dsField = Helper?.Reflection.GetField<DepthStencilState>(b, "_depthStencilState", false);
-		DepthStencilState? old_depth = dsField?.GetValue();
-
-		var rsField = Helper?.Reflection.GetField<RasterizerState>(b, "_rasterizerState", false);
-		RasterizerState? old_rasterizer = rsField?.GetValue();
-
-		var efField = Helper?.Reflection.GetField<Effect>(b, "_effect", false);
-		Effect? old_effect = efField?.GetValue();
+		SpriteSortMode old_sort = GetSortMode(b);
+		BlendState? old_blend = GetBlendState(b);
+		SamplerState? old_sampler = GetSamplerState(b);
+		DepthStencilState? old_depth = GetDepthStencilState(b);
+		RasterizerState? old_rasterizer = GetRasterizerState(b);
+		Effect? old_effect = GetEffect(b);
 
 		var old_scissor = b.GraphicsDevice.ScissorRectangle;
 
@@ -759,7 +779,7 @@ public static class RenderHelper {
 				transformMatrix: null
 			);
 
-			if (target != null) { 
+			if (target != null) {
 				var rt = (old_targets?.Length ?? 0) > 0 ?
 					old_targets![0].RenderTarget : null;
 				b.GraphicsDevice.SetRenderTarget((RenderTarget2D?) rt);

@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Custom Kissing Mod",
   "Author": "Digus",
-  "Version": "1.2.1-alpha.20231204",
+  "Version": "1.2.1",
   "Description": "Let you configure kissing of NPCs.",
   "UniqueID": "Digus.CustomKissingMod",
   "EntryDll": "CustomKissingMod.dll",

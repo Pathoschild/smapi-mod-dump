@@ -89,6 +89,7 @@ Generic Mod Config Menu config menu translations currently avaliable in:
 - Italian, thanks to AlixNauts!
 - German, thanks to Nordmole!
 - Russian, thanks to theRealDuda!
+- Portuguese, thanks to caputi!
 
 Other Generic Mod Config Menu translations done using DeepL and Google Translate. Improved translations are welcome.
 

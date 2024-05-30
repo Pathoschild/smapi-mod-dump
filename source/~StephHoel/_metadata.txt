@@ -8,11 +8,11 @@ mods:
    Configure Machine Speed
 
 latest commit:
-   commit 286b81e7d62d55e21e40ad0aeae29b04604b1e2b
+   commit cec698d79926a00b5e68ac6462556e5348d5c11e
    Author: Steph Hoel <steph.hoel@gmail.com>
-   Date:   Sun Apr 14 13:34:02 2024 -0300
+   Date:   Sun May 12 09:57:04 2024 -0300
    
-       Merge pull request #3 from StephHoel/CMS-1.1.13
+       Merge pull request #4 from StephHoel/CMS-1.1.14
        
-       add new machine (mushroom log)
+       [CMS] Add german translation
    

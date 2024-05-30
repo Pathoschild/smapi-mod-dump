@@ -1,0 +1,12 @@
+{
+  "Enabled": true,
+  "DisplayWhenHeld": true,
+  "ToggleEmoteKey": "None",
+  "HideWhenUnusable": true,
+  "HideWhenNoCrop": false,
+  "OffsetY": 0,
+  "OffsetX": 0,
+  "EmoteInterval": 250,
+  "OpacityPercent": 75,
+  "SizePercent": 75
+}

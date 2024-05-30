@@ -38,6 +38,9 @@ namespace RangeHighlight {
         private readonly PerScreen<Mutex> highlightTilesMutex = new PerScreen<Mutex>(createNewState: () => new Mutex());
         private readonly PerScreen<bool> showAllDownLastState = new PerScreen<bool>();
         private readonly PerScreen<bool> showAllToggleState = new PerScreen<bool>();
+        private readonly PerScreen<bool> movedSinceLastMouseMovement = new();
+        private readonly PerScreen<int> lastMouseX = new();
+        private readonly PerScreen<int> lastMouseY = new();
 
         private class Highlighter<T> {
             public string uniqueId { get; }
@@ -176,6 +179,14 @@ namespace RangeHighlight {
         }
 
         private void OnUpdateTicked(object? sender, UpdateTickedEventArgs e) {
+            if (Game1.player.movedDuringLastTick()) movedSinceLastMouseMovement.Value = true;
+            var mouseState = Game1.input.GetMouseState();
+            if (lastMouseX.Value != mouseState.X || lastMouseY.Value != mouseState.Y) {
+                movedSinceLastMouseMovement.Value = false;
+                lastMouseX.Value = mouseState.X;
+                lastMouseY.Value = mouseState.Y;
+            }
+
             if (!e.IsMultipleOf(theMod.config.RefreshInterval)) return;
 
             if (highlightTilesMutex.Value.WaitOne()) {
@@ -306,8 +317,8 @@ namespace RangeHighlight {
                     if (ret != null) {
                         if (itemHighlighters[i].HighlightOthersWhenHeld) {
                             runItemHighlighter[i] = true;
+                            iterateItems = true;
                         }
-                        iterateItems = true;
                         var cursorTile = GetCursorTile();
                         var actionTile = cursorTile;
                         bool mouseHidden = !Game1.wasMouseVisibleThisFrame || Game1.mouseCursorTransparency == 0f;
@@ -322,7 +333,8 @@ namespace RangeHighlight {
                         }
                         if (showAtActionTile) AddHighlightTiles(ret, (int)actionTile.X, (int)actionTile.Y);
                         if ((!showAtActionTile || cursorTile != actionTile)
-                            && !mouseHidden) {
+                            && !mouseHidden
+                            && (! config.HideAtMouseOnMovement || !movedSinceLastMouseMovement.Value)) {
                             AddHighlightTiles(ret, (int)cursorTile.X, (int)cursorTile.Y);
                         }
                         //break;
@@ -362,6 +374,33 @@ namespace RangeHighlight {
                 if (itemHighlighterStartCalled[i]) {
                     itemHighlighters[i].onFinish?.Invoke();
                 }
+            }
+
+            if (!config.ShowOverlaps) {
+                if (highlightTilesMutex.Value.WaitOne()) {
+                    try {
+                        // this is expensive.
+                        Dictionary<Color, HashSet<Point>> unique = new();
+                        foreach (var t in highlightTiles.Value) {
+                            HashSet<Point>? points;
+                            if (!unique.TryGetValue(t.Item1, out points)) {
+                                points = new();
+                                unique[t.Item1] = points;
+                            }
+                            points.Add(t.Item2);
+                        }
+                        var tiles = highlightTiles.Value;
+                        tiles.Clear();
+                        foreach(var pr in unique) {
+                            foreach (var p in pr.Value) {
+                                tiles.Add(new Tuple<Color, Point>(pr.Key, p));
+                            }
+                        }
+                    } finally {
+                        highlightTilesMutex.Value.ReleaseMutex();
+                    }
+                }
+
             }
         }
     }

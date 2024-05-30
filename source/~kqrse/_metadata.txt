@@ -3,14 +3,18 @@ urls:
    Git: https://github.com/kqrse/StardewValleyMods.git
 
 mods:
+   Better Truffles
    Brighter Building Paint
    Empty Jar Bubbles
+   Fertilizer Bubbles
+   Place Floor on Tilled Dirt
    Skinny Animals
+   Where's My Horse
 
 latest commit:
-   commit bf7db6a3d43102b28248356c8840aaf969df3e2b
+   commit 9988b186f60f2cc7ae8474bc1699ba2e231550fb
    Author: Karson Nguyen <karsonn@sfu.ca>
-   Date:   Thu Apr 25 21:03:54 2024 -0700
+   Date:   Wed May 22 20:02:42 2024 -0700
    
-       done
+       empty jar bubbles - chinese translation
    

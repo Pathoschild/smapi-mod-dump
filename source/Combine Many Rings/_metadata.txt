@@ -6,9 +6,11 @@ mods:
    Combine Many Rings
 
 latest commit:
-   commit a7bb9729c269e6d1dbd6d15457be5e55f789cc23
-   Author: sliva <sliva@DESKTOP-7M27B1J>
-   Date:   Sat May 29 19:53:20 2021 -0400
+   commit 44a6379be151e4d612ee537237664fe15689993e
+   Author: SlivaStari <52631488+SlivaStari@users.noreply.github.com>
+   Date:   Sat May 4 11:51:38 2024 -0400
    
-       Update Version
+       Update README.md
+       
+       Update README with details on BalancedMode
    

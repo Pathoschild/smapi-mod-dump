@@ -20,7 +20,7 @@ using StardewValley.Menus;
 using StardewValley.Tools;
 
 /// <inheritdoc />
-public sealed class ModEntry : Mod
+public sealed class ModEntry : StardewModdingAPI.Mod
 {
     private static readonly FieldInfo MouseWheelScrolledEventArgsOldValueField =
         typeof(MouseWheelScrolledEventArgs).GetField(

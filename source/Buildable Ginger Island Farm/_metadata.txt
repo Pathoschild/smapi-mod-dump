@@ -6,9 +6,9 @@ mods:
    Buildable Ginger Island Farm
 
 latest commit:
-   commit 66aea3febb163a4fb5701b7d32d7a0a1d516c429
+   commit a3c6706b30d75635b1672f3880f626eec2497b1c
    Author: mouahrara <mouahrara@users.noreply.github.com>
-   Date:   Sun Apr 21 20:47:05 2024 +0200
+   Date:   Tue May 28 19:35:12 2024 +0200
    
-       Buildable Ginger Island Farm 1.0.3
+       Buildable Ginger Island Farm 1.0.4
    

@@ -19,7 +19,7 @@ namespace DwarvishMattock
 	public class FruitTreePatches
 	{
 		public static DynamicMethod performToolActionOriginal = null;
-		public static bool performToolAction_Prefix(ref FruitTree __instance, Tool t, int explosion, Vector2 tileLocation, GameLocation location, ref bool __result)
+		public static bool performToolAction_Prefix(ref FruitTree __instance, Tool t, int explosion, Vector2 tileLocation, ref bool __result)
 		{
 			// Gotta have the original method available for mattock stand-ins.
 			if (performToolActionOriginal == null)
@@ -32,9 +32,9 @@ namespace DwarvishMattock
 			if (t is Mattock mattock && !mattock.struckFeatures.Contains(__instance))
 			{ 
 				// Treat the mattock as an axe for stumps.
-				Axe standinAxe = mattock.asAxe();
+				Axe standinAxe = mattock.AsAxe();
 				mattock.struckFeatures.Add(__instance);
-				__result = (bool) performToolActionOriginal.Invoke(__instance, new object[] { __instance, standinAxe, explosion, tileLocation, location });
+				__result = (bool) performToolActionOriginal.Invoke(__instance, new object[] { __instance, standinAxe, explosion, tileLocation });
 				return false;
 			}
 

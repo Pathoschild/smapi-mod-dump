@@ -15,7 +15,6 @@ using StardewValley.GameData;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
 using StardewValley.Tools;
-using System.Reflection;
 using SObject = StardewValley.Object;
 
 namespace GardenPotOptions {
@@ -44,6 +43,14 @@ namespace GardenPotOptions {
                     postfix: new HarmonyMethod(typeof(Patches), nameof(Postfix_Bush_performUseAction))
                 );
                 harmony.Patch(
+                    original: AccessTools.Method(typeof(Tree), "performUseAction"),
+                    postfix: new HarmonyMethod(typeof(Patches), nameof(Postfix_Tree_performUseAction))
+                );
+                harmony.Patch(
+                    original: AccessTools.Method(typeof(FruitTree), "performUseAction"),
+                    postfix: new HarmonyMethod(typeof(Patches), nameof(Postfix_FruitTree_performUseAction))
+                );
+                harmony.Patch(
                     original: AccessTools.Method(typeof(SObject), "placementAction"),
                     postfix: new HarmonyMethod(typeof(Patches), nameof(Postfix_Object_placementAction))
                 );
@@ -66,24 +73,24 @@ namespace GardenPotOptions {
             }
         }
 
-        private static bool IsFilledPot(SObject obj, out IndoorPot? pot) =>
-            (pot = obj as IndoorPot) is not null
-            && (pot.hoeDirt?.Value?.crop is not null
-            || pot.bush?.Value is not null
-            || pot.hoeDirt?.Value?.fertilizer?.Value is not null
-            || pot.heldObject?.Value is not null);
+        private static bool IsGardenPot(Item? item) => item?.QualifiedItemId?.Equals("(BC)62") ?? false;
 
         private static void Prefix_Tool_DoFunction(GameLocation location, int x, int y, Farmer who) {
             try {
                 if (ModEntry.Instance?.ModConfig?.KeepContents ?? false) {
                     var tile = new Vector2(x / 64, y / 64);
                     if ((location?.Objects?.TryGetValue(tile, out var obj) ?? false)
-                         && IsFilledPot(obj, out var pot)
-                         && who is not null
+                        && obj is IndoorPot pot
+                        && BetterIndoorPot.TryTransplant(pot, out var bip)
+                        && who is not null
                     ) {
-                        location.debris?.Add(new Debris(pot, who.GetToolLocation(), who.GetBoundingBox().Center.ToVector2()));
+                        TryRemove<IndoorPot>(location, tile);
                         pot!.performRemoveAction();
-                        location.Objects.Remove(tile);
+                        if (bip.IsFilled()) {
+                            location.debris?.Add(new Debris(bip, who.GetToolLocation(), who.GetBoundingBox().Center.ToVector2()));
+                        } else {
+                            Game1.createItemDebris(new SObject(tile, "62"), Game1.player.getStandingPosition(), Game1.player.FacingDirection);
+                        }
                     }
                 }
             } catch { }
@@ -108,108 +115,136 @@ namespace GardenPotOptions {
         }
 
         private static void Postfix_Bush_performUseAction(
-            Bush __instance, Vector2 tileLocation
+            Bush __instance
         ) {
-            IndoorPot? pot;
             if ((ModEntry.Instance?.ModConfig?.AllowTransplant ?? false) // can transplant
                 && (__instance?.size?.Value ?? 0) == 3 // must be a tea sapling (or modded?)
-                && (Game1.player?.ActiveItem?.QualifiedItemId?.Equals("(BC)62") ?? false) // player is holding a garden pot
-                && ((pot = Game1.player.ActiveItem as IndoorPot) is null // which has not been placed yet...
-                    || !IsFilledPot(pot, out _)) // or is still empty
+                && IsGardenPot(Game1.player?.ActiveItem) // player is holding a garden pot
+                && Game1.player?.ActiveItem is not BetterIndoorPot // which has not been placed yet
             ) {
-                // put existing bush in a new garden pot
-                pot = new IndoorPot(tileLocation);
-                try { pot.bush.Value = __instance; } catch { }
-
-                // clear existing bush from tile
-                __instance!.Location.terrainFeatures.Remove(tileLocation);
+                var bip = new BetterIndoorPot(__instance);
 
                 // remove empty garden pot from inventory
-                Game1.player.reduceActiveItemByOne();
+                Game1.player?.reduceActiveItemByOne();
+
                 // drop full garden pot
-                Game1.createItemDebris(pot, Game1.player.getStandingPosition(), Game1.player.FacingDirection);
+                Game1.createItemDebris(bip, Game1.player?.getStandingPosition() ?? Vector2.Zero, Game1.player?.FacingDirection ?? 0);
             }
         }
 
-        private static readonly FieldInfo? BushYDrawOffset = typeof(Bush).GetField("yDrawOffset", BindingFlags.NonPublic | BindingFlags.Instance);
+        private static void Postfix_Tree_performUseAction(
+            Tree __instance
+        ) {
+            if ((ModEntry.Instance?.ModConfig?.AllowTransplant ?? false) // can transplant
+                && IsGardenPot(Game1.player?.ActiveItem) // player is holding a garden pot
+                && Game1.player?.ActiveItem is not BetterIndoorPot // which has not been placed yet
+                && __instance.growthStage.Value <= (ModEntry.Instance?.ModConfig?.TreeTransplantMax ?? -1)
+            ) {
+                var bip = new BetterIndoorPot(__instance);
+
+                // remove empty garden pot from inventory
+                Game1.player?.reduceActiveItemByOne();
+
+                // drop full garden pot
+                Game1.createItemDebris(bip, Game1.player?.getStandingPosition() ?? Vector2.Zero, Game1.player?.FacingDirection ?? 0);
+            }
+        }
+
+        private static void Postfix_FruitTree_performUseAction(
+            FruitTree __instance
+        ) {
+            if ((ModEntry.Instance?.ModConfig?.AllowTransplant ?? false) // can transplant
+                && IsGardenPot(Game1.player?.ActiveItem) // player is holding a garden pot
+                && Game1.player?.ActiveItem is not BetterIndoorPot // which has not been placed yet
+                && __instance.growthStage.Value <= (ModEntry.Instance?.ModConfig?.FruitTreeTransplantMax ?? -1)
+            ) {
+                var bip = new BetterIndoorPot(__instance);
+
+                // remove empty garden pot from inventory
+                Game1.player?.reduceActiveItemByOne();
+
+                // drop full garden pot
+                Game1.createItemDebris(bip, Game1.player?.getStandingPosition() ?? Vector2.Zero, Game1.player?.FacingDirection ?? 0);
+            }
+        }
+
+        private static string Test(this bool? b) => b.HasValue ? b.Value.ToString() : "null";
 
         private static void Prefix_Utility_tryToPlaceItem(
             GameLocation location, ref Item? item, int x, int y
         ) {
             if ((ModEntry.Instance?.ModConfig?.AllowTransplant ?? false) // can transpant
-                && (item?.QualifiedItemId?.Equals("(BC)62") ?? false)) { // using garden pot
-                bool? isDirt, isBush, potEmpty, potCrop, potBush, dirtCrop, tileEmpty;
+                && IsGardenPot(item)) { // using garden pot
+                bool? isDirt, isBush, potEmpty, potCrop, potBush, dirtCrop, tileEmpty, isTree, potTree;
 
                 var tile = new Vector2(x / 64, y / 64);
                 HoeDirt? dirt = null;
-                IndoorPot? pot = item as IndoorPot;
-                potEmpty = pot is null || !IsFilledPot(pot, out _);
+                BetterIndoorPot? bip = item as BetterIndoorPot;
+                potEmpty = bip is null;
                 isDirt = (location?.terrainFeatures?.TryGetValue(tile, out var h) ?? false) && (dirt = h as HoeDirt) is not null;
-                Bush? bush;
-                isBush = (location?.terrainFeatures?.TryGetValue(tile, out var b) ?? false) && (bush = b as Bush) is not null && (bush?.size?.Value ?? 0) == 3;
+                isBush = (location?.terrainFeatures?.TryGetValue(tile, out var b) ?? false) && b is Bush bush && bush is not null && (bush?.size?.Value ?? 0) == 3;
+                isTree = (location?.terrainFeatures?.TryGetValue(tile, out var t) ?? false) && ((t is Tree tree && tree is not null) || (t is FruitTree fruit && fruit is not null));
                 tileEmpty = location?.isTilePlaceable(tile) ?? false;
                 dirtCrop = dirt?.crop is not null || dirt?.fertilizer?.Value is not null;
-                potCrop = pot?.hoeDirt?.Value?.crop is not null || pot?.hoeDirt?.Value?.fertilizer?.Value is not null;
-                potBush = pot?.bush?.Value is not null;
+                potCrop = bip?.hoeDirt?.Value?.crop is not null || bip?.hoeDirt?.Value?.fertilizer?.Value is not null;
+                potBush = bip?.bush?.Value is not null;
+                potTree = bip?.tree is not null;
 
+                string? deniedMsg = null;
                 var disableCall = false;
-                if ((isDirt ?? false) && !(dirtCrop ?? false) && (potCrop ?? false)) { // is dirt but no crop, potted crop
-                    // transplant garden pot content to hoed dirt
-                    try { dirt!.crop = pot!.hoeDirt.Value.crop; } catch { }
-                    try { dirt!.fertilizer.Value = pot!.hoeDirt.Value.fertilizer.Value; } catch { }
-                    try { dirt!.state.Value = pot!.hoeDirt.Value.state.Value; } catch { }
-
-                    // clear garden pot
-                    try { pot!.hoeDirt.Value = null; } catch { }
-
-                    // remove from inventory
-                    Game1.player.reduceActiveItemByOne();
-
-                    // drop new garden pot
-                    Game1.createItemDebris(new SObject(tile, "62"), Game1.player.getStandingPosition(), Game1.player.FacingDirection);
-
+                if ((isDirt ?? false) && (dirtCrop ?? false) && (tileEmpty ?? false) && (potCrop ?? false)) { // is dirt with fertilizer, potted crop
+                    disableCall = true; // disable to prevent pot trampling dirt
+                } else if ((isDirt ?? false) && !(dirtCrop ?? false) && (potTree ?? false)) {
                     disableCall = true;
-                } else if ((isDirt ?? false) && (dirtCrop ?? false) && (potEmpty ?? false) // is dirt with crop, empty pot
-                    //&& (!(dirt!.crop.indexOfHarvest.Value?.Equals("454") ?? false) || (ModEntry.Instance?.ModConfig?.AllowAncientSeeds ?? false))
-                ) { 
-                    if (location.CheckItemPlantRules(dirt.crop.netSeedIndex.Value, true, true, out var denisedMsg)) {
+                } else if ((isDirt ?? false) && !(dirtCrop ?? false) && (potCrop ?? false)) { // is dirt but no crop, potted crop
+                    if (bip!.hoeDirt?.Value?.crop is null
+                        || (location?.CanPlantSeedsHere(bip!.hoeDirt.Value.crop.netSeedIndex.Value, x, y, false, out deniedMsg) ?? false)
+                    ) {
+                        bip!.TransplantOut(dirt);
+
+                        // remove from inventory
+                        Game1.player.reduceActiveItemByOne();
+
+                        // drop new garden pot
+                        Game1.createItemDebris(new SObject(tile, "62"), Game1.player.getStandingPosition(), Game1.player.FacingDirection);
+                    } else if (deniedMsg is not null) {
+                        Game1.showRedMessage(deniedMsg);
+                    }
+                    disableCall = true;
+                } else if ((isDirt ?? false) && (dirtCrop ?? false) && (potEmpty ?? false)) { // is dirt with crop, empty pot
+                    if (dirt?.crop is null || (location?.CheckItemPlantRules(dirt.crop.netSeedIndex.Value, true, true, out deniedMsg) ?? false)) {
                         // create new pot
-                        pot = new IndoorPot(tile);
-
-                        // transplant hoed dirt content to garden pot
-                        try { pot.hoeDirt.Value = new HoeDirt(dirt!.state.Value, dirt.crop) { Location = dirt.Location }; } catch { }
-                        try { pot.hoeDirt.Value.fertilizer.Value = dirt!.fertilizer.Value; } catch { }
-
-                        // clear hoed dirt
-                        try { dirt!.crop = null; } catch { }
-                        try { dirt!.fertilizer.Value = null; } catch { }
-                        try { dirt!.state.Value = 0; } catch { }
+                        bip = new BetterIndoorPot(dirt);
 
                         // remove empty garden pot
                         Game1.player.reduceActiveItemByOne();
 
                         // drop full garden pot
-                        Game1.createItemDebris(pot, Game1.player.getStandingPosition(), Game1.player.FacingDirection);
-                    } else {
-                        Game1.showRedMessage(denisedMsg);
+                        Game1.createItemDebris(bip, Game1.player.getStandingPosition(), Game1.player.FacingDirection);
+                    } else if (deniedMsg is not null) {
+                        Game1.showRedMessage(deniedMsg);
                     }
                     disableCall = true;
-                } else if ((isBush ?? false) && (potEmpty ?? false)) { // bush tile and empty pot
-                    // handled about in Bush.performUseAction
-                } else if ((tileEmpty ?? false) && (potBush ?? false)) { // empty tile and potted bush
-                    // add bush to tile
-                    location?.terrainFeatures.Add(tile, pot!.bush.Value);
-                    // reset draw offset so bush is centered
-                    BushYDrawOffset?.SetValue(pot!.bush.Value, 0);
-                    // remove bush from pot
-                    pot!.bush.Value = null;
+                } else if (((isBush ?? false) && (potEmpty ?? false)) // bush tile and empty pot
+                    || ((isTree ?? false) && (potTree ?? false)) // tree tile and empty pot
+                ) { 
+                    // handled about in Bush/Tree/FruitTree.performUseAction
+                } else if ((tileEmpty ?? false) && ((potBush ?? false) || (potTree ?? false))) { // empty tile and potted bush or tree
+                    if (((potBush ?? false) && (new SObject("251", 1)?.placementAction(location, x, y) ?? false))
+                        || ((potTree ?? false) && (new SObject(bip!.GetTreeSeedType, 1)?.placementAction(location, x, y) ?? false))
+                    ) {
+                        // remove temp object
+                        location?.terrainFeatures.Remove(tile);
 
-                    // remove from inventory
-                    Game1.player.reduceActiveItemByOne();
+                        // place real object
+                        bip!.TransplantOut(location, tile);
 
-                    // drop new pot
-                    Game1.createItemDebris(new SObject(tile, "62"), Game1.player.getStandingPosition(), Game1.player.FacingDirection);
+                        // remove from inventory
+                        Game1.player.reduceActiveItemByOne();
 
+                        // drop new pot
+                        Game1.createItemDebris(new SObject(tile, "62"), Game1.player.getStandingPosition(), Game1.player.FacingDirection);
+                    }
                     disableCall = true;
                 }
 
@@ -220,6 +255,12 @@ namespace GardenPotOptions {
             }
         }
 
+        private static void TryRemove<T>(GameLocation? location, Vector2 tile) {
+            if (location is not null && location.Objects.TryGetValue(tile, out var t) && t is T) {
+                location.Objects.Remove(tile);
+            }
+        }
+
         private static void Postfix_Object_placementAction(
             SObject __instance, ref bool __result,
             GameLocation location, int x, int y
@@ -227,59 +268,22 @@ namespace GardenPotOptions {
             var tile = new Vector2(x / 64, y / 64);
             if (__result &&
                 (ModEntry.Instance?.ModConfig?.KeepContents ?? false)
-                && IsFilledPot(__instance, out var pot)
+                && __instance is BetterIndoorPot bip && bip.IsFilled()
                 && (location?.Objects?.TryGetValue(tile, out var p) ?? false)
                 && p is IndoorPot newPot && newPot is not null
             ) {
-                if (Game1.IsMasterGame) {
-                    // directly swapping does not seem to work after the first placement
-                    //location.objects.Remove(tile);
-                    //location.objects.Add(tile, __instance);
-
-                    // so we transplant to the new pot instead
-                    try { newPot.bush.Value = pot!.bush.Value; } catch { }
-                    try { newPot.hoeDirt.Value = pot!.hoeDirt.Value; } catch { }
-                    try { newPot.heldObject.Value = pot!.heldObject.Value; } catch { }
-                    try { newPot.showNextIndex.Value = pot!.showNextIndex.Value; } catch { }
-
-                    // disassociate with the original pot
-                    try { pot!.bush.Value = null; } catch { }
-                    try { pot!.hoeDirt.Value = null; } catch { }
-                    try { pot!.heldObject.Value = null; } catch { }
-
-                    // update locations
-                    try { newPot.bush.Value.Location = location; } catch { }
-                    try { newPot.hoeDirt.Value.Location = location; } catch { }
-                    try { newPot.hoeDirt.Value.crop.currentLocation = location; } catch { }
-                    try { newPot.heldObject.Value.Location = location; } catch { }
-
-                    // update tiles
-                    try { newPot.bush.Value.Tile = tile; } catch { }
-                    try { newPot.hoeDirt.Value.Tile = tile; } catch { }
-                    try { newPot.hoeDirt.Value.crop.tilePosition = tile; } catch { }
-                    try { newPot.heldObject.Value.TileLocation = tile; } catch { }
-                } else {
-                    // don't remove item
-                    __result = false;
-                    // remove the new empty pot
-                    location.objects.Remove(tile);
-                    // notify user
-                    Game1.showRedMessage(ModEntry.Instance?.Helper.Translation.Get("NCarigon.GardenPotOptions/farmhand_placement_error") ?? "null");
-                }
+                bip.TryTransplantOut(newPot);
             }
         }
 
         private static void Postfix_Object_loadDisplayName(SObject __instance, ref string __result) {
             try {
-                if ((ModEntry.Instance?.ModConfig?.KeepContents ?? false) && IsFilledPot(__instance, out var pot)) {
-                    if (pot?.hoeDirt?.Value?.crop?.indexOfHarvest?.Value is not null) {
-                        __result += $" ({new SObject(pot.hoeDirt.Value.crop.indexOfHarvest.Value, 1).DisplayName})";
-                    } else if (pot?.bush?.Value is not null) {
-                        __result += $" ({(pot.bush.Value.size.Value == 3 ? new SObject("251", 1).DisplayName : "Bush")})";
-                    } else if (pot?.hoeDirt?.Value?.fertilizer?.Value is not null) {
-                        __result += $" ({new SObject(pot.hoeDirt.Value.fertilizer.Value.Replace("(O)", ""), 1).DisplayName})";
-                    } else if (pot?.heldObject?.Value?.DisplayName is not null) {
-                        __result += " (" + pot.heldObject.Value.DisplayName + ")";
+                if ((ModEntry.Instance?.ModConfig?.KeepContents ?? false)
+                    && __instance is BetterIndoorPot bip && bip.IsFilled()
+                ) {
+                    var suffix = bip.GetPottedType();
+                    if (!string.IsNullOrWhiteSpace(suffix)) {
+                        __result += $" ({suffix})";
                     }
                 }
             } catch { }
@@ -288,7 +292,7 @@ namespace GardenPotOptions {
         private static void Postfix_Object_maximumStackSize(SObject __instance, ref int __result) {
             try {
                 if ((ModEntry.Instance?.ModConfig?.KeepContents ?? false)
-                    && IsFilledPot(__instance, out _)
+                    && __instance is BetterIndoorPot bip && bip.IsFilled()
                 ) {
                     __result = 1;
                 }

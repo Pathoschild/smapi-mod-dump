@@ -1,0 +1,15 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Digus/StardewValleyMods
+**
+*************************************************/
+
+{
+    "CustomCrystalarium.Letter": "Bauer @, ^   Wir heben das Verbot der Platzierung von prismatischen Scherben innerhalb des Kristallariums auf. J�ngste Studien haben gezeigt, dass es sicher ist und gut funktioniert. ^   Urspr�nglich dachten wir, dass die EMF von den Scherben negativ mit dem Kristallarium interagieren w�rden, und es k�nnte f�r Menschen in der N�he sch�dlich sein. Das ist aber nicht der Fall, es dauert nur viel l�nger, bis der Splitter geklont ist. ^   Wir freuen uns auch, Ihnen mitteilen zu k�nnen, dass Sie das Kristallarium mit 'externer Hilfe' so einstellen k�nnen, dass es eine Vielzahl von Objekten kopiert, nicht nur Edelsteine und Mineralien. Es ist sogar m�glich, die aktuelle Kopierzeit von Mineralien und Edelsteinen zu �ndern.^^   -Ferngill Technology Association",
+    "CustomCrystalarium.Letter.Title": "Prismatische Scherbe im Kristallarium",
+    "CustomCrystalarium.Dialogue.BlockChange": "Kann den Gegenstand nicht �ndern."
+}

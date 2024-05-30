@@ -14,16 +14,16 @@
     {
       "LogName": "Load textures",
       "Action": "Load",
-      "Target": "Mods/{{ModId}}/Objects,",
-      "FromFile": "assets/sprites/{{TargetWithoutPath}}.png"
+      "Target": "Mods/{{ModId}}/Objects", // creates a new Objects asset in Mods/{{ModId}}/
+      "FromFile": "assets/sprites/{{TargetWithoutPath}}.png" // loads assets/sprites/Objects.png into Objects asset
     },
     {
       "LogName": "Add red velvet cake object",
       "Action": "EditData",
       "Target": "Data/Objects",
       "Entries": {
-        "{{ModId}}_RedVelvetCake": {
-          "Name": "{{ModId}}_RedVelvetCake",
+        "{{ModId}}_RedVelvetCake": { // item id
+          "Name": "{{ModId}}_RedVelvet_Cake", // internal name
           "Displayname": "Red Velvet Cake",
           "Description": "Soft red-colored layer cake, covered in cream cheese frosting.",
           "Type": "Cooking",
@@ -46,26 +46,29 @@
       "Action": "EditData",
       "Target": "Data/CookingRecipes",
       "Entries": {
-        "{{ModId}}_RedVelvetCake": "245 1 246 1 247 1 -5 1/0 0/{{ModId}}_RedVelvetCake/null/"
+        "{{ModId}}_RedVelvet_Cake": "245 1 246 1 247 1 -5 1/0 0/{{ModId}}_RedVelvetCake/null/" // key needs to be the same as item id
       }
     },
     {
       "LogName": "Add red velvet cake cooking recipe to saloon shop",
       "Action": "EditData",
       "Target": "Data/Shops",
-      "TargetField": [ "Saloon", "Items" ],
+      "TargetField": [
+        "Saloon",
+        "Items"
+      ],
       "Entries": {
-        "{{ModId}}_RedVelvetCake": {
-          "Id": "{{ModId}}_RedVelvetCake",
-          "ItemId": "{{ModId}}_RedVelvetCake",
-          "ObjectInternalName": "{{ModId}}_RedVelvetCake",
+        "{{ModId}}_RedVelvetCake_Recipe": {
+          "Id": "{{ModId}}_RedVelvetCake_Recipe", // used to identify entry for move entries field
+          "ItemId": "{{ModId}}_RedVelvetCake", // needs to be the same as the item id of our object and the key of our recipe
+          "ObjectInternalName": "{{ModId}}_RedVelvet_Cake", // must match the recipe key if item id is different
           "IsRecipe": true,
           "Price": 500
         }
       },
       "MoveEntries": [
         {
-          "ID": "{{ModId}}_RedVelvetCake",
+          "ID": "{{ModId}}_RedVelvetCake_Recipe",
           "ToPosition": "Top"
         }
       ]

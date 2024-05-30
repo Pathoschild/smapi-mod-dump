@@ -176,9 +176,6 @@ namespace CustomCompanions.Framework.Companions
                 this.despawnTimer -= time.ElapsedGameTime.Milliseconds;
             }
 
-            // Stuck timer
-            this.CheckStuckStatus(location, time);
-
             if (Game1.IsMasterGame)
             {
                 if (this.despawnTimer <= 0)
@@ -365,27 +362,6 @@ namespace CustomCompanions.Framework.Companions
             return base.currentLocation.characters;
         }
 
-        private void CheckStuckStatus(GameLocation location, GameTime time)
-        {
-            var collidingCharacter = location.isCollidingWithCharacter(this.nextPosition(this.FacingDirection));
-            bool isCollidingWithCharacter = collidingCharacter != null && (!collidingCharacter.Equals(this) || (collidingCharacter is MapCompanion && (collidingCharacter as MapCompanion).targetTile != this.targetTile));
-
-            if (base.currentLocation.isTileLocationTotallyClearAndPlaceable(new Vector2(this.nextPosition(this.FacingDirection).X, this.nextPosition(this.FacingDirection).Y)))
-            {
-                this.stuckTimer = 0;
-                this.bypassCollision = false;
-            }
-            else
-            {
-                this.stuckTimer += time.ElapsedGameTime.Milliseconds;
-            }
-
-            if (this.stuckTimer > 5000)
-            {
-                this.bypassCollision = true;
-            }
-        }
-
         private bool IsCollidingWithFarmer(GameLocation location, Rectangle position)
         {
             return location.farmers.Any(f => f != null && f.GetBoundingBox().Intersects(position));
@@ -394,11 +370,6 @@ namespace CustomCompanions.Framework.Companions
         internal bool IsCollidingPosition(Rectangle position, GameLocation location, bool isPathFinding = false)
         {
             var collidingCharacter = location.isCollidingWithCharacter(this.nextPosition(this.FacingDirection));
-            if (this.bypassCollision && collidingCharacter != null && (!collidingCharacter.Equals(this) || (collidingCharacter is MapCompanion && (collidingCharacter as MapCompanion).targetTile != this.targetTile)))
-            {
-                return false;
-            }
-
             if (collidingCharacter != null && collidingCharacter is MapCompanion companion && !companion.Equals(this) && !companion.collidesWithOtherCharacters)
             {
                 return false;

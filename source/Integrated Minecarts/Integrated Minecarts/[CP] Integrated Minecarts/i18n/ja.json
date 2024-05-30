@@ -56,6 +56,12 @@
     //TODO		"Lumisteria.MtVapius_TrainStation": "Mount Vapius - Train Station",
     //TODO		"Lumisteria.MtVapius_Hamlet": "Mount Vapius - Glimsap Hamlet",
     //TODO		"WaFFCave": "Waterfall Cave",
+    //TODO   "Lantana": "Lantana Lagoon",
+    //TODO   "ModestFarmCave": "Farm Cave",
+    //TODO   "GrampletonFieldsE": "Grampleton Fields - East",
+    //TODO   "GrampletonFieldsS": "Grampleton Fields - South",
+    //TODO   "GrampletonFieldsW": "Grampleton Fields - West",
+    //TODO   "IslandFarm": "Island Farm",
     //Config Menu translation
     //General
     //TODO"config.section.General.name": "General",
@@ -161,96 +167,28 @@
     //TODO"config.EnableLumisteria.MtVapiusHamletToRailroad.description": "Lumisteria Visit Mount Vapius - Adds Railroad Destination to VMV Minecart Network",
     "config.EnableWaFFCave.name": "WaFFCave",
     //TODO"config.EnableWaFFCave.description": "WaFF or WaFFLE - Waterfall Cave",
+    //TODO	"config.EnableLantana.name": "Lantana",
+    //TODO    "config.EnableLantana.description": "PolyAmory Sweet - Lantana Lagoon",
+    //TODO    "config.EnableModestFarmCave.name": "ModestFarmCave",
+    //TODO    "config.EnableModestFarmCave.description": "Modest Farm Cave",
+    //TODO    "config.EnableGrampletonFields.name": "GrampletonFields",
+    //TODO    "config.EnableGrampletonFields.description": "Grampleton Fields - All minecarts",
+    //TODO	"config.EnableGingerIslandFarm.name": "IslandFarm",
+    //TODO    "config.EnableGingerIslandFarm.description": "Integrated Minecarts - Ginger Island Farm",
     //Farm Location
-    //TODO"config.FarmCartStyle.name": "Farm Minecart Style",
-    //TODO"config.FarmCartStyle.description": "Sets the style of the Farm Minecart. Use Cart for open areas. Use CartEntrance if setting into a wall.",
-    //Standard Farm + Default Custom FarmTypes
-    "config.IntegratedFarmX.name": "Farm Minecart X Coordinate",
-    "config.IntegratedFarmX.description": "おじいちゃんの牧場/メドウランズ牧場でプレイしない場合のみ使用。IntegratedFarmのトロッコの水平座標を設定します。0はマップの左端です。",
-    //TODO"config.IntegratedFarmX.name": "Farm Minecart X Coordinate",
-    //TODO"config.IntegratedFarmX.description": "USE THIS if not playing on any of the farms below. Sets horizontal coordinate for IntegratedFarm minecart. 0 being left edge of map.",
-    "config.IntegratedFarmY.name": "Farm Minecart Y Coordinate",
-    "config.IntegratedFarmY.description": "おじいちゃんの牧場/メドウランズ牧場でプレイしない場合のみ使用。IntegratedFarmのトロッコの垂直座標を設定します。0はマップの上端です。",
-    //TODO"config.IntegratedFarmY.name": "Farm Minecart Y Coordinate",
-    //TODO"config.IntegratedFarmY.description": "USE THIS if not playing on any of the farms below. Sets vertical coordinate for IntegratedFarm minecart. 0 being top edge of map.",
-    //Hilltop Farm
-    //TODO"config.HilltopFarmX.name": "Hilltop Farm Minecart X Coordinate",
-    //TODO"config.HilltopFarmX.description": "ONLY USED IF PLAYING ON Hilltop Farm. Sets horizontal coordinate for IntegratedFarm minecart. 0 being left edge of map.",
-    //TODO"config.HilltopFarmY.name": "Hilltop Farm Minecart Y Coordinate",
-    //TODO"config.HilltopFarmY.description": "ONLY USED IF PLAYING ON Hilltop Farm. Sets vertical coordinate for IntegratedFarm minecart. 0 being top edge of map.",
-    //Forest Farm
-    //TODO"config.ForestFarmX.name": "Forest Farm Minecart X Coordinate",
-    //TODO"config.ForestFarmX.description": "ONLY USED IF PLAYING ON Forest Farm. Sets horizontal coordinate for IntegratedFarm minecart. 0 being left edge of map.",
-    //TODO"config.ForestFarmY.name": "Forest Farm Minecart Y Coordinate",
-    //TODO"config.ForestFarmY.description": "ONLY USED IF PLAYING ON Forest Farm. Sets vertical coordinate for IntegratedFarm minecart. 0 being top edge of map.",
-    //Wilderness Farm
-    //TODO"config.WildernessFarmX.name": "Wilderness Farm Minecart X Coordinate",
-    //TODO"config.WildernessFarmX.description": "ONLY USED IF PLAYING ON Wilderness Farm. Sets horizontal coordinate for IntegratedFarm minecart. 0 being left edge of map.",
-    //TODO"config.WildernessFarmY.name": "Wilderness Farm Minecart Y Coordinate",
-    //TODO"config.WildernessFarmY.description": "ONLY USED IF PLAYING ON Wilderness Farm. Sets vertical coordinate for IntegratedFarm minecart. 0 being top edge of map.",
-    //Riverland Farm
-    //TODO"config.RiverlandFarmX.name": "Riverland Farm Minecart X Coordinate",
-    //TODO"config.RiverlandFarmX.description": "ONLY USED IF PLAYING ON Riverland Farm. Sets horizontal coordinate for IntegratedFarm minecart. 0 being left edge of map.",
-    //TODO"config.RiverlandFarmY.name": "Riverland Farm Minecart Y Coordinate",
-    //TODO"config.RiverlandFarmY.description": "ONLY USED IF PLAYING ON Riverland Farm. Sets vertical coordinate for IntegratedFarm minecart. 0 being top edge of map.",
-    //Beach Farm
-    //TODO"config.BeachFarmX.name": "Beach Farm Minecart X Coordinate",
-    //TODO"config.BeachFarmX.description": "ONLY USED IF PLAYING ON Beach Farm. Sets horizontal coordinate for IntegratedFarm minecart. 0 being left edge of map.",
-    //TODO"config.BeachFarmY.name": "Beach Farm Minecart Y Coordinate",
-    //TODO"config.BeachFarmY.description": "ONLY USED IF PLAYING ON Beach Farm. Sets vertical coordinate for IntegratedFarm minecart. 0 being top edge of map.",
-    //FourCorners Farm
-    //TODO"config.FourCornersFarmX.name": "Four Corners Farm Minecart X Coordinate",
-    //TODO"config.FourCornersFarmX.description": "ONLY USED IF PLAYING ON Four Corners Farm. Sets horizontal coordinate for IntegratedFarm minecart. 0 being left edge of map.",
-    //TODO"config.FourCornersFarmY.name": "Four Corners Farm Minecart Y Coordinate",
-    //TODO"config.FourCornersFarmY.description": "ONLY USED IF PLAYING ON Four Corners Farm. Sets vertical coordinate for IntegratedFarm minecart. 0 being top edge of map.",
-    //WaFF Farm
-    //TODO"config.WaFFFarmX.name": "WaFF Farm Minecart X Coordinate",
-    //TODO"config.WaFFFarmX.description": "ONLY USED IF PLAYING ON WaFF Farm. Sets horizontal coordinate for IntegratedFarm minecart. 0 being left edge of map.",
-    //TODO"config.WaFFFarmY.name": "WaFF Farm Minecart Y Coordinate",
-    //TODO"config.WaFFFarmY.description": "ONLY USED IF PLAYING ON WaFF Farm. Sets vertical coordinate for IntegratedFarm minecart. 0 being top edge of map.",
-    //WaFFLE Farm
-    //TODO"config.WaFFLEFarmX.name": "WaFFLE Farm Minecart X Coordinate",
-    //TODO"config.WaFFLEFarmX.description": "ONLY USED IF PLAYING ON WaFFLE Farm. Sets horizontal coordinate for IntegratedFarm minecart. 0 being left edge of map.",
-    //TODO"config.WaFFLEFarmY.name": "WaFFLE Farm Minecart Y Coordinate",
-    //TODO"config.WaFFLEFarmY.description": "ONLY USED IF PLAYING ON WaFFLE Farm. Sets vertical coordinate for IntegratedFarm minecart. 0 being top edge of map.",
-    //Grandpa's Farm Location
-    "config.GrandpaFarmX.name": "Grandpa's Farm Minecart X Coordinate",
-    "config.GrandpaFarmX.description": "おじいちゃんの牧場でプレイする場合にのみ使用します。IntegratedFarmのトロッコの水平座標を設定します。0はマップの左端です。",
-    "config.GrandpaFarmY.name": "Grandpa's Farm Minecart Y Coordinate",
-    "config.GrandpaFarmY.description": "おじいちゃんの牧場でプレイする場合にのみ使用します。IntegratedFarmのトロッコの垂直座標を設定します。0はマップの上端です。",
-    //Immersive Farm 2 Remaster Farm Location
-    //TODO"config.IF2RFarmX.name": "Immersive Farm 2 Remaster Minecart X Coordinate",
-    //TODO"config.IF2RFarmX.description": "ONLY USED IF PLAYING ON Immersive Farm 2 Remaster. Sets horizontal coordinate for IntegratedFarm minecart. 0 being left edge of map.",
-    //TODO"config.IF2RFarmY.name": "Immersive Farm 2 Remaster Minecart Y Coordinate",
-    //TODO"config.IF2RFarmY.description": "ONLY USED IF PLAYING ON Immersive Farm 2 Remaster. Sets vertical coordinate for IntegratedFarm minecart. 0 being top edge of map.",
-    //Kanjinuma's PersonalV1 Farm Location
-    //TODO"config.PersonalV1FarmX.name": "Kanjinuma's PersonalV1 Farm Minecart X Coordinate",
-    //TODO"config.PersonalV1FarmX.description": "ONLY USED IF PLAYING ON Kanjinuma's PersonalV1 Farm. Sets horizontal coordinate for IntegratedFarm minecart. 0 being left edge of map.",
-    //TODO"config.PersonalV1FarmY.name": "Kanjinuma's PersonalV1 Farm Minecart Y Coordinate",
-    //TODO"config.PersonalV1FarmY.description": "ONLY USED IF PLAYING ON Kanjinuma's PersonalV1 Farm. Sets vertical coordinate for IntegratedFarm minecart. 0 being top edge of map.",
-    //Kanjinuma's PersonalV2 Farm Location
-    //TODO"config.PersonalV2FarmX.name": "Kanjinuma's PersonalV2 Farm Minecart X Coordinate",
-    //TODO"config.PersonalV2FarmX.description": "ONLY USED IF PLAYING ON Kanjinuma's PersonalV2 Farm. Sets horizontal coordinate for IntegratedFarm minecart. 0 being left edge of map.",
-    //TODO"config.PersonalV2FarmY.name": "Kanjinuma's PersonalV2 Farm Minecart Y Coordinate",
-    //TODO"config.PersonalV2FarmY.description": "ONLY USED IF PLAYING ON Kanjinuma's PersonalV2 Farm. Sets vertical coordinate for IntegratedFarm minecart. 0 being top edge of map.",
-    //Kanjinuma's PersonalV3 Farm Location
-    //TODO"config.PersonalV3FarmX.name": "Kanjinuma's PersonalV3 Farm Minecart X Coordinate",
-    //TODO"config.PersonalV3FarmX.description": "ONLY USED IF PLAYING ON Kanjinuma's PersonalV3 Farm. Sets horizontal coordinate for IntegratedFarm minecart. 0 being left edge of map.",
-    //TODO"config.PersonalV3FarmY.name": "Kanjinuma's PersonalV3 Farm Minecart Y Coordinate",
-    //TODO"config.PersonalV3FarmY.description": "ONLY USED IF PLAYING ON Kanjinuma's PersonalV3 Farm. Sets vertical coordinate for IntegratedFarm minecart. 0 being top edge of map.",
+    //TODO    "config.section.FarmLocation.name": "Farm Minecart Settings",
+    //TODO    "config.section.FarmLocation.description": "The settings in this section relate to the Farm Minecart. Use the settings relevant to the farm you are playing on below",
+
+    //Custom Farm
+    //TODO   "config.UseCustomFarmMap.name": "Use Custom Farm Map",
+    //TODO    "config.UseCustomFarmMap.description": "If not playing on any of the farms listed below, and the Farm minecart does not show up, use the options in this section. If the minecart does show up, but the farm is not listed, try Standard. Note that this option will disable all other Farm settings. Disable this when not playing on the Custom Farm",
+    //TODO   "config.CustomFarmMap.name": "Custom Farm Map",
+    //TODO   "config.CustomFarmMap.description": "If using a CP Farm mod, check the content.json for a line in the format \"Target\": \"Maps/{MapName}\" followed by \"FromFile\": \"{path}/{MapFileName}\", use the MapName in this field. For a CFL Farm map, it will be in the format CFL_Map/{ModId}/{MapName}. ModId can be found from manifest.json. If you cannot find the MapName in the content.json, try the map file name without the file extension. You will need to enter in the whole string in this field.",
+
+    //TODO   "config.CustomFarmCartStyle.description": "Sets the style of the Farm Minecart. Use Cart for open areas. Use CartEntrance if setting into a wall. Use CartEntranceNarrow if CartEntrance is too wide.",
+    //TODO   "config.CustomFarmX.description": "This and the X settings below sets the horizontal coordinate for the Farm minecart. 0 being left edge of map.",
+    //TODO   "config.CustomFarmY.description": "This and the X settings below sets the vertical coordinate for the Farm minecart. 0 being top edge of map.",
     //LNH Mini Farm Location
-    "config.LNHMiniFarmX.name": "LNH Mini Farm Minecart X Coordinate",
-    "config.LNHMiniFarmX.description": "LNH Mini Farmでプレイする場合にのみ使用します。IntegratedFarm トロッコの水平座標を設定します。 0 はマップの左端です。",
-    "config.LNHMiniFarmY.name": "LNH Mini Farm Minecart Y Coordinate",
-    "config.LNHMiniFarmY.description": "LNH Mini Farmミニファームでプレイする場合にのみ使用します。IntegratedFarm トロッコの垂直座標を設定します。 0 はマップの上端です。",
-    //Meadowlands Farm Location
-    "config.MeadowlandsFarmX.name": "Meadowlands Farm Minecart X Coordinate",
-    "config.MeadowlandsFarmX.description": "メドウランズ牧場でプレイする場合のみ使用。IntegratedFarmのトロッコの水平座標を設定します。0はマップの左端です。",
-    "config.MeadowlandsFarmY.name": "Meadowlands Farm Minecart Y Coordinate",
-    "config.MeadowlandsFarmY.description": "メドウランズ牧場でプレイする場合のみ使用。IntegratedFarmのトロッコの垂直座標を設定します。0はマップの上端です。",
-    //DaisyNiko's Zenith Farm Location
-    //TODO"config.DNZenithFarmX.name": "DaisyNiko's Zenith Farm Minecart X Coordinate",
-    //TODO"config.DNZenithFarmX.description": "ONLY USED IF PLAYING ON DaisyNiko's Zenith Farm. Sets horizontal coordinate for IntegratedFarm minecart. 0 being left edge of map.",
-    //TODO"config.DNZenithFarmY.name": "DaisyNiko's Zenith Farm Minecart Y Coordinate",
-    //TODO"config.DNZenithFarmY.description": "ONLY USED IF PLAYING ON DaisyNiko's Zenith Farm. Sets vertical coordinate for IntegratedFarm minecart. 0 being top edge of map.",
+    //TODO   "config.LNHMiniFarmReplacement.name": "LNH Mini Farm Replacement",
+    //TODO   "config.LNHMiniFarmReplacement.description": "Must be used if playing on LNH Mini Farm. Setting must match the Farm Type setting in LNH Mini Farm. Keep disabled if not using LNH Mini Farm, or using the (Custom Farm) version.",
 }

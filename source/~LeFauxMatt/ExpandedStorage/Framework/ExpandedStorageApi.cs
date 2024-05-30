@@ -13,43 +13,41 @@ namespace StardewMods.ExpandedStorage.Framework;
 using StardewMods.Common.Interfaces;
 using StardewMods.Common.Services;
 using StardewMods.Common.Services.Integrations.ExpandedStorage;
-using StardewMods.Common.Services.Integrations.FauxCore;
 using StardewMods.ExpandedStorage.Framework.Models;
 using StardewMods.ExpandedStorage.Framework.Services;
 
 /// <inheritdoc />
 public sealed class ExpandedStorageApi : IExpandedStorageApi
 {
-    private readonly AssetHandler assetHandler;
     private readonly BaseEventManager eventManager;
     private readonly IModInfo modInfo;
+    private readonly StorageDataFactory storageDataFactory;
 
     /// <summary>Initializes a new instance of the <see cref="ExpandedStorageApi" /> class.</summary>
-    /// <param name="eventSubscriber">Dependency used for subscribing to events.</param>
-    /// <param name="log">Dependency used for monitoring and logging.</param>
+    /// <param name="eventManager">Dependency used for managing events.</param>
     /// <param name="modInfo">Mod info from the calling mod.</param>
-    /// <param name="assetHandler">Dependency for managing expanded storage chests.</param>
-    internal ExpandedStorageApi(IEventSubscriber eventSubscriber, ILog log, IModInfo modInfo, AssetHandler assetHandler)
+    /// <param name="storageDataFactory">Dependency used for managing storage data.</param>
+    internal ExpandedStorageApi(IEventManager eventManager, IModInfo modInfo, StorageDataFactory storageDataFactory)
     {
         // Init
         this.modInfo = modInfo;
-        this.assetHandler = assetHandler;
-        this.eventManager = new BaseEventManager(log, modInfo.Manifest);
+        this.storageDataFactory = storageDataFactory;
+        this.eventManager = new BaseEventManager();
 
         // Events
-        eventSubscriber.Subscribe<ChestCreatedEventArgs>(this.OnChestCreated);
+        eventManager.Subscribe<ChestCreatedEventArgs>(this.OnChestCreated);
     }
-
-    /// <inheritdoc />
-    public bool TryGetData(Item item, [NotNullWhen(true)] out IStorageData? storageData) =>
-        this.assetHandler.TryGetData(item, out storageData);
 
     /// <inheritdoc />
     public void Subscribe<TEventArgs>(Action<TEventArgs> handler) => this.eventManager.Subscribe(handler);
 
     /// <inheritdoc />
+    public bool TryGetData(Item item, [NotNullWhen(true)] out IStorageData? storageData) =>
+        this.storageDataFactory.TryGetData(item, out storageData);
+
+    /// <inheritdoc />
     public void Unsubscribe<TEventArgs>(Action<TEventArgs> handler) => this.eventManager.Unsubscribe(handler);
 
     private void OnChestCreated(ChestCreatedEventArgs e) =>
-        this.eventManager.Publish<IChestCreatedEventArgs, ChestCreatedEventArgs>(e);
+        this.eventManager.Publish<IChestCreated, ChestCreatedEventArgs>(e);
 }

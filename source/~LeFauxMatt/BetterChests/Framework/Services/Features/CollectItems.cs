@@ -18,8 +18,8 @@ using StardewMods.BetterChests.Framework.Services.Factory;
 using StardewMods.Common.Enums;
 using StardewMods.Common.Interfaces;
 using StardewMods.Common.Models;
-using StardewMods.Common.Services.Integrations.BetterChests.Enums;
-using StardewMods.Common.Services.Integrations.BetterChests.Interfaces;
+using StardewMods.Common.Services;
+using StardewMods.Common.Services.Integrations.BetterChests;
 using StardewMods.Common.Services.Integrations.FauxCore;
 
 /// <summary>Debris such as mined or farmed items can be collected into a Chest in the farmer's inventory.</summary>
@@ -37,19 +37,15 @@ internal sealed class CollectItems : BaseFeature<CollectItems>
     /// <param name="containerFactory">Dependency used for accessing containers.</param>
     /// <param name="eventManager">Dependency used for managing events.</param>
     /// <param name="inputHelper">Dependency used for checking and changing input state.</param>
-    /// <param name="log">Dependency used for logging debug information to the console.</param>
-    /// <param name="manifest">Dependency for accessing mod manifest.</param>
     /// <param name="modConfig">Dependency used for accessing config data.</param>
     /// <param name="patchManager">Dependency used for managing patches.</param>
     public CollectItems(
         ContainerFactory containerFactory,
         IEventManager eventManager,
         IInputHelper inputHelper,
-        ILog log,
-        IManifest manifest,
         IModConfig modConfig,
         IPatchManager patchManager)
-        : base(eventManager, log, manifest, modConfig)
+        : base(eventManager, modConfig)
     {
         CollectItems.instance = this;
         this.containerFactory = containerFactory;
@@ -144,12 +140,12 @@ internal sealed class CollectItems : BaseFeature<CollectItems>
             if (disable)
             {
                 Game1.player.modData.Remove(key);
-                this.Log.Info("{0}: Set collect items on", this.Id);
+                Log.Info("{0}: Set collect items on", this.Id);
                 return;
             }
 
             Game1.player.modData[key] = "true";
-            this.Log.Info("{0}: Set collect items off", this.Id);
+            Log.Info("{0}: Set collect items off", this.Id);
         }
     }
 
@@ -160,7 +156,7 @@ internal sealed class CollectItems : BaseFeature<CollectItems>
         this.cachedContainers.Value.Clear();
         foreach (var storage in this.containerFactory.GetAll(
             Game1.player,
-            container => container.Options.ChestFinder == FeatureOption.Enabled))
+            container => container.ChestFinder == FeatureOption.Enabled))
         {
             this.cachedContainers.Value.Add(storage);
         }

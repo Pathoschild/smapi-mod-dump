@@ -12,20 +12,14 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
-			"label": "mybuild",
-			"command": "C:/progra~2/micros~3/2019/BuildTools/MSBuild/Current/Bin/MSBuild.exe",
+			"label": "build",
+			"command": "dotnet build /property:GenerateFullPaths=true",
 			"type": "shell",
-			"args": [
-				"BerrySeasonReminder.csproj",
-				"/t:Build",
-				"/p:Configuration=Debug",
-				"/p:Platform=\"AnyCPU\""
-			],
-			"problemMatcher": [],
-			"group": {
-				"kind": "build",
-				"isDefault": true
-			}
+			"group": "build",
+			"presentation": {
+				"reveal": "silent"
+			},
+			"problemMatcher": "$msCompile"
 		}
 	]
 }

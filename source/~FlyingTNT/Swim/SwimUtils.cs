@@ -112,6 +112,13 @@ namespace Swim
                     Y = pos.Y
                 };
             }
+
+            if (Game1.getLocationFromName(diveLocation.OtherMapName) is not GameLocation location || !IsValidDiveLocation(location, new Vector2(dp.X, dp.Y)))
+            {
+                SMonitor.Log($"Invalid dive location: {diveLocation.OtherMapName} ({dp.X}, {dp.Y})");
+                return;
+            }
+
             if (!IsMapUnderwater(Game1.player.currentLocation.Name))
             {
                 ModEntry.bubbles.Value.Clear();
@@ -124,6 +131,12 @@ namespace Swim
             Game1.playSound("pullItemFromWater");
             Game1.warpFarmer(diveLocation.OtherMapName, dp.X, dp.Y, false);
         }
+
+        public static bool IsValidDiveLocation(GameLocation map, Vector2 location)
+        {
+            return map.isTileOnMap(location) && (!map.IsTileBlockedBy(location, CollisionMask.Buildings, CollisionMask.Buildings) || IsWaterTile(location, map)) && map.getTileIndexAt((int)location.X, (int)location.Y, "Back") != -1;
+        }
+
         public static int MaxOxygen()
         {
             return Game1.player.MaxStamina * Math.Max(1, Config.OxygenMult);
@@ -156,7 +169,7 @@ namespace Swim
             }
 
             // Player input checks
-            if (!((Game1.player.isMoving() && Config.ReadyToSwim) || (SHelper.Input.IsDown(Config.ManualJumpButton) && Config.EnableClickToSwim)) || SHelper.Input.IsDown(SButton.LeftShift))
+            if (!((Game1.player.isMoving() && Config.ReadyToSwim) || (Config.ManualJumpButton.IsDown() && Config.EnableClickToSwim)) || Config.PreventJumpButton.IsDown())
             {
                 return false;
             }
@@ -484,9 +497,14 @@ namespace Swim
 
         public static bool IsWaterTile(Vector2 tilePos)
         {
-            if (Game1.player.currentLocation != null && Game1.player.currentLocation.waterTiles != null && tilePos.X >= 0 && tilePos.Y >= 0 && Game1.player.currentLocation.waterTiles.waterTiles.GetLength(0) > tilePos.X && Game1.player.currentLocation.waterTiles.waterTiles.GetLength(1) > tilePos.Y)
+            return IsWaterTile(tilePos, Game1.player.currentLocation);
+        }
+
+        public static bool IsWaterTile(Vector2 tilePos, GameLocation location)
+        {
+            if (location != null && location.waterTiles != null && tilePos.X >= 0 && tilePos.Y >= 0 && location.waterTiles.waterTiles.GetLength(0) > tilePos.X && location.waterTiles.waterTiles.GetLength(1) > tilePos.Y)
             {
-                return Game1.player.currentLocation.waterTiles[(int)tilePos.X, (int)tilePos.Y];
+                return location.waterTiles[(int)tilePos.X, (int)tilePos.Y];
             }
             return false;
         }
@@ -523,9 +541,15 @@ namespace Swim
             return result;
         }
 
-        public static bool isMouseButton(SButton button)
+        public static bool isMouseButtonDown(KeybindList keybindList)
         {
-            return button == SButton.MouseLeft || button == SButton.MouseRight || button == SButton.MouseMiddle || button == SButton.MouseX1 || button == SButton.MouseX2;
+            if(keybindList.GetKeybindCurrentlyDown() is not Keybind keybind)
+                return false;
+
+            if (keybind.Buttons.Length == 0)
+                return false;
+
+            return keybind.Buttons[0] == SButton.MouseLeft || keybind.Buttons[0] == SButton.MouseRight || keybind.Buttons[0] == SButton.MouseMiddle || keybind.Buttons[0] == SButton.MouseX1 || keybind.Buttons[0] == SButton.MouseX2;
         }
         public static bool DebrisIsAnItem(Debris debris)
         {
@@ -535,7 +559,7 @@ namespace Swim
         internal static bool CanSwimHere()
         {
             GameLocation location = Game1.player.currentLocation;
-            bool result = (!Config.SwimIndoors || location.IsOutdoors) && location is not VolcanoDungeon && location is not BathHousePool && !ModEntry.locationIsPool.Value;
+            bool result = (!Config.SwimIndoors || location.IsOutdoors) && location is not VolcanoDungeon && location is not BoatTunnel && !ModEntry.locationIsPool.Value;
             if (!result)
                 return false;
 

@@ -18,6 +18,18 @@
     "config.ExperienceFromWaterShifter": "水筛经验增益",
     "config.ExperienceFromWaterShifter.tooltip": "收获水筛时获得的经验收益。",
 
+    "config.ExperienceFromResearchTable": "复原工作台经验增益",
+    "config.ExperienceFromResearchTable.tooltip": "此设置目前不生效。",
+
+    "config.ExperienceFromAncientBattery": "电池古法生产站经验增益",
+    "config.ExperienceFromAncientBattery.tooltip": "从电池古法生产站中收获的经验收益。",
+
+    "config.ExperienceFromPreservationChamber": "收藏室经验增益",
+    "config.ExperienceFromPreservationChamber.tooltip": "从收藏室中收获的经验收益。",
+
+    "config.ExperienceFromHPreservationChamber": "硬木收藏室经验增益",
+    "config.ExperienceFromHPreservationChamber.tooltip": "从硬木收藏室中收获的经验收益。",
+
     "moonslime.Archaeology.skill_book.levelup": "你学会了一些考古知识。",
 
     "moonslime.Archaeology.water_shifter.name": "水筛",

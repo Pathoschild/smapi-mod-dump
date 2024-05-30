@@ -38,7 +38,7 @@ namespace ResourceStorage
                 return true;
             }
 
-            count += (int)ModifyResourceLevel(farmer, ItemRegistry.QualifyItemId(itemId), -count);
+            count += (int)ModifyResourceLevel(farmer, ItemRegistry.QualifyItemId(itemId), -count, auto: true);
             return count > 0;
         }
         public static void Inventory_CountId_Postfix(Inventory __instance, string itemId, ref int __result)
@@ -80,11 +80,15 @@ namespace ResourceStorage
             if (!Config.ModEnabled || Game1.activeClickableMenu is ResourceMenu || item is not Object || !CanStore(item as Object))
                 return true;
 
-            long countAdded = ModifyResourceLevel(__instance, item.QualifiedItemId, item.Stack);
+            long countAdded = ModifyResourceLevel(__instance, item.QualifiedItemId, item.Stack, auto: true);
 
-            __instance.OnItemReceived(item, (int)countAdded, null, !Config.ShowMessage);
+            if(countAdded > 0)
+            {
+                __instance.OnItemReceived(item, (int)countAdded, null, true);
+                return false;
+            }
 
-            return countAdded <= 0;
+            return true;
         }
 
         // Transpiled becaues it was getting inlined
@@ -142,7 +146,7 @@ namespace ResourceStorage
             if (!Config.ModEnabled || !Config.AutoUse)
                 return true;
 
-            amount += (int)ModifyResourceLevel(who, drop_in.QualifiedItemId, -amount);
+            amount += (int)ModifyResourceLevel(who, drop_in.QualifiedItemId, -amount, auto: true);
             return amount > 0;
         }
 
@@ -275,10 +279,10 @@ namespace ResourceStorage
             {
                 if (Game1.player.CursorSlotItem is Object obj)
                 {
-                    if (CanStore(obj) && Game1.objectData.ContainsKey(obj.ItemId))
+                    if (CanStore(obj))
                     {
                         Game1.playSound("Ship");
-                        ModifyResourceLevel(Game1.player, obj.QualifiedItemId, Game1.player.CursorSlotItem.Stack, false);
+                        ModifyResourceLevel(Game1.player, obj.QualifiedItemId, Game1.player.CursorSlotItem.Stack, auto: false);
                         Game1.player.CursorSlotItem = null;
                     }
                 }
@@ -304,38 +308,6 @@ namespace ResourceStorage
                 SetupResourceButton(__instance);
 
             __instance.allClickableComponents.Add(resourceButton.Value);
-        }
-
-        public static void Leclair_Stardew_Common_InventoryHelper_CountItem_Postfix(Farmer who, Func<Item, bool> matcher, ref int __result)
-        {
-            if (!Config.ModEnabled)
-                return;
-            var resDict = GetFarmerResources(who);
-            foreach(var res in resDict)
-            {
-                Object obj = new Object(DequalifyItemId(res.Key), (int)res.Value);
-                if (matcher(obj))
-                {
-                    __result = (int.MaxValue - (int)res.Value < __result) ? int.MaxValue : (int)res.Value + __result;
-                    return;
-                }
-            }
-        }
-        public static void Leclair_Stardew_Common_InventoryHelper_ConsumeItem_Prefix(Func<Item, bool> matcher, IList<Item> items, ref int amount)
-        {
-            if (!Config.ModEnabled || items != Game1.player.Items)
-                return;
-
-            var resDict = GetFarmerResources(Game1.player);
-            foreach(var res in resDict)
-            {
-                Object obj = new Object(DequalifyItemId(res.Key), (int)res.Value);
-                if (matcher(obj))
-                {
-                    amount += (int)ModifyResourceLevel(Game1.player, res.Key, -amount);
-                    return;
-                }
-            }
         }
     }
 }

@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/ApryllForever/NuclearBombLocations
+   Git: https://github.com/ApryllForever/NuclearBombLocations.git
+
+mods:
+   Nuclear Valley - PG
+
+latest commit:
+   commit f0f40adb7f5ea13e7b39d70edfd8f140570bd41b
+   Author: Apryll Callahan <ApryllForever@yahoo.com>
+   Date:   Wed Mar 27 23:46:37 2024 -0700
+   
+       SHop fix
+   

@@ -10,9 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -26,7 +23,7 @@ public class BuildingRenderer {
 
 	public readonly ModEntry Mod;
 
-	private readonly List<(string, string?, Action<Texture2D>)> renderQueue = new();
+	private readonly List<((string, string?)?, Building?, Action<Texture2D>)> renderQueue = new();
 
 	public BuildingRenderer(ModEntry mod) {
 		Mod = mod;
@@ -46,13 +43,27 @@ public class BuildingRenderer {
 	}
 
 	public void RenderBuilding(string id, string? skinId, Action<Texture2D> onComplete) {
-		renderQueue.Add((id, skinId, onComplete));
+		renderQueue.Add(((id, skinId), null, onComplete));
 	}
 
-	private Texture2D DoRender(string id, string? skinId) {
+	public void RenderBuilding(Building building, Action<Texture2D> onComplete) {
+		renderQueue.Add((null, building, onComplete));
+	}
 
-		var building = Building.CreateInstanceFromId(id, Vector2.Zero);
-		building.skinId.Value = skinId;
+	private Texture2D DoRender((string, string?)? inputId, Building? inputBuilding) {
+		//string id, string? skinId) {
+		Building building;
+
+		if (inputBuilding != null)
+			building = inputBuilding;
+
+		else if (!inputId.HasValue)
+			throw new ArgumentNullException(nameof(inputId));
+
+		else {
+			building = Building.CreateInstanceFromId(inputId.Value.Item1, Vector2.Zero);
+			building.skinId.Value = inputId.Value.Item2;
+		}
 
 		Rectangle size = building.getSourceRect();
 		if (building is FishPond) {
@@ -92,7 +103,7 @@ public class BuildingRenderer {
 
 		Game1.spriteBatch.End();
 
-		Game1.spriteBatch.GraphicsDevice.SetRenderTargets( old_targets );
+		Game1.spriteBatch.GraphicsDevice.SetRenderTargets(old_targets);
 
 		big_target.Dispose();
 		big_target = null;

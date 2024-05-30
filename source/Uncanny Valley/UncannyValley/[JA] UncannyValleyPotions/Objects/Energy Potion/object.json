@@ -1,0 +1,85 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/jasisco5/UncannyValleyMod
+**
+*************************************************/
+
+{
+  "Name": "Apprentice's Potion",
+  "Description": "Provides a temporary increase to max energy, while recovering it.",
+  "Category": "Cooking",
+  "Edibility": 150, 
+  "EdibleIsDrink": true, 
+  "EdibleBuffs": {
+    "Farming": 0,
+    "Fishing": 0,
+    "Mining": 0,
+    "Luck": 0,
+    "Foraging": 0,
+    "MaxStamina": 100,
+    "MagnetRadius": 0,
+    "Speed": 0,
+    "Defense": 0,
+    "Attack": 0,
+    "Duration": 1714
+  },
+  "Recipe": null,
+  "CanSell": false,
+  "Price": 200,
+  "PurchaseFrom": "STF.UV_WizardApprenticeShop",
+  "PurchasePrice": 200,
+  "IsColored": false,
+  "GiftTastes":{
+		"Love":[
+			"Alex",
+			"Caroline",
+			"Clint",
+			"Demetrius",
+			"Dwarf",
+			"Elliott",
+			"Emily",
+			"Evelyn",
+			"George",
+			"Gus",
+			"Jodi",
+			"Kent",
+			"Krobus",
+			"Leah",
+			"Linus",
+			"Marnie",
+			"Maru",
+			"Pam",
+			"Pierre",
+			"Robin",
+			"Sandy",
+			"Shane",
+			"Willy",
+			"Wizard",
+			"Lewis",
+			"Abigail",
+			"Haley",
+			"Sam",
+			"Madam",
+			"Gregory",
+			"Joel"
+		],
+		"Hate":[
+			"Penny",
+			"Sebastian",
+			"Vincent",
+			"Jas",
+			"Sheila"
+		]
+  },
+  "NameLocalization": {
+    "zh": ""
+  },
+  "DescriptionLocalization": {
+    "zh": ""
+	
+  }
+}

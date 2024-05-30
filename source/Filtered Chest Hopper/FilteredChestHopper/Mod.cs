@@ -9,7 +9,7 @@
 *************************************************/
 
 using System.Collections.Generic;
-using System.Linq;
+using GenericModConfigMenu;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -17,15 +17,15 @@ using StardewValley;
 using StardewValley.Objects;
 
 //To-Do
-//Figure out how to read automate config?
-//Copy automates connecting with paths?
+//Custom Item
+//Custom Filter Interface
 
 namespace FilteredChestHopper
 {
 
     internal class Mod : StardewModdingAPI.Mod
     {
-        public int AutomationInterval { get; set; } = 60;
+        public ModConfig Config = new ModConfig();
         public int AutomateCountdown;
 
         //Active Pipelines
@@ -40,6 +40,8 @@ namespace FilteredChestHopper
             helper.Events.GameLoop.SaveLoaded += this.SaveLoaded;
             helper.Events.GameLoop.GameLaunched += this.GameLaunched;
             helper.Events.World.ObjectListChanged += this.ObjectListChanged;
+
+            this.Config = this.Helper.ReadConfig<ModConfig>();
         }
 
         private void GameLaunched(object sender, GameLaunchedEventArgs e)
@@ -48,6 +50,45 @@ namespace FilteredChestHopper
             {
                 Pipelines = new List<Pipeline>();
             }
+
+            //Config
+            var configMenu = this.Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
+            if (configMenu is null)
+                return;
+
+            // register mod
+            configMenu.Register(
+                mod: this.ModManifest,
+                reset: () => this.Config = new ModConfig(),
+                save: () => this.Helper.WriteConfig(this.Config)
+            );
+
+            // add some config options
+            configMenu.AddBoolOption(
+                mod: this.ModManifest,
+                name: () => "Compare Quality",
+                tooltip: () => "If true the filters will check the qualities of items as well as the item id",
+                getValue: () => this.Config.CompareQuality,
+                setValue: value => this.Config.CompareQuality = value
+            );
+
+            configMenu.AddBoolOption(
+                mod: this.ModManifest,
+                name: () => "Compare Quantity",
+                tooltip: () => "If true the filters will check the stack size of the item, and only place that many items in the target chest. Only having 1 item in the filter stack ignores the quantity filter for that item instead of only moving one (for ease of use)",
+                getValue: () => this.Config.CompareQuantity,
+                setValue: value => this.Config.CompareQuantity = value
+            );
+
+            configMenu.AddNumberOption(
+                mod: this.ModManifest,
+                name: () => "Tranfer Interval",
+                tooltip: () => "How often the item transfer logic runs in frames, ie. 1 is every frame, 60 every 60 frames which should be about every second",
+                getValue: () => this.Config.TransferInterval,
+                setValue: value => this.Config.TransferInterval = value,
+                min: 1,
+                max: 600
+            );
         }
 
         private void SaveLoaded(object sender, SaveLoadedEventArgs e)
@@ -105,7 +146,7 @@ namespace FilteredChestHopper
                 {
                     if (TryGetHopper(AddedObject.Value, out Chest hopper))
                     {
-                        Pipelines.RemoveAll(pipeline => AddedObject.Key == pipeline.Hoppers[0].TileLocation - new Vector2(1,0) || AddedObject.Key == pipeline.Hoppers[pipeline.Hoppers.Count - 1].TileLocation + new Vector2(1, 0));
+                        Pipelines.RemoveAll(pipeline => pipeline.Hoppers.Count < 1 || AddedObject.Key == pipeline.Hoppers[0].TileLocation - new Vector2(1,0) || AddedObject.Key == pipeline.Hoppers[pipeline.Hoppers.Count - 1].TileLocation + new Vector2(1, 0));
                         Pipeline pipeline = new Pipeline(hopper);
                         Pipelines.Add(pipeline);
                     }
@@ -116,16 +157,16 @@ namespace FilteredChestHopper
         private void UpdateTicked(object sender, UpdateTickedEventArgs e)
         {
             this.AutomateCountdown--;
-            if (this.AutomateCountdown > 0)
+            if (this.AutomateCountdown > 0 || Config == null)
                 return;
 
-            this.AutomateCountdown = AutomationInterval;
+            this.AutomateCountdown = Config.TransferInterval;
 
             if (Pipelines != null)
             { 
                 foreach (var pipeline in Pipelines)
                 {
-                    pipeline.AttemptTransfer();
+                    pipeline.AttemptTransfer(this);
                 }
             }
         }
@@ -144,12 +185,6 @@ namespace FilteredChestHopper
 
             hopper = null;
             return false;
-        }
-
-        //Will be used to limit regenerating unchanged pipelines
-        private bool CheckIfInBounds(Vector2 point, Vector2 boundsStart, Vector2 boundsSize)
-        {
-            return point.X >= boundsStart.X && point.X <= boundsStart.X + boundsSize.X && point.Y >= boundsStart.Y && point.Y <= boundsStart.Y + boundsSize.Y;
         }
 
         public static Chest GetChestAt(GameLocation location, Vector2 position)

@@ -1,0 +1,28 @@
+{
+  /*
+   | This file is automatically updated by ModManifestBuilder
+   | when the project is compiled.
+   | 
+   | Changes made to this file may be overwritten.
+   | 
+   */
+  "$schema": "https://smapi.io/schemas/manifest.json",
+  "UniqueID": "ApryllForever.NuclearBomb",
+  "Name": "NuclearBomb",
+  "Author": "ApryllForever",
+  "Version": "1.0.2",
+  "Description": "Nuclear Bombs.",
+  "MinimumApiVersion": "3.16.0",
+  "EntryDll": "NuclearBomb.dll",
+
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.SpaceCore"
+    }
+
+  ],
+
+  "UpdateKeys": [
+    "Nexus:"
+  ]
+}

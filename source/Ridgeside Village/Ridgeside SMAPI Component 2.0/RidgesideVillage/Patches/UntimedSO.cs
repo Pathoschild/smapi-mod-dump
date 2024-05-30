@@ -22,6 +22,7 @@ using StardewValley.Quests;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI.Utilities;
+using StardewValley.SpecialOrders;
 
 namespace RidgesideVillage
 {

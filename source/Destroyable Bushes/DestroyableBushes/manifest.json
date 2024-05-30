@@ -11,8 +11,8 @@
 {
   "Name": "Destroyable Bushes",
   "Author": "Esca",
-  "Version": "1.3.0",
-  "Description": "Allows the player to destroy any type of bush with an upgraded axe.",
+  "Version": "1.3.2",
+  "Description": "Allows the player to destroy bushes with an axe.",
   "UniqueID": "Esca.DestroyableBushes",
   "EntryDll": "DestroyableBushes.dll",
   "MinimumApiVersion": "4.0.0",

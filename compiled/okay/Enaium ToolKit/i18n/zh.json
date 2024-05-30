@@ -1,6 +1,7 @@
 ﻿{
-  "screenGui.component.textField.flipUp": "向上翻",
-  "screenGui.component.textField.flipDown": "向下翻",
-  "screenGui.component.textField.closeScreen": "关闭显示",
-  "screenGui.component.textField.Search": "搜索"
+  "screenGui.component.arrowButton.flipUp": "向上翻",
+  "screenGui.component.arrowButton.flipDown": "向下翻",
+  "screenGui.component.arrowButton.backScreen": "返回上一界面",
+  "screenGui.component.closeButton.closeScreen": "关闭显示",
+  "screenGui.component.textField.search": "搜索"
 }

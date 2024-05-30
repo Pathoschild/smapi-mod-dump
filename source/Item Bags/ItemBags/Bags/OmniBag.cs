@@ -50,20 +50,17 @@ namespace ItemBags.Bags
         /// <summary>Default parameterless constructor intended for use by XML Serialization. Do not use this constructor to instantiate a bag.</summary>
         public OmniBag() : base(ItemBagsMod.Translate("OmniBagName"), ItemBagsMod.Translate("OmniBagDescription"), ContainerSize.Small, null, null, new Vector2(16, 16), 0.5f, 1f)
         {
-            string SizeName = ItemBagsMod.Translate(string.Format("Size{0}Name", Size.GetDescription()));
-            DescriptionAlias = string.Format("{0}\n({1})\n({2})",
-                ItemBagsMod.Translate("OmniBagDescription"),
-                ItemBagsMod.Translate("CapacityDescription", new Dictionary<string, string>() { { "count", MaxStackSize.ToString() } }),
-                ItemBagsMod.Translate("OmniBagCapacityDescription", new Dictionary<string, string>() { { "size", SizeName } })
-            );
+            UpdateDescription();
+            OnSizeChanged += OmniBag_OnSizeChanged;
 
             this.NestedBags = new List<ItemBag>();
 
             LoadTextures();
         }
 
-        public OmniBag(ContainerSize Size)
-            : base(ItemBagsMod.Translate("OmniBagName"), ItemBagsMod.Translate("OmniBagDescription"), Size, null, null, new Vector2(16, 16), 0.5f, 1f)
+        private void OmniBag_OnSizeChanged(object sender, EventArgs e) => UpdateDescription();
+
+        private void UpdateDescription()
         {
             string SizeName = ItemBagsMod.Translate(string.Format("Size{0}Name", Size.GetDescription()));
             DescriptionAlias = string.Format("{0}\n({1})\n({2})",
@@ -71,6 +68,13 @@ namespace ItemBags.Bags
                 ItemBagsMod.Translate("CapacityDescription", new Dictionary<string, string>() { { "count", MaxStackSize.ToString() } }),
                 ItemBagsMod.Translate("OmniBagCapacityDescription", new Dictionary<string, string>() { { "size", SizeName } })
             );
+        }
+
+        public OmniBag(ContainerSize Size)
+            : base(ItemBagsMod.Translate("OmniBagName"), ItemBagsMod.Translate("OmniBagDescription"), Size, null, null, new Vector2(16, 16), 0.5f, 1f)
+        {
+            UpdateDescription();
+            OnSizeChanged += OmniBag_OnSizeChanged;
 
             this.NestedBags = new List<ItemBag>();
 

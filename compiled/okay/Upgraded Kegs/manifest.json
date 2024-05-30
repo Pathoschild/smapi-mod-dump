@@ -1,0 +1,16 @@
+{
+  "Name": "Upgraded Kegs",
+  "Author": "CyanFire",
+  "Version": "1.2.3",
+  "Description": "Extra code for Upgraded Kegs needed for certain mods",
+  "UniqueID": "CF.UpgradedKegs",
+  "EntryDll": "UpgradedKegs.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [  ],
+  "Dependencies": [
+    {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "IsRequired": false
+    }
+  ]
+}

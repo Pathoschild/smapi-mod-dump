@@ -1,0 +1,9 @@
+{
+  "Name": "Unlimited Community Center",
+  "Author": "TIplurka",
+  "Version": "1.0.0",
+  "Description": "Fix open community room for unlimited players!",
+  "UniqueID": "tiplurka.UnlimitedCommunityCenter",
+  "EntryDll": "UnlimitedCommunityCenter.dll",
+  "MinimumApiVersion": "4.0"
+}

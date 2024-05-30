@@ -24,13 +24,11 @@ namespace Pathoschild.Stardew.FastAnimations.Handlers
         /*********
         ** Public methods
         *********/
-        /// <summary>Construct an instance.</summary>
-        /// <param name="multiplier">The animation speed multiplier to apply.</param>
+        /// <inheritdoc />
         public HorseFluteHandler(float multiplier)
             : base(multiplier) { }
 
-        /// <summary>Get whether the animation is currently active.</summary>
-        /// <param name="playerAnimationID">The player's current animation ID.</param>
+        /// <inheritdoc />
         public override bool IsEnabled(int playerAnimationID)
         {
             if (!Context.IsWorldReady)
@@ -42,8 +40,7 @@ namespace Pathoschild.Stardew.FastAnimations.Handlers
                 && animation[0].frame == 98;
         }
 
-        /// <summary>Perform any logic needed on update while the animation is active.</summary>
-        /// <param name="playerAnimationID">The player's current animation ID.</param>
+        /// <inheritdoc />
         public override void Update(int playerAnimationID)
         {
             // speed up animation

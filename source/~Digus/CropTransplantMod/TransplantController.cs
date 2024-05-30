@@ -24,7 +24,7 @@ namespace CropTransplantMod
     {
         public static bool IsGardenPot(Object o)
         {
-            return o is Object object1 && object1.ParentSheetIndex == 62 && object1.bigCraftable.Value;
+            return o is Object object1 && object1.QualifiedItemId == "(BC)62";
         }
 
         public static bool IsTapper(Object obj)
@@ -52,17 +52,8 @@ namespace CropTransplantMod
 
         internal static Bush PrepareBushForPlacement(Bush bush, Vector2 tileLocation)
         {
-            if (!Game1.player.currentLocation.IsOutdoors && !bush.greenhouseBush.Value)
-            {
-                bush.greenhouseBush.Value = true;
-            }
-            else if (Game1.player.currentLocation.IsOutdoors && bush.greenhouseBush.Value)
-            {
-                bush.greenhouseBush.Value = false;
-            }
-            bush.tilePosition.Value = tileLocation;
-            bush.currentTileLocation = tileLocation;
-            bush.currentLocation = Game1.currentLocation;
+            bush.Tile = tileLocation;
+            bush.Location = Game1.currentLocation;
             ShakeBush(bush, tileLocation);
             bush.loadSprite();
             bush.tileSheetOffset.Value = 0;
@@ -77,7 +68,7 @@ namespace CropTransplantMod
 
         public static bool IsValidCrop(TerrainFeature terrainFeature)
         {
-            return terrainFeature is HoeDirt hoeDirt && hoeDirt.crop != null && !hoeDirt.crop.dead.Value && (!hoeDirt.crop.forageCrop.Value || hoeDirt.crop.whichForageCrop.Value > 2);
+            return terrainFeature is HoeDirt hoeDirt && hoeDirt.crop != null && !hoeDirt.crop.dead.Value && (!hoeDirt.crop.forageCrop.Value || hoeDirt.crop.whichForageCrop.Value is not "1" and "2");
         }
 
         public static bool IsValidTree(TerrainFeature terrainFeature)
@@ -110,7 +101,7 @@ namespace CropTransplantMod
             return str != null && (str.Equals("Tree") || str.Equals("All") || str.Equals("True"));
         }
 
-        public static bool IsValidTileForFruitTree(GameLocation location, int saplingIndex, int x, int y)
+        public static bool IsValidTileForFruitTree(GameLocation location, string saplingIndex, int x, int y)
         {
             return DataLoader.ModConfig.EnablePlacementOfFruitTreesOnAnyTileType
                    || (
@@ -121,7 +112,7 @@ namespace CropTransplantMod
                            || location.doesTileHavePropertyNoNull(x, y, "Type", "Back").Equals("Dirt"))
                        && !location.doesTileHavePropertyNoNull(x, y, "NoSpawn", "Back").Equals("Tree"))
                    || (
-                       location.CanPlantTreesHere(saplingIndex, x, y)
+                       location.CanPlantTreesHere(saplingIndex, x, y, out var deniedMessage)
                        && (
                            location.doesTileHaveProperty(x, y, "Diggable", "Back") != null 
                            || location.doesTileHavePropertyNoNull(x, y, "Type", "Back").Equals("Stone")));
@@ -157,17 +148,17 @@ namespace CropTransplantMod
 
         internal static void ShakeTree(Tree tree, Vector2? tileLocation = null)
         {
-            tree.performUseAction(tileLocation ?? Game1.player.getTileLocation() + new Vector2(0, -2), Game1.player.currentLocation);
+            tree.performUseAction(tileLocation ?? Game1.player.Tile + new Vector2(0, -2));
         }
 
         internal static void ShakeTree(FruitTree tree, Vector2? tileLocation = null)
         {
-            tree.performUseAction(tileLocation ?? Game1.player.getTileLocation() + new Vector2(0, -2), Game1.player.currentLocation);
+            tree.performUseAction(tileLocation ?? Game1.player.Tile + new Vector2(0, -2));
         }
 
         internal static void ShakeBush(Bush bush, Vector2? tileLocation = null)
         {
-            bush.performUseAction(tileLocation ?? Game1.player.getTileLocation() + new Vector2(0, -2), Game1.player.currentLocation);
+            bush.performUseAction(tileLocation ?? Game1.player.Tile + new Vector2(0, -2));
         }
 
         public static bool CheckFruitTreeGrowth(GameLocation location, int x, int y)

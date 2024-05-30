@@ -11,7 +11,7 @@
 {
   "Name": "EnaiumToolKit",
   "Author": "Enaium",
-  "Version": "1.6.0",
+  "Version": "1.8.1",
   "Description": "Enaium's Toolkit",
   "UniqueID": "Enaium.EnaiumToolKit",
   "EntryDll": "EnaiumToolKit.dll",

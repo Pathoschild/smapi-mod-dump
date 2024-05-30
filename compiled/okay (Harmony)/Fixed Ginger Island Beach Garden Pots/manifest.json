@@ -1,0 +1,10 @@
+{
+  "Name": "Fixed Ginger Island Beach Garden Pots",
+  "Version": "1.0.0",
+  "Author": "wilsoncwc",
+  "Description": "A mod for Stardew Valley that overrides the garden pot restriction in the beach area of the Ginger Island farm.",
+  "UniqueID": "wilsoncwc.IslandPotFix",
+  "EntryDll": "IslandPotFix.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:23934" ]
+}

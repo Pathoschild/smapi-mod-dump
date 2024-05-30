@@ -30,14 +30,19 @@ namespace EverlastingBaitsAndUnbreakableTacklesMod
             Farmer lastUser = DataLoader.Helper.Reflection.GetField<Farmer>(__instance,"lastUser").GetValue();
             if (consumeBaitAndTackle && lastUser != null && lastUser.IsLocalPlayer)
             {
-                if (!DataLoader.ModConfig.DisableBaits && __instance.attachments[0] != null && __instance.attachments[0].Quality == 4)
+                if (!DataLoader.ModConfig.DisableBaits && __instance.attachments.Count >= 1 && __instance.attachments[0] != null && __instance.attachments[0].Quality == 4)
                 {
                     __instance.attachments[0].Stack++;
                 }
 
-                if (!DataLoader.ModConfig.DisableTackles && __instance.attachments[1] != null && __instance.attachments[1].Quality == 4)
+                if (!DataLoader.ModConfig.DisableTackles && __instance.attachments.Count >= 2 && __instance.attachments[1] != null && __instance.attachments[1].Quality == 4)
                 {
                     __instance.attachments[1].uses.Value--;
+                }
+
+                if (!DataLoader.ModConfig.DisableTackles && __instance.attachments.Count >= 3 && __instance.attachments[2] != null && __instance.attachments[2].Quality == 4)
+                {
+                    __instance.attachments[2].uses.Value--;
                 }
             }
 
@@ -46,11 +51,10 @@ namespace EverlastingBaitsAndUnbreakableTacklesMod
 
         public static bool CreateItem(CraftingRecipe __instance, ref Item __result)
         {
-            BaitTackle? baitTackle = BaitTackleExtension.GetFromDescription(__instance.name);
-            if (baitTackle.HasValue)
+            BaitTackle baitTackle = BaitTackle.GetFromDescription(__instance.name);
+            if (baitTackle != null)
             {
-                Object _Object = new Object(Vector2.Zero, (int)baitTackle.Value, 1);
-                _Object.Quality = 4;
+                Object _Object = ItemRegistry.Create<Object>(baitTackle.Id, 1, 4);
                 __result = _Object;
                 return false;
             }
@@ -61,8 +65,8 @@ namespace EverlastingBaitsAndUnbreakableTacklesMod
         {
             CraftingRecipe craftingRecipe = DataLoader.Helper.Reflection.GetField<List<Dictionary<ClickableTextureComponent, CraftingRecipe>>>(__instance, "pagesOfCraftingRecipes").GetValue()[DataLoader.Helper.Reflection.GetField<int>(__instance, "currentCraftingPage").GetValue()][c];
 
-            BaitTackle? baitTackle = BaitTackleExtension.GetFromDescription(craftingRecipe.name);
-            if (baitTackle.HasValue)
+            BaitTackle baitTackle = BaitTackle.GetFromDescription(craftingRecipe.name);
+            if (baitTackle != null)
             {
                 foreach (Quest quest in Game1.player.questLog.Where(q => q.questType.Value == 1 && q.questTitle == craftingRecipe.name))
                 {
@@ -72,30 +76,37 @@ namespace EverlastingBaitsAndUnbreakableTacklesMod
             }
         }
 
-        public static bool TryToReceiveActiveObject(NPC __instance, ref Farmer who)
+        public static bool TryToReceiveActiveObject(NPC __instance, ref Farmer who, bool probe, ref bool __result)
         {
             if (__instance.Name.Equals((object) "Willy"))
             {
-                if (who.ActiveObject is Object o)
+                if (who.ActiveObject is { } o)
                 {
-                    if (Enum.IsDefined(typeof(BaitTackle), o.ParentSheetIndex) && o.Quality == 4)
+                    if (BaitTackle.GetFromId(o.ItemId) is {} baitTackle && o.Quality == 4)
                     {
-                        BaitTackle baitTackle = (BaitTackle)o.ParentSheetIndex;
-                        foreach (Quest quest in Game1.player.questLog.Where(q => q.questType.Value == 1 && q.questTitle == DataLoader.I18N.Get($"{baitTackle.ToString()}.Name")))
+                        foreach (Quest quest in Game1.player.questLog.Where(q => q.questType.Value == 1 && q.questTitle == DataLoader.I18N.Get($"{baitTackle}.Name")))
                         {
-                            if (baitTackle != BaitTackle.UnbreakableDressedSpinner)
+                            __result = true;
+                            if (!probe)
                             {
-                                __instance.CurrentDialogue.Push(new Dialogue(DataLoader.I18N.Get("Quest.CompleteDialog"), __instance));
+                                who.Halt();
+                                who.faceGeneralDirection(__instance.getStandingPosition(), 0, opposite: false, useTileCalculations: false);
+                                if (BaitTackle.UnbreakableDressedSpinner.Equals(baitTackle))
+                                {
+                                    __instance.CurrentDialogue.Push(new Dialogue(__instance, "Quest.LastCompleteDialog",
+                                        DataLoader.I18N.Get("Quest.LastCompleteDialog")));
+                                }
+                                else
+                                {
+                                    __instance.CurrentDialogue.Push(new Dialogue(__instance, "Quest.CompleteDialog",
+                                        DataLoader.I18N.Get("Quest.CompleteDialog")));
+                                }
+
+                                Game1.drawDialogue(__instance);
+                                Game1.player.reduceActiveItemByOne();
+                                quest.questComplete();
+                                who.mailReceived.Add(baitTackle.GetQuestName());
                             }
-                            else
-                            {
-                                __instance.CurrentDialogue.Push(new Dialogue(DataLoader.I18N.Get("Quest.LastCompleteDialog"), __instance));
-                            }
-                            
-                            Game1.drawDialogue(__instance);
-                            Game1.player.reduceActiveItemByOne();
-                            quest.questComplete();
-                            who.mailReceived.Add(baitTackle.GetQuestName());
                             return false;
                         }
                     }
@@ -118,7 +129,7 @@ namespace EverlastingBaitsAndUnbreakableTacklesMod
                             {
                                 return;
                             }
-                            if (DataLoader.ModConfig.IridiumQualityFishOnlyWithWildBait && fishingRod.attachments[0].ParentSheetIndex != 774)
+                            if (DataLoader.ModConfig.IridiumQualityFishOnlyWithWildBait && fishingRod.attachments[0].ItemId != "774")
                             {
                                 return;
                             }

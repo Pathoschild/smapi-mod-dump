@@ -8,7 +8,11 @@
 **
 *************************************************/
 
+#if IS_FAUXCORE
+namespace StardewMods.FauxCore.Common.Services.Integrations.ExpandedStorage;
+#else
 namespace StardewMods.Common.Services.Integrations.ExpandedStorage;
+#endif
 
 /// <summary>Mod API for Expanded Storage.</summary>
 public interface IExpandedStorageApi
@@ -19,7 +23,7 @@ public interface IExpandedStorageApi
     /// When this method returns, contains the data associated with the specified item, if the
     /// retrieval succeeds; otherwise, null. This parameter is passed uninitialized.
     /// </param>
-    /// <returns>true if the data was successfully retrieved; otherwise, false.</returns>
+    /// <returns><c>true</c> if the data was successfully retrieved; otherwise, <c>false</c>.</returns>
     public bool TryGetData(Item item, [NotNullWhen(true)] out IStorageData? storageData);
 
     /// <summary>Subscribes to an event handler.</summary>

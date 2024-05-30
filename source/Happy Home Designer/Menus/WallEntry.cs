@@ -16,7 +16,6 @@ using StardewValley.Locations;
 using StardewValley.Objects;
 using System;
 using System.Collections.Generic;
-using System.Xml.Linq;
 
 namespace HappyHomeDesigner.Menus
 {
@@ -79,6 +78,10 @@ namespace HappyHomeDesigner.Menus
 				batch.Draw(Catalog.MenuTexture, new Rectangle(x + 4, y + 4, 18, 18), favRibbon, Color.White);
 		}
 
+		/// <summary>Attempts to apply the wall/floor to the current room</summary>
+		/// <param name="playSound">Whether or not to play sounds</param>
+		/// <param name="state">if applied, the undo-redo state item that represents this operation</param>
+		/// <returns>True if applied, otherwise false</returns>
 		public bool TryApply(bool playSound, out WallFloorState state)
 		{
 			state = default;
@@ -138,6 +141,8 @@ namespace HappyHomeDesigner.Menus
 
 			return true;
 		}
+
+		/// <inheritdoc/>
 		public Wallpaper GetOne()
 		{
 			return item.getOne() as Wallpaper;
@@ -152,16 +157,19 @@ namespace HappyHomeDesigner.Menus
 
 			return Favorited;
 		}
+
 		public override string ToString()
 		{
 			return id;
 		}
 
+		/// <inheritdoc/>
 		public string GetName()
 		{
 			return id;
 		}
 
+		/// <returns>The texture used by this wall/floor</returns>
 		private Texture2D GetTexture()
 		{
 			var modData = item.GetSetData();

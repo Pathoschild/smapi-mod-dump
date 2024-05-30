@@ -1,0 +1,144 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/slimerrain/stardew-mods
+**
+*************************************************/
+
+{
+
+    // ========== BYPRODUCTS ==========
+    "Byproduct.Fruit.Orange.name": "Cáscara de naranja",
+    "Byproduct.Fruit.Orange.description": "La piel de una naranja.",
+    
+    // ========== BUSHES ==========
+    "Bush.Jasmine.name": "Jazmín",
+    "Bush.Jasmine.description": "Una pequeña flor blanca con un delicioso aroma floral.",
+    "Bush.Sapling.Jasmine.name": "Árbol de jazmín",
+    "Bush.Sapling.Jasmine.description": "Tarda 18 días en producir un arbusto de té con flores de jazmín en verano y otoño.",
+    
+    "Bush.Osmanthus.name": "Osmanthus",
+    "Bush.Osmanthus.description": "Una diminuta flor de color amarillo brillante con un aroma floral desbordante.",
+    "Bush.Sapling.Osmanthus.name": "Árbol de Osmanthus",
+    "Bush.Sapling.Osmanthus.description": "Tarda 18 días en producir un arbusto de té con flores de osmanthus en primavera y verano.",
+    
+    // ========== DISHES ==========
+    "Dishes.Mooncake.name": "Pastel de luna",
+    "Dishes.Mooncake.description": "Pastel tradicional chino con un intrincado diseño prensado.",
+
+    "Dishes.CandiedOrangePeel.name": "Cáscara de naranja confitada",
+    "Dishes.CandiedOrangePeel.description": "¡Está repleto de sabor!",
+
+    "Dishes.RicePorridge.name": "Gachas de arroz",
+    "Dishes.RicePorridge.description": "Sabroso con sabores adicionales de los ingredientes.",
+
+    "Dishes.TeaEggs.name": "Huevos de té",
+    "Dishes.TeaEggs.description": "La salsa les daba un fresco efecto marmolado.",
+
+    // ========== DRIED ITEMS ==========
+    "Dried.Seeds.Cassia.name": "Semillas de casia",
+    "Dried.Seeds.Cassia.description": "Las semillas duras y oscuras de la flor de Cassia, que se suelen utilizar para preparar té.",
+
+    "Dried.Fruit.Goji.name": "Bayas de Goji secas",
+    "Dried.Fruit.Goji.description": "Trozos crujientes de bayas de goji deshidratadas.",
+
+    "Dried.Seeds.Lotus.name": "Semillas de loto secas",
+    "Dried.Seeds.Lotus.description": "Semillas de una vaina de loto. Se utilizan en pastas y sopas.",
+
+    "Dried.Seeds.Lily.name": "Bombilla Lily",
+    "Dried.Seeds.Lily.description": "Bulbo desecado de una flor de lirio. Se puede añadir a la sopa para aliviar la tos.",
+
+    "Dried.Fruit.Peel.Orange.name": "Cáscara de naranja seca",
+    "Dried.Fruit.Peel.Orange.description": "Un ingrediente versátil para preparar alimentos o bebidas.",
+
+    "Dried.Fruit.Strawberry.name": "Fresas secas",
+    "Dried.Fruit.Strawberry.description": "Trozos crujientes de fresas deshidratadas.",
+    
+    "Dried.Vegetables.Sugarcane.name": "Azúcar de roca",
+    "Dried.Vegetables.Sugarcane.description": "Mmmmm, crujiente.",
+
+    // ========== CROPS ==========
+    "Crops.Chamomile.name": "Manzanilla",
+    "Crops.Chamomile.description": "Una pequeña flor blanca con un gran centro amarillo. Se utiliza para preparar té.",
+    "Seeds.Chamomile.name": "Semillas de manzanilla",
+    "Seeds.Chamomile.description": "Plántelas en primavera o verano. Tarda 7 días en producir flores de manzanilla.",
+    
+    "Crops.Chrysanthemum.name": "Crisantemo",
+    "Crops.Chrysanthemum.description": "Flor amarilla con muchos pétalos pequeños. Se utiliza para preparar té.",
+    "Seeds.Chrysanthemum.name": "Semillas de crisantemo",
+    "Seeds.Chrysanthemum.description": "Plántelos en primavera, verano u otoño. Tardan 8 días en producir crisantemos.",
+    
+    "Crops.GojiBerry.name": "Bayas de Goji",
+    "Crops.GojiBerry.description": "Pequeña baya rosada que puede deshidratarse y utilizarse para diversos platos e infusiones.",
+    "Seeds.GojiBerry.name": "Semillas de bayas de Goji",
+    "Seeds.GojiBerry.description": "Plántalas en primavera o verano. Tarda 11 días en madurar y sigue produciendo bayas de goji después de la primera cosecha.",
+    
+    "Crops.Lavender.name": "Lavanda",
+    "Crops.Lavender.description": "Un gran tallo de diminutas flores púrpuras punzantes.",
+    "Seeds.Lavender.name": "Semillas de lavanda",
+    "Seeds.Lavender.description": "Plántelas en primavera. Tarda 5 días en producir flores de lavanda.",
+    
+    "Crops.Lily.name": "Lirio",
+    "Crops.Lily.description": "Una flor alta con pétalos brillantes.",
+    "Seeds.Lily.name": "Bombilla de lirio",
+    "Seeds.Lily.description": "Plántelas en primavera. Tarda 7 días en producir flores de lirio.",
+    
+    "Crops.Lotus.name": "Loto",
+    "Crops.Lotus.description": "Flor acuática ornamental con muchos pétalos extendidos.",
+    "Seeds.Lotus.name": "Semillas de loto",
+    "Seeds.Lotus.description": "Plántelas en primavera, verano u otoño. Tardan 6 días en madurar. Crece más rápido si se planta cerca de una masa de agua.",
+    
+    "Crops.Sugarcane.name": "Caña de azúcar",
+    "Crops.Sugarcane.description": "Un tallo alto y fibroso de azúcar.",
+    "Seeds.Sugarcane.name": "Semillas de caña de azúcar",
+    "Seeds.Sugarcane.description": "Plántalas en otoño. Tardan 8 días en madurar. Crece más rápido si se planta cerca de una masa de agua. Vuelve a crecer. Cosecha con guadaña.",
+
+    // ========== TEA ==========
+    "Tea.Barley.name": "Té de cebada",
+    "Tea.Barley.description": "Un energizante té terroso de cebada servido con hielo.",
+
+    "Tea.BrownRice.name": "Té de arroz integral",
+    "Tea.BrownRice.description": "Un té de arroz tostado terroso con un sabor profundo.",
+    
+    "Tea.Cassia.name": "Té Cassia",
+    "Tea.Cassia.description": "Té agridulce elaborado con las semillas saladas de la casia.",
+
+    "Tea.Chamomile.name": "Té de manzanilla",
+    "Tea.Chamomile.description": "Una infusión relajante elaborada con flores de manzanilla.",
+
+    "Tea.Chrysanthemum.name": "Té de crisantemo",
+    "Tea.Chrysanthemum.description": "Un té dulce y floral a base de flores de crisantemo que te calienta de inmediato.",
+    
+    "Tea.HealthBlend.name": "Mezcla de té saludable",
+    "Tea.HealthBlend.description": "Una deliciosa mezcla de té de crisantemo y té de casia con algunas bayas de goji secas añadidas.",
+    
+    "Tea.Lavender.name": "Té de lavanda",
+    "Tea.Lavender.description": "Un té floral a base de flores de lavanda.",
+    
+    "Tea.Jasmine.name": "Té de jazmín",
+    "Tea.Jasmine.description": "Un té clásico con un ligero aroma floral.",
+    
+    "Tea.Osmanthus.name": "Té de osmanto",
+    "Tea.Osmanthus.description": "Un té oriental clásico con un aroma floral reconocible.",
+
+    "Teapot.name": "Tetera",
+    "Teapot.description": "Una bonita tetera para preparar té.",
+
+    // ========== TREES ==========
+    "Tree.Cassia.name": "Árbol de la Cassia",
+    "Tree.Cassia.description": "Una flor colgante en la que crecen muchas semillas pequeñas.",
+    "Tree.Cassia.Harvest.name": "Flor de Cassia",
+    "Tree.Cassia.Sapling.name": "Arbol de Cassia",
+    "Tree.Cassia.Sapling.description": "Se tarda 28 días en producir un árbol de Cassia maduro. Florece en verano. Sólo crece si las 8 que rodean \"baldosas\" están vacías.",
+
+    // ========== CONFIG ==========
+    "Config.TeaRecipes.description": "Si quieres que todos los tés se puedan preparar en la cocina.",
+    "Config.TeaBrewing.description": "Si desea que todos los tés puedan prepararse en la tetera.",
+    "Config.CustomDehydratorRules.description": "Si estás de acuerdo con las modificaciones a las normas existentes deshidratador de vainilla basado en los artículos secos del mod. (Fresas)",
+    "Config.QuaintLivingFlowerGarden2Compatability.description": "Si desea activar la eliminación de los cultivos duplicados que añade mi mod.",
+    "Config.CornucopiaCompatability.description": "Si desea activar la eliminación de los cultivos duplicados que añade mi mod.",
+    "Config.WildFlourCompatability.description": "Si desea activar la eliminación de los cultivos duplicados que añade mi mod."
+}

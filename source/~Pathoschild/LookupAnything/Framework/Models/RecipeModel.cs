@@ -36,11 +36,8 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Models
         /// <summary>The recipe's lookup name (if any).</summary>
         public string? Key { get; }
 
-        /// <summary>The machine's unqualified item ID, if applicable.</summary>
+        /// <summary>The unique ID for the machine which processes this recipe, if applicable. This is the qualified item ID for an object machine, or the building type for a building, or <c>null</c> for any other recipe.</summary>
         public string? MachineId { get; }
-
-        /// <summary>Get whether this recipe is for the given machine.</summary>
-        public Func<object, bool> IsForMachine { get; }
 
         /// <summary>The recipe type.</summary>
         public RecipeType Type { get; }
@@ -72,6 +69,12 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Models
         /// <summary>The sprite and display text for a non-standard recipe output.</summary>
         public RecipeItemEntry? SpecialOutput { get; }
 
+        /// <summary>The item quality that will be produced, if applicable.</summary>
+        public int? Quality { get; }
+
+        /// <summary>The game state queries which indicate when this recipe is available, if any.</summary>
+        public string[] Conditions { get; }
+
 
         /*********
         ** Public methods
@@ -83,14 +86,15 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Models
         /// <param name="ingredients">The items needed to craft the recipe (item ID => number needed).</param>
         /// <param name="item">The item that's created by this recipe, given an optional input.</param>
         /// <param name="isKnown">Whether the player knows this recipe.</param>
-        /// <param name="machineId">The machine's unqualified item ID, if applicable.</param>
-        /// <param name="isForMachine">Get whether this recipe is for the given machine.</param>
+        /// <param name="machineId">The machine's qualified item ID, if applicable.</param>
         /// <param name="exceptIngredients">The ingredients which can't be used in this recipe (typically exceptions for a category ingredient).</param>
         /// <param name="outputQualifiedItemId">The qualified item ID produced by this recipe, if applicable.</param>
         /// <param name="minOutput">The minimum number of items output by the recipe.</param>
         /// <param name="maxOutput">The maximum number of items output by the recipe.</param>
+        /// <param name="quality">The item quality that will be produced, if applicable.</param>
         /// <param name="outputChance">The percentage chance of this recipe being produced (or <c>null</c> if the recipe is always used).</param>
-        public RecipeModel(string? key, RecipeType type, string displayType, IEnumerable<RecipeIngredientModel> ingredients, Func<Item?, Item?>? item, Func<bool> isKnown, string? machineId, Func<object, bool> isForMachine, IEnumerable<RecipeIngredientModel>? exceptIngredients = null, string? outputQualifiedItemId = null, int? minOutput = null, int? maxOutput = null, decimal? outputChance = null)
+        /// <param name="conditions">The game state queries which indicate when this recipe is available, if any.</param>
+        public RecipeModel(string? key, RecipeType type, string displayType, IEnumerable<RecipeIngredientModel> ingredients, Func<Item?, Item?>? item, Func<bool> isKnown, string? machineId, IEnumerable<RecipeIngredientModel>? exceptIngredients = null, string? outputQualifiedItemId = null, int? minOutput = null, int? maxOutput = null, decimal? outputChance = null, int? quality = null, string[]? conditions = null)
         {
             // normalize values
             if (minOutput == null && maxOutput == null)
@@ -109,7 +113,6 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Models
             this.DisplayType = displayType;
             this.Ingredients = ingredients.ToArray();
             this.MachineId = machineId;
-            this.IsForMachine = isForMachine;
             this.ExceptIngredients = exceptIngredients?.ToArray() ?? Array.Empty<RecipeIngredientModel>();
             this.Item = item;
             this.IsKnown = isKnown;
@@ -117,6 +120,8 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Models
             this.MinOutput = minOutput!.Value;
             this.MaxOutput = maxOutput!.Value;
             this.OutputChance = outputChance is > 0 and < 100 ? outputChance.Value : 100;
+            this.Quality = quality;
+            this.Conditions = conditions ?? Array.Empty<string>();
         }
 
         /// <summary>Construct an instance.</summary>
@@ -133,7 +138,6 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Models
                 isKnown: () => recipe.name != null && Game1.player.knowsRecipe(recipe.name),
                 minOutput: recipe.numberProducedPerCraft,
                 machineId: null,
-                isForMachine: _ => false,
                 outputQualifiedItemId: RecipeModel.QualifyRecipeOutputId(recipe, outputQualifiedItemId) ?? outputQualifiedItemId
             ) { }
 
@@ -148,13 +152,13 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Models
                 ingredients: ingredients,
                 item: _ => null,
                 isKnown: () => true,
-                machineId: null,
-                isForMachine: _ => false
+                machineId: null
             )
         {
             this.SpecialOutput = new RecipeItemEntry(
                 Sprite: new SpriteInfo(building.texture.Value, building.getSourceRectForMenu() ?? building.getSourceRect()),
-                DisplayText: TokenParser.ParseText(building.GetData()?.Name) ?? building.buildingType.Value
+                DisplayText: TokenParser.ParseText(building.GetData()?.Name) ?? building.buildingType.Value,
+                Quality: null
             );
         }
 
@@ -172,7 +176,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Models
                 outputQualifiedItemId: other.OutputQualifiedItemId,
                 minOutput: other.MinOutput,
                 machineId: other.MachineId,
-                isForMachine: other.IsForMachine
+                conditions: other.Conditions
             )
         { }
 
@@ -197,6 +201,24 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Models
             }
             else
                 return Array.Empty<RecipeIngredientModel>();
+        }
+
+        /// <summary>Get whether this recipe is for the given building.</summary>
+        /// <param name="building">The building instance.</param>
+        public bool IsForMachine(Building building)
+        {
+            return
+                this.MachineId is not null
+                && this.MachineId == building.buildingType.Value;
+        }
+
+        /// <summary>Get whether this recipe is for the given machine.</summary>
+        /// <param name="machine">The machine instance.</param>
+        public bool IsForMachine(Item machine)
+        {
+            return
+                this.MachineId is not null
+                && this.MachineId == machine.QualifiedItemId;
         }
 
         /// <summary>Create the item crafted by this recipe if it's valid.</summary>

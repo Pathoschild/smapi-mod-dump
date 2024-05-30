@@ -7,6 +7,9 @@ for queries and analysis.**
 ----
 
 # MEEP Release Notes
+* 2.3.7
+  * Fixed MEEP farm animals appearing in events.
+  * Potentially fixed Lazy Mod spam-petting MEEP farm animals.
 * 2.3.6
   * Fixed the animal-removal command. Oops!
 * 2.3.5

@@ -131,7 +131,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.TerrainFeatures
                 {
                     yield return new GenericField(
                         I18n.FruitTree_Season(),
-                        I18n.FruitTree_Season_Summary(string.Join(", ", seasons))
+                        I18n.FruitTree_Season_Summary(I18n.List(seasons))
                     );
                 }
             }

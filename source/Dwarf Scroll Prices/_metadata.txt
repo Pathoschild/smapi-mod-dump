@@ -6,11 +6,11 @@ mods:
    Dwarf Scroll Prices
 
 latest commit:
-   commit 775a85e7ab8234cbd2065fffee17b972b79d1451
+   commit f9cf7e4f4fdc628a5067ddabae4ed2891b01aff2
    Author: noriteway <131356289+noriteway@users.noreply.github.com>
-   Date:   Sun Mar 31 18:48:50 2024 -0700
+   Date:   Mon May 27 04:02:43 2024 -0700
    
-       Mute and Fullscreen toggles v1
+       beach bridge price
        
-       Accounts for mute in title menu and fixed fullscreen toggle logic. Refactored and commented.
+       variable price and optimizations
    

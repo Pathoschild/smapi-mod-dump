@@ -1,0 +1,57 @@
+{
+  // TODO: WHOLE FILE //////////////////////////////////////////////////////////////////////
+  // UI //
+  "Config.SectionTitle.General": "General Settings",
+  "Config.SectionTitle.EnableDisable": "Enable / Disable Books",
+  "Config.SectionTitle.Prices": "Change Book Prices",
+  "Config.SectionTitle.Adjustments": "Adjust Book Powers",
+  "Config.SectionTitle.Debug": "Debug Settings",
+
+  // GENERAL CONFIG //
+  "Config.General.AlwaysAvailable.Name": "Books Always Available",
+  "Config.General.AlwaysAvailable.Description": "If enabled, all books will always be available from the bookseller without the need to meet certain requirements.",
+
+  "Config.General.Enabled.Name": "Enabled",
+  "Config.General.Enabled.Description": "If disabled, this book and its powers will not be available.",
+
+  "Config.General.Price.Description": "The price of this book when bought directly from a shop and not earned through other means. Integer values only.",
+
+  // BOOK SETTINGS //
+  "Config.Books.Luck.Title": "Beginner's Luck",
+  "Config.Books.LuckBonus.Name": "Luck Bonus",
+  "Config.Books.LuckBonus.Description": "How much luck is added after reading the Beginner's Luck book.",
+
+  "Config.Books.ExtraGifts.Title": "Book of Altruism",
+
+  "Config.Books.TreesIgnoreSeason.Title": "Winter Forestry",
+
+  "Config.Books.ArtisanMachines.Title": "Artisans Guild Manual",
+  "Config.Books.ArtisanMachinesGrangeMustWin.Name": "Grange Display Must Win",
+  "Config.Books.ArtisanMachinesGrangeMustWin.Description": "If enabled, your grange display must place 1st on top of having 6+ artisan goods.",
+  "Config.Books.ArtisanMachinesBonus.Name": "Machine Speed Bonus",
+  "Config.Books.ArtisanMachinesBonus.Description": "Percent decrease to the processing time of machines producing artisan goods.",
+
+  "Config.Books.GiantCrops.Title": "Big Melons!",
+  "Config.Books.GiantCropsBonus.Name": "Giant Crop Chance",
+  "Config.Books.GiantCropsBonus.Description": "Percent chance that crops will form a giant crop overnight.",
+
+  "Config.Books.Popularity.Title": "Friendship 202",
+
+  "Config.Books.BusDriving.Title": "Bus Driving for Dummies",
+
+  "Config.Books.QiNotebook.Title": "Mr. Qi's Notebook",
+  "Config.Books.QiNotebookBonus.Name": "Qi Gem Chance",
+  "Config.Books.QiNotebookBonus.Description": "Percent chance that a Qi Gem will drop in addition to the usual odds.",
+
+  "Config.Books.PetGifts.Title": "Pawsitive Reinforcement",
+
+  "Config.Books.CheatCodes.Title": "Secret Codes for Arcade Machines",
+  "Config.Books.CheatCodesRequirement.Name": "Junimo Kart Deaths Required",
+  "Config.Books.CheatCodesRequirement.Description": "The number of times you must die in Junimo Kart before the Secret Codes book becomes available.",
+  "Config.Books.CheatCodesBonus.Name": "Extra Lives",
+  "Config.Books.CheatCodesBonus.Description": "The number of extra lives you start Junimo Kart with.",
+
+  // DEBUG SETTINGS //
+  "Config.Debug.EnableDebugBook.Name": "Enable Debug Book",
+  "Config.Debug.EnableDebugBook.Description": "If enabled, a debug book will be available from Pierre that will remove all of your powers granted by this mod."
+}

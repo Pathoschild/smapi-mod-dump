@@ -49,7 +49,13 @@ namespace Unlockable_Bundles.Lib
             } else if (e.NameWithoutLocale.StartsWith("UnlockableBundles/ShopTextures/")) {
                 var asset = e.NameWithoutLocale.BaseName[31..];
                 e.LoadFrom(delegate () {
-                    return Helper.ModContent.Load<Texture2D>($"assets/{asset}.png");
+                    return Helper.ModContent.Load<Texture2D>($"assets/ShopTextures/{asset}.png");
+                }, AssetLoadPriority.Low);
+
+            } else if (e.NameWithoutLocale.StartsWith("UnlockableBundles/UI/")) {
+                var asset = e.NameWithoutLocale.BaseName[21..];
+                e.LoadFrom(delegate () {
+                    return Helper.ModContent.Load<Texture2D>($"assets/UI/{asset}.png");
                 }, AssetLoadPriority.Low);
 
             } else if (e.NameWithoutLocale.IsEquivalentTo("Data/Mail")) {

@@ -15,44 +15,58 @@ using StardewValley.Menus;
 
 namespace BetterStardrops {
     internal class ModEntry : Mod {
+        //void SetUpInts() {
+        //    attackIncreaseAmount = config.AttackIncreaseAmount;
+        //    defenseIncreaseAmount = config.DefenseIncreaseAmount;
+        //    immunityIncreaseAmount = config.ImmunityIncreaseAmount;
+        //    healthIncreaseAmount = config.HealthIncreaseAmount;
+        //    staminaIncreaseAmount = config.StaminaIncreaseAmount;
+        //    combatLevelIncreaseAmount = config.CombatLevelIncreaseAmount;
+        //    farminglevelIncreaseAmount = config.FarmingLevelIncreaseAmount;
+        //    fishingLevelIncreaseAmount = config.FishingLevelIncreaseAmount;
+        //    foragingLevelIncreaseAmount = config.ForagingLevelIncreaseAmount;
+        //    luckLevelIncreaseAmount = config.LuckLevelIncreaseAmount;
+        //    miningLevelIncreaseAmount = config.MiningLevelIncreaseAmount;
+        //    magneticIncreaseAmount = config.MagneticIncreaseAmount;
+        //}
 
-        int attackIncreaseAmount = new();
-        int newAttackIncreaseAmount = new();
+        int attackIncreaseAmount => config.AttackIncreaseAmount;
+        int newAttackIncreaseAmount;
 
-        int defenseIncreaseAmount = new();
-        int newDefenseIncreaseAmount = new();
+        int defenseIncreaseAmount => config.DefenseIncreaseAmount;
+        int newDefenseIncreaseAmount;
 
-        int immunityIncreaseAmount = new();
-        int newImmunityIncreaseAmount = new();
+        int immunityIncreaseAmount => config.ImmunityIncreaseAmount;
+        int newImmunityIncreaseAmount;
 
-        int healthIncreaseAmount = new();
-        int newHealthIncreaseAmount = new();
+        int healthIncreaseAmount => config.HealthIncreaseAmount;
+        int newHealthIncreaseAmount;
 
-        int staminaIncreaseAmount = new();
-        int newStaminaIncreaseAmount = new();
+        int staminaIncreaseAmount => config.StaminaIncreaseAmount;
+        int newStaminaIncreaseAmount;
 
-        int combatLevelIncreaseAmount = new();
-        int newCombatLevelIncreaseAmount = new();
+        int combatLevelIncreaseAmount => config.CombatLevelIncreaseAmount;
+        int newCombatLevelIncreaseAmount;
 
-        int farminglevelIncreaseAmount = new();
-        int newFarmingLevelIncreaseAmount = new();
+        int farminglevelIncreaseAmount => config.FarmingLevelIncreaseAmount;
+        int newFarmingLevelIncreaseAmount;
 
-        int fishingLevelIncreaseAmount = new();
-        int newFishingLevelIncreaseAmount = new();
+        int fishingLevelIncreaseAmount => config.FishingLevelIncreaseAmount;
+        int newFishingLevelIncreaseAmount;
 
-        int foragingLevelIncreaseAmount = new();
-        int newForagingLevelIncreaseAmount = new();
+        int foragingLevelIncreaseAmount => config.ForagingLevelIncreaseAmount;
+        int newForagingLevelIncreaseAmount;
 
-        int luckLevelIncreaseAmount = new();
-        int newLuckLevelIncreaseAmount = new();
+        int luckLevelIncreaseAmount => config.LuckLevelIncreaseAmount;
+        int newLuckLevelIncreaseAmount;
 
-        int miningLevelIncreaseAmount = new();
-        int newMiningLevelIncreaseAmount = new();
+        int miningLevelIncreaseAmount => config.MiningLevelIncreaseAmount;
+        int newMiningLevelIncreaseAmount;
 
-        int magneticIncreaseAmount = new();
-        int newMagneticIncreaseAmount = new();
+        int magneticIncreaseAmount => config.MagneticIncreaseAmount;
+        int newMagneticIncreaseAmount;
 
-        int stardropsFound = new();
+        int stardropsFound;
 
         ModConfig config = new();
         BuffMaker buffMaker = new BuffMaker();
@@ -87,7 +101,7 @@ namespace BetterStardrops {
                 config.ResetMaxHealth = false;
             }
 
-            SetUpInts();
+            //SetUpInts();
             stardropsFound = Utility.numStardropsFound(Game1.player);
 
             if (config.ShowLogging && stardropsFound < 1) {
@@ -183,25 +197,6 @@ namespace BetterStardrops {
                 }
             }
         }
-
-        void SetUpInts() {
-            attackIncreaseAmount = config.AttackIncreaseAmount;
-            defenseIncreaseAmount = config.DefenseIncreaseAmount;
-            immunityIncreaseAmount = config.ImmunityIncreaseAmount;
-            healthIncreaseAmount = config.HealthIncreaseAmount;
-            staminaIncreaseAmount = config.StaminaIncreaseAmount;
-            combatLevelIncreaseAmount = config.CombatLevelIncreaseAmount;
-            farminglevelIncreaseAmount = config.FarmingLevelIncreaseAmount;
-            fishingLevelIncreaseAmount = config.FishingLevelIncreaseAmount;
-            foragingLevelIncreaseAmount = config.ForagingLevelIncreaseAmount;
-            luckLevelIncreaseAmount = config.LuckLevelIncreaseAmount;
-            miningLevelIncreaseAmount = config.MiningLevelIncreaseAmount;
-            magneticIncreaseAmount = config.MagneticIncreaseAmount;
-        }
-
-
-
-
 
         void SetUpGMCM() {
             var configMenu = Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");

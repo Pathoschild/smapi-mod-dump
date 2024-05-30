@@ -17,7 +17,7 @@ namespace EasyFishin.helpers
 {
     internal class FishingHelper
     {
-        private static readonly string[] BAIT_IDS = { "685", "774", "908", "DeluxeBait", "SpecificBait", "ChallengeBait" };
+        private static readonly string[] BAIT_IDS = { "685", "703", "774", "908", "DeluxeBait", "SpecificBait", "ChallengeBait" };
         private static readonly string[] TACKLE_IDS = { "686", "687", "694", "695", "692", "693", "691", "856", "877", "SonarBobber" };
 
         private static readonly PerScreen<BobberBar?> BobberBarMenus = new();

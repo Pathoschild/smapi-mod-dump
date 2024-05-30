@@ -1,7 +1,7 @@
 ﻿{
   "Name": "TerrariaAccessories Code",
   "Author": "jeWel",
-  "Version": "1.0.2", // fixed locally
+  "Version": "1.0.3",
   "Description": "Code for TerrariaAccessories mod.",
   "UniqueID": "jeWel.TerrariaAccessoriesCode",
   "MinimumApiVersion": "4.0.0",

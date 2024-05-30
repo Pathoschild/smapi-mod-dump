@@ -379,13 +379,19 @@ public class DynamicTiles
 
             if (offsetX is not 4 || offsetY is not 2)
             {
+                // Prepend cabin's owner name to the cabin
                 if (cabin.HasOwner && !cabin.IsOwnedByCurrentPlayer && !string.IsNullOrWhiteSpace(ownerName))
                     name = $"{cabin.owner.Name} {name}";
                 goto PassableTilesCheck;
             }
 
+            // Cabin Mail Box
+
+            category = CATEGORY.Interactables;
+
             if (!cabin.IsOwnedByCurrentPlayer)
             {
+                // Prepend the owner's name to mail box
                 name = string.IsNullOrWhiteSpace(ownerName)
                     ? $"{name} {Translator.Instance.Translate("tile_name-mail_box")}" // Cabin Mail Box
                     : $"{cabin.owner.Name} {Translator.Instance.Translate("tile_name-mail_box")}"; // [Owner] Mail Box
@@ -394,7 +400,6 @@ public class DynamicTiles
 
             // Mail Box (with unread status)
             name = Translator.Instance.Translate("tile_name-mail_box");
-            category = CATEGORY.Interactables;
             var mailbox = Game1.player.mailbox;
             if (mailbox is not null && mailbox.Count > 0)
             {
@@ -909,6 +914,11 @@ public class DynamicTiles
         if (Game1.CurrentEvent is not null && Game1.CurrentEvent.isFestival && x == 0 && y == 54)
         {
             return ("tile-town_festival_exit-name", CATEGORY.Doors);
+        }
+
+        if (Utility.getDaysOfBooksellerThisSeason().Contains(Game1.dayOfMonth) && x is 109 or 110 && y is 26)
+        {
+            return ("tile-town-bookseller", CATEGORY.Interactables);
         }
 
         return (null, null);

@@ -1,0 +1,26 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/rtrox/LineSprinklersRedux
+**
+*************************************************/
+
+{
+  // Basic
+  "LineSprinkler.DisplayName": "Aspersor en Línea",
+  "LineSprinkler.Description": "Riega 4 casillas en línea recta hacia una dirección cada mañana.",
+  // Quality
+  "QualityLineSprinkler.DisplayName": "Aspersor en Línea de Calidad",
+  "QualityLineSprinkler.Description": "Riega 8 casillas en línea recta hacia una dirección cada mañana.",
+  // Iridium
+  "IridiumLineSprinkler.DisplayName": "Aspersor en Línea de Iridio",
+  "IridiumLineSprinkler.Description": "Riega 24 casillas en línea recta hacia una dirección cada mañana.",
+
+  // Config
+  "Controls": "Controles",
+  "RotateSprinklerKeybind": "Rotar Aspersor",
+  "RotateSprinklerKeybind.Tooltip": "Al presionar esta tecla mientras sostienes un aspersor o al pasar el cursor sobre un aspersor colocado, se rotará 90° a la derecha."
+}

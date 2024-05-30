@@ -34,6 +34,8 @@
 	"show_mini_festival_tip": "Whether or not to show mini festivals like Trout Derby on Agenda",
 	"ignore_condition": "Ignore festival condition",
 	"ignore_condition_tip": "If true, the festivals will always be displayed regardless of its condition",
+	"showDate": "Show Dates",
+	"showDate_tip": "Whether ot not to display dates on the cells. Note: if choose, there may overlap between the date and the title!",
 	"trigger" : "Trigger: ",
 	"warning": "WARNING: Your current trigger is incomplete. It will not function if you save it. Do you want to save it?",
 	"unsupported": "WARNING: Current trigger contains unsupported feature. It will not function if you save it. Do you want to save it?",

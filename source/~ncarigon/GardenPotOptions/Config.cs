@@ -18,6 +18,8 @@ namespace GardenPotOptions {
         public bool AllowAncientSeeds { get; set; } = false;
         public string SafeTool { get; set; } = "Pickaxe";
         public bool AllowTransplant { get; set; } = true;
+        public int TreeTransplantMax { get; set; } = 3;
+        public int FruitTreeTransplantMax { get; set; } = 2;
         public int HeartsForGardenPot { get; set; } = 4;
         public int HeartsForRecipe { get; set; } = 8;
 
@@ -70,6 +72,24 @@ namespace GardenPotOptions {
                         tooltip: () => ModEntry.Instance?.Helper.Translation.Get("NCarigon.GardenPotOptions/config_desc_AllowTransplant") ?? "null",
                         getValue: () => ModEntry.Instance!.ModConfig.AllowTransplant,
                         setValue: value => ModEntry.Instance!.ModConfig.AllowTransplant = value
+                    );
+                    configMenu.AddNumberOption(
+                        mod: ModEntry.Instance!.ModManifest,
+                        name: () => ModEntry.Instance?.Helper.Translation.Get("NCarigon.GardenPotOptions/config_name_TreeTransplantMax") ?? "null",
+                        tooltip: () => ModEntry.Instance?.Helper.Translation.Get("NCarigon.GardenPotOptions/config_desc_TreeTransplantMax") ?? "null",
+                        getValue: () => config.TreeTransplantMax,
+                        setValue: value => config.TreeTransplantMax = value,
+                        min: -1,
+                        max: 5
+                    );
+                    configMenu.AddNumberOption(
+                        mod: ModEntry.Instance!.ModManifest,
+                        name: () => ModEntry.Instance?.Helper.Translation.Get("NCarigon.GardenPotOptions/config_name_FruitTreeTransplantMax") ?? "null",
+                        tooltip: () => ModEntry.Instance?.Helper.Translation.Get("NCarigon.GardenPotOptions/config_desc_FruitTreeTransplantMax") ?? "null",
+                        getValue: () => config.FruitTreeTransplantMax,
+                        setValue: value => config.FruitTreeTransplantMax = value,
+                        min: -1,
+                        max: 5
                     );
                     configMenu.AddNumberOption(
                         mod: ModEntry.Instance!.ModManifest,

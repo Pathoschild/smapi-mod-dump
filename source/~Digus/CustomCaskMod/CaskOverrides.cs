@@ -28,7 +28,7 @@ namespace CustomCaskMod
         public static bool IsValidCaskLocation(ref Cask __instance, ref bool __result)
         {
             if ((IsVanillaCask(__instance) && DataLoader.ModConfig.EnableCasksAnywhere)
-                || (AgerController.GetAger(__instance.QualifiedItemId) is CustomAger ager && ager.EnableAgingAnywhere))
+                || (AgerController.GetAger(__instance.QualifiedItemId) is CustomAger ager && (ager.EnableAgingAnywhere || DataLoader.ModConfig.EnableCustomAgersAnywhere)))
             {
                 __result = true;
                 return false;

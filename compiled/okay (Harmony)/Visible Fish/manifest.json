@@ -1,11 +1,11 @@
 ﻿{
   "Name": "Visible Fish",
   "Author": "shekurika",
-  "Version": "0.4.1",
+  "Version": "0.4.2",
   "Description": "Shows fish in the water",
   "UniqueID": "shekurika.WaterFish",
   "EntryDll": "showFishInWater.dll",
-  "MinimumApiVersion": "4.0.0-alpha",
+  "MinimumApiVersion": "4.0.0",
   "UpdateKeys": [ "Nexus:8897" ],
   
 }

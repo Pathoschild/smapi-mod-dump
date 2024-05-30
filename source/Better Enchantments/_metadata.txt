@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/rusunu/Enchantment
+   Git: https://github.com/rusunu/Enchantment.git
+
+mods:
+   Better Enchantments
+
+latest commit:
+   commit 9eb8de6524158bb78e08fedcaccf3828ab9ae0fb
+   Author: rusunu <113993483+rusunu@users.noreply.github.com>
+   Date:   Sun Apr 28 17:41:20 2024 +0300
+   
+       README.md
+   

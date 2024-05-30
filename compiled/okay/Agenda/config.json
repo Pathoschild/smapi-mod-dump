@@ -8,8 +8,9 @@
   "Sync_With_Host": false,
   "always_Hide_HUD": false,
   "showBirthday": true,
-  "showFestival": false,
+  "showFestival": true,
   "showPassiveFestival": true,
   "showMiniFestival": true,
-  "ignoreFestivalCondition": false
+  "ignoreFestivalCondition": false,
+  "showDate": true
 }

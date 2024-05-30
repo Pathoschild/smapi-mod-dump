@@ -1,0 +1,4 @@
+{
+  "config.name.ShareConversionPercent": "经验转化率百分比(%)",
+  "config.tips.ShareConversionPercent": "范围: [0, 100]"
+}

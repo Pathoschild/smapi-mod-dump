@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/24018
+IDs: MercuryVN.HorseFluteAutoMount
+update keys: Nexus:24018, GitHub:MercuryVN/HorseFluteAutoMount

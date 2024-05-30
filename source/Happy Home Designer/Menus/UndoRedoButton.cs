@@ -15,7 +15,7 @@ using StardewValley.Menus;
 
 namespace HappyHomeDesigner.Menus
 {
-	public partial class UndoRedoButton : ClickableComponent
+	public partial class UndoRedoButton<T> : ClickableComponent
 	{
 		public const int WIDTH = 128;
 		public const int HEIGHT = 64;

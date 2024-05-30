@@ -2,6 +2,7 @@
   /*
 		The first entry before the : is the translation key, leave that one unchanged. Only change the translation in the "" behind it.
 		Every value that you don't translate (or that is missing when I update) will simply take the english translation I wrote.
+		The {{name}} will be replaced by an automatically detected name (so if you use mermaid mods and changed the name there, don't change it here) or 'FallbackOldMarinerName' if the detection failed.
   */
   "ConfigMarinerNameOverwrite": "Mariner Name Overwrite",
   "ConfigMarinerNameOverwriteDescription": "Change the mariner name in dialogue in case the automatic name detection fails (does not affect base game mariner dialogue). Leave empty for automatic detection.",
@@ -33,11 +34,11 @@
   "SpaPaintingOrNecklace": "Some rain drops told me they met you before evaporating outside a local spa. They want you to know that there is another curious thing there.",
   "IridiumKrobusReady": "You look like a master of fishing. With this much skill you seem ready to find something special in the river south of the sewers.",
   "IridiumKrobusNotReady": "You look like a master of fishing. But you need even more skill to find something special in the river south of the sewers.",
-  "IslandGourmandStatue": "I heard about stingrays in a hidden cove on a fareaway island having a beautiful sunken statue at their home.",
-  "VolcanoPainting": "I heard about lava eels at the top of a volcano on a fareaway island being quite the determined artists.",
-  "IslandFrogHat": "There is a legend among the local frogs of a glutton frog on a fareaway island. It is said that their domain also houses a small, slimy friend that wants to see the world.",
-  "IslandPainting": "On the northern part of a fareaway island, I've heard of a secret on the bed of a part of a river only reachable through a secret grove. This one might be a bit tricky to find.",
-  "IslandSquirrel": "On a fareaway island, I've heard of a secret on the bed of a part of a river only reachable by finding a way to walk across lava. This one might be a bit tricky to find.",
+  "IslandGourmandStatue": "I heard about stingrays in a hidden cove on a faraway island having a beautiful sunken statue at their home.",
+  "VolcanoPainting": "I heard about lava eels at the top of a volcano on a faraway island being quite the determined artists.",
+  "IslandFrogHat": "There is a legend among the local frogs of a glutton frog on a faraway island. It is said that their domain also houses a small, slimy friend that wants to see the world.",
+  "IslandPainting": "On the northern part of a faraway island, I've heard of a secret on the bed of a part of a river only reachable through a secret grove. This one might be a bit tricky to find.",
+  "IslandSquirrel": "On a faraway island, I've heard of a secret on the bed of a part of a river only reachable by finding a way to walk across lava. This one might be a bit tricky to find.",
   "GreenOcean_Sailor": "Green Ocean",
   "Secret_Sailor": "{{name}}: Do ye want to know a secret?",
   "NoSecret_Sailor": "{{name}}: I've got no secret fer ye today.",
@@ -59,9 +60,9 @@
   "SpaPaintingOrNecklace_Sailor": "Some rain drops told me they met ye before evaporatin' outside a local spa. They want ye to know that there is another curious thing there.",
   "IridiumKrobusReady_Sailor": "Ye look like a master of fishin'. With this much skill ye seem ready to find somethin' special in the river south o' the sewers.",
   "IridiumKrobusNotReady_Sailor": "Ye look like a master of fishin'. But ye need even more skill to find somethin' special in the river south o' the sewers.",
-  "IslandGourmandStatue_Sailor": "I heard about stingrays in a hidden cove on a fareaway island havin' a beautiful sunken statue at their home.",
-  "VolcanoPainting_Sailor": "I heard about lava eels at the top o' a volcano on a fareaway island bein' quite the determined artists.",
-  "IslandFrogHat_Sailor": "There be a legend among the local frogs of a glutton frog on a fareaway island. It be said that their domain also houses a small, slimy friend that wants to see the world.",
-  "IslandPainting_Sailor": "On the northern part of a fareaway island, I've heard of a secret on the bed of a part o' a river only reachable through a secret grove. This one might be a bit tricky to find.",
-  "IslandSquirrel_Sailor": "On a fareaway island, I've heard of a secret on the bed of a part o' a river only reachable by findin' a way to walk across lava. This one might be a bit tricky to find."
+  "IslandGourmandStatue_Sailor": "I heard about stingrays in a hidden cove on a faraway island havin' a beautiful sunken statue at their home.",
+  "VolcanoPainting_Sailor": "I heard about lava eels at the top o' a volcano on a faraway island bein' quite the determined artists.",
+  "IslandFrogHat_Sailor": "There be a legend among the local frogs of a glutton frog on a faraway island. It be said that their domain also houses a small, slimy friend that wants to see the world.",
+  "IslandPainting_Sailor": "On the northern part of a faraway island, I've heard of a secret on the bed of a part o' a river only reachable through a secret grove. This one might be a bit tricky to find.",
+  "IslandSquirrel_Sailor": "On a faraway island, I've heard of a secret on the bed of a part o' a river only reachable by findin' a way to walk across lava. This one might be a bit tricky to find."
 }

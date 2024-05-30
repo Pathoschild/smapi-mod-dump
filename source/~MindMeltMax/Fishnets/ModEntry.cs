@@ -11,10 +11,12 @@
 global using Object = StardewValley.Object;
 using Fishnets.Data;
 using Fishnets.Integrations;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.GameData.Objects;
 
@@ -47,7 +49,7 @@ namespace Fishnets
         internal static ObjectInformation ObjectInfo;
         internal static bool NoSound = false; //Avoid sound bomb on backwards compat load (MY EARS!)
 
-        private bool validateInventory = true;
+        private PerScreen<bool> validateInventory = new(() => true);
 
         public override void Entry(IModHelper helper)
         {
@@ -61,7 +63,7 @@ namespace Fishnets
             Helper.Events.GameLoop.GameLaunched += onGameLaunched;
             Helper.Events.GameLoop.DayStarted += onDayStarted;
             Helper.Events.Content.AssetRequested += onAssetRequested;
-            Helper.Events.GameLoop.ReturnedToTitle += (_, _) => validateInventory = true;
+            Helper.Events.GameLoop.ReturnedToTitle += (_, _) => validateInventory.Value = true;
         }
 
         public override object GetApi() => IApi ??= new Api();
@@ -70,15 +72,15 @@ namespace Fishnets
         {
             Patches.Patch(ModManifest.UniqueID);
             if (HasQualityBait)
-                IQualityBaitApi = Helper.ModRegistry.GetApi<IQualityBaitApi>("MindMeltMax.QualityBait");
+                IQualityBaitApi = Helper.ModRegistry.GetApi<IQualityBaitApi>("MindMeltMax.QualityBait")!;
             if (HasAlternativeTextures)
-                IAlternativeTexturesApi = Helper.ModRegistry.GetApi<IAlternativeTexturesApi>("PeacefulEnd.AlternativeTextures");
+                IAlternativeTexturesApi = Helper.ModRegistry.GetApi<IAlternativeTexturesApi>("PeacefulEnd.AlternativeTextures")!;
             if (HasJsonAssets)
-                IJsonAssetsApi = Helper.ModRegistry.GetApi<IJsonAssetsApi>("spacechase0.JsonAssets");
+                IJsonAssetsApi = Helper.ModRegistry.GetApi<IJsonAssetsApi>("spacechase0.JsonAssets")!;
             if (HasBetterCrafting)
-                IBetterCraftingApi = Helper.ModRegistry.GetApi<IBetterCraftingApi>("leclair.bettercrafting");
+                IBetterCraftingApi = Helper.ModRegistry.GetApi<IBetterCraftingApi>("leclair.bettercrafting")!;
             if (HasGMCM)
-                IGMCMApi = Helper.ModRegistry.GetApi<IGMCMApi>("spacechase0.GenericModConfigMenu");
+                IGMCMApi = Helper.ModRegistry.GetApi<IGMCMApi>("spacechase0.GenericModConfigMenu")!;
 
             IBetterCraftingApi?.AddRecipesToDefaultCategory(false, "fishing", ["Fish Net"]);
             if (IGMCMApi is not null)
@@ -90,7 +92,7 @@ namespace Fishnets
             if (Game1.player.FishingLevel >= 6 && !Game1.player.knowsRecipe("Fish Net"))
                 Game1.player.craftingRecipes.Add("Fish Net", 0);
 
-            if (validateInventory) //Check if the items id has changed, so the player doesn't end up with bugged objects
+            if (validateInventory.Value) //Check if the items id has changed, so the player doesn't end up with bugged objects
             {
                 var items = new List<Item>(Game1.player.Items.Where(x => x is not null));
                 foreach (var item in items)
@@ -100,15 +102,14 @@ namespace Fishnets
 
             if (!Context.IsMainPlayer)
             {
-                if (validateInventory)
-                    validateInventory = false;
+                validateInventory.Value = false;
                 return;
             }
 
             NoSound = true;
-            foreach (var l in Game1.locations) //Apply save load / day update fixes
+            foreach (var l in Game1.locations) //Apply save load / day update fixes \\Most of this is backwards compat
             {
-                if (validateInventory)
+                if (validateInventory.Value)
                 {
                     var objects = l.Objects.Keys;
                     foreach (var obj in objects)
@@ -116,14 +117,31 @@ namespace Fishnets
                         if (l.Objects[obj].Name == "Fish Net" && l.Objects[obj].ItemId != ObjectInfo.Id)
                         {
                             Object o = new(ObjectInfo.Id, 1, quality: l.Objects[obj].Quality);
-                            var modData = Statics.GetModDataAt(l, obj);
+
+                            Object? bait = null;
+                            if (Statics.TryParseModData(o, out var baitData))
+                                bait = ItemRegistry.Create<Object>(baitData.Key, quality: baitData.Value, allowNull: true);
+
+                            var owner = l.Objects[obj].owner.Value;
                             Statics.OnRemove(l, obj);
                             l.Objects.Remove(obj);
-                            o.placementAction(l, (int)obj.X, (int)obj.Y, Game1.getFarmerMaybeOffline(l.Objects[obj].owner.Value));
-                            Statics.SetModDataAt(l, obj, modData! with { BaitId = modData.BaitId, BaitQuality = modData.BaitQuality });
+                            o.placementAction(l, (int)obj.X, (int)obj.Y, Game1.getFarmerMaybeOffline(owner));
+                            if (bait is not null)
+                                Statics.SetModData(o, new(bait.ItemId, bait.Quality));
                             l.Objects[obj].DayUpdate();
                         }
                     }
+                }
+                
+                //Shouldn't need this since bait is taken before day updates and is therefore most likely not saved,
+                //but honestly, I've seen enough unexplainable reports for this mod
+                if (l.modData.ContainsKey(ModManifest.UniqueID)) 
+                {
+                    var oldData = JsonConvert.DeserializeObject<Dictionary<Vector2, ModData>>(l.modData[ModManifest.UniqueID]);
+                    foreach (var item in oldData)
+                        if (!string.IsNullOrWhiteSpace(item.Value.BaitId) && l.Objects.TryGetValue(item.Key, out var obj) && obj.ItemId == ObjectInfo.Id)
+                            Statics.SetModData(obj, new(item.Value.BaitId, item.Value.BaitQuality));
+                    l.modData.Remove(ModManifest.UniqueID);
                 }
 
                 //Backwards compatibility
@@ -136,16 +154,17 @@ namespace Fishnets
                 foreach (var f in deserialized)
                 {
                     Object o = ItemRegistry.Create<Object>(ObjectInfo.Id);
-                    o.heldObject.Value = Statics.GetObjectFromSerializable(f);
+                    o.heldObject.Value = Statics.GetObjectFromSerializable(f)!;
                     o.placementAction(l, (int)f.Tile.X * 64, (int)f.Tile.Y * 64, Game1.getFarmerMaybeOffline(f.Owner));
-                    Statics.SetModDataAt(l, f.Tile, Statics.GetModDataAt(l, f.Tile)! with { BaitId = f.Bait, BaitQuality = f.BaitQuality });
+                    Statics.SetModData(o, new(f.Bait, f.BaitQuality));
                     l.Objects[f.Tile].DayUpdate();
                 }
 
+                Statics.ClearOffsetMap();
                 l.modData.Remove(ModDataKey);
             }
             NoSound = false;
-            validateInventory = false;
+            validateInventory.Value = false;
         }
 
         private void onAssetRequested(object? sender, AssetRequestedEventArgs e)

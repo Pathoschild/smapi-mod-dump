@@ -14,6 +14,8 @@ using SkillPrestige.Logging;
 using SkillPrestige.Professions;
 using StardewModdingAPI.Events;
 using StardewValley;
+using StardewValley.Menus;
+
 // ReSharper disable PossibleLossOfFraction
 
 namespace SkillPrestige.Framework.Menus.Elements.Buttons
@@ -21,12 +23,9 @@ namespace SkillPrestige.Framework.Menus.Elements.Buttons
     /// <summary>Represents a profession button on the prestige menu. Used to allow the user to choose to permanently obtain a profession.</summary>
     internal class MinimalistProfessionButton : Button
     {
-        /*********
-        ** Fields
-        *********/
-        private bool IsDisabled => this.Selected || !this.IsObtainable || !this.CanBeAfforded;
+        public bool IsDisabled => this.Selected || !this.IsObtainable || !this.CanBeAfforded;
         private Color DrawColor => this.IsDisabled ? Color.Gray : Color.White;
-        private readonly Rectangle CheckmarkSourceRectangle = new Rectangle(0, 0, 64, 64);
+        private readonly Rectangle CheckmarkSourceRectangle = new (0, 0, 32, 32);
 
         private static int TextYOffset => 4 * Game1.pixelZoom;
         private Vector2 IconLocation;
@@ -49,10 +48,6 @@ namespace SkillPrestige.Framework.Menus.Elements.Buttons
 
         protected override string Text => string.Join("\n", this.Profession.DisplayName.Split(' '));
 
-
-        /*********
-        ** Accessors
-        *********/
         public static Texture2D ProfessionButtonTexture { get; set; }
 
         public Profession Profession { get; init; }
@@ -60,10 +55,6 @@ namespace SkillPrestige.Framework.Menus.Elements.Buttons
         public bool IsObtainable { private get; set; }
         public bool CanBeAfforded { private get; set; }
 
-
-        /*********
-        ** Public methods
-        *********/
         public MinimalistProfessionButton()
         {
             this.TitleTextFont = Game1.dialogueFont;
@@ -95,10 +86,6 @@ namespace SkillPrestige.Framework.Menus.Elements.Buttons
             }
         }
 
-
-        /*********
-        ** Protected methods
-        *********/
         private void DrawIcon(SpriteBatch spriteBatch)
         {
             var locationOfIconRelativeToButton = new Vector2(this.Bounds.Width / 2 - this.Profession.IconSourceRectangle.Width * Game1.pixelZoom / 2, TextYOffset);
@@ -117,14 +104,24 @@ namespace SkillPrestige.Framework.Menus.Elements.Buttons
             this.DrawTitleText(spriteBatch, locationOfTextRelativeToButton);
         }
 
+        private bool CheckmarkTextureMissingLogged;
+
         private void DrawCheckmark(SpriteBatch spriteBatch)
         {
             if (!this.Selected)
                 return;
+            if (ModEntry.CheckmarkTexture == null)
+            {
+                if (this.CheckmarkTextureMissingLogged) return;
+                Logger.LogWarning("ProfessionButton - Checkmark texture not loaded, skipping checkmark draw action.");
+                this.CheckmarkTextureMissingLogged = true;
+                return;
+            }
             var locationOfCheckmarkRelativeToButton = new Vector2(this.Bounds.Width - this.CheckmarkSourceRectangle.Width * Game1.pixelZoom / 8, 0);
             var buttonLocation = new Vector2(this.Bounds.X, this.Bounds.Y);
             var checkmarkLocation = buttonLocation + locationOfCheckmarkRelativeToButton;
-            spriteBatch.Draw(ModEntry.CheckmarkTexture, checkmarkLocation, this.CheckmarkSourceRectangle, Color.White, 0f, Vector2.Zero, Game1.pixelZoom / 4f, SpriteEffects.None, 1f);
+
+            spriteBatch.Draw(ModEntry.CheckmarkTexture, checkmarkLocation, this.CheckmarkSourceRectangle, Color.White, 0f, Vector2.Zero, Game1.pixelZoom / 2f, SpriteEffects.None, 1f);
         }
 
         /// <summary>Raised when the player begins hovering over the button.</summary>

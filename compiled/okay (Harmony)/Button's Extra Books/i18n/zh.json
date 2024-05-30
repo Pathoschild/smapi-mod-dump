@@ -13,6 +13,8 @@
   "Config.General.Enabled.Name": "启用",
   "Config.General.Enabled.Description": "如果禁用，本书及其能力将不可用。",
   
+  "Config.General.Price.Description": "这本书直接从商店购买而非通过其他方式获取的价格。仅限整数值。",
+  
   // BOOK SETTINGS //
   "Config.Books.Luck.Title": "初学者的运气",
   "Config.Books.LuckBonus.Name": "初学者运气额外奖励",
@@ -28,7 +30,7 @@
   "Config.Books.ArtisanMachinesBonus.Name": "工匠协会手册额外奖励",
   "Config.Books.ArtisanMachinesBonus.Description": "生产工匠物品的机器加工时间减少百分比。",
   
-  "Config.Books.GiantCrops.Name": "大甜瓜!",
+  "Config.Books.GiantCrops.Title": "大甜瓜!",
   "Config.Books.GiantCropsBonus.Name": "大甜瓜！额外奖励",
   "Config.Books.GiantCropsBonus.Description": "作物过夜形成巨大作物的几率百分比。",
 
@@ -39,6 +41,14 @@
   "Config.Books.QiNotebook.Title": "齐先生的笔记本",
   "Config.Books.QiNotebookBonus.Name": "齐钻概率",
   "Config.Books.QiNotebookBonus.Description": "调整齐钻的概率。",
+  
+  "Config.Books.PetGifts.Title": "强化爪爪",
+  
+  "Config.Books.CheatCodes.Title": "街机密码",
+  "Config.Books.CheatCodesRequirement.Name": "需要祝尼魔赛车死亡次数",
+  "Config.Books.CheatCodesRequirement.Description": "在本书可用之前，你必须在祝尼魔赛车中的死亡次数。",
+  "Config.Books.CheatCodesBonus.Name": "额外生命数",
+  "Config.Books.CheatCodesBonus.Description": "在祝尼魔赛车开始时的额外生命数。",
   
   // DEBUG SETTINGS //
   "Config.Debug.EnableDebugBook.Name": "开启排错之书",

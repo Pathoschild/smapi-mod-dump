@@ -1,0 +1,38 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/LeFauxMatt/StardewMods
+**
+*************************************************/
+
+{
+  "Changes": [
+    {
+      "LogName": "FauxCore Icon for TractorMod.SummonTractor",
+      "Action": "EditData",
+      "Target": "furyx639.FauxCore/Icons",
+      "Entries": {
+        "{{ModId}}/TractorMod.SummonTractor": {
+          "Area": { "X": 16, "Y": 32, "Width": 16, "Height": 16 },
+          "Path": "{{InternalAssetKey: assets/icons.png}}"
+        }
+      }
+    },
+    {
+      "LogName": "Toolbar Icon for TractorMod.SummonTractor",
+      "Action": "EditData",
+      "Target": "furyx639.ToolbarIcons/Data",
+      "Entries": {
+        "{{ModId}}/TractorMod.SummonTractor": {
+          "ModId": "Pathoschild.TractorMod",
+          "Type": "Method",
+          "ExtraData": "SummonTractor",
+          "HoverText": "{{i18n: button.TractorMod}}"
+        }
+      }
+    }
+  ]
+}

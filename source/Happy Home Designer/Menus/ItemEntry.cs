@@ -33,6 +33,7 @@ namespace HappyHomeDesigner.Menus
 			item.drawInMenu(b, new(x + 8, y + 8), 1f);
 		}
 
+		/// <inheritdoc/>
 		public string GetName()
 		{
 			return item.DisplayName;

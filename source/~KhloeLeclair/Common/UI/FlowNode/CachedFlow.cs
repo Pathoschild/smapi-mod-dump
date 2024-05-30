@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-#nullable enable
+#if COMMON_FLOW
 
 using Microsoft.Xna.Framework.Graphics;
 
@@ -39,3 +39,5 @@ public struct CachedFlow {
 		return Font == font && maxWidth == MaxWidth;
 	}
 }
+
+#endif

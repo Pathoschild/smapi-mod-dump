@@ -1,109 +1,115 @@
 {
-	"ModSettings" :
-{
-  "RandomizeWinter": true,
-  "TrellisEnabled": true,
-  "FlowersInFlowerMix": true,
-  "RandomizeGingerIsland": true,
-  "EnableYearRequirements": true
-},
+    "ModSettings" :
+    {         
+        "RandomizeWinter" : true,
+        "TrellisEnabled" : true,
+        "FlowersInFlowerMix" : true,
+        "RandomizeGingerIsland" : true,
+        "EnableYearRequirements" : true
+    },
+     
+    "SeedSets" : [
+        {
+            "name" : "Vanilla",
+            "enabled" : true,
+            "dropChance" : 50
+        },
+        {
+            "name" : "SVE",
+            "UniqueID": "FlashShifter.SVECode",
+            "enabled" : false,
+            "dropChance" : 50
+        },
+        {
+            "name" : "CornucopiaDefault",
+            "UniqueID": "Cornucopia.MoreCrops",
+            "enabled" : false,
+            "dropChance" : 50
+        },
+        {
+            "name" : "CornucopiaExtended",
+            "UniqueID": "Cornucopia.MoreCrops",
+            "enabled" : false,
+            "dropChance" : 50
+        },
+        {
+            "name" : "CornucopiaHerbs",
+            "UniqueID": "Cornucopia.MoreCrops",
+            "enabled" : false,
+            "dropChance" : 50
+        },
+        {
+            "name" : "CornucopiaFlowersDefault",
+            "UniqueID": "Cornucopia.MoreFlowers",
+            "enabled" : false,
+            "dropChance" : 50
+        },
+        {
+            "name" : "CornucopiaFlowersExtended",
+            "UniqueID": "Cornucopia.MoreFlowers",
+            "enabled" : false,
+            "dropChance" : 50
+        },
+        {
+            "name" : "Wildflour",
+            "UniqueID": "wildflour.ateliercrops",
+            "enabled" : false,
+            "dropChance" : 50
+        },
+        {
+            "name" : "Lumisteria",
+            "UniqueID": "Lumisteria.SereneMeadow",
+            "enabled" : false,
+            "dropChance" : 50
+        },
+        {
+            "name" : "EastScarp",
+            "UniqueID": "atravita.EastScarp",            
+            "enabled" : false,
+            "dropChance" : 10
+        },
+        {
+            "name" : "QuaintLiving",
+            "UniqueID": "PC.QLFlowerGarden",
+            "enabled" : false,
+            "dropChance" : 50
+        },
+        {
+            "name" : "QuaintLiving2",
+            "UniqueID": "PC.CP.QL.FlowerGarden2",
+            "enabled" : false,
+            "dropChance" : 50
+        },
+        {
+            "name" : "WalkToTheDesert",
+            "UniqueID": "Tarniyar.CP.WalkToDesert",
+            "enabled" : false,
+            "dropChance" : 50
+        },
+        {
+            "name" : "ForageOfFerngill",
+            "UniqueID": "StunkyMcDoo.WildFlowersofFerngill.CP",
+            "enabled" : false,
+            "dropChance" : 40
+        },
+        {
+            "name" : "BonstersBasicCrops",
+            "UniqueID": "BFV.CombinedCrops",
+            "enabled" : false,
+            "dropChance" : 50
+        },
+        {
+            "name" : "BonstersRareCrops",
+            "UniqueID": "BFV.CombinedCrops",
+            "enabled" : false,
+            "dropChance" : 50
+        },
+        {
+            "name" : "NeoSucculentFarm",
+            "UniqueID": "NoraCharles.NeosSucculentFarmRedux",
+            "enabled" : false,
+            "dropChance" : 50
+        }
 
-"SeedSets" :[
-  {
-    "name": "Vanilla",
-    "UniqueID": null,
-    "enabled": true,
-    "dropChance": 50.0
-  },
-  {
-    "name": "SVE",
-    "UniqueID": "FlashShifter.SVECode",
-    "enabled": false,
-    "dropChance": 10.0
-  },
-  {
-    "name": "CornucopiaDefault",
-    "UniqueID": "Cornucopia.MoreCrops",
-    "enabled": false,
-    "dropChance": 50.0
-  },
-  {
-    "name": "CornucopiaExtended",
-    "UniqueID": "Cornucopia.MoreCrops",
-    "enabled": false,
-    "dropChance": 50.0
-  },
-  {
-    "name": "CornucopiaHerbs",
-    "UniqueID": "Cornucopia.MoreCrops",
-    "enabled": false,
-    "dropChance": 50.0
-  },
-  {
-    "name": "CornucopiaFlowersDefault",
-    "UniqueID": "Cornucopia.MoreFlowers",
-    "enabled": false,
-    "dropChance": 50.0
-  },
-  {
-    "name": "CornucopiaFlowersExtended",
-    "UniqueID": "Cornucopia.MoreFlowers",
-    "enabled": false,
-    "dropChance": 50.0
-  },
-  {
-    "name": "Wildflour",
-    "UniqueID": "wildflour.ateliercrops",
-    "enabled": false,
-    "dropChance": 50.0
-  },
-  {
-    "name": "Lumisteria",
-    "UniqueID": "Lumisteria.SereneMeadow",
-    "enabled": false,
-    "dropChance": 50.0
-  },
-  {
-    "name": "EastScarp",
-    "UniqueID": "atravita.EastScarp",
-    "enabled": false,
-    "dropChance": 10.0
-  },
-  {
-    "name": "QuaintLiving",
-    "UniqueID": "PC.QLFlowerGarden",
-    "enabled": false,
-    "dropChance": 50.0
-  },
-  {
-    "name": "QuaintLiving2",
-    "UniqueID": "PC.CP.QL.FlowerGarden2",
-    "enabled": false,
-    "dropChance": 50.0
-  },
-  {
-    "name": "WalkToTheDesert",
-    "UniqueID": "Tarniyar.CP.WalkToDesert",
-    "enabled": false,
-    "dropChance": 5.0
-  },
-  {
-    "name": "ForageOfFerngill",
-    "UniqueID": "StunkyMcDoo.WildFlowersofFerngill.CP",
-    "enabled": false,
-    "dropChance": 50.0
-  },
-  {
-    "name": "BonstersBasicCrops",
-    "UniqueID": "BFV.CombinedCrops",
-    "enabled": false,
-    "dropChance": 50.0
-  },
-  {
-    "name": "BonstersRareCrops",
-    "UniqueID": "BFV.CombinedCrops",
-    "enabled": false,
-    "dropChance": 50.0
-  }
-]
+    ]      
 }

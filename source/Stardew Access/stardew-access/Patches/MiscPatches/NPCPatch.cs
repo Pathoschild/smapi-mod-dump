@@ -32,6 +32,7 @@ namespace stardew_access.Patches
 
         private static void DrawAboveAlwaysFrontLayerPatch(object __instance, string ___textAboveHead, int ___textAboveHeadTimer)
         {
+            if (!MainClass.Config.AutoReadCharacterBubbles) return;
             try
             {
                 if (__instance is not NPC && __instance is not Junimo) return;

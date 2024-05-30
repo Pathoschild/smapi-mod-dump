@@ -1,7 +1,7 @@
 {
   "Name": "SprinklerActivation",
   "Author": "Blaxsmith",
-  "Version": "1.1.0",
+  "Version": "1.1.1",
   "Description": "Allows to manually activate sprinklers.",
   "UniqueID": "Blaxsmith.SprinklerActivation",
   "EntryDll": "SprinklerActivation.dll",

@@ -35,7 +35,7 @@
     "crop-harvest.name": "作物: 収穫可能",
     "crop-harvest.ready": "収穫可能",
     "crop-harvest.not-ready": "収穫不可能",
-    "crop-harvest.not-enough-time-or-dead": "Not Enough Time (or Dead)", // TODO
+    "crop-harvest.not-enough-time-or-dead": "成長日数不足、枯れている",
 
     // crops: watered
     "crop-water.name": "作物: 水やり",
@@ -52,7 +52,7 @@
     "crop-fertilizer.fertilizer": "肥料",
     "crop-fertilizer.retaining-soil": "保水土",
     "crop-fertilizer.speed-gro": "グングンノビール",
-    "crop-fertilizer.multiple": "Multiple Fertilizer Types", // TODO
+    "crop-fertilizer.multiple": "複数の肥料",
 
     // machine processing
     "machines.name": "加工設備",

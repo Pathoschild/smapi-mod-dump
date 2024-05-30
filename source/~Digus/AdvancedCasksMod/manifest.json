@@ -11,10 +11,10 @@
 {
     "Name": "AdvancedCasksMod",
     "Author": "Digus",
-    "Version": "1.0.2",
+    "Version": "2.0.0",
     "Description": "Fake manifest. Delete if found.",
     "UniqueID": "Digus.AdvancedCasksMod",
-    "MinimumApiVersion": "3.18",
+    "MinimumApiVersion": "4.0.0",
     "UpdateKeys": [ "Nexus:8413" ],
     "EntryDll": "AdvancedCasksMod.dll"
 }

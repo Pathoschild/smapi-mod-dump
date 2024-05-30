@@ -7,9 +7,9 @@ mods:
    Telephone Purchasing
 
 latest commit:
-   commit f6c60d673560687adc67aee47febe7a0547b6477
-   Author: Cade Duncan <cadeduncan72@gmail.com>
-   Date:   Sat Nov 27 18:43:42 2021 -0800
+   commit fcd4e98dbf9d73dce0588987b1a8d2e279980102
+   Author: Stingrayss <cadeduncan72@gmail.com>
+   Date:   Fri May 24 20:08:16 2024 -0700
    
-       Added GenericModConfig Support
+       Version 3.0.2
    

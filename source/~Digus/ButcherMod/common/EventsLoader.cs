@@ -38,6 +38,7 @@ namespace AnimalHusbandryMod.common
             {
                 args.Edit(asset =>
                 {
+                    if (!DataLoader.ModConfig.DisableAnimalContest) return;
                     var data = asset.AsDictionary<string, string>().Data;
                     foreach (CustomEvent customEvent in CustomEvents)
                     {

@@ -51,6 +51,7 @@ The table below summarizes each feature EMP provides for other mods.
 Feature | Summary
 --------|--------
 Bed Placement | Allow players to place moveable (furniture) beds at a location. Also includes an option to prevent money loss and NPC "rescue" letters if players run out of stamina at a location.
+Content Patcher Tokens | Adds new tokens to Content Patcher, such as a [Game State Query](https://stardewvalleywiki.com/Modding:Game_state_queries) token.
 Custom Order Boards | Create new Special Orders boards that only display orders from a custom category. (See the [Data/SpecialOrders](https://stardewvalleywiki.com/Modding:Special_orders) asset.)
 Destroyable Bushes | Mark bushes as destroyable at specific locations and/or tiles, allowing players to remove them with any upgraded axe.
 Fish Locations | Give locations multiple "zones" with different fish, including fish from other locations. (See the [Data/Locations](https://stardewvalleywiki.com/Modding:Location_data) asset.)
@@ -69,5 +70,6 @@ See the Stardew Valley Wiki's [Modding:Translations](https://stardewvalleywiki.c
 Language | File | Contributor(s)
 ---------|------|------------
 English | [default.json](https://github.com/Esca-MMC/EscasModdingPlugins/blob/master/EscasModdingPlugins/i18n/default.json) | [Esca-MMC](https://github.com/Esca-MMC)
+French | [fr.json](https://github.com/Esca-MMC/EscasModdingPlugins/blob/master/EscasModdingPlugins/i18n/fr.json) | [Caranud](https://www.nexusmods.com/users/745980)
 Italian | [it.json](https://github.com/Esca-MMC/EscasModdingPlugins/blob/master/EscasModdingPlugins/i18n/it.json) | [Orkamaial](https://www.nexusmods.com/users/181358142)
 Spanish | [es.json](https://github.com/Esca-MMC/EscasModdingPlugins/blob/master/EscasModdingPlugins/i18n/es.json) | [nitropicc](https://www.nexusmods.com/users/118950518)

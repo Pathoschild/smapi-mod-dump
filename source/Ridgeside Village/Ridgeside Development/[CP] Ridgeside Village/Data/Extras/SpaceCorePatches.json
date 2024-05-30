@@ -1,0 +1,27 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Rafseazz/Ridgeside-Village-Mod
+**
+*************************************************/
+
+{
+    "Changes": [
+        {
+            "Action": "EditData",
+            "Target": "spacechase0.SpaceCore/ObjectExtensionData",
+            "Entries": {
+                "Rafseazz.RSVCP_Warp_Totem__Ridgeside": {
+                    "TotemWarp": {
+                        "Location": "Custom_Ridgeside_Ridge",
+                        "Position": "18, 10",
+                        "Color": { "R": 188, "G": 36, "B": 37, "A": 255 }
+                    }
+                }
+            }
+        },
+    ]
+}

@@ -11,8 +11,7 @@
 namespace StardewMods.BetterChests.Framework.Models.Containers;
 
 using Microsoft.Xna.Framework;
-using StardewMods.Common.Services.Integrations.BetterChests.Enums;
-using StardewMods.Common.Services.Integrations.BetterChests.Interfaces;
+using StardewMods.Common.Services.Integrations.BetterChests;
 using StardewValley.Buildings;
 using StardewValley.Inventories;
 using StardewValley.Menus;
@@ -26,22 +25,20 @@ internal sealed class BuildingContainer : BaseContainer<Building>
     private readonly Chest? chest;
 
     /// <summary>Initializes a new instance of the <see cref="BuildingContainer" /> class.</summary>
-    /// <param name="baseOptions">The type of storage object.</param>
     /// <param name="building">The building to which the storage is connected.</param>
     /// <param name="chest">The chest storage of the container.</param>
-    public BuildingContainer(IStorageOptions baseOptions, Building building, Chest chest)
-        : base(baseOptions)
+    public BuildingContainer(Building building, Chest chest)
+        : base(building)
     {
-        this.Source = new WeakReference<Building>(building);
         this.chest = chest;
+        this.InitOptions();
     }
 
     /// <summary>Initializes a new instance of the <see cref="BuildingContainer" /> class.</summary>
-    /// <param name="baseOptions">The type of storage object.</param>
-    /// <param name="shippingBin">The building to which the storage is connected.</param>
-    public BuildingContainer(IStorageOptions baseOptions, ShippingBin shippingBin)
-        : base(baseOptions) =>
-        this.Source = new WeakReference<Building>(shippingBin);
+    /// <param name="building">The building to which the storage is connected.</param>
+    public BuildingContainer(Building building)
+        : base(building) =>
+        this.InitOptions();
 
     /// <summary>Gets the source building of the container.</summary>
     public Building Building =>
@@ -53,16 +50,13 @@ internal sealed class BuildingContainer : BaseContainer<Building>
     public override int Capacity => this.chest?.GetActualCapacity() ?? int.MaxValue;
 
     /// <inheritdoc />
+    public override bool IsAlive => this.Source.TryGetTarget(out _);
+
+    /// <inheritdoc />
     public override IInventory Items => this.chest?.GetItemsForPlayer() ?? Game1.getFarm().getShippingBin(Game1.player);
 
     /// <inheritdoc />
     public override GameLocation Location => this.Building.GetParentLocation();
-
-    /// <inheritdoc />
-    public override Vector2 TileLocation =>
-        new(
-            this.Building.tileX.Value + (this.Building.tilesWide.Value / 2f),
-            this.Building.tileY.Value + (this.Building.tilesHigh.Value / 2f));
 
     /// <inheritdoc />
     public override ModDataDictionary ModData => this.Building.modData;
@@ -71,124 +65,104 @@ internal sealed class BuildingContainer : BaseContainer<Building>
     public override NetMutex? Mutex => this.chest?.GetMutex();
 
     /// <inheritdoc />
-    public override bool IsAlive => this.Source.TryGetTarget(out _);
+    public override Vector2 TileLocation =>
+        new(
+            this.Building.tileX.Value + (this.Building.tilesWide.Value / 2f),
+            this.Building.tileY.Value + (this.Building.tilesHigh.Value / 2f));
 
     /// <inheritdoc />
-    public override WeakReference<Building> Source { get; }
+    public override void GrabItemFromChest(Item? item, Farmer who)
+    {
+        if (item is null || !who.couldInventoryAcceptThisItem(item))
+        {
+            return;
+        }
+
+        if (this.Building is ShippingBin && item == Game1.getFarm().lastItemShipped)
+        {
+            Game1.getFarm().lastItemShipped = this.Items.LastOrDefault();
+        }
+
+        this.Items.RemoveEmptySlots();
+        this.ShowMenu();
+    }
+
+    /// <inheritdoc />
+    public override void GrabItemFromInventory(Item? item, Farmer who)
+    {
+        if (this.Building is not ShippingBin)
+        {
+            base.GrabItemFromInventory(item, who);
+            return;
+        }
+
+        Game1.playSound("Ship");
+        base.GrabItemFromInventory(item, who);
+    }
+
+    /// <inheritdoc />
+    public override bool HighlightItems(Item? item) =>
+        this.Building is ShippingBin ? Utility.highlightShippableObjects(item) : base.HighlightItems(item);
 
     /// <inheritdoc />
     public override void ShowMenu(bool playSound = false)
     {
-        switch (this.Building)
+        var itemGrabMenu = this.Building switch
         {
-            case ShippingBin shippingBin:
-                if (playSound)
-                {
-                    Game1.player.currentLocation.localSound("shwip");
-                }
+            // Vanilla Shipping Bin
+            ShippingBin when this.ResizeChest is ChestMenuOption.Disabled => this.GetItemGrabMenu(
+                reverseGrab: true,
+                showReceivingMenu: false,
+                snapToBottom: true,
+                playRightClickSound: false,
+                showOrganizeButton: false,
+                source: ItemGrabMenu.source_none),
 
-                ItemGrabMenu itemGrabMenu;
+            // Shipping Bin with Chest Menu
+            ShippingBin => this.GetItemGrabMenu(source: ItemGrabMenu.source_none, context: Game1.getFarm()),
 
-                if (this.Options.ResizeChest is ChestMenuOption.Default or ChestMenuOption.Disabled)
-                {
-                    itemGrabMenu = new ItemGrabMenu(
-                        null,
-                        true,
-                        false,
-                        Utility.highlightShippableObjects,
-                        this.GrabItemFromInventory,
-                        null,
-                        null,
-                        true,
-                        true,
-                        false,
-                        true,
-                        false,
-                        0,
-                        null,
-                        -1,
-                        shippingBin);
+            // Junimo Hut
+            JunimoHut => this.GetItemGrabMenu(whichSpecialButton: ItemGrabMenu.specialButton_junimotoggle),
+            _ => null,
+        };
 
-                    itemGrabMenu.initializeUpperRightCloseButton();
-                    itemGrabMenu.setBackgroundTransparency(b: false);
-                    itemGrabMenu.setDestroyItemOnClick(b: true);
-                    itemGrabMenu.initializeShippingBin();
-                }
-                else
-                {
-                    itemGrabMenu = new ItemGrabMenu(
-                        this.Items,
-                        false,
-                        true,
-                        Utility.highlightShippableObjects,
-                        this.GrabItemFromInventory,
-                        null,
-                        this.GrabItemFromChest,
-                        false,
-                        true,
-                        true,
-                        true,
-                        true,
-                        0,
-                        null,
-                        -1,
-                        shippingBin);
-                }
-
-                Game1.activeClickableMenu = itemGrabMenu;
-
-                break;
-
-            case JunimoHut when this.chest is not null:
-                Game1.activeClickableMenu = new ItemGrabMenu(
-                    this.Items,
-                    false,
-                    true,
-                    InventoryMenu.highlightAllItems,
-                    this.GrabItemFromInventory,
-                    null,
-                    this.GrabItemFromChest,
-                    false,
-                    true,
-                    true,
-                    true,
-                    true,
-                    1,
-                    null,
-                    1,
-                    this.Building);
-
-                break;
-
-            default:
-                if (this.chest is not null)
-                {
-                    if (playSound)
-                    {
-                        Game1.player.currentLocation.localSound("openChest");
-                    }
-
-                    Game1.activeClickableMenu = new ItemGrabMenu(
-                        this.Items,
-                        false,
-                        true,
-                        InventoryMenu.highlightAllItems,
-                        this.GrabItemFromInventory,
-                        null,
-                        this.GrabItemFromChest,
-                        false,
-                        true,
-                        true,
-                        true,
-                        true,
-                        1,
-                        null,
-                        -1,
-                        this.Building);
-                }
-
-                break;
+        if (itemGrabMenu is null)
+        {
+            base.ShowMenu(playSound);
+            return;
         }
+
+        var oldID = Game1.activeClickableMenu?.currentlySnappedComponent?.myID ?? -1;
+        if (this.Building is not ShippingBin)
+        {
+            Game1.activeClickableMenu = itemGrabMenu;
+            if (oldID == -1)
+            {
+                return;
+            }
+
+            Game1.activeClickableMenu.currentlySnappedComponent = Game1.activeClickableMenu.getComponentWithID(oldID);
+            Game1.activeClickableMenu.snapCursorToCurrentSnappedComponent();
+            return;
+        }
+
+        if (this.ResizeChest is ChestMenuOption.Disabled)
+        {
+            itemGrabMenu.initializeUpperRightCloseButton();
+            itemGrabMenu.setBackgroundTransparency(b: false);
+            itemGrabMenu.setDestroyItemOnClick(b: true);
+            itemGrabMenu.initializeShippingBin();
+        }
+
+        itemGrabMenu.inventory.moveItemSound = "Ship";
+        Game1.activeClickableMenu = itemGrabMenu;
+        if (oldID == -1)
+        {
+            return;
+        }
+
+        Game1.activeClickableMenu.currentlySnappedComponent = Game1.activeClickableMenu.getComponentWithID(oldID);
+        Game1.activeClickableMenu.snapCursorToCurrentSnappedComponent();
     }
 
     /// <inheritdoc />
@@ -238,19 +212,13 @@ internal sealed class BuildingContainer : BaseContainer<Building>
     }
 
     /// <inheritdoc />
-    public override void GrabItemFromChest(Item item, Farmer who)
+    protected override void InitOptions()
     {
-        if (item is null || !who.couldInventoryAcceptThisItem(item))
-        {
-            return;
-        }
+        base.InitOptions();
 
-        if (this.Building is ShippingBin && item == Game1.getFarm().lastItemShipped)
+        if (this.Building is ShippingBin && string.IsNullOrWhiteSpace(this.StorageIcon))
         {
-            Game1.getFarm().lastItemShipped = this.Items.LastOrDefault();
+            this.StorageIcon = "StardewValley.Vanilla/ShippingBin";
         }
-
-        this.Items.RemoveEmptySlots();
-        this.ShowMenu();
     }
 }

@@ -42,3 +42,5 @@ Full translation support is included for both parts of the mod. New translations
 Currently available in:
 - English, by me
 - Chinese, thanks to useplay on Nexus!
+- German, thanks to kingmomo2 on Nexus!
+- Russian, thanks to Ztxxi on Nexus! Available [here](https://www.nexusmods.com/stardewvalley/mods/23625)

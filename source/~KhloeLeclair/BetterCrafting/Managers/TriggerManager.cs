@@ -19,7 +19,6 @@ using Microsoft.Xna.Framework;
 
 using StardewValley;
 using StardewValley.Delegates;
-using StardewValley.GameData.Locations;
 using StardewValley.Objects;
 using StardewValley.Triggers;
 
@@ -34,7 +33,7 @@ public enum BenchMode {
 	Buildings = 8
 }
 
-public class TriggerManager: BaseManager {
+public class TriggerManager : BaseManager {
 
 	public TriggerManager(ModEntry mod) : base(mod) {
 
@@ -50,7 +49,7 @@ public class TriggerManager: BaseManager {
 		if (where.Objects.Values.Any(obj => obj is Workbench))
 			return true;
 
-		foreach(var building in where.buildings) {
+		foreach (var building in where.buildings) {
 			if (building.GetIndoors() is GameLocation interior && FindBenchRecursive(interior))
 				return true;
 		}
@@ -75,17 +74,17 @@ public class TriggerManager: BaseManager {
 
 		// First Argument: bool (for cooking/not cooking) or station name
 		// See if we can get a bool. If not, try getting a station.
-		if (args.Length > 1 && !ArgUtility.TryGetBool(args, 1, out isCooking, out error)) {
+		if (args.Length > 1 && !ArgUtility.TryGetBool(args, 1, out isCooking, out _)) {
 			// Was not a valid boolean. Must be a station then.
 			station = args[1];
 		}
 
 		// Second argument: bool (for include buildings yes/no) or flags
 		if (args.Length > 2) {
-			if (ArgUtility.TryGetBool(args, 2, out bool isBuilding, out error)) {
+			if (ArgUtility.TryGetBool(args, 2, out bool isBuilding, out _)) {
 				if (isBuilding)
 					mode |= BenchMode.Buildings;
-			} else if (!ArgUtility.TryGetEnum<BenchMode>(args, 2, out mode, out error)) {
+			} else if (!ArgUtility.TryGetEnum<BenchMode>(args, 2, out mode, out _)) {
 				error = "Second argument must be: true, false or comma separated list of: Area, Map, World, or Buildings";
 				return null;
 			}
@@ -93,7 +92,7 @@ public class TriggerManager: BaseManager {
 
 		// Third argument: possibly area if area flag. Possibly station name.
 		if (mode.HasFlag(BenchMode.Area)) {
-			if (ArgUtility.TryGetInt(args, 3, out int r, out error))
+			if (ArgUtility.TryGetInt(args, 3, out int r, out _))
 				range = r;
 			else {
 				error = "Must include range argument after Area";
@@ -150,7 +149,7 @@ public class TriggerManager: BaseManager {
 	public bool Map_OpenMenu(GameLocation location, string[] args, Farmer who, Point pos) {
 
 		var result = ParseArguments(who, args, out string? error);
-		if (!result.HasValue) { 
+		if (!result.HasValue) {
 			Log($"Error parsing arguments to open Better Crafting menu: {error}", StardewModdingAPI.LogLevel.Error);
 			return false;
 		}

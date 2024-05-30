@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/seichen/Stardew-Stop-Flower-Harvests
+   Git: https://github.com/seichen/Stardew-Stop-Flower-Harvests.git
+
+mods:
+   Stop Flower Harvests
+
+latest commit:
+   commit e52d922a703ba52d82d7d1b11625afea5646f59d
+   Author: Sabrina Eichenberger <54446558+seichen@users.noreply.github.com>
+   Date:   Mon May 27 17:21:53 2024 -0500
+   
+       Create README.md
+   

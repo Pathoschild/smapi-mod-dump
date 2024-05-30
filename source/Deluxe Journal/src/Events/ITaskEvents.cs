@@ -9,23 +9,38 @@
 *************************************************/
 
 using StardewModdingAPI.Events;
+using StardewValley;
+using StardewValley.Menus;
 
 namespace DeluxeJournal.Events
 {
     /// <summary>Events provided to every ITask.</summary>
     public interface ITaskEvents
     {
-        /// <summary>
-        /// An Item was collected for the first time, i.e. Item.HasBeenInInventory is false.
-        /// Note: Does not fire for Furniture or big craftables.
-        /// </summary>
+        /// <summary>An <see cref="Item"/> was collected for the first time, i.e. Item.HasBeenInInventory is false.</summary>
         event EventHandler<ItemReceivedEventArgs> ItemCollected;
 
-        /// <summary>An Item has been crafted from the crafting menu.</summary>
+        /// <summary>An <see cref="Item"/> has been crafted from the crafting menu.</summary>
         event EventHandler<ItemReceivedEventArgs> ItemCrafted;
 
-        /// <summary>An Item has been given to an NPC.</summary>
+        /// <summary>An <see cref="Item"/> has been given to an NPC.</summary>
         event EventHandler<GiftEventArgs> ItemGifted;
+
+        /// <summary>A <see cref="ISalable"/> has been purchased.</summary>
+        event EventHandler<SalableEventArgs> SalablePurchased;
+
+        /// <summary>An <see cref="ISalable"/> has been sold.</summary>
+        event EventHandler<SalableEventArgs> SalableSold;
+
+        /// <summary>A <see cref="FarmAnimal"> has been purchased.</summary>
+        event EventHandler<FarmAnimalEventArgs> FarmAnimalPurchased;
+
+        /// <summary>A <see cref="FarmAnimal"> has been sold.</summary>
+        event EventHandler<FarmAnimalEventArgs> FarmAnimalSold;
+
+        /// <summary>A Building has been constructed. Fires for both new and upgraded buildings.</summary>
+        /// <remarks>Upgrades are currently only detected via a <see cref="CarpenterMenu"/> (i.e. Robin or the Wizard).</remarks>
+        event EventHandler<BuildingConstructedEventArgs> BuildingConstructed;
 
         /// <summary>SMAPI mod events bus.</summary>
         IModEvents ModEvents { get; }

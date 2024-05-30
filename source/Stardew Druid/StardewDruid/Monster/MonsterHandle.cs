@@ -12,48 +12,76 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewDruid.Cast;
 using StardewDruid.Data;
-using StardewDruid.Monster.Boss;
-using StardewDruid.Monster.Template;
 using StardewValley;
 using StardewValley.Monsters;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using static StardewDruid.Monster.MonsterHandle;
 
 namespace StardewDruid.Monster
 {
+
+    public class SpawnHandle
+    {
+
+        public MonsterHandle.bosses boss;
+
+        public Monster.Boss.temperment temperment;
+
+        public Monster.Boss.difficulty difficulty;
+
+        public SpawnHandle(MonsterHandle.bosses Boss, Monster.Boss.temperment Temperment, Monster.Boss.difficulty Difficulty)
+        {
+            boss = Boss;
+            temperment = Temperment;
+            difficulty = Difficulty;
+
+        }
+
+        public SpawnHandle(MonsterHandle.bosses Boss, int Temperment = 4, int Difficulty = 0)
+        {
+            boss = Boss;
+            temperment = (Monster.Boss.temperment)Temperment;
+            difficulty = (Monster.Boss.difficulty)Difficulty;
+
+        }
+
+    }
+
     public class MonsterHandle
     {
 
-        //private Rite riteData;
-
-        public List<StardewValley.Monsters.Monster> monsterSpawns;
+        public List<StardewValley.Monsters.Monster> monsterSpawns = new();
 
         public int monstersLeft;
 
-        public List<int> spawnIndex;
+        public enum bosses
+        {
 
-        public int spawnFrequency;
+            batwing,
+            blobfiend,
+            darkbrute,
+            darkshooter,
+            demonki,
+            dino,
+            dragon,
+            gargoyle,
+            goblin,
+            reaper,
+            rogue,
+            scavenger,
+            shadowfox,
 
-        public int spawnAmplitude;
+        }
+
+        public Dictionary<int,List<SpawnHandle>> spawnSchedule = new();
 
         public int spawnCounter;
-
-        public bool spawnChampion;
-
-        public int championCounter;
-
-        public int championInterval;
-
-        public int championAmount;
-
-        public int championLimit;
 
         public Vector2 spawnWithin;
 
         public Vector2 spawnRange;
-
-        //public List<MonsterSpawn> spawnHandles;
 
         public int spawnTotal;
 
@@ -70,25 +98,11 @@ namespace StardewDruid.Monster
 
             BaseTarget(target);
 
-            spawnFrequency = 1;
-
-            spawnAmplitude = 1;
-
-            monsterSpawns = new();
-
-            //spawnHandles = new();
-
-            spawnIndex = new() { 99, };
-
             spawnLocation = location;
-
-            randomIndex = new();
 
             spawnCombat = Mod.instance.CombatDifficulty();
 
             spawnWater = false;
-
-            //riteData = rite;
 
         }
 
@@ -128,12 +142,10 @@ namespace StardewDruid.Monster
 
             SpawnCheck();
 
-            //ModUtility.LogMonsters(monsterSpawns);
-
             for (int i = monsterSpawns.Count - 1; i >= 0; i--)
             {
 
-                ModUtility.AnimateQuickWarp(spawnLocation, monsterSpawns[i].Position, true);
+                Mod.instance.iconData.AnimateQuickWarp(spawnLocation, monsterSpawns[i].Position, true);
 
                 monsterSpawns[i].Health = 0;
 
@@ -143,30 +155,12 @@ namespace StardewDruid.Monster
 
             }
 
-            //spawnHandles = new();
-
             return;
 
         }
 
         public void SpawnCheck()
         {
-
-            //monstersLeft = monsterSpawns.Count;
-
-            /*for (int i = spawnHandles.Count - 1; i >= 0; --i)
-            {
-
-                if (spawnHandles[i].spawnComplete)
-                {
-
-                    monsterSpawns.Add(spawnHandles[i].targetMonster);
-
-                    spawnHandles.RemoveAt(i);
-
-                }
-
-            }*/
 
             for (int i = monsterSpawns.Count - 1; i >= 0; i--)
             {
@@ -175,8 +169,6 @@ namespace StardewDruid.Monster
                 {
                     
                     monsterSpawns.RemoveAt(i);
-
-                    //monstersLeft--;
 
                 }
 
@@ -189,59 +181,39 @@ namespace StardewDruid.Monster
         public int SpawnInterval()
         {
             
-            spawnCounter--;
+            spawnCounter++;
 
-            if (spawnCounter > 0)
+            int spawnAmount = 0;
+
+            Vector2 spawnVector;
+
+            if (!spawnSchedule.ContainsKey(spawnCounter))
             {
 
                 return 0;
 
             }
 
-            spawnCounter = spawnFrequency;
-
-            if (championInterval != 0)
+            for (int i = 0; i < spawnSchedule[spawnCounter].Count; i++)
             {
 
-                if (championAmount == championLimit)
+                for(int j = 0; j < 4; j++)
                 {
 
-                    championInterval = 0;
+                    spawnVector = SpawnVector();
 
-                }
+                    if (spawnVector.X > 0)
+                    {
 
-                championCounter++;
+                        SpawnGround(spawnVector, spawnSchedule[spawnCounter][i]);
 
-                if(championCounter == championInterval)
-                {
+                        spawnAmount++;
 
-                    spawnChampion = true;
+                        spawnTotal++;
 
-                    championAmount++;
+                        break;
 
-                    championCounter = 0;
-
-                }
-
-            }
-
-            int spawnAmount = 0;
-
-            Vector2 spawnVector;
-
-            for (int i = 0; i < spawnAmplitude; i++)
-            {
-
-                spawnVector = SpawnVector();
-
-                if (spawnVector.X >= 0)
-                {
-
-                    SpawnGround(spawnVector);
-
-                    spawnAmount++;
-
-                    spawnTotal++;
+                    }
 
                 }
 
@@ -281,9 +253,9 @@ namespace StardewDruid.Monster
             while (spawnAttempt++ < spawnLimit)
             {
 
-                int offsetX = randomIndex.Next(spawnX);
+                int offsetX = Mod.instance.randomIndex.Next(spawnX);
 
-                int offsetY = randomIndex.Next(spawnY);
+                int offsetY = Mod.instance.randomIndex.Next(spawnY);
 
                 Vector2 offsetVector = new(offsetX, offsetY);
 
@@ -320,14 +292,10 @@ namespace StardewDruid.Monster
 
         }
 
-        public StardewValley.Monsters.Monster SpawnGround(Vector2 spawnVector)
+        public StardewValley.Monsters.Monster SpawnGround(Vector2 spawnVector, SpawnHandle spawnProfile)
         {
 
-            int spawnMob = spawnIndex[randomIndex.Next(spawnIndex.Count)];
-
-            StardewValley.Monsters.Monster theMonster = CreateMonster(spawnMob, spawnVector, spawnCombat, spawnChampion);
-
-            if (spawnChampion) { spawnChampion = false; }
+            StardewValley.Monsters.Monster theMonster = CreateMonster(spawnProfile.boss, spawnVector, spawnCombat, spawnProfile.difficulty, spawnProfile.temperment);
 
             monsterSpawns.Add(theMonster);
 
@@ -339,7 +307,7 @@ namespace StardewDruid.Monster
 
             spawnTotal++;
 
-            ModUtility.AnimateQuickWarp(spawnLocation, spawnVector * 64 - new Vector2(0, 32));
+            Mod.instance.iconData.AnimateQuickWarp(spawnLocation, spawnVector * 64 - new Vector2(0, 32));
 
             return theMonster;
 
@@ -358,11 +326,17 @@ namespace StardewDruid.Monster
 
             spawnTotal++;
 
-            ModUtility.AnimateQuickWarp(spawnLocation, theMonster.Position - new Vector2(0, 32));
+            Mod.instance.iconData.AnimateQuickWarp(spawnLocation, theMonster.Position - new Vector2(0, 32));
 
         }
 
-        public static StardewValley.Monsters.Monster CreateMonster(int spawnMob, Vector2 spawnVector, int combatModifier = -1, bool champion = false)
+        public static StardewDruid.Monster.Boss CreateMonster(
+            bosses spawnMob, 
+            Vector2 spawnVector, 
+            int combatModifier = -1, 
+            Boss.difficulty difficulty = Boss.difficulty.basic, 
+            Boss.temperment temperment = Boss.temperment.cautious
+        )
         {
 
             if (combatModifier == -1)
@@ -374,209 +348,119 @@ namespace StardewDruid.Monster
 
             System.Random randomise = new();
 
-            StardewValley.Monsters.Monster theMonster;
+            StardewDruid.Monster.Boss theMonster;
 
             switch (spawnMob)
             {
 
                 default:
-                case 0: // Bat
+                case bosses.batwing:
 
-                    if (champion)
-                    {
+                    theMonster = new Batwing(spawnVector, combatModifier);
 
-                        theMonster = new BigBat(spawnVector, combatModifier);
+                    break;
+
+                case bosses.blobfiend:
+
+                    theMonster = new Blobfiend(spawnVector, combatModifier);
+
+                    break;
+
+                case bosses.darkbrute:
+
+                    theMonster = new DarkBrute(spawnVector, combatModifier);
+
+                    break;
+
+                case bosses.darkshooter:
+
+                    theMonster = new DarkShooter(spawnVector, combatModifier);
+
+                    break;
+
+                    /*case bosses.gargoyle:
+
+                        theMonster = new Gargoyle(spawnVector, combatModifier);
 
                         break;
 
-                    }
+                    case bosses.demonki:
 
-                    theMonster = new StardewDruid.Monster.Template.Bat(spawnVector, combatModifier);
-
-                    break;
-
-                case 1: // Shadow Brute
-
-                    if (champion)
-                    {
-
-                        theMonster = new StardewDruid.Monster.Template.Shooter(spawnVector, combatModifier);
+                        theMonster = new Demonki(spawnVector, combatModifier);
 
                         break;
 
-                    }
+                    case bosses.dino:
 
-                    theMonster = new Shadow(spawnVector, combatModifier);
-
-                    break;
-
-                case 2: // Green Slime
-
-                    if (champion)
-                    {
-
-                        if (randomise.Next(2) == 0)
-                        {
-
-
-                            theMonster = new BlobSlime(spawnVector, combatModifier);
-
-                        }
-                        else
-                        {
-
-                            theMonster = new StardewDruid.Monster.Template.BigSlime(spawnVector, combatModifier);
-
-                        }
+                        theMonster = new Dino(spawnVector, combatModifier);
 
                         break;
 
-                    }
-
-                    theMonster = new Slime(spawnVector, combatModifier);
-
-                    break;
-
-                case 3: // Skeleton
-
-                    theMonster = new StardewDruid.Monster.Template.Skeleton(spawnVector, combatModifier);
-
-                    break;
-
-                case 4: // Golem
-
-                    theMonster = new Golem(spawnVector, combatModifier);
-
-                    break;
-
-                case 5: // DustSpirit
-
-                    theMonster = new Spirit(spawnVector, combatModifier);
-
-                    break;
-
-                case 6: // Gargoyle
-
-                    theMonster = new Gargoyle(spawnVector, combatModifier);
-
-                    if (!champion)
-                    {
-
-                        (theMonster as Gargoyle).SetMode(0);
-
-                    }
-
-                    (theMonster as StardewDruid.Monster.Boss.Boss).RandomTemperment();
-
-                    /*string scheme = randomise.Next(2) == 0 ? "Solar" : "Void";
-
-                    (theMonster as Gargoyle).netScheme.Set(scheme);
-
-                    (theMonster as Gargoyle).SchemeLoad();*/
-
-                    break;
-
-                case 7: // Demonki
-
-                    theMonster = new Demonki(spawnVector, combatModifier);
-
-                    if (!champion)
-                    {
-
-                        (theMonster as Demonki).SetMode(0);
-
-                    }
-
-                    (theMonster as StardewDruid.Monster.Boss.Boss).RandomTemperment();
-
-                    break;
-
-                case 8:
-
-                    theMonster = new Dino(spawnVector, combatModifier);
-
-                    (theMonster as Dino).SetMode(0);
-
-                    if (champion)
-                    {
-
-                        (theMonster as Dino).SetMode(2);
-
-                    }
-
-                    (theMonster as StardewDruid.Monster.Boss.Boss).RandomTemperment();
-
-                    break;
-
-                case 9:
-
-                    if (randomise.Next(2) == 0)
-                    {
+                    case bosses.scavenger:
 
                         theMonster = new Scavenger(spawnVector, combatModifier);
 
-                    }
-                    else
-                    {
+                        break;
+
+                    case bosses.shadowfox:
 
                         theMonster = new Shadowfox(spawnVector, combatModifier);
 
-                    }
+                        break;
 
-                    (theMonster as StardewDruid.Monster.Boss.Boss).SetMode(1);
-
-                    (theMonster as StardewDruid.Monster.Boss.Boss).RandomTemperment();
-
-                    break;
-
-                case 10:
-
-                    if (randomise.Next(2) == 0)
-                    {
+                    case bosses.rogue:
 
                         theMonster = new Rogue(spawnVector, combatModifier);
 
-                    }
-                    else
-                    {
+                        break;
+
+                    case bosses.goblin:
 
                         theMonster = new Goblin(spawnVector, combatModifier);
 
-                    }
+                        break;
 
-                    (theMonster as StardewDruid.Monster.Boss.Boss).SetMode(1);
+                    case bosses.dragon:
 
-                    (theMonster as StardewDruid.Monster.Boss.Boss).RandomTemperment();
+                        string dragon = "Purple";
+
+                        switch (randomise.Next(4))
+                        {
+
+                            case 1:
+
+                                dragon = "Red"; break;
+
+                            case 2:
+
+                                dragon = "Blue"; break;
+
+                            case 3:
+
+                                dragon = "Black"; break;
+
+                        }
+
+                        theMonster = new Dragon(spawnVector, combatModifier, dragon + "Dragon");
+
+                        break;*/
+
+            }
+
+            theMonster.SetMode((int)difficulty);
+
+            switch (temperment)
+            {
+
+                case Monster.Boss.temperment.random:
+
+                    theMonster.RandomTemperment();
 
                     break;
 
-                case 11:
+                default:
 
-                    string dragon = "Purple";
-
-                    switch (randomise.Next(4))
-                    {
-
-                        case 1:
-
-                            dragon = "Red"; break;
-
-                        case 2:
-
-                            dragon = "Blue"; break;
-
-                        case 3:
-
-                            dragon = "Black"; break;
-
-                    }
-
-
-                    theMonster = new Dragon(spawnVector, combatModifier, dragon + "Dragon");
-
-                    (theMonster as Dragon).SetMode(1);
-
-                    (theMonster as StardewDruid.Monster.Boss.Boss).RandomTemperment();
+                    theMonster.tempermentActive = temperment;
 
                     break;
 
@@ -589,25 +473,15 @@ namespace StardewDruid.Monster
         public static bool BossMonster(StardewValley.Monsters.Monster monster)
         {
 
-            if (monster is StardewDruid.Monster.Boss.Boss)
+            if (monster is Monster.Boss boss)
             {
 
-                return true;
+                if(boss.netMode.Value >= 2)
+                {
 
-            }
+                    return true;
 
-            List<System.Type> customMonsters = new()
-            {
-                typeof(BigBat),
-                typeof(StardewDruid.Monster.Template.Shooter),
-                typeof(StardewDruid.Monster.Template.BigSlime),
-
-            };
-
-            if (customMonsters.Contains(monster.GetType()))
-            {
-
-                return true;
+                }
 
             }
 
@@ -617,13 +491,6 @@ namespace StardewDruid.Monster
 
         public static Texture2D MonsterTexture(string characterName)
         {
-
-            if (characterName == "Dinosaur")
-            {
-
-                return Game1.content.Load<Texture2D>("Characters\\Monsters\\Pepper Rex");
-
-            }
 
             Texture2D characterTexture = Mod.instance.Helper.ModContent.Load<Texture2D>(Path.Combine("Images", characterName + ".png"));
 

@@ -20,6 +20,9 @@ namespace DeluxeJournal.Menus.Components
     /// <summary>A text editor style TextBox.</summary>
     public class MultilineTextBox : TextBox
     {
+        private const double HeldDelay = 200.0;
+        private const double RepeatDelay = 40.0;
+
         public readonly ScrollComponent scrollComponent;
 
         private Rectangle _bounds;
@@ -27,18 +30,22 @@ namespace DeluxeJournal.Menus.Components
         private Dictionary<char, SpriteFont.Glyph> _glyphs;
         private Point _caretPosition;
         private int _index;
+        private bool _updateCaret;
 
         private KeyboardState _oldKeyboardState;
         private Keys _arrowKey;
-        private double _heldDelay;
         private double _heldTimer;
-        private double _repeatDelay;
         private double _repeatTimer;
 
         public Rectangle Bounds => _bounds;
 
-        /// <summary>Replaces the Text property (sort of a hack because Text is not marked virtual).</summary>
-        /// <remarks>IMPORTANT: Do NOT use the TextBox.Text property. It will not behave correctly.</remarks>
+        /// <summary>
+        /// Replaces the <see cref="TextBox.Text"/> property (sort of a hack because <see cref="TextBox.Text"/>
+        /// is not marked virtual).
+        /// </summary>
+        /// <remarks>
+        /// IMPORTANT: Do NOT use the <see cref="TextBox.Text"/> property. It will not behave correctly.
+        /// </remarks>
         public string MultilineText
         {
             get
@@ -63,7 +70,7 @@ namespace DeluxeJournal.Menus.Components
             }
         }
 
-        /// <summary>Accesses the raw text including formatting characters. Use with caution.</summary>
+        /// <summary>Accesses the raw text including formatting characters.</summary>
         public string RawText
         {
             get
@@ -80,18 +87,15 @@ namespace DeluxeJournal.Menus.Components
             }
         }
 
-        public MultilineTextBox(Rectangle bounds, Texture2D? textBoxTexture, Texture2D? caretTexture, SpriteFont font, Color textColor) :
-            base(textBoxTexture, caretTexture, font, textColor)
+        public MultilineTextBox(Rectangle bounds, Texture2D? textBoxTexture, Texture2D? caretTexture, SpriteFont font, Color textColor)
+            : base(textBoxTexture, caretTexture, font, textColor)
         {
             _bounds = bounds;
             _text = new StringBuilder();
             _glyphs = _font.GetGlyphs();
             _caretPosition = new Point(0);
             _index = 0;
-
-            _heldDelay = 200.0;
             _heldTimer = 0.0;
-            _repeatDelay = 40.0;
             _repeatTimer = 0.0;
 
             Rectangle scrollBarBounds = default;
@@ -266,6 +270,7 @@ namespace DeluxeJournal.Menus.Components
             }
 
             _caretPosition.X = (int)lineWidth;
+            _updateCaret = false;
         }
 
         public virtual void Update(GameTime time)
@@ -274,6 +279,11 @@ namespace DeluxeJournal.Menus.Components
 
             UpdateArrowKeyInput(keyboardState, time);
             _oldKeyboardState = keyboardState;
+
+            if (_updateCaret)
+            {
+                MoveCaretToIndex();
+            }
         }
 
         private void UpdateArrowKeyInput(KeyboardState keyboardState, GameTime time)
@@ -305,7 +315,7 @@ namespace DeluxeJournal.Menus.Components
             if (_arrowKey == Keys.None || _oldKeyboardState.IsKeyUp(key))
             {
                 _arrowKey = key;
-                _heldTimer = _heldDelay;
+                _heldTimer = HeldDelay;
                 _repeatTimer = 0;
             }
 
@@ -316,7 +326,7 @@ namespace DeluxeJournal.Menus.Components
             else if (_repeatTimer <= 0)
             {
                 ArrowKeyInput(key);
-                _repeatTimer = _repeatDelay;
+                _repeatTimer = RepeatDelay;
             }
             else if (_heldTimer > 0)
             {
@@ -349,7 +359,6 @@ namespace DeluxeJournal.Menus.Components
 
             if (caretVisible && Selected)
             {
-                MoveCaretToIndex();
                 b.Draw(Game1.staminaRect, new Rectangle(_bounds.X + _caretPosition.X, _bounds.Y + caretY, 4, caretHeight), _textColor);
             }
 
@@ -427,12 +436,14 @@ namespace DeluxeJournal.Menus.Components
                     {
                         _index--;
                     }
+                    MoveCaretToIndex();
                     break;
                 case Keys.Right:
                     if (_index < _text.Length && _text[_index++] == '\r' && _index < _text.Length)
                     {
                         _index++;
                     }
+                    MoveCaretToIndex();
                     break;
             }
         }
@@ -443,6 +454,7 @@ namespace DeluxeJournal.Menus.Components
             float lineWidth = 0;
             int linesAdded = 0;
             int contentHeight = _font.LineSpacing;
+            _updateCaret = true;
 
             for (int i = 0; i < _text.Length; ++i)
             {

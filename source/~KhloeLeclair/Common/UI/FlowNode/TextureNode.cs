@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-#nullable enable
+#if COMMON_FLOW
 
 using System;
 using System.Collections.Generic;
@@ -73,7 +73,7 @@ public struct TextureNode : IFlowNode {
 	[MemberNotNullWhen(false, nameof(Texture))]
 	[MemberNotNullWhen(false, nameof(Source))]
 	public bool IsEmpty() {
-		return Texture is null || ! Source.HasValue || Source.Value.Width <= 0 || Source.Value.Height <= 0 || Scale <= 0;
+		return Texture is null || !Source.HasValue || Source.Value.Width <= 0 || Source.Value.Height <= 0 || Scale <= 0;
 	}
 
 	public IFlowNodeSlice? Slice(IFlowNodeSlice? last, SpriteFont font, float maxWidth, float remaining, IFlowNodeSlice? nextSlice) {
@@ -137,3 +137,5 @@ public struct TextureNode : IFlowNode {
 		return !(left == right);
 	}
 }
+
+#endif

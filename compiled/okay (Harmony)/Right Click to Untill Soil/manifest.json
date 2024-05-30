@@ -1,0 +1,10 @@
+{
+    "Name": "Right Click Untill Soil",
+    "Author": "Kumagabear",
+    "Version": "1.0.4",
+    "Description": "Right click to untill soil with hoe",
+    "UniqueID": "Kumagabear.RightClickUntillSoil",
+    "EntryDll": "RightClickUntillSoil.dll",
+    "MinimumApiVersion": "3.0.0",
+    "UpdateKeys": [ "Nexus:19563" ]
+}

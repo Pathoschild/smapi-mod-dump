@@ -1,6 +1,7 @@
 {
+  "MachinesSale": true,
   "UseOres": true,
   "BetterSeedMaker": false,
-  "ProgressMode": false,
+  "ProgressMode": true,
   "StaticSeedMaker": true
 }

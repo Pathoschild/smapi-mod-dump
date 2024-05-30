@@ -10,7 +10,46 @@ for queries and analysis.**
 
 # Release notes
 ## Upcoming release
-* Added config options for the new collapsible fields.
+* Fixed search UI not listing dried items, pickled forage, smoked fish, and specific bait.
+
+## 1.44.0
+Released 27 May 2024 for SMAPI 4.0.0 or later.
+
+* Split 'progression mode' into multiple options.
+* Added human-readable text for keg recipe conditions.
+* The list value separator (like the `, ` in `A, B, C`) is now translatable for non-English players.
+* Fixed fish area display names in data not shown in Lookup Anything.
+* Fixed some Custom Bush lookups showing game tokens like `LocalizedText`.
+* Improved translations. Thanks to mitekano23 (updated Japanese!).
+
+## 1.43.2
+Released 23 May 2024 for SMAPI 4.0.0 or later.
+
+* Added readable text in recipes for 'preserve sheet index' context tags.
+* Fixed location display names not used when possible.
+* Fixed item lookups showing unrelated custom recipes in some cases (thanks to zombifier!).
+* Improved translations. Thanks to DARKS0UND (updated Korean)!
+
+## 1.43.1
+Released 22 May 2024 for SMAPI 4.0.0 or later.
+
+* Fixed machine lookup error when Producer Framework Mod overrides some machines.
+
+## 1.43.0
+Released 22 May 2024 for SMAPI 4.0.0 or later.
+
+* Added support for machine recipes in `Data/Buildings` and `Data/Machines`, including custom recipes from other mods (thanks to collaboration with zombifier!).
+* Added support for machine changes from the Extra Machine Config mod (thanks to zombifier!).
+* Added quality star icons in recipe lists where relevant.
+* Added config options for the new collapsible fields, and raised maximum number of items shown before they collapse by default.
+* Added hint message when some machine rules are too dynamic to display.
+* Re-added support for Producer Framework Mod machines (thanks to zombifier!).
+* The 'progression mode' option now hides recipes you haven't learned yet (thanks to b3nk3lly!).
+* Fixed repeating warning when looking up caged monsters at Spirit's Eve.
+* Fixed keg and preserve jar lookups showing incorrect recipe items like "Error Item Jelly" (thanks to b3nk3lly!).
+* Fixed roe lookups showing incorrect caviar recipe (thanks to b3nk3lly!).
+* Fixed roe lookups showing recipes like 'Aged Aged Roe Roe'.
+* Improved translations. Thanks to burunduk (updated Ukrainian), Caranud (updated French), MakinDay (updated Italian), mitekano23 (updated Japanese), nimbXnumb (updated Russian), ShanderB (updated Portuguese), and weizinai & ykinsoul (updated Chinese)!
 
 ## 1.42.0
 Released 21 April 2024 for SMAPI 4.0.0 or later.

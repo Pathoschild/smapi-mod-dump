@@ -1,0 +1,22 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/emurphy42/PredictiveMods
+**
+*************************************************/
+
+{
+  "Name": "[CP] Public Access TV",
+  "Author": "John Peters (you know, the farmer?)",
+  "Version": "3.0.11",
+  "Description": "Villager-hosted TV channels about mining, shopping, foraging and more.",
+  "UniqueID": "JohnPeters.PublicAccessTVCP",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:22486" ],
+  "ContentPackFor": {
+    "UniqueID": "Pathoschild.ContentPatcher",
+   }
+}

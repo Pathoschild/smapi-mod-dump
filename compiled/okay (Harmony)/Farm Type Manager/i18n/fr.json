@@ -1,0 +1,12 @@
+{
+  "Config.EnableConsoleCommands.Name": "Commandes dans la console ?",
+  "Config.EnableConsoleCommands.Desc": "Active les commandes de FTM dans la console.\nCeci n'aura pas d'effet tant que Stardew Valley n'aura pas été redémarré.",
+  "Config.EnableContentPacks.Name": "Packs de contenu ?",
+  "Config.EnableContentPacks.Desc": "Active tous les packs de contenu FTM.\nSi cette option est désactivée, seuls les fichiers dans FarmTypeManager/data seront utilisés.",
+  "Config.EnableTraceLogMessages.Name": "Messages dans les logs ?",
+  "Config.EnableTraceLogMessages.Desc": "Active les messages [TRACE] de FTM dans les logs de SMAPI.\nSi cette option est désactivée, les logs seront plus petites, mais elles fourniront moins d'informations sur FTM.",
+  "Config.EnableEPUDebugMessages.Name": "Messages de débogage EPU ?",
+  "Config.EnableEPUDebugMessages.Desc": "Active les messages de débogage de Expanded Preconditions Utility (EPU).\nCeci peut être utile lors de la création de mods avec des préconditions.",
+  "Config.MonsterLimitPerLocation.Name": "Limite de monstres",
+  "Config.MonsterLimitPerLocation.Desc": "Le nombre maximum de monstres que FTM autorisera sur un seul emplacement simultanément.\nUtiliser un nombre plus bas peut améliorer le taux de rafraîchissement du jeu. 50 est une suggestion courante.\nTapez NULL pour autoriser un nombre illimité de monstres."
+}

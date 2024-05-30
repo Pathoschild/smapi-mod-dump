@@ -1,0 +1,10 @@
+{
+	"Name": "AutomaticStroking",
+	"Author": "yangZ",
+	"Version": "1.0.1",
+	"Description": "Automatic pet animals in luxury barn, must be luxury barn! Rely on my other module: 'SuperiorLuxuryAnimalRoom'",
+	"UniqueID": "yangZ.AutomaticStroking",
+	"EntryDll": "AutomaticStroking.dll",
+	"MinimumApiVersion": "4.0.8",
+	"UpdateKeys": []
+}

@@ -8,10 +8,11 @@
 **
 *************************************************/
 
+using EnaiumToolKit.Framework.Extensions;
 using EnaiumToolKit.Framework.Screen.Components;
-using EnaiumToolKit.Framework.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using StardewValley;
 using StardewValley.Menus;
 
@@ -20,12 +21,31 @@ namespace EnaiumToolKit.Framework.Screen;
 public class GuiScreen : IClickableMenu
 {
     private readonly List<Component> _components = new();
+    protected IClickableMenu? PreviousMenu;
 
     protected GuiScreen()
     {
         _components.Clear();
         Initialization();
-        ModEntry.GetInstance().Helper.Events.Display.WindowResized += (_, _) => { Initialization(); };
+    }
+
+    public override void gameWindowSizeChanged(Rectangle oldBounds, Rectangle newBounds)
+    {
+        Initialization();
+        base.gameWindowSizeChanged(oldBounds, newBounds);
+    }
+
+    private bool _isFirstUpdate;
+
+    public override void update(GameTime time)
+    {
+        if (!_isFirstUpdate)
+        {
+            _isFirstUpdate = true;
+            Initialization();
+        }
+
+        base.update(time);
     }
 
     private void Initialization()
@@ -43,31 +63,59 @@ public class GuiScreen : IClickableMenu
         foreach (var component in _components.Where(component => component.Visibled))
         {
             component.Render(b);
-            if (component.Hovered && !component.Description.Equals(""))
-            {
-                var descriptionWidth = FontUtils.GetWidth(component.Description) + 50;
-                var descriptionHeight = FontUtils.GetHeight(component.Description) + 50;
+        }
 
-                drawTextureBox(b, Game1.mouseCursors, new Rectangle(384, 396, 15, 15), 0, 0, descriptionWidth,
-                    descriptionHeight, Color.Wheat, 4f, false);
-                FontUtils.DrawHvCentered(b, component.Description, 0, 0, descriptionWidth, descriptionHeight);
+        foreach (var component in _components.Where(component => component.Visibled))
+        {
+            if (component is { Hovered: true, Description: not null } && !component.Description.Equals(""))
+            {
+                DrawTooltip(b, component.Description);
             }
         }
 
         const string text = "EnaiumToolKit By Enaium";
-        FontUtils.Draw(b, text, 0, Game1.viewport.Height - FontUtils.GetHeight(text));
+        b.DrawString(text, 0, Game1.graphics.GraphicsDevice.Viewport.Height - b.GetStringHeight(text));
 
         drawMouse(b);
         base.draw(b);
     }
 
+    protected void DrawTooltip(SpriteBatch b, string text)
+    {
+        var descriptionWidth = b.GetStringWidth(text) + 50;
+        var descriptionHeight = b.GetStringHeight(text) + 50;
+
+        var mouseX = Game1.getMouseX() + 40;
+        var mouseY = Game1.getMouseY() + 40;
+        var description = text!;
+        description = Game1.parseText(description, Game1.dialogueFont, width);
+        descriptionWidth = description.Split('\n').Max(s => b.GetStringWidth(s) + 50);
+        descriptionHeight += description.Count(c => c == '\n') * b.GetStringHeight(text);
+        var offScreen = mouseX + descriptionWidth > Game1.graphics.GraphicsDevice.Viewport.Width &&
+                        Game1.getMouseX() - descriptionWidth > 0;
+        if (offScreen)
+        {
+            mouseX = Game1.getMouseX() - descriptionWidth;
+        }
+
+        b.DrawWindowTexture(mouseX, mouseY, descriptionWidth, descriptionHeight);
+        b.DrawStringCenter(description, mouseX, mouseY, descriptionWidth,
+            descriptionHeight);
+    }
+
     public override void receiveLeftClick(int x, int y, bool playSound = true)
     {
         foreach (var component in _components.Where(component =>
-                     component is { Visibled: true, Enabled: true, Hovered: true }))
+                     component is { Visibled: true, Enabled: true }))
         {
-            component.MouseLeftClicked(x, y);
-            Game1.playSound("drumkit6");
+            if (component is { Hovered: true })
+            {
+                component.MouseLeftClicked(x, y);
+            }
+            else
+            {
+                component.LostFocus(x, y);
+            }
         }
 
         base.receiveLeftClick(x, y, playSound);
@@ -76,9 +124,16 @@ public class GuiScreen : IClickableMenu
     public override void releaseLeftClick(int x, int y)
     {
         foreach (var component in _components.Where(component =>
-                     component is { Visibled: true, Enabled: true, Hovered: true }))
+                     component is { Visibled: true, Enabled: true }))
         {
-            component.MouseLeftReleased(x, y);
+            if (component is { Hovered: true })
+            {
+                component.MouseLeftReleased(x, y);
+            }
+            else
+            {
+                component.LostFocus(x, y);
+            }
         }
 
         base.releaseLeftClick(x, y);
@@ -87,9 +142,16 @@ public class GuiScreen : IClickableMenu
     public override void receiveRightClick(int x, int y, bool playSound = true)
     {
         foreach (var component in _components.Where(component =>
-                     component is { Visibled: true, Enabled: true, Hovered: true }))
+                     component is { Visibled: true, Enabled: true }))
         {
-            component.MouseRightClicked(x, y);
+            if (component is { Hovered: true })
+            {
+                component.MouseRightClicked(x, y);
+            }
+            else
+            {
+                component.LostFocus(x, y);
+            }
         }
 
         base.receiveRightClick(x, y, playSound);
@@ -104,6 +166,16 @@ public class GuiScreen : IClickableMenu
         }
 
         base.receiveScrollWheelAction(direction);
+    }
+
+    public override void receiveKeyPress(Keys key)
+    {
+        if (Game1.options.menuButton[0].key == key)
+        {
+            return;
+        }
+
+        base.receiveKeyPress(key);
     }
 
     protected void AddComponent(Component component)
@@ -131,6 +203,11 @@ public class GuiScreen : IClickableMenu
 
     protected void OpenScreenGui(IClickableMenu clickableMenu)
     {
+        if (clickableMenu is GuiScreen { PreviousMenu: null } guiScreen)
+        {
+            guiScreen.PreviousMenu = this;
+        }
+
         if (Game1.activeClickableMenu is TitleMenu)
         {
             TitleMenu.subMenu = clickableMenu;

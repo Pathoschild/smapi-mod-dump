@@ -1,0 +1,10 @@
+{
+  "Open": "J",
+  "CarriageFee": 1.3,
+  "CarriageFee_NoJoja": 1.5,
+  "CarriageFee_Member": 1.1,
+  "OpenByPhone": true,
+  "OpenByKey": false,
+  "OpenByPad": true,
+  "CloseWhenCCComplete": true
+}

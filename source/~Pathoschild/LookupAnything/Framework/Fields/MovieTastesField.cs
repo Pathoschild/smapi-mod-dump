@@ -40,7 +40,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Fields
                 return null;
 
             string[] names = giftTastes[showTaste].OrderBy(p => p).ToArray();
-            return string.Join(", ", names);
+            return I18n.List(names);
         }
     }
 }

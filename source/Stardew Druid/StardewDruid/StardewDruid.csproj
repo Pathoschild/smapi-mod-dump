@@ -10,7 +10,37 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="customData.json">
+    <None Update="Images\Batwing.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Images\Blobfiend.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Images\DarkBrute.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Images\DarkShooter.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Images\Echo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Images\FirearmBazooka.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Images\Relics.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Images\Weapon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Images\WeaponSwipe.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Images\WeaponSword.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Sheets\Druid.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Images\BlackBeam.png">
@@ -103,13 +133,10 @@
     <None Update="Images\EffigyDash.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Images\EffigyIcon.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="Images\Fates.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Images\FirstFarmer.png">
+    <None Update="Images\Cuchulan.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Images\Flashbang.png">
@@ -154,7 +181,10 @@
     <None Update="Images\Impact.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Images\LadyBeyond.png">
+    <None Update="Images\Impacts.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Images\Morrigan.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Images\Laser.png">
@@ -244,9 +274,6 @@
     <None Update="Images\Mists.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Images\Nightsky.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="Images\Earth.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -301,6 +328,9 @@
     <None Update="Images\ShadowtinPortrait.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Images\Skies.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Images\Solar.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -349,6 +379,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Cast\Fates\" />
     <Folder Include="Sounds\" />
   </ItemGroup>
 

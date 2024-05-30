@@ -1,4 +1,9 @@
 {
+  "AllowShaders": true,
+  "DisabledShaders": [],
+  "ReplaceTVMenu": true,
   "ShowDebugTiming": false,
-  "ShowWeatherTooltip": true
+  "RecompileShaders": false,
+  "ShowWeatherTooltip": true,
+  "UseCustomGingerIsleArt": true
 }

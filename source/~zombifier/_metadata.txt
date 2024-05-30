@@ -9,9 +9,9 @@ mods:
    Toggle Items Framework
 
 latest commit:
-   commit 5c092c712274f96bdffe4a0c1d69dedc47eed70b
+   commit 5647c030260404dde03059b46cd46a4de51b25af
    Author: zombifier <zombify.25@gmail.com>
-   Date:   Thu Apr 25 18:47:37 2024 -0400
+   Date:   Mon May 27 15:20:07 2024 -0400
    
-       oops
+       tiny clarification
    

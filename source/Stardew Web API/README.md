@@ -12,6 +12,14 @@ A mod for Stardew Valley that provides access to some game basic information, ac
 
 It's my first game mod, so be gentle.
 
+## Game Data
+
+### Game Data Info
+
+- `/api/v1/data/achievements`: Get a list of all loaded achievements
+- `/api/v1/data/locations`: Get a list of all loaded locations
+- `/api/v1/data/locations/{name}`: Get info about a location by name
+
 ## Items
 
 ### Item Info
@@ -41,19 +49,20 @@ It's my first game mod, so be gentle.
 
 ### Player Info
 
-- `/api/v1/player`: Information about the current player
+- `/api/v1/players/main`: Information about the current player
+- `/api/v1/players/main/inventory`: Information about the current player's inventory
 
 ### Player Actions
 
-- `/api/v1/player/actions/refillEnergy`: Fully refills the player's energy/stamina
-- `/api/v1/player/actions/passOut`: Fully drains the player's energy/stamina, causing them to pass out
-- `/api/v1/player/actions/fullyHeal`: Fully refills the player's health
-- `/api/v1/player/actions/knockOut`: Fully drains the player's health, causing them to be knocked out/die
-- `/api/v1/player/actions/giveMoney/{amount}`: Gives money to/takes money away from the player
-- `/api/v1/player/actions/giveItem/name/{itemName}`: Attempts to add the specified item to the player's inventory, using the item's display name
-- `/api/v1/player/actions/giveItem/id/{itemId}`: Same as above, but using the item's fully qualified ID (e.g. `(F)1365`) instead
-- `/api/v1/player/actions/warp/{location}`: Warps the player to the specified location
-- `/api/v1/player/actions/petFarmAnimal/{name}`: Pets the named farm animal (i.e. chickens, cows, etc., but not pets like dogs, cats, or turtles)
+- `/api/v1/players/main/actions/refillEnergy`: Fully refills the player's energy/stamina
+- `/api/v1/players/main/actions/passOut`: Fully drains the player's energy/stamina, causing them to pass out
+- `/api/v1/players/main/actions/fullyHeal`: Fully refills the player's health
+- `/api/v1/players/main/actions/knockOut`: Fully drains the player's health, causing them to be knocked out/die
+- `/api/v1/players/main/actions/giveMoney/{amount}`: Gives money to/takes money away from the player
+- `/api/v1/players/main/actions/giveItem/name/{itemName}`: Attempts to add the specified item to the player's inventory, using the item's display name
+- `/api/v1/players/main/actions/giveItem/id/{itemId}`: Same as above, but using the item's fully qualified ID (e.g. `(F)1365`) instead
+- `/api/v1/players/main/actions/warp/{location}`: Warps the player to the specified location
+- `/api/v1/players/main/actions/petFarmAnimal/{name}`: Pets the named farm animal (i.e. chickens, cows, etc., but not pets like dogs, cats, or turtles)
 
 ## UI
 
@@ -72,7 +81,9 @@ It's my first game mod, so be gentle.
 
 ### World Actions
 
-- `/api/v1/world/actions/playSound`: Plays a sound in game
+- `/api/v1/world/actions/playSound/{name}`: Plays a sound in game
+- `/api/v1/world/actions/playMusicTrack/{name}`: Plays a music track in game
+- `/api/v1/world/actions/stopMusicTrack`: Stops the currently playing music track
 
 ## Events
 

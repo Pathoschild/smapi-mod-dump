@@ -1,5 +1,5 @@
 {
-    "Format": "1.26.4",
+    "Format": "2.0.0",
     "Changes": [
      {
      "Action": "EditData",
@@ -19,6 +19,76 @@
          }
          ]
      },
+
+     {
+        //Adds Marlon and Gunther (1.6)
+        "Action": "EditData",
+        "Target": "Data/Characters",
+        "Entries": {
+            "Marlon": {
+                "DisplayName": "Marlon",
+                "BirthSeason": "Fall",
+                "BirthDay": 8,
+                "HomeRegion": "Town",
+                "Gender": "Male",
+                "Age": "Adult",
+                "Manner": "Neutral",
+                "SocialAnxiety": "Outgoing",
+                "Optimism": "Neutral",
+                "IsDarkSkinned": false,
+                "CanBeRomanced": false,
+                "Calendar": "AlwaysShown",
+                "SocialTab": "UnknownUntilMet",
+                "CanSocialize": true,
+                "ExcludeFromPerfectionScore": false,
+                "Home": [
+                    {
+                    "ID": "AdventureGuild",
+                    "Condition": null,
+                    "Location": "AdventureGuild",
+                    "Tile": {
+                        "X": 8,
+                        "Y": 4
+                    },
+                    "Direction": "down"
+                }
+                ]
+            },
+            "Gunther": {
+                "DisplayName": "Gunther",
+                "BirthSeason": "Spring",
+                "BirthDay": 22,
+                "HomeRegion": "Town",
+                "Gender": "Male",
+                "Age": "Adult",
+                "Manner": "Polite",
+                "SocialAnxiety": "Neutral",
+                "Optimism": "Negative",
+                "IsDarkSkinned": false,
+                "CanBeRomanced": false,
+                "Calendar": "AlwaysShown",
+                "SocialTab": "UnknownUntilMet",
+                "CanSocialize": true,
+                "EndSlideShow": "MainGroup",
+                "ExcludeFromPerfectionScore": false,
+                "WinterStarParticipant": true,
+                "Home": [
+                    {
+                    "ID": "ArchaeologyHouse",
+                    "Condition": null,
+                    "Location": "ArchaeologyHouse",
+                    "Tile": {
+                        "X": 3,
+                        "Y": 8
+                    },
+                    "Direction": "down"
+                }
+                ]
+            }
+        }
+    },
+
+
      {
          "Action": "EditData",
          "Target": "Data/NPCDispositions",
@@ -115,9 +185,26 @@
                  "Remove": true
              },
              {
+                "Position": {"X": 6, "Y": 11},
+                "Layer": "Front2",
+                "Remove": true
+            },
+             {
                 "Position": {"X": 6, "Y": 12},
                 "Layer": "Buildings",
                 "Remove": true
+            },
+            {
+                "Position": {"X": 6, "Y": 12},
+                "Layer": "Back",
+                "SetTilesheet": 1,
+                "SetIndex": 1304
+            },
+            {
+                "Position": {"X": 6, "Y": 13},
+                "Layer": "Back",
+                "SetTilesheet": 1,
+                "SetIndex": 1336
             }
          ]
      }

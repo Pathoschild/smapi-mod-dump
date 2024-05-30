@@ -13,6 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="LuckSkill" HintPath="$(GamePath)\Mods\LuckSkill\LuckSkill.dll" Private="False" />
+    <Reference Include="LuckSkill" HintPath="$(GameModsPath)\LuckSkill\LuckSkill.dll" Private="False" />
   </ItemGroup>
 </Project>

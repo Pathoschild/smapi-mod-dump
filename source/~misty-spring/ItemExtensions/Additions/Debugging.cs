@@ -147,11 +147,6 @@ public class Debugging
             case "seeds":
                 helper.Data.WriteJsonFile("dump/Seeds.json", ModEntry.Seeds);
                 break;
-            case "menu":
-            case "menuactions":
-            case "actions":
-                helper.Data.WriteJsonFile("dump/MenuActions.json", ModEntry.MenuActions);
-                break;
             case "shop": 
             case "shops":
                 helper.Data.WriteJsonFile("dump/Shops.json", GetAllShopExtras());

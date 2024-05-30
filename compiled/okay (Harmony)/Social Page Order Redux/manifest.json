@@ -1,0 +1,22 @@
+﻿{
+  "Name": "Social Page Order Redux",
+  "Author": "aedenthorn, FlyingTNT",
+  "Version": "1.0.2",
+  "Description": "Lets you reorder and search the social page.",
+  "UniqueID": "FlyingTNT.SocialPageOrderRedux",
+  "EntryDll": "SocialPageOrderRedux.dll",
+  "MinimumApiVersion": "4.0.4",
+  "UpdateKeys": [ "Nexus:23374" ],
+  "ModUpdater": {
+    "Repository": "StardewValleyMods",
+    "User": "FlyingTNT",
+    "Directory": "_releases",
+    "ModFolder": "SocialPageOrderRedux"
+  },
+  "Dependencies": [
+    {
+      "UniqueID": "Platonymous.ModUpdater",
+      "IsRequired": false
+    }
+  ]
+}

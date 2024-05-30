@@ -72,8 +72,7 @@ namespace Boomerang
             if (!Context.IsPlayerFree)
                 return;
             
-            if (e.Button == SButton.MouseRight &&
-                Game1.player.CurrentTool is not null &&
+            if ((e.Button == SButton.MouseRight || e.Button == SButton.ControllerA) &&
                 Game1.player.CurrentTool is MeleeWeapon &&
                 Game1.player.CurrentTool.itemId.Value.Equals(itemID_c) &&
                 this.Thrown is null)
@@ -86,13 +85,15 @@ namespace Boomerang
                 Game1.currentLocation.projectiles.Add(this.Thrown);
             }
 
-            if (e.Button == SButton.MouseLeft &&
-                Game1.player.CurrentTool is not null &&
+            if ((e.Button == SButton.MouseLeft || e.Button == SButton.ControllerX) &&
                 Game1.player.CurrentTool is MeleeWeapon &&
                 Game1.player.CurrentTool.itemId.Value.Equals(itemID_c))
             {
                 if (this.Thrown is not null)
+                {
                     Helper.Input.Suppress(SButton.MouseLeft);
+                    Helper.Input.Suppress(SButton.ControllerX);
+                }
             }
         }
 

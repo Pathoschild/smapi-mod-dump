@@ -1,0 +1,224 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/jasisco5/UncannyValleyMod
+**
+*************************************************/
+
+{
+  "Changes": [
+    {
+      "LogName": "Apprentice Dispositions",
+      "Action": "EditData",
+      "Target": "Data/Characters",
+      "Entries": {
+        "Apprentice": {
+          "DisplayName": "Apprentice",
+          "BirthSeason": "Winter",
+          "BirthDay": 4,
+          "HomeRegion": "Other",
+          "Gender": "Undefined",
+          "Age": "Adult",
+          "Manner": "Polite",
+          "SocialAnxiety": "Outgoing",
+          "Optimism": "Neutral",
+          "CanBeRomanced": false,
+          "LoveInterest": null,
+          "SocialTab": "UnknownUntilMet",
+          "ExcludeFromIntroductionsQuest": true,
+          "ExcludeFromPerfectionScore": false,
+          "EndSlideShow": "TrailingGroup",
+          "FriendsAndFamily": {},
+          "SpawnIfMissing": true,
+          "Home": [
+            {
+              "Id": "Default",
+              "Location": "Custom_Mansion_Interior",
+              "Tile": {
+                "X": 85,
+                "Y": 32
+              },
+              "Direction": "Down"
+            }
+          ],
+          "Breather": true
+        }
+      }
+    },
+    {
+      "LogName": "Apprentice's Sprites",
+      "Action": "Load",
+      "Target": "Characters/Apprentice",
+      "FromFile": "assets/Image/Overworld/Apprentice.png"
+    },
+    {
+      "LogName": "Apprentice's Portrait",
+      "Action": "Load",
+      "Target": "Portraits/Apprentice",
+      "FromFile": "assets/Image/Portraits/Apprentice.png"
+    },
+    {
+      "LogName": "Apprentices's Dialogue",
+      "Action": "Load",
+      "Target": "Characters/Dialogue/Apprentice",
+      "FromFile": "assets/Dialogue/Dialogue.json"
+    },
+    {
+      "LogName": "Apprentice's Schedule",
+      "Action": "Load",
+      "Target": "Characters/schedules/Apprentice",
+      "FromFile": "assets/Schedule/Apprentice.json"
+    },
+    {
+      "LogName": "Apprentice Gift Tastes",
+      "Action": "EditData",
+      "Target": "Data/NPCGiftTastes",
+      "Entries": {
+        "Apprentice": "You're giving this to me? This is amazing!/207 232 233 400/Thank you! This is a very interesting specimen./-5 -79 422/...What is this?/80 330/This is disgusting./2/That was very thoughtful of you./-4/ "
+      }
+    },
+
+    {
+      "LogName": "Butler Dispositions",
+      "Action": "EditData",
+      "Target": "Data/Characters",
+      "Entries": {
+        "Butler": {
+          "DisplayName": "Butler",
+          "BirthSeason": "Winter",
+          "BirthDay": 4,
+          "HomeRegion": "Other",
+          "Gender": "Male",
+          "Age": "Adult",
+          "Manner": "Polite",
+          "SocialAnxiety": "Outgoing",
+          "Optimism": "Neutral",
+          "CanBeRomanced": false,
+          "LoveInterest": null,
+          "SocialTab": "UnknownUntilMet",
+          "ExcludeFromIntroductionsQuest": true,
+          "ExcludeFromPerfectionScore": true,
+          "EndSlideShow": "TrailingGroup",
+          "FriendsAndFamily": {},
+          "SpawnIfMissing": true,
+          "Home": [
+            {
+              "Id": "Default",
+              "Location": "Custom_Mansion_Interior",
+              "Tile": {
+                "X": 51,
+                "Y": 30
+              },
+              "Direction": "Down"
+            }
+          ],
+          "Breather": true
+        }
+      }
+    },
+    {
+      "LogName": "Butler's Sprites",
+      "Action": "Load",
+      "Target": "Characters/Butler",
+      "FromFile": "assets/Image/Overworld/Butler.png"
+    },
+    {
+      "LogName": "Butler's Portrait",
+      "Action": "Load",
+      "Target": "Portraits/Butler",
+      "FromFile": "assets/Image/Portraits/Butler.png"
+    },
+    {
+      "LogName": "Butler's Dialogue",
+      "Action": "Load",
+      "Target": "Characters/Dialogue/Butler",
+      "FromFile": "assets/Dialogue/Butler.json"
+    },
+    {
+      "LogName": "Butler's Schedule",
+      "Action": "Load",
+      "Target": "Characters/schedules/Butler",
+      "FromFile": "assets/Schedule/Butler.json"
+    },
+    {
+      "LogName": "Butler Gift Tastes",
+      "Action": "EditData",
+      "Target": "Data/NPCGiftTastes",
+      "Entries": {
+        "Apprentice": "You're giving this to me? This is amazing!/207 232 233 400/Thank you! This is a very interesting specimen./-5 -79 422/...What is this?/80 330/This is disgusting./2/That was very thoughtful of you./-4/ "
+      }
+    },
+    {
+      "Action": "Load",
+      "Target": "Data/Events/Custom_Mansion_Exterior",
+      "FromFile": "blank.json"
+    },
+    {
+      "Action": "Load",
+      "Target": "Data/Events/Custom_Mansion_Interior",
+      "FromFile": "blank.json"
+    },
+    {
+      "Action": "Load",
+      "Target": "Data/Events/Custom_Mansion_Basement",
+      "FromFile": "blank.json"
+    },
+    {
+      "Action": "Load",
+      "Target": "Data/Events/Custom_Mansion_Chase",
+      "FromFile": "blank.json"
+    },
+    {
+      "Action": "Load",
+      "Target": "Data/Events/Custom_Mansion_Basement_Chase",
+      "FromFile": "blank.json"
+    },
+    {
+      "LogName": "Events",
+      "Action": "EditData",
+      "Target": "Data/Events/Custom_Mansion_Exterior",
+      "Entries": {
+        "2051902/e 100162 2051901": "nightTime/25 37/farmer 23 48 1 Apprentice 27 37 0/skippable/move farmer 0 -11 1 false/pause 1000/speak Apprentice \"Hi there. Never seen you around here before.\"/pause 1000/speak Apprentice \"Name's Apprentice. I'm a wizard... or an apprentice one at least.$s#$b#What's your name?\"/pause 1000/speak Apprentice \"@ huh? Cool.\"/pause 1200/speak Apprentice \"I heard some reports that there was a ghost sighting around here. Came to check it out.#$b#You wanna join me?\"/pause 700/move Apprentice -2 0 0 false/move Apprentice 0 -10 0 false/playSound doorClose/pause 200/warp Apprentice 0 0/pause 500/end"
+      }
+    },
+    {
+      "LogName": "Events",
+      "Action": "EditData",
+      "Target": "Data/Events/Custom_Mansion_Interior",
+      "Entries": {
+        "2051903/e 2051902": "nightTime/43 42/farmer 44 44 1 Apprentice 47 37 0 Butler 19 18 0/skippable/move farmer 0 -7 1 false/pause 1000/speak Apprentice \"Interesting place here. I don't think the door has ever been unlocked before.\"/pause 1000/faceDirection Apprentice 3 true/speak Apprentice \"Oh hey @.$s#$b#This place seems kinda clean for a mansion that's supposedly abandoned, huh?\"/pause 1000/move Butler 25 0 2 true/speak Apprentice \"Well, I don't see any ghosts at the moment.\"/pause 1000/viewport move 0 -2 7000/pause 500/speak Butler \"Well, look at this! Guests!\"/faceDirection farmer 0 true/faceDirection Apprentice 0 true/emote farmer 40/beginSimultaneousCommand/faceDirection farmer 2 true /jump farmer/emote farmer 16/endSimultaneousCommand/faceDirection farmer 0 true/pause 1000/speak Butler \"Haha! No need for alarm. I'm just a butler, after all.\"/move Butler 0 14 2 false/viewport move 0 1 5000/pause 500/speak Butler \"Welcome to the manor! It's been quite some time since we last had visitors.\"/pause 500/speak Apprentice \"Ah, pardon me, but are you a ghost?$u\"/pause 500/speak Butler \"A ghost?$u#$b# Haha! Are you some sort of fantasy role-playing wizard?$h\"/pause 500/beginSimultaneousCommand/emote farmer 40 /emote Apprentice 40/endSimultaneousCommand/pause 1000/end"
+      }
+    },
+    {
+      "LogName": "Events",
+      "Action": "EditData",
+      "Target": "Data/Events/Farm",
+      "Entries": {
+        "2051901/t 600 800/e 100162": "continue/64 15/farmer 64 16 2 Jodi 64 18 0/skippable/pause 1500/speak Jodi \"Hello. Sorry to bother you so early in the morning.$s#$b#My son Vincent, well, yesterday... $s#$b#He was out playing last night, over by Clint's house, and he said he saw a ghost or something.#$b#I'm sorry to ask you this, but do you mind going and checking it out? Just to ease my fears.#$b#Thank you!$h\"/pause 500/end"
+      }
+    },
+    {
+      "LogName": "Events",
+      "Action": "EditData",
+      "Target": "Data/Events/Custom_Mansion_Chase",
+      "Entries": {
+        "2051905/e 2051904": "nightTime/54 34/farmer 54 25 2 Apprentice 82 33 0 Butler 0 0 0/skippable/speed farmer 5/move farmer 0 15 2 false/emote farmer 28/pause 1000/warp Butler 54 25/move Butler 0 3 2/speak Butler \"Oh... please.#$b#Did you really think you could escape so easily, @?$3\"/beginSimultaneousCommand/faceDirection farmer 0 true /jump farmer/emote farmer 16/endSimultaneousCommand/pause 500/playSound debuffHit/temporarySprite 54 40 5 8 20 false 5/temporarySprite 54 39 5 8 20 false 5/pause 200/move farmer 0 1 0 false/emote farmer 28/speak Butler \"Haha!$1#$b#You, are pathetic! $1\"/pause 500/move farmer 0 -12 0/animate farmer true false 50 36 37 38 39 40 41/pause 1000/emote farmer 40/pause 500/beginSimultaneousCommand/faceDirection farmer 0 true /jump farmer/emote farmer 16/endSimultaneousCommand/speak Butler \"Haha! Did you think you could hurt me?$1#$b# You, a simple farmer? $1\"/move farmer 0 5 0 false/pause 500/speed Apprentice 5/move Apprentice -25 0 3 true/speak Butler \"Now, I thank you for your help, but you are no longer needed here.\"/pause 500/speak Apprentice \"@, what's going on?$3\"/pause 500/speak Butler \"Oh yes, you. I had completely forgotten about you.$3#$b#Well, if you also wish to perish, I can do that as well.\"/pause 500/screenFlash 1/startJittering/pause 1000/shake Apprentice 1000/stopJittering/speak Butler \"Well, it's been a pleasure, @, Purple-haired individual. #$b# Let the master know I said hello.\"/pause 1000/playSound debuffSpell/temporarySprite 54 27 13 8 20 false 5/pause 500/speak Butler \"Ack! $3#$b#What was that?\"/pause 500/speak Apprentice \"Did you forget that I'm a wiizard's apprentice?$3#$b#You aren't the only one here capable of magic, y'know.\"/pause 500/speak Butler \"Why you little...$3\"/pause 200/speak Apprentice \"Now's your chance @! Hit him again!\"/pause 300/beginSimultaneousCommand/screenFlash 0.5/playSound thunder/speak Butler \"Enough!$3\"/endSimultaneousCommand/speak Butler \"I have had enough of you, child. I do not care what you think you can do to me. $3#$b# I will silence you for good!$3\"/pause 500/beginSimultaneousCommand/playSound coldSpell/temporarySprite 57 32 32 128 20 false 5/temporarySprite 57 33 32 128 20 false 5/pause 1280/endSimultaneousCommand/pause 500/warp Apprentice 0 0/pause 1000/move farmer 0 -5 0 false/animate farmer true false 50 36 37 38 39 40 41/screenFlash 0.2/pause 500/speak Butler \"...Wha...$3#$b#What did you do?$3\"/pause 500 /move farmer 0 5 0 false/pause 500/shake Butler 20000/pause 500/beginSimultaneousCommand/temporarySprite 54 28 31 64 20 false 5/temporarySprite 54 27 31 64 20 false 5/endSimultaneousCommand/pause 500/speak Butler \"No. NO!$3\"/pause 500/playSound explosion/temporarySprite 54 27 5 8 20 false 5/warp Butler 0 1/pause 1000/speak Butler \"You piece of...TRASH!$3#$b#I was going to be all powerful!$3#$b#And I would've gotten away with it too if it wasn't for you meddling farmer and wizard!\"/pause 1000/end"
+      }
+    },
+    {
+      "LogName": "Events",
+      "Action": "EditData",
+      "Target": "Data/Events/Custom_Mansion_Basement",
+      "Entries": {
+        "2051904/p Butler": "nightTime/78 65/farmer 78 58 0 Butler 78 45 0/skippable/move farmer 0 13 2 false/pause 1000/emote farmer 16/pause 1000/animate farmer true false 50 24 25 26 27 28 29/pause 1000/emote farmer 40/pause 1000/emote farmer 40/move Butler 0 20 2 false/speak Butler \"Ah, there it is.#$b#That totem is the reason that those monsters invade this place.#$b#Please, take this sword, and destroy it!$3\"/pause 1000/faceDirection farmer 0 true/move Butler 0 5 2 false/pause 500/itemAboveHead 2051901/pause 1000/awardFestivalPrize 2051901/pause 500/faceDirection farmer 2 false/pause 1000/animate farmer true false 50 24 25 26 27 28 29/pause 500/screenFlash 0.5/emote farmer 16/pause 1000/animate farmer true false 50 24 25 26 27 28 29/pause 500/screenFlash 1/changeLocation Custom_Mansion_Basement_Chase/pause 500/emote farmer 16/pause 1000/viewport move 0 3 5000/speak Butler \"Ah, that's better.#$b#That totem was put there a long time ago, by the master, right before he passed away.#$b#With it in place, he could prevent me from growing too powerful.$3\"/pause 1000 /speak Butler \"It irritated me greatly when he first put it in place, so I made him pay.#$b#And now, you've gone and destroyed it for me.\"/pause 1000/speak Butler \"Heh...heh...#$b#HAHAHAHAHAHAHAHAHAHAHA $1\"/screenFlash 1/warp Butler 0 0/pause 1000/end"
+      }
+    }
+
+  ]
+
+
+}
+		

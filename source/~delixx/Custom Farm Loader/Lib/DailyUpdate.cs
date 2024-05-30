@@ -36,6 +36,7 @@ namespace Custom_Farm_Loader.Lib
         public WildCropType WildCropID;
         public float Chance = 1;
         public int Attempts = int.MaxValue;
+        public List<string> RawItems = new List<string>();
         public List<string> Items = new List<string>();
         public Filter Filter = new Filter();
         public Area Area = new Area();
@@ -96,7 +97,7 @@ namespace Custom_Farm_Loader.Lib
                             dailyUpdate.BackgroundTypes = UtilityMisc.parseEnumArray<BackgroundType>(property);
                             break;
                         case "items":
-                            dailyUpdate.Items = ItemObject.MapNameToItemId(UtilityMisc.parseStringArray(property));
+                            dailyUpdate.RawItems = UtilityMisc.parseStringArray(property);
                             break;
                         default:
                             if (dailyUpdate.Filter.parseAttribute(property))

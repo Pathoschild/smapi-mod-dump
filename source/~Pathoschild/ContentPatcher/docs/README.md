@@ -28,7 +28,7 @@ to change the game's data, images, and maps without replacing game files.
 That's it! Content packs unzipped into `Mods` will be loaded and applied automatically.
 
 ### Compatibility
-Content Patcher is compatible with Stardew Valley 1.5.6+ on Linux/Mac/Windows, both single-player and
+Content Patcher is compatible with Stardew Valley 1.6+ on Linux/macOS/Windows, both single-player and
 multiplayer.
 
 ### Configure content packs
@@ -54,8 +54,7 @@ data       | Only directly affects players that have it installed, but can indir
 ## For mod authors
 * To create content packs, see the [author guide](author-guide.md) and its [tokens subpage](author-guide/tokens.md).
 * To add custom Content Patcher tokens from a SMAPI mod, see the [extensibility API](extensibility.md).
-* To use Content Patcher conditions in your own SMAPI mod, see the [conditions API](conditions-api.md).
-
+* To use Content Patcher conditions and token strings in your own SMAPI mod, see the [conditions API](conditions-api.md) and [token string API](token-strings-api.md).
 
 ## Configure
 Content Patcher creates a `config.json` file in its mod folder the first time you run it. You can

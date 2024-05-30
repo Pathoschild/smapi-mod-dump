@@ -1,0 +1,14 @@
+{
+  "Config.AnimalsStayInside.Name": "Animals Staying Inside",
+  "Config.AnimalsStayInside.Description": "Animals which will stay inside regardless of weather or season conditions",
+  "Config.AnimalsGoOutsideBadWeather.Name": "Animals Going Outside During Bad Weather",
+  "Config.AnimalsGoOutsideBadWeather.Description": "Animals which will go outside during rain or winter, but not during more extreme weather",
+  "Config.AnimalsGoOutsideHorribleWeather.Name": "Animals Going Outside During All Weather",
+  "Config.AnimalsGoOutsideHorribleWeather.Description": "Animals which will go outside regardless of weather or season conditions",
+  "Config.DelayedPet.Name": "Delayed Petting",
+  "Config.DelayedPet.Description": "Whether or not to disable petting if the animal is performing an animation (so as to not cancel pigs digging up truffles)",
+  "Config.NoTruffleLimit.Name": "No Truffle Limit",
+  "Config.NoTruffleLimit.Description": "Whether or not to disable the limit on digging up truffles",
+  "Config.PigAnimalCrackerMultiplier.Name": "Pig Animal Cracker Multiplier",
+  "Config.PigAnimalCrackerMultiplier.Description": "The multiplier for the chance that pigs will dig up truffles"
+}

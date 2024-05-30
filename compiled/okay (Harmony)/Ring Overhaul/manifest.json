@@ -1,7 +1,7 @@
 {
   "Name": "Ring Overhaul",
   "Author": "Goldenrevolver",
-  "Version": "1.4.1",
+  "Version": "1.4.2",
   "Description": "Changes the ring progression to how it always should have worked",
   "UniqueID": "Goldenrevolver.RingOverhaul",
   "EntryDll": "RingOverhaul.dll",

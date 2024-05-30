@@ -6,7 +6,13 @@
   "DisplayIslandBirdGem": true,
   "DisplayWeatherOnCalendar": true,
   "DisplayFishingBubblesAtBegin": true,
-  "DisplayFishingBubblesLimitDays": 28,
+  "DisplayFishingBubblesLimitDays": -1,
+  "DisplayOrePanPoint": true,
+  "DisplayMonsterBloodVolume": true,
+  "DisplayVillagerName": true,
+  "DisplayPlayerName": true,
+  "DisplayChestItem": true,
+  "DisplayChestItemBorder": true,
   "MovieTheaterOpenCraneGame": true,
   "SeedMakerBumperHarvest": true,
   "SeedMakerConfig": [
@@ -19,5 +25,7 @@
     3,
     6,
     7
-  ]
+  ],
+  "IncreasePrismaticSlimeChances": true,
+  "WheelSpinGameForceGreen": true
 }

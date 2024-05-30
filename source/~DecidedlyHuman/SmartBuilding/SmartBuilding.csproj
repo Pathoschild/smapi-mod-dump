@@ -6,9 +6,9 @@
     <PropertyGroup>
         <Name>Smart Building</Name>
         <Description>Allows you to build fences/walls/paths, etc. in a much more streamlined way.</Description>
-        <MinimumApiVersion>3.15.0</MinimumApiVersion>
+        <MinimumApiVersion>4.0.0</MinimumApiVersion>
         <UpdateKeys>Nexus:11158</UpdateKeys>
-        <Version>1.8.8</Version>
+        <Version>1.8.10</Version>
     </PropertyGroup>
 
     <PropertyGroup>

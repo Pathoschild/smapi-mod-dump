@@ -27,21 +27,45 @@ namespace HatsOnPetsPlus
     {
 
         private static IMonitor Monitor;
+        private static IModHelper Helper;
         public static Dictionary<Tuple<string, string>, PetData> customPetsDict = new Dictionary<Tuple<string, string>, PetData>();
 
-        internal static void Initialize(IMonitor monitor)
+        internal static void Initialize(IMonitor monitor, IModHelper helper)
         {
             Monitor = monitor;
+            Helper = helper;
         }
 
-        public static void addPetToDictionnary(ExternalPetModData moddedPet)
+        public static void addPetToDictionnary(ExternalPetModData moddedPet, String modId = "")
         {
-            addPetToDictionnary(moddedPet.Type, moddedPet.BreedId, new PetData(moddedPet.Sprites));
-            
+            // If both BreedId and BreedIdList are null (or empty), show an error message
+            if ((moddedPet.BreedId == null)
+                && (moddedPet.BreedIdList == null || moddedPet.BreedIdList.Length == 0)) {
+                Monitor.Log("Mod entry for HOPP : " + modId + " has no breedId and breedIdList in one of their pet block, HOPP will skip it", LogLevel.Warn);
+                return;
+            }
+
+            // Check if there is a breedId defined and apply it
+            if (moddedPet.BreedId != null)
+            {
+                addPetToDictionnary(moddedPet.Type, moddedPet.BreedId, new PetData(moddedPet.Sprites));
+            }
+
+            // Check if there is a list of breedId defined and apply them
+            if (moddedPet.BreedIdList != null && moddedPet.BreedIdList.Length != 0)
+            {
+                foreach (string breedInList in moddedPet.BreedIdList) { 
+                    if (breedInList != moddedPet.BreedId) // Avoid processing the same breed twice
+                    {
+                        addPetToDictionnary(moddedPet.Type, breedInList, new PetData(moddedPet.Sprites));
+                    }
+                }
+            }
         }
 
         public static void addPetToDictionnary(string petType, string petBreed, PetData pet)
         {
+            Monitor.Log("HOPP Init : Loading Breed : " + petBreed + " for Pet Type : " + petType, LogLevel.Trace);
             customPetsDict[new Tuple<string, string>(petType, petBreed)] = pet;
         }
 
@@ -55,6 +79,10 @@ namespace HatsOnPetsPlus
             try
             {
                 //Monitor.Log("Entered draw hat prefix function", LogLevel.Debug);
+
+                // Checks if the data asset has new data, and reload the customPetsDicts if that's the case
+                // Must be before the hat check so that it also updates the logic in CheckActionPostFix if there is no hat to draw
+                Helper.GameContent.Load<Dictionary<string, ExternalPetModData[]>>(ModEntry.modContentPath);
 
                 if (__instance.hat.Value == null)
                 {

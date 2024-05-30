@@ -13,5 +13,20 @@
 		"width": 3,
 		"height": 3,
 		"author": "SonreirAngel"
+	},
+	"parrot": {
+		"width": 3,
+		"height": 3,
+		"author": "Aktaia"
+	},
+	"stone1": {
+		"width": 2,
+		"height": 2,
+		"author": "SonreirAngel"
+	},
+	"cairn": {
+		"width": 2,
+		"height": 2,
+		"author": "Leroymilo"
 	}
 }

@@ -4,6 +4,7 @@
   "IsPathAffectHorseSpeed": true,
   "HorsePathSpeedBuffModifier": 1.0,
   "IsEnablePathReplace": true,
+  "IsTownPathSpeedBuff": true,
   "IsUseCustomPathSpeedBuffValues": false,
   "CustomPathSpeedBuffValues": {
     "WoodPath": 1.0,

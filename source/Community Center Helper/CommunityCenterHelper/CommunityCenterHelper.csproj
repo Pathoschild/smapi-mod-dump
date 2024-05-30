@@ -2,7 +2,7 @@
   <PropertyGroup>
     <AssemblyName>CommunityCenterHelper</AssemblyName>
     <RootNamespace>CommunityCenterHelper</RootNamespace>
-    <Version>1.5.0</Version>
+    <Version>1.5.1</Version>
     <TargetFramework>net6.0</TargetFramework>
     <EnableHarmony>true</EnableHarmony>
   </PropertyGroup>

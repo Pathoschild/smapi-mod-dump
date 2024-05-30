@@ -9,12 +9,10 @@
 *************************************************/
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Leclair.Stardew.Common.Types;
 
-internal ref struct BitHelper {
+internal readonly ref struct BitHelper {
 
 	private readonly Span<int> Span;
 

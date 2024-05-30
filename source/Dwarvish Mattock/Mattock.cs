@@ -12,20 +12,19 @@ using System.Collections.Generic;
 using StardewValley;
 using StardewValley.TerrainFeatures;
 using StardewValley.Tools;
-using static System.Reflection.BindingFlags;
 
 namespace DwarvishMattock
 {
 	public class Mattock : MeleeWeapon
 	{
 		// Keeps track of objects that are struck in a single swing so they don't get hit multiple times.
-		public HashSet<Object> struckObjects = new HashSet<Object>();
-		public HashSet<TerrainFeature> struckFeatures = new HashSet<TerrainFeature>();
-		public Mattock() : base(70)
+		public HashSet<Object> struckObjects = new();
+		public HashSet<TerrainFeature> struckFeatures = new();
+		public Mattock() : base(ModEntry.MATTOCK_WEAPON_ID)
 		{
 		}
 
-		public override int salePrice()
+		public override int salePrice(bool ignoreProfitMargins = false)
 		{
 			return -1;
 		}
@@ -37,28 +36,27 @@ namespace DwarvishMattock
 			base.DoFunction(location, x, y, power, who);
 		}
 
-		public Axe asAxe()
+		public override void setFarmerAnimating(Farmer who)
 		{
-			Axe standIn = new Axe();
-			standIn.UpgradeLevel = 3;
-			CopyEnchantments(this, standIn);
+			struckObjects.Clear();
+			struckFeatures.Clear();
+			base.setFarmerAnimating(who);
+		}
 
-			// Set the "lastUser" field to the player.
-			var lastUser = standIn.GetType().GetField("lastUser", NonPublic | Instance);
-			lastUser.SetValue(standIn, Game1.player);
+		public Axe AsAxe()
+		{
+			Axe standIn = new() { UpgradeLevel = 3, lastUser = Game1.player };
+
+			CopyEnchantments(this, standIn);
 
 			return standIn;
 		}
 
-		public Pickaxe asPickaxe()
+		public Pickaxe AsPickaxe()
 		{
-			Pickaxe standIn = new Pickaxe();
-			standIn.UpgradeLevel = 3;
-			CopyEnchantments(this, standIn);
+			Pickaxe standIn = new() { UpgradeLevel = 3, lastUser = Game1.player };
 
-			// Set the "lastUser" field to the player.
-			var lastUser = standIn.GetType().GetField("lastUser", NonPublic | Instance);
-			lastUser.SetValue(standIn, Game1.player);
+			CopyEnchantments(this, standIn);
 
 			return standIn;
 		}

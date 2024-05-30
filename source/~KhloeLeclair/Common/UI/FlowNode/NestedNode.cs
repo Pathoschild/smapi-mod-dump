@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-#nullable enable
+#if COMMON_FLOW
 
 using System;
 using System.Collections.Generic;
@@ -175,3 +175,5 @@ public struct NestedNodeSlice : IFlowNodeSlice {
 		return !(left == right);
 	}
 }
+
+#endif

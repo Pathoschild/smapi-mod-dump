@@ -1,4 +1,5 @@
 {
   "ChancePercentage": 75,
-  "BaitMakerQuality": true
+  "BaitMakerQuality": true,
+  "ForceLowerQuality": true
 }

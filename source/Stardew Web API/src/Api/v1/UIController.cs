@@ -78,7 +78,7 @@ public class UIController : ApiControllerBase
         Response.Ok(new ActionResult(true));
     }
 
-    [Route("/actions/showChatMessage")]
+    [Route("/actions/showChatMessage"), RequireLoadedGame]
     public void ShowChatMessage(string message, ChatMessageType type = ChatMessageType.None)
     {
         UIUtilities.ShowChatMessage(message, type);

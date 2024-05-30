@@ -4,6 +4,7 @@
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <IgnoreModFilePaths>EnaiumToolKit.dll</IgnoreModFilePaths>
     </PropertyGroup>
 
     <ItemGroup>
@@ -15,6 +16,10 @@
       <Reference Include="EnaiumToolKit">
         <HintPath>..\..\EnaiumToolKit\EnaiumToolKit\bin\Debug\net6.0\EnaiumToolKit.dll</HintPath>
       </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="Framework\Entity\KeyBindListInfo.cs" />
     </ItemGroup>
 
 </Project>

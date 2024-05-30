@@ -58,7 +58,7 @@ public class BuildingRecipe : IDynamicDrawingRecipe {
 		int skins = 1;
 
 		if (Data.Skins != null)
-			foreach(var skin in Data.Skins) {
+			foreach (var skin in Data.Skins) {
 				if (!skin.ShowAsSeparateConstructionEntry)
 					skins++;
 
@@ -78,16 +78,14 @@ public class BuildingRecipe : IDynamicDrawingRecipe {
 		List<IIngredient> ings = new();
 		int amount;
 
-		//ings.Add(Mod.BCAPI!.CreateCurrencyIngredient(CurrencyType.Money, 1));
-
 		if (Data.BuildMaterials is not null)
 			foreach (var mat in Data.BuildMaterials) {
 				amount = (int) (mat.Amount * (Mod.Config.CostMaterial / 100.0));
 				if (amount > 0)
-					ings.Add(Mod.BCAPI!.CreateBaseIngredient(mat.ItemId, mat.Amount));
+					ings.Add(Mod.BCAPI!.CreateBaseIngredient(mat.ItemId, amount));
 			}
 
-		amount = (int) (Data.BuildCost * (Mod.Config.CostMaterial / 100.0));
+		amount = (int) (Data.BuildCost * (Mod.Config.CostCurrency / 100.0));
 		if (amount > 0)
 			ings.Add(Mod.BCAPI!.CreateCurrencyIngredient(CurrencyType.Money, amount));
 
@@ -209,7 +207,7 @@ public class BuildingRecipe : IDynamicDrawingRecipe {
 	}
 
 	public bool CanCraft(Farmer who) {
-		if ( ! who.currentLocation.IsBuildableLocation() )
+		if (!who.currentLocation.IsBuildableLocation())
 			return false;
 
 		if (Data.BuildingToUpgrade != null && !who.currentLocation.isBuildingConstructed(Data.BuildingToUpgrade))
@@ -250,10 +248,10 @@ public class BuildingRecipe : IDynamicDrawingRecipe {
 
 		} else
 			StageTwoPerformCraft(evt, SkinId);
-			
+
 	}
 
-	private void StageTwoPerformCraft(IPerformCraftEvent evt, string? skinId) { 
+	private void StageTwoPerformCraft(IPerformCraftEvent evt, string? skinId) {
 
 		var menu = new BuildMenu(Mod, Data.BuildingToUpgrade != null ? ActionType.Upgrade : ActionType.Build, BuildingId, skinId, Data, evt);
 		var old_menu = Game1.activeClickableMenu;

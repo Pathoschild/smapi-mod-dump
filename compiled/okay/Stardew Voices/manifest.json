@@ -1,7 +1,7 @@
 {
   "Name": "Stardew Voices",
   "Author": "Shannon Hobby",
-  "Version": "1.0.0-Beta",
+  "Version": "1.0.1-Beta",
   "Description": "Adds voice over to Stardew Valley | Currently only Abigail is dubbed.",
   "UniqueID": "shobby.StardewVoices",
   "EntryDll": "StardewVoices.dll",

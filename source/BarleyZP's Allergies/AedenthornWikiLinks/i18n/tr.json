@@ -1,0 +1,23 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/lisyce/SDV_Allergies_Mod
+**
+*************************************************/
+
+{
+    "(O)340": "Bal",
+    "(O)348": "Şarap",
+    "(O)350": "Meyve_Suyu",
+    "(O)342": "Marmelat_ve_Turşu",
+    "(O)344": "Marmelat_ve_Turşu",
+    "(O)447": "Olgun_Yumurta",
+    "(O)812": "Balık_Yumurtası",
+    "(O)SmokedFish": "Tütsülenmiş_Balık",
+    "(O)DriedMushrooms": "Kurutulmuş_Mantarlar",
+    "(O)DriedFruit": "Kurutulmuş_Meyve",
+    "pet": "Hayvanlar#Kedi_ve_K.C3.B6pek"
+}

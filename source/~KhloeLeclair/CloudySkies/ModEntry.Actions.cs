@@ -10,15 +10,19 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Diagnostics.CodeAnalysis;
+
+using Leclair.Stardew.Common;
+using Leclair.Stardew.Common.Events;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
+using StardewModdingAPI;
+
 using StardewValley;
 using StardewValley.Delegates;
+using StardewValley.Network;
 using StardewValley.TokenizableStrings;
 
 namespace Leclair.Stardew.CloudySkies;
@@ -27,65 +31,157 @@ public partial class ModEntry {
 
 	#region Game State Queries
 
-	private void RegisterQueries() {
-		Dictionary<string, GameStateQueryDelegate> entries = new() {
-			{ "LOCATION_IGNORE_DEBRIS_WEATHER", LocationIgnoreDebrisWeather },
-			{ "WEATHER_IS_RAINING", WeatherRaining },
-			{ "WEATHER_IS_SNOWING", WeatherSnowing },
-			{ "WEATHER_IS_LIGHTNING", WeatherLightning },
-			{ "WEATHER_IS_DEBRIS", WeatherDebris },
-			{ "WEATHER_IS_GREEN_RAIN", WeatherGreenRain }
-		};
+	protected override void RegisterGameStateQueries() {
+		List<string> registered = EventHelper.RegisterGameStateQueries(this, [
+				$"{ModManifest.UniqueID}_",
+				$"CS_"
+			], Monitor.Log);
 
-		foreach (var pair in entries) {
-			string prefixed = $"leclair.cloudyskies_{pair.Key}";
-			GameStateQuery.Register(prefixed, pair.Value);
-			if (!GameStateQuery.Exists($"CS_{pair.Key}"))
-				GameStateQuery.RegisterAlias($"CS_{pair.Key}", prefixed);
+		registered.AddRange(EventHelper.RegisterGameStateQueries(GetType(), [
+				$"{ModManifest.UniqueID}_",
+				$"CS_"
+			], Monitor.Log));
+
+		if (registered.Count > 0)
+			Log($"Registered Game State Query conditions: {string.Join(", ", registered)}", LogLevel.Trace);
+	}
+
+	[GSQCondition]
+	public static bool WEATHER(string[] query, GameStateQueryContext context) {
+		GameLocation location = context.Location;
+		if (!GameStateQuery.Helpers.TryGetLocationArg(query, 1, ref location, out string? error) ||
+			!ArgUtility.TryGetInt(query, 2, out int offset, out error) ||
+			!ArgUtility.TryGet(query, 3, out string? weatherId, out error, allowBlank: false)
+		)
+			return GameStateQuery.Helpers.ErrorResult(query, error);
+
+		if (offset > 0)
+			return GameStateQuery.Helpers.ErrorResult(query, "Cannot get historic data about the future");
+		else if (offset < -7)
+			return GameStateQuery.Helpers.ErrorResult(query, "Historic data only extends up to 7 days");
+
+		if (Instance.TryGetWeatherHistory(location, Game1.Date.TotalDays + offset, out string? historicId)) {
+			if (historicId == weatherId)
+				return true;
+
+			int i = 4;
+			while (i < query.Length) {
+				if (query[i] == historicId)
+					return true;
+				i++;
+			}
 		}
+
+		return false;
 	}
 
-	public static bool WeatherRaining(string[] query, GameStateQueryContext context) {
+	private bool TryGetWeatherForGSQ(GameLocation? location, int offset, [NotNullWhen(false)] out string? error, out LocationWeather? weather) {
+		if (offset > 0) {
+			error = "Cannot get historic data about the future.";
+			weather = null;
+			return false;
+		} else if (offset < -7) {
+			error = "Historic data only extends up to 7 days.";
+			weather = null;
+			return false;
+		}
+
+		if (location is null) {
+			error = null;
+			weather = null;
+			return true;
+		}
+
+		weather = location.GetWeather();
+
+		if (offset != 0) {
+			if (TryGetWeatherHistory(location, Game1.Date.TotalDays + offset, out string? weatherId)) {
+				if (weather.Weather != weatherId) {
+					// We need to make a new weather object with this data.
+					// Unfortunately this is slightly more involved than we'd like.
+
+					if (!Game1.locationContextData.TryGetValue(location.GetLocationContextId(), out var ctxData))
+						ctxData = new() {
+							WeatherConditions = new()
+						};
+
+					weather = new LocationWeather {
+						WeatherForTomorrow = weatherId
+					};
+
+					weather.UpdateDailyWeather(location.GetLocationContextId(), ctxData, Game1.random);
+				}
+
+			} else
+				weather = null;
+		}
+
+		error = null;
+		return true;
+	}
+
+	[GSQCondition]
+	public static bool WEATHER_IS_RAINING(string[] query, GameStateQueryContext context) {
 		GameLocation location = context.Location;
-		if (!GameStateQuery.Helpers.TryGetLocationArg(query, 1, ref location, out string? error))
+		if (!GameStateQuery.Helpers.TryGetLocationArg(query, 1, ref location, out string? error) ||
+			!ArgUtility.TryGetOptionalInt(query, 2, out int offset, out error) ||
+			!Instance.TryGetWeatherForGSQ(location, offset, out error, out var weather)
+		)
 			return GameStateQuery.Helpers.ErrorResult(query, error);
 
-		return location?.GetWeather()?.IsRaining ?? false;
+		return weather?.IsRaining ?? false;
 	}
 
-	public static bool WeatherSnowing(string[] query, GameStateQueryContext context) {
+	[GSQCondition]
+	public static bool WEATHER_IS_SNOWING(string[] query, GameStateQueryContext context) {
 		GameLocation location = context.Location;
-		if (!GameStateQuery.Helpers.TryGetLocationArg(query, 1, ref location, out string? error))
+		if (!GameStateQuery.Helpers.TryGetLocationArg(query, 1, ref location, out string? error) ||
+			!ArgUtility.TryGetOptionalInt(query, 2, out int offset, out error) ||
+			!Instance.TryGetWeatherForGSQ(location, offset, out error, out var weather)
+		)
 			return GameStateQuery.Helpers.ErrorResult(query, error);
 
-		return location?.GetWeather()?.IsSnowing ?? false;
+		return weather?.IsSnowing ?? false;
 	}
 
-	public static bool WeatherLightning(string[] query, GameStateQueryContext context) {
+	[GSQCondition]
+	public static bool WEATHER_IS_LIGHTNING(string[] query, GameStateQueryContext context) {
 		GameLocation location = context.Location;
-		if (!GameStateQuery.Helpers.TryGetLocationArg(query, 1, ref location, out string? error))
+		if (!GameStateQuery.Helpers.TryGetLocationArg(query, 1, ref location, out string? error) ||
+			!ArgUtility.TryGetOptionalInt(query, 2, out int offset, out error) ||
+			!Instance.TryGetWeatherForGSQ(location, offset, out error, out var weather)
+		)
 			return GameStateQuery.Helpers.ErrorResult(query, error);
 
-		return location?.GetWeather()?.IsLightning ?? false;
+		return weather?.IsLightning ?? false;
 	}
 
-	public static bool WeatherDebris(string[] query, GameStateQueryContext context) {
+	[GSQCondition]
+	public static bool WEATHER_IS_DEBRIS(string[] query, GameStateQueryContext context) {
 		GameLocation location = context.Location;
-		if (!GameStateQuery.Helpers.TryGetLocationArg(query, 1, ref location, out string? error))
+		if (!GameStateQuery.Helpers.TryGetLocationArg(query, 1, ref location, out string? error) ||
+			!ArgUtility.TryGetOptionalInt(query, 2, out int offset, out error) ||
+			!Instance.TryGetWeatherForGSQ(location, offset, out error, out var weather)
+		)
 			return GameStateQuery.Helpers.ErrorResult(query, error);
 
-		return location?.GetWeather()?.IsDebrisWeather ?? false;
+		return weather?.IsDebrisWeather ?? false;
 	}
 
-	public static bool WeatherGreenRain(string[] query, GameStateQueryContext context) {
+	[GSQCondition]
+	public static bool WEATHER_IS_GREEN_RAIN(string[] query, GameStateQueryContext context) {
 		GameLocation location = context.Location;
-		if (!GameStateQuery.Helpers.TryGetLocationArg(query, 1, ref location, out string? error))
+		if (!GameStateQuery.Helpers.TryGetLocationArg(query, 1, ref location, out string? error) ||
+			!ArgUtility.TryGetOptionalInt(query, 2, out int offset, out error) ||
+			!Instance.TryGetWeatherForGSQ(location, offset, out error, out var weather)
+		)
 			return GameStateQuery.Helpers.ErrorResult(query, error);
 
-		return location?.GetWeather()?.IsGreenRain ?? false;
+		return weather?.IsGreenRain ?? false;
 	}
 
-	public static bool LocationIgnoreDebrisWeather(string[] query, GameStateQueryContext context) {
+	[GSQCondition]
+	public static bool LOCATION_IGNORE_DEBRIS_WEATHER(string[] query, GameStateQueryContext context) {
 		GameLocation location = context.Location;
 		if (!GameStateQuery.Helpers.TryGetLocationArg(query, 1, ref location, out string? error))
 			return GameStateQuery.Helpers.ErrorResult(query, error);
@@ -95,15 +191,26 @@ public partial class ModEntry {
 
 	#endregion
 
+	#region Trigger Actions
+
+	protected override void RegisterTriggerActions() {
+		string key = $"{ModManifest.UniqueID}_";
+		List<string> registered = EventHelper.RegisterTriggerActions(typeof(Triggers), key, Monitor.Log);
+		if (registered.Count > 0)
+			Log($"Registered trigger actions: {string.Join(", ", registered)}", LogLevel.Trace);
+	}
+
+	#endregion
+
 	#region Custom Weather Totems
 
-	public bool UseWeatherTotem(Farmer who, string weatherId, SObject? item = null) {
+	public bool UseWeatherTotem(Farmer who, string weatherId, SObject? item = null, bool bypassChecks = false) {
 		var location = who.currentLocation;
 
 		string contextId = location.GetLocationContextId();
 		var context = location.GetLocationContext();
 
-		if (context.RainTotemAffectsContext != null) {
+		if (!bypassChecks && context.RainTotemAffectsContext != null) {
 			contextId = context.RainTotemAffectsContext;
 			context = LocationContexts.Require(contextId);
 		}
@@ -117,7 +224,7 @@ public partial class ModEntry {
 				allowed = !string.IsNullOrWhiteSpace(val);
 		}
 
-		if (!allowed) {
+		if (!allowed && !bypassChecks) {
 			Game1.showRedMessageUsingLoadString("Strings\\UI:Item_CantBeUsedHere");
 			return false;
 		}
@@ -139,7 +246,7 @@ public partial class ModEntry {
 		if (applied) {
 			string message;
 			if (weatherData != null && !string.IsNullOrEmpty(weatherData.TotemMessage))
-				message = TokenParser.ParseText(weatherData.TotemMessage);
+				message = TokenizeText(weatherData.TotemMessage);
 			else
 				message = Game1.content.LoadString("Strings\\StringsFromCSFiles:Object.cs.12822");
 
@@ -245,6 +352,51 @@ public partial class ModEntry {
 
 		return true;
 	}
+
+	#endregion
+
+	#region Tokenized Text Stuff
+
+	[return: NotNullIfNotNull(nameof(input))]
+	public string? TokenizeText(string? input, Farmer? who = null, Random? rnd = null) {
+		if (string.IsNullOrWhiteSpace(input))
+			return input;
+
+		bool ParseToken(string[] query, out string? replacement, Random? random, Farmer? player) {
+			if (!ArgUtility.TryGet(query, 0, out string? cmd, out string? error))
+				return TokenParser.LogTokenError(query, error, out replacement);
+
+			if (cmd is null || !cmd.Equals("LocalizedText")) {
+				replacement = null;
+				return false;
+			}
+
+			if (!ArgUtility.TryGet(query, 1, out string? key, out error))
+				return TokenParser.LogTokenError(query, error, out replacement);
+
+			var tl = Helper.Translation.Get(key);
+			if (!tl.HasValue()) {
+				replacement = null;
+				return false;
+			}
+
+			Dictionary<int, string> replacements;
+			if (query.Length > 2) {
+				replacements = new();
+				for (int i = 2; i < query.Length; i++) {
+					replacements[i - 2] = query[i];
+				}
+
+			} else
+				replacements = [];
+
+			replacement = TokenParser.ParseText(tl.Tokens(replacements).ToString(), rnd, ParseToken, who);
+			return true;
+		}
+
+		return TokenParser.ParseText(input, rnd, ParseToken, who);
+	}
+
 
 	#endregion
 

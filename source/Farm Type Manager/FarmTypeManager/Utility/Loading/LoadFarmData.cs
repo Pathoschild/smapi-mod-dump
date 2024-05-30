@@ -21,7 +21,6 @@ namespace FarmTypeManager
         private static partial class Utility
         {
             /// <summary>Loads all available data files for the current farm into FarmDataList. Checks the mod's data folder and any relevant content packs.</summary>
-            /// <returns>True if the files loaded successfully; false otherwise.</returns>
             public static void LoadFarmData()
             {
                 Monitor.Log("Beginning file loading process...", LogLevel.Trace);
@@ -100,7 +99,7 @@ namespace FarmTypeManager
                 }
                 else
                 {
-                    Monitor.Log("Content packs disabled in config.json. Skipping to local files...", LogLevel.Trace);
+                    Monitor.Log("Content packs are disabled in config.json. Skipping to local files...", LogLevel.Trace);
                 }
 
                 //clear each temp object

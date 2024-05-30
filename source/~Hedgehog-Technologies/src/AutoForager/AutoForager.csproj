@@ -7,7 +7,7 @@
     <Name>Auto Forager</Name>
     <Authors>Jag3Dagster</Authors>
     <Description>Automatically forage items simply by moving near them.</Description>
-    <Version>3.3.0</Version>
+    <Version>3.6.0</Version>
     <UpdateKeys>Nexus:7736</UpdateKeys>
 
     <MinimumApiVersion>auto</MinimumApiVersion>
@@ -19,22 +19,13 @@
     <SMAPIDependency Include="NCarigon.BushBloomMod" Required="false" />
     <SMAPIDependency Include="Pathoschild.ContentPatcher" Required="false" />
     <SMAPIDependency Include="furyx639.CustomBush" Required="false" />
+    <SMAPIDependency Include="Esca.FarmTypeManager" Required="false" />
   </ItemGroup>
-
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(BuildConfig)' == 'GITHUB' ">
-    <GamePath>../ref</GamePath>
-    <EnableModDeploy>false</EnableModDeploy>
-  </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Leclair.Stardew.ModManifestBuilder" Version="2.1.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
     <PackageReference Include="Pathoschild.Stardew.ModTranslationClassBuilder" Version="2.0.1" />
   </ItemGroup>
+
+  <Import Project="..\Common\Common.projitems" Label="Shared" />
 </Project>

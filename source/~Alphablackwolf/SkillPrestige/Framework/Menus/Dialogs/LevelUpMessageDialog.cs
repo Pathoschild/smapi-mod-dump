@@ -8,9 +8,12 @@
 **
 *************************************************/
 
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
+using StardewValley.Menus;
+
 // ReSharper disable PossibleLossOfFraction
 
 namespace SkillPrestige.Framework.Menus.Dialogs
@@ -18,28 +21,18 @@ namespace SkillPrestige.Framework.Menus.Dialogs
     /// <summary>Represents a message dialog for skill level up messages.</summary>
     internal class LevelUpMessageDialog : MessageDialog
     {
-        /*********
-        ** Fields
-        *********/
         private readonly Skill Skill;
         // ReSharper disable once MemberCanBePrivate.Global
         protected readonly int YPositionOfHeaderPartition;
 
-
-        /*********
-        ** Public methods
-        *********/
         public LevelUpMessageDialog(Rectangle bounds, string message, Skill skill)
             : base(bounds, message)
         {
             this.Skill = skill;
             this.YPositionOfHeaderPartition = this.yPositionOnScreen + (Game1.tileSize * 2.5).Floor();
+            this.allClickableComponents = new List<ClickableComponent> { this.upperRightCloseButton };
         }
 
-
-        /*********
-        ** Protected methods
-        *********/
         protected override void DrawDecorations(SpriteBatch spriteBatch)
         {
             base.DrawDecorations(spriteBatch);
@@ -62,7 +55,7 @@ namespace SkillPrestige.Framework.Menus.Dialogs
 
         protected override void DrawMessage(SpriteBatch spriteBatch)
         {
-            int textPadding = 2 * Game1.pixelZoom;
+            const int textPadding = 2 * Game1.pixelZoom;
             int xLocationOfMessage = this.xPositionOnScreen + borderWidth + textPadding;
             int yLocationOfMessage = this.YPositionOfHeaderPartition + spaceToClearTopBorder;
             this.DrawMessage(spriteBatch, Game1.dialogueFont, new Vector2(xLocationOfMessage, yLocationOfMessage), this.width - borderWidth * 2);

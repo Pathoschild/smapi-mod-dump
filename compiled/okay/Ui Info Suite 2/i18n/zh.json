@@ -13,6 +13,22 @@
   //Harvest
   "DaysToMature": "天后成熟",
   "ReadyToHarvest": "可以收获！",
+  "With": "已使用",
+  "Fertilized": "已施肥",
+  //Tree
+  "Tree": "树",
+  "stage": "阶段",
+  "Oak": "橡",
+  "Maple": "枫",
+  "Pine": "松",
+  "Palm": "棕榈",
+  "Mushroom": "蘑菇",
+  "Mahogany": "桃花心木",
+  "PalmJungle": "棕榈(丛林)",
+  "GreenRainType1": "苔雨I",
+  "GreenRainType2": "苔雨II",
+  "GreenRainType3": "苔雨III",
+  "Mystic": "神秘",
   //Display icons - General
   "TodaysRecipe": "今日食谱：",
   "TravelingMerchantIsInTown": "旅行商人在镇上！",

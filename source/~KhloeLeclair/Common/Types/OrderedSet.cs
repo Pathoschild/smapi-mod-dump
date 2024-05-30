@@ -13,22 +13,20 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-using StardewValley.Menus;
-
 namespace Leclair.Stardew.Common.Types;
 
-public class OrderedSet<T> : ICollection<T>, IEnumerable<T>, IReadOnlyCollection<T>, IReadOnlyList<T>, IList<T>, IReadOnlySet<T>, ISet<T>, ICollection where T : notnull {
+public class OrderedSet<TValue> : ICollection<TValue>, IEnumerable<TValue>, IReadOnlyCollection<TValue>, IReadOnlyList<TValue>, IList<TValue>, IReadOnlySet<TValue>, ISet<TValue>, ICollection where TValue : notnull {
 
-	private readonly IEqualityComparer<T> _Comparer;
-	private readonly IDictionary<T, LinkedListNode<T>> _Dictionary;
-	private readonly LinkedList<T> _List;
+	private readonly IEqualityComparer<TValue> _Comparer;
+	private readonly IDictionary<TValue, LinkedListNode<TValue>> _Dictionary;
+	private readonly LinkedList<TValue> _List;
 
-	public OrderedSet() : this(EqualityComparer<T>.Default) { }
+	public OrderedSet() : this(EqualityComparer<TValue>.Default) { }
 
-	public OrderedSet(IEqualityComparer<T> comparer) {
+	public OrderedSet(IEqualityComparer<TValue> comparer) {
 		_Comparer = comparer;
-		_Dictionary = new Dictionary<T, LinkedListNode<T>>(comparer);
-		_List = new LinkedList<T>();
+		_Dictionary = new Dictionary<TValue, LinkedListNode<TValue>>(comparer);
+		_List = new LinkedList<TValue>();
 	}
 
 	public virtual bool IsReadOnly => _Dictionary.IsReadOnly;
@@ -41,7 +39,7 @@ public class OrderedSet<T> : ICollection<T>, IEnumerable<T>, IReadOnlyCollection
 		return _List.GetEnumerator();
 	}
 
-	public IEnumerator<T> GetEnumerator() {
+	public IEnumerator<TValue> GetEnumerator() {
 		return _List.GetEnumerator();
 	}
 
@@ -49,13 +47,13 @@ public class OrderedSet<T> : ICollection<T>, IEnumerable<T>, IReadOnlyCollection
 
 	#region Basic Manipulation
 
-	void ICollection<T>.Add(T item) {
+	void ICollection<TValue>.Add(TValue item) {
 		Add(item);
 	}
 
-	public bool Add(T item) {
+	public bool Add(TValue item) {
 		if (_Dictionary.ContainsKey(item)) return false;
-		LinkedListNode<T> node = _List.AddLast(item);
+		LinkedListNode<TValue> node = _List.AddLast(item);
 		_Dictionary.Add(item, node);
 		return true;
 	}
@@ -65,8 +63,8 @@ public class OrderedSet<T> : ICollection<T>, IEnumerable<T>, IReadOnlyCollection
 		_List.Clear();
 	}
 
-	public bool Remove(T item) {
-		if (!_Dictionary.TryGetValue(item, out LinkedListNode<T>? node))
+	public bool Remove(TValue item) {
+		if (!_Dictionary.TryGetValue(item, out LinkedListNode<TValue>? node))
 			return false;
 
 		_Dictionary.Remove(item);
@@ -88,8 +86,8 @@ public class OrderedSet<T> : ICollection<T>, IEnumerable<T>, IReadOnlyCollection
 	/// Returns true if the item is in the collection and was moved.
 	/// </summary>
 	/// <param name="item">The item to move.</param>
-	public bool MoveToStart(T item) {
-		if (!_Dictionary.TryGetValue(item, out LinkedListNode<T>? node))
+	public bool MoveToStart(TValue item) {
+		if (!_Dictionary.TryGetValue(item, out LinkedListNode<TValue>? node))
 			return false;
 
 		if (_List.First == node)
@@ -100,8 +98,8 @@ public class OrderedSet<T> : ICollection<T>, IEnumerable<T>, IReadOnlyCollection
 		return true;
 	}
 
-	public bool MoveBefore(T item, T sibling) {
-		if (!_Dictionary.TryGetValue(item, out LinkedListNode<T>? node) || !_Dictionary.TryGetValue(sibling, out LinkedListNode<T>? siblingNode))
+	public bool MoveBefore(TValue item, TValue sibling) {
+		if (!_Dictionary.TryGetValue(item, out LinkedListNode<TValue>? node) || !_Dictionary.TryGetValue(sibling, out LinkedListNode<TValue>? siblingNode))
 			return false;
 
 		if (siblingNode.Previous == node)
@@ -112,8 +110,8 @@ public class OrderedSet<T> : ICollection<T>, IEnumerable<T>, IReadOnlyCollection
 		return true;
 	}
 
-	public bool MoveAfter(T item, T sibling) {
-		if (!_Dictionary.TryGetValue(item, out LinkedListNode<T>? node) || !_Dictionary.TryGetValue(sibling, out LinkedListNode<T>? siblingNode))
+	public bool MoveAfter(TValue item, TValue sibling) {
+		if (!_Dictionary.TryGetValue(item, out LinkedListNode<TValue>? node) || !_Dictionary.TryGetValue(sibling, out LinkedListNode<TValue>? siblingNode))
 			return false;
 
 		if (siblingNode.Next == node)
@@ -134,8 +132,8 @@ public class OrderedSet<T> : ICollection<T>, IEnumerable<T>, IReadOnlyCollection
 	/// Returns true if the item is in the collection and was moved.
 	/// </summary>
 	/// <param name="item">The item to move.</param>
-	public bool MoveToEnd(T item) {
-		if (!_Dictionary.TryGetValue(item, out LinkedListNode<T>? node))
+	public bool MoveToEnd(TValue item) {
+		if (!_Dictionary.TryGetValue(item, out LinkedListNode<TValue>? node))
 			return false;
 
 		if (_List.Last == node)
@@ -158,7 +156,7 @@ public class OrderedSet<T> : ICollection<T>, IEnumerable<T>, IReadOnlyCollection
 		if (array != null && array.Rank != 1)
 			throw new ArgumentException("Multidimensional arrays are not supported", nameof(array));
 
-		if (array is not T[] tarray)
+		if (array is not TValue[] tarray)
 			throw new ArgumentException("Invalid array type", nameof(array));
 
 		_List.CopyTo(tarray, index);
@@ -168,7 +166,7 @@ public class OrderedSet<T> : ICollection<T>, IEnumerable<T>, IReadOnlyCollection
 
 	#region List Implementation
 
-	public int IndexOf(T item) {
+	public int IndexOf(TValue item) {
 		// O(1) check to see if we even have it.
 		if (!_Dictionary.ContainsKey(item))
 			return -1;
@@ -186,11 +184,11 @@ public class OrderedSet<T> : ICollection<T>, IEnumerable<T>, IReadOnlyCollection
 		return -1;
 	}
 
-	void IList<T>.Insert(int index, T item) {
+	void IList<TValue>.Insert(int index, TValue item) {
 		Insert(index, item);
 	}
 
-	public bool Insert(int index, T item) {
+	public bool Insert(int index, TValue item) {
 		// Make sure the index is within range.
 		if (index < 0 || index > _Dictionary.Count)
 			throw new ArgumentOutOfRangeException(nameof(index));
@@ -205,7 +203,7 @@ public class OrderedSet<T> : ICollection<T>, IEnumerable<T>, IReadOnlyCollection
 		if (_Dictionary.ContainsKey(item)) return false;
 
 		// Find the node we're inserting after.
-		LinkedListNode<T>? node = _List.First;
+		LinkedListNode<TValue>? node = _List.First;
 		while (index > 0)
 			node = node?.Next;
 
@@ -213,12 +211,12 @@ public class OrderedSet<T> : ICollection<T>, IEnumerable<T>, IReadOnlyCollection
 		if (node is null)
 			throw new ArgumentOutOfRangeException(nameof(index));
 
-		LinkedListNode<T> newNode = _List.AddAfter(node, item);
+		LinkedListNode<TValue> newNode = _List.AddAfter(node, item);
 		_Dictionary.Add(item, newNode);
 		return true;
 	}
 
-	void IList<T>.RemoveAt(int index) {
+	void IList<TValue>.RemoveAt(int index) {
 		RemoveAt(index);
 	}
 
@@ -234,7 +232,7 @@ public class OrderedSet<T> : ICollection<T>, IEnumerable<T>, IReadOnlyCollection
 		}
 
 		// Find the node we're removing.
-		LinkedListNode<T>? node = _List.First;
+		LinkedListNode<TValue>? node = _List.First;
 		while (index > 0)
 			node = node?.Next;
 
@@ -247,14 +245,14 @@ public class OrderedSet<T> : ICollection<T>, IEnumerable<T>, IReadOnlyCollection
 		_List.Remove(node);
 	}
 
-	public T this[int index] {
+	public TValue this[int index] {
 		get {
 			// Make sure the index is within range.
 			if (index < 0 || index >= _Dictionary.Count)
 				throw new ArgumentOutOfRangeException(nameof(index));
 
 			// Find the node we're returning.
-			LinkedListNode<T>? node = _List.First;
+			LinkedListNode<TValue>? node = _List.First;
 			while (index > 0)
 				node = node?.Next;
 
@@ -270,7 +268,7 @@ public class OrderedSet<T> : ICollection<T>, IEnumerable<T>, IReadOnlyCollection
 				throw new ArgumentOutOfRangeException(nameof(index));
 
 			// Find the node we're returning.
-			LinkedListNode<T>? node = _List.First;
+			LinkedListNode<TValue>? node = _List.First;
 			while (index > 0)
 				node = node?.Next;
 
@@ -297,27 +295,27 @@ public class OrderedSet<T> : ICollection<T>, IEnumerable<T>, IReadOnlyCollection
 
 	#region Set Implementation
 
-	public bool Contains(T item) {
+	public bool Contains(TValue item) {
 		return _Dictionary.ContainsKey(item);
 	}
 
-	public void CopyTo(T[] array, int index) {
+	public void CopyTo(TValue[] array, int index) {
 		_List.CopyTo(array, index);
 	}
 
-	public void ExceptWith(IEnumerable<T> other) {
-		foreach (T item in other)
+	public void ExceptWith(IEnumerable<TValue> other) {
+		foreach (TValue item in other)
 			Remove(item);
 	}
 
-	public void IntersectWith(IEnumerable<T> other) {
+	public void IntersectWith(IEnumerable<TValue> other) {
 		if (other is null)
 			throw new ArgumentNullException(nameof(other));
 
 		if (_Dictionary.Count == 0 || other == this)
 			return;
 
-		if (other is ICollection<T> collection && collection.Count == 0) {
+		if (other is ICollection<TValue> collection && collection.Count == 0) {
 			Clear();
 			return;
 		}
@@ -325,25 +323,25 @@ public class OrderedSet<T> : ICollection<T>, IEnumerable<T>, IReadOnlyCollection
 		IntersectWithEnumerable(other);
 	}
 
-	private void IntersectWithEnumerable(IEnumerable<T> other) {
+	private void IntersectWithEnumerable(IEnumerable<TValue> other) {
 		// This is not at all optimized, but we never use this ourselves.
-		List<T> existing = _Dictionary.Keys.ToList();
+		List<TValue> existing = _Dictionary.Keys.ToList();
 
-		foreach(T item in other)
+		foreach (TValue item in other)
 			existing.Remove(item);
 
-		foreach (T item in existing)
+		foreach (TValue item in existing)
 			Remove(item);
 	}
 
-	public bool IsProperSubsetOf(IEnumerable<T> other) {
+	public bool IsProperSubsetOf(IEnumerable<TValue> other) {
 		if (other is null)
 			throw new ArgumentNullException(nameof(other));
 
 		if (other == this)
 			return false;
 
-		if (other is ICollection<T> collection) {
+		if (other is ICollection<TValue> collection) {
 			if (collection.Count == 0)
 				return false;
 			if (_Dictionary.Count == 0)
@@ -354,56 +352,56 @@ public class OrderedSet<T> : ICollection<T>, IEnumerable<T>, IReadOnlyCollection
 		return unique == _Dictionary.Count && unfound > 0;
 	}
 
-	public bool IsSubsetOf(IEnumerable<T> other) {
+	public bool IsSubsetOf(IEnumerable<TValue> other) {
 		if (other is null)
 			throw new ArgumentNullException(nameof(other));
 
 		if (_Dictionary.Count == 0 || other == this)
 			return true;
 
-		if (other is ICollection<T> collection && _Dictionary.Count > collection.Count)
+		if (other is ICollection<TValue> collection && _Dictionary.Count > collection.Count)
 			return false;
 
 		var (unique, _) = CheckUniqueAndUnfoundElements(other, returnIfUnfound: false);
 		return unique == _Dictionary.Count;
 	}
 
-	public bool IsProperSupersetOf(IEnumerable<T> other) {
+	public bool IsProperSupersetOf(IEnumerable<TValue> other) {
 		if (other is null)
 			throw new ArgumentNullException(nameof(other));
 
 		if (_Dictionary.Count == 0 || other == this)
 			return false;
 
-		if (other is ICollection<T> collection && collection.Count == 0)
+		if (other is ICollection<TValue> collection && collection.Count == 0)
 			return true;
 
 		var (unique, unfound) = CheckUniqueAndUnfoundElements(other, returnIfUnfound: true);
 		return unique < _Dictionary.Count && unfound == 0;
 	}
 
-	public bool IsSupersetOf(IEnumerable<T> other) {
+	public bool IsSupersetOf(IEnumerable<TValue> other) {
 		if (other is null)
 			throw new ArgumentNullException(nameof(other));
 
 		if (other == this)
 			return true;
 
-		if (other is ICollection<T> collection ) {
+		if (other is ICollection<TValue> collection) {
 			if (collection.Count == 0)
 				return true;
 			if (collection.Count > _Dictionary.Count)
 				return false;
 		}
 
-		foreach (T item in other)
+		foreach (TValue item in other)
 			if (!_Dictionary.ContainsKey(item))
 				return false;
 
 		return true;
 	}
 
-	public bool Overlaps(IEnumerable<T> other) {
+	public bool Overlaps(IEnumerable<TValue> other) {
 		if (other is null)
 			throw new ArgumentNullException(nameof(other));
 
@@ -413,28 +411,28 @@ public class OrderedSet<T> : ICollection<T>, IEnumerable<T>, IReadOnlyCollection
 		if (other == this)
 			return true;
 
-		foreach (T item in other)
+		foreach (TValue item in other)
 			if (_Dictionary.ContainsKey(item))
 				return true;
 
 		return false;
 	}
 
-	public bool SetEquals(IEnumerable<T> other) {
+	public bool SetEquals(IEnumerable<TValue> other) {
 		if (other is null)
 			throw new ArgumentNullException(nameof(other));
 
 		if (other == this)
 			return true;
 
-		if (other is ICollection<T> collection && collection.Count != _Dictionary.Count)
+		if (other is ICollection<TValue> collection && collection.Count != _Dictionary.Count)
 			return false;
 
 		var (unique, unfound) = CheckUniqueAndUnfoundElements(other, returnIfUnfound: true);
 		return unique == _Dictionary.Count && unfound == 0;
 	}
 
-	public void SymmetricExceptWith(IEnumerable<T> other) {
+	public void SymmetricExceptWith(IEnumerable<TValue> other) {
 		if (other is null)
 			throw new ArgumentNullException(nameof(other));
 
@@ -445,26 +443,26 @@ public class OrderedSet<T> : ICollection<T>, IEnumerable<T>, IReadOnlyCollection
 			Clear();
 
 		else {
-			HashSet<T> removed = new HashSet<T>(_Comparer);
+			HashSet<TValue> removed = new(_Comparer);
 
-			foreach (T item in other) {
+			foreach (TValue item in other) {
 				if (Remove(item))
 					removed.Add(item);
-				else if (! removed.Contains(item))
+				else if (!removed.Contains(item))
 					Add(item);
 			}
 		}
 	}
 
-	public void UnionWith(IEnumerable<T> other) {
+	public void UnionWith(IEnumerable<TValue> other) {
 		if (other is null)
 			throw new ArgumentNullException(nameof(other));
 
-		foreach (T item in other)
+		foreach (TValue item in other)
 			Add(item);
 	}
 
-	private (int UniqueCount, int UnfoundCount) CheckUniqueAndUnfoundElements(IEnumerable<T> other, bool returnIfUnfound = false) {
+	private (int UniqueCount, int UnfoundCount) CheckUniqueAndUnfoundElements(IEnumerable<TValue> other, bool returnIfUnfound = false) {
 		if (_Dictionary.Count == 0)
 			return (0, other.Count());
 
@@ -474,9 +472,9 @@ public class OrderedSet<T> : ICollection<T>, IEnumerable<T>, IReadOnlyCollection
 		int count = _Dictionary.Count;
 		int length = BitHelper.ToIntArrayLength(count);
 		Span<int> data = length <= 100 ? stackalloc int[length] : GC.AllocateUninitializedArray<int>(length);
-		BitHelper helper = new BitHelper(data, clear: true);
+		BitHelper helper = new(data, clear: true);
 
-		foreach(T item in other) {
+		foreach (TValue item in other) {
 			int idx = IndexOf(item);
 			if (idx != -1) {
 				if (!helper.IsMarked(idx)) {

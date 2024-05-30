@@ -1,0 +1,92 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Smoked-Fish/AnythingAnywhere
+**
+*************************************************/
+
+{
+  // 家具配置
+  "Config.AnythingAnywhere.Placing.Title": "放置",
+  "Config.AnythingAnywhere.EnablePlacing.Name": "启用放置",
+  "Config.AnythingAnywhere.EnablePlacing.Description": "允许在任何位置放置物品（家具、箱子等）",
+  "Config.AnythingAnywhere.EnableFreePlace.Name": "自由放置",
+  "Config.AnythingAnywhere.EnableFreePlace.Description": "允许在任何位置放置家具，甚至在墙上",
+  "Config.AnythingAnywhere.EnableRugRemovalBypass.Name": "地毯移除绕过",
+  "Config.AnythingAnywhere.EnableRugRemovalBypass.Description": "允许移除带有家具的地毯",
+  "Config.AnythingAnywhere.EnableWallFurnitureIndoors.Name": "室内墙壁家具",
+  "Config.AnythingAnywhere.EnableWallFurnitureIndoors.Description": "允许在可装饰的室内任何位置放置墙壁家具",
+
+  // 建筑配置
+  "Config.AnythingAnywhere.Building.Title": "建筑",
+  "Config.AnythingAnywhere.EnableBuilding.Name": "启用建筑",
+  "Config.AnythingAnywhere.EnableBuilding.Description": "启用此模组的建筑功能",
+  "Config.AnythingAnywhere.EnableBuildAnywhere.Name": "任意建造",
+  "Config.AnythingAnywhere.EnableBuildAnywhere.Description": "允许在任何位置建造，甚至在墙上",
+
+  "Config.AnythingAnywhere.BuildMenu.Name": "任意建造菜单",
+  "Config.AnythingAnywhere.BuildMenu.Description": "在任何地方打开木匠菜单",
+  "Config.AnythingAnywhere.WizardBuildMenu.Name": "巫师建造菜单",
+  "Config.AnythingAnywhere.WizardBuildMenu.Description": "在任何地方打开巫师建造菜单",
+  "Config.AnythingAnywhere.BuildModifier.Name": "建造修改键",
+  "Config.AnythingAnywhere.BuildModifier.Description": "在放置、拆除或升级建筑时按住该键，将不会返回建造菜单。",
+  "Config.AnythingAnywhere.EnableGreenhouse.Name": "启用温室",
+  "Config.AnythingAnywhere.EnableGreenhouse.Description": "使温室可以建造。",
+  "Config.AnythingAnywhere.RemoveBuildConditions.Name": "移除建造条件",
+  "Config.AnythingAnywhere.RemoveBuildConditions.Description": "移除大多数蓝图的建造条件。",
+  "Config.AnythingAnywhere.EnableBuildingIndoors.Name": "室内建筑",
+  "Config.AnythingAnywhere.EnableBuildingIndoors.Description": "在室内进行建筑",
+  "Config.AnythingAnywhere.BypassMagicInk.Name": "魔法墨水绕过",
+  "Config.AnythingAnywhere.BypassMagicInk.Description": "跳过魔法墨水检查。",
+
+  // 农业配置
+  "Config.AnythingAnywhere.Farming.Title": "农业",
+  "Config.AnythingAnywhere.EnablePlanting.Name": "启用耕作",
+  "Config.AnythingAnywhere.EnablePlanting.Description": "允许在任何位置进行耕作",
+  "Config.AnythingAnywhere.EnableDiggingAll.Name": "任意锄地",
+  "Config.AnythingAnywhere.EnableDiggingAll.Description": "允许锄翻任何地块",
+  "Config.AnythingAnywhere.EnableFruitTreeTweaks.Name": "果树调整",
+  "Config.AnythingAnywhere.EnableFruitTreeTweaks.Description": "移除果树的生长限制",
+  "Config.AnythingAnywhere.EnableWildTreeTweaks.Name": "野生树木调整",
+  "Config.AnythingAnywhere.EnableWildTreeTweaks.Description": "移除野生树木的生长限制。这将快速失控",
+
+  // 其他配置
+  "Config.AnythingAnywhere.Other.Title": "其他",
+  "Config.AnythingAnywhere.EnableAnimalRelocate.Name": "动物搬迁",
+  "Config.AnythingAnywhere.EnableAnimalRelocate.Description": "允许从一个地点搬迁动物到另一个地点",
+  "Config.AnythingAnywhere.EnableCaskFunctionality.Name": "桶调整",
+  "Config.AnythingAnywhere.EnableCaskFunctionality.Description": "在任何地方启用桶功能",
+  "Config.AnythingAnywhere.EnableJukeboxFunctionality.Name": "点唱机调整",
+  "Config.AnythingAnywhere.EnableJukeboxFunctionality.Description": "在任何地方启用点唱机功能。（在下雨时除外）",
+  "Config.AnythingAnywhere.EnableGoldClockAnywhere.Name": "金色时钟调整",
+  "Config.AnythingAnywhere.EnableGoldClockAnywhere.Description": "在任何地方启用金色时钟功能。",
+  "Config.AnythingAnywhere.MultipleMiniObelisks.Name": "多个小方尖碑",
+  "Config.AnythingAnywhere.MultipleMiniObelisks.Description": "允许在每个位置放置超过2个小方尖碑",
+  "Config.AnythingAnywhere.EnableCabinsAnywhere.Name": "房屋/小屋绕过",
+  "Config.AnythingAnywhere.EnableCabinsAnywhere.Description": "这将导致错误！禁用小屋和农舍检查",
+
+  // Reset Page Button
+  "Config.AnythingAnywhere.ResetPage.Button": "重置页面",
+
+  // Buildable Locations Button
+  "Config.AnythingAnywhere.BlacklistedLocations.Title": "隐藏位置",
+  "Config.AnythingAnywhere.BlacklistedLocations.Button": "当前位置",
+  "Config.AnythingAnywhere.BlacklistedLocations.Description": "防止当前位置出现在罗宾菜单中",
+
+  // 玩家消息
+  "Message.AnythingAnywhere.NoBuildingIndoors": "禁用了室内建筑",
+  "Message.AnythingAnywhere.NoMovingBuildingLocation": "{{buildingName}} 无法移动到另一张地图",
+  "Message.AnythingAnywhere.NoMagicInk": "您需要魔法墨水才能打开巫师的建造菜单",
+  "Message.AnythingAnywhere.MultiplayerRelocate": "在多人游戏中，您无法将建筑物移动到其他位置",
+  "Message.AnythingAnywhere.ChooseBuildingLocation": "您想将建筑物移动到哪里？",
+  "Message.AnythingAnywhere.ChooseAnimalLocation": "您想将动物移动到哪里？",
+
+  // TODO (DID MY BEST)
+  "Config.AnythingAnywhere.EnableInstantBuild.Name": "即时建造",
+  "Config.AnythingAnywhere.EnableInstantBuild.Description": "启用即时建造",
+  "Config.AnythingAnywhere.EnableFreeBuild.Name": "免费建造",
+  "Config.AnythingAnywhere.EnableFreeBuild.Description": "将建造成本设置为免费"
+}

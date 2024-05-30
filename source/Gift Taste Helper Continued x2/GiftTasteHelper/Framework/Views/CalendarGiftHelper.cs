@@ -8,7 +8,6 @@
 **
 *************************************************/
 
-using System.Collections.Generic;
 using System.Diagnostics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -23,12 +22,12 @@ namespace GiftTasteHelper.Framework
         ** Properties
         *********/
         /// <summary>The underlying calendar.</summary>
-        private readonly Calendar Calendar = new Calendar();
-        private readonly Dictionary<int, NPC> Birthdays = new Dictionary<int, NPC>();
+        private readonly Calendar Calendar = new();
+        private readonly Dictionary<int, NPC> Birthdays = new();
 
         // The currently hovered day.
         private int HoveredDay = Calendar.InvalidDay;
-        private string SeasonLastOpenedOn = null;
+        private string? SeasonLastOpenedOn = null;
 
         /*********
         ** Public methods
@@ -128,7 +127,10 @@ namespace GiftTasteHelper.Framework
         public override void OnDraw()
         {
             // Draw the tooltip
-            this.DrawGiftTooltip(this.CurrentGiftDrawData, this.TooltipTitle(), this.Calendar.GetCurrentHoverText());
+            if (this.CurrentGiftDrawData is not null)
+            {
+                this.DrawGiftTooltip(this.CurrentGiftDrawData, this.TooltipTitle(), this.Calendar.GetCurrentHoverText());
+            }
         }
 
         private void LoadBirthdays()

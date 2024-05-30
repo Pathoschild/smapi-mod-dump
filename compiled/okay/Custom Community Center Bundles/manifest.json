@@ -14,7 +14,7 @@
 {
   "Name": "Custom Community Center Bundles",
   "Author": "alvadea & jaksha",
-  "Version": "1.0.0",
+  "Version": "1.1.1",
   "Description": "Custom Community Center Bundles - Main Files",
   "UniqueID": "alja.CustomCCB",
   "EntryDll": "ChallengingCommunityCenterBundles.dll",

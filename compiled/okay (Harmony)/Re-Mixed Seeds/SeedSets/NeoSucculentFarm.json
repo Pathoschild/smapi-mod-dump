@@ -1,0 +1,445 @@
+{      
+    "Spring": [          
+        {
+            "cropName" : "",
+            "seedID" : "NoraCharles.NeosSucculentFarmRedux_AlbinoHoodiaSeed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "",
+            "seedID" : "NoraCharles.NeosSucculentFarmRedux_BlueCandleSeed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "",
+            "seedID" : "NoraCharles.NeosSucculentFarmRedux_CandelabraSeed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "",
+            "seedID" : "NoraCharles.NeosSucculentFarmRedux_DevilsHornsSeed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "",
+            "seedID" : "NoraCharles.NeosSucculentFarmRedux_EstevesiiSeed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "",
+            "seedID" : "NoraCharles.NeosSucculentFarmRedux_FlapjackSeed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "",
+            "seedID" : "NoraCharles.NeosSucculentFarmRedux_FlowerCrownSeed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "",
+            "seedID" : "NoraCharles.NeosSucculentFarmRedux_HereroaSeed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "",
+            "seedID" : "NoraCharles.NeosSucculentFarmRedux_HoodiaSeed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "",
+            "seedID" : "NoraCharles.NeosSucculentFarmRedux_JadeSeed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "",
+            "seedID" : "NoraCharles.NeosSucculentFarmRedux_LipstickEcheveriaSeed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "",
+            "seedID" : "NoraCharles.NeosSucculentFarmRedux_PaddleSeed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "",
+            "seedID" : "NoraCharles.NeosSucculentFarmRedux_SaguaroSeed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "",
+            "seedID" : "NoraCharles.NeosSucculentFarmRedux_StarSeed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "",
+            "seedID" : "NoraCharles.NeosSucculentFarmRedux_WaxAgaveSeed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "",
+            "seedID" : "NoraCharles.NeosSucculentFarmRedux_ZebraSeed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        }
+      ],
+
+      "Summer": [
+        {
+            "cropName" : "",
+            "seedID" : "NoraCharles.NeosSucculentFarmRedux_AlbinoHoodiaSeed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "",
+            "seedID" : "NoraCharles.NeosSucculentFarmRedux_AloeVeraSeed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "",
+            "seedID" : "NoraCharles.NeosSucculentFarmRedux_BarrelSeed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "",
+            "seedID" : "NoraCharles.NeosSucculentFarmRedux_BlueCandleSeed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "",
+            "seedID" : "NoraCharles.NeosSucculentFarmRedux_CandelabraSeed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "",
+            "seedID" : "NoraCharles.NeosSucculentFarmRedux_DevilsHornsSeed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "",
+            "seedID" : "NoraCharles.NeosSucculentFarmRedux_EstevesiiSeed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "",
+            "seedID" : "NoraCharles.NeosSucculentFarmRedux_FlapjackSeed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "",
+            "seedID" : "NoraCharles.NeosSucculentFarmRedux_FlowerCrownSeed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "",
+            "seedID" : "NoraCharles.NeosSucculentFarmRedux_HereroaSeed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "",
+            "seedID" : "NoraCharles.NeosSucculentFarmRedux_HoodiaSeed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "",
+            "seedID" : "NoraCharles.NeosSucculentFarmRedux_JadeSeed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "",
+            "seedID" : "NoraCharles.NeosSucculentFarmRedux_LipstickEcheveriaSeed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "",
+            "seedID" : "NoraCharles.NeosSucculentFarmRedux_PaddleSeed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "",
+            "seedID" : "NoraCharles.NeosSucculentFarmRedux_PowderPuffSeed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "",
+            "seedID" : "NoraCharles.NeosSucculentFarmRedux_SaguaroSeed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "",
+            "seedID" : "NoraCharles.NeosSucculentFarmRedux_SeaBeanSeed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "",
+            "seedID" : "NoraCharles.NeosSucculentFarmRedux_StarSeed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "",
+            "seedID" : "NoraCharles.NeosSucculentFarmRedux_WaxAgaveSeed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "",
+            "seedID" : "NoraCharles.NeosSucculentFarmRedux_ZebraSeed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        }
+           
+      ],
+
+      "Fall": [
+        {
+            "cropName" : "",
+            "seedID" : "NoraCharles.NeosSucculentFarmRedux_AlbinoHoodiaSeed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "",
+            "seedID" : "NoraCharles.NeosSucculentFarmRedux_AloeVeraSeed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "",
+            "seedID" : "NoraCharles.NeosSucculentFarmRedux_BarrelSeed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "",
+            "seedID" : "NoraCharles.NeosSucculentFarmRedux_BlueCandleSeed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "",
+            "seedID" : "NoraCharles.NeosSucculentFarmRedux_CandelabraSeed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "",
+            "seedID" : "NoraCharles.NeosSucculentFarmRedux_DevilsHornsSeed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "",
+            "seedID" : "NoraCharles.NeosSucculentFarmRedux_EstevesiiSeed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "",
+            "seedID" : "NoraCharles.NeosSucculentFarmRedux_FlapjackSeed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "",
+            "seedID" : "NoraCharles.NeosSucculentFarmRedux_FlowerCrownSeed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "",
+            "seedID" : "NoraCharles.NeosSucculentFarmRedux_HereroaSeed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "",
+            "seedID" : "NoraCharles.NeosSucculentFarmRedux_HoodiaSeed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "",
+            "seedID" : "NoraCharles.NeosSucculentFarmRedux_JadeSeed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "",
+            "seedID" : "NoraCharles.NeosSucculentFarmRedux_LipstickEcheveriaSeed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "",
+            "seedID" : "NoraCharles.NeosSucculentFarmRedux_SaguaroSeed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "",
+            "seedID" : "NoraCharles.NeosSucculentFarmRedux_SeaBeanSeed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "",
+            "seedID" : "NoraCharles.NeosSucculentFarmRedux_StarSeed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "",
+            "seedID" : "NoraCharles.NeosSucculentFarmRedux_WaxAgaveSeed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "",
+            "seedID" : "NoraCharles.NeosSucculentFarmRedux_ZebraSeed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        }
+        
+      ]
+      
+}

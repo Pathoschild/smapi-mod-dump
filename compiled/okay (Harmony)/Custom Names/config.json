@@ -1,4 +1,6 @@
 {
   "CostToName": 5,
-  "UnforgeClearName": false
+  "UnforgeClearsName": false,
+  "ShowCompanionName": true,
+  "ShowToolbarName": true
 }

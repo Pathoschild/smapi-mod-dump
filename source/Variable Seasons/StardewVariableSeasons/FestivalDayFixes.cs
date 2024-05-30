@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using System;
 using StardewValley;
 
 namespace StardewVariableSeasons
@@ -24,12 +25,16 @@ namespace StardewVariableSeasons
             __state = Game1.season;
             Game1.season = ModEntry.SeasonByDay;
             Game1.currentSeason = ModEntry.SeasonByDay.ToString().ToLower();
+            Game1.Date.Season = ModEntry.SeasonByDay;
+            Game1.Date.SeasonKey = ModEntry.SeasonByDay.ToString().ToLower();
         }
         
         public static void ResetSeasonPostfix(Season __state)
         {
             Game1.season = __state;
             Game1.currentSeason = Game1.season.ToString().ToLower();
+            Game1.Date.Season = Game1.season;
+            Game1.Date.SeasonKey = Game1.season.ToString().ToLower();
         }
     }
 }

@@ -1,0 +1,9 @@
+{
+	"Name": "[DLL] ScreamingForJoy",
+	"Author": "Danil Harding",
+	"Version": "1.0.0",
+	"Description": "Sometimes it is best to let out a little scream...",
+	"UniqueID": "DanilH.ScreamingForJoy",
+	"EntryDll":  "ScreamingForJoy.dll",
+	"UpdateKeys": []
+	}

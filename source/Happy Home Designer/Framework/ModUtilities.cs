@@ -131,10 +131,14 @@ namespace HappyHomeDesigner.Framework
 		public static T ToDelegate<T>(this MethodInfo method, object target) where T : Delegate
 			=> (T)Delegate.CreateDelegate(typeof(T), target, method);
 
-		public static void QuickBind(this IGMCM gmcm, IManifest manifest, object config, string name)
+		public static void QuickBind(this IGMCM gmcm, IManifest manifest, object config, string name, 
+			bool titleOnly = false, string[] allowedValues = null, Func<string, string> formatValue = null)
 		{
 			var prop = config.GetType().GetProperty(name) ??
 				throw new ArgumentException($"Public property of name '{name}' not found on config.");
+
+			if (titleOnly)
+				gmcm.SetTitleScreenOnlyForNextOptions(manifest, true);
 
 			var title = $"config.{prop.Name}.name";
 			var desc = $"config.{prop.Name}.desc";
@@ -154,8 +158,29 @@ namespace HappyHomeDesigner.Framework
 				() => ModEntry.i18n.Get(title),
 				() => ModEntry.i18n.Get(desc));
 
+			else if (type == typeof(string))
+				gmcm.AddTextOption(manifest,
+				prop.GetMethod.ToDelegate<Func<string>>(config),
+				prop.SetMethod.ToDelegate<Action<string>>(config),
+				() => ModEntry.i18n.Get(title),
+				() => ModEntry.i18n.Get(desc),
+				allowedValues, formatValue);
+
 			else
 				throw new ArgumentException($"Config property '{name}' is of unsupported type '{type.FullName}'.");
+
+			if (titleOnly)
+				gmcm.SetTitleScreenOnlyForNextOptions(manifest, false);
+		}
+
+		public static void QuickPage(this IGMCM gmcm, IManifest manifest, string name, string owner = "")
+		{
+			gmcm.AddPage(manifest, owner);
+			gmcm.AddPageLink(manifest, name,
+				() => ModEntry.i18n.Get($"config.{name}.name"),
+				() => ModEntry.i18n.Get($"config.{name}.desc")
+			);
+			gmcm.AddPage(manifest, name, () => ModEntry.i18n.Get($"config.{name}.name"));
 		}
 
 		public static bool AssertValid(this CodeMatcher matcher, string message, LogLevel level = LogLevel.Debug)
@@ -184,12 +209,7 @@ namespace HappyHomeDesigner.Framework
 
 		public static IEnumerable<ISalable> GetAdditionalCatalogItems(this IEnumerable<ISalable> original, string ID)
 		{
-			var output = original;
-
-			if (CustomFurniture.Installed && ID.Contains("Furniture"))
-				output = output.Concat(CustomFurniture.customFurniture);
-
-			return output;
+			return original;
 		}
 
 		public static bool CountsAsCatalog(this ShopMenu shop, bool ignore_config = false)
@@ -208,7 +228,7 @@ namespace HappyHomeDesigner.Framework
 
 		public static IEnumerable<ISalable> GenerateCombined(CatalogType catalog)
 		{
-			IEnumerable<ISalable> output = Array.Empty<ISalable>();
+			IEnumerable<ISalable> output = [];
 			var shopData = DataLoader.Shops(Game1.content);
 
 			if (ModEntry.config.EarlyDeluxe && catalog.HasFlag(CatalogType.Furniture) && catalog.HasFlag(CatalogType.Wallpaper))
@@ -246,5 +266,13 @@ namespace HappyHomeDesigner.Framework
 			}
 			return true;
 		}
+
+		public static Color Mult(this Color a, Color b)
+			=> new(
+				(a.R / 255f) * (b.R / 255f),
+				(a.G / 255f) * (b.G / 255f),
+				(a.B / 255f) * (b.B / 255f),
+				(a.A / 255f) * (b.A / 255f)
+			);
 	}
 }

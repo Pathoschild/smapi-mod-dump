@@ -21,9 +21,6 @@ namespace SkillPrestige
     /// <summary>Extension methods created and used for SkillPrestige.</summary>
     public static class Extensions
     {
-        /*********
-        ** Public methods
-        *********/
         /// <summary>gets the field from an object through reflection, even if it is a private field.</summary>
         /// <typeparam name="T">The type that contains the parameter member</typeparam>
         /// <param name="instance">The instance of the type you wish to get the field from.</param>
@@ -74,6 +71,12 @@ namespace SkillPrestige
             }
         }
 
+        public static TReturn GetStaticField<TReturn>(this Type type, string fieldName)
+        {
+            const BindingFlags bindingAttributes = BindingFlags.Static | BindingFlags.NonPublic;
+            return (TReturn)type.GetField(fieldName, bindingAttributes)?.GetValue(null);
+        }
+
         /// <summary>sets the field of a base class of an object through reflection, even if it is a private field.</summary>
         /// <typeparam name="T">The type that directly inherits from the type contains the parameter member</typeparam>
         /// <typeparam name="TMember">The type of the parameter member</typeparam>
@@ -93,12 +96,19 @@ namespace SkillPrestige
             return appDomain.GetAssemblies().Where(x => !x.FullName.StartsWithOneOf("mscorlib", "System", "Microsoft", "Windows", "Newtonsoft"));
         }
 
+
+        private static readonly List<string> AssemblyNamesToSkip = new() { "Steamworks.NET", "SolidFoundationsAutomate", "DynamicGameAssets" };
         /// <summary>Gets types from an assembly as long as those types can safely be retrieved.</summary>
         /// <param name="assembly">Assembly you wish to obtain types from.</param>
         public static IEnumerable<Type> GetTypesSafely(this Assembly assembly)
         {
             try
             {
+                if (AssemblyNamesToSkip.Contains(assembly.GetName().Name))
+                {
+                    Logger.LogVerbose($"Skipping {assembly.FullName}...");
+                    return new List<Type>();
+                }
                 Logger.LogVerbose($"Attempting to obtain types of assembly {assembly.FullName} safely...");
                 return assembly.GetTypes();
             }

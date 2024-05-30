@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v6.0": {
-      "AlternativeTextures/7.2.6": {
+      "AlternativeTextures/7.3.0": {
         "dependencies": {
           "Newtonsoft.Json": "13.0.3",
           "Pathoschild.Stardew.ModBuildConfig": "4.1.1"
@@ -27,7 +27,7 @@
     }
   },
   "libraries": {
-    "AlternativeTextures/7.2.6": {
+    "AlternativeTextures/7.3.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

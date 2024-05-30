@@ -1,0 +1,21 @@
+{
+  "ConfigureAdventureBar": "U",
+  "ToggleAdventureBar": "LeftControl + U",
+  "AbilityBar1Slot1": "LeftControl + D1",
+  "AbilityBar1Slot2": "LeftControl + D2",
+  "AbilityBar1Slot3": "LeftControl + D3",
+  "AbilityBar1Slot4": "LeftControl + D4",
+  "AbilityBar1Slot5": "LeftControl + D5",
+  "AbilityBar1Slot6": "LeftControl + D6",
+  "AbilityBar1Slot7": "LeftControl + D7",
+  "AbilityBar1Slot8": "LeftControl + D8",
+  "AbilityBar2Slot1": "LeftShift + D1",
+  "AbilityBar2Slot2": "LeftShift + D2",
+  "AbilityBar2Slot3": "LeftShift + D3",
+  "AbilityBar2Slot4": "LeftShift + D4",
+  "AbilityBar2Slot5": "LeftShift + D5",
+  "AbilityBar2Slot6": "LeftShift + D6",
+  "AbilityBar2Slot7": "LeftShift + D7",
+  "AbilityBar2Slot8": "LeftShift + D8",
+  "ThrowShieldKey": "R"
+}

@@ -14,57 +14,37 @@ using StardewModdingAPI.Events;
 using StardewMods.Common.Interfaces;
 using StardewMods.Common.Services;
 using StardewMods.Common.Services.Integrations.ContentPatcher;
-using StardewMods.Common.Services.Integrations.FauxCore;
 using StardewMods.CustomBush.Framework.Models;
 
-/// <summary>Responsible for handling assets provided by this mod.</summary>
-internal sealed class AssetHandler : BaseService
+/// <inheritdoc />
+internal sealed class AssetHandler : BaseAssetHandler
 {
-    private readonly string dataPath;
-    private readonly IGameContentHelper gameContentHelper;
-
-    private Dictionary<string, CustomBush>? data;
-
     /// <summary>Initializes a new instance of the <see cref="AssetHandler" /> class.</summary>
+    /// <param name="contentPatcherIntegration">Dependency for Content Patcher integration.</param>
+    /// <param name="eventManager">Dependency used for managing events.</param>
     /// <param name="gameContentHelper">Dependency used for loading game assets.</param>
-    /// <param name="eventSubscriber">Dependency used for subscribing to events.</param>
-    /// <param name="log">Dependency used for logging debug information to the console.</param>
-    /// <param name="manifest">Dependency for accessing mod manifest.</param>
+    /// <param name="modContentHelper">Dependency used for accessing mod content.</param>
     public AssetHandler(
+        ContentPatcherIntegration contentPatcherIntegration,
+        IEventManager eventManager,
         IGameContentHelper gameContentHelper,
-        IEventSubscriber eventSubscriber,
-        ILog log,
-        IManifest manifest)
-        : base(log, manifest)
-    {
-        this.gameContentHelper = gameContentHelper;
-        this.dataPath = this.ModId + "/Data";
-        eventSubscriber.Subscribe<AssetRequestedEventArgs>(this.OnAssetRequested);
-        eventSubscriber.Subscribe<AssetsInvalidatedEventArgs>(this.OnAssetsInvalidated);
-        eventSubscriber.Subscribe<ConditionsApiReadyEventArgs>(this.OnConditionsApiReady);
-    }
+        IModContentHelper modContentHelper)
+        : base(contentPatcherIntegration, eventManager, gameContentHelper, modContentHelper) =>
+        this
+            .Asset($"{Mod.Id}/Data")
+            .Load(static () => new Dictionary<string, CustomBush>(StringComparer.OrdinalIgnoreCase))
+            .Edit(AssetHandler.AddIds, (AssetEditPriority)int.MaxValue);
 
     /// <summary>Gets the data model for all Custom Bush.</summary>
     public Dictionary<string, CustomBush> Data =>
-        this.data ??= this.gameContentHelper.Load<Dictionary<string, CustomBush>>(this.dataPath);
+        this.Asset($"{Mod.Id}/Data").Require<Dictionary<string, CustomBush>>();
 
-    private void OnConditionsApiReady(ConditionsApiReadyEventArgs e) => this.data = null;
-
-    private void OnAssetsInvalidated(AssetsInvalidatedEventArgs e)
+    private static void AddIds(IAssetData asset)
     {
-        if (e.Names.Any(assetName => assetName.IsEquivalentTo(this.dataPath)))
+        var data = asset.AsDictionary<string, CustomBush>().Data;
+        foreach (var (key, customBush) in data)
         {
-            this.data = null;
-        }
-    }
-
-    private void OnAssetRequested(AssetRequestedEventArgs e)
-    {
-        if (e.Name.IsEquivalentTo(this.dataPath))
-        {
-            e.LoadFrom(
-                static () => new Dictionary<string, CustomBush>(StringComparer.OrdinalIgnoreCase),
-                AssetLoadPriority.Exclusive);
+            customBush.Id = key;
         }
     }
 }

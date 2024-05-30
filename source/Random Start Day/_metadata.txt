@@ -6,10 +6,10 @@ mods:
    Random Start Day
 
 latest commit:
-   commit 4b807d475da0cffae15d58e04f7eed625cbe9d29
+   commit 6cdfd65a45339a58047824c6f11ae768d6a6ad49
    Author: idermailer <idermailer@gmail.com>
-   Date:   Sat Mar 30 19:44:45 2024 +0900
+   Date:   Mon May 20 02:05:34 2024 +0900
    
-       2.0.1
-       If you don't set random seed at advanced game option, random random seed is given now.
+       - 2.1.0
+       many changes. please see changelogs on Nexus mods page.
    

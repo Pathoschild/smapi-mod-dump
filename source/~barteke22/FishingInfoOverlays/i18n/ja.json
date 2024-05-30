@@ -13,6 +13,12 @@
 	"GenericMC.barDescription": "釣りざお（エサ・釣り具・ゴミ・魚）、カニかご（ゴミ・エビなど）を持っている時に位置情報を示すバーです",
 	"GenericMC.barDescription2": "変数名にカーソルを合わせると、詳細が示されます.釣ざおを持ちながらセーブすると、このメニューに結果が更新されます.",
 
+	"GenericMC.barSonarMode": "ソナータックルが必要",
+	"GenericMC.barSonarModeDesc": "ソナーを特定の MOD 機能の要件にします:\nMOD 全体: ソナーがない場合、すべての MOD 機能を無効にします。\nミニ + スキャン: ソナーがない場合、ミニゲームのプレビューとシフト スキャン機能を無効にします。\nシフトスキャン: ソナーがない場合に Shift キーを押したままにすると、マウス タイルの照準が無効になります。",
+	"GenericMC.barSonarMode0": "MOD 全体",
+	"GenericMC.barSonarMode1": "ミニ + スキャン",
+	"GenericMC.barSonarMode2": "シフトスキャン",
+
 	"GenericMC.barIconMode": "アイコンモード",
 	"GenericMC.barIconModeDesc": "エサ・釣り具・ゴミ・魚のアイコンが移動する方向で、行・列に分割されます.",
 	"GenericMC.barIconMode0": "水平方向のアイコン",
@@ -50,8 +56,8 @@
 	"GenericMC.barSortMode0": "名前",
 	"GenericMC.barSortMode1": "捕獲率",
 
-	"GenericMC.barExtraCheckFrequency": "エクストラチェック頻度",
-	"GenericMC.barExtraCheckFrequencyDesc": "現在地での釣りをシミュレートするパフォーマンス重視のチェック.数値が高いほど試行回数が多くなる(精度が上がり、ちらつきが減る).どのようなMODでも正確であるべきですが、高い場合、パフォーマンスを悪化させる可能性があります.画面分割モードでは、パフォーマンスを助けるために画面数で割り算されます.",
+	"GenericMC.barExtraCheckFrequency": "動的周波数",
+	"GenericMC.barExtraCheckFrequencyDesc": "0の場合: 釣りはシミュレートされません。 精度の低いチェックが使用されます。 パーセンテージはわずかに異なる可能性があります。\nそれ以外の場合は、現在地での釣りをシミュレートするパフォーマンス重視のチェック.数値が高いほど試行回数が多くなる(精度が上がり、ちらつきが減る).どのようなMODでも正確であるべきですが、高い場合、パフォーマンスを悪化させる可能性があります.画面分割モードでは、パフォーマンスを助けるために画面数で割り算されます.",
 
 	"GenericMC.barScanRadius": "スキャン半径",
 	"GenericMC.barScanRadiusDesc": "オーバーレイはプレイヤーの周囲Xタイルをスキャンして水を探し、見つかった最も近い水タイルの魚情報のみを示します.",
@@ -72,9 +78,8 @@
 	"GenericMC.MinigameMode": "ミニゲームモード",
 	"GenericMC.MinigameModeDesc": "フル：複数のレイヤーをコピーして見栄えを良くします.\nシンプル.魚を重ねるだけなので、見た目は悪くなりますが、性能・機能は良くなるかもしれません.\nバーのみ（上記2つに含まれる）：通常のロケーションバー（有効になっている場合）に魚をアウトライン化します.",
 	"GenericMC.MinigameMode0": "フル",
-	"GenericMC.MinigameMode1": "フル (if Sonar)",
-	"GenericMC.MinigameMode2": "シンプル",
-	"GenericMC.MinigameMode3": "バーのみ",
+	"GenericMC.MinigameMode1": "シンプル",
+	"GenericMC.MinigameMode2": "バーのみ",
 
 	"GenericMC.SplitScreenDesc": "画面分割固有の設定です.これらは画面分割のプレイヤーにのみ関係します.メインプレーヤーだけが変更する必要があります.",
 	"GenericMC.SplitScreen2": "分割画面2: 右",

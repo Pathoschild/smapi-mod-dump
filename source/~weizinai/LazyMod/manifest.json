@@ -1,0 +1,27 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/weizinai/StardewValleyMods
+**
+*************************************************/
+
+{
+    "Name": "Lazy Mod",
+    "Author": "weizinai",
+    "Version": "1.0.8",
+    "Description": "A mod help you do many things.",
+    "UniqueID": "weizinai.LazyMod",
+    "EntryDll": "LazyMod.dll",
+    "UpdateKeys": [
+        "Nexus:22826"
+    ],
+    "Dependencies": [
+        {
+            "UniqueID": "spacechase0.GenericModConfigMenu",
+            "IsRequired": false
+        }
+    ]
+}

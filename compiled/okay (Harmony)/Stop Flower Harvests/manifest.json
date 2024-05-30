@@ -1,0 +1,9 @@
+{
+    "Name": "Stop Flower Harvests",
+    "Author": "BlobLeader",
+    "Version": "1.0.1", // fixed locally
+    "Description": "For when you're tired of harvesting flowers when collecting honey.",
+    "UniqueID": "BlobLeader.StopFlowerHarvests",
+    "EntryDll": "StopFlowerHarvests.dll",
+    "UpdateKeys": []
+}

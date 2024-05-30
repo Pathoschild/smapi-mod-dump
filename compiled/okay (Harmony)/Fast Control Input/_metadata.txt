@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/24324
+IDs: weizinai.FastControlInput
+update keys: Nexus:24324, GitHub:weizinai/StardewValleyMods

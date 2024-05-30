@@ -31,8 +31,8 @@ namespace NermNermNerm.Junimatic
         private const string AddFishTankPropEventCommand = "Junimatic.AddFishTankProp";
         private const string SetExitLocationCommand = "Junimatic.SetExitLocation";
         private const string HasDoneIcePipsQuestModDataKey = "Junimatic.HasDoneIcePipsQuest";
-        private const string IcePipsQuestStartedDayModDataKey = "Junimatic.HasDoneIcePipsQuest";
-        private const string IcePipsQuestCompletedDayModDataKey = "Junimatic.HasDoneIcePipsQuest";
+        private const string IcePipsQuestStartedDayModDataKey = "Junimatic.IcePipsQuestStartedDay";
+        private const string IcePipsQuestCompletedDayModDataKey = "Junimatic.IcePipsQuestCompletedDay";
         private const string OnIcePipsConversationKey = "Junimatic.OnIcePipsQuest";
         private const string AfterIcePipsConversationKey = "Junimatic.AfterIcePipsConversationKey";
         private const string IcePipQuestCountKey = "Junimatic.IcePipCount";
@@ -52,6 +52,22 @@ namespace NermNermNerm.Junimatic
             mod.Helper.Events.GameLoop.OneSecondUpdateTicked += this.GameLoop_OneSecondUpdateTicked;
             mod.Helper.Events.GameLoop.DayEnding += this.GameLoop_DayEnding;
             mod.Helper.Events.GameLoop.DayStarted += this.GameLoop_DayStarted;
+
+            mod.Helper.ConsoleCommands.Add(
+                "Junimatic.EnableFish",
+                "Enables the fishing Junimo - Enables the Junimo for handling fishing things with or without having done the quest.",
+                this.ForceEnable);
+        }
+
+        private void ForceEnable(string cmd, string[] args)
+        {
+            if (Game1.MasterPlayer is null)
+            {
+                this.mod.LogError("This command has to be run when the game is loaded");
+                return;
+            }
+
+            Game1.MasterPlayer.modData[HasDoneIcePipsQuestModDataKey] = "true";
         }
 
         private void GameLoop_DayStarted(object? sender, DayStartedEventArgs e)
@@ -107,6 +123,7 @@ namespace NermNermNerm.Junimatic
         private void GameLoop_DayEnding(object? sender, DayEndingEventArgs e)
         {
             if (Game1.IsMasterGame
+                && this.mod.UnlockPortalQuest.IsUnlocked
                 && Game1.player.fishingLevel.Value >= 8
                 && Game1.player.getFriendshipHeartLevelForNPC("Linus") >= 6
                 && Game1.player.deepestMineLevel > 60
@@ -300,9 +317,9 @@ namespace NermNermNerm.Junimatic
                 e.Edit(editor =>
                 {
                     IDictionary<string, string> data = editor.AsDictionary<string, string>().Data;
-                    data[MeetLinusAtTentQuest] = "Basic/Find Linus at his tent/Linus said he had something he needed my help with./Go to Linus' tent before 10pm/null/-1/0/-1/false";
-                    data[MeetLinusAt60Quest] = "Basic/Meet Linus at level 60/Linus had something he wanted to show me at level 60 of the mines./Follow Linus to level 60/null/-1/0/-1/false";
-                    data[CatchIcePipsQuest] = "Basic/Catch six Ice Pips/Catch six ice pips and put them in the mysterious fish tank.//null/-1/0/-1/false";
+                    data[MeetLinusAtTentQuest] = "Basic/Find Linus At His Tent/Linus said he had something he needed your help with./Go to Linus' tent before 10pm/null/-1/0/-1/false";
+                    data[MeetLinusAt60Quest] = "Basic/Meet Linus At Level 60/Linus had something he wanted to show you at level 60 of the mines./Follow Linus to level 60/null/-1/0/-1/false";
+                    data[CatchIcePipsQuest] = "Basic/Catch Six Ice Pips/Catch six ice pips and put them in the mysterious fish tank.//null/-1/0/-1/false";
                 });
             }
             else if (e.NameWithoutLocale.IsEquivalentTo("Data/Mail"))
@@ -327,7 +344,7 @@ namespace NermNermNerm.Junimatic
                 e.Edit(editor =>
                 {
                     IDictionary<string, string> data = editor.AsDictionary<string, string>().Data;
-                    data[AfterIcePipsConversationKey] = "Hey I just read a paper written by one of my old college buddies on habitat restoration of an underground Ghostfish Ice Pip pool!$1#$b#I'm told we have such a cavern deep in the mines.  Perhaps you could take me to it one day.#$b#Funny, the paper didn't spell out where he got the fish to repopulate from...$3";
+                    data[AfterIcePipsConversationKey] = "Hey I just read a paper written by one of my old college buddies on habitat restoration of an underground pool populated with Ghostfish and Ice Pips!$1#$b#I'm told we have such a cavern deep in the mines.  Perhaps you could take me to it one day.#$b#Funny, the paper didn't specify where he got the fish to repopulate from...$3";
                 });
             }
         }

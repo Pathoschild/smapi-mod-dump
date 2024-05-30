@@ -9,9 +9,36 @@ for queries and analysis.**
 [← back to readme](README.md)
 
 # Release notes
-## Upcoming release
+## 2.2.2
+Released 25 May 2024 for SMAPI 4.0.0 or later.
+
+* If a machine crashes when checking input, it's now paused for 30 seconds and no longer blocks running other machines in the group.
+
+## 2.2.1
+Released 24 May 2024 for SMAPI 4.0.0 or later.
+
+* Workbenches are no longer connectors by default, to avoid confusion.
+* Fixed error automating some trees in 2.2.0.
+
+## 2.2.0
+Released 24 May 2024 for SMAPI 4.0.0 or later.
+
+* Added support for custom tree drops from the new `Data/WildTrees` asset.
+* Fixed maple trees no longer outputting hazelnuts.
+* Fixed silos and feed hoppers outside the farm not being automated.
+
+## 2.1.0
+Released 22 May 2024 for SMAPI 4.0.0 or later.
+
+* Added support for custom building rules in the game's new `Data/Buildings` asset.
+* Opening a chest will now pause any connected machines, to reduce the chance that items are lost due to inventory edit conflicts.
 * Fixed support for custom trash cans outside the town map.
 * Fixed trash can tracking for pre-1.6 town map mods.
+* Fixed machines grabbing incubated eggs before they hatch.
+* Fixed Art o' Crabbing book's bonus not applied to automated crab pots.
+* Fixed crab pots not always applying the player's professions and bonuses.
+* Fixed bushes in pots being collected twice.
+* Improved translations. Thanks to burunduk (updated Ukrainian), CaranudLapin (updated French), Curotar (updated Russian), and Nana-Nord (updated Spanish)!
 
 ## 2.0.7
 Released 15 April 2024 for SMAPI 4.0.0 or later.

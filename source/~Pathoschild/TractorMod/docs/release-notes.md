@@ -9,10 +9,40 @@ for queries and analysis.**
 [← back to readme](README.md)
 
 # Release notes
+## 4.19.0
+Released 24 May 2024 for SMAPI 4.0.0 or later.
+
+* Added volume level option for tractor sound effects.
+* Added option to disable build material requirement.
+* Lowered default tractor volume by 25%.
+
+## 4.18.0
+Released 22 May 2024 for SMAPI 4.0.0 or later.
+
+* Added support for...
+  * digging seed spots (with a hoe);
+  * harvesting tree moss (with a scythe);
+  * planting blue grass starter.
+* Added warning in config UI when Questable Tractor is installed to avoid confusion.
+* Split 'harvest grass' option into non-blue and blue grass.
+* Simplified tractor names to improve display in mods like NPC Map Locations.
+* Fixed tool options:
+  * Fixed axe 'chop free trees (saplings)' option affecting full-grown trees.
+  * Fixed pickaxe 'harvest mine spawns' option not working if 'clear placed objects' is also enabled.
+  * Fixed scythe 'harvest tree seeds' option missing in Generic Mod Config Menu UI.
+* Fixed tractor sounds continuing to play during a cutscene if you were riding a tractor when it started.
+* Fixed errors in some cases when using a tool on the tractor that was never used manually in the current session.
+* Improved translations. Thanks to burunduk (updated Ukrainian), Lexith98 (updated Turkish), MakinDay (updated Italian), mc-kaishixiaxue & weizinai (updated Chinese), and mitekano23 (updated Japanese)!
+
+**Note for mod authors:**
+* Tractor Mod now sets tractor names to `Tractor` instead of `tractor/<horse id>`, for better compatibility with mods
+  like NPC Map Locations. If you use the name to identify tractors, that was deprecated in 4.12.2 (January 2021); you
+  can check for a `Pathoschild.TractorMod` entry in the horse's `modData` field instead.
+
 ## 4.17.3
 Released 04 April 2024 for SMAPI 4.0.0 or later.
 
-* Fixed tractor being shown in the animal social menu. (This will take effect in Stardew Valley 1.6.4.)
+* Fixed tractor being shown in the animal social menu.
 * Fixed fertilizer able to apply to grown crops using the tractor (thanks to foxwhite25!).
 * Improved compatibility with mods which change fertilizer logic (thanks to foxwhite25!).
 * Improved translations. Thanks to Scomar82 (updated German), JhonatanMedeiros (updated Portuguese), and Shi974 (updated French)!

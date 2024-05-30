@@ -22,7 +22,7 @@ namespace BetterFriendship
         public bool SpousePromptsOverride { get; set; }
         public bool DisplayBubbles { get; set; } = true;
 
-        private int _bubbleDisplayRange = 3; // nice for only up-close bubbles
+        private int _bubbleDisplayRange = 12;
         
         public int BubbleDisplayRange
         {

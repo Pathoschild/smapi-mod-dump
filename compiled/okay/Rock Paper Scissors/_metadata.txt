@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/23875
+IDs: Spiderbuttons.RockPaperScissors
+update keys: Nexus:23875

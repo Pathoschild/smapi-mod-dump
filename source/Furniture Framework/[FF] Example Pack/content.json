@@ -1,0 +1,893 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Leroymilo/FurnitureFramework
+**
+*************************************************/
+
+{
+	"$schema": "https://raw.githubusercontent.com/Leroymilo/FurnitureFramework/main/doc/schemas/content.json",
+
+	"Format": 2,
+
+	"Furniture": {
+		// your mod's id will automatically be added to the furniture id
+		"{{ModID}}.simple_test": {
+			"Display Name": "Simple Test",
+			"Description": "A simple Custom Furniture example",
+
+			"Rotations": 1,
+			"Collisions": {
+				"Width": 1,
+				"Height": 1
+			},	// in tiles
+
+			"Placement Restriction": 1,
+
+			"Source Image": "assets/simple.png",
+			"Source Rect": {"X": 0, "Y": 0, "Width": 16, "Height": 48},	// in pixels
+
+			"Shows in Shops": ["{{ModID}}.custom_catalogue"]
+		},
+
+		"{{ModID}}.custom_catalogue": {
+			"Display Name": "Custom Catalogue",
+			"Description": "An example for a Custom Catalogue",
+
+			"Rotations": 1,
+			"Collisions": {
+				"Width": 1,
+				"Height": 1
+			},
+
+			"Placement Restriction": 2,
+
+			"Source Image": "assets/catalogue.png",
+			"Source Rect": {"X": 0, "Y": 0, "Width": 16, "Height": 32},	// in pixels
+
+			"Shop Id": "{{ModID}}.custom_catalogue",
+			// To make a catalogue-like Furniture
+			"Shows in Shops": ["Carpenter"]
+			// Adding the Custom Catalogue to Robin's Shop
+		},
+
+		"{{ModID}}.seasonal_bush_test": {
+			"Display Name": "Bush Test",
+			"Description": "An example of seasonal Furniture.",
+
+			"Rotations": 1,
+			"Collisions": {
+				"Width": 2,
+				"Height": 1
+			},
+
+			"Placement Restriction": 1,
+
+			"Seasonal": true,
+			"Source Image": "assets/bush.png",
+			"Source Rect": {"X": 0, "Y": 0, "Width": 32, "Height": 32},	// in pixels
+
+			"Shows in Shops": ["{{ModID}}.custom_catalogue"]
+		},
+
+		"{{ModID}}.chair_test": {
+
+			"Display Name": "Chair Test",
+
+			"Rotations": 4,
+			// "Rotations": ["Down", "Right", "Up", "Left"],
+			// keys used in all other directional values
+			"Collisions": {
+				"Width": 1,
+				"Height": 1
+			},
+
+			"Placement Restriction": 2,
+
+			"Source Image": "assets/chair.png",
+			"Source Rect": {
+				"Down":		{"X": 0,  "Y": 0, "Width": 16, "Height": 32},
+				"Right":	{"X": 16, "Y": 0, "Width": 16, "Height": 32},
+				"Up":		{"X": 32, "Y": 0, "Width": 16, "Height": 32},
+				"Left":		{"X": 48, "Y": 0, "Width": 16, "Height": 32}
+				// must have all directions
+			},
+			"Layers": {
+				"Up": [
+					{
+						"Source Rect": {"X": 32, "Y": 32, "Width": 16, "Height": 32}
+						// in pixels
+					}
+				]
+			},
+
+			"Seats": [
+				// positions are from the top left of the Bounding Box (not the texture!)
+				{
+					"Position": {"X": 0, "Y": 0},		// in tiles, can be decimal to sit between 2 tiles
+					"Player Direction": {
+						"Up": 0,
+						"Right": 1,
+						"Down": 2,
+						"Left": 3
+					}	// structure is : {<furniture rotation> : <player direction>}
+					// player direction : Up->0, Right->1, Down->2, Left->3
+					// omitting a furniture rotation will remove this seat when the furniture is in this direction
+				}
+			],
+
+			"Shows in Shops": ["{{ModID}}.custom_catalogue"]
+		},
+
+		"{{ModID}}.armchair_test": {
+
+			"Display Name": "{{ImageVariant}} Armchair Test",
+
+			"Rotations": 4,
+			// "Rotations": ["Down", "Right", "Up", "Left"],
+			// keys used in all other directional values
+			"Collisions": {"Width": 2, "Height": 1},
+
+			"Placement Restriction": 2,
+
+			"Source Image": {
+				"Brown": "assets/armchair.png",
+				"Yellow": "assets/armchair_yellow.png",
+				"Blue": "assets/armchair_blue.png"
+			},
+			"Source Rect": {
+				"Down":		{"X": 0,  "Y": 0, "Width": 32, "Height": 32},
+				"Right":	{"X": 32, "Y": 0, "Width": 32, "Height": 32},
+				"Up":		{"X": 64, "Y": 0, "Width": 32, "Height": 32},
+				"Left":		{"X": 96, "Y": 0, "Width": 32, "Height": 32}
+				// must have all directions
+			},
+
+			"Layers": [
+				{
+					"Source Rect": {
+						// Layer for up is transparent, can be omitted
+						"Right":	{"X": 32, "Y": 32, "Width": 32, "Height": 32},
+						"Up":		{"X": 64, "Y": 32, "Width": 32, "Height": 32},
+						"Left":		{"X": 96, "Y": 32, "Width": 32, "Height": 32}
+					}
+				}
+			],
+
+			"Seats": [
+				// positions are from the top left of the Bounding Box (not the texture!)
+				{
+					"Position": {"X": 0.5, "Y": 0},		// in tiles, can be decimal to sit between 2 tiles
+					"Player Direction": {
+						"Up": 0,
+						"Down": 2
+					}	// structure is : {<furniture rotation> : <player direction>}
+					// player direction : Up->0, Right->1, Down->2, Left->3
+				},
+				{
+					"Position": {"X": 1, "Y": 0},		// in tiles, can be decimal to sit between 2 tiles
+					"Player Direction": {
+						"Right": 1
+					}	// structure is : {<furniture rotation> : <player direction>}
+					// player direction : Up->0, Right->1, Down->2, Left->3
+				},
+				{
+					"Position": {"X": 0, "Y": 0},		// in tiles, can be decimal to sit between 2 tiles
+					"Player Direction": {
+						"Left": 3
+					}	// structure is : {<furniture rotation> : <player direction>}
+					// player direction : Up->0, Right->1, Down->2, Left->3
+				}
+			],
+
+			"Shows in Shops": ["{{ModID}}.custom_catalogue"]
+		},
+
+		"{{ModID}}.bench_test": {
+
+			"Display Name": "Bench Test",
+
+			"Rotations": 4,
+			// "Rotations": ["Down", "Right", "Up", "Left"],
+			// keys used in all other directional values
+			"Collisions": {
+				"Down": 	{"Width": 2, "Height": 1},
+				"Right": 	{"Width": 1, "Height": 2},
+				"Up": 		{"Width": 2, "Height": 1},
+				"Left": 	{"Width": 1, "Height": 2}
+			},
+
+			"Placement Restriction": 2,
+
+			"Source Image": "assets/bench.png",
+			"Source Rect": {
+				"Down":		{"X": 0,  "Y": 0, "Width": 32, "Height": 32},
+				"Right":	{"X": 32, "Y": 0, "Width": 16, "Height": 48},
+				"Up":		{"X": 48, "Y": 0, "Width": 32, "Height": 32},
+				"Left":		{"X": 80, "Y": 0, "Width": 16, "Height": 48}
+				// must have all directions
+			},
+
+			"Layers": {
+				"Up": [
+					{
+						"Source Rect": {"X": 48, "Y": 48, "Width": 32, "Height": 32}
+						// in pixels
+					}
+				]
+			},
+
+			"Seats": [
+				// positions are from the top left of the Bounding Box (not the texture!)
+				{
+					"Position": {"X": 0, "Y": 0},		// in tiles, can be decimal to sit between 2 tiles
+					"Player Direction": {
+						"Up": 0,
+						"Right": 1,
+						"Down": 2,
+						"Left": 3
+					}	// structure is : {<furniture rotation> : <player direction>}
+					// player direction : Up->0, Right->1, Down->2, Left->3
+				},
+				{
+					"Position": {"X": 1, "Y": 0},		// in tiles, can be decimal to sit between 2 tiles
+					"Player Direction": {
+						"Up": 0,
+						"Down": 2
+					}	// structure is : {<furniture rotation> : <player direction>}
+					// player direction : Up->0, Right->1, Down->2, Left->3
+				},
+				{
+					"Position": {"X": 0, "Y": 1},		// in tiles, can be decimal to sit between 2 tiles
+					"Player Direction": {
+						"Right": 1,
+						"Left": 3
+					}	// structure is : {<furniture rotation> : <player direction>}
+					// player direction : Up->0, Right->1, Down->2, Left->3
+				}
+			],
+
+			"Shows in Shops": ["{{ModID}}.custom_catalogue"]
+		},
+
+		"{{ModID}}.couch_test": {
+
+			"Display Name": "Couch Test",
+
+			"Rotations": 4,
+			// "Rotations": ["Down", "Right", "Up", "Left"],
+			// keys used in all other directional values
+			"Collisions": {
+				"Down": 	{"Width": 3, "Height": 1},
+				"Right": 	{"Width": 2, "Height": 2},
+				"Up": 		{"Width": 3, "Height": 1},
+				"Left": 	{"Width": 2, "Height": 2}
+			},
+
+			"Placement Restriction": 2,
+
+			"Source Image": "assets/couch.png",
+			"Source Rect": {
+				"Down":		{"X": 0,	"Y": 0, "Width": 48, "Height": 32},
+				"Right":	{"X": 48,	"Y": 0, "Width": 32, "Height": 48},
+				"Up":		{"X": 80,	"Y": 0, "Width": 48, "Height": 32},
+				"Left":		{"X": 128,	"Y": 0, "Width": 32, "Height": 48}
+				// must have all directions
+			},
+
+			"Layers": {
+				"Right": [
+					{
+						"Source Rect": {"X": 48, "Y": 48, "Width": 32, "Height": 48},
+						"Depth": {"Tile": 1, "Sub": 1000}
+					}
+				],
+				"Up": [
+					{
+						"Source Rect": {"X": 80, "Y": 48, "Width": 48, "Height": 32},
+						"Depth": {"Tile": 0, "Sub": 1000}
+					}
+				],
+				"Left": [
+					{
+						"Source Rect": {"X": 128, "Y": 48, "Width": 32, "Height": 48},
+						"Depth": {"Tile": 1, "Sub": 1000}
+					}
+				]
+			},
+
+			"Seats": {
+				"Up": [
+					{
+						"Position": {"X": 0.5, "Y": 0},
+						"Player Direction": 0
+					},
+					{
+						"Position": {"X": 1.5, "Y": 0},
+						"Player Direction": 0
+					}
+				],
+				"Right": [
+					{
+						"Position": {"X": 1, "Y": 0},
+						"Player Direction": 1
+					},
+					{
+						"Position": {"X": 1, "Y": 1},
+						"Player Direction": 1
+					}
+				],
+				"Down": [
+					{
+						"Position": {"X": 0.5, "Y": 0},
+						"Player Direction": 2
+					},
+					{
+						"Position": {"X": 1.5, "Y": 0},
+						"Player Direction": 2
+					}
+				],
+				"Left": [
+					{
+						"Position": {"X": 0, "Y": 0},
+						"Player Direction": 3
+					},
+					{
+						"Position": {"X": 0, "Y": 1},
+						"Player Direction": 3
+					}
+				]
+			},
+
+			"Shows in Shops": ["{{ModID}}.custom_catalogue"]
+		},
+
+		"{{ModID}}.table_test": {
+			"Display Name": "Table Test",
+
+			"Rotations": 2,
+			// "Rotations": ["Horizontal", "Vertical"],
+			// keys used in all other directional values
+			"Collisions": {
+				"Horizontal": 	{
+					"Width": 2, "Height": 1
+				},
+				"Vertical": 	{
+					"Width": 1, "Height": 2
+				}
+			},
+
+			"Placement Restriction": 2,
+
+			"Source Image": "assets/table.png",
+			"Source Rect": {
+				"Horizontal":	{"X": 0,	"Y": 0, "Width": 32, "Height": 32},
+				"Vertical":		{"X": 32,	"Y": 0, "Width": 16, "Height": 48}
+			},	// in pixels
+
+			"Slots": {
+				"Horizontal": [
+					{
+						"Area": {"X": 0, "Y": 11, "Width": 16, "Height": 13},
+						"Debug Color": "Blue"
+					},
+					{
+						"Area": {"X": 16, "Y": 11, "Width": 16, "Height": 13},
+						"Debug Color": "Green"
+					}
+				],
+				"Vertical": [
+					{
+						"Area": {"X": 0, "Y": 8, "Width": 16, "Height": 16},
+						"Debug Color": "Blue"
+					},
+					{
+						"Area": {"X": 0, "Y": 24, "Width": 16, "Height": 16},
+						"Debug Color": "Green",
+						"Depth": 1
+					}
+				]
+				// The Area rectangle is in pixels, and is relative to the sprite for each rotation.
+			},
+
+			"Shows in Shops": ["{{ModID}}.custom_catalogue"]
+		},
+
+		"{{ModID}}.living_room": {
+
+			"Display Name": "Living Room",
+			"Description": "A complex Furniture to test Layers and Collision Maps.",
+
+			"Rotations": 4,
+			// "Rotations": ["Down", "Right", "Up", "Left"],
+			// keys used in all other directional values
+			"Collisions": {
+				"Down": 	{
+					"Width": 8, "Height": 3,
+					"Map": "..XXXX../XX....XX/...XX.XX"
+				},
+				"Right": 	{
+					"Width": 5, "Height": 5,
+					"Map": "..XXX/XX.../XX..X/XX..X/..XX."
+				},
+				"Up": 		{
+					"Width": 8, "Height": 3,
+					"Map": "XX.XX.../XX....XX/..XXXX.."
+				},
+				"Left": 	{
+					"Width": 5, "Height": 5,
+					"Map": ".XX../X..XX/X..XX/...XX/XXX.."
+				}
+			},
+
+			"Placement Restriction": 2,
+
+			"Source Image": "assets/living_room.png",
+			"Source Rect": {
+				"Down":		{"X": 0, "Y": 0, "Width": 128, "Height": 64},
+				"Right":	{"X": 0, "Y": 128, "Width": 80, "Height": 96},
+				"Up":		{"X": 0, "Y": 64, "Width": 128, "Height": 64},
+				"Left":		{"X": 80, "Y": 128, "Width": 80, "Height": 96}
+				// must have all directions
+			},
+
+			"Layers": {
+				"Up": [
+					{
+						// Back of Long Couch, facing Up
+						"Source Rect": {"X": 80, "Y": 224, "Width": 64, "Height": 32},
+						"Draw Pos": {"X": 32, "Y": 32},
+						"Depth": {"Tile": 2, "Sub": 1000}
+					},
+					{
+						// Lower Arm of Couch facing Right
+						"Source Rect": {"X": 160, "Y": 128, "Width": 32, "Height": 48},
+						"Draw Pos": {"X": 0, "Y": 0},
+						"Depth": {"Tile": 1, "Sub": 1000}
+					},
+					{
+						// Lower Arm of Armchair facing Left
+						"Source Rect": {"X": 192, "Y": 64, "Width": 32, "Height": 32},
+						"Draw Pos": {"X": 96, "Y": 16},
+						"Depth": {"Tile": 1, "Sub": 1000}
+					},
+					{
+						// Upper Arm of Armchair facing Left
+						"Source Rect": {"X": 192, "Y": 96, "Width": 32, "Height": 32},
+						"Draw Pos": {"X": 96, "Y": 16},
+						"Depth": 1
+					}
+					// Upper Arm of Couch facing Right & Table are already drawn by the base sprite 
+				],
+				"Right": [
+					{
+						// Back of Armchair facing Up
+						"Source Rect": {"X": 0, "Y": 224, "Width": 32, "Height": 32},
+						"Draw Pos": {"X": 32, "Y": 64},
+						"Depth": {"Tile": 4, "Sub": 1000}
+					},
+					{
+						// Lower Arm of Long Couch facing Right
+						"Source Rect": {"X": 128, "Y": 0, "Width": 32, "Height": 64},
+						"Draw Pos": {"X": 0, "Y": 16},
+						"Depth": {"Tile": 3, "Sub": 1000}
+					},
+					{
+						// Table
+						"Source Rect": {"X": 176, "Y": 208, "Width": 16, "Height": 48},
+						"Draw Pos": {"X": 64, "Y": 32},
+						"Depth": 2
+					},
+					{
+						// Upper Arm of Long Couch facing Right
+						"Source Rect": {"X": 128, "Y": 64, "Width": 32, "Height": 64},
+						"Draw Pos": {"X": 0, "Y": 16},
+						"Depth": 1
+					}
+				],
+				"Down": [
+					{
+						// Lower Arm of Couch facing Left
+						"Source Rect": {"X": 192, "Y": 128, "Width": 32, "Height": 48},
+						"Draw Pos": {"X": 96, "Y": 16},
+						"Depth": {"Tile": 2, "Sub": 1000}
+					},
+					{
+						// Lower Arm of Armchair facing Right
+						"Source Rect": {"X": 192, "Y": 0, "Width": 32, "Height": 32},
+						"Draw Pos": {"X": 0, "Y": 16},
+						"Depth": {"Tile": 1, "Sub": 1000}
+					},
+					{
+						// Table
+						"Source Rect": {"X": 144, "Y": 224, "Width": 32, "Height": 32},
+						"Draw Pos": {"X": 48, "Y": 32},
+						"Depth": 2
+					},
+					{
+						// Upper Arm of Armchair facing Right
+						"Source Rect": {"X": 192, "Y": 32, "Width": 32, "Height": 32},
+						"Draw Pos": {"X": 0, "Y": 16},
+						"Depth": 1
+					},
+					{
+						// Upper Arm of Couch facing Left
+						"Source Rect": {"X": 192, "Y": 176, "Width": 32, "Height": 48},
+						"Draw Pos": {"X": 96, "Y": 16},
+						"Depth": 1
+					}
+				],
+				"Left": [
+					{
+						// Back of Couch facing Up
+						"Source Rect": {"X": 32, "Y": 224, "Width": 48, "Height": 32},
+						"Draw Pos": {"X": 0, "Y": 64},
+						"Depth": {"Tile": 4, "Sub": 1000}
+					},
+					{
+						// Lower Arm of Long Couch facing Left
+						"Source Rect": {"X": 160, "Y": 0, "Width": 32, "Height": 64},
+						"Draw Pos": {"X": 48, "Y": 16},
+						"Depth": {"Tile": 3, "Sub": 1000}
+					},
+					{
+						// Table
+						"Source Rect": {"X": 176, "Y": 208, "Width": 16, "Height": 48},
+						"Draw Pos": {"X": 0, "Y": 16},
+						"Depth": 1
+					},
+					{
+						// Upper Arm of Long Couch facing Left
+						"Source Rect": {"X": 160, "Y": 64, "Width": 32, "Height": 64},
+						"Draw Pos": {"X": 48, "Y": 16},
+						"Depth": 1
+					}
+				]
+			},
+		
+			"Seats": {
+				"Down": [
+					{
+						// Left seat of Long Couch
+						"Position": {"X": 2.5, "Y": 0},
+						"Player Direction": 2
+					},
+					{
+						// Center seat of Long Couch
+						"Position": {"X": 3.5, "Y": 0},
+						"Player Direction": 2
+					},
+					{
+						// Right seat of Long Couch
+						"Position": {"X": 4.5, "Y": 0},
+						"Player Direction": 2
+					},
+					{
+						// Seat of Armchair
+						"Position": {"X": 1, "Y": 1},
+						"Player Direction": 1
+					},
+					{
+						// Top seat of Couch
+						"Position": {"X": 6, "Y": 1},
+						"Player Direction": 3
+					},
+					{
+						// Bottom seat of Couch
+						"Position": {"X": 6, "Y": 2},
+						"Player Direction": 3
+					}
+				],
+				"Right": [
+					{
+						// Left seat of Couch
+						"Position": {"X": 2.5, "Y": 0},
+						"Player Direction": 2
+					},
+					{
+						// Right seat of Couch
+						"Position": {"X": 3.5, "Y": 0},
+						"Player Direction": 2
+					},
+					{
+						// Top seat of Long Couch
+						"Position": {"X": 1, "Y": 1},
+						"Player Direction": 1
+					},
+					{
+						// Center seat of Long Couch
+						"Position": {"X": 1, "Y": 2},
+						"Player Direction": 1
+					},
+					{
+						// Bottom seat of Long Couch
+						"Position": {"X": 1, "Y": 3},
+						"Player Direction": 1
+					},
+					{
+						// Seat of Armchair
+						"Position": {"X": 2.5, "Y": 4},
+						"Player Direction": 0
+					}
+				],
+				"Up": [
+					{
+						// Top seat of Couch
+						"Position": {"X": 1, "Y": 0},
+						"Player Direction": 1
+					},
+					{
+						// Bottom seat of Couch
+						"Position": {"X": 1, "Y": 1},
+						"Player Direction": 1
+					},
+					{
+						// Seat of Armchair
+						"Position": {"X": 6, "Y": 1},
+						"Player Direction": 3
+					},
+					{
+						// Left seat of Long Couch
+						"Position": {"X": 2.5, "Y": 2},
+						"Player Direction": 0
+					},
+					{
+						// Center seat of Long Couch
+						"Position": {"X": 3.5, "Y": 2},
+						"Player Direction": 0
+					},
+					{
+						// Right seat of Long Couch
+						"Position": {"X": 4.5, "Y": 2},
+						"Player Direction": 0
+					}
+				],
+				"Left": [
+					{
+						// Seat of Armchair
+						"Position": {"X": 1.5, "Y": 0},
+						"Player Direction": 2
+					},
+					{
+						// Top seat of Long Couch
+						"Position": {"X": 3, "Y": 1},
+						"Player Direction": 3
+					},
+					{
+						// Center seat of Long Couch
+						"Position": {"X": 3, "Y": 2},
+						"Player Direction": 3
+					},
+					{
+						// Bottom seat of Long Couch
+						"Position": {"X": 3, "Y": 3},
+						"Player Direction": 3
+					},
+					{
+						// Left seat of Couch
+						"Position": {"X": 0.5, "Y": 4},
+						"Player Direction": 0
+					},
+					{
+						// Right seat of Couch
+						"Position": {"X": 1.5, "Y": 4},
+						"Player Direction": 0
+					}
+				]
+			},
+
+			"Slots": {
+				"Down": [
+					{
+						"Area": {"X": 48, "Y": 43, "Width": 32, "Height": 13},
+						"Depth": 2
+					}
+				],
+				"Right": [
+					{
+						"Area": {"X": 64, "Y": 41, "Width": 16, "Height": 31},
+						"Depth": 2
+					}
+				],
+				"Up": [
+					{
+						"Area": {"X": 48, "Y": 11, "Width": 32, "Height": 13},
+						"Depth": 0
+					}
+				],
+				"Left": [
+					{
+						"Area": {"X": 0, "Y": 25, "Width": 16, "Height": 31},
+						"Depth": 1
+					}
+				]
+				// The Area rectangle is in pixels, and is relative to the sprite for each rotation.
+			},
+
+			"Shows in Shops": ["{{ModID}}.custom_catalogue"]
+		},
+
+		"{{ModID}}.cauldron_test": {
+			"Display Name": "Custom Cauldron",
+			"Description": "A Cauldron to test toggleability, sounds and particles",
+
+			"Rotations": 1,
+			"Collisions": {
+				"Width": 2,
+				"Height": 1
+			},	// in tiles
+
+			"Placement Restriction": 2,
+
+			"Source Image": "assets/cauldron.png",
+			"Source Rect": {"X": 0, "Y": 0, "Width": 32, "Height": 32},	// in pixels
+
+			"Layers": [
+				{
+					"Source Rect": {"X": 0, "Y": 32, "Width": 32, "Height": 32}
+				}
+			],
+
+			"Shows in Shops": ["{{ModID}}.custom_catalogue"],
+
+			"Sounds": [
+				{
+					"Mode": "on_turn_on",
+					"Name": "bubbles"
+				},
+				{
+					"Mode": "on_turn_on",
+					"Name": "fireball"
+				}
+			],
+
+			"Particles": [
+				{
+					"Source Image": "assets/smoke.png",
+					"Source Rect": {"X": 0, "Y": 0, "Width": 10, "Height": 10},
+					"Emission Interval": 500,
+
+					"Spawn Rect": {"X": 12, "Y": 15, "Width": 8, "Height": 4},
+					"Depths": [0.1, 0.3, 0.5, 0.7, 0.9],
+					"Speed": {"X": 0, "Y": -0.5},
+
+					"Rotations": [],
+					"Rotation Speeds": [
+						-0.061, -0.049, -0.037, -0.025, -0.012,
+						0, 0.012, 0.025, 0.037, 0.049, 0.061
+					],
+
+					"Scale": 3,
+					"Scale Change": 0.01,
+
+					"Color": "Lime",
+					"Alpha": 0.75,
+					"Alpha Fade": 0.0027,
+
+					"Frame Count": 1,
+					"Frame Duration": 5000,
+					"Loop Count": 1,
+					"Hold Last Frame": false,
+					"Flicker": false,
+
+					"Emit When On": true,
+					"Emit When Off": false,
+					"Burst": true
+				}
+			],
+
+			"Toggle": true
+		},
+
+		"{{ModID}}.cat_statue": {
+			// Sprite by SonreirAngel for Seasonal Japanese Buildings
+			"Display Name": "{{RectVariant}} Cat Statue",
+			"Description": "A statue to test Animations and Variants. Sprites by SonreirAngel",
+
+			"Rotations": 1,
+			"Collisions": {"Width": 1, "Height": 1},
+
+			"Placement Restriction": 2,
+
+			"Source Image": "assets/neko_statues.png",
+			"Source Rect": {"X": 0, "Y": 0, "Width": 16, "Height": 32},	// in pixels
+			"Source Rect Offsets": {
+				"White": {"X": 0, "Y": 0},
+				"Black": {"X": 0, "Y": 32}
+			},
+
+			"Shows in Shops": ["{{ModID}}.custom_catalogue"],
+
+			"Frame Count": 7,
+			"Frame Duration": 500,
+			"Animation Offset": {"X": 16, "Y": 0}
+		},
+
+		"{{ModID}}.large_bed": {
+			"Display Name": "Large Bed",
+			"Description": "A bed to test Custom Beds",
+
+			"Rotations": 1,
+			"Collisions": {
+				"Width": 5,
+				"Height": 3,
+				"Map": "XXXXX/...../XXXXX"
+			},
+
+			"Placement Restriction": 2,
+
+			"Source Image": "assets/large_bed.png",
+			"Source Rect": {"X": 0, "Y": 0, "Width": 80, "Height": 64},	// in pixels
+
+			"Layers": [
+				{
+					"Source Rect": {"X": 0, "Y": 64, "Width": 80, "Height": 64},
+					"Depth": 2
+				}
+			],
+
+			"Shows in Shops": ["{{ModID}}.custom_catalogue"],
+
+			"Special Type": "Bed",
+			"Bed Spot": {"X": 2, "Y": 1}
+		},
+
+		"{{ModID}}.rug_test": {
+			"Display Name": "Rug Test",
+			"Description": "A rug to test Custom Rugs",
+
+			"Rotations": 1,
+			"Collisions": {"Width": 4, "Height": 3},
+
+			"Placement Restriction": 0,
+			"Placement Type": "Rug",
+
+			"Source Image": "assets/rug.png",
+			"Source Rect": {"X": 0, "Y": 0, "Width": 64, "Height": 48},	// in pixels
+
+			"Shows in Shops": ["{{ModID}}.custom_catalogue"]
+		},
+
+		"{{ModID}}.painting_test": {
+			"Display Name": "Painting Test",
+			"Description": "A painting to test Mural Custom Furniture",
+
+			"Rotations": 1,
+			"Collisions": {"Width": 3, "Height": 2},
+
+			"Placement Restriction": 0,
+			"Placement Type": "Mural",
+
+			"Source Image": "assets/painting.png",
+			"Source Rect": {"X": 0, "Y": 0, "Width": 48, "Height": 32},	// in pixels
+
+			"Shows in Shops": ["{{ModID}}.custom_catalogue"]
+		}
+	}
+}
+
+// FUTURE FIELDS :
+
+// "LightSources": [
+// 	{
+// 		"Position": {"X": 8, "Y": 8},	// in pixels
+// 		"Texture": null,
+// 		"SourceRect": {"X": 0, "Y": 0, "Width": 48, "Height": 96},	// in pixels
+// 		"Color": null,
+// 		"Is Window": false,
+// 		"For Rotations": 0
+// 	}
+// ],
+// "Is Lamp": false,
+// "Is Fireplace": false,
+// "Torch Fire": [
+// 	{
+// 		"Position": {"X": 8, "Y": 8},	// in pixels
+// 		"For Rotations": 0
+// 	}
+// ],
+// "Is Rug": false,
+// "Is Mural": false

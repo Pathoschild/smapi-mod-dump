@@ -1,0 +1,7 @@
+{
+  "ModEnabled": true,
+  "DyeColors": true,
+  "RequiredPopulation": 2,
+  "DisableSingleRecolors": false,
+  "Debugging": true
+}

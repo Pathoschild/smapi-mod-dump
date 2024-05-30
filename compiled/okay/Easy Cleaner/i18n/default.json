@@ -1,8 +1,14 @@
 ﻿{
   "config.name.EasyCleanerAssistKey": "EasyCleaner Assist Key",
-  "config.tips.EasyCleanerAssistKey": "Hold tool, Press Assist Key and Right-click to clean",
+  "config.tips.EasyCleanerAssistKey": "Hold tool, Press Assist Key and Right-click to clean sundries ",
   "config.name.CleanTreeSeedInFarm": "Clean Tree Seed In Farm",
   "config.tips.CleanTreeSeedInFarm": "clean tree seeds in your farm when you have axe. (except tree seed fertilized)",
   "config.name.EnableIndoorsLocation": "Enable Indoors Location",
-  "config.tips.EnableIndoorsLocation": "allow to clean sundries of Indoors Location such as Mines or Skull Cavern etc."
+  "config.tips.EnableIndoorsLocation": "allow to clean sundries of Indoors Location such as Mines or Skull Cavern etc.",
+  "config.name.CleanWitheredCrops": "Clean Withered Crops",
+  "config.tips.CleanWitheredCrops": "Clean Withered Crops in Farm by Scythe",
+  "config.name.CleanBigTreesOutFarm": "Clean BigTrees Out Farm",
+  "config.tips.CleanBigTreesOutFarm": "Clean BigTrees Out of Farm. (except trees fertilized or tapped, and mushroomTree/mysticTree/palmTree)",
+  "config.name.CleanBigTreesInFarm": "Clean BigTrees in Farm",
+  "config.tips.CleanBigTreesInFarm": "Clean BigTrees in Farm. (except trees fertilized or tapped, and mushroomTree/mysticTree/palmTree)"
 }

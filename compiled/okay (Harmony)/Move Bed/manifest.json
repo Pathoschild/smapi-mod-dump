@@ -1,0 +1,10 @@
+{
+    "Name": "MoveBed",
+    "Author": "yangZ",
+    "Version": "1.0.0",
+    "Description": "移动联机小屋的床",
+    "UniqueID": "yangZ.MoveBed",
+    "EntryDll": "MoveBed.dll",
+    "MinimumApiVersion": "4.0.7",
+    "UpdateKeys": []
+}

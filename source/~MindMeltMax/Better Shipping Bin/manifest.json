@@ -11,7 +11,7 @@
 {
     "Name": "Better Shipping Bin",
     "Author": "MindMeltMax",
-    "Version": "1.4.3",
+    "Version": "1.4.5",
     "Description": "Retreive items from the shipping bin",
     "UniqueID": "MindMeltMax.BetterShipping",
     "EntryDll": "Better Shipping.dll",

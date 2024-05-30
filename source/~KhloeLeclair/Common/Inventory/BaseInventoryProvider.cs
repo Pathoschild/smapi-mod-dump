@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-#nullable enable
+#if COMMON_BCINVENTORY
 
 using System;
 using System.Collections.Generic;
@@ -120,3 +120,5 @@ public abstract class BaseInventoryProvider<T> : IInventoryProvider where T : cl
 	/// <inheritdoc cref="GetInventory(object, GameLocation?, Farmer?)" />
 	public abstract IInventory? GetInventory(T obj, GameLocation? location, Farmer? who);
 }
+
+#endif

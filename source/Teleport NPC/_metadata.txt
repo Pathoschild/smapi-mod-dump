@@ -6,9 +6,11 @@ mods:
    Teleport NPC
 
 latest commit:
-   commit 8a7387248df3cf698b7f1c5a2b6121bfba81e204
+   commit c817c39f32f2a22c35eec5d07555a61e262e4e8b
    Author: Enaium <32991121+Enaium@users.noreply.github.com>
-   Date:   Wed Mar 27 18:22:15 2024 +0800
+   Date:   Thu May 16 01:39:34 2024 +0800
    
-       Create LICENSE
+       Merge pull request #6 from Enaium/develop
+       
+       KeybindList
    

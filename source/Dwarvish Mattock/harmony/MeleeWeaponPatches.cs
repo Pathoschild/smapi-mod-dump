@@ -17,7 +17,7 @@ namespace DwarvishMattock
 {
 	public class MeleeWeaponPatches
 	{
-		public static bool isScythe_Prefix(ref MeleeWeapon __instance, int index, ref bool __result)
+		public static bool isScythe_Prefix(ref MeleeWeapon __instance, ref bool __result)
 		{
 			// Mattocks are scythes.  Huh.
 			if (__instance is Mattock)
@@ -59,7 +59,7 @@ namespace DwarvishMattock
 									// Stumps
 									case 600:
 									case 602:
-										standinTool = mattock.asAxe();
+										standinTool = mattock.AsAxe();
 										break;
 
 									// Boulders
@@ -69,14 +69,14 @@ namespace DwarvishMattock
 									case 754:
 									case 756:
 									case 758:
-										standinTool = mattock.asPickaxe();
+										standinTool = mattock.AsPickaxe();
 										break;
 								}
 
 								if (standinTool != null)
 								{
 									mattock.struckFeatures.Add(resourceClump);
-									if (resourceClump.performToolAction(standinTool, 1, resourceClump.tile.Get(), location))
+									if (resourceClump.performToolAction(standinTool, 1, resourceClump.Tile))
 									{
 										location.resourceClumps.Remove(resourceClump);
 									}

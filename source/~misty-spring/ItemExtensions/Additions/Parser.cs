@@ -10,8 +10,11 @@
 
 using ItemExtensions.Models;
 using ItemExtensions.Models.Contained;
+using ItemExtensions.Models.Enums;
 using ItemExtensions.Models.Items;
 using StardewModdingAPI;
+using StardewValley;
+using StardewValley.TerrainFeatures;
 
 namespace ItemExtensions.Additions;
 
@@ -24,35 +27,6 @@ public static class Parser
 #endif
     
     private static void Log(string msg, LogLevel lv = Level) => ModEntry.Mon.Log(msg, lv);
-    internal static void ItemActions(Dictionary<string, List<MenuBehavior>> ia)
-    {
-        var parsed = new Dictionary<string, List<MenuBehavior>>();
-        foreach (var item in ia)
-        {
-            Log($"Checking {item.Key} ...");
-            var temp = new List<MenuBehavior>();
-            
-            foreach (var affected in item.Value)
-            {
-                if (!affected.Parse(out var rightInfo)) 
-                    continue;
-#if DEBUG
-                Log($"Information parsed successfully! ({rightInfo.TargetId})");
-#endif
-                temp.Add(rightInfo);
-            }
-            
-            if(temp.Count > 0)
-                parsed.Add(item.Key,temp);
-        }
-
-        if (parsed.Count <= 0) 
-            return;
-        
-        Log("FOR MODDERS: Patches to /MenuActions are deprecated. To see the new model, check the template in the mod's page.", LogLevel.Warn);
-        
-        ModEntry.MenuActions = parsed;
-    }
 
     internal static void ObjectData(Dictionary<string, ItemData> objData)
     {
@@ -198,6 +172,47 @@ public static class Parser
         }
     }
 
+    internal static void Terrain(Dictionary<string, TerrainSpawnData> trees)
+    {
+        ModEntry.MineTerrain = new Dictionary<string,TerrainSpawnData>();
+        foreach (var pair in trees)
+        {
+            Log($"Checking {pair.Key} data...");
+
+            //checks id
+            if (string.IsNullOrWhiteSpace(pair.Value.TerrainFeatureId))
+            {
+                Log($"Mineshaft spawn with key '{pair.Key}' doesn't have an ID. Skipping", LogLevel.Info);
+                continue;
+            }
+            if (pair.Value.Type == FeatureType.FruitTree && Game1.fruitTreeData.ContainsKey(pair.Value.TerrainFeatureId) == false)
+            {
+                Log($"Mineshaft spawn with key '{pair.Key}' has a fruit tree id that doesn't exist. Skipping", LogLevel.Info);
+                continue;
+            }
+
+            ModEntry.MineTerrain.Add(pair.Key, pair.Value);
+        }
+    }
+
+    internal static void Train(Dictionary<string, TrainDropData> trainData)
+    {
+        ModEntry.TrainDrops = new Dictionary<string, TrainDropData>();
+        foreach (var pair in trainData)
+        {
+            Log($"Checking {pair.Key} data...");
+
+            //checks id
+            if (string.IsNullOrWhiteSpace(pair.Value.ItemId))
+            {
+                Log($"Train drop with key '{pair.Key}' has empty item ID. Skipping", LogLevel.Info);
+                continue;
+            }
+
+            ModEntry.TrainDrops.Add(pair.Key, pair.Value);
+        }
+    }
+
     /// <summary>
     /// Checks an Id.
     /// </summary>
@@ -225,8 +240,25 @@ public static class Parser
                 "CalicoEggStone_0" => true,
                 "CalicoEggStone_1" => true,
                 "CalicoEggStone_2" => true,
-                FarAwayStone => true,
+                "FarAwayStone" => true,
                 _ => false
         };
+    }
+
+    internal static List<string> SplitCommas(string str)
+    {
+        var result = new List<string>();
+        if (string.IsNullOrWhiteSpace(str))
+            return result;
+
+        var str2 = str.Replace(", ", ",");
+        if (string.IsNullOrWhiteSpace(str))
+            return result;
+
+        foreach (var separated in str2.Split(','))
+        {
+            result.Add(separated);
+        }
+        return result;
     }
 }

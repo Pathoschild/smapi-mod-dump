@@ -62,8 +62,10 @@
         "HatMouse": {
           "Currency": 1,
           "PriceModifiers": [
-            {"Modification": "Multiply", "Amount": 0.5}
-          ]
+            {"Modification": "Multiply", "Amount": 0.5},
+            {"Modification": "Set", "Amount": 9999}
+          ],
+          "PriceModifierMode": "Minimum"
         }
       },
       "When": {

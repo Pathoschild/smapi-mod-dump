@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/11322
-IDs: aedenthorn.CustomToolbar
-update keys: Nexus:11322, GitHub:aedenthorn/StardewValleyMods

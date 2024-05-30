@@ -6,9 +6,9 @@ mods:
    Junimatic
 
 latest commit:
-   commit f6831bb04dcc3171d4972fd25b07b00f13fc1ea6
+   commit c2f32f84ac93d0e3d678227025e31401cd3daa08
    Author: SteveBenz <s8878992@hotmail.com>
-   Date:   Sat Apr 20 14:57:38 2024 -0700
+   Date:   Thu May 16 12:47:24 2024 -0700
    
-       Refactored PetFindsThings to get rid of the ModEntry setting on the farm
+       Bump version
    

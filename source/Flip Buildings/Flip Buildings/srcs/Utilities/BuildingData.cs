@@ -22,85 +22,95 @@ namespace FlipBuildings.Utilities
 	internal class BuildingDataUtility
 	{
 		/// <summary>The cached data for flipped buildings from <c>Data/Buildings</c>.</summary>
-		public static IDictionary<string, BuildingData> flippedBuildingData;
+		public static Dictionary<string, BuildingData> flippedBuildingData = new();
 
 		internal static void LoadContent()
 		{
-			flippedBuildingData = Game1.buildingData.DeepClone();
-
-			foreach (BuildingData buildingData in flippedBuildingData.Values)
+			foreach (KeyValuePair<string, BuildingData> kvp in Game1.buildingData)
 			{
-				if (buildingData.UpgradeSignTile != new Vector2(-1, -1))
+				if (!CompatibilityUtility.IsSolidFoundationsLoaded || !CompatibilityUtility.SFExtendedBuildingModelType.IsInstanceOfType(kvp.Value) || !flippedBuildingData.ContainsKey(kvp.Key))
 				{
-					buildingData.UpgradeSignTile.X = buildingData.Size.X - 1 - buildingData.UpgradeSignTile.X;
+					BuildingData value = kvp.Value.DeepClone();
+
+					ProcessBuildingData(value);
+					flippedBuildingData[kvp.Key] = value;
 				}
-				if (buildingData.DrawOffset != Vector2.Zero)
-				{
-					buildingData.DrawOffset.X = -buildingData.DrawOffset.X;
-				}
-				if (buildingData.CollisionMap is not null)
-				{
-					buildingData.CollisionMap = string.Join('\n', buildingData.CollisionMap.Trim().Split('\n', StringSplitOptions.TrimEntries).Select(line => new string(line.Reverse().ToArray())));
-				}
-				if (buildingData.AdditionalPlacementTiles is not null)
-				{
-					foreach (BuildingPlacementTile buildingPlacementTile in buildingData.AdditionalPlacementTiles)
-					{
-						buildingPlacementTile.TileArea.X = buildingData.Size.X - 1 - (buildingPlacementTile.TileArea.X + buildingPlacementTile.TileArea.Width - 1);
-					}
-				}
-				if (buildingData.HumanDoor != new Point(-1, -1))
-				{
-					buildingData.HumanDoor.X = buildingData.Size.X - 1 - buildingData.HumanDoor.X;
-				}
-				if (buildingData.AnimalDoor != new Rectangle(-1, -1, 0, 0))
-				{
-					buildingData.AnimalDoor.X = buildingData.Size.X - 1 - (buildingData.AnimalDoor.X + buildingData.AnimalDoor.Width - 1);
-				}
-				if (buildingData.Chests is not null)
-				{
-					foreach (BuildingChest buildingChest in buildingData.Chests)
-					{
-						buildingChest.DisplayTile.X = buildingData.Size.X - 1 - buildingChest.DisplayTile.X;
-					}
-				}
-				if (buildingData.ActionTiles is not null)
-				{
-					foreach (BuildingActionTile buildingActionTile in buildingData.ActionTiles)
-					{
-						buildingActionTile.Tile.X = buildingData.Size.X - 1 - buildingActionTile.Tile.X;
-					}
-				}
-				if (buildingData.TileProperties is not null)
-				{
-					foreach (BuildingTileProperty buildingTileProperty in buildingData.TileProperties)
-					{
-						buildingTileProperty.TileArea.X = buildingData.Size.X - 1 - (buildingTileProperty.TileArea.X + buildingTileProperty.TileArea.Width - 1);
-					}
-				}
-				if (buildingData.DrawLayers is not null)
-				{
-					foreach (BuildingDrawLayer buildingDrawLayer in buildingData.DrawLayers)
-					{
-						buildingDrawLayer.DrawPosition.X = buildingData.Size.X * 16f - buildingDrawLayer.DrawPosition.X - buildingDrawLayer.SourceRect.Width;
-					}
-				}
-				if (buildingData.Metadata is not null)
-				{
-					ProcessMetadata(buildingData, buildingData.Metadata);
-				}
-				if (buildingData.Skins is not null)
-				{
-					foreach (BuildingSkin buildingSkin in buildingData.Skins)
-					{
-						if (buildingSkin.Metadata is not null)
-						{
-							ProcessMetadata(buildingData, buildingSkin.Metadata);
-						}
-					}
-				}
-				HandleFarmhouseSpecifics(buildingData);
 			}
+		}
+
+		private static void ProcessBuildingData(BuildingData buildingData)
+		{
+			if (buildingData.UpgradeSignTile != new Vector2(-1, -1))
+			{
+				buildingData.UpgradeSignTile.X = buildingData.Size.X - 1 - buildingData.UpgradeSignTile.X;
+			}
+			if (buildingData.DrawOffset != Vector2.Zero)
+			{
+				buildingData.DrawOffset.X = -buildingData.DrawOffset.X;
+			}
+			if (buildingData.CollisionMap is not null)
+			{
+				buildingData.CollisionMap = string.Join('\n', buildingData.CollisionMap.Trim().Split('\n', StringSplitOptions.TrimEntries).Select(line => new string(line.Reverse().ToArray())));
+			}
+			if (buildingData.AdditionalPlacementTiles is not null)
+			{
+				foreach (BuildingPlacementTile buildingPlacementTile in buildingData.AdditionalPlacementTiles)
+				{
+					buildingPlacementTile.TileArea.X = buildingData.Size.X - 1 - (buildingPlacementTile.TileArea.X + buildingPlacementTile.TileArea.Width - 1);
+				}
+			}
+			if (buildingData.HumanDoor != new Point(-1, -1))
+			{
+				buildingData.HumanDoor.X = buildingData.Size.X - 1 - buildingData.HumanDoor.X;
+			}
+			if (buildingData.AnimalDoor != new Rectangle(-1, -1, 0, 0))
+			{
+				buildingData.AnimalDoor.X = buildingData.Size.X - 1 - (buildingData.AnimalDoor.X + buildingData.AnimalDoor.Width - 1);
+			}
+			if (buildingData.Chests is not null)
+			{
+				foreach (BuildingChest buildingChest in buildingData.Chests)
+				{
+					buildingChest.DisplayTile.X = buildingData.Size.X - 1 - buildingChest.DisplayTile.X;
+				}
+			}
+			if (buildingData.ActionTiles is not null)
+			{
+				foreach (BuildingActionTile buildingActionTile in buildingData.ActionTiles)
+				{
+					buildingActionTile.Tile.X = buildingData.Size.X - 1 - buildingActionTile.Tile.X;
+				}
+			}
+			if (buildingData.TileProperties is not null)
+			{
+				foreach (BuildingTileProperty buildingTileProperty in buildingData.TileProperties)
+				{
+					buildingTileProperty.TileArea.X = buildingData.Size.X - 1 - (buildingTileProperty.TileArea.X + buildingTileProperty.TileArea.Width - 1);
+				}
+			}
+			if (buildingData.DrawLayers is not null)
+			{
+				foreach (BuildingDrawLayer buildingDrawLayer in buildingData.DrawLayers)
+				{
+					buildingDrawLayer.DrawPosition.X = buildingData.Size.X * 16f - buildingDrawLayer.DrawPosition.X - buildingDrawLayer.SourceRect.Width;
+				}
+			}
+			if (buildingData.Metadata is not null)
+			{
+				ProcessMetadata(buildingData, buildingData.Metadata);
+			}
+			if (buildingData.Skins is not null)
+			{
+				foreach (BuildingSkin buildingSkin in buildingData.Skins)
+				{
+					if (buildingSkin.Metadata is not null)
+					{
+						ProcessMetadata(buildingData, buildingSkin.Metadata);
+					}
+				}
+			}
+			CompatibilityUtility.ProcessSFExtendedBuildingModel(buildingData);
+			HandleFarmhouseSpecifics(buildingData);
 		}
 
 		private static void ProcessMetadata(BuildingData buildingData, Dictionary<string, string> metadata)

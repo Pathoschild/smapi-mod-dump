@@ -51,6 +51,9 @@ namespace ContentPatcher.Framework.Patches
         /// <summary>The normalized asset name to intercept.</summary>
         IAssetName? TargetAsset { get; }
 
+        /// <summary>The locale code in the target asset's name to match (like <c>fr-FR</c> to target <c>Characters/Dialogue/Abigail.fr-FR</c>), or an empty string to match only the base unlocalized asset, or <c>null</c> to match all localized or unlocalized variants of the <see cref="TargetAsset"/>.</summary>
+        string? TargetLocale { get; }
+
         /// <summary>If the <see cref="TargetAsset"/> was redirected by a runtime migration, the asset name before it was redirected.</summary>
         public IAssetName? TargetAssetBeforeRedirection { get; }
 
@@ -69,6 +72,9 @@ namespace ContentPatcher.Framework.Patches
 
         /// <summary>Whether the patch is currently applied to the target asset.</summary>
         bool IsApplied { get; set; }
+
+        /// <summary>Whether the content pack which adds this patch predates the <see cref="TargetLocale"/> feature.</summary>
+        bool PredatesTargetLocale { get; }
 
         /// <summary>The <see cref="Game1.ticks"/> value when this patch last changed due to a context update.</summary>
         int LastChangedTick { get; }

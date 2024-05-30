@@ -11,7 +11,8 @@
 {
   "$schema": "https://smapi.io/schemas/manifest.json",
   "Name": "[AF] Stranded Fish Forage",
-  "Description": "Forage added by Stranded Forage",
+  // https://www.nexusmods.com/stardewvalley/mods/9187
+  "Description": "Forage added by mikemonroe's Stranded Fish",
   "Author": "Jag3Dagster",
   "UniqueID": "HedgehogTechnologies.StrandedFishForageAF",
   "Version": "1.0.0",

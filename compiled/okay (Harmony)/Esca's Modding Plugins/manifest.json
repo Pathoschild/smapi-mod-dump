@@ -1,10 +1,16 @@
 ﻿{
   "Name": "Esca's Modding Plugins",
   "Author": "Esca",
-  "Version": "1.2.4",
+  "Version": "1.3.0",
   "Description": "Adds new data assets, map/tile properties, and features for other mods to use.",
   "UniqueID": "Esca.EMP",
   "EntryDll": "EMP.dll",
   "MinimumApiVersion": "4.0.0",
-  "UpdateKeys": [ "Nexus:9296", "GitHub:Esca-MMC/EscasModdingPlugins", "ModDrop:1005443" ]
+  "UpdateKeys": [ "Nexus:9296", "GitHub:Esca-MMC/EscasModdingPlugins", "ModDrop:1005443" ],
+  "Dependencies": [
+    {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "IsRequired": false
+    }
+  ]
 }

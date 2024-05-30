@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-#nullable enable
+#if COMMON_FLOW
 
 using System;
 using System.Collections.Generic;
@@ -17,6 +17,7 @@ using System.Diagnostics.CodeAnalysis;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
+using StardewValley;
 using StardewValley.Menus;
 
 namespace Leclair.Stardew.Common.UI.FlowNode;
@@ -29,6 +30,8 @@ public struct SpriteNode : IFlowNode {
 	public Alignment Alignment { get; }
 	public object? Extra { get; }
 	public string? UniqueId { get; }
+
+	public int Quantity { get; }
 
 	public bool NoComponent { get; }
 	public Func<IFlowNodeSlice, int, int, bool>? OnClick { get; }
@@ -46,7 +49,8 @@ public struct SpriteNode : IFlowNode {
 		float size = 16,
 		int frame = -1,
 		object? extra = null,
-		string? id = null
+		string? id = null,
+		int quantity = 0
 	) {
 		Sprite = sprite;
 		Scale = scale;
@@ -59,6 +63,7 @@ public struct SpriteNode : IFlowNode {
 		Frame = frame;
 		Extra = extra;
 		UniqueId = id;
+		Quantity = quantity;
 	}
 
 	public ClickableComponent? UseComponent(IFlowNodeSlice slice) {
@@ -80,7 +85,17 @@ public struct SpriteNode : IFlowNode {
 		if (last != null)
 			return null;
 
-		return new UnslicedNode(this, Size * Scale, Size * Scale, WrapMode.None);
+		float height = Size * Scale;
+		float width = Size * Scale;
+
+		if (Quantity > 0) {
+			float qScale = (float) Math.Round(Scale * 0.75f);
+			float qX = width - Utility.getWidthOfTinyDigitString(Quantity, qScale) + qScale;
+			if (qX < 0)
+				width -= qX;
+		}
+
+		return new UnslicedNode(this, width, height, WrapMode.None);
 	}
 
 	public void Draw(IFlowNodeSlice slice, SpriteBatch batch, Vector2 position, float scale, SpriteFont defaultFont, Color? defaultColor, Color? defaultShadowColor, CachedFlowLine line, CachedFlow flow) {
@@ -88,6 +103,22 @@ public struct SpriteNode : IFlowNode {
 			return;
 
 		Sprite.Draw(batch, position, scale * Scale, Frame, Size);
+
+		// Draw Quantity
+		if (Quantity > 0) {
+			float itemSize = Size * Scale;
+			float offsetX = 0;
+
+			float qScale = (float) Math.Round(Scale * 0.75f);
+			float qX = position.X + itemSize - Utility.getWidthOfTinyDigitString(Quantity, qScale) + qScale;
+			float qY = position.Y + itemSize - 6f * qScale + 2f;
+
+			if (qX < position.X)
+				offsetX = position.X - qX;
+
+			Utility.drawTinyDigits(Quantity, batch, new Vector2(qX + offsetX, qY), qScale, 1f, Color.White);
+		}
+
 	}
 
 	public override bool Equals(object? obj) {
@@ -97,6 +128,7 @@ public struct SpriteNode : IFlowNode {
 			   Size == node.Size &&
 			   Frame == node.Frame &&
 			   Alignment == node.Alignment &&
+			   Quantity == node.Quantity &&
 			   EqualityComparer<object>.Default.Equals(Extra, node.Extra) &&
 			   UniqueId == node.UniqueId &&
 			   NoComponent == node.NoComponent &&
@@ -112,6 +144,7 @@ public struct SpriteNode : IFlowNode {
 		hash.Add(Size);
 		hash.Add(Frame);
 		hash.Add(Alignment);
+		hash.Add(Quantity);
 		hash.Add(Extra);
 		hash.Add(UniqueId);
 		hash.Add(NoComponent);
@@ -129,3 +162,5 @@ public struct SpriteNode : IFlowNode {
 		return !(left == right);
 	}
 }
+
+#endif

@@ -21,20 +21,17 @@ namespace Pathoschild.Stardew.FastAnimations.Handlers
         /*********
         ** Public methods
         *********/
-        /// <summary>Construct an instance.</summary>
-        /// <param name="multiplier">The animation speed multiplier to apply.</param>
+        /// <inheritdoc />
         public BreakingGeodeHandler(float multiplier)
             : base(multiplier) { }
 
-        /// <summary>Get whether the animation is currently active.</summary>
-        /// <param name="playerAnimationID">The player's current animation ID.</param>
+        /// <inheritdoc />
         public override bool IsEnabled(int playerAnimationID)
         {
             return Game1.activeClickableMenu is GeodeMenu { geodeAnimationTimer: > 0 };
         }
 
-        /// <summary>Perform any logic needed on update while the animation is active.</summary>
-        /// <param name="playerAnimationID">The player's current animation ID.</param>
+        /// <inheritdoc />
         public override void Update(int playerAnimationID)
         {
             GeodeMenu menu = (GeodeMenu)Game1.activeClickableMenu;

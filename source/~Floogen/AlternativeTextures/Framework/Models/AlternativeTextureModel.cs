@@ -40,6 +40,7 @@ namespace AlternativeTextures.Framework.Models
         public int TextureWidth { get; set; }
         public int TextureHeight { get; set; }
         public int Variations { get; set; } = 1;
+        public int? DefaultVariation { get; set; }
         internal int MaxVariationsPerTextures { get; set; } = -1;
         internal string TileSheetPath { get; set; }
         internal Dictionary<int, Texture2D> Textures { get; set; } = new Dictionary<int, Texture2D>();
@@ -250,7 +251,7 @@ namespace AlternativeTextures.Framework.Models
             }
 
             return name;
-        }        
+        }
 
         internal bool HandleTypeChanges()
         {

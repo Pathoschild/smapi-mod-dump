@@ -61,23 +61,22 @@ namespace Custom_Farm_Loader.Lib
                 }
             }
 
-            held.ID = held.Type switch {
-                HeldObjectType.Item => ItemObject.MapNameToItemId(held.ID),
-                HeldObjectType.Furniture or _ => Furniture.MapNameToParentsheetindex(held.ID),
-            };
-
             return held;
         }
 
         public StardewValley.Object objectFactory(Vector2 pos)
         {
             if (Type == HeldObjectType.Item) {
-                var obj = new StardewValley.Object(ID, 1, quality: Quality);
+                var id = ItemObject.MapNameToItemId(ID);
+                var obj = new StardewValley.Object(id, 1, quality: Quality);
                 obj.TileLocation = pos;
                 return obj;
 
-            } else if (Type == HeldObjectType.Furniture)
-                return new StardewValley.Objects.Furniture(ID, pos, Rotations);
+            } else if (Type == HeldObjectType.Furniture) {
+                var id = Furniture.MapNameToParentsheetindex(ID);
+                return new StardewValley.Objects.Furniture(id, pos, Rotations);
+            }
+                
 
             return null;
         }

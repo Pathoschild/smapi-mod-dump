@@ -1,7 +1,7 @@
 {
   "Name": "Special Orders Tweaks",
   "Author": "nnn",
-  "Version": "1.0.1",
+  "Version": "1.0.5",
   "Description": "Special Orders Tweaks",
   "UniqueID": "nnn.Special_Orders_Tweaks",
   "EntryDll": "Special Orders Tweaks.dll",

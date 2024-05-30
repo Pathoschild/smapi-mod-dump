@@ -30,6 +30,8 @@ namespace BusLocations
         /// <summary>The available bus choices.</summary>
         private Response[] Choices;
 
+        /// <summary>Api for integrating other mods</summary>
+        private BusStopEventsApi busStopEvents;
 
         /*********
         ** Public methods
@@ -58,6 +60,13 @@ namespace BusLocations
             }
             choices.Add(new Response("Cancel", "Cancel"));
             this.Choices = choices.ToArray();
+
+            this.busStopEvents = new BusStopEventsApi();
+        }
+
+        public override object GetApi()
+        {
+            return this.busStopEvents;
         }
 
 
@@ -86,10 +95,12 @@ namespace BusLocations
             if (!Game1.currentLocation.Name.Contains("BusStop"))
                 return;
 
-            if (Game1.currentLocation.doesTileHaveProperty(7, 11, "Action", "Buildings") != "BusTicket")
-                return;
+        /// this action no longer exists as of 03/21/2017
+        /// if (Game1.currentLocation.doesTileHaveProperty(17, 11, "Action", "Buildings") != "BusTicket")
+        ///     return;
 
-            if (!(e.Cursor.GrabTile.X == 7 && (e.Cursor.GrabTile.Y == 11 || e.Cursor.GrabTile.Y == 10)))
+        /// for some reason the Ticket Machine extends all the way down to Tile 12 so let's add it here.
+            if (!(e.Cursor.GrabTile.X == 17 && (e.Cursor.GrabTile.Y == 12 || e.Cursor.GrabTile.Y == 11 || e.Cursor.GrabTile.Y == 10)))
                 return;
 
             this.Helper.Input.Suppress(e.Button);
@@ -108,17 +119,27 @@ namespace BusLocations
                 return;
             int index = int.Parse(whichAnswer);
             NPC characterFromName = Game1.getCharacterFromName("Pam");
-            if (Game1.player.Money >= Locations[index].TicketPrice && Game1.currentLocation.characters.Contains(characterFromName) && characterFromName.getTileLocation() == new Vector2(11, 10))
+            if (Game1.player.Money >= Locations[index].TicketPrice && Game1.currentLocation.characters.Contains(characterFromName) && characterFromName.Tile == new Vector2(21, 10))
             {
+                Game1.player.Money -= Locations[index].TicketPrice;
+                if (busStopEvents.HasJumpToOverride())
+                {
+                    //Let the other mod handle warping
+                    busStopEvents.SetGoingTo(Locations[index]);
+                    busStopEvents.JumpToLocation();
+                } else { 
+                    Game1.player.Halt();
+                    Game1.player.freezePause = 700;
+                    Game1.warpFarmer(Locations[index].MapName, Locations[index].DestinationX, Locations[index].DestinationY, Locations[index].ArrivalFacing);
+                }
+            }
+            else if (Game1.player.Money < Locations[index].TicketPrice)
+                Game1.drawObjectDialogue(Game1.content.LoadString("Strings\\Locations:BusStop_NotEnoughMoneyForTicket"));
+              else
                 Game1.player.Money -= Locations[index].TicketPrice;
                 Game1.player.Halt();
                 Game1.player.freezePause = 700;
                 Game1.warpFarmer(Locations[index].MapName, Locations[index].DestinationX, Locations[index].DestinationY, Locations[index].ArrivalFacing);
-            }
-            else if (Game1.player.Money < Locations[index].TicketPrice)
-                Game1.drawObjectDialogue(Game1.content.LoadString("Strings\\Locations:BusStop_NotEnoughMoneyForTicket"));
-            else
-                Game1.drawObjectDialogue(Game1.content.LoadString("Strings\\Locations:BusStop_NoDriver"));
         }
     }
 }

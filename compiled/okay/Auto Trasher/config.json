@@ -1,0 +1,15 @@
+{
+  "ToggleTrasherKeybind": "LeftAlt + R, RightAlt + R",
+  "OpenTrashMenuKeybind": "LeftAlt + L, RightAlt + L",
+  "AddTrashKeybind": "LeftAlt + X, RightAlt + X",
+  "ReclaimableItemCount": 10,
+  "TrashList": [
+    "168",
+    "169",
+    "170",
+    "171",
+    "172",
+    "747",
+    "748"
+  ]
+}

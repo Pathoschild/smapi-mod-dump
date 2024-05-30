@@ -11,7 +11,7 @@
 {
   "Name": "Gift Taste Helper Continued x2",
   "Author": "JoXW, Isi0, tstaples (aka catman)",
-  "Version": "1.0.5",
+  "Version": "1.2.0",
   "MinimumApiVersion": "4.0.0",
   "Description": "Displays NPC gift tastes in a handy tooltip.",
   "UniqueID": "JoXW.GiftTasteHelper",

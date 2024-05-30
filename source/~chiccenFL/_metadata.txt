@@ -1,0 +1,15 @@
+urls:
+   web: https://github.com/chiccenFL/StardewValleyMods
+   Git: https://github.com/chiccenFL/StardewValleyMods.git
+
+mods:
+   Garbage Can Tweaks
+   Wild Tree Tweaks
+
+latest commit:
+   commit 46d164a0373cee310680faeb2d824c29840f3f29
+   Author: Joshua Parks <joshuaparks2018@gmail.com>
+   Date:   Wed May 29 12:44:05 2024 -0400
+   
+       ignore json builder WIP
+   

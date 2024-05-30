@@ -45,6 +45,7 @@ namespace PredictiveCore
 
 			List<Prediction> predictions = new ();
 
+			// Start from today, or Summer 3 Year 1, whichever is later (in case BypassFriendships flag is set)
 			for (int days = Math.Max (fromDate.DaysSinceStart, 31);
 				predictions.Count < limit &&
 					days < fromDate.DaysSinceStart + Utilities.MaxHorizon;
@@ -52,24 +53,27 @@ namespace PredictiveCore
 			{
                 // Base game's Railroad.DayUpdate() uses Utility.CreateDaySaveRandom() which depends on the current date
                 // but we need to emulate what this would do in the past/future
-                var EffectiveDaysPlayed = days + 1;
-                Random rng = Utility.CreateRandom(EffectiveDaysPlayed, Game1.uniqueIDForThisGame / 2);
+                Random rng = Utility.CreateRandom(days, Game1.uniqueIDForThisGame / 2);
 
                 if (!(rng.NextDouble () < 0.2))
 					continue;
 
-				int time = rng.Next (900, 1800);
+                int time = rng.Next (900, 1800);
 				time -= time % 10;
 				if (time % 100 >= 60)
 					continue;
 
+                var dayOfPrediction = SDate.FromDaysSinceStart(days);
+
                 // No train on the first day after loading the game.
-                SDate tonight = SDate.FromDaysSinceStart(days);
-                SDate tomorrow = SDate.FromDaysSinceStart(days + 1);
-                if (tonight == Utilities.LoadDate)
+                if (dayOfPrediction == Utilities.LoadDate)
 					continue;
 
-				predictions.Add (new Prediction { date = tomorrow, time = time });
+                // No train on festival days.
+                if (Utility.isFestivalDay(day: dayOfPrediction.Day, season: dayOfPrediction.Season))
+					continue;
+
+                predictions.Add (new Prediction { date = dayOfPrediction, time = time });
 			}
 
 			return predictions;

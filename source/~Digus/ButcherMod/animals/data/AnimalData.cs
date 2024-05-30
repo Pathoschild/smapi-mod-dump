@@ -111,10 +111,17 @@ namespace AnimalHusbandryMod.animals.data
             {
                 if (likedTreat is string s)
                 {
-                    KeyValuePair<string, ObjectData> pair = Game1.objectData.FirstOrDefault(o => o.Value.Name.Equals(s));
-                    if (pair.Value != null)
+                    if (ItemRegistry.Exists(ItemRegistry.type_object + s))
                     {
-                        treatItem.LikedTreatsId.Add(pair.Key);
+                        treatItem.LikedTreatsId.Add(s);
+                    }
+                    else
+                    {
+                        KeyValuePair<string, ObjectData> pair = Game1.objectData.FirstOrDefault(o => s.Equals(o.Value.Name));
+                        if (pair.Value != null)
+                        {
+                            treatItem.LikedTreatsId.Add(pair.Key);
+                        }
                     }
                 }
                 else if (likedTreat is long l)

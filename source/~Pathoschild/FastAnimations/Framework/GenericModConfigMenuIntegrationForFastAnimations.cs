@@ -89,6 +89,22 @@ namespace Pathoschild.Stardew.FastAnimations.Framework
                     max: maxSpeed
                 )
                 .AddNumberField(
+                    name: I18n.Config_HoldUpItem_Name,
+                    tooltip: () => I18n.Config_HoldUpItem_Tooltip(defaultValue: defaultConfig.HoldUpItemSpeed),
+                    get: config => config.HoldUpItemSpeed,
+                    set: (config, value) => config.HoldUpItemSpeed = value,
+                    min: minSpeed,
+                    max: maxSpeed
+                )
+                .AddNumberField(
+                    name: I18n.Config_HorseFlute_Name,
+                    tooltip: () => I18n.Config_HorseFlute_Tooltip(defaultValue: defaultConfig.HorseFluteSpeed),
+                    get: config => config.HorseFluteSpeed,
+                    set: (config, value) => config.HorseFluteSpeed = value,
+                    min: minSpeed,
+                    max: maxSpeed
+                )
+                .AddNumberField(
                     name: I18n.Config_Milk_Name,
                     tooltip: () => I18n.Config_Milk_Tooltip(defaultValue: defaultConfig.MilkSpeed),
                     get: config => config.MilkSpeed,
@@ -105,10 +121,10 @@ namespace Pathoschild.Stardew.FastAnimations.Framework
                     max: maxSpeed
                 )
                 .AddNumberField(
-                    name: I18n.Config_HorseFlute_Name,
-                    tooltip: () => I18n.Config_HorseFlute_Tooltip(defaultValue: defaultConfig.HorseFluteSpeed),
-                    get: config => config.HorseFluteSpeed,
-                    set: (config, value) => config.HorseFluteSpeed = value,
+                    name: I18n.Config_ReadBook_Name,
+                    tooltip: () => I18n.Config_ReadBook_Tooltip(defaultValue: defaultConfig.ReadBookSpeed),
+                    get: config => config.ReadBookSpeed,
+                    set: (config, value) => config.ReadBookSpeed = value,
                     min: minSpeed,
                     max: maxSpeed
                 )
@@ -137,6 +153,14 @@ namespace Pathoschild.Stardew.FastAnimations.Framework
                     max: maxSpeed
                 )
                 .AddNumberField(
+                    name: I18n.Config_UseTotem_Name,
+                    tooltip: () => I18n.Config_UseTotem_Tooltip(defaultValue: defaultConfig.UseTotemSpeed),
+                    get: config => config.UseTotemSpeed,
+                    set: (config, value) => config.UseTotemSpeed = value,
+                    min: minSpeed,
+                    max: maxSpeed
+                )
+                .AddNumberField(
                     name: I18n.Config_Weapon_Name,
                     tooltip: () => I18n.Config_Weapon_Tooltip(defaultValue: defaultConfig.WeaponSwingSpeed, suggestedValue: 4),
                     get: config => config.WeaponSwingSpeed,
@@ -155,14 +179,6 @@ namespace Pathoschild.Stardew.FastAnimations.Framework
                     max: maxSpeed
                 )
                 .AddNumberField(
-                    name: I18n.Config_CasinoSlots_Name,
-                    tooltip: () => I18n.Config_CasinoSlots_Tooltip(defaultValue: defaultConfig.CasinoSlotsSpeed),
-                    get: config => config.CasinoSlotsSpeed,
-                    set: (config, value) => config.CasinoSlotsSpeed = value,
-                    min: minSpeed,
-                    max: maxSpeed
-                )
-                .AddNumberField(
                     name: I18n.Config_Bus_Name,
                     tooltip: () => I18n.Config_Bus_Tooltip(defaultValue: defaultConfig.PamBusSpeed),
                     get: config => config.PamBusSpeed,
@@ -171,10 +187,58 @@ namespace Pathoschild.Stardew.FastAnimations.Framework
                     max: maxSpeed
                 )
                 .AddNumberField(
+                    name: I18n.Config_CasinoSlots_Name,
+                    tooltip: () => I18n.Config_CasinoSlots_Tooltip(defaultValue: defaultConfig.CasinoSlotsSpeed),
+                    get: config => config.CasinoSlotsSpeed,
+                    set: (config, value) => config.CasinoSlotsSpeed = value,
+                    min: minSpeed,
+                    max: maxSpeed
+                )
+                .AddNumberField(
+                    name: I18n.Config_FishingTreasure_Name,
+                    tooltip: () => I18n.Config_FishingTreasure_Tooltip(defaultValue: defaultConfig.FishingTreasureSpeed),
+                    get: config => config.FishingTreasureSpeed,
+                    set: (config, value) => config.FishingTreasureSpeed = value,
+                    min: minSpeed,
+                    max: maxSpeed
+                )
+                .AddNumberField(
+                    name: I18n.Config_Forge_Name,
+                    tooltip: () => I18n.Config_Forge_Tooltip(defaultValue: defaultConfig.ForgeSpeed),
+                    get: config => config.ForgeSpeed,
+                    set: (config, value) => config.ForgeSpeed = value,
+                    min: minSpeed,
+                    max: maxSpeed
+                )
+                .AddNumberField(
+                    name: I18n.Config_OpenChest_Name,
+                    tooltip: () => I18n.Config_OpenChest_Tooltip(defaultValue: defaultConfig.OpenChestSpeed),
+                    get: config => config.OpenChestSpeed,
+                    set: (config, value) => config.OpenChestSpeed = value,
+                    min: minSpeed,
+                    max: maxSpeed
+                )
+                .AddNumberField(
+                    name: I18n.Config_PrizeTicketMachine_Name,
+                    tooltip: () => I18n.Config_PrizeTicketMachine_Tooltip(defaultValue: defaultConfig.PrizeTicketMachineSpeed),
+                    get: config => config.PrizeTicketMachineSpeed,
+                    (config, value) => config.PrizeTicketMachineSpeed = value,
+                    minSpeed,
+                    maxSpeed
+                )
+                .AddNumberField(
                     name: I18n.Config_TreeFall_Name,
                     tooltip: () => I18n.Config_TreeFall_Tooltip(defaultValue: defaultConfig.TreeFallSpeed, suggestedValue: 3),
                     get: config => config.TreeFallSpeed,
                     set: (config, value) => config.TreeFallSpeed = value,
+                    min: minSpeed,
+                    max: maxSpeed
+                )
+                .AddNumberField(
+                    name: I18n.Config_WheelSpin_Name,
+                    tooltip: () => I18n.Config_WheelSpin_Tooltip(defaultValue: defaultConfig.WheelSpinSpeed),
+                    get: config => config.WheelSpinSpeed,
+                    set: (config, value) => config.WheelSpinSpeed = value,
                     min: minSpeed,
                     max: maxSpeed
                 )

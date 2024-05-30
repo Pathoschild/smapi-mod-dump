@@ -40,116 +40,11 @@ NPC on their profile page, etc.
 You can also press `left shift` + `F1` to search for something by name.
 
 ## Configure
-### In-game settings
-If you have [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098) installed,
-you can click the cog button (⚙) on the title screen or the "mod options" button at the bottom of
-the in-game menu to configure the mod. Hover the cursor over a field for details, or see the next
-section.
+If you install [Generic Mod Config Menu][], you can click the cog button (⚙) on the title screen
+or the "mod options" button at the bottom of the in-game menu to configure the mod. Hover the
+cursor over a field for details.
 
-![](screenshots/generic-config-menu.png)
-
-### `config.json` file
-The mod creates a `config.json` file in its mod folder the first time you run it. You can open that
-file in a text editor to configure the mod.
-
-Common settings:
-
-<table>
-<tr>
-  <th>setting</th>
-  <th>what it affects</th>
-</tr>
-
-<tr>
-  <td><code>Controls</code></td>
-  <td>
-
-The configured controller, keyboard, and mouse buttons (see [key bindings](https://stardewvalleywiki.com/Modding:Key_bindings)).
-You can separate multiple buttons with commas. The default bindings are...
-
-field | action | default
------ | ------ | -------
-`ToggleLookup` | Look up a subject (see _use_ section). | `F1`
-`ToggleSearch` | Show a search UI to find something by name. | `LeftShift + F1`
-`ScrollUp`, `ScrollDown` | Scroll the displayed lookup results by a few lines. | `Up`, `Down`
-`PageUp`, `PageDown` | Scroll the displayed lookup results by a full page. | `PageUp`, `PageDown`
-`ToggleDebug` | Show information intended for developers. | _none_
-
-You can separate bindings with commas (like `F1, LeftShoulder` for either one), and set
-multi-key bindings with plus signs (like `LeftShift + F1`).
-
-  </td>
-</tr>
-
-<tr>
-  <td><code>MinMinutesForFairyDust</code></td>
-  <td>
-
-Default `20`. The minimum machine processing time in minutes for which to apply any [fairy
-dust](https://stardewvalleywiki.com/Fairy_Dust) in the chest.
-
-  </td>
-</tr>
-
-<tr>
-  <td><code>ProgressionMode</code></td>
-  <td>
-
-Default `false`. Whether to hide some content (e.g. gift tastes and puzzle solutions) until you've
-discovered it in-game.
-
-  </td>
-</tr>
-
-<tr>
-  <td><code>HighlightUnrevealedGiftTastes</code></td>
-  <td>
-
-Default `false`. Whether to highlight item gift tastes which haven't been revealed in the NPC
-profile. When enabled, unrevealed gift tastes will be bold.
-
-  </td>
-</tr>
-
-<tr>
-  <td><code>ShowGiftTastes</code></td>
-  <td>
-
-Default loved and liked. Which gift taste levels to show in NPC and item lookups.
-
-  </td>
-</tr>
-
-<tr>
-  <td><code>ShowUnownedGifts</code></td>
-  <td>
-
-Default `true`. Whether to show gift tastes in an NPC lookup for items that you don't own somewhere
-in the world.
-
-  </td>
-</tr>
-
-<tr>
-  <td><code>HideOnKeyUp</code></td>
-  <td>
-
-Default `false`. If enabled, the lookup window will be shown while you hold `F1` and disappear when
-you release it.
-
-  </td>
-</tr>
-</table>
-
-Advanced settings:
-
-setting           | what it affects
------------------ | -------------------
-`EnableTargetRedirection` | Default `true`. In some cases the game spawns a temporary entity to represent another one. For example, Abigail in the mines is actually a temporary NPC with the name 'AbigailMine', so looking her up there won't show Abigail's real info. With this option enabled, Lookup Anything will look up the original Abigail instead.
-`EnableTileLookups` | Default `false`. Whether to include map tiles as lookup targets.
-`ForceFullScreen` | Default `false`. Whether the menu should always be full-screen, instead of centered in the window. This is mainly useful when viewing data mining fields.
-`ScrollAmount` | Default `160`. The number of pixels to shift content on each up/down scroll.
-`ShowDataMiningFields` | Default `false`. Whether to show raw data useful for data miners (as separate fields at the bottom of lookup results). This is an advanced feature not intended for most players.
+> ![](screenshots/generic-config-menu.png)
 
 ## Showcase
 ### Progression mode
@@ -281,7 +176,7 @@ Enable tile lookups to see information about map tiles:
 > ![](screenshots/map-tile.png)
 
 ## Compatibility
-Lookup Anything is compatible with Stardew Valley 1.5.6+ on Linux/Mac/Windows, both single-player and
+Lookup Anything is compatible with Stardew Valley 1.6+ on Linux/macOS/Windows, both single-player and
 multiplayer. There are no known issues in multiplayer (even if other players don't have it installed).
 
 ## Extensibility for modders
@@ -322,3 +217,5 @@ public NPC HoveredNpc;
 ## See also
 * [Release notes](release-notes.md)
 * [Nexus mod](https://www.nexusmods.com/stardewvalley/mods/518)
+
+[Generic Mod Config Menu]: https://www.nexusmods.com/stardewvalley/mods/5098

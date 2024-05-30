@@ -5,17 +5,20 @@ urls:
 mods:
    Convenient Inventory
    Faster Path Speed
+   Splitscreen Improved
 
 latest commit:
-   commit e099792cc8e7df76fb705f47019b54aeaff6f998
+   commit 55bb6c4db12baa5cf9a4ed55609b1359a9a14ce1
    Author: Alan Perrow <65362286+alanperrow@users.noreply.github.com>
-   Date:   Thu Mar 21 18:47:56 2024 -0400
+   Date:   Tue May 28 21:43:31 2024 -0400
    
-       Convenient inventory 1.4.1 (#15)
+       Faster Path Speed 1.3.1 (#24)
        
-       * Always ignore the click action if FavoriteItemsHotkey is down. In this case we should only be allowing favorite item slot toggling. This prevents strange favorite item slot tracking behavior.
+       * Check for the town "path" tile. Currently just setting a debug value.
        
-       * Updated req SMAPI to 4.0.0.
+       * Apply path speed boost when on town path tiles. Removed debug code.
        
-       * Removed GamePath csproj property.
+       * GMCM support for IsTownPathSpeedBuff config option.
+       
+       * Updated readme.
    

@@ -6,9 +6,9 @@ mods:
    Animal Observer
 
 latest commit:
-   commit 46488dd9e11faba989eb9e8300e37fa11d44fe24
+   commit d4ce151d241467291995680a8a2e44cbf7d4e931
    Author: nofilenamed <nofilenamed@gmail.com>
-   Date:   Tue May 18 14:45:26 2021 +0200
+   Date:   Sun May 19 11:53:35 2024 +0200
    
-       now with truffle ready show
+       Overhauled update
    

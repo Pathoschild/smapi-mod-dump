@@ -15,8 +15,10 @@
 	"DoorAttic.Name": "Dimenzió ajtó - Padlás",
 	"DoorLoft.Name": "Dimenzió ajtó - Loft",
 	"DoorCellar.Name": "Dimenzió ajtó - Pince",
+	"DoorSpa.Name": "Dimenzió ajtó - Fürdő",
 	"Door.Empty": "Az ajtó mögött nincs semmi.",
 	"Door.Offline": "Nem szabadna szaglászni, amikor a barátod távol van!",
+	"Door.Locked": "Ez az ajtó zárva van",
 	"Painting.Name": "A szezon festménye",
 	"Synchronizer.Name": "Téridő szinkronizáló",
 	"Synchronizer.Description": "Szinkronizálja a személyes dimenziót a pelikánvárosok dátumával",
@@ -27,4 +29,6 @@
 	"VoidSeal.Buff.Name": "Belső üresség",
 	"VoidSeal.Buff.Description": "Olyan... üresnek érzem magam.",
 	"NoContentPacks": "Megvan az ajtó, de nincs helyiség tartalmú csomag, hogy vele menjen",
+	"Key.Name": "Üres kulcs",
+	"Key.Description": "Zárak és feloldások személyes dimenziója",
 }

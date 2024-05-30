@@ -14,7 +14,7 @@
     {
       "LogName": "Load map into assets",
       "Action": "Load",
-      "Target": "Mods/{{ModId}}/Custom_BeachHouse", // creates the asset to target later
+      "Target": "Maps/Rokugin_BeachHouse", // creates the asset to target later
       "FromFile": "assets/Custom_BeachHouse.tmx" // make sure the tmx file is inside a folder named assets inside your mod's folder
     },
     {
@@ -22,14 +22,14 @@
       "Action": "EditData",
       "Target": "Data/Locations",
       "Entries": {
-        "{{ModId}}_BeachHouse": { // entry key, make it unique
+        "Rokugin_BeachHouse": { // entry key, make it unique
           "DisplayName": "Beach House", // translatable display name, accepts tokens
           "DefaultArrivalTile": { // used if no tile coordinates are provided when warping to map
             "X": 3, // coordinates start at index 0 for the top left tile of the map
             "Y": 9
           },
           "CreateOnLoad": { // loads the map when loading the save game
-            "MapPath": "Mods/{{ModId}}/Custom_BeachHouse"
+            "MapPath": "Maps/Rokugin_BeachHouse"
           }
         }
       }
@@ -38,14 +38,34 @@
       "LogName": "Add beach house exterior to beach map",
       "Action": "EditMap",
       "Target": "Maps/Beach",
-      "FromFile": "assets/Custom_Beach_HouseExterior.tmx", 
+      "FromFile": "assets/Custom_Beach_HouseExterior.tmx",
       "ToArea": { // top left coordinate of where the file will be on the target map
         "X": 65,
         "Y": 3,
         "Width": 5, // actual size of the source map
         "Height": 7
       },
-      "PatchMode": "Overlay" // overlay only replaces tiles that you actually used in your source map
+      "PatchMode": "Overlay", // overlay only replaces tiles that you actually used in your source map
+      "MapTiles": [
+        {
+          "Position": {
+            "X": 68,
+            "Y": 9
+          },
+          "Layer": "Buildings",
+          "SetProperties": {
+            "Action": "Warp 3 9 Rokugin_BeachHouse"
+          }
+        }
+      ]
+    },
+    {
+      "LogName": "Add interior warp",
+      "Action": "EditMap",
+      "Target": "Maps/Rokugin_BeachHouse",
+      "AddWarps": [
+        "3 10 Beach 68 10"
+      ]
     }
   ]
 }

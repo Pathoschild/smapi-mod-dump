@@ -1,0 +1,117 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Pet-Slime/StardewValley
+**
+*************************************************/
+
+{
+
+
+    "config.Enable_Vanilla_Food_Changes.name": "MODを有効にする",
+    "config.Enable_Vanilla_Food_Changes.description": "オフにした場合、ほとんどのバニラ料理の設定は元に戻るが、パイ生地関連のレシピ設定は残ったままになります。",
+
+    "config.Enable_Cookout_Kit_Changes.name": "野外料理キットの変更",
+    "config.Enable_Cookout_Kit_Changes.description": "オフにした場合、野外料理キットはレベル0の料理レシピではなく、レベル3の採取レシピに戻ります。",
+
+    "moonslime.Cooking.green_stew.name": "グリーンシチュー",
+    "moonslime.Cooking.green_stew.description": "イオウとジャガイモの香りがする繊細なシチュー。",
+
+    "moonslime.Cooking.soda.name": "ソーダ",
+    "moonslime.Cooking.soda.description": "シロップや果汁を使った甘い飲み物。",
+
+    "moonslime.Cooking.soda_Mystic.name": "ミスティックソーダ",
+    "moonslime.Cooking.soda_Mystic.description": "魔法の香りがする甘い飲み物。",
+
+    "moonslime.Cooking.oven.name": "オーブン",
+    "moonslime.Cooking.oven.description": "（現在作成中）",
+
+    "moonslime.Cooking.soda_machine.name": "ソーダメーカー",
+    "moonslime.Cooking.soda_machine.description": "水と炭酸を加えることで、くだものやメープルシロップからソーダを作ることができる機械。",
+
+    "moonslime.Cooking.green_smoothy.name": "グリーンスムージー",
+    "moonslime.Cooking.green_smoothy.description": "健康的で美味しい飲み物。",
+
+    "moonslime.Cooking.anchovy_pizza.name": "アンチョビピザ",
+    "moonslime.Cooking.anchovy_pizza.description": "好みがはっきりと分かれるピザ。",
+
+    "moonslime.Cooking.wizards_brew.name": "ウィザーズブルー",
+    "moonslime.Cooking.wizards_brew.description": "フクロウの群れがいる山の上で作られたものではない。",
+
+    "moonslime.Cooking.pie_crust.name": "パイ生地",
+    "moonslime.Cooking.pie_crust.description": "パイを作るうえでの基本。",
+
+    "moonslime.Cooking.rice.name": "白飯",
+    "moonslime.Cooking.rice.description": "エネルギー源として最適で、作るのも簡単。",
+
+    "moonslime.Cooking.banana_field_snack.name": "バナナバー",
+    "moonslime.Cooking.banana_field_snack.description": "ドライバナナも入ったエネルギーバー。",
+
+    "moonslime.Cooking.strawberry_pie.name": "ストロベリーパイ",
+    "moonslime.Cooking.strawberry_pie.description": "春の贈り物に最適。",
+
+    "moonslime.Cooking.mushroom_rice.name": "キノコご飯",
+    "moonslime.Cooking.mushroom_rice.description": "炒めたマッシュルームを混ぜ込んだご飯。",
+
+    "moonslime.Cooking.spring_onion_soup.name": "葉タマネギのスープ",
+    "moonslime.Cooking.spring_onion_soup.description": "あなたの足取りに、春ような軽やかさを与えてくれるだろう。",
+
+    "moonslime.Cooking.fries.name": "フライドポテト＆ケチャップ",
+    "moonslime.Cooking.fries.description": "フライドポテトにはやっぱりケチャップ！",
+
+    "moonslime.Cooking.caramel_miner_treat.name": "キャラメルキャンディ",
+    "moonslime.Cooking.caramel_miner_treat.description": "ほんの少しの甘さは、誰も傷つけない。",
+
+    "moonslime.Cooking.fishers_breakfast.name": "漁師の朝食",
+    "moonslime.Cooking.fishers_breakfast.description": "魚・ハッシュドポテト・野菜を組み合わせた、1日の始まりにふさわしい料理。",
+
+    "moonslime.Cooking.cream_pie.name": "クリームパイ",
+    "moonslime.Cooking.cream_pie.description": "顔には投げつけないこと。",
+
+    "moonslime.Cooking.ramen.name": "ラーメン",
+    "moonslime.Cooking.ramen.description": "つるつるっと食べよう。",
+
+    "moonslime.Cooking.tomato_soup.name": "トマトスープ",
+    "moonslime.Cooking.tomato_soup.description": "衣料品店で買おうとしてはいけない。",
+
+    "moonslime.Cooking.egg_burrito.name": "エッグブリトー",
+    "moonslime.Cooking.egg_burrito.description": "外出先での朝食。",
+
+    "moonslime.Cooking.oeuf.name": "ウッフ・ア・ラ・コック",
+    "moonslime.Cooking.oeuf.description": "タマゴ用の小さな台座がとてもかわいい！",
+
+    "moonslime.Cooking.egg_ramen.name": "タマゴラーメン",
+    "moonslime.Cooking.egg_ramen.description": "ラーメンはタマゴを加えることで、よりおいしくなる。",
+
+    "moonslime.Cooking.fish_pie.name": "フィッシュパイ",
+    "moonslime.Cooking.fish_pie.description": "ミートパイに次ぐ美味しさ。",
+
+    "moonslime.Cooking.eggnog.name": "エッグノッグ",
+    "moonslime.Cooking.eggnog.description": "主に冬のお祭りで提供される。",
+
+    "moonslime.Cooking.apple_pie.name": "アップルパイ",
+    "moonslime.Cooking.apple_pie.description": "パンプキンパイに次ぐ、秋のベストパイのひとつ。",
+
+    "moonslime.Cooking.egg_sandwhich.name": "タマゴサンド",
+    "moonslime.Cooking.egg_sandwhich.description": "うーん、これこそサンドイッチ。",
+
+    "moonslime.Cooking.tomatoe_cheese_omelet.name": "チーズかけトマトオムレツ",
+    "moonslime.Cooking.tomatoe_cheese_omelet.description": "ふわふわのオムレツの上にチーズをのせ、その上にスライスしたトマトをのせたもの。",
+
+    "moonslime.Cooking.nigiri.name": "ウナギのかば焼",
+    "moonslime.Cooking.nigiri.description": "食べやすく切ったウナギを焼いて、タレをかけたもの。",
+
+    "moonslime.Cooking.seafoam_icecream.name": "海の泡アイス",
+    "moonslime.Cooking.seafoam_icecream.description": "桟橋に座って夕日を眺めながら食べると、より一層に美味しい。",
+
+    "moonslime.Cooking.wizard_casserole.name": "ウィザーズキャセロール",
+    "moonslime.Cooking.wizard_casserole.description": "魔法使いの、魔法使いによる、魔法使いのための食べ物。",
+
+    "moonslime.Cooking.skill_book.name": "料理大全",
+    "moonslime.Cooking.skill_book.description": "様々な料理技法について書かれた分厚い本。 "
+
+
+}

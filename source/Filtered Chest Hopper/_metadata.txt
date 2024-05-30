@@ -6,9 +6,9 @@ mods:
    Filtered Chest Hopper
 
 latest commit:
-   commit bb3d88749d1c12f6f50e4eecb5ef72ae57f2576b
+   commit b9e3fb45646f7b25f8e26ab1289c275e32231813
    Author: Alex Apperley <AlexApperley@gmail.com>
-   Date:   Thu Apr 11 20:34:00 2024 -0500
+   Date:   Thu May 23 18:20:10 2024 -0500
    
-       Add update key to manifest and rework pipline logic to just store hoppers instead of location
+       Add checks for null item slots
    

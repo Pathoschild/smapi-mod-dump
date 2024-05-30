@@ -11,7 +11,8 @@
 {
   "$schema": "https://smapi.io/schemas/manifest.json",
   "Name": "[AF] Cornucopia - More Flowers Forage",
-  "Description": "Forage added by Cornucopia - More Flowers",
+  // https://www.nexusmods.com/stardewvalley/mods/20290
+  "Description": "Forage added by MizuJakkaru's Cornucopia - More Flowers",
   "Author": "Jag3Dagster",
   "UniqueID": "HedgehogTechnologies.CMFlowersForageAF",
   "Version": "1.0.1",

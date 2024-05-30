@@ -6,9 +6,9 @@ mods:
    Ultimate Fertilizer
 
 latest commit:
-   commit 1d62c70c592c2dee7551f09f0f87066a70ddbe8d
+   commit 46716644e1947043c4b1bc2843374e0df362d5f1
    Author: Fox_white <vct.xie@gmail.com>
-   Date:   Fri Apr 26 12:29:21 2024 +0800
+   Date:   Thu May 30 13:21:12 2024 +0800
    
-       i18n: translate options
+       fix: my ocd
    

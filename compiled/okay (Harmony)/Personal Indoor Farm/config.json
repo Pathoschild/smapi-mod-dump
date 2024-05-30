@@ -1,4 +1,16 @@
 {
   "UseVanillaDoors": true,
-  "UseVMVDoors": true
+  "UseVMVDoors": true,
+  "LockedDoorColor": {
+    "B": 0,
+    "G": 0,
+    "R": 153,
+    "A": 153
+  },
+  "UnlockedDoorColor": {
+    "B": 20,
+    "G": 83,
+    "R": 20,
+    "A": 153
+  }
 }

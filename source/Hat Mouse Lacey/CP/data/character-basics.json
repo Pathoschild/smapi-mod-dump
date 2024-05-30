@@ -120,7 +120,13 @@
             "MapAsset": "{{ModId}}_SpousePatio",
             "MapSourceRect": {
               "X": 0, "Y": 0, "Width": 4, "Height": 4
-            }
+            },
+            "SpriteAnimationFrames": [
+              [24, 300],
+              [25, 200],
+              [26, 500],
+              [27, 200]
+            ]
           },
           "SpouseFloors": [],
           "SpouseWallpapers": [],

@@ -1,0 +1,472 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Pet-Slime/StardewValley
+**
+*************************************************/
+
+{
+    "Changes": [
+        {
+            "Action": "EditData",
+            "Target": "Data/Machines",
+            "Entries": {
+                "(BC)moonslime.Luck.slots_copper": {
+                    "OutputRules": [
+                        {
+                            "Id": "Copper_bar_insert",
+                            "Triggers": [
+                                {
+                                    "Id": "ItemPlacedInMachine",
+                                    "Trigger": "ItemPlacedInMachine",
+                                    "RequiredItemId": "(O)334",
+                                    "RequiredCount": 5
+                                }
+                            ],
+                            "UseFirstValidOutput": true,
+                            "OutputItem": [
+                                {
+                                    "Id": "Wood",
+                                    "Condition": "RANDOM 0.1",
+                                    "ItemId": "(O)388",
+                                    "MinStack": 10,
+                                    "MaxStack": 20
+                                },
+                                {
+                                    "Id": "Stone",
+                                    "Condition": "RANDOM 0.1",
+                                    "ItemId": "(O)390",
+                                    "MinStack": 10,
+                                    "MaxStack": 20
+                                },
+                                {
+                                    "Id": "Fiber",
+                                    "Condition": "RANDOM 0.1",
+                                    "ItemId": "(O)771",
+                                    "MinStack": 10,
+                                    "MaxStack": 20
+                                },
+                                {
+                                    "Id": "Slime",
+                                    "Condition": "RANDOM 0.1",
+                                    "ItemId": "(O)766",
+                                    "MinStack": 10,
+                                    "MaxStack": 20
+                                },
+                                {
+                                    "Id": "Copper Bar",
+                                    "Condition": "RANDOM 0.1",
+                                    "ItemId": "(O)334",
+                                    "MinStack": 10,
+                                    "MaxStack": 20
+                                },
+                                {
+                                    "Id": "Salmon Berry",
+                                    "Condition": "RANDOM 0.1",
+                                    "ItemId": "(O)296",
+                                    "MinStack": 10,
+                                    "MaxStack": 20
+                                },
+                                {
+                                    "Id": "Clay",
+                                    "Condition": "RANDOM 0.1",
+                                    "ItemId": "(O)330",
+                                    "MinStack": 10,
+                                    "MaxStack": 20
+                                },
+                                {
+                                    "Id": "Joja Cola",
+                                    "Condition": "RANDOM 0.1",
+                                    "ItemId": "(O)167",
+                                    "MinStack": 10,
+                                    "MaxStack": 20
+                                },
+                                {
+                                    "Id": "Sap",
+                                    "Condition": "RANDOM 0.1",
+                                    "ItemId": "(O)92",
+                                    "MinStack": 10,
+                                    "MaxStack": 20
+                                },
+                                {
+                                    "Id": "Copper Ore",
+                                    "ItemId": "(O)378",
+                                    "MinStack": 10,
+                                    "MaxStack": 20
+                                }
+                            ],
+                            "MinutesUntilReady": 360
+                        }
+                    ],
+                    "AdditionalConsumedItems": [
+                        {
+                            "ItemId": "(O)787",
+                            "RequiredCount": 1,
+                            "InvalidCountMessage": "{{i18n: moonslime.Luck.battery.need_item}}"
+                        }
+                    ],
+                    "WobbleWhileWorking": true,
+                    "ShowNextIndexWhileWorking": true,
+                    "ShowNextIndexWhenReady": true,
+                    "LoadEffects": [
+                        {
+                            "Id": "Default",
+                            "Condition": null,
+                            "Sounds": [
+                                {
+                                    "Id": "clank",
+                                    "Delay": 0
+                                }
+                            ],
+                            "Interval": 100,
+                            "Frames": null,
+                            "ShakeDuration": -1
+                        }
+                    ]
+                },
+                "(BC)moonslime.Luck.slots_gold": {
+                    "OutputRules": [
+                        {
+                            "Id": "Gold_bar_insert",
+                            "Triggers": [
+                                {
+                                    "Id": "ItemPlacedInMachine",
+                                    "Trigger": "ItemPlacedInMachine",
+                                    "RequiredItemId": "(O)336",
+                                    "RequiredCount": 5
+                                }
+                            ],
+                            "UseFirstValidOutput": true,
+                            "OutputItem": [
+                                {
+                                    "Id": "Geode",
+                                    "Condition": "RANDOM 0.1",
+                                    "ItemId": "(O)535",
+                                    "MinStack": 1,
+                                    "MaxStack": 5
+                                },
+                                {
+                                    "Id": "Frozen Geode",
+                                    "Condition": "RANDOM 0.1",
+                                    "ItemId": "(O)536",
+                                    "MinStack": 1,
+                                    "MaxStack": 5
+                                },
+                                {
+                                    "Id": "Magma Geode",
+                                    "Condition": "RANDOM 0.1",
+                                    "ItemId": "(O)537",
+                                    "MinStack": 1,
+                                    "MaxStack": 5
+                                },
+                                {
+                                    "Id": "Omni Geode",
+                                    "Condition": "RANDOM 0.1",
+                                    "ItemId": "(O)749",
+                                    "MinStack": 1,
+                                    "MaxStack": 1
+                                },
+                                {
+                                    "Id": "Gold Bar",
+                                    "Condition": "RANDOM 0.1",
+                                    "ItemId": "(O)336",
+                                    "MinStack": 5,
+                                    "MaxStack": 20
+                                },
+                                {
+                                    "Id": "Solar Essence",
+                                    "Condition": "RANDOM 0.1",
+                                    "ItemId": "(O)768",
+                                    "MinStack": 1,
+                                    "MaxStack": 1
+                                },
+                                {
+                                    "Id": "Void Essence",
+                                    "Condition": "RANDOM 0.1",
+                                    "ItemId": "(O)769",
+                                    "MinStack": 1,
+                                    "MaxStack": 1
+                                },
+                                {
+                                    "Id": "Lava Eel",
+                                    "Condition": "RANDOM 0.1",
+                                    "ItemId": "(O)162",
+                                    "MinStack": 1,
+                                    "MaxStack": 1
+                                },
+                                {
+                                    "Id": "Gold Mask",
+                                    "Condition": "RANDOM 0.1",
+                                    "ItemId": "(O)124",
+                                    "MinStack": 1,
+                                    "MaxStack": 1
+                                },
+                                {
+                                    "Id": "Gold Ore",
+                                    "ItemId": "(O)384",
+                                    "MinStack": 5,
+                                    "MaxStack": 20
+                                }
+                            ],
+                            "MinutesUntilReady": 360
+                        }
+                    ],
+                    "AdditionalConsumedItems": [
+                        {
+                            "ItemId": "(O)787",
+                            "RequiredCount": 1,
+                            "InvalidCountMessage": "{{i18n: moonslime.Luck.battery.need_item}}"
+                        }
+                    ],
+                    "WobbleWhileWorking": true,
+                    "ShowNextIndexWhileWorking": true,
+                    "ShowNextIndexWhenReady": true,
+                    "LoadEffects": [
+                        {
+                            "Id": "Default",
+                            "Condition": null,
+                            "Sounds": [
+                                {
+                                    "Id": "clank",
+                                    "Delay": 0
+                                }
+                            ],
+                            "Interval": 100,
+                            "Frames": null,
+                            "ShakeDuration": -1
+                        }
+                    ]
+                },
+                "(BC)moonslime.Luck.slots_iridium": {
+                    "OutputRules": [
+                        {
+                            "Id": "Iridium_bar_insert",
+                            "Triggers": [
+                                {
+                                    "Id": "ItemPlacedInMachine",
+                                    "Trigger": "ItemPlacedInMachine",
+                                    "RequiredItemId": "(O)337",
+                                    "RequiredCount": 5
+                                }
+                            ],
+                            "UseFirstValidOutput": true,
+                            "OutputItem": [
+                                {
+                                    "Id": "Diamond",
+                                    "Condition": "RANDOM 0.1",
+                                    "ItemId": "(O)72",
+                                    "MinStack": 1,
+                                    "MaxStack": 5
+                                },
+                                {
+                                    "Id": "Topaz",
+                                    "Condition": "RANDOM 0.1",
+                                    "ItemId": "(O)68",
+                                    "MinStack": 1,
+                                    "MaxStack": 5
+                                },
+                                {
+                                    "Id": "Amethyst",
+                                    "Condition": "RANDOM 0.1",
+                                    "ItemId": "(O)66",
+                                    "MinStack": 1,
+                                    "MaxStack": 5
+                                },
+                                {
+                                    "Id": "Jade",
+                                    "Condition": "RANDOM 0.1",
+                                    "ItemId": "(O)70",
+                                    "MinStack": 1,
+                                    "MaxStack": 1
+                                },
+                                {
+                                    "Id": "Iridium Bar",
+                                    "Condition": "RANDOM 0.1",
+                                    "ItemId": "(O)337",
+                                    "MinStack": 5,
+                                    "MaxStack": 20
+                                },
+                                {
+                                    "Id": "Ruby",
+                                    "Condition": "RANDOM 0.1",
+                                    "ItemId": "(O)64",
+                                    "MinStack": 1,
+                                    "MaxStack": 5
+                                },
+                                {
+                                    "Id": "Aquamarine",
+                                    "Condition": "RANDOM 0.1",
+                                    "ItemId": "(O)62",
+                                    "MinStack": 1,
+                                    "MaxStack": 5
+                                },
+                                {
+                                    "Id": "Emerald",
+                                    "Condition": "RANDOM 0.1",
+                                    "ItemId": "(O)60",
+                                    "MinStack": 1,
+                                    "MaxStack": 5
+                                },
+                                {
+                                    "Id": "Quartz",
+                                    "Condition": "RANDOM 0.1",
+                                    "ItemId": "(O)80",
+                                    "MinStack": 1,
+                                    "MaxStack": 5
+                                },
+                                {
+                                    "Id": "Iridium Ore",
+                                    "ItemId": "(O)386",
+                                    "MinStack": 5,
+                                    "MaxStack": 20
+                                }
+                            ],
+                            "MinutesUntilReady": 360
+                        }
+                    ],
+                    "AdditionalConsumedItems": [
+                        {
+                            "ItemId": "(O)787",
+                            "RequiredCount": 1,
+                            "InvalidCountMessage": "{{i18n: moonslime.Luck.battery.need_item}}"
+                        }
+                    ],
+                    "WobbleWhileWorking": true,
+                    "ShowNextIndexWhileWorking": true,
+                    "ShowNextIndexWhenReady": true,
+                    "LoadEffects": [
+                        {
+                            "Id": "Default",
+                            "Condition": null,
+                            "Sounds": [
+                                {
+                                    "Id": "clank",
+                                    "Delay": 0
+                                }
+                            ],
+                            "Interval": 100,
+                            "Frames": null,
+                            "ShakeDuration": -1
+                        }
+                    ]
+                },
+                "(BC)moonslime.Luck.slots_radioactive": {
+                    "OutputRules": [
+                        {
+                            "Id": "Radio_bar_insert",
+                            "Triggers": [
+                                {
+                                    "Id": "ItemPlacedInMachine",
+                                    "Trigger": "ItemPlacedInMachine",
+                                    "RequiredItemId": "(O)910",
+                                    "RequiredCount": 5
+                                }
+                            ],
+                            "UseFirstValidOutput": true,
+                            "OutputItem": [
+                                {
+                                    "Id": "Prismatic Shard",
+                                    "Condition": "RANDOM 0.1",
+                                    "ItemId": "(O)74",
+                                    "MinStack": 1,
+                                    "MaxStack": 1
+                                },
+                                {
+                                    "Id": "Pearl",
+                                    "Condition": "RANDOM 0.1",
+                                    "ItemId": "(O)797",
+                                    "MinStack": 1,
+                                    "MaxStack": 1
+                                },
+                                {
+                                    "Id": "Golden Pumpkin",
+                                    "Condition": "RANDOM 0.1",
+                                    "ItemId": "(O)373",
+                                    "MinStack": 1,
+                                    "MaxStack": 1
+                                },
+                                {
+                                    "Id": "Rabbit's Foot",
+                                    "Condition": "RANDOM 0.1",
+                                    "ItemId": "(O)446",
+                                    "MinStack": 1,
+                                    "MaxStack": 1
+                                },
+                                {
+                                    "Id": "Radioactive Bar",
+                                    "Condition": "RANDOM 0.1",
+                                    "ItemId": "(O)910",
+                                    "MinStack": 5,
+                                    "MaxStack": 20
+                                },
+                                {
+                                    "Id": "Dragon Tooth",
+                                    "Condition": "RANDOM 0.1",
+                                    "ItemId": "(O)852",
+                                    "MinStack": 1,
+                                    "MaxStack": 1
+                                },
+                                {
+                                    "Id": "Magic Rock Candy",
+                                    "Condition": "RANDOM 0.1",
+                                    "ItemId": "(O)279",
+                                    "MinStack": 1,
+                                    "MaxStack": 5
+                                },
+                                {
+                                    "Id": "Cinder Shards",
+                                    "Condition": "RANDOM 0.1",
+                                    "ItemId": "(O)848",
+                                    "MinStack": 1,
+                                    "MaxStack": 5
+                                },
+                                {
+                                    "Id": "Ancient Fruit",
+                                    "Condition": "RANDOM 0.1",
+                                    "ItemId": "(O)454",
+                                    "MinStack": 1,
+                                    "MaxStack": 5
+                                },
+                                {
+                                    "Id": "Radioactive Ore",
+                                    "ItemId": "(O)909",
+                                    "MinStack": 5,
+                                    "MaxStack": 20
+                                }
+                            ],
+                            "MinutesUntilReady": 360
+                        }
+                    ],
+                    "AdditionalConsumedItems": [
+                        {
+                            "ItemId": "(O)787",
+                            "RequiredCount": 1,
+                            "InvalidCountMessage": "{{i18n: moonslime.Luck.battery.need_item}}"
+                        }
+                    ],
+                    "WobbleWhileWorking": true,
+                    "ShowNextIndexWhileWorking": true,
+                    "ShowNextIndexWhenReady": true,
+                    "LoadEffects": [
+                        {
+                            "Id": "Default",
+                            "Condition": null,
+                            "Sounds": [
+                                {
+                                    "Id": "clank",
+                                    "Delay": 0
+                                }
+                            ],
+                            "Interval": 100,
+                            "Frames": null,
+                            "ShakeDuration": -1
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}

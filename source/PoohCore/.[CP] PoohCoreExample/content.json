@@ -1,0 +1,190 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/poohnhi/PoohCore
+**
+*************************************************/
+
+{
+    "$schema": "https://smapi.io/schemas/content-patcher.json",
+    "Format": "2.0.0",
+    "Changes": [{
+            "LogName": "Load blank.json to create dialogue and schedule file",
+            "Action": "Load",
+            "Target": "Characters/Dialogue/Tallgail, Characters/schedules/Tallgail, Characters/Dialogue/NotJeremy, Characters/schedules/NotJeremy, Characters/Dialogue/UltimateFusion, Characters/schedules/UltimateFusion",
+            "FromFile": "Assets/blank.json"
+        },
+
+        {
+            "LogName": "Load Portraits and Sprites to the game",
+            "Action": "Load",
+            "Target": "Portraits/Tallgail, Characters/Tallgail, Portraits/NotJeremy, Characters/NotJeremy, Portraits/UltimateFusion, Characters/UltimateFusion",
+            "FromFile": "Assets/{{TargetPathOnly}}/{{TargetWithoutPath}}.png"
+        },
+
+        {
+            "LogName": "Npc Dispositions 1.6",
+            "Action": "EditData",
+            "Target": "Data/Characters",
+            "Entries": {
+                "Tallgail": {
+                    // Basic infos
+                    "DisplayName": "Tallgail",
+
+                    // Birthday
+                    "BirthSeason": "spring", // Change this to her birthday!
+                    "BirthDay": 1,
+
+                    // Social features
+                    "CanSocialize": true,
+                    "CanReceiveGifts": false,
+
+                    // Spawn rule
+                    "Home": [{
+                        "Id": "Default",
+                        "Location": "BusStop",
+                        "Tile": {
+                            "X": 19,
+                            "Y": 22
+                        },
+                        "Direction": "Down"
+                    }],
+                    "Size": { "X": 16, "Y": 48 },
+                    "CustomFields": {
+                        "poohnhi.PoohCore/HighCharacter": "true"
+                    }
+                },
+                "NotJeremy": {
+                    // Basic infos
+                    "DisplayName": "Not Jeremy",
+
+                    // Birthday
+                    "BirthSeason": "spring", // Change this to her birthday!
+                    "BirthDay": 2,
+
+                    // Social features
+                    "CanSocialize": true,
+                    "CanReceiveGifts": false,
+
+                    // Spawn rule
+                    "Home": [{
+                        "Id": "Default",
+                        "Location": "BusStop",
+                        "Tile": {
+                            "X": 22,
+                            "Y": 22
+                        },
+                        "Direction": "Down"
+                    }],
+                    "Size": { "X": 32, "Y": 32 },
+                    "CustomFields": {
+                        "poohnhi.PoohCore/WideCharacter": "true"
+                    }
+                },
+                "UltimateFusion": {
+                    // Basic infos
+                    "DisplayName": "Fusionchan",
+
+                    // Birthday
+                    "BirthSeason": "spring", // Change this to her birthday!
+                    "BirthDay": 3,
+
+                    // Social features
+                    "CanSocialize": true,
+                    "CanReceiveGifts": false,
+
+                    // Spawn rule
+                    "Home": [{
+                        "Id": "Default",
+                        "Location": "Beach",
+                        "Tile": {
+                            "X": 21,
+                            "Y": 20
+                        },
+                        "Direction": "Down"
+                    }],
+                    "Size": { "X": 32, "Y": 38 },
+                    "CustomFields": {
+                        "poohnhi.PoohCore/WideCharacter": "true",
+                        "poohnhi.PoohCore/HighCharacter": "true"
+                    }
+                }
+            }
+        },
+
+        {
+            "LogName": "Edit Dialogue",
+            "Action": "EditData",
+            "Target": "Characters/Dialogue/Tallgail, Characters/Dialogue/NotJeremy, Characters/Dialogue/UltimateFusion",
+            "Entries": {
+                // Daily dialogues example
+                "Mon": "It's a nice Monday, isn't it?",
+                "Tue": "Hello. How are you today?",
+                "Wed": "Good morning. Have you finished your farm work?",
+                "Thu": "Have a nice day.",
+                "Fri": "Hi! Are you excited for the weekends?",
+                "Sat": "Greetings.",
+                "Sun": "Happy weekend!"
+            }
+        },
+
+        {
+            "LogName": "Edit Schedule",
+            "Action": "EditData",
+            "Target": "Characters/schedules/Tallgail",
+            "Entries": {
+                "spring": "630 SamHouse 7 5 3/1010 SeedShop 35 20 0/1400 SeedShop 7 19 0/1500 SamHouse 3 21 0/1700 SamHouse 7 5 3/2100 Town 8 89 2",
+            }
+        },
+        {
+            "LogName": "Edit Schedule",
+            "Action": "EditData",
+            "Target": "Characters/schedules/NotJeremy",
+            "Entries": {
+                "spring": "630 SamHouse 8 7 3/1010 SeedShop 37 22 0/1400 SeedShop 5 21 0/1600 SamHouse 2 16 0/1900 SamHouse 8 7 3/2100 Town 7 89 2",
+            }
+        },
+        {
+            "LogName": "Edit Schedule",
+            "Action": "EditData",
+            "Target": "Characters/schedules/UltimateFusion",
+            "Entries": {
+                "spring": "630 SamHouse 4 15 2/1010 SeedShop 37 18 2/1400 SeedShop 7 23 3/1600 SamHouse 4 14 0/1900 SamHouse 6 7 2/2100 Town 15 95 2",
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Festivals/spring13",
+            "TextOperations": [
+                {
+                    "Operation": "Append",
+                    "Target": [
+                        "Entries",
+                        "Set-Up_additionalCharacters"
+                    ],
+                    "Value": "Tallgail 7 74 3/NotJeremy 10 71 1/UltimateFusion 10 74 3",
+                    "Delimiter": "/"
+                },
+                {
+                    "Operation": "Append",
+                    "Target": [
+                        "Entries",
+                        "MainEvent_additionalCharacters"
+                    ],
+                    "Value": "Tallgail 7 74 3/NotJeremy 10 71 1/UltimateFusion 10 74 3",
+                    "Delimiter": "/"
+                },
+            ]
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Events/Town",
+            "Entries": {
+                "poohnhi.PoohCoreTest.Event/f Tallgail 500/t 900 1400/w sunny": "50s/49 64/farmer 43 64 1 Tallgail 59 69 1 NotJeremy 49 64 0 UltimateFusion 37 70 3 Abigail -100 -100 2/skippable/pause 700/emote NotJeremy 28/pause 500/speak NotJeremy \"*Sigh*... How am I going to reach that letter in the back?$s\"/move Tallgail -3 0 0/move Tallgail 0 -5 3/move Tallgail -3 0 3/emote Tallgail 16/pause 300/speed Tallgail 4/move Tallgail -3 0 3/faceDirection NotJeremy 1/pause 400/showFrame Tallgail 20/pause 400/speak Tallgail \"Here, let me help you, Mr. Mullner!\"/pause 400/speed Tallgail 2/move Tallgail 0 1 3/move Tallgail -2 0 0/move Tallgail 0 -1 1/positionOffset Tallgail 2 0/pause 50/showFrame Tallgail 5/positionOffset Tallgail 2 0/pause 50/showFrame Tallgail 4/positionOffset Tallgail 2 0/pause 50/showFrame Tallgail 5/positionOffset Tallgail 2 0/pause 50/showFrame Tallgail 4/showFrame Tallgail 21/move NotJeremy 1 0 1 true/emote NotJeremy 16/positionOffset Tallgail 2 0/pause 50/showFrame Tallgail 22/positionOffset Tallgail 2 0/pause 50/faceDirection Tallgail 1/move Tallgail 1 0 1/pause 400/faceDirection Tallgail 0/playSound openBox/pause 600/faceDirection NotJeremy 3/faceDirection Tallgail 1/speak Tallgail \"There you go!$h\"/pause 300/emote NotJeremy 12/speak NotJeremy \"Hmmph. I could've done it myself! And I can certainly move around on my own!$u#$b#How feeble do you think I am?\"/move farmer 5 0 1/pause 200/faceDirection NotJeremy 3/emote NotJeremy 8/faceDirection Tallgail 3/pause 400/faceDirection NotJeremy 2/pause 800/showFrame NotJeremy 16/pause 500/emote NotJeremy 28/pause 1000/faceDirection Tallgail 1/speak NotJeremy \"*sigh*...No, no... I'm sorry, miss. I shouldn't have gotten so angry.$s\"/pause 500/faceDirection NotJeremy 3/pause 400/speak NotJeremy \"It was actually very kind of you to help me out.\"/pause 400/speak Tallgail \"That's okay, Mr. Mullner. I understand.\"/warp Abigail 44 1/pause 500/move Abigail 0 8 2 true/move NotJeremy 7 0 0 false/pause 550/move Abigail -18 0 2 true/warp NotJeremy -1 -1/playSound doorClose/pause 600/emote Tallgail 28/pause 700/faceDirection Tallgail 3/playMusic spring_day_ambient/pause 600/pause 500/emote Tallgail 40/faceDirection Tallgail 2/pause 500/faceDirection Tallgail 3/speak Tallgail \"Well, it was interesting talking to you, @. I should go.$u\"/showFrame Tallgail 20/pause 500/showFrame Tallgail 12/pause 900/move Tallgail 6 0 2 true/globalFade/viewport -1000 -1000/end",
+            }
+        },
+    ]
+}

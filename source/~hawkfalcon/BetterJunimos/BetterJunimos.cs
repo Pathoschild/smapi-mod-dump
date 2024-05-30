@@ -201,7 +201,7 @@ namespace BetterJunimos {
         }
 
         private bool ShowPerfectionTracker(ButtonPressedEventArgs e) {
-            if (Game1.player.currentLocation is not Farm) return false;
+            if (!Game1.player.currentLocation.IsFarm) return false;
             if (Game1.activeClickableMenu != null) return false;
             if (!JunimoProgression.HutOnTile(e.Cursor.Tile)) return false;
             if (Helper.ModRegistry.Get("ceruleandeep.BetterJunimosForestry") != null) return false;
@@ -249,7 +249,7 @@ namespace BetterJunimos {
 
             // opened menu
             if (e.OldMenu != null || e.NewMenu is not CarpenterMenu) return;
-            if (!Helper.Reflection.GetField<bool>(e.NewMenu, "magicalConstruction").GetValue()) return;
+            if (!Helper.Reflection.GetField<bool>(e.NewMenu, "MagicalConstruction").GetValue()) return;
             // limit to only junimo hut
             if (!Game1.MasterPlayer.mailReceived.Contains("hasPickedUpMagicInk")) {
                 OpenJunimoHutMenu();
@@ -265,7 +265,7 @@ namespace BetterJunimos {
                 Util.Payments.WereJunimosPaidToday = false;
             }
 
-            var huts = Game1.getFarm().buildings.OfType<JunimoHut>().ToList();
+            var huts = Util.GetAllHuts();
             
             // tag each hut chest so later we can tell whether a GrabMenu close is for a Junimo chest or some other chest 
             foreach (var hut in huts) {
@@ -298,9 +298,8 @@ namespace BetterJunimos {
 
         private void CheckHutsForWagesAndProgressionItems() {
             var alreadyPaid = Util.Payments.WereJunimosPaidToday;
-
-            var huts = Game1.getFarm().buildings.OfType<JunimoHut>();
-            var junimoHuts = huts.ToList();
+            
+            var junimoHuts = Util.GetAllHuts();
             if (!junimoHuts.Any()) return;
 
             // Monitor.Log("Updating hut items", LogLevel.Debug);
@@ -653,16 +652,21 @@ namespace BetterJunimos {
         }
 
         private void SpawnJunimoCommand() {
-            if (Game1.player.currentLocation.IsFarm || Game1.player.currentLocation.IsGreenhouse) {
-                var huts = Game1.getFarm().buildings.OfType<JunimoHut>();
-                var junimoHuts = huts.ToList();
+            var currentLocation = Game1.player.currentLocation;
+
+            if (currentLocation.IsFarm || currentLocation.IsGreenhouse) {
+                var junimoHuts = Util.GetAllFarms()
+                    .FindAll(farm => farm.Equals(currentLocation))
+                    .SelectMany(farm => farm.buildings.OfType<JunimoHut>())
+                    .ToList();
+
                 if (!junimoHuts.Any()) {
                     Util.SendMessage(Helper.Translation.Get("msg.cannot-spawn-without-hut"));
                     return;
                 }
 
                 var hut = junimoHuts.ElementAt(Game1.random.Next(0, junimoHuts.Count));
-                Util.SpawnJunimoAtPosition(Game1.player.currentLocation, Game1.player.Position, hut, Game1.random.Next(4, 100));
+                Util.SpawnJunimoAtPosition(currentLocation, Game1.player.Position, hut, Game1.random.Next(4, 100));
             }
             else {
                 Util.SendMessage(Helper.Translation.Get("msg.cannot-spawn-here"));

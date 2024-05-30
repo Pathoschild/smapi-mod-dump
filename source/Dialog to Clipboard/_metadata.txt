@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/dlrdlrdlr/DialogToClipboard
+   Git: https://github.com/dlrdlrdlr/DialogToClipboard.git
+
+mods:
+   Dialog to Clipboard
+
+latest commit:
+   commit f603f9eb8cb4ec2c25965dbc8e1c8787298f4e30
+   Author: dlrdlrdlr <dlridlrid@gmail.com>
+   Date:   Thu May 9 16:11:33 2024 -0500
+   
+       Cleaned up some debug stuff.
+   

@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-#nullable enable
+#if COMMON_FLOW
 
 namespace Leclair.Stardew.Common.UI.FlowNode;
 
@@ -25,3 +25,5 @@ public struct CachedFlowLine {
 		Height = height;
 	}
 }
+
+#endif

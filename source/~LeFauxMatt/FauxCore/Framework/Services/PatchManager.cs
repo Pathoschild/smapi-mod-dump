@@ -11,23 +11,20 @@
 namespace StardewMods.FauxCore.Framework.Services;
 
 using HarmonyLib;
-using StardewMods.Common.Enums;
-using StardewMods.Common.Services;
-using StardewMods.Common.Services.Integrations.FauxCore;
+using StardewMods.FauxCore.Common.Enums;
+using StardewMods.FauxCore.Common.Services;
+using StardewMods.FauxCore.Common.Services.Integrations.FauxCore;
 
 /// <inheritdoc cref="IPatchManager" />
 internal sealed class PatchManager : BaseService<PatchManager>, IPatchManager
 {
     private readonly HashSet<string> appliedPatches = [];
-    private readonly Lazy<Harmony> harmony;
+    private readonly Harmony harmony;
     private readonly Dictionary<string, List<ISavedPatch>> savedPatches = new();
 
     /// <summary>Initializes a new instance of the <see cref="PatchManager" /> class.</summary>
-    /// <param name="log">Dependency used for logging debug information to the console.</param>
-    /// <param name="manifest">Dependency for accessing mod manifest.</param>
-    public PatchManager(ILog log, IManifest manifest)
-        : base(log, manifest) =>
-        this.harmony = new Lazy<Harmony>(() => new Harmony(this.ModId));
+    /// <param name="modInfo">Dependency used for accessing mod info.</param>
+    public PatchManager(IModInfo modInfo) => this.harmony = new Harmony(modInfo.Manifest.UniqueID);
 
     /// <inheritdoc />
     public void Add(string id, params ISavedPatch[] patches)
@@ -54,7 +51,7 @@ internal sealed class PatchManager : BaseService<PatchManager>, IPatchManager
         {
             try
             {
-                this.Log.Trace(
+                Log.Trace(
                     "Patching {0}.{1} with {2}.{3} {4}.",
                     patch.Original.DeclaringType!.Name,
                     patch.Original.Name,
@@ -65,22 +62,22 @@ internal sealed class PatchManager : BaseService<PatchManager>, IPatchManager
                 switch (patch.Type)
                 {
                     case PatchType.Prefix:
-                        this.harmony.Value.Patch(patch.Original, new HarmonyMethod(patch.Patch));
+                        this.harmony.Patch(patch.Original, new HarmonyMethod(patch.Patch));
                         continue;
                     case PatchType.Postfix:
-                        this.harmony.Value.Patch(patch.Original, postfix: new HarmonyMethod(patch.Patch));
+                        this.harmony.Patch(patch.Original, postfix: new HarmonyMethod(patch.Patch));
                         continue;
                     case PatchType.Transpiler:
-                        this.harmony.Value.Patch(patch.Original, transpiler: new HarmonyMethod(patch.Patch));
+                        this.harmony.Patch(patch.Original, transpiler: new HarmonyMethod(patch.Patch));
                         continue;
                     case PatchType.Finalizer:
-                        this.harmony.Value.Patch(patch.Original, finalizer: new HarmonyMethod(patch.Patch));
+                        this.harmony.Patch(patch.Original, finalizer: new HarmonyMethod(patch.Patch));
                         continue;
                 }
             }
             catch (Exception e)
             {
-                this.Log.Warn(
+                Log.Warn(
                     "Patching {0} failed with.\nError: {1}",
                     patch.LogId ?? $"{patch.Original.DeclaringType!.Name}.{patch.Original.Name}",
                     e.Message);
@@ -99,8 +96,8 @@ internal sealed class PatchManager : BaseService<PatchManager>, IPatchManager
         this.appliedPatches.Remove(id);
         foreach (var patch in patches)
         {
-            this.Log.Trace("Unpatching {0} with {1}.", patch.Original.Name, patch.Patch.Name);
-            this.harmony.Value.Unpatch(patch.Original, patch.Patch);
+            Log.Trace("Unpatching {0} with {1}.", patch.Original.Name, patch.Patch.Name);
+            this.harmony.Unpatch(patch.Original, patch.Patch);
         }
     }
 }

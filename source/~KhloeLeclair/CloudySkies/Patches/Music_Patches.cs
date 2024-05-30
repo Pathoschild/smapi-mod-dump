@@ -12,13 +12,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 using HarmonyLib;
-
-using Leclair.Stardew.CloudySkies.Models;
 
 using StardewValley;
 using StardewValley.Network;
@@ -66,7 +61,7 @@ public static class Music_Patches {
 				transpiler: new HarmonyMethod(typeof(Music_Patches), nameof(Game1_UpdateMusic__Transpiler))
 			);
 
-		} catch(Exception ex) {
+		} catch (Exception ex) {
 			mod.Log($"Error patching Game1. Weather music will not work correctly.", StardewModdingAPI.LogLevel.Error, ex);
 		}
 
@@ -79,6 +74,7 @@ public static class Music_Patches {
 
 			mod.Harmony.Patch(
 				original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.GetLocationSpecificMusic)),
+				prefix: new HarmonyMethod(typeof(Music_Patches), nameof(GameLocation_GetLocationSpecificMusic__Prefix)),
 				transpiler: new HarmonyMethod(typeof(Music_Patches), nameof(GameLocation_GetLocationSpecificMusic__Transpiler))
 			);
 
@@ -97,7 +93,7 @@ public static class Music_Patches {
 				transpiler: new HarmonyMethod(typeof(Music_Patches), nameof(GameLocation_IsMiniJukeboxPlaying__Transpiler))
 			);
 
-		} catch(Exception ex) {
+		} catch (Exception ex) {
 			mod.Log($"Error patching GameLocation. Weather music will not work correctly.", StardewModdingAPI.LogLevel.Error, ex);
 		}
 
@@ -218,33 +214,64 @@ public static class Music_Patches {
 		var hasMusic = AccessTools.Method(typeof(PatchHelper), nameof(PatchHelper.HasMusic));
 
 		// This is... fragile. But what do we do about it?
-		var playMorningSong = AccessTools.Method(typeof(Game1), "<playMorningSong>g__PlayAction|654_0");
+		//var playMorningSong = AccessTools.Method(typeof(Game1), "<playMorningSong>g__PlayAction|654_0");
 		var playCustomWeatherMusic = AccessTools.Method(typeof(Music_Patches), nameof(PlayCustomWeatherMusic));
 
-		foreach (var instr in instructions) {
-			if (instr.Calls(isRainingHere))
+		// Use a code matcher to find the delegate call we need to replace.
+		var matcher = new CodeMatcher(instructions)
+			.MatchStartForward(
+				new CodeMatch(OpCodes.Call, isRainingHere),
+				new CodeMatch(OpCodes.Brfalse_S),
+				new CodeMatch(OpCodes.Ldarg_0),
+				new CodeMatch(OpCodes.Brfalse_S),
+				new CodeMatch(OpCodes.Call),
+				new CodeMatch(OpCodes.Ret)
+			)
+			.ThrowIfInvalid("could not find PlayAction delegate")
+			.Advance(4);
+
+		var instr = matcher.Instruction;
+
+		matcher = matcher
+			.SetInstruction(new CodeInstruction(instr) {
+				opcode = OpCodes.Call,
+				operand = playCustomWeatherMusic
+			})
+			.MatchStartForward(
+				new CodeMatch(OpCodes.Ldnull),
+				new CodeMatch(OpCodes.Ldftn),
+				new CodeMatch(OpCodes.Newobj)
+			)
+			.ThrowIfInvalid("Could not find second PlayAction delegate")
+			.Advance(1)
+			.SetOperandAndAdvance(playCustomWeatherMusic);
+
+		foreach (var in0 in matcher.InstructionEnumeration()) {
+
+			if (in0.Calls(isRainingHere))
 				// Old Code: Game1.IsRainingHere(null)
 				// New Code: PatchHelper.HasMusic(null)
-				yield return new CodeInstruction(instr) {
+				yield return new CodeInstruction(in0) {
 					opcode = OpCodes.Call,
 					operand = hasMusic
 				};
-			else if (instr.Calls(playMorningSong))
+
+			/*else if (in0.Calls(playMorningSong))
 				// Old Code: PlayAction();
 				// New Code: Music_Patches.PlayCustomWeatherMusic();
-				yield return new CodeInstruction(instr) {
+				yield return new CodeInstruction(in0) {
 					opcode = OpCodes.Call,
 					operand = playCustomWeatherMusic
 				};
-			else if (instr.opcode == OpCodes.Ldftn && instr.operand is MethodInfo minfo && minfo == playMorningSong)
+			else if (in0.opcode == OpCodes.Ldftn && in0.operand is MethodInfo minfo && minfo == playMorningSong)
 				// Old Code: PlayAction
 				// New Code: Music_Patches.PlayCustomWeatherMusic
-				yield return new CodeInstruction(instr) {
+				yield return new CodeInstruction(in0) {
 					opcode = OpCodes.Ldftn,
 					operand = playCustomWeatherMusic
-				};
+				};*/
 			else
-				yield return instr;
+				yield return in0;
 		}
 	}
 
@@ -396,6 +423,24 @@ public static class Music_Patches {
 
 	}
 
+	private static bool GameLocation_GetLocationSpecificMusic__Prefix(GameLocation __instance, ref string? __result) {
+		try {
+			var wd = PatchHelper.GetWeatherData(__instance);
+			if (wd?.SoftMusicOverrides != null)
+				foreach (var entry in wd.SoftMusicOverrides) {
+					if (string.IsNullOrEmpty(entry.Condition) || GameStateQuery.CheckConditions(entry.Condition, __instance)) {
+						__result = entry.Track;
+						return false;
+					}
+				}
+
+		} catch (Exception ex) {
+			Mod?.Log($"Error in GetLocationSpecificMusic__Prefix: {ex}", StardewModdingAPI.LogLevel.Error);
+		}
+
+		return true;
+	}
+
 	private static IEnumerable<CodeInstruction> GameLocation_GetLocationSpecificMusic__Transpiler(IEnumerable<CodeInstruction> instructions) {
 
 		var isRainingHere = AccessTools.Method(typeof(GameLocation), nameof(GameLocation.IsRainingHere));
@@ -426,7 +471,7 @@ public static class Music_Patches {
 
 		CodeInstruction[] instrs = instructions.ToArray();
 
-		for(int i = 0; i < instrs.Length; i++) {
+		for (int i = 0; i < instrs.Length; i++) {
 			var in0 = instrs[i];
 
 			if (in0.LoadsConstant("rain")) {

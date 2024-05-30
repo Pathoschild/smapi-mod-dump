@@ -31,8 +31,11 @@ namespace ContentPatcher.Framework.ConfigModels
         /// <summary>The patch type to apply.</summary>
         public string? Action { get; set; }
 
-        /// <summary>The asset key to change.</summary>
+        /// <summary>The asset name to change.</summary>
         public string? Target { get; set; }
+
+        /// <summary>The locale code in the target asset's name to match (like <c>fr-FR</c> to target <c>Characters/Dialogue/Abigail.fr-FR</c>), or an empty string to match only the base unlocalized asset, or <c>null</c> to match all localized or unlocalized variants of the <see cref="Target"/>.</summary>
+        public string? TargetLocale { get; set; }
 
         /// <summary>Indicates when a patch should be updated.</summary>
         public string? Update { get; set; }

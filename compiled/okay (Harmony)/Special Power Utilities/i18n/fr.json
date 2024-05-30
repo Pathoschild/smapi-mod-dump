@@ -1,0 +1,20 @@
+﻿{
+  "Config.EnableCategories.Name": "Activer catégories de pouvoirs",
+  "Config.EnableCategories.Description": "Si désactivé, aucune catégorie ne sera ajoutée à l'onglet Objets spéciaux et Pouvoirs et il aura l'apparence habituelle. Vous bénéficierez toujours de tous les mods utilisant les fonctionnalités en arrière-plan de Special Power Utilities.",
+  
+  "Config.ParseModNames.Name": "Analyser les noms des mods",
+  "Config.ParseModNames.Description": "Indique s’il faut ou non tenter d'analyser les noms des mods à partir des identifiants (ID) des pouvoirs si le mod n'ajoute pas spécifiquement de support pour Special Power Utilities. Si désactivé, les pouvoirs sans support SPU seront placés dans la catégorie \"Divers.\"",
+  
+  "Config.EnableMiscCategory.Name": "Activer la catégorie \"Divers\"",
+  "Config.EnableMiscCategory.Description": "Indique s’il faut ou non activer la catégorie \"Divers\" pour les pouvoirs qui n'ont pas de catégorie spécifique. Si désactivé, les pouvoirs sans catégorie spécifique seront placés avec les pouvoirs de base de Stardew Valley.",
+  
+  "Config.UseVanillaMenu.Name": "Utiliser le menu de base",
+  "Config.UseVanillaMenu.Description": "Indique s’il faut ou non utiliser le menu de base pour l'onglet Objets spéciaux et Pouvoirs. Si activé, le menu personnalisé de Special Power Utilities ne sera pas utilisé. Vous ne verrez pas de catégories et aucun pouvoir marqué comme indisponible par les auteurs de mod ne sera visible pour vous. Cependant, tous les effets seront toujours appliqués.",
+  
+  "Config.StripelessBooks.Name": "Livres sans rayures",
+  "Config.StripelessBooks.Description": "Permet de choisir de supprimer ou non les deux bandes des livres pendant l'animation qui se joue lorsque vous lisez un livre.",
+  
+  "HoverText.StardewValley": "Stardew Valley",
+  "HoverText.Misc": "Divers",
+  "HoverText.Unavailable": "Non disponible"
+}

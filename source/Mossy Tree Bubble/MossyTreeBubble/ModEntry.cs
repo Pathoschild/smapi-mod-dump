@@ -17,10 +17,12 @@ using StardewValley.TerrainFeatures;
 
 namespace Tocseoj.Stardew.MossyTreeBubble;
 
-internal sealed class ModEntry : Mod {
+internal sealed class ModEntry : Mod
+{
 	// Location -> Tile -> (Tree, Bubble, Moss))
-	private readonly Dictionary<GameLocation, Dictionary<Vector2, ValueTuple<Tree, TemporaryAnimatedSprite, TemporaryAnimatedSprite>>> TreesAtLocation = new();
-	public override void Entry(IModHelper helper) {
+	private Dictionary<GameLocation, Dictionary<Vector2, ValueTuple<Tree, TemporaryAnimatedSprite, TemporaryAnimatedSprite>>> TreesAtLocation = [];
+	public override void Entry(IModHelper helper)
+	{
 		helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
 		helper.Events.Player.Warped += OnWarped;
 		helper.Events.GameLoop.DayStarted += OnDayStarted;
@@ -30,12 +32,13 @@ internal sealed class ModEntry : Mod {
 		helper.Events.World.LocationListChanged += OnLocationListChanged;
 	}
 
-	private void OnWarped(object? sender, WarpedEventArgs e) {
-		if (!Context.IsWorldReady) return;
+	private void OnWarped(object? sender, WarpedEventArgs e)
+	{
 		if (!e.IsLocalPlayer) return;
 
 		GameLocation location = e.NewLocation;
-		if (!TreesAtLocation.ContainsKey(location)) return;
+		if (!TreesAtLocation.ContainsKey(location))
+			FindMossyTrees(location);
 
 		foreach ((_, (_, TemporaryAnimatedSprite bubble, TemporaryAnimatedSprite moss)) in TreesAtLocation[location]) {
 			// Prevent adding the same sprites multiple times
@@ -51,11 +54,12 @@ internal sealed class ModEntry : Mod {
 		Monitor.Log($"Added {TreesAtLocation[location].Count} mossy tree sprites to {location.Name}.");
 	}
 
-	private void OnUpdateTicked(object? sender, UpdateTickedEventArgs e) {
+	private void OnUpdateTicked(object? sender, UpdateTickedEventArgs e)
+	{
 		if (!Context.IsWorldReady) return;
 
-		GameLocation location = Game1.currentLocation;
-		if (!TreesAtLocation.ContainsKey(location)) return;
+		GameLocation location = Game1.player.currentLocation;
+		if (location == null || !TreesAtLocation.ContainsKey(location)) return;
 
 		foreach ((Vector2 tile, (Tree tree, TemporaryAnimatedSprite bubble, TemporaryAnimatedSprite moss)) in TreesAtLocation[location]) {
 			if (tree.hasMoss.Value == false) {
@@ -67,25 +71,28 @@ internal sealed class ModEntry : Mod {
 		}
 	}
 
-	private void FindMossyTrees(GameLocation location) {
-		FindMossyTrees(location, location.terrainFeatures.Pairs.ToImmutableDictionary());
+	private bool FindMossyTrees(GameLocation location)
+	{
+		return FindMossyTrees(location, location.terrainFeatures.Pairs.ToImmutableDictionary());
 	}
 
-	private void FindMossyTrees(GameLocation location, ImmutableDictionary<Vector2, TerrainFeature> features) {
+	private bool FindMossyTrees(GameLocation location, ImmutableDictionary<Vector2, TerrainFeature> features)
+	{
+		if (!TreesAtLocation.ContainsKey(location))
+			TreesAtLocation[location] = [];
 		foreach ((Vector2 tile, TerrainFeature feature) in features) {
 			if (feature is Tree tree) {
 				if (tree.hasMoss.Value == true && tree.growthStage.Value >= 5) {
-					if (!TreesAtLocation.ContainsKey(location))
-						TreesAtLocation[location] = new();
-
 					(TemporaryAnimatedSprite bubble, TemporaryAnimatedSprite moss) = BubbleSprites(tile);
 					TreesAtLocation[location][tile] = (tree, bubble, moss);
 				}
 			}
 		}
+		return true;
 	}
 
-	private static (TemporaryAnimatedSprite bubble, TemporaryAnimatedSprite moss) BubbleSprites(Vector2 tile) {
+	private static (TemporaryAnimatedSprite bubble, TemporaryAnimatedSprite moss) BubbleSprites(Vector2 tile)
+	{
 		Vector2 offset = new(2, -45);
 		TemporaryAnimatedSprite bubble = new(
 			textureName: "LooseSprites\\Cursors",
@@ -125,16 +132,15 @@ internal sealed class ModEntry : Mod {
 		return (bubble, moss);
 	}
 
-	private void OnDayStarted(object? sender, DayStartedEventArgs e) {
+	private void OnDayStarted(object? sender, DayStartedEventArgs e)
+	{
 		TreesAtLocation.Clear();
-
-		foreach (GameLocation location in Game1.locations) {
-      FindMossyTrees(location);
-		}
+		Utility.ForEachLocation(FindMossyTrees);
 		Monitor.Log($"Found {TreesAtLocation.Sum(pair => pair.Value.Count)} mossy trees.");
 	}
 
-	private void OnTerrainFeatureListChanged(object? sender, TerrainFeatureListChangedEventArgs e) {
+	private void OnTerrainFeatureListChanged(object? sender, TerrainFeatureListChangedEventArgs e)
+	{
 		Monitor.Log($"TerrainFeatureListChanged: {e.Location.Name}.");
 		FindMossyTrees(e.Location, e.Added.ToImmutableDictionary());
 
@@ -148,7 +154,8 @@ internal sealed class ModEntry : Mod {
 		}
 	}
 
-	private void OnLocationListChanged(object? sender, LocationListChangedEventArgs e) {
+	private void OnLocationListChanged(object? sender, LocationListChangedEventArgs e)
+	{
 		foreach (GameLocation location in e.Added) {
 			Monitor.Log($"Adding {location.Name}.");
       FindMossyTrees(location);

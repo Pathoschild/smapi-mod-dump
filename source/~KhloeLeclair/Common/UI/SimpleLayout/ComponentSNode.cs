@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#if COMMON_SIMPLELAYOUT
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -31,9 +33,9 @@ public record struct ComponentSNode : ISimpleNode {
 		OnDraw = onDraw;
 	}
 
-	public bool DeferSize => false;
+	public readonly bool DeferSize => false;
 
-	public Vector2 GetSize(SpriteFont defaultFont, Vector2 containerSize) {
+	public readonly Vector2 GetSize(SpriteFont defaultFont, Vector2 containerSize) {
 		return new Vector2(Component.bounds.Width, Component.bounds.Height);
 	}
 
@@ -61,3 +63,5 @@ public record struct ComponentSNode : ISimpleNode {
 	}
 
 }
+
+#endif

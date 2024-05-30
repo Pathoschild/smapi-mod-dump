@@ -41,6 +41,8 @@ namespace BetterHoneyMead.ModPatches {
         private static void Prefix_ModEntry_BuildMenu() {
             IsLoading = true;
             CachedItems.Clear();
+            var honey = CreateItems.CreateFlavoredHoney(null, 999);
+            CachedItems.Add(honey); // non-flavored, non-wild honey
         }
 
         private static void Postfix_ModEntry_BuildMenu() {
@@ -48,13 +50,12 @@ namespace BetterHoneyMead.ModPatches {
         }
 
         private static void Postfix_ObjectDataDefinition_CreateFlavoredHoney(
+            ref SObject __result,
             SObject ingredient
         ) {
             if (IsLoading) {
-                var item = CreateFlavoredMead(ingredient);
-                if (item is not null) {
-                    CachedItems.Add(item);
-                }
+                var mead = CreateItems.CreateFlavoredMead(ingredient, __result.Stack, __result.Quality);
+                CachedItems.Add(mead);
             }
         }
 
@@ -62,6 +63,10 @@ namespace BetterHoneyMead.ModPatches {
             IList<Item> ___ItemsInView, TextBox ___SearchBox
         ) {
             var search = ___SearchBox?.Text?.Trim();
+            var mead = ___ItemsInView.Where(i => i?.Name?.Equals("Mead") ?? false).FirstOrDefault();
+            if (mead is not null) {
+                ___ItemsInView.Remove(mead);
+            }
             foreach (var item in CachedItems) {
                 if (string.IsNullOrWhiteSpace(search)
                     || (item.Name?.Contains(search, StringComparison.InvariantCultureIgnoreCase) ?? false)
@@ -71,21 +76,6 @@ namespace BetterHoneyMead.ModPatches {
                 }
             } 
         }
-
-        private static SObject? CreateFlavoredMead(SObject ingredient) {
-            var color = TailoringMenu.GetDyeColor(ingredient) ?? Color.Gold;
-            var item = new ColoredObject("459", 999, color) {
-                displayNameFormat = "%PRESERVED_DISPLAY_NAME %DISPLAY_NAME",
-            };
-            item.preservedParentSheetIndex.Value = ingredient.ItemId;
-            var price = ((Game1.objectData.FirstOrDefault(o => o.Key.Equals("340")).Value?.Price ?? 0) + (ingredient is null ? 0 : ingredient.Price * 2)) * 2;
-            if (price > 0) {
-                item.Price = price;
-            }
-            if (ingredient?.Name is not null) {
-                item.Name = $"{item.QualifiedItemId}_{ingredient.Name} Honey";
-            }
-            return item;
-        }
     }
 }
+

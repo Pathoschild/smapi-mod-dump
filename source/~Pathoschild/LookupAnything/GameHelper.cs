@@ -17,7 +17,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Pathoschild.Stardew.Common;
 using Pathoschild.Stardew.Common.Integrations.CustomBush;
 using Pathoschild.Stardew.Common.Integrations.CustomFarmingRedux;
+using Pathoschild.Stardew.Common.Integrations.ExtraMachineConfig;
 using Pathoschild.Stardew.Common.Integrations.MultiFertilizer;
+using Pathoschild.Stardew.Common.Integrations.ProducerFrameworkMod;
 using Pathoschild.Stardew.Common.Items;
 using Pathoschild.Stardew.LookupAnything.Framework;
 using Pathoschild.Stardew.LookupAnything.Framework.Constants;
@@ -30,6 +32,7 @@ using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Characters;
+using StardewValley.Extensions;
 using StardewValley.GameData.Buildings;
 using StardewValley.GameData.Crafting;
 using StardewValley.GameData.FishPonds;
@@ -49,9 +52,8 @@ namespace Pathoschild.Stardew.LookupAnything
         /// <summary>The Custom Farming Redux integration.</summary>
         private readonly CustomFarmingReduxIntegration CustomFarmingRedux;
 
-        // TODO: restore when PFM is updated
-        ///// <summary>The Producer Framework Mod integration.</summary>
-        //private readonly ProducerFrameworkModIntegration ProducerFrameworkMod;
+        /// <summary>The Producer Framework Mod integration.</summary>
+        private readonly ProducerFrameworkModIntegration ProducerFrameworkMod;
 
         /// <summary>Parses the raw game data into usable models.</summary>
         private readonly DataParser DataParser = new();
@@ -87,6 +89,9 @@ namespace Pathoschild.Stardew.LookupAnything
         /// <summary>The MultiFertilizer integration.</summary>
         public MultiFertilizerIntegration MultiFertilizer { get; }
 
+        /// <summary>The Extra Machine Config integration.</summary>
+        public ExtraMachineConfigIntegration ExtraMachineConfig { get; }
+
 
         /*********
         ** Public methods
@@ -103,10 +108,11 @@ namespace Pathoschild.Stardew.LookupAnything
             this.ModRegistry = modRegistry;
             this.WorldItemScanner = new WorldItemScanner(reflection);
 
-            this.CustomBush = new CustomBushIntegration(modRegistry, this.Monitor);
-            this.CustomFarmingRedux = new CustomFarmingReduxIntegration(modRegistry, this.Monitor);
+            this.CustomBush = new CustomBushIntegration(modRegistry, monitor);
+            this.CustomFarmingRedux = new CustomFarmingReduxIntegration(modRegistry, monitor);
             this.MultiFertilizer = new MultiFertilizerIntegration(modRegistry, monitor);
-            //this.ProducerFrameworkMod = new ProducerFrameworkModIntegration(modRegistry, this.Monitor);  // TODO: restore when PFM is updated
+            this.ProducerFrameworkMod = new ProducerFrameworkModIntegration(modRegistry, monitor);
+            this.ExtraMachineConfig = new ExtraMachineConfigIntegration(modRegistry, monitor);
 
             this.ResetCache(monitor);
         }
@@ -400,8 +406,9 @@ namespace Pathoschild.Stardew.LookupAnything
 
                 RecipeIngredientModel? ingredient = recipe.Ingredients.FirstOrDefault();
                 return
-                    ingredient?.PossibleIds.Any(p => int.TryParse(p, out int id) && id < 0) == true
-                    && recipes.Any(other => other.Ingredients.FirstOrDefault()?.PossibleIds.Contains(item.QualifiedItemId) == true && other.DisplayType == recipe.DisplayType);
+                    int.TryParse(ingredient?.InputId, out int category)
+                    && category < 0
+                    && recipes.Any(other => other.Ingredients.FirstOrDefault()?.InputId == item.QualifiedItemId && other.DisplayType == recipe.DisplayType);
             });
 
             // from construction recipes
@@ -429,6 +436,19 @@ namespace Pathoschild.Stardew.LookupAnything
             // from cached recipes
             return this.GetRecipes()
                 .Where(recipe => recipe.IsForMachine(machine))
+                .ToList();
+        }
+
+        /// <summary>Get the recipes for a given building.</summary>
+        /// <param name="building">The building.</param>
+        public IEnumerable<RecipeModel> GetRecipesForBuilding(Building? building)
+        {
+            if (building == null)
+                return Array.Empty<RecipeModel>();
+
+            // from cached recipes
+            return this.GetRecipes()
+                .Where(recipe => recipe.IsForMachine(building))
                 .ToList();
         }
 
@@ -652,55 +672,51 @@ namespace Pathoschild.Stardew.LookupAnything
         private RecipeModel[] GetAllRecipes(IMonitor monitor)
         {
             // get vanilla recipes
-            List<RecipeModel> recipes = this.DataParser.GetRecipes(this.Metadata, monitor).ToList();
+            List<RecipeModel> recipes = this.DataParser.GetRecipes(this.Metadata, monitor, this.ExtraMachineConfig).ToList();
 
-            // TODO: restore when PFM is updated
-            //// get recipes from Producer Framework Mod
-            //if (this.ProducerFrameworkMod.IsLoaded)
-            //{
-            //    List<RecipeModel> customRecipes = new List<RecipeModel>();
-            //    foreach (ProducerFrameworkRecipe recipe in this.ProducerFrameworkMod.GetRecipes())
-            //    {
-            //        if (recipe.HasContextTags())
-            //            continue;
+            // get recipes from Producer Framework Mod
+            if (this.ProducerFrameworkMod.IsLoaded)
+            {
+                List<RecipeModel> customRecipes = new List<RecipeModel>();
+                foreach (ProducerFrameworkRecipe recipe in this.ProducerFrameworkMod.GetRecipes())
+                {
+                    // remove vanilla recipes overridden by a PFM one
+                    if (recipe.InputId != null)
+                        recipes.RemoveAll(other => other.Type == RecipeType.MachineInput && other.MachineId == recipe.MachineId && other.Ingredients.Length > 0 && other.Ingredients[0].InputId == recipe.InputId);
 
-            //        // remove vanilla recipes overridden by a PFM one
-            //        // This is always an integer currently, but the API may return context_tag keys in the future.
-            //        recipes.RemoveAll(r => r.Type == RecipeType.MachineInput && r.MachineId == recipe.MachineId.ToString() && recipe.InputId != null && r.Ingredients[0].PossibleIds.Contains(recipe.InputId.Value.ToString()));
+                    // get machine
+                    var machine = ItemRegistry.Create<SObject>(recipe.MachineId, allowNull: true);
+                    if (machine == null || !machine.HasTypeBigCraftable())
+                        continue;
 
-            //        // get machine
-            //        if (!this.TryGetObjectBySpriteIndex(recipe.MachineId.ToString(), out SObject? machine, bigcraftable: true))
-            //            continue;
+                    // add recipe
+                    customRecipes.Add(new RecipeModel(
+                        key: null,
+                        type: RecipeType.MachineInput,
+                        displayType: machine.DisplayName,
+                        ingredients: recipe.Ingredients.Select(p => new RecipeIngredientModel(p.InputId, p.Count)),
+                        item: ingredient =>
+                        {
+                            SObject output = ItemRegistry.Create<SObject>(recipe.OutputId);
+                            if (ingredient?.ParentSheetIndex != null)
+                            {
+                                output.preservedParentSheetIndex.Value = ingredient.ItemId;
+                                output.preserve.Value = recipe.PreserveType;
+                            }
+                            return output;
+                        },
+                        isKnown: () => true,
+                        exceptIngredients: recipe.ExceptIngredients.Select(id => new RecipeIngredientModel(id, 1)),
+                        outputQualifiedItemId: recipe.OutputId,
+                        minOutput: recipe.MinOutput,
+                        maxOutput: recipe.MaxOutput,
+                        outputChance: (decimal)recipe.OutputChance,
+                        machineId: ItemRegistry.ManuallyQualifyItemId(recipe.MachineId, ItemRegistry.type_bigCraftable)
+                    ));
+                }
 
-            //        // add recipe
-            //        customRecipes.Add(new RecipeModel(
-            //            key: null,
-            //            type: RecipeType.MachineInput,
-            //            displayType: machine.DisplayName,
-            //            ingredients: recipe.Ingredients.Select(p => new RecipeIngredientModel(p.InputId!.Value.ToString(), p.Count)),
-            //            item: ingredient =>
-            //            {
-            //                SObject output = this.GetObjectById(recipe.OutputId.ToString());
-            //                if (ingredient?.ParentSheetIndex != null)
-            //                {
-            //                    output.preservedParentSheetIndex.Value = ingredient.ItemId;
-            //                    output.preserve.Value = recipe.PreserveType;
-            //                }
-            //                return output;
-            //            },
-            //            isKnown: () => true,
-            //            exceptIngredients: recipe.ExceptIngredients.Select(id => new RecipeIngredientModel(id!.Value, 1)),
-            //            outputItemIndex: recipe.OutputId,
-            //            minOutput: recipe.MinOutput,
-            //            maxOutput: recipe.MaxOutput,
-            //            outputChance: (decimal)recipe.OutputChance,
-            //            machineId: recipe.MachineId,
-            //            isForMachine: p => p is SObject obj && obj.GetItemType() == ItemType.BigCraftable && obj.ParentSheetIndex == recipe.MachineId
-            //        ));
-            //    }
-
-            //    recipes.AddRange(customRecipes);
-            //}
+                recipes.AddRange(customRecipes);
+            }
 
             // get tailoring recipes
             recipes.AddRange(this.GetAllTailorRecipes());
@@ -805,8 +821,7 @@ namespace Pathoschild.Stardew.LookupAnything
                                 item: _ => output.getOne(),
                                 isKnown: () => Game1.player.HasTailoredThisItem(output),
                                 outputQualifiedItemId: ItemRegistry.QualifyItemId(recipe.CraftedItemId),
-                                machineId: null,
-                                isForMachine: _ => false
+                                machineId: null
                             );
                         }
                     }

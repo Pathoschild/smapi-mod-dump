@@ -1,6 +1,12 @@
 {
   "NumberOfStaircasesToLeaveInStack": 0,
-  "SkipLevel100SkullCavern": false,
+  "MaxLevelsToSkipPerUse": -1,
+  "DoNotSkipSkullCavernLevels": [
+    100,
+    200,
+    300
+  ],
+  "DoNotSkipMineLevels": [],
   "SkipDinosaurLevels": false,
   "SkipTreasureLevels": false,
   "SkipQuarryDungeonLevels": false,

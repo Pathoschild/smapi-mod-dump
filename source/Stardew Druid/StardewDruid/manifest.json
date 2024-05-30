@@ -15,6 +15,6 @@
     "Description": "Stardew Druid Mod for Stardew Valley",
     "UniqueID": "neosinf.StardewDruid",
     "EntryDll": "StardewDruid.dll",
-    "MinimumApiVersion": "4.0.6",
+    "MinimumApiVersion": "4.0.8",
     "UpdateKeys": [ "Nexus:18465" ]
 }

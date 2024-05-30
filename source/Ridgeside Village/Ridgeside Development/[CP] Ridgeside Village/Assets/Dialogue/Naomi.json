@@ -102,6 +102,8 @@
 
 	 //Special Dialogue
 	"MovieInvitation": "{{i18n:Naomi.Dialogue.MovieInvitation}}",
+
+	"AcceptGift_(O)StardropTea": "{{i18n:AcceptStardropTea.Naomi}}"
 		},
 	},
 ]

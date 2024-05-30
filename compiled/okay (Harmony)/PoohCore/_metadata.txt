@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/22941
+IDs: poohnhi.PoohCore
+update keys: Nexus:22941, GitHub:poohnhi/PoohCore

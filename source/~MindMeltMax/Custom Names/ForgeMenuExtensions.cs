@@ -26,7 +26,6 @@ namespace CustomNames
         private static readonly PerScreen<TextBox> textBox = new(() => null!);
         private static readonly PerScreen<bool> isSnappedToTextBox = new(() => false);
         private static readonly PerScreen<string?> textCache = new(() => null);
-        private static readonly PerScreen<Item?> leftItem = new(() => null);
         private static readonly PerScreen<bool> isUnforging = new(() => false);
         private static FieldInfo? craftStateField;
         private static FieldInfo? unforgingField;
@@ -64,6 +63,10 @@ namespace CustomNames
                 postfix: new(typeof(ForgeMenuExtensions), nameof(ForgeMenu_ValidateCraft_Postfix))
             );
             harmony.Patch(
+                original: AccessTools.Method(typeof(ForgeMenu), "_CreateButtons"),
+                postfix: new(typeof(ForgeMenuExtensions), nameof(ForgeMenu_CreateButtons_Postfix))
+            );
+            harmony.Patch(
                 original: AccessTools.Method(typeof(ForgeMenu), nameof(ForgeMenu.receiveKeyPress)),
                 prefix: new(typeof(ForgeMenuExtensions), nameof(ForgeMenu_ReceiveKeyPress_Prefix))
             );
@@ -77,10 +80,6 @@ namespace CustomNames
                 transpiler: new(typeof(ForgeMenuExtensions), nameof(ForgeMenu_Update_Transpiler))
             );
             harmony.Patch(
-                original: AccessTools.Method(typeof(ForgeMenu), nameof(ForgeMenu.gameWindowSizeChanged)),
-                postfix: new(typeof(ForgeMenuExtensions), nameof(ForgeMenu_GameWindowSizeChanged_Postfix))
-            );
-            harmony.Patch(
                 original: AccessTools.Method(typeof(ForgeMenu), nameof(ForgeMenu.receiveLeftClick)),
                 postfix: new(typeof(ForgeMenuExtensions), nameof(ForgeMenu_ReceiveLeftClick_Postfix))
             );
@@ -89,7 +88,6 @@ namespace CustomNames
                 original: AccessTools.Method(typeof(ForgeMenu), nameof(ForgeMenu.draw), [typeof(SpriteBatch)]),
                 transpiler: new(typeof(ForgeMenuExtensions), nameof(ForgeMenu_Draw_Transpiler))
             );
-
             harmony.Patch(
                 original: AccessTools.Method(typeof(ForgeMenu), "_leftIngredientSpotClicked"),
                 transpiler: new(typeof(ForgeMenuExtensions), nameof(ForgeMenu_LeftIngredientSpotClicked_Transpiler))
@@ -146,12 +144,6 @@ namespace CustomNames
             if (string.IsNullOrWhiteSpace(text) && !(item?.modData.ContainsKey(ModEntry.ModDataKey) ?? false))
                 text = item?.DisplayName;
             return text != item?.DisplayName;
-        }
-
-        private static void updatePosition()
-        {
-            textBox.Value.X = Game1.uiViewport.Width / 2 - (800 + IClickableMenu.borderWidth * 2) / 2 + 204 - (textBox.Value.Width / 2) + 100;
-            textBox.Value.Y = Game1.uiViewport.Height / 2 - (600 + IClickableMenu.borderWidth * 2) / 2 + 212 - 112;
         }
 
         private static bool lightUpLeftIngredientSpot(ForgeMenu menu)
@@ -248,6 +240,18 @@ namespace CustomNames
             updateDescriptionMethod!.Invoke(__instance, null);
         }
 
+        private static void ForgeMenu_CreateButtons_Postfix(ForgeMenu __instance)
+        {
+            textBox.Value = new(Game1.content.Load<Texture2D>("LooseSprites\\textBox"), Game1.staminaRect, Game1.smallFont, Game1.textColor)
+            {
+                X = Game1.uiViewport.Width / 2 - (800 + IClickableMenu.borderWidth * 2) / 2 + 204 - ((textBox.Value?.Width ?? 200) / 2) + 100,
+                Y = __instance.leftIngredientSpot.bounds.Y - 120,//__instance.yPositionOnScreen + 64,
+                Text = textBox.Value?.Text,
+                limitWidth = false,
+                textLimit = 20
+            };
+        }
+
         private static bool ForgeMenu_ReceiveKeyPress_Prefix()
         {
             if (textBox.Value.Selected)
@@ -266,27 +270,19 @@ namespace CustomNames
                     validateCraftMethod?.Invoke(__instance, null);
                 textCache.Value = textBox.Value.Text;
                 textBox.Value.Width = (int)Math.Max(200, textBox.Value.Font.MeasureString(textBox.Value.Text).X + 24);
-                textBox.Value.X = textBox.Value.X = Game1.uiViewport.Width / 2 - (800 + IClickableMenu.borderWidth * 2) / 2 + 204 - (textBox.Value.Width / 2) + 100;
+                textBox.Value.X = Game1.uiViewport.Width / 2 - (800 + IClickableMenu.borderWidth * 2) / 2 + 204 - (textBox.Value.Width / 2) + 100;
             }
         }
-
-        private static void ForgeMenu_GameWindowSizeChanged_Postfix() => updatePosition();
 
         private static void ForgeMenu_ReceiveLeftClick_Postfix(ForgeMenu __instance, int x, int y)
         {
             if (__instance.leftIngredientSpot is ClickableTextureComponent c && c.containsPoint(x, y))
             {
-                if (c.item is not null && leftItem.Value is null)
-                {
-                    leftItem.Value = c.item;
+                if (c.item is not null)
                     textBox.Value.Text = c.item.DisplayName;
-                }
 
-                if (c.item is null && leftItem.Value is not null)
-                {
-                    leftItem.Value = null;
+                if (c.item is null)
                     textBox.Value.Text = null;
-                }
             }
             if (__instance.unforgeButton is ClickableComponent c2 && c2.containsPoint(x, y))
             {

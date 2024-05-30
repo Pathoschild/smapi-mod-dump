@@ -1,6 +1,9 @@
 {
   // GMCM
-  "GMCM_OptionModEnabled_Name": "Mod Enabled?",
-  "GMCM_OptionInstantConstruction_Name": "Instant Construction",
-  "GMCM_OptionInstantConstruction_Description": "Enable instant construction of Fish Ponds."
+  "GMCM_Option_ModEnabled_Name": "Mod Enabled?",
+  "GMCM_Option_InstantConstruction_Name": "Instant Construction",
+  "GMCM_Option_InstantConstruction_Description": "Enable instant construction of Fish Ponds.",
+  "GMCM_Option_KeepSmallerSizeOnSave_Name": "Keep smaller size when saving",
+  "GMCM_Option_KeepSmallerSizeOnSave_Description": "Keeps Fish Ponds as 3x3 on saving. This may help prevent issues with crops or other nearby structures, but can cause graphical issues if the mod is ever removed."
+
 }

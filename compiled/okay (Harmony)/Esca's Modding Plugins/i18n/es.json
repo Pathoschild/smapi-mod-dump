@@ -1,0 +1,8 @@
+﻿{
+	"Config.PlaceBedsAnywhere.Name": "Poner camas en cualquier lugar",
+	"Config.PlaceBedsAnywhere.Description": "Si está activado puedes colocar camas en cualquier sitio",
+	"Config.PlaceMiniFridgesAnywhere.Name": "Pone mini-neveras en cualquier lugar",
+	"Config.PlaceMiniFridgesAnywhere.Description": "Si está activado puedes colocar mini-neveras en cualquier sitio",
+	"Config.PassOutSafelyEverywhere.Name": "Desmayate con seguridad",
+	"Config.PassOutSafelyEverywhere.Description": "Si está activado, no perderás dinero si te desmayas passadas las 2:00 AM. NOTA: Este cambio no afecta a que te quedes sin Salud/vida."
+}

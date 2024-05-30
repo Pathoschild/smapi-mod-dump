@@ -1,0 +1,19 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/MindMeltMax/Stardew-Valley-Mods
+**
+*************************************************/
+
+{
+  "Config.TotalValue.Title": "Mostrar el Valor Total",
+  "Config.TotalValue.Description": "Muestra un banner en la parte superior del inventario del contenedor de env�o con el valor total de todos los art�culos",
+  "Config.MiniTotalValue.Title": "Mostrar el Valor Total del Mini contenedor",
+  "Config.MiniTotalValue.Description": "Muestra el mismo banner que en el inventario regular en el mini contenedor de env�o",
+  "Config.InvertScroll.Title": "Invertir Rueda de Desplazamiento",
+  "Config.InvertScroll.Description": "Invertir la direcci�n de la rueda de desplazamiento al recorrer el inventario",
+  "Menu.TotalValue": "Valor total: "
+}

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/23934
+IDs: wilsoncwc.IslandPotFix
+update keys: Nexus:23934

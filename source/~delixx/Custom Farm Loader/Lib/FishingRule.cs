@@ -155,6 +155,11 @@ namespace Custom_Farm_Loader.Lib
                     if (customFarm.FishingRules.Any(e => e.LocationName == fish.Id))
                         continue;
 
+                    if(Game1.getLocationFromName(fish.Id) is null) {
+                        Monitor.LogOnce($"Attempted to catch fish from location '{fish.Id}', but that location does not exist.", LogLevel.Warn);
+                        continue;
+                    }
+
                     return GameLocation.GetFishFromLocationData(fish.Id, new Vector2(0,0), waterDepth, who, beginnersRod, false);
                 }
 

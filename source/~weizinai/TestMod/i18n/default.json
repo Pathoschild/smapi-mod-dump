@@ -1,0 +1,19 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/weizinai/StardewValleyMods
+**
+*************************************************/
+
+{
+    "Config.MineShaftMap.Name": "矿井地图",
+    "Config.MineShaftMap.ToolTip": "该选项需要重启游戏才能生效.",
+    "Config.VolcanoDungeonMap.Name": "火山地图",
+    "Config.VolcanoDungeonMap.ToolTip": "该选项可及时生效.",
+    "Config.RandomInt.Name": "随机 int",
+    "Config.RandomBool.Name": "随机 bool",
+    "UI.Button.Name": "开始"
+}

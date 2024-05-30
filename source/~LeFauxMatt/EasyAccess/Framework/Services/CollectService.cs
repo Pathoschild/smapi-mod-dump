@@ -10,66 +10,45 @@
 
 namespace StardewMods.EasyAccess.Framework.Services;
 
-using Microsoft.Xna.Framework;
 using StardewModdingAPI.Events;
 using StardewMods.Common.Helpers;
 using StardewMods.Common.Interfaces;
 using StardewMods.Common.Services;
 using StardewMods.Common.Services.Integrations.FauxCore;
 using StardewMods.Common.Services.Integrations.ToolbarIcons;
+using StardewMods.EasyAccess.Framework.Enums;
 using StardewMods.EasyAccess.Framework.Interfaces;
 
 /// <summary>Handles collecting items.</summary>
 internal sealed class CollectService : BaseService<CollectService>
 {
-    private readonly AssetHandler assetHandler;
+    private readonly IIconRegistry iconRegistry;
     private readonly IInputHelper inputHelper;
     private readonly IModConfig modConfig;
     private readonly ToolbarIconsIntegration toolbarIconsIntegration;
 
     /// <summary>Initializes a new instance of the <see cref="CollectService" /> class.</summary>
-    /// <param name="assetHandler">Dependency used for handling assets.</param>
-    /// <param name="eventSubscriber">Dependency used for subscribing to events.</param>
+    /// <param name="eventManager">Dependency used for managing events.</param>
+    /// <param name="iconRegistry">Dependency used for registering and retrieving icons.</param>
     /// <param name="inputHelper">Dependency used for checking and changing input state.</param>
-    /// <param name="log">Dependency used for logging debug information to the console.</param>
-    /// <param name="manifest">Dependency for accessing mod manifest.</param>
     /// <param name="modConfig">Dependency used for accessing config data.</param>
     /// <param name="toolbarIconsIntegration">Dependency for Toolbar Icons integration.</param>
     public CollectService(
-        AssetHandler assetHandler,
-        IEventSubscriber eventSubscriber,
+        IEventManager eventManager,
+        IIconRegistry iconRegistry,
         IInputHelper inputHelper,
-        ILog log,
-        IManifest manifest,
         IModConfig modConfig,
         ToolbarIconsIntegration toolbarIconsIntegration)
-        : base(log, manifest)
     {
         // Init
-        this.assetHandler = assetHandler;
+        this.iconRegistry = iconRegistry;
         this.inputHelper = inputHelper;
         this.modConfig = modConfig;
         this.toolbarIconsIntegration = toolbarIconsIntegration;
 
         // Events
-        eventSubscriber.Subscribe<GameLaunchedEventArgs>(this.OnGameLaunched);
-        eventSubscriber.Subscribe<ButtonsChangedEventArgs>(this.OnButtonsChanged);
-    }
-
-    private void OnGameLaunched(GameLaunchedEventArgs obj)
-    {
-        if (!this.toolbarIconsIntegration.IsLoaded)
-        {
-            return;
-        }
-
-        this.toolbarIconsIntegration.Api.AddToolbarIcon(
-            this.UniqueId,
-            this.assetHandler.IconTexture.Name.BaseName,
-            new Rectangle(0, 0, 16, 16),
-            I18n.Button_CollectOutputs_Name());
-
-        this.toolbarIconsIntegration.Api.Subscribe(this.OnIconPressed);
+        eventManager.Subscribe<GameLaunchedEventArgs>(this.OnGameLaunched);
+        eventManager.Subscribe<ButtonsChangedEventArgs>(this.OnButtonsChanged);
     }
 
     private void CollectItems()
@@ -136,7 +115,7 @@ internal sealed class CollectService : BaseService<CollectService>
 
                     Game1.createItemDebris(obj, Game1.tileSize * pos, direction, Game1.currentLocation);
                     Game1.currentLocation.Objects.Remove(pos);
-                    this.Log.Info("Dropped {0} from forage.", obj.DisplayName);
+                    Log.Info("Dropped {0} from forage.", obj.DisplayName);
                     continue;
                 }
 
@@ -145,7 +124,7 @@ internal sealed class CollectService : BaseService<CollectService>
                     var item = obj.heldObject.Value;
                     if (item is not null && obj.checkForAction(Game1.player))
                     {
-                        this.Log.Info("Collected {0} from producer {1}.", item.DisplayName, obj.DisplayName);
+                        Log.Info("Collected {0} from producer {1}.", item.DisplayName, obj.DisplayName);
                     }
                 }
             }
@@ -178,9 +157,23 @@ internal sealed class CollectService : BaseService<CollectService>
         this.CollectItems();
     }
 
+    private void OnGameLaunched(GameLaunchedEventArgs obj)
+    {
+        if (!this.toolbarIconsIntegration.IsLoaded)
+        {
+            return;
+        }
+
+        this.toolbarIconsIntegration.Api.AddToolbarIcon(
+            this.iconRegistry.RequireIcon(InternalIcon.Collect),
+            I18n.Button_CollectOutputs_Name());
+
+        this.toolbarIconsIntegration.Api.Subscribe(this.OnIconPressed);
+    }
+
     private void OnIconPressed(IIconPressedEventArgs e)
     {
-        if (e.Id == this.UniqueId)
+        if (e.Id == this.iconRegistry.RequireIcon(InternalIcon.Collect).Id)
         {
             this.CollectItems();
         }

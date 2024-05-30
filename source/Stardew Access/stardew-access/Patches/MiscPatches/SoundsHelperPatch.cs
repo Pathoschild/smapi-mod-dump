@@ -40,7 +40,7 @@ internal class SoundsHelperPatch : IPatch
                 return true;
 
             if (cueName is "grassyStep" or "sandyStep" or "snowyStep" or "stoneStep" or "thudStep" or "woodyStep"
-                    && TileInfo.IsCollidingAtTile(Game1.currentLocation, (int)CurrentPlayer.FacingTile.X, (int)CurrentPlayer.FacingTile.Y))
+                    && TileInfo.IsCollidingAtTile(Game1.currentLocation, CurrentPlayer.FacingTile))
             {
                 return false;
             }

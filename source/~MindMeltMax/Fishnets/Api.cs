@@ -108,16 +108,15 @@ namespace Fishnets
         public bool TryGetFishNetInfoAt(GameLocation location, Vector2 tile, out Dictionary<string, string> data)
         {
             data = [];
-            if (Statics.GetModDataAt(location, tile) is ModData modData && location.Objects.TryGetValue(tile, out Object obj) && obj.ItemId == ModEntry.ObjectInfo.Id)
+            if (location.Objects.TryGetValue(tile, out Object obj) && obj.ItemId == ModEntry.ObjectInfo.Id && Statics.TryParseModData(obj, out var baitData))
             {
                 data = new()
                 {
                     { "heldObject", obj.heldObject.Value.QualifiedItemId },
                     { "heldObjectStack", obj.heldObject.Value.Stack.ToString() },
                     { "heldObjectQuality", obj.heldObject.Value.Quality.ToString() },
-                    { "bait", modData.BaitId },
-                    { "baitQuality", modData.BaitQuality.ToString() },
-                    { "directionOffset", JsonConvert.SerializeObject(modData.Offset) },
+                    { "bait", baitData.Key },
+                    { "baitQuality", baitData.Value.ToString() },
                     { "owner", obj.owner.Value.ToString() }
                 };
                 return true;

@@ -1,0 +1,187 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/HeyImAmethyst/Ars-Venefici
+**
+*************************************************/
+
+{
+	/*********
+	** Config
+	*********/
+
+	"config.position_x.name": "Position X",
+	"config.position_y.name": "Position Y",
+
+	"config.position_x.tooltip": "La position X en pixels pour l’infobulle des sorts, relative au coin supérieur gauche de l'écran.",
+	"config.position_y.tooltip": "La position Y en pixels pour l’infobulle  des sorts, relative au coin supérieur gauche de l'écran.",
+
+	"config.open_spellbook_key.name": "Bouton Ouvrir le Livre de Sorts",
+	"config.open_spellbook_key.tooltip": "Appuyez sur Shift et ce bouton pour ouvrir le livre de sorts.",
+
+	"config.move_spell_lable_key.name": "Bouton Déplacer l’infobulle (sort)",
+	"config.move_spell_lable_key.tooltip": "Appuyez sur Shift et ce bouton pour déplacer l'infobulle de sort.",
+
+	"config.next_spell_key.name": "Bouton Sort suivant",
+	"config.next_spell_key.tooltip": "Le bouton pour passer au sort suivant.",
+
+	"config.previous_spell_key.name": "Bouton Sort précédent",
+	"config.previous_spell_key.tooltip": "Le bouton pour revenir au sort précédent.",
+
+	"config.cast_spell_key.name": "Bouton Lancer le sort",
+	"config.cast_spell_key.tooltip": "Le bouton pour lancer le sort actuel.",
+
+	/*********
+	** Spell Parts
+	*********/
+
+	"spellpart.self.name": "* Soi-même",
+	"spellpart.self.description": "Applique des effets sur vous-même.",
+
+	"spellpart.projectile.name": "* Projectile",
+	"spellpart.projectile.description": "Lance une boule de magie.",
+
+	"spellpart.touch.name": "* Toucher",
+	"spellpart.touch.description": "Ciblera le terrain que vous touchez.",
+
+	"spellpart.etherial_touch.name": "* Toucher éthéré",
+	"spellpart.etherial_touch.description": "Ciblera le terrain sous le curseur de la souris.",
+
+	"spellpart.aoe.name": "* Zone d'effet",
+	"spellpart.aoe.description": "Lance le sort dans une zone autour de l'endroit où il est déclenché.\nCette forme doit être placée en dernier.",
+
+	"spellpart.zone.name": "Zone",
+	"spellpart.zone.description": "Makes a 'zone' of the spell cast. This shape must be placed last. This shape will continue ticking the spell effect it was attached to.",
+
+
+	"spellpart.dig.name": "Creuser",
+	"spellpart.dig.description": "Brise les rochers, les débris et coupe les arbres.",
+
+	"spellpart.plow.name": "Labourer",
+	"spellpart.plow.description": "Laboure le sol cultivable.",
+
+	"spellpart.grow.name": "Croître",
+	"spellpart.grow.description": "Fait pousser des arbres et des cultures.",
+
+	"spellpart.harvest.name": "Récolter",
+	"spellpart.harvest.description": "Récolte les cultures... récoltables.",
+
+	"spellpart.create_water.name": "Créer de l'eau",
+	"spellpart.create_water.description": "Arrose le sol labouré.",
+
+	"spellpart.explosion.name": "Exploser",
+	"spellpart.explosion.description": "Crée une explosion.",
+
+	"spellpart.blink.name": "Téléporter",
+	"spellpart.blink.description": "Téléporte la cible à l'emplacement spécifié. Fonctionne uniquement avec les formes Toucher et Toucher Éthéré. Ne téléportera que le lanceur.",
+
+	"spellpart.light.name": "Illuminer",
+	"spellpart.light.description": "Place une torche à l'emplacement spécifié. Les torches créées de cette manière ne seront pas récupérables.",
+
+	"spellpart.heal.name": "Guérir",
+	"spellpart.heal.description": "Permet de se soigner (si utilisé avec soi-même) ou d'autres joueurs (lorsqu'il est utilisé avec projectile).",
+
+	"spellpart.life_drain.name": "Drainer la vie",
+	"spellpart.life_drain.description": "Endommage la cible et vous soigne en fonction des dégâts infligés.",
+
+	"spellpart.physical_damage.name": "Blesser",
+	"spellpart.physical_damage.description": "Endommage la cible.",
+
+	"spellpart.haste.name": "Haste",
+	"spellpart.haste.description": "Increases the player's speed'.",
+
+
+	"spellpart.damage.name": "Dégâts +",
+	"spellpart.damage.description": "Renforce les dégâts des composants de type dégâts.",
+
+	"spellpart.range.name": "Portée +",
+	"spellpart.range.description": "Augmente la portée des formes de type Zone d'Effet et de certains composants.",
+
+	"spellpart.bounce.name": "Rebond +",
+	"spellpart.bounce.description": "Fait rebondir les sorts de projectile contre les murs jusqu'à ce qu'il touche un monstre, un terrain exploitable ou disparaisse.",
+
+	"spellpart.piercing.name": "Perforation +",
+	"spellpart.piercing.description": "Augmente le nombre de fois que le projectile peut perforer un ennemi avant d'être détruit.",
+
+	"spellpart.velocity.name": "Vélocité +",
+	"spellpart.velocity.description": "Rend les projectiles plus rapides.",
+
+	"spellpart.healing.name": "Guérison +",
+	"spellpart.healing.description": "Renforce la puissance des composants de guérison.",
+
+	"spellpart.duration.name": "Duration",
+	"spellpart.duration.description": "Adds additional time to Zone spells.",
+
+	"spellpart.mining_power.name": "Mining Power",
+	"spellpart.mining_power.description": "Adds +1 axe/pickaxe upgrade to Dig spells.",
+
+	/*********
+	** UI
+	*********/
+
+	"ui.mana_cost.name": "Mana Cost",
+
+	"ui.spell_label.shape_group.name": "Shape Group",
+
+	"ui.spell_book.source_area.name": "Source Area",
+	"ui.spell_book.shape_group_area.name": "Shape Group Area",
+	"ui.spell_book.spell_grammar_area.name": "Spell Grammar Area",
+
+	/*********
+	** Skill/Professions
+	*********/
+
+	"skill.wizardry.name": "Wizardry",
+	"skill.extra_level_up_info.text": "+1 mana regen",
+	"skill.skill_page_hover_text_mana_regen.text": "mana regen",
+
+	"professions.ManaEfficiency1.name": "Mana Effeciency I",
+	"professions.ManaEfficiency1.description": "Total mana cost of spells is reduced by about a third",
+
+	"professions.ManaEfficiency2.name": "Mana Effeciency II",
+	"professions.ManaEfficiency2.description": "Total mana cost of spells is reduced by about half",
+
+	"professions.ManaRegen1.name": "Mana Regen I",
+	"professions.ManaRegen1.description": "+0.5 mana regen per level",
+
+	"professions.ManaRegen2.name": "Mana Regen II",
+	"professions.ManaRegen2.description": "+1 mana regen per level",
+
+	"professions.ManaConservation.name": "Mana Conservation",
+	"professions.ManaConservation.description": "25% chance of spells not costing any mana",
+
+	"professions.ManaCap.name": "Mana Reserve",
+	"professions.ManaCap.description": "+500 max mana",
+
+	/*********
+    ** Wizard learn-magic event
+    *********/
+
+	"event.wizard.1": "Salutations @.",
+	"event.wizard.2": "J'ai remarqué ton fort intérêt pour la magie.",
+	"event.wizard.3": "Serais-tu intéressé à ce que je te montre comment créer des sorts ?",
+	"event.wizard.4": "Très bien. Voici donc pour toi un livre de sorts afin que tu puisses créer des sorts.",
+
+	"event.message.1": "Le sorcier t'a donné un livre de sorts ! Tu pourras maintenant créer des sorts !\nAppuie sur Shift et 'B' pour l'ouvrir.",
+
+	"event.wizard.5": "Le livre de sorts te montrera toutes les différentes parties de sorts que tu peux utiliser.",
+	"event.wizard.6": "Pour créer des sorts, tu devras placer une ou plusieurs formes, qui sont des carrés, dans chaque groupe de formes sur la page de sort sur laquelle tu es.",
+	"event.wizard.7": "Ensuite, tu devras placer un ou plusieurs composants, qui sont des octogones, dans la section de grammaire de sorts de la page.",
+	"event.wizard.8": "Tu peux changer la façon dont les formes et les composants se comportent avec des modificateurs, qui sont des losanges.",
+	"event.wizard.9": "Assure-toi de donner un nom à ton sort. Une fois que tu as créé ton sort, tu peux fermer ton livre de sorts et le sort sera sauvegardé.",
+	"event.wizard.10": "Une fois que tu as fermé ton livre de sorts, tu peux parcourir ta liste de sorts.",
+
+	"event.message.2": "Utilise 'Z' et 'X' pour parcourir ta liste de sorts. Tu peux aussi utiliser Shift et 'Z' et Shift et 'X' pour faire défiler les groupes de formes d'un sort.",
+
+	"event.wizard.11": "Une fois que tu as le sort que tu veux, tu pourras le lancer.",
+
+	"event.message.3": "Pour lancer un sort, appuie sur Q.",
+	"event.message.4": "Ces contrôles peuvent être ajustés dans le fichier de configuration d'Ars Venefici.",
+
+	"event.wizard.12": "Bonne chance dans tes aventures magiques.",
+
+	"event.wizard.abovehead": "SORCELLERIE !"
+}

@@ -6,9 +6,9 @@ mods:
    Berry Season Reminder
 
 latest commit:
-   commit cfaca9eef06d9b698d2ec6da874842d63621d1cc
+   commit 0a39db6c77719815177dcc59dafa173a1be01066
    Author: Anthony Hilyard <anthony.hilyard@gmail.com>
-   Date:   Sat Feb 13 22:10:43 2021 -0800
+   Date:   Wed May 1 09:14:18 2024 -0700
    
-       Updated manifest with correct UniqueID.
+       Updated to 1.6.
    

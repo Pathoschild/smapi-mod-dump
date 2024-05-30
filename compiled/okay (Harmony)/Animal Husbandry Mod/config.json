@@ -16,6 +16,8 @@
   "DisableMeatFromDinosaur": false,
   "PercentualAjustOnFriendshipInscreaseFromProfessions": 0.25,
   "DisableContestBonus": false,
+  "DisableFeedingBasketLetter": false,
+  "DisableInseminationSyringeLetter": false,
   "DisableMeatToolLetter": false,
   "DisableMeatButton": false,
   "DisableMeatInBlundle": false,

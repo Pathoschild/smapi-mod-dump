@@ -1,0 +1,268 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Digus/StardewValleyMods
+**
+*************************************************/
+
+{
+    "Format": "2.0.0",
+    "Changes": [
+        {
+            "Action": "EditData",
+            "Target": "Data/TriggerActions",
+            "Entries": {
+                "{{ModId}}_MigrateIds_Recipes_JA_old": {
+                    "Id": "{{ModId}}_MigrateIds_Recipes_JA_old",
+                    "Trigger": "DayStarted",
+                    "Actions": [
+                        'Pathoschild.ContentPatcher_MigrateIds CraftingRecipes "Hardwood Cask" Digus.AdvancedCasksMod_HardwoodCask "Radioactive Cask" Digus.AdvancedCasksMod_RadioactiveCask'
+                    ],
+                    "HostOnly": true
+                }
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/TriggerActions",
+            "Entries": {
+                "{{ModId}}_MigrateIds_Recipes_JA_new": {
+                    "Id": "{{ModId}}_MigrateIds_Recipes_JA_new",
+                    "Trigger": "DayStarted",
+                    "Actions": [
+                        "Pathoschild.ContentPatcher_MigrateIds CraftingRecipes Digus.AdvancedCasksMod_Hardwood_Cask Digus.AdvancedCasksMod_HardwoodCask Digus.AdvancedCasksMod_Radioactive_Cask Digus.AdvancedCasksMod_RadioactiveCask"
+                    ],
+                    "HostOnly": true
+                }
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/TriggerActions",
+            "Entries": {
+                "{{ModId}}_MigrateIds_Recipes_CP_new": {
+                    "Id": "{{ModId}}_MigrateIds_Recipes_CP_new",
+                    "Trigger": "DayStarted",
+                    "Actions": [
+                        "Pathoschild.ContentPatcher_MigrateIds CraftingRecipes Digus.AdvancedCaskMod_HardwoodCask Digus.AdvancedCasksMod_HardwoodCask Digus.AdvancedCaskMod_RadioactiveCask Digus.AdvancedCasksMod_RadioactiveCask"
+                    ],
+                    "HostOnly": true
+                }
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/TriggerActions",
+            "Entries": {
+                "{{ModId}}_MigrateIds_Items_JA_old": {
+                    "Id": "{{ModId}}_MigrateIds_Items_JA_old",
+                    "Trigger": "DayStarted",
+                    "Actions": [
+                        'Pathoschild.ContentPatcher_MigrateIds Items "JsonAssets:big-craftables:Hardwood Cask" (BC)Digus.AdvancedCasksMod_HardwoodCask  "JsonAssets:big-craftables:Radioactive Cask" (BC)Digus.AdvancedCasksMod_RadioactiveCask'
+                    ],
+                    "HostOnly": true
+                }
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/TriggerActions",
+            "Entries": {
+                "{{ModId}}_MigrateIds_Items_JA_new": {
+                    "Id": "{{ModId}}_MigrateIds_Items_JA_new",
+                    "Trigger": "DayStarted",
+                    "Actions": [
+                        "Pathoschild.ContentPatcher_MigrateIds Items (BC)Digus.AdvancedCasksMod_Hardwood_Cask (BC)Digus.AdvancedCasksMod_HardwoodCask (BC)Digus.AdvancedCasksMod_Radioactive_Cask (BC)Digus.AdvancedCasksMod_RadioactiveCask"
+                    ],
+                    "HostOnly": true
+                }
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/TriggerActions",
+            "Entries": {
+                "{{ModId}}_MigrateIds_Items_CP_new": {
+                    "Id": "{{ModId}}_MigrateIds_Items_CP_new",
+                    "Trigger": "DayStarted",
+                    "Actions": [
+                        "Pathoschild.ContentPatcher_MigrateIds Items (BC)Digus.AdvancedCaskMod_HardwoodCask (BC)Digus.AdvancedCasksMod_HardwoodCask (BC)Digus.AdvancedCaskMod_RadioactiveCask (BC)Digus.AdvancedCasksMod_RadioactiveCask"
+                    ],
+                    "HostOnly": true
+                }
+            }
+        },
+        {
+            "LogName": "Load big craftables data for Advanced Casks Mod",
+            "Action": "EditData",
+            "Target": "Data/BigCraftables",
+            "Entries": {
+                "Digus.AdvancedCasksMod_HardwoodCask": {
+                    "Name": "Digus.AdvancedCasksMod_HardwoodCask",
+                    "DisplayName": "{{i18n:HardwoodCask.BigCraftable.DisplayName}}",
+                    "Description": "{{i18n:HardwoodCask.BigCraftable.Description}}",
+                    "Price": 50,
+                    "Fragility": 0,
+                    "CanBePlacedOutdoors": true,
+                    "CanBePlacedIndoors": true,
+                    "IsLamp": false,
+                    "Texture": "Digus.AdvancedCasksMod/TileSheets/Craftables",
+                    "SpriteIndex": 0
+                },
+                "Digus.AdvancedCasksMod_RadioactiveCask": {
+                    "Name": "Digus.AdvancedCasksMod_RadioactiveCask",
+                    "DisplayName": "{{i18n:RadioactiveCask.BigCraftable.DisplayName}}",
+                    "Description": "{{i18n:RadioactiveCask.BigCraftable.Description}}",
+                    "Price": 50,
+                    "Fragility": 0,
+                    "CanBePlacedOutdoors": true,
+                    "CanBePlacedIndoors": true,
+                    "IsLamp": false,
+                    "Texture": "Digus.AdvancedCasksMod/TileSheets/Craftables",
+                    "SpriteIndex": 1
+                }
+            }
+        },
+        {
+            "LogName": "Load machine data for Advanced Casks Mod",
+            "Action": "EditData",
+            "Target": "Data/Machines",
+            "Fields": {
+                "(BC)Digus.AdvancedCasksMod_HardwoodCask": {
+                    "LoadEffects": [
+                        {
+                            "Id": "Default",
+                            "Condition": null,
+                            "Sounds": [
+                                {
+                                    "Id": "Ship",
+                                    "Delay": 0
+                                },
+                                {
+                                    "Id": "bubbles",
+                                    "Delay": 0
+                                }
+                            ],
+                            "Interval": 100,
+                            "Frames": null,
+                            "ShakeDuration": -1,
+                            "TemporarySprites": [
+                                {
+                                    "Id": "Default",
+                                    "Condition": null,
+                                    "Texture": "TileSheets\\animations",
+                                    "SourceRect": {
+                                        "X": 256,
+                                        "Y": 1856,
+                                        "Width": 64,
+                                        "Height": 128
+                                    },
+                                    "Interval": 80.0,
+                                    "Frames": 6,
+                                    "Loops": 999999,
+                                    "PositionOffset": "0, -32",
+                                    "Flicker": false,
+                                    "Flip": false,
+                                    "SortOffset": 0.0,
+                                    "AlphaFade": 0.005,
+                                    "Scale": 0.25,
+                                    "ScaleChange": 0.0,
+                                    "Rotation": 0.0,
+                                    "RotationChange": 0.0,
+                                    "Color": "#bfbf00bf"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "(BC)Digus.AdvancedCasksMod_RadioactiveCask": {
+                    "LoadEffects": [
+                        {
+                            "Id": "Default",
+                            "Condition": null,
+                            "Sounds": [
+                                {
+                                    "Id": "Ship",
+                                    "Delay": 0
+                                },
+                                {
+                                    "Id": "bubbles",
+                                    "Delay": 0
+                                }
+                            ],
+                            "Interval": 100,
+                            "Frames": null,
+                            "ShakeDuration": -1,
+                            "TemporarySprites": [
+                                {
+                                    "Id": "Default",
+                                    "Condition": null,
+                                    "Texture": "TileSheets\\animations",
+                                    "SourceRect": {
+                                        "X": 256,
+                                        "Y": 1856,
+                                        "Width": 64,
+                                        "Height": 128
+                                    },
+                                    "Interval": 80.0,
+                                    "Frames": 6,
+                                    "Loops": 999999,
+                                    "PositionOffset": "0, -32",
+                                    "Flicker": false,
+                                    "Flip": false,
+                                    "SortOffset": 0.0,
+                                    "AlphaFade": 0.005,
+                                    "Scale": 0.25,
+                                    "ScaleChange": 0.0,
+                                    "Rotation": 0.0,
+                                    "RotationChange": 0.0,
+                                    "Color": "#bfbf00bf"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "LogName": "Load crafting recipe data for Advanced Casks Mod",
+            "Action": "EditData",
+            "Target": "Data/CraftingRecipes",
+            "Entries": {
+                "Digus.AdvancedCasksMod_HardwoodCask": "709 20 382 1 335 1/Home/Digus.AdvancedCasksMod_HardwoodCask/true/null/",
+                "Digus.AdvancedCasksMod_RadioactiveCask": "709 20 337 2 910 1/Home/Digus.AdvancedCasksMod_RadioactiveCask/true/null/"
+            }
+        },
+        {
+            "LogName": "Load shop data for Advanced Casks Mod",
+            "Action": "EditData",
+            "Target": "Data/Shops",
+            "TargetField": [ "QiGemShop", "Items" ],
+            "Entries": {
+                "(BC)Digus.AdvancedCasksMod_RadioactiveCask (Recipe)": {
+                    "TradeItemId": "(O)858",
+                    "TradeItemAmount": 50,
+                    "AvailableStockLimit": "Global",
+                    "Id": "(BC)Digus.AdvancedCasksMod_RadioactiveCask (Recipe)",
+                    "ItemId": "(BC)Digus.AdvancedCasksMod_RadioactiveCask",
+                    "IsRecipe": true
+                }
+            },
+            "MoveEntries": [
+                {
+                    "Id": "(BC)Digus.AdvancedCasksMod_RadioactiveCask (Recipe)",
+                    "AfterId": "(BC)264 (Recipe)"
+                }
+            ]
+        },
+        {
+            "LogName": "Load Big Craftable Sprites for Advanced Casks Mod",
+            "Action": "Load",
+            "Target": "Digus.AdvancedCasksMod/TileSheets/Craftables",
+            "FromFile": "assets/BigCraftables.png"
+        }
+    ]
+}

@@ -6,13 +6,9 @@ mods:
    Stardew Access
 
 latest commit:
-   commit f5c527800cd6d8297f99d47b2189398fa7d4ea77
-   Author: Mohammad Shoaib Khan <khanshoaibpers@outlook.com>
-   Date:   Thu Apr 25 21:37:54 2024 +0530
+   commit 35d876eda511c5a98e13badce909f348018d0e7d
+   Author: GitHub Actions [Bot] <>
+   Date:   Thu May 23 20:51:46 2024 +0000
    
-       ðŸŒ Patch Bobber Machine in fish shop
-       
-       - The bobber styles have not been correctly described, waiting for Kat
-         and JJ :)
-       related to #272
+       :memo: Add changelogs from #358 to latest.md
    

@@ -1,0 +1,28 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/jasisco5/UncannyValleyMod
+**
+*************************************************/
+
+{
+  "$schema": "https://smapi.io/schemas/manifest.json",
+  "Name": "UncannyValleyCP",
+  "Author": "UncannyValley",
+  "Version": "0.5.5-beta",
+  "Description": "Uncanny Valley Content Patches",
+  "UniqueID": "UncannyValley.UncannyValleyCP",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:20519@CP" ],
+  "ContentPackFor": {
+    "UniqueID": "Pathoschild.ContentPatcher"
+  },
+  "Dependencies": [
+    {
+      "UniqueID": "UncannyValley.UncannyValleyMod"
+    }
+  ]
+}

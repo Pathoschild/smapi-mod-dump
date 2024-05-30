@@ -11,7 +11,7 @@
 {
   "Name": "Custom Names",
   "Author": "MindMeltMax",
-  "Version": "1.0.0",
+  "Version": "1.0.1",
   "Description": "Give your own name to your tools, weapons, and trinkets",
   "UniqueID": "MindMeltMax.CustomNames",
   "EntryDll": "Custom Names.dll",

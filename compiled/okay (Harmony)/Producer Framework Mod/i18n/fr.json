@@ -1,0 +1,15 @@
+{
+    "Message.Requirement.Amount": "Nécessite {{amount}} {{objectName}}",
+    "Message.Requirement.Quality": "Nécessite une qualité différente",
+    "Message.Requirement.Fuel": "Nécessite un ingrédient manquant",
+    "Message.Requirement.Season": "Nécessite une saison différente",
+    "Message.Requirement.Weather": "Nécessite un temps différent",
+    "Message.Requirement.Location": "Nécessite un lieu différent",
+    "Message.Requirement.InputParent": "Nécessite un autre type de {{objectName}}",
+    "Message.Condition.Location": "Ne peut pas travailler ici",
+    "Message.Condition.Season": "Ne peut pas travailler cette saison",
+    "Object.Category.Meat": "Viande",
+    "Object.Category.MetalResources": "Ressources Métalliques",
+    "Object.Category.BuildingResources": "Ressources de construction",
+    "Object.Category.TappedTreeProduct": "Produit d’arbre"
+}

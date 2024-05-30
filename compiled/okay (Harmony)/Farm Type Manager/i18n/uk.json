@@ -1,0 +1,12 @@
+{
+  "Config.EnableConsoleCommands.Name": "Увімкнути консольні команди",
+  "Config.EnableConsoleCommands.Desc": "Вмикає консольні команди FTM.\nЗміни не набудуть чинності до перезапуску Stardew Valley.",
+  "Config.EnableContentPacks.Name": "Увімкнути пакунки контенту",
+  "Config.EnableContentPacks.Desc": "Вмикає всі FTM пакунки контенту.\nЯкщо вимкнуто, лише файли з теки FarmTypeManager/data будуть використані.",
+  "Config.EnableTraceLogMessages.Name": "Увімкнути звітування\nповідомлень трасування",
+  "Config.EnableTraceLogMessages.Desc": "Вмикає FTM [TRACE] повідомлення в файлах звіту SMAPI.\nЯкщо вимкнуто, файл звіту буде менший, але міститиме менше інформації про FTM.",
+  "Config.EnableEPUDebugMessages.Name": "Увімкнути звітування\nповідомлення зневадження EPU",
+  "Config.EnableEPUDebugMessages.Desc": "Вмикає повідомлення зневадження утиліти розширених попередніх умов «Expanded Preconditions Utility» (EPU).\nЦе може бути корисним при створені модифікацій з попередніми умовами.",
+  "Config.MonsterLimitPerLocation.Name": "Ліміт монстрів на локацію",
+  "Config.MonsterLimitPerLocation.Desc": "Максимальна кількість монстрів, яку FTM дозволяє використовувати на одній карті одночасно.\nМенше число може збільшити частоту кадрів в грі. 50 рекомендоване значення.\nВведіть NULL, аби дозволити необмежену кількість монстрів."
+}

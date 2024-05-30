@@ -545,7 +545,14 @@ namespace FashionSense.Framework.UI
                     }
 
                     var outfit = FashionSense.outfitManager.GetOutfit(Game1.player, packName, _isDisplayingPresets);
-                    if (packName.Length > 12)
+                    if (_isDisplayingPresets)
+                    {
+                        if (packName.Length > 18)
+                        {
+                            packName = $"{packName.Substring(0, 18).TrimEnd()}...";
+                        }
+                    }
+                    else if (packName.Length > 12)
                     {
                         packName = $"{packName.Substring(0, 12).TrimEnd()}...";
                     }

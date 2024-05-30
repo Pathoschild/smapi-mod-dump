@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/mouahrara/RelocateFarmAnimals
+**
+*************************************************/
+
+{
+	"Name": "Relocate Buildings And Farm Animals",
+	"Author": "mouahrara",
+	"Version": "1.0.1",
+	"Description": "Allows you to relocate buildings and farm animals to new locations.",
+	"UniqueID": "mouahrara.RelocateBuildingsAndFarmAnimals",
+	"EntryDll": "RelocateBuildingsAndFarmAnimals.dll",
+	"MinimumApiVersion": "4.0.0",
+	"UpdateKeys": [ "Nexus:20606" ]
+}

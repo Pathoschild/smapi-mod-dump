@@ -8,84 +8,51 @@
 **
 *************************************************/
 
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using StardewValley.Menus;
 
 namespace DeluxeJournal.Menus
 {
-    public interface IPage
+    public abstract class IPage : IClickableMenu
     {
-        const int TabRegion = 9500;
+        /// <summary>Reserved starting <see cref="ClickableComponent.myID"/> region for tabs.</summary>
+        public const int TabRegion = 9500;
 
-        /// <summary>A wrapper for the IClickableMenu.allClickableComponents (or equivalent) field.</summary>
-        List<ClickableComponent> AllClickableComponents { get; }
+        /// <summary>End of reserved <see cref="ClickableComponent.myID"/> region for tabs.</summary>
+        public const int TabRegionEnd = 9599;
 
-        /// <summary>Hover text to be displayed by the parent DeluxeJournalMenu.</summary>
-        string HoverText { get; }
+        /// <summary>The page name.</summary>
+        public string Name { get; }
+
+        /// <summary>The page title (should be translated for the current locale).</summary>
+        public string Title { get; }
 
         /// <summary>ID value for the tab ClickableComponent.</summary>
-        int TabComponentID => TabID + TabRegion;
+        public int TabComponentID => TabID + TabRegion;
 
         /// <summary>Tab ID value assigned by the page manager (this value is set immediately AFTER construction).</summary>
-        int TabID { get; set; }
+        public int TabID { get; set; }
+
+        /// <summary>Hover text to be displayed by the parent DeluxeJournalMenu.</summary>
+        public virtual string HoverText { get; set; }
+
+        public IPage(string name, string title, int x, int y, int width, int height, bool showUpperRightCloseButton = false)
+            : base(x, y, width, height, showUpperRightCloseButton)
+        {
+            Name = name;
+            Title = title;
+            HoverText = string.Empty;
+        }
 
         /// <summary>Get the ClickableTextureComponent for the page tab.</summary>
-        ClickableTextureComponent GetTabComponent();
+        public abstract ClickableTextureComponent GetTabComponent();
 
         /// <summary>Called when the page becomes visible and active.</summary>
-        void OnVisible();
+        public abstract void OnVisible();
 
         /// <summary>Called when the page is hidden and no longer active.</summary>
-        void OnHidden();
+        public abstract void OnHidden();
 
         /// <summary>Returns true if keyboard input should be ignored by the parent DeluxeJournalMenu.</summary>
-        bool KeyboardHasFocus();
-
-        /// <summary>Returns true if all input should be ignored by the parent DeluxeJournalMenu.</summary>
-        bool ChildHasFocus();
-
-        // ---
-        // Methods below are provided by StardewValley.Menus.IClickableMenu
-        // ---
-
-        void populateClickableComponentList();
-
-        ClickableComponent getCurrentlySnappedComponent();
-
-        void setCurrentlySnappedComponentTo(int id);
-
-        void automaticSnapBehavior(int direction, int oldRegion, int oldID);
-
-        void snapToDefaultClickableComponent();
-
-        void snapCursorToCurrentSnappedComponent();
-
-        void receiveGamePadButton(Buttons b);
-
-        void setUpForGamePadMode();
-
-        void receiveLeftClick(int x, int y, bool playSound = true);
-
-        void leftClickHeld(int x, int y);
-
-        void releaseLeftClick(int x, int y);
-
-        void receiveRightClick(int x, int y, bool playSound = true);
-
-        void receiveScrollWheelAction(int direction);
-
-        void receiveKeyPress(Keys key);
-
-        void performHoverAction(int x, int y);
-
-        bool readyToClose();
-
-        bool shouldDrawCloseButton();
-
-        void update(GameTime time);
-
-        void draw(SpriteBatch b);
+        public abstract bool KeyboardHasFocus();
     }
 }

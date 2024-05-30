@@ -10,12 +10,14 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Netcode;
+using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
 using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+using Pos = MPInfo.Position;
 
 namespace MPInfo
 {
@@ -51,18 +53,23 @@ namespace MPInfo
         private Config Config => ModEntry.Config;
         private string hoverText = "";
 
+        private string cachedData;
+        private PlayerInfo? info;
+
         public PlayerInfoBox(Farmer who)
         {
             Who = who;
             width = 96 + 12 + 112 + 28;
             height = 96;
+            if (who.modData.TryGetValue(ModEntry.Instance.ModManifest.UniqueID, out cachedData))
+                info = PlayerInfo.Deserialize(cachedData);
         }
 
         public override void performHoverAction(int x, int y)
         {
             base.performHoverAction(x, y);
             if (new Rectangle(xPositionOnScreen + Config.XOffset, yPositionOnScreen + Config.YOffset, 96, 96).Contains(x, y))
-                hoverText = $"{Who.Name}{(Game1.player.UniqueMultiplayerID == Who.UniqueMultiplayerID ? " (Me)" : (Game1.serverHost.Value.UniqueMultiplayerID == Who.UniqueMultiplayerID ? " (Host)" : ""))}";
+                hoverText = $"{Who.Name}{(Game1.player.UniqueMultiplayerID == Who.UniqueMultiplayerID ? $" {ModEntry.Instance.Helper.Translation.Get("PlayerInfoBox.Me")}" : (Game1.serverHost.Value.UniqueMultiplayerID == Who.UniqueMultiplayerID ? $" {ModEntry.Instance.Helper.Translation.Get("PlayerInfoBox.Host")}" : ""))}";
         }
 
         public override void receiveLeftClick(int x, int y, bool playSound = true)
@@ -76,6 +83,16 @@ namespace MPInfo
         {
             if (oldBounds != newBounds)
                 RedrawAll();
+        }
+
+        public override void update(GameTime time)
+        {
+            base.update(time);
+            if (Who.modData.TryGetValue(ModEntry.Instance.ModManifest.UniqueID, out string data) && data != cachedData)
+            {
+                cachedData = data;
+                info = PlayerInfo.Deserialize(cachedData);
+            }
         }
 
         public bool Visible() => ModEntry.Instance.IsEnabled && (Config.ShowSelf || Who.UniqueMultiplayerID != Game1.player.UniqueMultiplayerID);
@@ -97,17 +114,17 @@ namespace MPInfo
             int x = 32, y = 0;
             switch (Config.Position)
             {
-                case Position.BottomLeft:
+                case Pos.BottomLeft:
                     y = (Game1.graphics.GraphicsDevice.Viewport.Height - 32 - 96) - (Config.SpaceBetween * index);
                     break;
-                case Position.TopLeft:
+                case Pos.TopLeft:
                     y = 32 + (Config.SpaceBetween * index);
                     break;
-                case Position.BottomRight:
+                case Pos.BottomRight:
                     y = (Game1.graphics.GraphicsDevice.Viewport.Height - 32 - 96) - (Config.SpaceBetween * index);
                     x = Game1.graphics.GraphicsDevice.Viewport.Width - 112 - 16;
                     break;
-                case Position.CenterRight:
+                case Pos.CenterRight:
                     y = ((Game1.graphics.GraphicsDevice.Viewport.Height / 2) + 32 - 96 + 8) + (Config.SpaceBetween * index);
                     x = Game1.graphics.GraphicsDevice.Viewport.Width - 112 - 16;
                     break;
@@ -121,11 +138,13 @@ namespace MPInfo
                 return;
 
             base.draw(b);
+            //float info.Stamina = netStamina.Value;
 
+            //I'm going to clean this up, I promise \\Never mind, maybe some other time
             switch (Config.Position)
             {
-                case Position.TopLeft:
-                case Position.BottomLeft:
+                case Pos.TopLeft:
+                case Pos.BottomLeft:
                     b.Draw(Texture, new(xPositionOnScreen, yPositionOnScreen), Who == Game1.player ? SourceRectIconBackgroundSelf : SourceRectIconBackground, Color.White, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, 0.88f);
                     b.Draw(Texture, new(xPositionOnScreen + 96, yPositionOnScreen + 4), SourceRectInfoDisplay[0], Color.White, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, 0.88f);
                     b.Draw(Texture, new(xPositionOnScreen + 96 + 12, yPositionOnScreen + 4), SourceRectInfoDisplay[1], Color.White, 0.0f, Vector2.Zero, new Vector2(56f, 4f), SpriteEffects.None, 0.88f);
@@ -133,7 +152,7 @@ namespace MPInfo
 
                     FarmerRenderer.isDrawingForUI = true;
                     Who.FarmerRenderer.drawMiniPortrat(b, new(xPositionOnScreen + 16, yPositionOnScreen + 15), 0.89f, 4f, 0, Who);
-                    if (Who.health <= 0) //Icon to display being knocked out
+                    if (info is not null && info.Health <= 0) //Icon to display being knocked out
                     {
                         b.Draw(Game1.fadeToBlackRect, new(xPositionOnScreen + 12, yPositionOnScreen + 12, 72, 72), new Rectangle(0, 0, 1, 1), Color.Black * 0.6f, 0.0f, Vector2.Zero, SpriteEffects.None, 0.9f);
                         b.Draw(Texture, new(xPositionOnScreen + 28, yPositionOnScreen + 36), SourceRectIconSkull, Color.White, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, 0.9f);
@@ -152,12 +171,19 @@ namespace MPInfo
                     FarmerRenderer.isDrawingForUI = false;
 
                     b.Draw(Texture, new(xPositionOnScreen + 96 + 4, yPositionOnScreen + 4 + 26), SourceRectIconHealth, Color.White, 0.0f, Vector2.Zero, 2f, SpriteEffects.None, 0.89f);
-                    b.DrawString(Game1.smallFont, $"{Who.health}/{Who.maxHealth}", new(xPositionOnScreen + 96 + 8 + 24, yPositionOnScreen + 4 + 20), (Who.health <= (float)(Who.maxHealth / 10)) ? Color.Red : (Who.health <= (float)(Who.maxHealth / 5) ? Color.Yellow : Game1.textColor), 0.0f, Vector2.Zero, 1f, SpriteEffects.None, 0.89f);
+                    if (info is not null)
+                        b.DrawString(Game1.smallFont, $"{info.Health}/{info.MaxHealth}", new(xPositionOnScreen + 96 + 8 + 24, yPositionOnScreen + 4 + 20), (info.Health <= (float)(info.MaxHealth / 10)) ? Color.Red : (info.Health <= (float)(info.MaxHealth / 5) ? Color.Yellow : Game1.textColor), 0.0f, Vector2.Zero, 1f, SpriteEffects.None, 0.89f);
+                    else
+                        b.DrawString(Game1.smallFont, $"???/???", new(xPositionOnScreen + 96 + 8 + 24, yPositionOnScreen + 4 + 20), Game1.textColor, 0.0f, Vector2.Zero, 1f, SpriteEffects.None, 0.89f);
+                    
                     b.Draw(Texture, new(xPositionOnScreen + 96 + 4, yPositionOnScreen + 4 + 50), SourceRectIconEnergy, Color.White, 0.0f, Vector2.Zero, 2f, SpriteEffects.None, 0.89f);
-                    b.DrawString(Game1.smallFont, $"{Math.Round(Who.stamina)}/{Who.maxStamina}", new(xPositionOnScreen + 96 + 8 + 24, yPositionOnScreen + 4 + 44), (Who.stamina <= (float)(Who.maxStamina.Value / 10)) ? Color.Red : (Who.stamina <= (float)(Who.maxStamina.Value / 5) ? Color.Yellow : Game1.textColor), 0.0f, Vector2.Zero, 1f, SpriteEffects.None, 0.89f);
+                    if (info is not null)
+                        b.DrawString(Game1.smallFont, $"{Math.Round(info.Stamina)}/{info.MaxStamina}", new(xPositionOnScreen + 96 + 8 + 24, yPositionOnScreen + 4 + 44), (info.Stamina <= info.MaxStamina / 10) ? Color.Red : (info.Stamina <= info.MaxStamina / 5 ? Color.Yellow : Game1.textColor), 0.0f, Vector2.Zero, 1f, SpriteEffects.None, 0.89f);
+                    else
+                        b.DrawString(Game1.smallFont, $"???/{Who.MaxStamina}", new(xPositionOnScreen + 96 + 8 + 24, yPositionOnScreen + 4 + 44), Game1.textColor, 0.0f, Vector2.Zero, 1f, SpriteEffects.None, 0.89f);
                     break;
-                case Position.CenterRight:
-                case Position.BottomRight:
+                case Pos.CenterRight:
+                case Pos.BottomRight:
                     b.Draw(Texture, new(xPositionOnScreen + 12, yPositionOnScreen), Who == Game1.player ? SourceRectIconBackgroundSelf : SourceRectIconBackground, Color.White, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, 0.88f);
                     b.Draw(Texture, new(xPositionOnScreen, yPositionOnScreen + 4), SourceRectInfoDisplay[0], Color.White, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, 0.88f);
                     b.Draw(Texture, new(xPositionOnScreen - 112 + 4, yPositionOnScreen + 4), SourceRectInfoDisplay[1], Color.White, 0.0f, Vector2.Zero, new Vector2(56f, 4f), SpriteEffects.None, 0.88f);
@@ -165,7 +191,7 @@ namespace MPInfo
 
                     FarmerRenderer.isDrawingForUI = true;
                     Who.FarmerRenderer.drawMiniPortrat(b, new(xPositionOnScreen + 28, yPositionOnScreen + 15), 0.89f, 4f, 0, Who);
-                    if (Who.health <= 0) //Icon to display being knocked out
+                    if (info is not null && info.Health <= 0) //Icon to display being knocked out
                     {
                         b.Draw(Game1.fadeToBlackRect, new(xPositionOnScreen + 24, yPositionOnScreen + 12, 72, 72), new Rectangle(0, 0, 1, 1), Color.Black * 0.6f, 0.0f, Vector2.Zero, SpriteEffects.None, 0.9f);
                         b.Draw(Texture, new(xPositionOnScreen + 44, yPositionOnScreen + 39), SourceRectIconSkull, Color.White, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, 0.9f);
@@ -184,9 +210,16 @@ namespace MPInfo
                     FarmerRenderer.isDrawingForUI = false;
 
                     b.Draw(Texture, new(xPositionOnScreen - 96 - 10, yPositionOnScreen + 4 + 26), SourceRectIconHealth, Color.White, 0.0f, Vector2.Zero, 2f, SpriteEffects.None, 0.89f);
-                    b.DrawString(Game1.smallFont, $"{Who.health}/{Who.maxHealth}", new(xPositionOnScreen - 96 - 8 + 20, yPositionOnScreen + 4 + 20), ((float)Who.health <= (float)(Who.maxHealth / 10)) ? Color.Red : ((float)Who.health <= (float)(Who.maxHealth / 5) ? Color.DarkOrange : Game1.textColor), 0.0f, Vector2.Zero, 1f, SpriteEffects.None, 0.89f);
+                    if (info is not null)
+                        b.DrawString(Game1.smallFont, $"{info.Health}/{info.MaxHealth}", new(xPositionOnScreen - 96 - 8 + 20, yPositionOnScreen + 4 + 20), (info.Health <= (float)(info.MaxHealth / 10)) ? Color.Red : (info.Health <= (float)(info.MaxHealth / 5) ? Color.DarkOrange : Game1.textColor), 0.0f, Vector2.Zero, 1f, SpriteEffects.None, 0.89f);
+                    else
+                        b.DrawString(Game1.smallFont, $"???/???", new(xPositionOnScreen - 96 - 8 + 20, yPositionOnScreen + 4 + 20), Game1.textColor, 0.0f, Vector2.Zero, 1f, SpriteEffects.None, 0.89f);
+                    
                     b.Draw(Texture, new(xPositionOnScreen - 96 - 10, yPositionOnScreen + 4 + 50), SourceRectIconEnergy, Color.White, 0.0f, Vector2.Zero, 2f, SpriteEffects.None, 0.89f);
-                    b.DrawString(Game1.smallFont, $"{Math.Round(Who.stamina)}/{Who.maxStamina}", new(xPositionOnScreen - 96 - 8 + 20, yPositionOnScreen + 4 + 44), (Who.stamina <= (float)(Who.maxStamina.Value / 10)) ? Color.Red : (Who.stamina <= (float)(Who.maxStamina.Value / 5) ? Color.DarkOrange : Game1.textColor), 0.0f, Vector2.Zero, 1f, SpriteEffects.None, 0.89f);
+                    if (info is not null)
+                        b.DrawString(Game1.smallFont, $"{Math.Round(info.Stamina)}/{info.MaxStamina}", new(xPositionOnScreen - 96 - 8 + 20, yPositionOnScreen + 4 + 44), (info.Stamina <= info.MaxStamina / 10) ? Color.Red : (info.Stamina <= info.MaxStamina / 5 ? Color.DarkOrange : Game1.textColor), 0.0f, Vector2.Zero, 1f, SpriteEffects.None, 0.89f);
+                    else
+                        b.DrawString(Game1.smallFont, $"???/{Who.MaxStamina}", new(xPositionOnScreen - 96 - 8 + 20, yPositionOnScreen + 4 + 44), Game1.textColor, 0.0f, Vector2.Zero, 1f, SpriteEffects.None, 0.89f);
                     break;
             }
 

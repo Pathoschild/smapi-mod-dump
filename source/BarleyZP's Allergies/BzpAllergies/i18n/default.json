@@ -1,0 +1,66 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/lisyce/SDV_Allergies_Mod
+**
+*************************************************/
+
+{
+  "config.general-settings": "General Settings",
+  "config.allergy-menu-kb": "Allergy Menu Keybind",
+  "config.allergy-menu-kb-tt": "Set a keybind to open a standalone allergy menu.",
+  "config.skills-tab": "Enable Skills Page Tab",
+  "config.skills-tab-tt": "If you play with any custom skills, you may want to disable this for compatibility.",
+  "config.difficulty": "Difficulty Settings",
+  "config.eating-hint": "Hints Before Eating",
+  "config.eating-hint-tt": "Get a hint in the popup before you eat something to warn you of your allergies.",
+  "config.holding-reaction": "Reaction From Holding Foods",
+  "config.holding-reaction-tt": "Holding foods you're allergic to gives your farmer a reaction.",
+  "config.cooking-reaction": "Reaction From Cooking Foods",
+  "config.cooking-reaction-tt": "Cooking foods you're allergic to gives your farmer a reaction.",
+  "config.nausea": "Enable Nausea",
+  "config.nausea-tt": "Enable/disable the random nausea that accompanies eating a food you're allergic to.",
+  "config.debuff-len": "Debuff Length (Seconds)",
+  "config.debuff-len-tt": "Length of the debuff from eating food; Other debuff lengths are based upon this value.",
+  "config.debuff-sev": "Debuff Severity Multiplier",
+  "config.debuff-sev-tt": "Severity multiplier for the allergic reaction debuff to speed, attack, and defense.",
+  "config.random": "Random Allergy Settings",
+  "config.random-hint": "Random Allergy Count Hint",
+  "config.random-hint-tt": "Select to get a hint in allergy menu to see how many more allergies you haven't discovered.",
+  "config.random-num": "Number of Random Allergies",
+  "config.random-num-tt": "If you roll random allergies in-game, this determines how many you'll get.",
+  "config.random-neg-1": "Set to -1 for a random number of random allergies!",
+
+  "allergy-menu.title": "My Allergies",
+  "allergy-menu.from-hovertext": "From {{modName}}",
+  "allergy-menu.have-random": "You have random allergies.",
+  "allergy-menu.have-sel": "You have selected your allergies.",
+  "allergy-menu.none-discovered": "You haven't discovered any allergies yet.",
+  "allergy-menu.discovered-count": "You've discovered {{discoverCount}}/{{hasCount}} of your allergies.",
+  "allergy-menu.reroll": "Reroll Allergies",
+  "allergy-menu.switch-sel": "Switch to Selection",
+  "allergy-menu.switch-random": "Switch to Random",
+
+  "allergic-hint": " You are allergic to it!",
+  "lactase-save": "Good thing you took your lactase!",
+  "dairy-immunity": "Quick, eat the cheese!",
+  "item-desc-prefix": "Allergens: ",
+  "debuff.consume": "Probably shouldn't have eaten that...",
+  "debuff.hold": "Holding that with severe\nallergies was a bad idea!",
+  "debuff.cook": "Cooking that gave you a reaction!",
+  "debuff.name": "Allergic Reaction",
+
+  "books.allergy-teach": "You've learned more about your dietary restrictions.",
+  "books.allergy-cookbook": "You've got some new cooking knowledge to think about overnight.",
+
+  "allergies.egg": "Eggs",
+  "allergies.gluten": "Gluten",
+  "allergies.fish": "Fish",
+  "allergies.shellfish": "Shellfish",
+  "allergies.treenuts": "Tree Nuts",
+  "allergies.dairy": "Dairy",
+  "allergies.mushroom": "Mushrooms"
+}

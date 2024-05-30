@@ -12,6 +12,8 @@ using System;
 
 using Leclair.Stardew.BetterCrafting.Models;
 using Leclair.Stardew.Common.Crafting;
+using Leclair.Stardew.Common.UI;
+using Leclair.Stardew.Common.UI.FlowNode;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -22,13 +24,11 @@ using StardewValley.Menus;
 
 namespace Leclair.Stardew.BetterCrafting.DynamicRules;
 
-public class SingleItemRuleHandler : IDynamicRuleHandler {
+public class SingleItemRuleHandler : IDynamicRuleHandler, IExtraInfoRuleHandler {
 
 	public readonly string ItemId;
 	public readonly Lazy<Item> Item;
 	public readonly Lazy<ParsedItemData> Data;
-
-	public SingleItemRuleHandler(int itemId) : this($"{itemId}") { }
 
 	public SingleItemRuleHandler(string itemId) {
 		ItemId = itemId;
@@ -36,8 +36,8 @@ public class SingleItemRuleHandler : IDynamicRuleHandler {
 		Data = new Lazy<ParsedItemData>(() => ItemRegistry.GetDataOrErrorItem(ItemId));
 	}
 
-	public string DisplayName => I18n.Filter_Buff(Data.Value.DisplayName);
-	public string Description => I18n.Filter_Buff_About(Data.Value.DisplayName);
+	public string DisplayName => I18n.Filter_NewBuff();
+	public string Description => I18n.Filter_NewBuff_About();
 
 	public Texture2D Texture => Data.Value.GetTexture();
 
@@ -55,5 +55,11 @@ public class SingleItemRuleHandler : IDynamicRuleHandler {
 
 	public bool DoesRecipeMatch(IRecipe recipe, Lazy<Item?> item, object? state) {
 		return item.Value is not null && Item.Value.canStackWith(item.Value);
+	}
+
+	public IFlowNode[]? GetExtraInfo(object? state) {
+		return FlowHelper.Builder()
+			.Text(Data.Value.DisplayName, shadow: false)
+			.Build();
 	}
 }

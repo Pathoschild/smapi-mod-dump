@@ -1,0 +1,24 @@
+{
+	"mod.name": "多云的天空",
+
+	"setting.weather-tooltip": "显示天气提示",
+	"setting.weather-tooltip.about": "启用后，当鼠标悬停在时钟的天气图标上时，将显示一个提示框，显示当前天气状况的名称。",
+
+	"setting.debug": "显示调试时间",
+	"setting.debug.about": "启用后，屏幕上将显示一个计时器，显示更新和渲染天气所花费的时间。这有助于确保在创建自定义天气条件时不会过度。",
+
+	"setting.replace-tv-menu": "替换电视天气频道",
+	"setting.replace-tv-menu.about": "启用后，我们将用一个自定义版本替换电视的天气频道，该版本支持显示更多地点的天气。",
+
+	"tv.select-location": "选择一个地点：",
+
+	"location.stardew-valley": "星露谷",
+
+	"weather.sunny": "晴朗",
+	"weather.rain": "雨",
+	"weather.debris": "风",
+	"weather.lightning": "雷暴",
+	"weather.festival": "晴朗",
+	"weather.snow": "雪",
+	"weather.green": "绿雨"
+}

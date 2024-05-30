@@ -1,0 +1,110 @@
+{
+  "BarSonarMode": 2,
+  "BarIconMode": [
+    0,
+    0,
+    0,
+    0
+  ],
+  "Comment_BarIconMode": "Above BarIconMode values: 0= Horizontal Icons, 1= Vertical Icons, 2= Vertical Icons + Text, 3= Off. The arrays represent splitscreen screens, with first element being the default user.",
+  "BarTopLeftLocationX": [
+    20,
+    20,
+    20,
+    20
+  ],
+  "BarTopLeftLocationY": [
+    20,
+    20,
+    20,
+    20
+  ],
+  "BarScale": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+  ],
+  "BarMaxIcons": [
+    100,
+    100,
+    100,
+    100
+  ],
+  "BarMaxIconsPerRow": [
+    20,
+    20,
+    20,
+    20
+  ],
+  "BarBackgroundMode": [
+    0,
+    0,
+    0,
+    0
+  ],
+  "Comment_BarBackgroundMode": "Above BarBackgroundMode values: 0= Circles (behind each icon), 1= Rectangle (behind everything), 2= Off",
+  "BarBackgroundColorRGBA": [
+    0,
+    0,
+    0,
+    128
+  ],
+  "BarTextColorRGBA": [
+    255,
+    255,
+    255,
+    255
+  ],
+  "BarShowBaitAndTackleInfo": [
+    true,
+    true,
+    true,
+    true
+  ],
+  "BarShowPercentages": [
+    true,
+    true,
+    true,
+    true
+  ],
+  "BarSortMode": [
+    0,
+    0,
+    0,
+    0
+  ],
+  "Comment_BarSortMode": "Above BarSortMode values: 0= Sort Icons by Name (text mode only), 1= Sort icons by catch chance (Extra Check Frequency based), 2= Off",
+  "BarExtraCheckFrequency": 0,
+  "BarScanRadius": [
+    20,
+    20,
+    20,
+    20
+  ],
+  "BarCrabPotEnabled": [
+    true,
+    true,
+    true,
+    true
+  ],
+  "UncaughtFishAreDark": [
+    true,
+    true,
+    true,
+    true
+  ],
+  "OnlyFish": [
+    false,
+    false,
+    false,
+    false
+  ],
+  "MinigamePreviewMode": [
+    0,
+    0,
+    0,
+    0
+  ],
+  "Comment_MinigamePreviewMode": "0= Copies multiple layers to look better. 1= Looks worse, but might perform/work better. 2= Only outlines it in the Bar (BarEnabled needed), 3= Off."
+}

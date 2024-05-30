@@ -8,7 +8,6 @@
 **
 *************************************************/
 
-using System;
 using System.Collections.Generic;
 
 using Leclair.Stardew.Common;
@@ -37,13 +36,12 @@ public class TemporaryCraftingPage : CraftingPage {
 			oldPage.cooking,
 			false,
 			oldPage._materialContainers is null ? null : new(oldPage._materialContainers)
-		)
-	{
+		) {
 		Mod = mod;
 	}
 
 	private void ReplaceSelf() {
-		if (HasStartedLoad || ! HasRenderedOnce)
+		if (HasStartedLoad || !HasRenderedOnce)
 			return;
 
 		HasStartedLoad = true;
@@ -59,7 +57,7 @@ public class TemporaryCraftingPage : CraftingPage {
 		}
 
 		int idx = gm.pages.IndexOf(this);
-		if ( idx == -1 ) {
+		if (idx == -1) {
 			exitThisMenu();
 			return;
 		}
@@ -82,14 +80,18 @@ public class TemporaryCraftingPage : CraftingPage {
 			x: gm.xPositionOnScreen,
 			y: gm.yPositionOnScreen
 		);
+
+		gm.AddTabsToClickableComponents(gm.pages[idx]);
+		if (Game1.options.SnappyMenus)
+			gm.snapToDefaultClickableComponent();
 	}
 
 	public override void RepositionElements() {
-		
+
 	}
 
 	public override void snapToDefaultClickableComponent() {
-		
+
 	}
 
 	protected override List<string> GetRecipesToDisplay() {
@@ -111,7 +113,7 @@ public class TemporaryCraftingPage : CraftingPage {
 	}
 
 	public override void receiveScrollWheelAction(int direction) {
-		
+
 	}
 
 	public override void receiveLeftClick(int x, int y, bool playSound = true) {
@@ -130,7 +132,7 @@ public class TemporaryCraftingPage : CraftingPage {
 	}
 
 	public override void performHoverAction(int x, int y) {
-		
+
 	}
 
 	public override void draw(SpriteBatch b) {

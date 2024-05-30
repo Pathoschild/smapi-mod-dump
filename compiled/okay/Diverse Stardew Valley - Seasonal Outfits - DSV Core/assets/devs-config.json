@@ -121,9 +121,6 @@
 			"LOCATION_NAME Target AnimalShop, !TIME 0710 2150",
 			"LOCATION_NAME Target Farmhouse, !TIME 0710 2150, PLAYER_NPC_RELATIONSHIP Current Shane Married Roommate"
 		],
-		"Willy": [
-			"LOCATION_NAME Target Beach, WEATHER Target Sun Wind, SEASON Summer, !DAY_OF_WEEK Saturday, TIME 1710 1810"
-		],
 		"Wizard": [
 			"EVENT_ID 123001",
 			"PLAYER_HAS_SEEN_EVENT Current 123001, TIME 0610 1010",

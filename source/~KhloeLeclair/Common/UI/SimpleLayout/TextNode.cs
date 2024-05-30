@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-#nullable enable
+#if COMMON_SIMPLELAYOUT
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -114,11 +114,13 @@ public class TextNode : ISimpleNode {
 		if (Style.IsUnderline())
 			Utility.drawLineWithScreenCoordinates(
 				(int) position.X,
-				(int) (position.Y + size.Y * 3/4),
+				(int) (position.Y + size.Y * 3 / 4),
 				(int) (position.X + size.X),
-				(int) (position.Y + size.Y * 3/4),
+				(int) (position.Y + size.Y * 3 / 4),
 				batch,
 				color
 			);
 	}
 }
+
+#endif

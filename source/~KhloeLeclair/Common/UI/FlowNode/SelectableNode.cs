@@ -8,16 +8,14 @@
 **
 *************************************************/
 
-#nullable enable
+#if COMMON_FLOW
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-using StardewValley;
 using StardewValley.Menus;
 
 namespace Leclair.Stardew.Common.UI.FlowNode;
@@ -28,10 +26,13 @@ public class SelectableNode : IFlowNode {
 	public Rectangle? SelectedSource { get; set; }
 	public Color? SelectedColor { get; set; }
 
+	public float SelectedScale { get; set; } = 4f;
+
 	public Texture2D? HoverTexture { get; set; }
 	public Rectangle? HoverSource { get; set; }
 	public Color? HoverColor { get; set; }
 
+	public float HoverScale { get; set; } = 4f;
 
 	public bool Selected { get; set; }
 	public bool Hovered { get; private set; }
@@ -144,7 +145,7 @@ public class SelectableNode : IFlowNode {
 					(int) position.X + 2, (int) position.Y + 2,
 					(int) slice.Width - 4, (int) slice.Height - 4,
 					SelectedColor ?? Color.White,
-					scale: 4f,
+					scale: SelectedScale,
 					drawShadow: false
 				);
 
@@ -157,7 +158,7 @@ public class SelectableNode : IFlowNode {
 					(int) position.X, (int) position.Y,
 					(int) slice.Width, (int) slice.Height,
 					HoverColor ?? Color.White,
-					scale: 4f,
+					scale: HoverScale,
 					drawShadow: false
 				);
 		}
@@ -181,3 +182,5 @@ public class SelectableNode : IFlowNode {
 	#endregion
 
 }
+
+#endif

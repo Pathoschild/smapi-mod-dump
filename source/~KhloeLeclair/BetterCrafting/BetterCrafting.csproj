@@ -3,12 +3,15 @@
 	<PropertyGroup>
 		<BaseManifest>new</BaseManifest>
 		<AssemblyName>BetterCrafting</AssemblyName>
-		<Version>2.8.2</Version>
+		<Version>2.12.0</Version>
 		<RootNamespace>Leclair.Stardew.BetterCrafting</RootNamespace>
 		
 		<EnableHarmony>true</EnableHarmony>
 		<EnablePintail>true</EnablePintail>
 		<EnableTranslation>true</EnableTranslation>
+
+    <UseCommon>Crafting;BCInventory;Inventory;GMCM;Mutex;UI;SimpleLayout;Flow;SpookyAction;ThemeManager</UseCommon>
+    
 	</PropertyGroup>
 
 	<PropertyGroup>

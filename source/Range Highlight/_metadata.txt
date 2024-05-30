@@ -6,9 +6,27 @@ mods:
    Range Highlight
 
 latest commit:
-   commit e7b3b71db64795a6ef21c2e1a972a46165daab23
+   commit 34712afe9c4faec297a0f3fc303684527fa31869
    Author: Jamie Taylor <Jamie.Taylor@pobox.com>
-   Date:   Thu Mar 28 23:01:10 2024 -0400
+   Date:   Sat May 18 23:12:29 2024 -0400
    
-       Release 4.1.1
+       v4.2.0: new options: coalesing overlaps, sprinkler range, hide on motion
+       
+       * Added "Sprinkler Mod Compatibility" option.  The default ("more
+         compatible") changes the way that sprinkler ranges are calculated so
+         that it is likely that it will automatically be correct even if mods
+         have changed the shape of sprinkler ranges (on either the existing
+         sprinkler objects or new ones added by the mod).  This is a more
+         expensive calculation, so there is an option to revert to the old
+         behavior ("faster").
+       
+       * Added the "show overlaps" option (defaulting to true).  If this is
+         disabled then overlapping range tiles of the same color will be
+         converted into just one highlight tile of that color.  This is a
+         relatively expensive operation; disabling this option may result in
+         decreased performance and lag.
+       
+       * Added an option to hide the held item's highlight at the mouse location
+         if the player has moved more recently than the mouse has moved.
+         (Defaults to true)
    

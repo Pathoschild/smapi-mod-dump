@@ -13,7 +13,7 @@
     "Author": "slimerrain",
     "Description": "Content patches relating to grains. Adds more grains to the valley.",
     "Version": "1.1.7",
-    "MinimumApiVersion": "3.0.0",
+    "MinimumApiVersion": "4.0.0",
     "UniqueID": "slimerrain.grainsoverhullcp",
     "ContentPackFor": {"UniqueID": "Pathoschild.ContentPatcher"},
     "UpdateKeys": [ "Nexus:20884" ]

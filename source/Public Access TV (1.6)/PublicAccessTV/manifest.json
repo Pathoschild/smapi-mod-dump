@@ -11,7 +11,7 @@
 {
   "Name": "PublicAccessTV",
   "Author": "John Peters (you know, the farmer?)", // original by kdau
-  "Version": "3.0.3",
+  "Version": "3.0.11",
   "Description": "Villager-hosted TV channels about mining, shopping, foraging and more.",
   "UniqueID": "JohnPeters.PublicAccessTV",
   "EntryDll": "PublicAccessTV.dll",

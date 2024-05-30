@@ -8,34 +8,26 @@
 **
 *************************************************/
 
-using AnythingAnywhere.Framework.Interfaces;
 using StardewValley.TerrainFeatures;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Object = StardewValley.Object;
 
 namespace AnythingAnywhere.Framework.External.CustomBush
 {
-    public class CustomBushModData
+    public static class CustomBushModData
     {
-        private static string ModID = "furyx639.CustomBush";
-        private static string modDataId = ModID + "/Id";
+        private const string ModId = "furyx639.CustomBush";
+        private const string ModDataId = ModId + "/Id";
 
-        public static Bush AddBushModData(Bush bush, Object __instance)
+        public static Bush AddBushModData(Bush bush, SObject __instance)
         {
-            if (!ModEntry.modHelper.ModRegistry.IsLoaded("furyx639.CustomBush"))
-                return bush;
+            if (ModEntry.CustomBushApi == null || !ModEntry.ModHelper.ModRegistry.IsLoaded("furyx639.CustomBush")) return bush;
 
-            IEnumerable<(string Id, ICustomBush Data)> customBushData = ModEntry.customBushApi.GetData();
-            if (!customBushData.Any(item => item.Id == __instance.QualifiedItemId))
-                return bush;
+            var customBushData = ModEntry.CustomBushApi.GetData();
+            if (customBushData.All(item => item.Id != __instance.QualifiedItemId)) return bush;
 
-
-            bush.modData[modDataId] = __instance.QualifiedItemId;
+            bush.modData[ModDataId] = __instance.QualifiedItemId;
             bush.setUpSourceRect();
+
             return bush;
         }
     }

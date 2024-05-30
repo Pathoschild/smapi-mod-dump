@@ -1,0 +1,9 @@
+{
+  "Config.TotalValue.Title": "Mostrar el Valor Total",
+  "Config.TotalValue.Description": "Muestra un banner en la parte superior del inventario del contenedor de envío con el valor total de todos los artículos",
+  "Config.MiniTotalValue.Title": "Mostrar el Valor Total del Mini contenedor",
+  "Config.MiniTotalValue.Description": "Muestra el mismo banner que en el inventario regular en el mini contenedor de envío",
+  "Config.InvertScroll.Title": "Invertir Rueda de Desplazamiento",
+  "Config.InvertScroll.Description": "Invertir la dirección de la rueda de desplazamiento al recorrer el inventario",
+  "Menu.TotalValue": "Valor total: "
+}

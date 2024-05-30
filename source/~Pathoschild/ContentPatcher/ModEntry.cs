@@ -79,7 +79,8 @@ namespace ContentPatcher
             new Migration_1_28(),
             new Migration_1_29(),
             new Migration_1_30(),
-            new Migration_2_0()
+            new Migration_2_0(),
+            new Migration_2_1()
         };
 
         /// <summary>The special validation logic to apply to assets affected by patches.</summary>
@@ -143,7 +144,8 @@ namespace ContentPatcher
                 reflection: this.Helper.Reflection,
                 addModToken: this.AddModToken,
                 isConditionsApiReady: () => Game1.ticks >= this.ConditionsApiReadyTick,
-                parseConditions: this.ParseConditionsForApi
+                parseConditions: this.ParseConditionsForApi,
+                parseTokenString: this.ParseTokenStringForApi
             );
         }
 
@@ -394,11 +396,7 @@ namespace ContentPatcher
             this.QueuedModTokens.Add(token);
         }
 
-        /// <summary>Parse raw conditions for an API consumer.</summary>
-        /// <param name="manifest">The manifest of the mod parsing the conditions.</param>
-        /// <param name="rawConditions">The raw conditions to parse.</param>
-        /// <param name="formatVersion">The format version for which to parse conditions.</param>
-        /// <param name="assumeModIds">The unique IDs of mods whose custom tokens to allow in the <paramref name="rawConditions"/>.</param>
+        /// <inheritdoc cref="ContentPatcherAPI.ParseConditionsDelegate" />
         private IManagedConditions ParseConditionsForApi(IManifest manifest, InvariantDictionary<string?>? rawConditions, ISemanticVersion formatVersion, string[]? assumeModIds = null)
         {
             IInvariantSet assumeModIdsLookup = assumeModIds is not null
@@ -415,6 +413,32 @@ namespace ContentPatcher
 
                     bool isValid = screen.PatchLoader.TryParseConditions(rawConditions, tokenParser, new LogPathBuilder(), out Condition[] conditions, out _, out string? error);
                     var managed = new ApiManagedConditionsForSingleScreen(conditions, context, isValid: isValid, validationError: error);
+                    managed.UpdateContext();
+
+                    return managed;
+                }
+            );
+        }
+
+        /// <inheritdoc cref="ContentPatcherAPI.ParseTokenStringDelegate" />
+        private IManagedTokenString ParseTokenStringForApi(IManifest manifest, string rawTokenString, ISemanticVersion formatVersion, string[]? assumeModIds = null)
+        {
+            IInvariantSet assumeModIdsLookup = assumeModIds is not null
+                ? InvariantSets.From(assumeModIds)
+                : InvariantSets.FromValue(manifest.UniqueID);
+            IMigration migrator = new AggregateMigration(formatVersion, this.GetFormatVersions(null));
+
+            return new ApiManagedTokenString(
+                parse: () =>
+                {
+                    ScreenManager screen = this.ScreenManager.Value;
+                    IContext context = screen.TokenManager;
+                    TokenParser tokenParser = new(context, manifest, migrator, assumeModIdsLookup);
+                    LogPathBuilder logPathBuilder = new();
+
+                    bool isValid = tokenParser.TryParseString(rawTokenString, assumeModIdsLookup, logPathBuilder, out string? error, out Framework.IManagedTokenString? parsedString);
+                    parsedString ??= new LiteralString(string.Empty, logPathBuilder);
+                    var managed = new ApiManagedTokenStringForSingleScreen(parsedString, context, isValid: isValid, validationError: error);
                     managed.UpdateContext();
 
                     return managed;

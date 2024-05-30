@@ -4,5 +4,7 @@
   "config.name.EasyChestKey": "EasyChestKey",
   "config.tips.EasyChestKey": "Shortcut key to open chests",
   "config.name.ChestSortBy": "ChestSortBy",
-  "config.tips.ChestSortBy": "Switch chest order when scroll mouseWheel"
+  "config.tips.ChestSortBy": "Switch chest order when scroll mouseWheel",
+  "config.name.ShowChestInfo": "ShowChestInfo",
+  "config.tips.ShowChestInfo": "Display Chests information in the upper left corner"
 }

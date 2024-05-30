@@ -27,33 +27,12 @@ namespace ProducerFrameworkMod.Controllers
     public class ProducerController
     {
         public static readonly List<string> UnsupportedMachines = new()
-            { "(BC)21", "(BC)163", "(BC)101", "(BC)156", "(BC)275", "(BC)130", "(BC)62", "(BC)209"
-                , "(BC)208", "(BC)105", "(BC)264", "(BC)94", "(BC)127", "(BC)56", "(BC)71", "(BC)159", "(BC)141"
-                , "(BC)8", "(BC)167", "(BC)110", "(BC)113", "(BC)126", "(BC)136", "(BC)137", "(BC)138", "(BC)139", "(BC)140" //arecrow
-            };
+        {
+            "(BC)0", "(BC)1", "(BC)2", "(BC)3", "(BC)4", "(BC)5", "(BC)6", "(BC)7", "(BC)8", "(BC)21", "(BC)56", "(BC)62", "(BC)71", "(BC)94", "(BC)99", "(BC)101", "(BC)105", "(BC)110", "(BC)113", "(BC)126", "(BC)127", "(BC)130", "(BC)136", "(BC)137", "(BC)138", "(BC)139", "(BC)140", "(BC)141", "(BC)156", "(BC)159", "(BC)163", "(BC)165", "(BC)167", "(BC)208", "(BC)209", "(BC)238", "(BC)239", "(BC)247", "(BC)264", "(BC)275", "(O)PotOfGold", "(BC)MiniForge", "(BC)StatueOfTheDwarfKing", "(BC)StatueOfBlessings", "(BC)TextSign", "(O)464", "(O)463"
+        };
 
         private static readonly Dictionary<Tuple<string, object>, ProducerRule> RulesRepository = new();
-        private static readonly Dictionary<string, ProducerConfig> ConfigRepository = new()
-        {
-            {
-                "(BC)13", new ProducerConfig("Furnace",true){ProducerQualifiedItemId = "(BC)13"}
-            },
-            {
-                "(BC)17", new ProducerConfig("Loom",false,true){ProducerQualifiedItemId = "(BC)17"}
-            },
-            {
-                "(BC)114", new ProducerConfig("Charcoal Kiln",true){ProducerQualifiedItemId = "(BC)114"}
-            },
-            {
-                "(BC)12", new ProducerConfig("Keg", new Dictionary<StardewStats, string>(){{StardewStats.BeveragesMade,null}}){ProducerQualifiedItemId = "(BC)12"}
-            },
-            {
-                "(BC)15", new ProducerConfig("Preserves Jar", new Dictionary<StardewStats, string>(){{StardewStats.PreservesMade,null}}){ProducerQualifiedItemId = "(BC)15"}
-            },
-            {
-                "(BC)16", new ProducerConfig("Cheese Press", new Dictionary<StardewStats, string>(){{StardewStats.GoatCheeseMade, "426" },{StardewStats.CheeseMade, null } }){ProducerQualifiedItemId = "(BC)16"}
-            }
-        };
+        private static readonly Dictionary<string, ProducerConfig> ConfigRepository = new();
 
         private const string WarningNotBugPrefix = "This is just a Warning, don't report this as a bug. ";
 
@@ -474,7 +453,7 @@ namespace ProducerFrameworkMod.Controllers
             }
             else if (!Int32.TryParse(identifier, out int index))
             {
-                var pair = Game1.objectData.FirstOrDefault(o => o.Value.Name.Equals(identifier));
+                var pair = Game1.objectData.FirstOrDefault(o => identifier.Equals(o.Value.Name));
                 if (pair.Value != null)
                 {
                     itemId = ItemRegistry.type_object + pair.Key;

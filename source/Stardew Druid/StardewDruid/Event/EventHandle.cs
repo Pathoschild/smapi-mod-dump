@@ -20,11 +20,14 @@ using StardewDruid.Monster;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.GameData;
+using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+
 using xTile.Layers;
+using xTile.Tiles;
 
 namespace StardewDruid.Event
 {
@@ -37,12 +40,16 @@ namespace StardewDruid.Event
 
         public Vector2 origin = Vector2.Zero;
 
+        public bool inabsentia;
+
         // -------------------------------------
         // trigger management
 
         public bool triggerEvent;
 
         public bool triggerActive;
+
+        public bool triggerAbort;
 
         public int triggerCounter;
 
@@ -69,6 +76,12 @@ namespace StardewDruid.Event
 
         public int eventLinger = -1;
 
+        public float eventProximity = -1;
+
+        public int proximityCounter = 0;
+
+        public bool eventLocked;
+
         // -------------------------------------
         // event entities
 
@@ -86,11 +99,9 @@ namespace StardewDruid.Event
 
         public Dictionary<int, Narrator> narrators = new();
 
-        public int dialogueCounter;
+        public Dictionary<int, NPC> voices = new();
 
         public Dictionary<StardewDruid.Character.Character, int> dialogueLoader = new();
-
-        // ------------------------------------
 
         public bool soundTrack;
 
@@ -247,6 +258,13 @@ namespace StardewDruid.Event
 
         }
 
+        public virtual bool TriggerAbort()
+        {
+
+            return triggerAbort;
+
+        }
+
         public virtual void TriggerInterval()
         {
 
@@ -261,56 +279,16 @@ namespace StardewDruid.Event
 
             }
 
-            Vector2 animationPosition = origin - new Vector2(32, 32);
-
-            Vector2 animationMotion = new Vector2(0, -0.3f);
-
-            Vector2 animationAcceleration = new Vector2(0f, 0.002f);
-
             if (animations.Count > 0)
             {
 
-                if (location.temporarySprites.Contains(animations.First()))
-                {
-
-                    animations.First().Position = animationPosition;
-
-                    animations.First().reset();
-
-                    animations.First().motion = animationMotion;
-
-                    return;
-
-                }
+                location.temporarySprites.Remove(animations[0]);
 
                 animations.Clear();
 
             }
 
-            float animationSort = 999f;
-
-            TemporaryAnimatedSprite targetAnimation = new(0, 6000f, 1, 1, animationPosition, false, false)
-            {
-
-                sourceRect = new(0, 0, 64, 64),
-
-                sourceRectStartingPos = new Vector2(0, 0),
-
-                texture = Mod.instance.Helper.ModContent.Load<Texture2D>(Path.Combine("Images", "Target.png")),
-
-                layerDepth = animationSort,
-
-                scale = 2f,
-                
-                motion = animationMotion,
-
-                acceleration = animationAcceleration,
-
-                color = Mod.instance.iconData.schemeColour(Mod.instance.questHandle.quests[eventId].triggerRite),
-
-            };
-
-            location.temporarySprites.Add(targetAnimation);
+            TemporaryAnimatedSprite targetAnimation = Mod.instance.iconData.AnimateTarget(location, origin, (IconData.schemes)Mod.instance.questHandle.quests[eventId].triggerRite);
 
             animations.Add(targetAnimation);
 
@@ -324,7 +302,6 @@ namespace StardewDruid.Event
             eventActive = false;
 
         }
-
 
         // ------------------------------------
 
@@ -352,14 +329,13 @@ namespace StardewDruid.Event
 
             expireTime = Game1.currentGameTime.TotalGameTime.TotalSeconds + expireIn;
 
-            location = Game1.player.currentLocation;
+            if (!inabsentia || location == null)
+            {
 
-        }
+                location = Game1.player.currentLocation;
 
-        public virtual void MinutesLeft(int minutes)
-        {
+            }
 
-            Mod.instance.CastMessage($"{minutes} more minutes left!",2);
         }
 
         public virtual bool EventActive()
@@ -373,13 +349,18 @@ namespace StardewDruid.Event
                 return false;
 
             }
-
-            if (Game1.player.currentLocation.Name != location.Name)
+            
+            if (!inabsentia)
             {
 
-                EventAbort();
+                if (Game1.player.currentLocation.Name != location.Name)
+                {
 
-                return false;
+                    EventAbort();
+
+                    return false;
+
+                }
 
             }
 
@@ -396,6 +377,39 @@ namespace StardewDruid.Event
             {
 
                 return EventExpire();
+
+            }
+
+            if (eventProximity != -1)
+            {
+
+                if (Vector2.Distance(Game1.player.Position, origin) > eventProximity)
+                {
+
+                    proximityCounter++;
+
+                    if (proximityCounter > 5)
+                    {
+
+                        Mod.instance.CastMessage("Left event zone", 3, true);
+
+                        return false;
+
+                    }
+                    else
+                    {
+
+                        Mod.instance.CastMessage("Leaving event zone", 3);
+
+                    }
+
+                }
+                else if (proximityCounter > 0)
+                {
+
+                    proximityCounter--;
+
+                }
 
             }
 
@@ -453,6 +467,8 @@ namespace StardewDruid.Event
 
             RemoveAnimations();
 
+            ReturnLadders();
+
             if (soundTrack)
             {
 
@@ -506,25 +522,52 @@ namespace StardewDruid.Event
         // ------------------------------------
         // entities
         
-        public void CastVoice(string message, int actor = 0, int duration = 2000)
+        public void CastVoice(int id, string message, int duration = 2000)
         {
 
-            if (actors.Count <= 0)
+            if(!voices.ContainsKey(id))
             {
 
-                this.AddActor(actor,origin);
+                if(id == 0)
+                {
 
-            }
+                    this.AddActor(id, origin);
 
-            if (!actors.ContainsKey(actor))
-            {
+                }
 
                 return;
 
             }
 
-            actors[actor].showTextAboveHead(message, duration: duration);
+            if (message == "...")
+            {
+                voices[id].doEmote(40);
 
+                return;
+            }
+            else if (message == "!")
+            {
+
+                voices[id].doEmote(16);
+
+                return;
+            }
+            else if (message == "?")
+            {
+
+                voices[id].doEmote(8);
+
+                return;
+            }
+            else if (message == "x")
+            {
+
+                voices[id].doEmote(36);
+
+                return;
+            }
+
+            voices[id].showTextAboveHead(message, duration: duration);
 
         }
 
@@ -566,6 +609,8 @@ namespace StardewDruid.Event
             location.characters.Add(actor);
 
             actors.Add(id,actor);
+
+            voices[id] = actor;
 
         }
 
@@ -652,47 +697,7 @@ namespace StardewDruid.Event
                 foreach (KeyValuePair<int, string> cue in cues[cueIndex])
                 {
 
-                    if (companions.ContainsKey(cue.Key))
-                    {
-
-                        if (cue.Value == "...")
-                        {
-                            companions[cue.Key].doEmote(40);
-
-                            continue;
-                        }
-                        else if (cue.Value == "!")
-                        {
-
-                            companions[cue.Key].doEmote(16);
-
-                            continue;
-                        }
-                        else if (cue.Value == "?")
-                        {
-
-                            companions[cue.Key].doEmote(8);
-
-                            continue;
-                        }
-                        else if (cue.Value == "x")
-                        {
-
-                            companions[cue.Key].doEmote(36);
-
-                            continue;
-                        }
-
-                        companions[cue.Key].showTextAboveHead(cue.Value);
-
-                    }
-
-                    if (actors.ContainsKey(cueIndex))
-                    {
-
-                        actors[cue.Key].showTextAboveHead(cue.Value);
-
-                    }
+                    CastVoice(cue.Key, cue.Value, 3000);
 
                     if (narrators.ContainsKey(cue.Key))
                     {
@@ -754,6 +759,25 @@ namespace StardewDruid.Event
 
         }
 
+        public virtual void DialogueClear(int companionId)
+        {
+
+            if (!companions.ContainsKey(companionId))
+            {
+
+                return;
+
+            }
+
+            if (dialogueLoader.ContainsKey(companions[companionId]))
+            {
+
+                dialogueLoader.Remove(companions[companionId]);
+
+            }
+
+        }
+
         public virtual void DialogueSetups(StardewDruid.Character.Character npc, int dialogueId)
         {
 
@@ -772,6 +796,22 @@ namespace StardewDruid.Event
 
 
         }
+
+        public virtual void DialogueDraw(NPC npc, string text)
+        {
+
+            Game1.currentSpeaker = npc;
+
+            StardewValley.Dialogue dialogue = new(npc, "0", text);
+
+            Game1.activeClickableMenu = new DialogueBox(dialogue);
+
+            Game1.player.Halt();
+
+            Game1.player.CanMove = false;
+
+        }
+
 
         // ----------------------------------
         // clean up
@@ -877,6 +917,33 @@ namespace StardewDruid.Event
             }
 
         }
+
+        public virtual void ReturnLadders()
+        {
+
+            if (ladders.Count > 0)
+            {
+                Layer layer = location.map.GetLayer("Buildings");
+
+                int x = (int)ladders.First().X;
+
+                int y = (int)ladders.First().Y;
+
+                if (layer.Tiles[x, y] == null)
+                {
+
+                    layer.Tiles[x, y] = new StaticTile(layer, location.map.TileSheets[0], 0, 173);
+
+                    Game1.player.TemporaryPassableTiles.Add(new Microsoft.Xna.Framework.Rectangle(x * 64, y * 64, 64, 64));
+
+                    Mod.instance.CastMessage("A way down has appeared");
+
+                }
+
+            }
+
+        }
+
 
     }
 

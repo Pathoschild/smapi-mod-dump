@@ -12,12 +12,6 @@ using HarmonyLib;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.GameData.Fences;
-using StardewValley.Locations;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NoFenceDecayRedux
 {
@@ -25,24 +19,26 @@ namespace NoFenceDecayRedux
     {
         public override void Entry(IModHelper helper)
         {
-            // Init Harmony
-            var Harmony = new Harmony(this.ModManifest.UniqueID);
-
-            /**********************************
-             * Harmony prefix Fence.minutesElapsed
-             * minutesElapsed applies fence decay
-             **********************************/
-            Harmony.Patch(
-                original: AccessTools.Method(typeof(StardewValley.Fence), nameof(StardewValley.Fence.minutesElapsed)),
-                prefix: new HarmonyMethod(typeof(ModEntry), nameof(ModEntry.minutesElapsed_Patched))
-                );
+            var harmony = new Harmony(this.ModManifest.UniqueID);
+            harmony.PatchAll(typeof(ModEntry).Assembly);
         }
+    }
 
-        
-        private static bool minutesElapsed_Patched(int minutes)
+    [HarmonyPatch(typeof(Fence), nameof(Fence.minutesElapsed))]
+    public static class NoFenceDecay
+    {
+        private static bool Prefix(Fence __instance, ref bool __result)
         {
-            // Return false, stopping fence decay from applying to fences
             return false;
+        }
+        private static void Postfix(Fence __instance, ref bool __result)
+        {
+            if (__instance.health.Value < __instance.maxHealth.Value && Game1.IsMasterGame)
+            {
+                FenceData data = __instance.GetData();
+                __instance.ResetHealth(data.RepairHealthAdjustmentMaximum);
+                __result = false;
+            }
         }
     }
 }

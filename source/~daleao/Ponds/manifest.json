@@ -1,0 +1,28 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/daleao/sdv
+**
+*************************************************/
+
+{
+  "$schema": "https://smapi.io/schemas/manifest.json",
+  "UniqueID": "DaLion.Ponds",
+  "Name": "Aquarism",
+  "Author": "DaLion",
+  "Version": "1.0.3",
+  "Description": "Adds persistant fish qualities, scaling roe production, spontaneous algae growth, and radioactive enrichment to Fish Ponds.",
+  "EntryDll": "DaLion.Ponds.dll",
+  "Dependencies": [
+    {
+      "UniqueID": "DaLion.Core",
+      "MinimumVersion": "1.1.2"
+    }
+  ],
+  "UpdateKeys": [
+    "Nexus:24356"
+  ]
+}

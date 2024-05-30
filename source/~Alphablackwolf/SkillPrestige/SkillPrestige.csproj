@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="SpaceCore" HintPath="$(GamePath)\Mods\SpaceCore\SpaceCore.dll" Private="False" />
+    <Reference Include="SpaceCore" HintPath="$(GameModsPath)\SpaceCore\SpaceCore.dll" Private="False" />
   </ItemGroup>
 
   <Target Name="DeployPack" AfterTargets="Build">

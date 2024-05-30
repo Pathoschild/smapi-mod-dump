@@ -1,7 +1,9 @@
 ﻿{
-  "Action.Shake.Future": "摇晃",
   "Action.Dig.Future": "挖出", // Google Translate - Feel free to update
+  "Action.Forage.Future": "Forage", // TODO
+  "Action.Shake.Future": "摇晃",
 
+  "Category.Animal": "Animals", // TODO
   "Category.Beach": "海滩", // Google Translate - Feel free to update
   "Category.BushBlooms": "布什绽放", // Google Translate - Feel free to update
   "Category.CustomBushes": "定制灌木丛", // Google Translate - Feel free to update
@@ -45,6 +47,8 @@
 
   "Option.FruitsReadyToShake.Name": "准备摇晃的最小水果数",
   "Option.FruitsReadyToShake.Tooltip": "在自动觅食者摇晃果树之前,果树应准备好的最小水果量.",
+  "Option.IgnoreMushroomLogTrees.Name": "Skip Moss-Covered Trees near{{whitespace}}Mushroom Logs?", // TODO
+  "Option.IgnoreMushroomLogTrees.Tooltip": "Whether or not to skip harvesting Moss from trees that are near enough to contribute to a Mushroom log.", // TODO
   "Option.IsForagerActive.Name": "觅食是否开启？",
   "Option.IsForagerActive.Tooltip": "自动觅食是否会摇晃树木和灌木丛并觅食.",
   "Option.RequireHoe.Name": "是否需要用锄头来觅食{{whitespace}}生姜,雪山药还有冬根？",
@@ -74,7 +78,9 @@
   "Reward.Buried.Items": "埋藏物品", // Google Translate - Feel free to update
   "Reward.Buried.Seeds": "埋藏的种子", // Google Translate - Feel free to update
   "Reward.GoldenWalnuts": "金胡桃",
+  "Reward.Mushrooms": "Mushrooms", // TODO
   "Reward.Salmonberries": "树莓",
+  "Reward.TappedTree": "Tree Byproducts", // TODO
   "Reward.TeaLeaves": "茶叶",
 
   "Section.Bushes.Text": "灌木丛 切换",
@@ -90,8 +96,12 @@
   "Subject.Bushes": "灌木丛", // Google Translate - Feel free to update
   "Subject.BushBloomSchedules": "布什开花时间表", // Google Translate - Feel free to update
   "Subject.GingerRoots": "姜",
+  "Subject.MushroomBoxes": "Mushroom Boxes", // TODO
+  "Subject.MushroomLogs": "Mushroom Logs", // TODO
   "Subject.SalmonberryBushes": "树莓灌木",
   "Subject.SeedSpot": "种子位置", // Google Translate - Feel free to update
+  "Subject.SpawnableForageIds": "spawnable forage ids", // TODO
+  "Subject.Tappers": "Tappers", // TODO
   "Subject.TeaBushes": "茶苗",
   "Subject.WalnutBushes": "核桃树丛"
 }

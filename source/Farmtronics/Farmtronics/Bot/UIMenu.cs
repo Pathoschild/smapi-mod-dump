@@ -16,6 +16,7 @@ It has several parts:
 	3. A MiniScript console.
 */
 
+using System.Threading;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -201,9 +202,9 @@ namespace Farmtronics.Bot {
 		/// Return whether the given screen position is in our draggable area.
 		/// </summary>
 		bool inDragArea(int x, int y) {
-			// ModEntry.instance.Monitor.Log($"inDragArea: x={x} y={y}, in botInventoryBounds: {botInventoryBounds().Contains(x, y)}, in consoleBounds: {consoleBounds().Contains(x, y)}");
+			//ModEntry.instance.Monitor.Log($"inDragArea: x={x} y={y}, in botInventoryBounds: {botInventoryBounds().Contains(x, y)}, in consoleBounds: {consoleBounds().Contains(x, y)}");
 			if (botInventoryBounds().Contains(x,y)) return false;
-			if (consoleBounds().Contains(x,y)) return false;
+			if (consoleBounds().Contains(x+30,y-90)) return false;
 
 			var playerInv = inventory;
 			Rectangle invRect = new Rectangle(playerInv.xPositionOnScreen, playerInv.yPositionOnScreen, width, height);
@@ -262,7 +263,7 @@ namespace Farmtronics.Bot {
 */
 			if (hoverText != null && hoveredItem == null) {
 				if (hoverAmount > 0) {
-					IClickableMenu.drawToolTip(b, hoverText, "", null, heldItem: true, -1, 0, -1, -1, null, hoverAmount);
+					IClickableMenu.drawToolTip(b, hoverText, "", null, heldItem: true, -1, 0, null, -1, null, hoverAmount);
 				} else {
 					IClickableMenu.drawHoverText(b, hoverText, Game1.smallFont);
 				}

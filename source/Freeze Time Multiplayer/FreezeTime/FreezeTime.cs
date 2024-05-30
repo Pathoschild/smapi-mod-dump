@@ -9,10 +9,11 @@
 *************************************************/
 
 using HarmonyLib;
-using StardewModdingAPI;
-using StardewValley;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using StardewModdingAPI;
+using StardewModdingAPI.Events;
+using StardewValley;
 using StardewValley.Monsters;
 
 namespace FreezeTime;
@@ -21,9 +22,10 @@ public partial class FreezeTime: Mod
 {
     private const string BroadcastStatusMessageType = "_FREEZE";
     private const string AskStatusMessageType = "_ASK_FREEZE";
+    private const string BroadcastConfigMessageType = "_FREEZE_CONFIG";
     private static Texture2D? _frame, _blackBlock, _frozenBlock,_unfrozenBlock,_unloadedButFrozenBlock,_unloadedButUnfrozenBlock;
 
-    private FreezeTimeChecker _checker = new(new ModConfig());
+    private FreezeTimeChecker _checker = null!;
     private static bool _lastFreezeStatus;
     private static bool _forcePassTime;
     private static readonly Vector2 FramePosition = new(44, 240);
@@ -90,14 +92,13 @@ public partial class FreezeTime: Mod
         {
             _forcePassTime = true;
         }        
-        
         public static void PerformSleepChecked()
         {
             _forcePassTime = false;
         }
     }
 
-    private void SaveLoadedEvent(object? sender, StardewModdingAPI.Events.SaveLoadedEventArgs e)
+    private void SaveLoadedEvent(object? sender, SaveLoadedEventArgs e)
     {
         _checker = new FreezeTimeChecker(_config);
         if (Context.IsMainPlayer) {
@@ -112,21 +113,28 @@ public partial class FreezeTime: Mod
         }
     }
     
-    private void ModMessageReceivedEvent(object? sender, StardewModdingAPI.Events.ModMessageReceivedEventArgs e)
+    private void ModMessageReceivedEvent(object? sender, ModMessageReceivedEventArgs e)
     {
         if (e.FromModID != ModManifest.UniqueID) {
             return;
         }
         if (Context.IsMainPlayer) {
-            if (e.Type == AskStatusMessageType) {
-                BroadcastStatus();
-            }
-        } else {
-            if (e.Type != BroadcastStatusMessageType) {
+            if (e.Type != AskStatusMessageType) {
                 return;
             }
-            var status = e.ReadAs<Dictionary<long, Dictionary<string, bool>>>();
-            _checker.LoadFromStatus(status);
+            BroadcastStatus();
+            BroadcastConfig();
+        } else {
+            switch (e.Type) {
+                case BroadcastStatusMessageType: 
+                    var status = e.ReadAs<Dictionary<long, Dictionary<string, bool>>>();
+                    _checker.LoadFromStatus(status);
+                    break;
+                case BroadcastConfigMessageType:
+                    _config = e.ReadAs<ModConfig>();
+                    break;
+            }
+            _lastFreezeStatus = _checker.IsFrozen();
         }
     }
 
@@ -137,12 +145,12 @@ public partial class FreezeTime: Mod
     
     private void PreRenderHudEvent(object? sender, EventArgs e)
     {
-        if (Game1.displayHUD) {
+        if (Game1.displayHUD && !Game1.freezeControls) {
             DrawStatusBar();
         }
     }
     
-    private void ButtonReleasedEvent(object? sender, StardewModdingAPI.Events.ButtonReleasedEventArgs e)
+    private void ButtonReleasedEvent(object? sender, ButtonReleasedEventArgs e)
     {
         if (e.Button != SButton.MouseLeft) {
             return;
@@ -151,8 +159,6 @@ public partial class FreezeTime: Mod
         if (!new Rectangle((int)((Game1.dayTimeMoneyBox.position.X + FramePosition.X + 24) * Game1.options.uiScale),(int)((Game1.dayTimeMoneyBox.position.Y + FramePosition.Y + 24) * Game1.options.uiScale),(int)(108 * Game1.options.uiScale), (int)(24 * Game1.options.uiScale)).Contains(Game1.getMouseX(), Game1.getMouseY())) { 
             return;
         }
-
-        _lastFreezeStatus = !_lastFreezeStatus;
         Game1.chatBox.addMessage(_checker.GetFreezeTimeMessage(), Color.Aqua);
         Helper.Input.Suppress(SButton.MouseLeft);
     }
@@ -186,7 +192,7 @@ public partial class FreezeTime: Mod
     }
     
     //main player
-    private void PlayerConnectedEvent(object? sender, StardewModdingAPI.Events.PeerConnectedEventArgs e)
+    private void PlayerConnectedEvent(object? sender, PeerConnectedEventArgs e)
     {
         if (!Context.IsMainPlayer) {
             return;
@@ -209,7 +215,7 @@ public partial class FreezeTime: Mod
         }
     }
 
-    private void PlayerDisconnectedEvent(object? sender, StardewModdingAPI.Events.PeerDisconnectedEventArgs e)
+    private void PlayerDisconnectedEvent(object? sender, PeerDisconnectedEventArgs e)
     {
         if (!Context.IsMainPlayer) {
             return;
@@ -290,5 +296,10 @@ public partial class FreezeTime: Mod
     private void BroadcastStatus()
     {   
         Helper.Multiplayer.SendMessage(_checker.FreezeTimeStatus(), BroadcastStatusMessageType, modIDs: [ModManifest.UniqueID]);
+    }
+    
+    private void BroadcastConfig()
+    {
+        Helper.Multiplayer.SendMessage(_config, BroadcastConfigMessageType, modIDs: [ModManifest.UniqueID]);
     }
 }

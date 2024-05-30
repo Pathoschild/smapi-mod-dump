@@ -22,8 +22,8 @@ namespace Pathoschild.Stardew.Common.Utilities
         /// <summary>Get the current cache key.</summary>
         private readonly Func<string> GetCacheKey;
 
-        /// <summary>Fetch the latest value for the cache.</summary>
-        private readonly Func<TValue> FetchNew;
+        /// <summary>Fetch the latest value for the cache, given the previous value (if any).</summary>
+        private readonly Func<TValue?, TValue> FetchNew;
 
         /// <summary>The last cache key which was cached.</summary>
         private string? LastCacheKey;
@@ -44,7 +44,7 @@ namespace Pathoschild.Stardew.Common.Utilities
                 if (cacheKey != this.LastCacheKey)
                 {
                     this.LastCacheKey = cacheKey;
-                    this.LastValue = this.FetchNew();
+                    this.LastValue = this.FetchNew(this.LastValue);
                 }
 
                 return this.LastValue!;
@@ -59,6 +59,12 @@ namespace Pathoschild.Stardew.Common.Utilities
         /// <param name="getCacheKey">Get the current cache key.</param>
         /// <param name="fetchNew">Fetch the latest value for the cache.</param>
         public Cached(Func<string> getCacheKey, Func<TValue> fetchNew)
+            : this(getCacheKey, _ => fetchNew()) { }
+
+        /// <summary>Construct an instance.</summary>
+        /// <param name="getCacheKey">Get the current cache key.</param>
+        /// <param name="fetchNew">Fetch the latest value for the cache, given the previous value (if any).</param>
+        public Cached(Func<string> getCacheKey, Func<TValue?, TValue> fetchNew)
         {
             this.GetCacheKey = getCacheKey;
             this.FetchNew = fetchNew;

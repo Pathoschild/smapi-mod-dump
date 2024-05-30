@@ -45,8 +45,8 @@ namespace EventLimiter
         private ModConfig config;
         public List<string> InternalExceptions = new List<string>(); 
         public List<string> NormalisedEventids = new List<string>();
-        // Important story events: intro, introduce special orders board, complete cc, complete joja, complete missing bundle, playerkilled, wedding
-        public static readonly string[] StoryProgressionEvents = new string[9] { "60367", "15389722", "191393", "502261", "missingBundleComplete", "PlayerKilled", "-2", "-1", "MovieTheaterScreening" };
+        // Important story events: intro, introduce special orders board, complete cc, complete joja, complete missing bundle, playerkilled, wedding, birdie
+        public static readonly string[] StoryProgressionEvents = new string[] { "60367", "15389722", "191393", "502261", "missingBundleComplete", "PlayerKilled", "-2", "-1", "MovieTheaterScreening", "-666777", "-888999"};
 
         // Counters for event tracking
         public static readonly PerScreen<int> EventCounterDay = new PerScreen<int>();

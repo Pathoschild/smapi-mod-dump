@@ -21,6 +21,7 @@ using StardewValley.Quests;
 using StardewModdingAPI.Utilities;
 using Microsoft.Xna.Framework.Graphics;
 using SpaceCore.Events;
+using StardewValley.SpecialOrders;
 
 namespace RidgesideVillage.Questing
 {
@@ -41,7 +42,7 @@ namespace RidgesideVillage.Questing
 		private static readonly PerScreen<bool> QuestBoardUnlocked = new();
 		private static readonly PerScreen<bool> OrdersGenerated = new();
 
-		internal static readonly PerScreen<HashSet<int>> FinishedQuests = new(() => new());
+		internal static readonly PerScreen<HashSet<string>> FinishedQuests = new(() => new());
 
 		private enum LocationForMarkers
         {
@@ -54,8 +55,8 @@ namespace RidgesideVillage.Questing
 		{
 			Helper = ModInstance.Helper;
 			Monitor = ModInstance.Monitor;
-			TileActionHandler.RegisterTileAction("RSVQuestBoard", OpenQuestBoard);
-			TileActionHandler.RegisterTileAction("RSVSpecialOrderBoard", OpenSOBoard);
+			GameLocation.RegisterTileAction("RSVQuestBoard", OpenQuestBoard);
+            GameLocation.RegisterTileAction("RSVSpecialOrderBoard", OpenSOBoard);
 
 			Helper.ConsoleCommands.Add("RSV_RefreshSOs", "", (s1, s2) => {
 				RSVSpecialOrderBoard.UpdateAvailableRSVSpecialOrders(force_refresh: true);
@@ -63,7 +64,7 @@ namespace RidgesideVillage.Questing
 			});
 
 			Helper.ConsoleCommands.Add("RSV_AddQuest", "", (s1, s2) => {
-                var quest = QuestFactory.getQuestFromId(int.Parse(s2[0]));
+                var quest = QuestFactory.getQuestFromId(s2[0]);
 				if (quest != null)
 				{
 					Game1.player.questLog.Add(quest);
@@ -90,7 +91,7 @@ namespace RidgesideVillage.Questing
 
         private static void CheckQuests()
         {
-			var questData = Helper.GameContent.Load<Dictionary<int, string>>(PathUtilities.NormalizeAssetName("Data/Quests"));
+			var questData = Helper.GameContent.Load<Dictionary<string, string>>(PathUtilities.NormalizeAssetName("Data/Quests"));
 			foreach(var key in questData.Keys)
             {
                 try
@@ -140,12 +141,12 @@ namespace RidgesideVillage.Questing
 			{
 
 				Log.Trace($"dailies Done: {dailisDone}");
-				FinishedQuests.Value = new HashSet<int>();
+				FinishedQuests.Value = new HashSet<string>();
 				if (!string.IsNullOrEmpty(dailisDone))
 				{
 					foreach (string id in dailisDone.Split(","))
 					{
-						FinishedQuests.Value.Add(int.Parse(id));
+						FinishedQuests.Value.Add(id);
 					}
 				}                
             }
@@ -215,20 +216,22 @@ namespace RidgesideVillage.Questing
 			}
 			return;
 		}
-        private static void OpenQuestBoard(string name, Vector2 position)
-		{
-			string type = name.Split()[^1];
+        private static bool OpenQuestBoard(GameLocation location, string[] arg2, Farmer farmer, Point point)
+        {
+			string type = arg2[^1];
 			Log.Trace($"Opening RSVQuestBoard {type}");
 			Log.Trace(dailyQuestData.ToString());
 			Game1.activeClickableMenu = new RSVQuestBoard(dailyQuestData.Value, type);
+			return true;
 		}
 
 
-		private static void OpenSOBoard(string name, Vector2 position)
-		{
-			string type = name.Split()[^1];
+		private static bool OpenSOBoard(GameLocation location, string[] arg2, Farmer farmer, Point point)
+        {
+			string type = arg2[^1];
 			Log.Trace($"Opening RSVSOBoard {type}");
 			Game1.activeClickableMenu = new RSVSpecialOrderBoard(type);
+			return true;
 		}
 
 
@@ -245,16 +248,17 @@ namespace RidgesideVillage.Questing
 				Log.Trace($"Player has done following quests: {String.Join(",", FinishedQuests.Value)}");
 				Quest townQuest = QuestFactory.GetDailyQuest();
 				Quest ninjaQuest = null;
-				if (Game1.player.eventsSeen.Contains(75160187))
+				if (Game1.player.eventsSeen.Contains("75160187"))
 				{
 					ninjaQuest = QuestFactory.GetDailyNinjaQuest();
                 }
 				dailyQuestData.Value = new QuestData(townQuest, ninjaQuest);
 			}
-            catch
+            catch (Exception exp)
             {
 				dailyQuestData.Value = new QuestData(null, null);
-				Log.Trace("Failed parsing new quests.");
+				Log.Warn("Failed parsing new quests.");
+				Log.Warn(exp.Message + exp.StackTrace);
 			}
 		}
 

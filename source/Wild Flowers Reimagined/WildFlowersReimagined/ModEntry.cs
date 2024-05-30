@@ -25,7 +25,8 @@ namespace WildFlowersReimagined
 
         private const string modDataKey = "jpp.WildFlowersReimagined.flower";
         private const string saveDataKey = "jpp.WildFlowersReimagined.flower";
-
+        
+        private const bool debugFlag = true;
 
         /// <summary>
         /// The mod configuration from the player.
@@ -49,7 +50,11 @@ namespace WildFlowersReimagined
         /// </summary>
         private readonly SeedMap seedMap = new();
 
-        
+        private readonly Random localRNG = new Random(Guid.NewGuid().GetHashCode());
+
+        private static FlowerGrassConfig? configMirrorFlowerGrass = null; 
+
+
 
 
 
@@ -71,6 +76,8 @@ namespace WildFlowersReimagined
                 return;
             }
 
+            configMirrorFlowerGrass = Config.FlowerGrassConfig;
+
             I18n.Init(helper.Translation);
 
             helper.Events.GameLoop.DayStarted += this.OnDayStart;
@@ -78,12 +85,67 @@ namespace WildFlowersReimagined
             helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
             helper.Events.GameLoop.GameLaunched += this.OnGameLaunch;
 
+            //dbg
+            if (debugFlag)
+            {
+                helper.Events.Input.ButtonPressed += this.DbgButtonPressed;
+            }
+
+
             this.Monitor.LogOnce("Mod enabled and ready", LogLevel.Debug);
 
         }
+
+        public static FlowerGrassConfig ConfigLoadedFlowerConfig()
+        {
+            // This case should almost never happen
+            if (configMirrorFlowerGrass == null)
+            {
+                return new FlowerGrassConfig();
+            }
+            return configMirrorFlowerGrass;
+        }
+
         /*********
         ** Private methods
         *********/
+        
+        private void DbgButtonPressed(object? sender, ButtonPressedEventArgs e)
+        {
+            if (e.Button == SButton.K)
+            {
+                var currPos = e.Cursor.Tile;
+                var current = Game1.currentLocation;
+
+                current.terrainFeatures.TryGetValue(currPos, out var terrainFeature);
+
+                var sts = "";
+
+                foreach (var loc in Game1.locations)
+                {
+                    if (loc == current)
+                    {
+                        sts = loc.IsActiveLocation().ToString();
+                        break;
+                    }
+                }
+
+                this.Monitor.Log($"{current}:{sts}:{currPos} has {terrainFeature}", LogLevel.Info);
+
+
+                if (terrainFeature is FlowerGrass fgT)
+                {
+                    this.Monitor.Log(fgT.ToDebugString(), LogLevel.Info);
+                    if (fgT.Crop != null)
+                    {
+                        fgT.Crop.updateDrawMath(fgT.Tile);
+                    }
+                }
+            }
+        }
+
+
+
 
         /// <summary>
         /// On Game Launch event: Adds the Generic Mod Config menu entry
@@ -92,11 +154,24 @@ namespace WildFlowersReimagined
         /// <param name="e">Unused</param>
         private void OnGameLaunch(object? sender, GameLaunchedEventArgs e)
         {
+
+            // get spacecore
+            var spacecore = this.Helper.ModRegistry.GetApi<ISpaceCoreApi>("spacechase0.SpaceCore");
+            if (spacecore == null)
+            {
+                this.Monitor.Log("SpaceCore not found, multiplayer will not work as expected", LogLevel.Warn);
+            }
+            else
+            {
+                spacecore.RegisterSerializerType(typeof(FlowerGrass));
+                this.Monitor.Log("SpaceCore Registration OK", LogLevel.Info);
+            }
+
             // get Generic Mod Config Menu's API (if it's installed)
             configMenu = this.Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
             if (configMenu is null)
             {
-                this.Monitor.Log("Generic Config Menu not found");
+                this.Monitor.Log("Generic Config Menu not found", LogLevel.Info);
                 return;
             }
 
@@ -148,6 +223,14 @@ namespace WildFlowersReimagined
                 tooltip: I18n.Config_AllLocations_Tooltip,
                 getValue: () => this.Config.CheckAllLocations,
                 setValue: value => this.Config.CheckAllLocations = value
+            );
+
+            configMenu.AddBoolOption(
+                mod: this.ModManifest,
+                name: I18n.Config_KeepRegrowFlower_Key,
+                tooltip: I18n.Config_KeepRegrowFlower_Tooltip,
+                getValue: () => this.Config.FlowerGrassConfig.KeepRegrowFlower,
+                setValue: value => this.Config.FlowerGrassConfig.KeepRegrowFlower = value
             );
         }
 
@@ -378,7 +461,9 @@ namespace WildFlowersReimagined
                     }
                     else
                     {
-                        location.terrainFeatures[key] = grassTuple.originalGrass;
+                        // location.terrainFeatures[key] = grassTuple.originalGrass;
+                        location.terrainFeatures.Remove(key);
+                        location.terrainFeatures.Add(key, grassTuple.originalGrass);
 
                         // prune tiles without flowers
                         if (grassTuple.flowerGrass.Crop == null)
@@ -470,18 +555,14 @@ namespace WildFlowersReimagined
             }
 
             //Init the seedmap
-            seedMap.Init();
+            seedMap.Init(this.Monitor);
             if (!this.flowerConfigEnabled)
             {
                 AddFlowerConfig();
                 flowerConfigEnabled = true;
             }
 
-            // if this is not the main player, skip adding data to prevent a crash
-            if (!Context.IsMainPlayer)
-            {
-                return;
-            }
+
 
             // Get all locations where flowers may spawn
             var validLocations = GetValidLocations();
@@ -489,6 +570,27 @@ namespace WildFlowersReimagined
             if (validLocations.Count < 1)
             {
                 this.Monitor.LogOnce("Unable to find a valid location, unable to proceed", LogLevel.Error);
+                return;
+            }
+
+            // if this is not the main player, skip adding data to prevent a crash
+            if (!Context.IsMainPlayer)
+            {
+                foreach (var location in validLocations)
+                {
+                    foreach(var (vector, terrainFeature) in location.terrainFeatures.Pairs)
+                    {
+                        if (terrainFeature is FlowerGrass flowerGrass)
+                        {
+                            if (!vector.Equals(flowerGrass.Tile))
+                            {
+                                flowerGrass.Tile = vector;
+                                flowerGrass.Location = location;
+                                flowerGrass.dayUpdate();
+                            }   
+                        }
+                    }
+                }
                 return;
             }
 
@@ -511,6 +613,7 @@ namespace WildFlowersReimagined
                 {
                     this.Monitor.LogOnce($"{location.Name}: {locationSeason} has {localFlowers.Count} flowers");
                 }
+                var replacements = new List<(Vector2 key, FlowerGrass replacement)>();
                 foreach (var pair in location.terrainFeatures.Pairs.Where(p => p.Value is Grass))
                 {
                     var key = pair.Key;
@@ -529,7 +632,14 @@ namespace WildFlowersReimagined
                         // keep the flower if it's in the probability list or PreserveFlowersOnProbability0 and it's in the candidate list
                         if (localFlowers.Contains(flowerGrass.Crop.netSeedIndex.Value) || (Config.PreserveFlowersOnProbability0 && localFlowerCandidates.Contains(flowerGrass.Crop.netSeedIndex.Value)))
                         {
-                            location.terrainFeatures[key] = flowerGrass;
+                            // location.terrainFeatures[key] = flowerGrass;
+                            replacements.Add((key, flowerGrass));
+                            /*
+                            if (!flowerGrass.Tile.Equals(key))
+                            {
+                                flowerGrass.Tile = key;
+                            }
+                            */
                         }
                         else
                         {
@@ -540,12 +650,12 @@ namespace WildFlowersReimagined
                     // if not let's do random chance
                     else
                     {
-                        var chance = Game1.random.NextDouble();
+                        var chance = localRNG.NextDouble();
                         // this.Monitor.Log($"{key} {chance}", LogLevel.Info);
                         if (chance <= this.Config.WildflowerGrowChance)
                         {
 
-                            var choice = Game1.random.ChooseFrom(localFlowers);
+                            var choice = localRNG.ChooseFrom(localFlowers);
 
                             var seed = Crop.getRandomFlowerSeedForThisSeason(locationSeason);
 
@@ -560,12 +670,20 @@ namespace WildFlowersReimagined
 
                             var flowerGrass = new FlowerGrass(grassValue.grassType.Value, grassValue.numberOfWeeds.Value, crop, this.Config.FlowerGrassConfig);
 
-                            location.terrainFeatures[key] = flowerGrass;
+                            // location.terrainFeatures.Remove(key);
+                            // location.terrainFeatures.Add(key, flowerGrass);
+                            //location.terrainFeatures[key] = flowerGrass;
+                            replacements.Add((key, flowerGrass));
                             grassValue.modData[modDataKey] = "FG replaced";
 
                             localPatchMap[key] = (flowerGrass, grassValue);
                         }
                     }
+                }
+                foreach (var (key, flowerGrass) in replacements)
+                {
+                    location.terrainFeatures.Remove(key);
+                    location.terrainFeatures.Add(key, flowerGrass);
                 }
             }
         }

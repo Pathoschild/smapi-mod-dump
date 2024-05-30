@@ -24,14 +24,23 @@
   "config.fertilizer_mode.option.single-fertilizer-replace": "single-fertilizer-replace",
   "config.fertilizer_mode.option.single-fertilizer-stack": "single-fertilizer-stack",
   "config.fertilizer_mode.option.vanilla": "Vanilla",
-
+  
+  "config.replace_high_tier.title": "Replace High-tier fertilizer",
+  "config.replace_high_tier.tooltip": "Whether replace mode can downgrade fertilizer.",
+  
   "config.enable_fertilizer_anytime.title": "Enable Fertilizer Anytime",
   "config.enable_fertilizer_anytime.tooltip": "Allows you to apply fertilizer to a crop space that already has crops on it.",
   
   "config.keep_fertilizer_across_season.title": "Keep Fertilizer Across Season",
   "config.keep_fertilizer_across_season.tooltip": "Allow fertilizers to not disappear between seasons.",
-  
-  
+
+  "config.fertilizer_alpha.title": "Fertilizer alpha",
+  "config.fertilizer_alpha.tooltip": "Transparency of fertilizer sprite; default 255; range 0-255",
+
+  "config.debug_mode.title": "Debug Mode",
+  "config.debug_mode.tooltip": "Enable debug output to console",
+
+
   "config.section.speed_fertilizer": "Speed Fertilizer",
   
   "config.affect_multi_harvest.title": "Affect Multi-Harvest",
@@ -58,6 +67,9 @@
   
   "config.section.quality_fertilizer": "Quality Fertilizer",
   
+  "config.fix_multi_drop.title": "Fix Multi Drop Bug",
+  "config.fix_multi_drop.tooltip": "In vanilla only the first piece of multi drop crops harvested that day will get the bonus.\nThis patch fixes this bug and make it so that every drop would have the same quality as the first one.",
+
   "config.basic_fertilizer_bonus.title": "Basic Fertilizer Bonus",
   "config.basic_fertilizer_bonus.tooltip": "Modify the quality bonus from Basic Fertilizer; default 1",
   

@@ -8,7 +8,9 @@
     "PageDown": "PageDown",
     "ToggleDebug": "None"
   },
-  "ProgressionMode": false,
+  "ShowUnknownGiftTastes": true,
+  "ShowUnknownRecipes": true,
+  "ShowPuzzleSolutions": true,
   "HighlightUnrevealedGiftTastes": false,
   "ShowGiftTastes": {
     "Loved": true,
@@ -16,6 +18,12 @@
     "Neutral": false,
     "Disliked": false,
     "Hated": false
+  },
+  "CollapseLargeFields": {
+    "Enabled": true,
+    "BuildingRecipes": 25,
+    "ItemRecipes": 25,
+    "NpcGiftTastes": 75
   },
   "ShowUnownedGifts": true,
   "HideOnKeyUp": false,

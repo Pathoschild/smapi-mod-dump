@@ -1,0 +1,9 @@
+﻿{
+  "Config.TotalValue.Title": "显示总价值",
+  "Config.TotalValue.Description": "在装运箱库存顶部显示横幅，其中包含所有物品的总价值",
+  "Config.MiniTotalValue.Title": "显示总价值 (迷你垃圾箱)",
+  "Config.MiniTotalValue.Description": "在迷你装运箱中显示与常规库存相同的横幅",
+  "Config.InvertScroll.Title": "反转滚轮",
+  "Config.InvertScroll.Description": "滚动查看物品栏时反转滚轮的方向",
+  "Menu.TotalValue": "总价值 : "
+}

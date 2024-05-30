@@ -20,6 +20,6 @@ namespace GiftTasteHelper.Framework
         /// <param name="npcName">The name of the npc to fetch the gifts for.</param>
         /// <param name="tastesToDisplay">The tastes of the gifts to include.</param>
         /// <param name="includeUniversal">Should universal gifts be included.</param>
-        GiftDrawData GetDrawData(string npcName, GiftTaste[] tastesToDisplay, bool includeUniversal);
+        GiftDrawData? GetDrawData(string npcName, GiftTaste[] tastesToDisplay, bool includeUniversal);
     }
 }

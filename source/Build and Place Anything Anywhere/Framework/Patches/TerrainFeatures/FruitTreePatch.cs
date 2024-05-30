@@ -8,31 +8,31 @@
 **
 *************************************************/
 
-using HarmonyLib;
-using StardewValley;
-using StardewModdingAPI;
-using StardewValley.TerrainFeatures;
+using Common.Helpers;
 using Microsoft.Xna.Framework;
-using System;
+using StardewValley;
+using StardewValley.TerrainFeatures;
 
 namespace AnythingAnywhere.Framework.Patches.TerrainFeatures
 {
-    internal class FruitTreePatch : PatchTemplate
+    internal sealed class FruitTreePatch : PatchHelper
     {
-        private readonly Type _object = typeof(FruitTree);
-
-        internal FruitTreePatch(IMonitor modMonitor, IModHelper modHelper) : base(modMonitor, modHelper)
+        internal FruitTreePatch() : base(typeof(FruitTree)) { }
+        internal void Apply()
         {
-
-        }
-        internal void Apply(Harmony harmony)
-        {
-            harmony.Patch(AccessTools.Method(_object, nameof(FruitTree.IsGrowthBlocked), new[] { typeof(Vector2), typeof(GameLocation) }), postfix: new HarmonyMethod(GetType(), nameof(IsGrowthBlockedPostfix)));
+            Patch(PatchType.Postfix, nameof(FruitTree.IsGrowthBlocked), nameof(IsGrowthBlockedPostfix), [typeof(Vector2), typeof(GameLocation)]);
+            Patch(PatchType.Postfix, nameof(FruitTree.IsTooCloseToAnotherTree), nameof(IsTooCloseToAnotherTreePostfix), [typeof(Vector2), typeof(GameLocation), typeof(bool)]);
         }
 
         public static void IsGrowthBlockedPostfix(FruitTree __instance, Vector2 tileLocation, GameLocation environment, ref bool __result)
         {
-            if (ModEntry.modConfig.EnableFruitTreeTweaks)
+            if (ModEntry.Config.EnableFruitTreeTweaks)
+                __result = false;
+        }
+
+        private static void IsTooCloseToAnotherTreePostfix(FruitTree __instance, Vector2 tileLocation, GameLocation environment, ref bool __result, bool fruitTreesOnly = false)
+        {
+            if (ModEntry.Config.EnableFruitTreeTweaks)
                 __result = false;
         }
     }

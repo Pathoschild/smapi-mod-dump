@@ -84,18 +84,18 @@ namespace FarmTypeManager.Monsters
                 }
                 //if ((string)base.name == "Iridium Golem")
                 //{
-                    base.Speed *= 2;
-                    base.Health += 400;
-                    base.DamageToFarmer += 10;
-                    base.ExperienceGained += 10;
-                    if (Game1.random.NextDouble() < 0.03)
-                    {
-                        base.objectsToDrop.Add("337");
-                    }
-                    if (Game1.random.NextDouble() < 0.03)
-                    {
-                        base.objectsToDrop.Add("337");
-                    }
+                base.Speed *= 2;
+                base.Health += 400;
+                base.DamageToFarmer += 10;
+                base.ExperienceGained += 10;
+                if (Game1.random.NextDouble() < 0.03)
+                {
+                    base.objectsToDrop.Add("337");
+                }
+                if (Game1.random.NextDouble() < 0.03)
+                {
+                    base.objectsToDrop.Add("337");
+                }
                 //}
                 this.Sprite.currentFrame = 16;
                 this.Sprite.loop = false;

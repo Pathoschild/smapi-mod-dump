@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/23946
+IDs: Aflojack45.BetterWateringCanAndHoe
+update keys: Nexus:23946, GitHub:Aflojack/BetterWateringCanAndHoe

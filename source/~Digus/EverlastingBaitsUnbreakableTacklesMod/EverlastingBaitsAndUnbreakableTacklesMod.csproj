@@ -5,7 +5,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>EverlastingBaitsAndUnbreakableTacklesMod</RootNamespace>
     <AssemblyName>EverlastingBaitsAndUnbreakableTacklesMod</AssemblyName>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <FileAlignment>512</FileAlignment>
     <EnableHarmony>true</EnableHarmony>
   </PropertyGroup>
@@ -27,6 +27,6 @@
     <None Include="manifest.json" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.1" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
   </ItemGroup>
 </Project>

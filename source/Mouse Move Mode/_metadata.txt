@@ -6,9 +6,10 @@ mods:
    Mouse Move Mode
 
 latest commit:
-   commit 5ed49a2f0e91ac4a0679821c1d8435a97f2905c1
-   Author: Nghia Ngo <ylongkaka3@gmail.com>
-   Date:   Wed Apr 17 09:33:22 2024 +0700
+   commit fa0c7d4d46b44a26f4384bceb5a5edcc978494a1
+   Author: nghiango1 <ducnghia.tin47@gmail.com>
+   Date:   Thu May 23 22:43:50 2024 +0700
    
-       Create LICENSE
+       remove unsued code, fix left click to perform special weapon just didn't
+       work
    

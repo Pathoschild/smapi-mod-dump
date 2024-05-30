@@ -202,30 +202,43 @@ namespace Unlockable_Bundles.Lib
         {
             ModifiedLocations.Add(location);
 
-            var shopObject = new ShopObject(unlockable.ShopPosition, unlockable);
+            foreach (var tile in unlockable.PossibleShopPositions) {
+                if (location.objects.TryGetValue(tile, out var obj)) {
+                    if (obj.Category != -999) //We replace litter objects
+                        continue;
 
-            if (!location.IsTileOccupiedBy(unlockable.ShopPosition, collisionMask: CollisionMask.Objects)) {
-                location.setObject(unlockable.ShopPosition, shopObject);
-                Monitor.Log($"Placed Bundle for '{unlockable.ID}' at '{location.NameOrUniqueName}':'{unlockable.ShopPosition}'", DebugLogLevel);
-            } else
-                Monitor.Log($"Failed to place Bundle for '{unlockable.ID}' at '{location.NameOrUniqueName}':'{unlockable.ShopPosition}' as it is occupied", LogLevel.Warn);
+                    location.removeObject(tile, false);
+                }
+                var shopObject = new ShopObject(tile, unlockable);
+
+                location.setObject(tile, shopObject);
+                Monitor.Log($"Placed Bundle for '{unlockable.ID}' at '{location.NameOrUniqueName}':'{tile}'", DebugLogLevel);
+                return;
+            }
+
+            Monitor.Log($"Failed to place Bundle for '{unlockable.ID}' at '{location.NameOrUniqueName}':'{unlockable.ShopPosition}' as it is occupied", LogLevel.Warn);
         }
 
-        public static bool shopExists(Unlockable unlockable)
+        public static bool shopExists(Unlockable unlockable) => shopExists(unlockable, out _);
+        public static bool shopExists(Unlockable unlockable, out Vector2 outTile)
         {
             var location = unlockable.getGameLocation();
-            var obj = location.getObjectAtTile((int)unlockable.ShopPosition.X, (int)unlockable.ShopPosition.Y);
-            return obj != null
-                && obj is ShopObject
-                && (obj as ShopObject).Unlockable.ID == unlockable.ID;
+            foreach (var tile in unlockable.PossibleShopPositions) {
+                outTile = tile;
+
+                if (location.objects.TryGetValue(tile, out var obj) && obj is ShopObject shop && shop.Unlockable.ID == unlockable.ID)
+                    return true;
+            }
+            outTile = default(Vector2);
+            return false;
         }
 
         public static void removeShop(Unlockable unlockable)
         {
-            if (shopExists(unlockable)) {
+            if (shopExists(unlockable, out var tile)) {
                 var location = unlockable.getGameLocation();
-                location.removeObject(unlockable.ShopPosition, false);
-                Monitor.Log($"Removed Shop Object for '{unlockable.ID}' at '{location.NameOrUniqueName}':'{unlockable.ShopPosition}'");
+                location.removeObject(tile, false);
+                Monitor.Log($"Removed Shop Object for '{unlockable.ID}' at '{location.NameOrUniqueName}':'{tile}'");
             }
 
         }

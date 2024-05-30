@@ -22,13 +22,13 @@ namespace ArtisanProductsCopyQuality
         public override void Entry(IModHelper helper)
         {
             Monitor.Log(i18n.Get("ArtisanProductsCopyQuality.start"), LogLevel.Info);
+            config = Helper.ReadConfig<Config>();
             Helper.Events.Content.AssetRequested += AssetRequested;
             Helper.Events.GameLoop.GameLaunched += GameLaunched;
         }
 
         private void GameLaunched(object? sender, GameLaunchedEventArgs e)
         {
-            config = Helper.ReadConfig<Config>();
             if (Helper.ModRegistry.IsLoaded("spacechase0.GenericModConfigMenu"))
             {
                 var api = Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
@@ -51,6 +51,7 @@ namespace ArtisanProductsCopyQuality
 
         private void EditMachines(IAssetData asset)
         {
+            if (config.machinesToTarget == null) throw new NullReferenceException("[ArtisanProductsCopyQuality] Config file is corrupted. Delete it and restart your game.");
             if (asset.Data is Dictionary<string, MachineData> data)
             {
                 foreach (KeyValuePair<string, MachineData> machine in data)

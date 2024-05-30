@@ -8,7 +8,10 @@
 **
 *************************************************/
 
+using ItemExtensions.Additions;
+using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
+using StardewValley.GameData.Objects;
 using StardewValley.Triggers;
 
 namespace ItemExtensions.Models.Internal;
@@ -33,7 +36,7 @@ public interface IWorldChangeData
     List<string> AddFlags { get; set; }
     List<string> RemoveFlags { get; set; }
     
-    List<ObjectBuffData> AddBuffs { get; set; } = new();
+    List<ObjectBuffData> AddBuffs { get; set; }
     //List<ObjectBuffData> RemoveBuffs { get; set; } = new();
     
     string Conditions { get; set; }
@@ -98,7 +101,13 @@ public interface IWorldChangeData
         {
             foreach (var buff in data.AddBuffs)
             {
-                Game1.player.applyBuff(buff);
+                if (!string.IsNullOrWhiteSpace(buff.BuffId))
+                    Game1.player.applyBuff(buff.BuffId);
+                else
+                {
+                    var texture = Game1.content.Load<Texture2D>(buff.IconTexture);
+                    Game1.player.buffs.Apply(new Buff(buff.BuffId, null, null, buff.Duration, texture, buff.IconSpriteIndex, new StardewValley.Buffs.BuffEffects(buff.CustomAttributes), buff.IsDebuff));
+                }
             }
         }
 
@@ -145,13 +154,13 @@ public interface IWorldChangeData
             return;
 
         //get all actions
-        var actions = data.TriggerAction.replace(", ", ",").split(',');
+        var actions = Parser.SplitCommas(data.TriggerAction);
         foreach(var trigger in actions)
         {
             TriggerActionManager.TryRunAction(trigger, out var error, out var exception);
             if (!string.IsNullOrWhiteSpace(error))
             {
-                ModEntry.Mon.Log($"Error: {error}. {exception}", LogLevel.Warn);
+                ModEntry.Mon.Log($"Error: {error}. {exception}", StardewModdingAPI.LogLevel.Warn);
             }
         }
     }

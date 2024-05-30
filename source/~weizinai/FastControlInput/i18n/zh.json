@@ -1,0 +1,16 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/weizinai/StardewValleyMods
+**
+*************************************************/
+
+{
+    "Config.ActionButton.Name": "动作键速度",
+    "Config.ActionButton.Tooltip": "游戏响应动作键的速度。",
+    "Config.UseToolButton.Name": "工具键速度",
+    "Config.UseToolButton.Tooltip": "游戏响应工具键的速度。"
+}

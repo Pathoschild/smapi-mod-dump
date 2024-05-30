@@ -64,14 +64,17 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Items
         /// <summary>The location containing the item, if applicable.</summary>
         private readonly GameLocation? Location;
 
-        /// <summary>Whether to only show content once the player discovers it.</summary>
-        private readonly bool ProgressionMode;
+        /// <summary>Whether to show gift tastes which the player hasn't learned about in-game yet</summary>
+        private readonly bool ShowUnknownGiftTastes;
 
         /// <summary>Whether to highlight item gift tastes which haven't been revealed in the NPC profile.</summary>
         private readonly bool HighlightUnrevealedGiftTastes;
 
         /// <summary>Which gift taste levels to show.</summary>
         private readonly ModGiftTasteConfig ShowGiftTastes;
+
+        /// <summary>Whether to show recipes the player hasn't learned in-game yet.</summary>
+        private readonly bool ShowUnknownRecipes;
 
         /// <summary>The configured minimum field values needed before they're auto-collapsed.</summary>
         private readonly ModCollapseLargeFieldsConfig CollapseFieldsConfig;
@@ -89,9 +92,10 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Items
         /// <summary>Construct an instance.</summary>
         /// <param name="codex">Provides subject entries</param>
         /// <param name="gameHelper">Provides utility methods for interacting with the game code.</param>
-        /// <param name="progressionMode">Whether to only show content once the player discovers it.</param>
+        /// <param name="showUnknownGiftTastes">Whether to show gift tastes which the player hasn't learned about in-game yet</param>
         /// <param name="highlightUnrevealedGiftTastes">Whether to highlight item gift tastes which haven't been revealed in the NPC profile.</param>
         /// <param name="showGiftTastes">Which gift taste levels to show.</param>
+        /// <param name="showUnknownRecipes">Whether to show recipes the player hasn't learned in-game yet.</param>
         /// <param name="collapseFieldsConfig">The configured minimum field values needed before they're auto-collapsed.</param>
         /// <param name="item">The underlying target.</param>
         /// <param name="context">The context of the object being looked up.</param>
@@ -100,13 +104,14 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Items
         /// <param name="getCropSubject">Get a lookup subject for a crop.</param>
         /// <param name="fromCrop">The crop associated with the item (if applicable).</param>
         /// <param name="fromDirt">The dirt containing the crop (if applicable).</param>
-        public ItemSubject(ISubjectRegistry codex, GameHelper gameHelper, bool progressionMode, bool highlightUnrevealedGiftTastes, ModGiftTasteConfig showGiftTastes, ModCollapseLargeFieldsConfig collapseFieldsConfig, Item item, ObjectContext context, bool knownQuality, GameLocation? location, Func<Crop, ObjectContext, HoeDirt?, ISubject> getCropSubject, Crop? fromCrop = null, HoeDirt? fromDirt = null)
+        public ItemSubject(ISubjectRegistry codex, GameHelper gameHelper, bool showUnknownGiftTastes, bool highlightUnrevealedGiftTastes, ModGiftTasteConfig showGiftTastes, bool showUnknownRecipes, ModCollapseLargeFieldsConfig collapseFieldsConfig, Item item, ObjectContext context, bool knownQuality, GameLocation? location, Func<Crop, ObjectContext, HoeDirt?, ISubject> getCropSubject, Crop? fromCrop = null, HoeDirt? fromDirt = null)
             : base(gameHelper)
         {
             this.Codex = codex;
-            this.ProgressionMode = progressionMode;
+            this.ShowUnknownGiftTastes = showUnknownGiftTastes;
             this.HighlightUnrevealedGiftTastes = highlightUnrevealedGiftTastes;
             this.ShowGiftTastes = showGiftTastes;
+            this.ShowUnknownRecipes = showUnknownRecipes;
             this.CollapseFieldsConfig = collapseFieldsConfig;
             this.Target = item;
             this.FromCrop = fromCrop ?? fromDirt?.crop;
@@ -222,7 +227,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Items
                         orderby name
                         select name
                     );
-                    yield return new GenericField(I18n.Item_SellsTo(), string.Join(", ", buyers));
+                    yield return new GenericField(I18n.Item_SellsTo(), I18n.List(buyers));
                 }
 
                 // clothing
@@ -234,15 +239,15 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Items
                 {
                     IDictionary<GiftTaste, GiftTasteModel[]> giftTastes = this.GetGiftTastes(item);
                     if (this.ShowGiftTastes.Loved)
-                        yield return new ItemGiftTastesField(I18n.Item_LovesThis(), giftTastes, GiftTaste.Love, onlyRevealed: this.ProgressionMode, highlightUnrevealed: this.HighlightUnrevealedGiftTastes);
+                        yield return new ItemGiftTastesField(I18n.Item_LovesThis(), giftTastes, GiftTaste.Love, showUnknown: this.ShowUnknownGiftTastes, highlightUnrevealed: this.HighlightUnrevealedGiftTastes);
                     if (this.ShowGiftTastes.Liked)
-                        yield return new ItemGiftTastesField(I18n.Item_LikesThis(), giftTastes, GiftTaste.Like, onlyRevealed: this.ProgressionMode, highlightUnrevealed: this.HighlightUnrevealedGiftTastes);
+                        yield return new ItemGiftTastesField(I18n.Item_LikesThis(), giftTastes, GiftTaste.Like, showUnknown: this.ShowUnknownGiftTastes, highlightUnrevealed: this.HighlightUnrevealedGiftTastes);
                     if (this.ShowGiftTastes.Neutral)
-                        yield return new ItemGiftTastesField(I18n.Item_NeutralAboutThis(), giftTastes, GiftTaste.Neutral, onlyRevealed: this.ProgressionMode, highlightUnrevealed: this.HighlightUnrevealedGiftTastes);
+                        yield return new ItemGiftTastesField(I18n.Item_NeutralAboutThis(), giftTastes, GiftTaste.Neutral, showUnknown: this.ShowUnknownGiftTastes, highlightUnrevealed: this.HighlightUnrevealedGiftTastes);
                     if (this.ShowGiftTastes.Disliked)
-                        yield return new ItemGiftTastesField(I18n.Item_DislikesThis(), giftTastes, GiftTaste.Dislike, onlyRevealed: this.ProgressionMode, highlightUnrevealed: this.HighlightUnrevealedGiftTastes);
+                        yield return new ItemGiftTastesField(I18n.Item_DislikesThis(), giftTastes, GiftTaste.Dislike, showUnknown: this.ShowUnknownGiftTastes, highlightUnrevealed: this.HighlightUnrevealedGiftTastes);
                     if (this.ShowGiftTastes.Hated)
-                        yield return new ItemGiftTastesField(I18n.Item_HatesThis(), giftTastes, GiftTaste.Hate, onlyRevealed: this.ProgressionMode, highlightUnrevealed: this.HighlightUnrevealedGiftTastes);
+                        yield return new ItemGiftTastesField(I18n.Item_HatesThis(), giftTastes, GiftTaste.Hate, showUnknown: this.ShowUnknownGiftTastes, highlightUnrevealed: this.HighlightUnrevealedGiftTastes);
                 }
             }
 
@@ -300,9 +305,12 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Items
 
                 if (recipes.Length > 0)
                 {
-                    var field = new ItemRecipesField(this.GameHelper, I18n.Item_Recipes(), item, recipes);
-                    if (this.CollapseFieldsConfig.Enabled && recipes.Length >= this.CollapseFieldsConfig.ItemRecipes)
-                        field.CollapseByDefault(I18n.Generic_ShowXResults(count: recipes.Length));
+                    var field = new ItemRecipesField(this.GameHelper, I18n.Item_Recipes(), item, recipes, this.ShowUnknownRecipes);
+
+                    // calculate count of recipes that will be shown, in case we're in progression mode and some are hidden
+                    int shownRecipesCount = recipes.Count(recipe => this.ShowUnknownRecipes || recipe.IsKnown());
+                    if (this.CollapseFieldsConfig.Enabled && shownRecipesCount >= this.CollapseFieldsConfig.ItemRecipes)
+                        field.CollapseByDefault(I18n.Generic_ShowXResults(count: shownRecipesCount));
                     yield return field;
                 }
             }
@@ -549,7 +557,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Items
                 }
 
                 // seasons
-                summary.Add(I18n.Crop_Summary_Seasons(seasons: string.Join(", ", I18n.GetSeasonNames(data.Seasons))));
+                summary.Add(I18n.Crop_Summary_Seasons(seasons: I18n.List(I18n.GetSeasonNames(data.Seasons))));
 
                 // drops
                 if (data.CropData is not null)
@@ -590,7 +598,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Items
                     .OrderBy(p => p)
                     .ToArray();
 
-                yield return new GenericField(I18n.Crop_Fertilized(), string.Join(", ", appliedFertilizers));
+                yield return new GenericField(I18n.Crop_Fertilized(), I18n.List(appliedFertilizers));
             }
         }
 
@@ -736,7 +744,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Items
                     )
                     .ToArray();
                 if (missingBundles.Any())
-                    neededFor.Add(I18n.Item_NeededFor_CommunityCenter(bundles: string.Join(", ", missingBundles)));
+                    neededFor.Add(I18n.Item_NeededFor_CommunityCenter(bundles: I18n.List(missingBundles)));
             }
 
             // polyculture achievement (ship 15 crops)
@@ -757,25 +765,36 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Items
 
             // recipe achievements
             {
-                var recipes =
+                RecipeData[] missingRecipes =
                     (
                         from recipe in this.GameHelper.GetRecipesForIngredient(this.Target)
                         let item = recipe.TryCreateItem(this.Target)
-                        where item != null
+                        let timesCrafted = recipe.GetTimesCrafted(Game1.player)
+                        where item != null && timesCrafted <= 0
                         orderby item.DisplayName
-                        select new { recipe.Type, item.DisplayName, TimesCrafted = recipe.GetTimesCrafted(Game1.player) }
+                        select new RecipeData(recipe.Type, item.DisplayName, TimesCrafted: timesCrafted, IsKnown: recipe.IsKnown())
                     )
                     .ToArray();
 
                 // gourmet chef achievement (cook every recipe)
-                string[] uncookedNames = (from recipe in recipes where recipe.Type == RecipeType.Cooking && recipe.TimesCrafted <= 0 select recipe.DisplayName).ToArray();
-                if (uncookedNames.Any())
-                    neededFor.Add(I18n.Item_NeededFor_GourmetChef(recipes: string.Join(", ", uncookedNames)));
+                {
+                    RecipeData[] missingCookingRecipes = missingRecipes.Where(recipe => recipe.Type == RecipeType.Cooking).ToArray();
+                    if (missingCookingRecipes.Length > 0)
+                    {
+                        string missingRecipesText = this.GetNeededForRecipeText(missingCookingRecipes);
+                        neededFor.Add(I18n.Item_NeededFor_GourmetChef(missingRecipesText));
+                    }
+                }
 
                 // craft master achievement (craft every item)
-                string[] uncraftedNames = (from recipe in recipes where recipe.Type == RecipeType.Crafting && recipe.TimesCrafted <= 0 select recipe.DisplayName).ToArray();
-                if (uncraftedNames.Any())
-                    neededFor.Add(I18n.Item_NeededFor_CraftMaster(recipes: string.Join(", ", uncraftedNames)));
+                {
+                    RecipeData[] missingCraftingRecipes = missingRecipes.Where(recipe => recipe.Type == RecipeType.Crafting).ToArray();
+                    if (missingCraftingRecipes.Length > 0)
+                    {
+                        string missingRecipesText = this.GetNeededForRecipeText(missingCraftingRecipes);
+                        neededFor.Add(I18n.Item_NeededFor_CraftMaster(missingRecipesText));
+                    }
+                }
             }
 
             // quests
@@ -786,12 +805,37 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Items
                     .OrderBy(p => p)
                     .ToArray();
                 if (quests.Any())
-                    neededFor.Add(I18n.Item_NeededFor_Quests(quests: string.Join(", ", quests)));
+                    neededFor.Add(I18n.Item_NeededFor_Quests(quests: I18n.List(quests)));
             }
 
             // yield
             if (neededFor.Any())
-                yield return new GenericField(I18n.Item_NeededFor(), string.Join(", ", neededFor));
+                yield return new GenericField(I18n.Item_NeededFor(), I18n.List(neededFor));
+        }
+
+        /// <summary>Get a text representation for missing recipes. If progression mode is enabled, includes the count of unknown recipes.</summary>
+        /// <param name="missingRecipes">A list of recipes that haven't been cooked or crafted yet.</param>
+        private string GetNeededForRecipeText(RecipeData[] missingRecipes)
+        {
+            if (this.ShowUnknownRecipes)
+            {
+                // return all recipe names
+                string[] recipeNames = (from recipe in missingRecipes select (string)recipe.DisplayName).ToArray();
+                return I18n.List(recipeNames);
+            }
+
+            RecipeData[] knownMissingRecipes = missingRecipes.Where(recipe => recipe.IsKnown).ToArray();
+            int unknownMissingRecipeCount = missingRecipes.Length - knownMissingRecipes.Length;
+
+            if (knownMissingRecipes.Any())
+            {
+                // return learned recipe names + count of unlearned recipes
+                string[] knownRecipeNames = (from recipe in knownMissingRecipes select (string)recipe.DisplayName).ToArray();
+                return I18n.List(knownRecipeNames.Append(I18n.Item_UnknownRecipes(unknownMissingRecipeCount)));
+            }
+
+            // return just the count of unlearned recipes
+            return I18n.Item_UnknownRecipes(unknownMissingRecipeCount);
         }
 
         /// <summary>Get unfinished bundles which require this item.</summary>
@@ -955,5 +999,12 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Items
                 .Where(p => this.IsIngredientNeeded(bundle, p))
                 .Sum(p => p.Stack);
         }
+
+        /// <summary>The basic metadata for a recipe.</summary>
+        /// <param name="Type">The recipe type.</param>
+        /// <param name="DisplayName">The translated display name for the produced item, including metadata like the "(Recipe)" suffix.</param>
+        /// <param name="TimesCrafted">How many times the recipe was cooked or crafted by the player.</param>
+        /// <param name="IsKnown">Whether the player knows this recipe.</param>
+        public record RecipeData(RecipeType Type, string DisplayName, int TimesCrafted, bool IsKnown);
     }
 }

@@ -44,7 +44,7 @@
 		{
 			"Action": "EditData",
 			"Target": "Data/Machines",
-			"TargetField": [ "(BC)12", "OutputRules", "Default_Wine", "Triggers", "#0" ],
+			"TargetField": [ "(BC)12", "OutputRules", "Default_Wine", "Triggers", "ItemPlacedInMachine_Fruit" ],
 			"Entries": {
 				"RequiredItemId": "(O)350",
 				"RequiredTags": [ "juice_fruit" ]
@@ -56,7 +56,7 @@
 		{
 			"Action": "EditData",
 			"Target": "Data/Machines",
-			"TargetField": [ "(BC)12", "OutputRules", "Default_Wine", "OutputItem", "#0" ],
+			"TargetField": [ "(BC)12", "OutputRules", "Default_Wine", "OutputItem", "Default" ],
 			"Entries": {
 				"ItemId": "(O)348",
 				"ObjectInternalName": "(O)348_{0}",
@@ -78,29 +78,26 @@
 		{
 			"Action": "EditData",
 			"Target": "Data/Machines",
-			"TargetField": [ "(BC)12", "OutputRules", "Default_Juice", "Triggers", "#0" ],
+			"TargetField": [ "(BC)12", "OutputRules", "Default_Juice", "Triggers", "ItemPlacedInMachine_Vegetable" ],
 			"Entries": {
-				"RequiredItemId": "(O)350",
-				"RequiredTags": [ "juice_vegetable" ]
+				//INFO: keeps compatibility with CopperStill while disabling for general use
+				"Condition": "ITEM_CONTEXT_TAG Input juice_vegetable"
 			}
 		},
 		{
 			"Action": "EditData",
 			"Target": "Data/Machines",
-			"TargetField": [ "(BC)12", "OutputRules", "Default_Juice", "OutputItem", "#0" ],
+			"TargetField": [ "(BC)12", "OutputRules", "Default_Juice", "Triggers", "ItemPlacedInMachine_Forage" ],
 			"Entries": {
-				"ItemId": "{{ModId}}_Mash",
-				"ObjectInternalName": "{{ModId}}_Mash_{0}",
-				"ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_Flavor %PRESERVED_DISPLAY_NAME %DISPLAY_NAME]",
-				"PreserveId": "DROP_IN_PRESERVE",
-				"CopyColor": true,
-				"CopyPrice": true,
-				"PriceModifiers": [
-					{
-						"Modification": "Multiply",
-						"Amount": 2.0
-					}
-				]
+				"Condition": "ITEM_CONTEXT_TAG Input juice_vegetable"
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/Machines",
+			"TargetField": [ "(BC)12", "OutputRules", "Default_Juice", "Triggers", "ItemPlacedInMachine_Juice" ],
+			"Entries": {
+				"Condition": "ITEM_CONTEXT_TAG Input juice_vegetable"
 			}
 		}
 	]

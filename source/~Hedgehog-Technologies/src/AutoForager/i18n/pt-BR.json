@@ -9,9 +9,11 @@
 *************************************************/
 
 {
-  "Action.Shake.Future": "Agite",
   "Action.Dig.Future": "Desenterrar", // Google Translate - Feel free to update
+  "Action.Forage.Future": "Forage", // TODO
+  "Action.Shake.Future": "Agite",
 
+  "Category.Animal": "Animals", // TODO
   "Category.Beach": "Praia", // Google Translate - Feel free to update
   "Category.BushBlooms": "Flores de Arbustos", // Google Translate - Feel free to update
   "Category.CustomBushes": "Arbustos Personalizados", // Google Translate - Feel free to update
@@ -55,6 +57,8 @@
 
   "Option.FruitsReadyToShake.Name": "Frutas Mínimas Prontas para Agitar",
   "Option.FruitsReadyToShake.Tooltip": "Quantidade mínima de frutas que uma árvore frutífera deve ter pronta antes que o AutoForager agite a árvore.",
+  "Option.IgnoreMushroomLogTrees.Name": "Skip Moss-Covered Trees near{{whitespace}}Mushroom Logs?", // TODO
+  "Option.IgnoreMushroomLogTrees.Tooltip": "Whether or not to skip harvesting Moss from trees that are near enough to contribute to a Mushroom log.", // TODO
   "Option.IsForagerActive.Name": "Forager Está Ativo?",
   "Option.IsForagerActive.Tooltip": "Se o Auto Forager vai ou não sacudir árvores e arbustos e forragear objetos.",
   "Option.RequireHoe.Name": "Exigir enxada para raízes de gengibre,{{whitespace}}Inhames de neve e raízes de inverno?",
@@ -84,7 +88,9 @@
   "Reward.Buried.Items": "Itens Enterrados", // Google Translate - Feel free to update
   "Reward.Buried.Seeds": "Sementes Enterradas", // Google Translate - Feel free to update
   "Reward.GoldenWalnuts": "GWalnuts antigos",
+  "Reward.Mushrooms": "Mushrooms", // TODO
   "Reward.Salmonberries": "Salmonberries",
+  "Reward.TappedTree": "Tree Byproducts", // TODO
   "Reward.TeaLeaves": "Folhas de Chá",
 
   "Section.Bushes.Text": "Alterrâncias de Bush",
@@ -100,8 +106,12 @@
   "Subject.Bushes": "arbustos", // Google Translate - Feel free to update
   "Subject.BushBloomSchedules": "horários de floração do mato", // Google Translate - Feel free to update
   "Subject.GingerRoots": "Raízes de gengibre",
+  "Subject.MushroomBoxes": "Mushroom Boxes", // TODO
+  "Subject.MushroomLogs": "Mushroom Logs", // TODO
   "Subject.SalmonberryBushes": "Arbustos de salmão",
   "Subject.SeedSpot": "Localização da semente", // Google Translate - Feel free to update
+  "Subject.SpawnableForageIds": "spawnable forage ids", // TODO
+  "Subject.Tappers": "Tappers", // TODO
   "Subject.TeaBushes": "Arbustos de chá",
   "Subject.WalnutBushes": "Arbustos de nozes"
 }

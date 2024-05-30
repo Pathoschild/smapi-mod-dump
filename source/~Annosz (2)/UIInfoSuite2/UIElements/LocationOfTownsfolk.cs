@@ -114,6 +114,16 @@ internal class LocationOfTownsfolk : IDisposable
 
     _townsfolk.Clear();
 
+    // We shouldn't render if the RSV map is open, it already does its own NPC Tracking
+    bool isRsvWorldMap =
+      Game1.activeClickableMenu?.GetChildMenu()?.GetType().FullName?.Equals("RidgesideVillage.RSVWorldMap") ?? false;
+
+    if (isRsvWorldMap)
+    {
+      ModEntry.MonitorObject.Log("Not Rendering Villagers, in RSV Map");
+      return;
+    }
+
     foreach (GameLocation? loc in Game1.locations)
     {
       foreach (NPC? character in loc.characters)
@@ -151,7 +161,7 @@ internal class LocationOfTownsfolk : IDisposable
         {
           // npc
           checkbox.greyedOut = false;
-          checkbox.isChecked = _options.ShowLocationOfFriends.SafeGet(friendName, true);
+          checkbox.isChecked = _options.ShowLocationOfFriends.GetOrDefault(friendName, true);
         }
         else
         {
@@ -279,7 +289,7 @@ internal class LocationOfTownsfolk : IDisposable
       try
       {
         bool shouldDrawCharacter = Game1.player.friendshipData.ContainsKey(character.Name) &&
-                                   _options.ShowLocationOfFriends.SafeGet(character.Name, true) &&
+                                   _options.ShowLocationOfFriends.GetOrDefault(character.Name, true) &&
                                    character.id != -1;
         if (shouldDrawCharacter)
         {

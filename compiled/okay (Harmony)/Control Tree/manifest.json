@@ -1,8 +1,8 @@
 {
     "Name": "Control Tree",
     "Author": "Cluom",
-    "Version": "1.0.1",
-    "Description": "Can cantrol tree for a better view.",
+    "Version": "1.1.3",
+    "Description": "This is a mod that aims to achieve better visual clarity by modifying the rendering logic of trees.",
     "UniqueID": "Cluom.ControlTree",
     "EntryDll": "ControlTree.dll",
     "MinimumApiVersion": "4.0.0",

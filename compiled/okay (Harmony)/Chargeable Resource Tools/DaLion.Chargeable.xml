@@ -1,0 +1,586 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DaLion.Chargeable</name>
+    </assembly>
+    <members>
+        <member name="T:DaLion.Chargeable.ChargeableConfig">
+            <summary>Config schema for the Chargeable mod.</summary>
+        </member>
+        <member name="P:DaLion.Chargeable.ChargeableConfig.Axe">
+            <inheritdoc cref="T:DaLion.Chargeable.Framework.Configs.AxeConfig"/>
+        </member>
+        <member name="P:DaLion.Chargeable.ChargeableConfig.Pick">
+            <inheritdoc cref="T:DaLion.Chargeable.Framework.Configs.PickaxeConfig"/>
+        </member>
+        <member name="P:DaLion.Chargeable.ChargeableConfig.RequireModKey">
+            <summary>Gets a value indicating whether determines whether charging requires a mod key to activate.</summary>
+        </member>
+        <member name="P:DaLion.Chargeable.ChargeableConfig.ModKey">
+            <summary>Gets the chosen mod key(s).</summary>
+        </member>
+        <member name="P:DaLion.Chargeable.ChargeableConfig.TicksBetweenWaves">
+            <summary>Gets the number of update ticks between each peak of the shockwave. Affects the shockwave travel speed. Lower is faster. Set to 0 for instant.</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.ChargeableConfig.Validate(StardewModdingAPI.IModHelper)">
+            <summary>Validate the config settings, replacing invalid values if necessary.</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.ChargeableConfigMenu.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Chargeable.ChargeableConfigMenu"/> class.</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.ChargeableConfigMenu.BuildMenu">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Chargeable.ChargeableConfigMenu.ResetConfig">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Chargeable.ChargeableConfigMenu.SaveAndApply">
+            <inheritdoc />
+        </member>
+        <member name="T:DaLion.Chargeable.ChargeableMod">
+            <summary>The mod entry point.</summary>
+        </member>
+        <member name="P:DaLion.Chargeable.ChargeableMod.Instance">
+            <summary>Gets the static <see cref="T:DaLion.Chargeable.ChargeableMod"/> instance.</summary>
+        </member>
+        <member name="P:DaLion.Chargeable.ChargeableMod.Config">
+            <summary>Gets or sets the <see cref="T:DaLion.Chargeable.ChargeableConfig"/> instance.</summary>
+        </member>
+        <member name="P:DaLion.Chargeable.ChargeableMod.PerScreenState">
+            <summary>Gets the <see cref="T:StardewModdingAPI.Utilities.PerScreen`1"/> <see cref="T:DaLion.Chargeable.ChargeableState"/>.</summary>
+        </member>
+        <member name="P:DaLion.Chargeable.ChargeableMod.State">
+            <summary>Gets or sets the <see cref="T:DaLion.Chargeable.ChargeableState"/> of the local player.</summary>
+        </member>
+        <member name="P:DaLion.Chargeable.ChargeableMod.Log">
+            <summary>Gets the <see cref="T:DaLion.Shared.Logger"/> instance.</summary>
+        </member>
+        <member name="P:DaLion.Chargeable.ChargeableMod.ModHelper">
+            <summary>Gets the <see cref="T:StardewModdingAPI.IModHelper"/> API.</summary>
+        </member>
+        <member name="P:DaLion.Chargeable.ChargeableMod.Manifest">
+            <summary>Gets the <see cref="T:StardewModdingAPI.IManifest"/> API.</summary>
+        </member>
+        <member name="P:DaLion.Chargeable.ChargeableMod.UniqueId">
+            <summary>Gets the unique ID for this mod.</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.ChargeableMod.Entry(StardewModdingAPI.IModHelper)">
+            <summary>The mod entry point, called after the mod is first loaded.</summary>
+            <param name="helper">Provides simplified APIs for writing mods.</param>
+        </member>
+        <member name="T:DaLion.Chargeable.ChargeableState">
+            <summary>The ephemeral runtime state for Tools.</summary>
+        </member>
+        <member name="T:DaLion.Chargeable.Framework.Configs.AxeConfig">
+            <summary>Configs related to the <see cref="T:StardewValley.Tools.Axe"/>.</summary>
+        </member>
+        <member name="P:DaLion.Chargeable.Framework.Configs.AxeConfig.EnableCharging">
+            <summary>Gets a value indicating whether enables charging the <see cref="T:StardewValley.Tools.Axe"/>.</summary>
+        </member>
+        <member name="P:DaLion.Chargeable.Framework.Configs.AxeConfig.RadiusAtEachPowerLevel">
+            <summary>Gets the radius of affected tiles at each upgrade level.</summary>
+        </member>
+        <member name="P:DaLion.Chargeable.Framework.Configs.AxeConfig.ClearFruitTreeSeeds">
+            <summary>Gets a value indicating whether to clear fruit tree seeds.</summary>
+        </member>
+        <member name="P:DaLion.Chargeable.Framework.Configs.AxeConfig.ClearFruitTreeSaplings">
+            <summary>Gets a value indicating whether to clear fruit trees that aren't fully grown.</summary>
+        </member>
+        <member name="P:DaLion.Chargeable.Framework.Configs.AxeConfig.CutGrownFruitTrees">
+            <summary>Gets a value indicating whether to cut down fully-grown fruit trees.</summary>
+        </member>
+        <member name="P:DaLion.Chargeable.Framework.Configs.AxeConfig.ClearTreeSeeds">
+            <summary>Gets a value indicating whether to clear non-fruit tree seeds.</summary>
+        </member>
+        <member name="P:DaLion.Chargeable.Framework.Configs.AxeConfig.ClearTreeSaplings">
+            <summary>Gets a value indicating whether to clear non-fruit trees that aren't fully grown.</summary>
+        </member>
+        <member name="P:DaLion.Chargeable.Framework.Configs.AxeConfig.CutGrownTrees">
+            <summary>Gets a value indicating whether to cut down full-grown non-fruit trees.</summary>
+        </member>
+        <member name="P:DaLion.Chargeable.Framework.Configs.AxeConfig.CutTappedTrees">
+            <summary>Gets a value indicating whether to cut down non-fruit trees that have a tapper.</summary>
+        </member>
+        <member name="P:DaLion.Chargeable.Framework.Configs.AxeConfig.CutGiantCrops">
+            <summary>Gets a value indicating whether to harvest giant crops.</summary>
+        </member>
+        <member name="P:DaLion.Chargeable.Framework.Configs.AxeConfig.ClearBushes">
+            <summary>Gets a value indicating whether to clear bushes.</summary>
+        </member>
+        <member name="P:DaLion.Chargeable.Framework.Configs.AxeConfig.ClearLiveCrops">
+            <summary>Gets a value indicating whether to clear live crops.</summary>
+        </member>
+        <member name="P:DaLion.Chargeable.Framework.Configs.AxeConfig.ClearDeadCrops">
+            <summary>Gets a value indicating whether to clear dead crops.</summary>
+        </member>
+        <member name="P:DaLion.Chargeable.Framework.Configs.AxeConfig.ClearDebris">
+            <summary>Gets a value indicating whether to clear debris like twigs, giant stumps, fallen logs and weeds.</summary>
+        </member>
+        <member name="P:DaLion.Chargeable.Framework.Configs.AxeConfig.AllowReachingEnchantment">
+            <summary>Gets a value indicating whether the Axe can be enchanted with Reaching.</summary>
+        </member>
+        <member name="P:DaLion.Chargeable.Framework.Configs.AxeConfig.StaminaCostMultiplier">
+            <summary>Gets the multiplier to base stamina consumed by the <see cref="T:StardewValley.Tools.Axe"/>.</summary>
+        </member>
+        <member name="T:DaLion.Chargeable.Framework.Configs.PickaxeConfig">
+            <summary>Configs related to the <see cref="T:StardewValley.Tools.Pickaxe"/>.</summary>
+        </member>
+        <member name="P:DaLion.Chargeable.Framework.Configs.PickaxeConfig.EnableCharging">
+            <summary>Gets a value indicating whether enables charging the Pick.</summary>
+        </member>
+        <member name="P:DaLion.Chargeable.Framework.Configs.PickaxeConfig.RadiusAtEachPowerLevel">
+            <summary>Gets the radius of affected tiles at each upgrade level.</summary>
+        </member>
+        <member name="P:DaLion.Chargeable.Framework.Configs.PickaxeConfig.BreakBouldersAndMeteorites">
+            <summary>Gets a value indicating whether to break boulders and meteorites.</summary>
+        </member>
+        <member name="P:DaLion.Chargeable.Framework.Configs.PickaxeConfig.HarvestMineSpawns">
+            <summary>Gets a value indicating whether to harvest spawned items in the mines.</summary>
+        </member>
+        <member name="P:DaLion.Chargeable.Framework.Configs.PickaxeConfig.BreakMineContainers">
+            <summary>Gets a value indicating whether to break containers in the mine.</summary>
+        </member>
+        <member name="P:DaLion.Chargeable.Framework.Configs.PickaxeConfig.ClearObjects">
+            <summary>Gets a value indicating whether to clear placed objects.</summary>
+        </member>
+        <member name="P:DaLion.Chargeable.Framework.Configs.PickaxeConfig.ClearFlooring">
+            <summary>Gets a value indicating whether to clear placed paths and flooring.</summary>
+        </member>
+        <member name="P:DaLion.Chargeable.Framework.Configs.PickaxeConfig.ClearDirt">
+            <summary>Gets a value indicating whether to clear tilled dirt.</summary>
+        </member>
+        <member name="P:DaLion.Chargeable.Framework.Configs.PickaxeConfig.ClearLiveCrops">
+            <summary>Gets a value indicating whether to clear live crops.</summary>
+        </member>
+        <member name="P:DaLion.Chargeable.Framework.Configs.PickaxeConfig.ClearDeadCrops">
+            <summary>Gets a value indicating whether to clear dead crops.</summary>
+        </member>
+        <member name="P:DaLion.Chargeable.Framework.Configs.PickaxeConfig.ClearDebris">
+            <summary>Gets a value indicating whether to clear debris like stones, boulders and weeds.</summary>
+        </member>
+        <member name="P:DaLion.Chargeable.Framework.Configs.PickaxeConfig.AllowReachingEnchantment">
+            <summary>Gets a value indicating whether the Pick can be enchanted with Reaching.</summary>
+        </member>
+        <member name="P:DaLion.Chargeable.Framework.Configs.PickaxeConfig.StaminaCostMultiplier">
+            <summary>Gets the multiplier to base stamina consumed by the <see cref="T:StardewValley.Tools.Axe"/>.</summary>
+        </member>
+        <member name="T:DaLion.Chargeable.Framework.Effects.AxeEffect">
+            <summary>Applies <see cref="T:StardewValley.Tools.Axe"/> effects.</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.Framework.Effects.AxeEffect.#ctor(DaLion.Chargeable.Framework.Configs.AxeConfig)">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Chargeable.Framework.Effects.AxeEffect"/> class.</summary>
+            <param name="config">The mod configs for the <see cref="T:StardewValley.Tools.Axe"/>.</param>
+        </member>
+        <member name="P:DaLion.Chargeable.Framework.Effects.AxeEffect.UpgradeLevelsNeededForResource">
+            <summary>Gets the <see cref="T:StardewValley.Tools.Axe"/> upgrade levels needed to break supported resource clumps.</summary>
+            <remarks>Derived from <see cref="M:StardewValley.TerrainFeatures.ResourceClump.performToolAction(StardewValley.Tool,System.Int32,Microsoft.Xna.Framework.Vector2)"/>.</remarks>
+        </member>
+        <member name="M:DaLion.Chargeable.Framework.Effects.AxeEffect.Apply(Microsoft.Xna.Framework.Vector2,StardewValley.Object,StardewValley.TerrainFeatures.TerrainFeature,StardewValley.Tool,StardewValley.GameLocation,StardewValley.Farmer)">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Chargeable.Framework.Effects.AxeEffect.ShouldCut(StardewValley.TerrainFeatures.Tree)">
+            <summary>Determines whether the given <paramref name="tree"/> should be chopped.</summary>
+            <param name="tree">The tree to check.</param>
+        </member>
+        <member name="M:DaLion.Chargeable.Framework.Effects.AxeEffect.ShouldCut(StardewValley.TerrainFeatures.FruitTree)">
+            <summary>Determines whether the given <paramref name="fruitTree"/> should be chopped.</summary>
+            <param name="fruitTree">The tree to check.</param>
+        </member>
+        <member name="M:DaLion.Chargeable.Framework.Effects.AxeEffect.ShouldCut(StardewValley.TerrainFeatures.Bush)">
+            <summary>Determines whether <see cref="T:StardewValley.TerrainFeatures.Bush"/>es should be chopped.</summary>
+            <param name="bush">A bush.</param>
+            <remarks>
+                The <see cref="T:StardewValley.TerrainFeatures.Bush"/> instance is irrelevant, and only kept in the method signature to overload other
+                <c>ShouldCut</c> variations.
+            </remarks>
+        </member>
+        <member name="T:DaLion.Chargeable.Framework.Effects.IToolEffect">
+            <summary>Interface for applying a <see cref="T:StardewValley.Tool"/>'s effects.</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.Framework.Effects.IToolEffect.Apply(Microsoft.Xna.Framework.Vector2,StardewValley.Object,StardewValley.TerrainFeatures.TerrainFeature,StardewValley.Tool,StardewValley.GameLocation,StardewValley.Farmer)">
+            <summary>Applies the <paramref name="tool"/> to the <paramref name="tile"/>.</summary>
+            <param name="tile">The tile to modify.</param>
+            <param name="tileObj">The object on the tile.</param>
+            <param name="tileFeature">The feature on the tile.</param>
+            <param name="tool">The tool selected by the player (if any).</param>
+            <param name="location">The current location.</param>
+            <param name="who">The current player.</param>
+            <returns><see langword="true"/> if the <paramref name="tool"/> was successfully applied, otherwise <see langword="false"/>.</returns>
+        </member>
+        <member name="T:DaLion.Chargeable.Framework.Effects.PickaxeEffect">
+            <summary>Applies <see cref="T:StardewValley.Tools.Pickaxe"/> effects.</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.Framework.Effects.PickaxeEffect.#ctor(DaLion.Chargeable.Framework.Configs.PickaxeConfig)">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Chargeable.Framework.Effects.PickaxeEffect"/> class.</summary>
+            <param name="config">The mod configs for the <see cref="T:StardewValley.Tools.Axe"/>.</param>
+        </member>
+        <member name="P:DaLion.Chargeable.Framework.Effects.PickaxeEffect.UpgradeLevelsNeededForResource">
+            <summary>Gets the <see cref="T:StardewValley.Tools.Pickaxe"/> upgrade levels needed to break supported resource clumps.</summary>
+            <remarks>Derived from <see cref="M:StardewValley.TerrainFeatures.ResourceClump.performToolAction(StardewValley.Tool,System.Int32,Microsoft.Xna.Framework.Vector2)"/>.</remarks>
+        </member>
+        <member name="M:DaLion.Chargeable.Framework.Effects.PickaxeEffect.Apply(Microsoft.Xna.Framework.Vector2,StardewValley.Object,StardewValley.TerrainFeatures.TerrainFeature,StardewValley.Tool,StardewValley.GameLocation,StardewValley.Farmer)">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Chargeable.Framework.Effects.PickaxeEffect.TryBreakContainer(Microsoft.Xna.Framework.Vector2,StardewValley.Object,StardewValley.Tool,StardewValley.GameLocation)">
+            <summary>Breaks open a container using a tool, if applicable.</summary>
+            <param name="tile">The tile position.</param>
+            <param name="tileObj">The object on the tile.</param>
+            <param name="tool">The tool selected by the player (if any).</param>
+            <param name="location">The current location.</param>
+            <returns><see langword="true"/> if the tool did break a container, otherwise <see langword="false"/>.</returns>
+        </member>
+        <member name="T:DaLion.Chargeable.Framework.Extensions.FarmerExtensions">
+            <summary>Extensions for the <see cref="T:StardewValley.Farmer"/> class.</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.Framework.Extensions.FarmerExtensions.TemporarilyFakeInteraction(StardewValley.Farmer,System.Action)">
+            <summary>
+                Temporarily sets up the <paramref name="farmer"/> to interact with a tile, then return it to the original
+                state.
+            </summary>
+            <param name="farmer">The <see cref="T:StardewValley.Farmer"/>.</param>
+            <param name="action">The action to perform.</param>
+        </member>
+        <member name="M:DaLion.Chargeable.Framework.Extensions.FarmerExtensions.CancelAnimation(StardewValley.Farmer,System.Int32[])">
+            <summary>Cancels the <paramref name="farmer"/>'s current animation if it matches one of the given IDs.</summary>
+            <param name="farmer">The <see cref="T:StardewValley.Farmer"/>.</param>
+            <param name="animationIds">The animation IDs to detect.</param>
+        </member>
+        <member name="T:DaLion.Chargeable.Framework.Extensions.GameLocationExtensions">
+            <summary>Extensions for the <see cref="T:StardewValley.GameLocation"/> class.</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.Framework.Extensions.GameLocationExtensions.GetResourceClumpCoveringTile(StardewValley.GameLocation,Microsoft.Xna.Framework.Vector2,StardewValley.Farmer,System.Func{StardewValley.Tool,System.Boolean}@)">
+            <summary>Gets the <see cref="T:StardewValley.TerrainFeatures.ResourceClump"/> which covers the given <paramref name="tile"/>, if any.</summary>
+            <param name="location">The <see cref="T:StardewValley.GameLocation"/>.</param>
+            <param name="tile">The tile to check.</param>
+            <param name="who">The current player.</param>
+            <param name="applyTool">Applies a tool to the resource clump.</param>
+            <returns>The <see cref="T:StardewValley.TerrainFeatures.ResourceClump"/> located at <paramref name="tile"/> if any, otherwise <see langword="null"/>.</returns>
+        </member>
+        <member name="T:DaLion.Chargeable.Framework.Extensions.ToolExtensions">
+            <summary>Extensions for the <see cref="T:StardewValley.Tool"/> class.</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.Framework.Extensions.ToolExtensions.UseOnTile(StardewValley.Tool,Microsoft.Xna.Framework.Vector2,StardewValley.GameLocation,StardewValley.Farmer)">
+            <summary>Uses the <paramref name="tool"/> on the given <paramref name="tile"/>.</summary>
+            <param name="tool">The <see cref="T:StardewValley.Tool"/>.</param>
+            <param name="tile">The tile to affect.</param>
+            <param name="location">The current location.</param>
+            <param name="who">The current player.</param>
+            <returns>Always <see langword="true"/>, for convenience when implementing tools.</returns>
+        </member>
+        <member name="T:DaLion.Chargeable.Framework.Integrations.ItemExtensionsIntegration">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Chargeable.Framework.Integrations.ItemExtensionsIntegration"/> class.</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.Framework.Integrations.ItemExtensionsIntegration.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Chargeable.Framework.Integrations.ItemExtensionsIntegration"/> class.</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.Framework.Patchers.AxeBeginUsingPatcher.Prefix(StardewValley.Tool,StardewValley.Farmer)">
+            <summary>Enable Axe power level increase.</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.Framework.Patchers.AxeDoFunctionPatcher.Postfix(StardewValley.Farmer)">
+            <summary>Charge shockwave stamina cost.</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.Framework.Patchers.FarmerToolPowerIncreasePatcher.Transpiler(System.Collections.Generic.IEnumerable{HarmonyLib.CodeInstruction})">
+            <summary>Allow first two power levels on Pick.</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.Framework.Patchers.PickaxeBeginUsingPatcher.Prefix(StardewValley.Tool,StardewValley.Farmer)">
+            <summary>Enable Pick power level increase.</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.Framework.Patchers.PickaxeDoFunctionPatcher.Postfix(StardewValley.Farmer)">
+            <summary>Charge shockwave stamina cost.</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.Framework.Patchers.ReachingToolEnchantmentCanApplyToPatcher.Postfix(System.Boolean@,StardewValley.Item)">
+            <summary>Allow apply Reaching enchant to Axe and Pick.</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.Framework.Patchers.ToolEndUsingPatcher.Postfix(StardewValley.Farmer)">
+            <summary>Do shockwave.</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.Framework.Patchers.ToolTilesAffectedPatcher.Postfix(StardewValley.Tool,System.Collections.Generic.List{Microsoft.Xna.Framework.Vector2},Microsoft.Xna.Framework.Vector2,System.Int32)">
+            <summary>Override affected tiles for resource tools.</summary>
+        </member>
+        <member name="T:DaLion.Chargeable.Framework.Shockwave">
+            <summary>Spreads a tool's effect across all tiles in a circular area.</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.Framework.Shockwave.#ctor(System.UInt32,StardewValley.Farmer,System.Double)">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Chargeable.Framework.Shockwave"/> class.</summary>
+            <param name="radius">The maximum radius of the <see cref="T:DaLion.Chargeable.Framework.Shockwave"/>.</param>
+            <param name="who">The player who initiated the <see cref="T:DaLion.Chargeable.Framework.Shockwave"/>.</param>
+            <param name="milliseconds">
+                The total elapsed <see cref="T:Microsoft.Xna.Framework.GameTime"/> in milliseconds at the moment the tool was
+                released.
+            </param>
+        </member>
+        <member name="M:DaLion.Chargeable.Framework.Shockwave.Update(System.Double)">
+            <summary>Expands the affected radius by one unit and applies the tool's effects.</summary>
+            <param name="milliseconds">The current elapsed <see cref="T:Microsoft.Xna.Framework.GameTime"/> in milliseconds.</param>
+            <returns><see langword="true"/> if the <see cref="T:DaLion.Chargeable.Framework.Shockwave"/> has reached its final radius and should be disposed, otherwise <see langword="false"/>.</returns>
+        </member>
+        <member name="M:DaLion.Chargeable.Framework.Shockwave.GetRadialAdjacentTile(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2@,System.Int32@)">
+            <summary>
+                Gets the tile coordinate which is adjacent to the given <paramref name="tile"/> along a radial line from the
+                player.
+            </summary>
+            <param name="epicenter">The tile containing the player.</param>
+            <param name="tile">The tile to face.</param>
+            <param name="adjacent">The tile radially adjacent to the <paramref name="tile"/>.</param>
+            <param name="facingDirection">The direction to face.</param>
+        </member>
+        <member name="T:DaLion.Chargeable.Framework.UpgradeLevel">
+            <summary>The upgrade level of a <see cref="T:StardewValley.Tool"/>.</summary>
+        </member>
+        <member name="F:DaLion.Chargeable.Framework.UpgradeLevel.None">
+            <summary>No upgrade.</summary>
+        </member>
+        <member name="F:DaLion.Chargeable.Framework.UpgradeLevel.Copper">
+            <summary>Copper upgrade.</summary>
+        </member>
+        <member name="F:DaLion.Chargeable.Framework.UpgradeLevel.Steel">
+            <summary>Steel upgrade.</summary>
+        </member>
+        <member name="F:DaLion.Chargeable.Framework.UpgradeLevel.Gold">
+            <summary>Gold upgrade.</summary>
+        </member>
+        <member name="F:DaLion.Chargeable.Framework.UpgradeLevel.Iridium">
+            <summary>Iridium upgrade.</summary>
+        </member>
+        <member name="F:DaLion.Chargeable.Framework.UpgradeLevel.Radioactive">
+            <summary>Radioactive upgrade. Requires Moon Misadventures.</summary>
+        </member>
+        <member name="F:DaLion.Chargeable.Framework.UpgradeLevel.Enchanted">
+            <summary>Extra upgrade for tools with the Reaching Enchantment.</summary>
+        </member>
+        <member name="T:DaLion.Chargeable.I18n">
+            <summary>Get translations from the mod's <c>i18n</c> folder.</summary>
+            <remarks>This is auto-generated from the <c>i18n/default.json</c> file when the project is compiled.</remarks>
+        </member>
+        <member name="F:DaLion.Chargeable.I18n.Translations">
+            <summary>The mod's translation helper.</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Init(StardewModdingAPI.ITranslationHelper)">
+            <summary>Construct an instance.</summary>
+            <param name="translations">The mod's translation helper.</param>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_Pages_Tols">
+            <summary>Get a translation equivalent to "Tools".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_Pages_Tols_Axe">
+            <summary>Get a translation equivalent to "Axe Settings".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_Pages_Tols_Pick">
+            <summary>Get a translation equivalent to "Pickaxe Settings".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_RequireModKey_Title">
+            <summary>Get a translation equivalent to "Require Mod Key".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_RequireModKey_Desc">
+            <summary>Get a translation equivalent to "Whether charging requires holding down a mod key (useful to preserve the tool-spam feature of vanilla).".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_ModKey_Title">
+            <summary>Get a translation equivalent to "Mod Key".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_ModKey_Desc">
+            <summary>Get a translation equivalent to "The key that must be held in order to charge a resource tools, if required.".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_TicksBetweenWaves_Title">
+            <summary>Get a translation equivalent to "Ticks Between Shockwaves".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_TicksBetweenWaves_Desc">
+            <summary>Get a translation equivalent to "The time between each crest in a shockwave, in game ticks. Lower values make the shockwave travel faster. Set to 0 for instant.".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_EnableCharging_Title">
+            <summary>Get a translation equivalent to "Enable Charging".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_EnableCharging_Desc">
+            <summary>Get a translation equivalent to "Enables charging this tool to increase its area of effect.".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_RadiusAtEachPowerLevel_Copper_Title">
+            <summary>Get a translation equivalent to "Copper Radius".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_RadiusAtEachPowerLevel_Copper_Desc">
+            <summary>Get a translation equivalent to "The radius of affected tiles for the Copper upgrade.".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_RadiusAtEachPowerLevel_Steel_Title">
+            <summary>Get a translation equivalent to "Steel Radius".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_RadiusAtEachPowerLevel_Steel_Desc">
+            <summary>Get a translation equivalent to "The radius of affected tiles for the Steel upgrade.".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_RadiusAtEachPowerLevel_Gold_Title">
+            <summary>Get a translation equivalent to "Gold Radius".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_RadiusAtEachPowerLevel_Gold_Desc">
+            <summary>Get a translation equivalent to "The radius of affected tiles for the Gold upgrade.".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_RadiusAtEachPowerLevel_Iridium_Title">
+            <summary>Get a translation equivalent to "Iridium Radius".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_RadiusAtEachPowerLevel_Iridium_Desc">
+            <summary>Get a translation equivalent to "The radius of affected tiles for the Iridium upgrade.".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_RadiusAtEachPowerLevel_Radioactive_Title">
+            <summary>Get a translation equivalent to "Radioactive Radius".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_RadiusAtEachPowerLevel_Radioactive_Desc">
+            <summary>Get a translation equivalent to "The radius of affected tiles for the Radioactive upgradedius.".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_RadiusAtEachPowerLevel_Mythicite_Title">
+            <summary>Get a translation equivalent to "Mythicite Radius".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_RadiusAtEachPowerLevel_Mythicite_Desc">
+            <summary>Get a translation equivalent to "The radius of affected tiles for the Mythicite upgrade.".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_RadiusAtEachPowerLevel_Reaching_Title">
+            <summary>Get a translation equivalent to "Reaching Radius".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_RadiusAtEachPowerLevel_Reaching_Desc">
+            <summary>Get a translation equivalent to "The radius of affected tiles for a fully-upgraded tool with the Reaching enchantment.".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_PlayShockwaveAnimation_Title">
+            <summary>Get a translation equivalent to "Play Shockwave Animation".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_PlayShockwaveAnimation_Desc">
+            <summary>Get a translation equivalent to "Whether to play the shockwave animation when the charge is released.".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_AllowReachingEnchantment_Title">
+            <summary>Get a translation equivalent to "Allow Reaching Enchantment".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_AllowReachingEnchantment_Desc">
+            <summary>Get a translation equivalent to "Whether this tool can be enchanted with Reaching.".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_StaminaCostMultiplier_Title">
+            <summary>Get a translation equivalent to "Charged Stamina Cost Multiplier".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_StaminaCostMultiplier_Desc">
+            <summary>Get a translation equivalent to "Adjusts the stamina cost of using the charged tool.".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_ClearFruitTreeSeeds_Title">
+            <summary>Get a translation equivalent to "Clear Fruit Tree Seeds".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_ClearFruitTreeSeeds_Desc">
+            <summary>Get a translation equivalent to "Whether to clear fruit tree seeds.".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_ClearFruitTreeSaplings_Title">
+            <summary>Get a translation equivalent to "Clear Fruit Tree Saplings".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_ClearFruitTreeSaplings_Desc">
+            <summary>Get a translation equivalent to "Whether to clear fruit trees that aren't fully grown.".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_CutGrownFruitTrees_Title">
+            <summary>Get a translation equivalent to "Cut Grown Fruit Trees".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_CutGrownFruitTrees_Desc">
+            <summary>Get a translation equivalent to "Whether to cut down fully-grown fruit trees.".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_ClearTreeSeeds_Title">
+            <summary>Get a translation equivalent to "Clear Tree Seeds".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_ClearTreeSeeds_Desc">
+            <summary>Get a translation equivalent to "Whether to clear non-fruit tree seeds.".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_ClearTreeSaplings_Title">
+            <summary>Get a translation equivalent to "Clear Tree Saplings".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_ClearTreeSaplings_Desc">
+            <summary>Get a translation equivalent to "Whether to clear non-fruit trees that aren't fully grown.".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_CutGrownTrees_Title">
+            <summary>Get a translation equivalent to "Cut Grown Trees".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_CutGrownTrees_Desc">
+            <summary>Get a translation equivalent to "Whether to cut down fully-grown non-fruit trees.".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_CutTappedTrees_Title">
+            <summary>Get a translation equivalent to "Cut Tapped Trees".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_CutTappedTrees_Desc">
+            <summary>Get a translation equivalent to "Whether to cut down non-fruit trees that have a tapper.".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_CutGiantCrops_Title">
+            <summary>Get a translation equivalent to "Cut Giant Crops".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_CutGiantCrops_Desc">
+            <summary>Get a translation equivalent to "Whether to harvest giant crops.".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_ClearBushes_Title">
+            <summary>Get a translation equivalent to "Clear Bushes".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_ClearBushes_Desc">
+            <summary>Get a translation equivalent to "Whether to clear bushes.".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_BreakBouldersAndMeteorites_Title">
+            <summary>Get a translation equivalent to "Break Boulders and Meteorites".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_BreakBouldersAndMeteorites_Desc">
+            <summary>Get a translation equivalent to "Whether to break boulders and meteorites.".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_HarvestMineSpawns_Title">
+            <summary>Get a translation equivalent to "Harvest Mine Spawns".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_HarvestMineSpawns_Desc">
+            <summary>Get a translation equivalent to "Whether to harvest spawned items in the mines.".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_BreakMineContainers_Title">
+            <summary>Get a translation equivalent to "Break Mine Containers".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_BreakMineContainers_Desc">
+            <summary>Get a translation equivalent to "Whether to break containers in the mines.".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_ClearObjects_Title">
+            <summary>Get a translation equivalent to "Clear Objects".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_ClearObjects_Desc">
+            <summary>Get a translation equivalent to "Whether to clear placed objects.".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_ClearFlooring_Title">
+            <summary>Get a translation equivalent to "Clear Flooring".</summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:DaLion.Chargeable.I18n.Gmcm_ClearFlooring_Desc" -->
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_ClearDirt_Title">
+            <summary>Get a translation equivalent to "Clear Dirt".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_ClearDirt_Desc">
+            <summary>Get a translation equivalent to "Whether to clear tilled dirt.".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_ClearLiveCrops_Title">
+            <summary>Get a translation equivalent to "Clear Live Crops".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_ClearLiveCrops_Desc">
+            <summary>Get a translation equivalent to "Whether to clear live crops.".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_ClearDeadCrops_Title">
+            <summary>Get a translation equivalent to "Clear Dead Crops".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_ClearDeadCrops_Desc">
+            <summary>Get a translation equivalent to "Whether to clear dead crops.".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_ClearDebris_Title">
+            <summary>Get a translation equivalent to "Clear Debris".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.Gmcm_ClearDebris_Desc">
+            <summary>Get a translation equivalent to "Whether to clear debris like twigs, giant stumps and fallen logs for axe, or stones, boulders for pickaxe.".</summary>
+        </member>
+        <member name="M:DaLion.Chargeable.I18n.GetByKey(System.String,System.Object)">
+            <summary>Get a translation by its key.</summary>
+            <param name="key">The translation key.</param>
+            <param name="tokens">An object containing token key/value pairs. This can be an anonymous object (like <c>new { value = 42, name = "Cranberries" }</c>), a dictionary, or a class instance.</param>
+        </member>
+        <member name="T:NetEscapades.EnumGenerators.EnumExtensionsAttribute">
+            <summary>
+            Add to enums to indicate that extension methods should be generated for the type
+            </summary>
+        </member>
+        <member name="P:NetEscapades.EnumGenerators.EnumExtensionsAttribute.ExtensionClassNamespace">
+            <summary>
+            The namespace to generate the extension class.
+            If not provided the namespace of the enum will be used
+            </summary>
+        </member>
+        <member name="P:NetEscapades.EnumGenerators.EnumExtensionsAttribute.ExtensionClassName">
+            <summary>
+            The name to use for the extension class.
+            If not provided, the enum name with "Extensions" will be used.
+            For example for an Enum called StatusCodes, the default name
+            will be StatusCodesExtensions
+            </summary>
+        </member>
+    </members>
+</doc>

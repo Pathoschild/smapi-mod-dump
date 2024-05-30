@@ -20,6 +20,8 @@ using StardewValley.GameData.WildTrees;
 using StardewValley.ItemTypeDefinitions;
 using StardewValley.TokenizableStrings;
 using AutoForager.Extensions;
+using HedgeTech.Common.Extensions;
+using HedgeTech.Common.Utilities;
 
 using Constants = AutoForager.Helpers.Constants;
 
@@ -225,49 +227,32 @@ namespace AutoForager.Classes
 			return (forageItems, bushItems);
 		}
 
-		public static IEnumerable<ForageableItem> ParseLocationData(IDictionary<string, ObjectData> oData, IDictionary<string, LocationData> lData, IDictionary<string, bool>? configValues = null)
+		public static IEnumerable<ForageableItem> ParseLocationData(IDictionary<string, LocationData> data, IDictionary<string, bool>? configValues = null, IMonitor? monitor = null)
 		{
 			var forageItems = new List<ForageableItem>();
 
-			foreach (var kvp in lData)
+			foreach (var location in data.Values)
 			{
-				var artifactSpots = kvp.Value.ArtifactSpots;
-				if (artifactSpots is null || artifactSpots.Count <= 0) continue;
+				var forage = location.Forage;
 
-				foreach (var artifact in artifactSpots)
+				if (forage.IsNullOrEmpty()) continue;
+
+				foreach (var forageObj in forage)
 				{
-					List<string> itemIds;
+					var qualifiedItemId = ItemUtilities.GetItemIdFromName(forageObj.ItemId);
+					var itemData = ItemRegistry.GetData(qualifiedItemId);
+					var internalName = itemData?.InternalName;
 
-					if (artifact.RandomItemId is not null)
+					if (itemData is not null && internalName is not null)
 					{
-						itemIds = artifact.RandomItemId;
-					}
-					else if (artifact.ItemId is not null)
-					{
-						itemIds = new() { artifact.ItemId };
-					}
-					else
-					{
-						continue;
-					}
-
-					foreach (var itemId in itemIds)
-					{
-						var artifactId = itemId.Substring(itemId.IndexOf(')') + 1);
-						if (!oData.ContainsKey(artifactId)) continue;
-
-						var objData = oData[artifactId];
-						if (objData is null || objData.CustomFields is null || !objData.CustomFields.ContainsKey(Constants.CustomFieldForageableKey)) continue;
-
 						var enabled = true;
-						var itemData = ItemRegistry.GetData(itemId);
 
-						if (configValues is not null && configValues.TryGetValue(itemData.InternalName, out var configEnabled))
+						if (configValues is not null && configValues.TryGetValue(internalName, out var configEnabled))
 						{
 							enabled = configEnabled;
 						}
 
-						forageItems.AddDistinct(new ForageableItem(itemData, objData.CustomFields, enabled));
+						forageItems.AddDistinct(new ForageableItem(itemData, new() { { Constants.CustomFieldCategoryKey, "Locations" } }, enabled));
 					}
 				}
 			}

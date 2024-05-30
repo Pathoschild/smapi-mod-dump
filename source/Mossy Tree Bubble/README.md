@@ -28,6 +28,11 @@ Active mods:
 - **Mossy Tree Bubble** ([Nexus](https://www.nexusmods.com/stardewvalley/mods/22818) | [(todo)CurseForge]() | [ModDrop](https://www.moddrop.com/stardew-valley/mods/1564905-mossy-tree-bubble) | [GitHub](https://github.com/Tocseoj/StardewValleyMods/releases?q=MossyTreeBubble&expanded=true) | [source](MossyTreeBubble))
   _Put reminders on your trees when they have harvest-able moss. Won't overlap with tapper bubbles._
 
+Mods in development:
+
+- **Stardew Shuffle** ([(todo)Nexus]() | [(todo)CurseForge]() | [(todo)ModDrop]() | [GitHub](https://github.com/Tocseoj/StardewValleyMods/releases?q=StardewShuffle&expanded=true) | [source](StardewShuffle))
+  _A trading card game thats all the rage in Pelican Town!_
+
 ## Compiling the mods
 
 Installing stable releases from Nexus Mods is recommended for most users. If you really want to

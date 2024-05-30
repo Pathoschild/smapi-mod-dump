@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/24332
+IDs: DaLion.Core
+update keys: Nexus:24332, GitHub:daleao/sdv

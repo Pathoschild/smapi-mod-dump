@@ -1,0 +1,18 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/FlyingTNT/StardewValleyMods
+**
+*************************************************/
+
+{
+    "sort": "排序",
+    "sort-0": "友情（升序）",
+    "sort-1": "友情（降序）",
+    "sort-2": "名称（升序）",
+    "sort-3": "名称（降序）",
+    "sort-by": "排序方式"
+}

@@ -31,6 +31,9 @@ namespace ContentPatcher.Framework.Patches
         /// <summary>The raw asset name to intercept.</summary>
         public string? AssetName { get; }
 
+        /// <summary>The raw asset name locale to intercept.</summary>
+        public string? AssetNameLocale { get; }
+
         /// <summary>The content pack which requested the patch.</summary>
         public IContentPack ContentPack { get; }
 
@@ -49,16 +52,18 @@ namespace ContentPatcher.Framework.Patches
         /// <param name="rawType">The raw patch type.</param>
         /// <param name="parsedType">The parsed patch type, if valid.</param>
         /// <param name="assetName">The raw asset name to intercept.</param>
+        /// <param name="assetNameLocale">The raw asset name locale to intercept.</param>
         /// <param name="contentPack">The content pack which requested the patch.</param>
         /// <param name="parentPatch">The parent patch for which this patch was loaded, if any.</param>
         /// <param name="reasonDisabled">The reason this patch is disabled.</param>
-        public DisabledPatch(LogPathBuilder path, string? rawType, PatchType? parsedType, string? assetName, IContentPack contentPack, Patch? parentPatch, string reasonDisabled)
+        public DisabledPatch(LogPathBuilder path, string? rawType, PatchType? parsedType, string? assetName, string? assetNameLocale, IContentPack contentPack, Patch? parentPatch, string reasonDisabled)
         {
             this.Path = path;
             this.RawType = rawType;
             this.ParsedType = parsedType;
             this.ContentPack = contentPack;
             this.AssetName = assetName;
+            this.AssetNameLocale = assetNameLocale;
             this.ParentPatch = parentPatch;
             this.ReasonDisabled = reasonDisabled;
         }

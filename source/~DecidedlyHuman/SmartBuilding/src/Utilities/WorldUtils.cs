@@ -750,13 +750,16 @@ namespace SmartBuilding.Utilities
 
                 if (furnitureToGrab != null)
                 {
+                    // This is apparently a thing that needs to be done now.
+                    furnitureToGrab.Stack = 1;
+
                     // If it's a StorageFurniture, and the setting to allow working with it is false, do nothing.
                     if (furnitureToGrab is StorageFurniture && !this.config.EnablePlacingStorageFurniture)
                         return;
 
                     // Otherwise, we can continue.
                     this.logger.Log($"{I18n.SmartBuilding_Message_TryingToGrab()} {furnitureToGrab.Name}");
-                    Game1.player.addItemToInventory(furnitureToGrab);
+                    Game1.player.addItemByMenuIfNecessary(furnitureToGrab);
                     here.furniture.Remove(furnitureToGrab);
                 }
             }

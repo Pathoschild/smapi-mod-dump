@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/perkmi/Always-On-Server-for-Multiplayer
+   Git: https://github.com/perkmi/Always-On-Server-for-Multiplayer.git
+
+mods:
+   Unlimited Community Center
+
+latest commit:
+   commit 1710665d33445c7be3104f18f4e5651fc1864c26
+   Author: Mikko Perkele <Mikko.Perkele.Official@gmail.com>
+   Date:   Sat May 4 17:54:50 2024 -0500
+   
+       Update README.md
+   

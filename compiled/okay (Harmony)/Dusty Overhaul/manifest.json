@@ -1,7 +1,7 @@
 {
   "Name": "[SMAPI] Dusty Overhaul",
   "Author": "CyanFire",
-  "Version": "2.6.5",
+  "Version": "2.6.6",
   "Description": "Code for Dusty Overhaul",
   "UniqueID": "CF.SMAPI.DustyOverhaul",
   "EntryDll": "DustyOverhaul.dll",

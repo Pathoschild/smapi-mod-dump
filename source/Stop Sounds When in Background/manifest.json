@@ -11,8 +11,8 @@
 {
   "Name": "StopSoundsWhenAltTabbed",
   "Author": "Mustafa",
-  "Version": "1.1.2",
-  "Description": "Stops sounds when game is alt-tabbed",
+  "Version": "1.1.3",
+  "Description": "Stops sounds when game is inactive or in the background (alt-tabbed)",
   "UniqueID": "Mustafa.StopSoundsWhenAltTabbed",
   "EntryDll": "StopSoundsWhenAltTabbed.dll",
   "MinimumApiVersion": "3.0.0",

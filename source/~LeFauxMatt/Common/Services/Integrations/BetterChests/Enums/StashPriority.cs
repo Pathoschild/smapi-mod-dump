@@ -8,7 +8,11 @@
 **
 *************************************************/
 
-namespace StardewMods.Common.Services.Integrations.BetterChests.Enums;
+#if IS_FAUXCORE
+namespace StardewMods.FauxCore.Common.Services.Integrations.BetterChests;
+#else
+namespace StardewMods.Common.Services.Integrations.BetterChests;
+#endif
 
 using NetEscapades.EnumGenerators;
 
@@ -16,6 +20,9 @@ using NetEscapades.EnumGenerators;
 [EnumExtensions]
 public enum StashPriority
 {
+    /// <summary>Represents the default priority.</summary>
+    Default = 0,
+
     /// <summary>Represents the lowest priority.</summary>
     Lowest = -3,
 
@@ -24,9 +31,6 @@ public enum StashPriority
 
     /// <summary>Represents a low priority.</summary>
     Low = -1,
-
-    /// <summary>Represents the default priority.</summary>
-    Default = 0,
 
     /// <summary>Represents a high priority.</summary>
     High = 1,

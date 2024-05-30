@@ -142,7 +142,10 @@ namespace StardewSurvivalProject.source.model
             {
                 if (ModConfig.GetInstance().UseDefaultIndoorTemperatureModifier)
                     //cut temperature difference by half if indoor if outside is colder (assume wall can block heat)
-                    value += Math.Min((DEFAULT_VALUE - value) / 2, 0);
+                    if(location.IsFarm)
+                        value += (DEFAULT_VALUE - value) * ModConfig.GetInstance().FarmIndoorTemperatureMultiplier;
+                    else
+                        value += (DEFAULT_VALUE - value) * ModConfig.GetInstance().IndoorTemperatureMultiplier;
 
                 // aggregate a list of weather control item to calculate indoor temperature
                 List<data.TempControlObject> tempControlDevices = new List<data.TempControlObject>();

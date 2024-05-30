@@ -16,14 +16,13 @@ using System.Reflection.Emit;
 
 using HarmonyLib;
 
-using Leclair.Stardew.CloudySkies.Models;
-
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using StardewValley;
+using StardewValley.Objects;
 
-namespace Leclair.Stardew.CloudySkies.Patches; 
+namespace Leclair.Stardew.CloudySkies.Patches;
 
 public static class Game1_Patches {
 
@@ -35,6 +34,11 @@ public static class Game1_Patches {
 		try {
 
 			// Drawing
+
+			mod.Harmony.Patch(
+				original: AccessTools.Method(typeof(Game1), nameof(Game1.ShouldDrawOnBuffer)),
+				postfix: new HarmonyMethod(typeof(Game1_Patches), nameof(Game1_ShouldDrawOnBuffer__Postfix))
+			);
 
 			mod.Harmony.Patch(
 				original: AccessTools.Method(typeof(Game1), nameof(Game1.drawWeather)),
@@ -83,13 +87,57 @@ public static class Game1_Patches {
 				prefix: new HarmonyMethod(typeof(Game1_Patches), nameof(updateRaindropPositionForPlayerMovement__Prefix))
 			);
 
-		} catch(Exception ex) {
+			mod.Harmony.Patch(
+				original: AccessTools.Method(typeof(IndoorPot), nameof(IndoorPot.DayUpdate)),
+				transpiler: new HarmonyMethod(typeof(Game1_Patches), nameof(IndoorPot_DayUpdate__Transpiler))
+			);
+
+			// Weather nonsense that we can't target by name.
+			var newDayRainFix = new HarmonyMethod(typeof(Game1_Patches), nameof(NewDayRain__Transpiler));
+
+			foreach (var type in typeof(Game1).GetNestedTypes(AccessTools.all)) {
+				if (type != null && type.IsClass) {
+					foreach (var method in AccessTools.GetDeclaredMethods(type)) {
+						// We know we want a non-static method, with _newDayAfterFade
+						// in its name. The method needs to return a bool, and
+						// have one parameter: a GameLocation.
+
+						// Sadly, this does match more than one method, but our
+						// transpiler will detect the proper method by inspecting
+						// the IL and just not do anything to the methods we
+						// don't care about.
+
+						if (method?.Name == null ||
+							method.IsStatic ||
+							method.ReturnType != typeof(bool) ||
+							!method.Name.Contains("_newDayAfterFade")
+						)
+							continue;
+
+						var parms = method.GetParameters();
+						if (parms.Length != 1 || parms[0].ParameterType != typeof(GameLocation))
+							continue;
+
+						mod.Harmony.Patch(
+							original: method,
+							transpiler: newDayRainFix
+						);
+					}
+				}
+			}
+
+		} catch (Exception ex) {
 			mod.Log($"Error patching Game1. Weather will not work correctly.", StardewModdingAPI.LogLevel.Error, ex);
 		}
 
 	}
 
 	#region Drawing
+
+	private static void Game1_ShouldDrawOnBuffer__Postfix(Game1 __instance, ref bool __result) {
+		if (Mod?.HasShaderLayer?.Value ?? false)
+			__result = true;
+	}
 
 	private static IEnumerable<CodeInstruction> DrawLighting__Transpiler(IEnumerable<CodeInstruction> instructions) {
 
@@ -122,7 +170,7 @@ public static class Game1_Patches {
 
 		CodeInstruction[] instrs = instructions.ToArray();
 
-		for(int i = 0; i < instrs.Length; i++) {
+		for (int i = 0; i < instrs.Length; i++) {
 			var in0 = instrs[i];
 
 			if (i + 2 < instrs.Length) {
@@ -170,7 +218,7 @@ public static class Game1_Patches {
 
 		bool seen_raining = false;
 
-		for(int i = 0; i < instrs.Length; i++) {
+		for (int i = 0; i < instrs.Length; i++) {
 			var in0 = instrs[i];
 
 			if (in0.Calls(GameLocation_isRainingHere)) {
@@ -188,7 +236,7 @@ public static class Game1_Patches {
 				var in2 = instrs[i + 2];
 				var in3 = instrs[i + 3];
 				var in4 = instrs[i + 4];
-				var in5	= instrs[i + 5];
+				var in5 = instrs[i + 5];
 
 				if (in0.Calls(Color_Blue) && in1.opcode == OpCodes.Ldc_R4) {
 					// Old Code: Color.Blue * 0.2f
@@ -248,6 +296,53 @@ public static class Game1_Patches {
 
 	#region Updates
 
+	private static IEnumerable<CodeInstruction> IndoorPot_DayUpdate__Transpiler(IEnumerable<CodeInstruction> instructions) {
+
+		var GameLocation_IsRainingHere = AccessTools.Method(typeof(GameLocation), nameof(GameLocation.IsRainingHere));
+		var ShouldWaterCropsAndBowls = AccessTools.Method(typeof(PatchHelper), nameof(PatchHelper.ShouldWaterCropsAndBowls));
+
+		foreach (var in0 in instructions) {
+			if (in0.Calls(GameLocation_IsRainingHere))
+				// Old Code: if ((bool)location.isOutdoors && location.IsRainingHere())
+				// New Code: if ((bool)location.isOutdoors && PatchHelper.ShouldWaterCropsAndBowls(location))
+				yield return new CodeInstruction(in0) {
+					opcode = OpCodes.Call,
+					operand = ShouldWaterCropsAndBowls
+				};
+
+			else
+				yield return in0;
+		}
+	}
+
+	private static IEnumerable<CodeInstruction> NewDayRain__Transpiler(IEnumerable<CodeInstruction> instructions) {
+
+		var GameLocation_IsOutdoors = AccessTools.PropertyGetter(typeof(GameLocation), nameof(GameLocation.IsOutdoors));
+		var GameLocation_IsRainingHere = AccessTools.Method(typeof(GameLocation), nameof(GameLocation.IsRainingHere));
+
+		var ShouldWaterCropsAndBowls = AccessTools.Method(typeof(PatchHelper), nameof(PatchHelper.ShouldWaterCropsAndBowls));
+
+		var matcher = new CodeMatcher(instructions)
+			.MatchEndForward(
+				new CodeMatch(OpCodes.Ldarg_1),
+				new CodeMatch(in0 => in0.Calls(GameLocation_IsOutdoors)),
+				new CodeMatch(OpCodes.Brfalse),
+				new CodeMatch(OpCodes.Ldarg_1),
+				new CodeMatch(in0 => in0.Calls(GameLocation_IsRainingHere))
+			);
+
+		if (matcher.IsValid)
+			// We found the expected sequence. Let's replace it!
+			// Old Code: if (location.IsOutdoors && location.IsRainingHere())
+			// New Code: if (location.IsOutdoors && PatchHelper.ShouldWaterCropsAndBowls(location))
+			matcher.SetInstruction(new CodeInstruction(matcher.Instruction) {
+				opcode = OpCodes.Call,
+				operand = ShouldWaterCropsAndBowls
+			});
+
+		return matcher.InstructionEnumeration();
+	}
+
 	private static IEnumerable<CodeInstruction> performTenMinuteClockUpdate__Transpiler(IEnumerable<CodeInstruction> instructions) {
 
 		var GameLocation_IsRainingHere = AccessTools.Method(typeof(GameLocation), nameof(GameLocation.IsRainingHere));
@@ -258,7 +353,7 @@ public static class Game1_Patches {
 
 		bool seen_ambient_light = false;
 
-		foreach(var in0 in instructions) {
+		foreach (var in0 in instructions) {
 
 			if (in0.LoadsField(AmbientLight))
 				seen_ambient_light = true;
@@ -285,25 +380,71 @@ public static class Game1_Patches {
 
 	}
 
-	private static IEnumerable<CodeInstruction> UpdateGameClock__Transpiler(IEnumerable<CodeInstruction> instructions) {
+	public static bool AssignOutdoorLight() {
+		var rawTint = PatchHelper.GetTintData(Game1.currentLocation);
+		if (!rawTint.HasValue || !rawTint.Value.HasAmbientColor)
+			return false;
 
-		var Game1_IsRainingHere = AccessTools.Method(typeof(Game1), nameof(Game1.IsRainingHere));
-		var hasAmbientColor = AccessTools.Method(typeof(PatchHelper), nameof(PatchHelper.HasAmbientColor));
+		var tint = rawTint.Value;
+		float opacity;
 
-		foreach (var in0 in instructions) {
+		if (tint.AmbientEndTime == int.MaxValue || tint.EndAmbientOutdoorOpacity == tint.StartAmbientOutdoorOpacity)
+			// Same value? No end to today? Just return the starting opacity.
+			opacity = tint.StartAmbientOutdoorOpacity;
+		else if (Game1.timeOfDay >= tint.AmbientEndTime)
+			opacity = tint.EndAmbientOutdoorOpacity;
+		else {
+			// Both values? Lerp between them.
+			int minutes = Utility.CalculateMinutesBetweenTimes(tint.AmbientStartTime, Game1.timeOfDay) / 10;
+			float progress = (minutes + (Game1.gameTimeInterval / (float) Game1.realMilliSecondsPerGameTenMinutes)) / tint.AmbientDurationInTenMinutes;
 
-			if (in0.Calls(Game1_IsRainingHere))
-				// Old Code: Game1.IsRainingHere(null)
-				// New Code: PatchHelper.HasAmbientColor(null)
-				yield return new CodeInstruction(in0) {
-					opcode = OpCodes.Call,
-					operand = hasAmbientColor
-				};
-
-			else
-				yield return in0;
+			opacity = Utility.Lerp(tint.StartAmbientOutdoorOpacity, tint.EndAmbientOutdoorOpacity, progress);
 		}
 
+		Game1.outdoorLight = Game1.ambientLight * opacity;
+		return true;
+	}
+
+
+	private static IEnumerable<CodeInstruction> UpdateGameClock__Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
+
+		var assignOutdoorLight = AccessTools.Method(typeof(Game1_Patches), nameof(AssignOutdoorLight));
+
+		var Game1_currentLocation = AccessTools.PropertyGetter(typeof(Game1), nameof(Game1.currentLocation));
+
+		var Game1_timeOfDay = AccessTools.Field(typeof(Game1), nameof(Game1.timeOfDay));
+		var Game1_ambientLight = AccessTools.Field(typeof(Game1), nameof(Game1.ambientLight));
+		var Game1_outdoorLight = AccessTools.Field(typeof(Game1), nameof(Game1.outdoorLight));
+
+		var matcher = new CodeMatcher(instructions, generator)
+			// We want to find Game1.outdoorLight = Game1.ambientLight; so we can jump to the bit after it.
+			.MatchEndForward(
+				new CodeMatch(in0 => in0.LoadsField(Game1_ambientLight)),
+				new CodeMatch(in0 => in0.StoresField(Game1_outdoorLight))
+			)
+			.ThrowIfInvalid("could not find last branch of lighting code")
+			.Advance(1)
+			.CreateLabel(out var label) // create a label on the next instruction so we can jump to it???
+
+			// Next, we want to find the start of the lighting block so we can add a branch that skips it
+			// all, depending on our own function call's return value.
+			.Start()
+			.MatchStartForward(
+				new CodeMatch(in0 => in0.LoadsField(Game1_timeOfDay)),
+				new CodeMatch(in0 => in0.Calls(Game1_currentLocation)),
+				new CodeMatch(OpCodes.Call),
+				new CodeMatch(OpCodes.Blt)
+			)
+			.ThrowIfInvalid("could not find initial time of day check");
+
+		var instr = matcher.Instruction;
+
+		// Insert our call + branch instruction
+		return matcher.Insert(
+				new CodeInstruction(OpCodes.Call, assignOutdoorLight).MoveLabelsFrom(instr).MoveBlocksFrom(instr),
+				new CodeInstruction(OpCodes.Brtrue, label)
+			)
+			.InstructionEnumeration();
 	}
 
 
@@ -312,7 +453,7 @@ public static class Game1_Patches {
 			if (Mod is not null && Mod.MoveWithViewport())
 				return false;
 
-		} catch(Exception ex) {
+		} catch (Exception ex) {
 			Mod?.Log($"Error moving weather: {ex}", StardewModdingAPI.LogLevel.Error, once: true);
 		}
 

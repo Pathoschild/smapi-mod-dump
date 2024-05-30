@@ -34,5 +34,8 @@ namespace ContentPatcher.Framework
         /// <summary>Get whether a token string uses the given tokens.</summary>
         /// <param name="tokens">The tokens to find.</param>
         bool UsesTokens(IEnumerable<ConditionType> tokens);
+
+        /// <summary>Get whether the token string should be updated for the current state.</summary>
+        bool ShouldUpdate();
     }
 }

@@ -1,6 +1,6 @@
 {
   "IsEnabled": true,
   "OnlyCorkBobber": false,
-  "BarSizePercentage": 1.0,
+  "BarSizePercentageInt": 100,
   "ExceptBossFish": false
 }

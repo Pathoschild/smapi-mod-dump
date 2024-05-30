@@ -1,0 +1,14 @@
+{
+  "EnableMod": true,
+  "MoveCursor": true,
+  "BlacklistPreventsPickup": true,
+  "RaiseButton": "Up",
+  "LowerButton": "Down",
+  "LeftButton": "Left",
+  "RightButton": "Right",
+  "BlacklistKey": "MouseRight",
+  "PassableKey": "None",
+  "ModKey": "LeftAlt",
+  "ModSpeed": 5,
+  "MoveSpeed": 10
+}

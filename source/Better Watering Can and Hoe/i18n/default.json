@@ -1,0 +1,33 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Aflojack/BetterWateringCanAndHoe
+**
+*************************************************/
+
+{ 
+    "dialogbox.wateringCanQuestion": "How should I use my watering wan?",
+    "dialogbox.hoeQuestion": "How should I use my hoe?",
+    "dialogbox.option0": "Tile (1)",
+    "dialogbox.option1": "Row (3)",
+    "dialogbox.option2": "Row (5)",
+    "dialogbox.option3": "Square (3x3)",
+    "dialogbox.option4": "Rectangle (6x3)",
+    "dialogbox.option5": "Square (5x5)",
+    "dialogbox.currentOption": "Current",
+    "configMenu.wateringCan.title": "Better Watering Can",
+    "configMenu.hoe.title": "Better Hoe",
+    "configMenu.enabled.name": "Enabled",
+    "configMenu.enabled.tooltip": "Enable or disable the mod function.",
+    "configMenu.selectionOpenKey.name": "Open selection menu",
+    "configMenu.selectionOpenKey.tooltip": "Bind key for open selection menu.",
+    "configMenu.alwaysHighestOption.name": "Always highest option",
+    "configMenu.alwaysHighestOption.tooltip": "If this setting is checked then it will automatically select highest options for your tool. (You cannot open selection menu if this option activated only)",
+    "configMenu.selectTemporary.name": "Select only temporary",
+    "configMenu.selectTemporary.tooltip": "Use with 'Always highest option' setting! If this setting is checked then you can open the selection menu but your selected option will only remain temporary before the highest option will be restored.",
+    "configMenu.selectTemporaryTimer.name": "Temporary timer (second)",
+    "configMenu.selectTemporaryTimer.tooltip": "Use with 'Select only temporary' setting! With this slide you can set the time that your temporary choice lasts (real time seconds)."
+}

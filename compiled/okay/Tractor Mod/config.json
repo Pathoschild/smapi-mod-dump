@@ -2,8 +2,10 @@
   "Distance": 1,
   "TractorSpeed": -2,
   "SoundEffects": "Tractor",
+  "SoundEffectsVolume": 75,
   "MagneticRadius": 384,
   "BuildPrice": 150000,
+  "RequireBuildMaterials": true,
   "BuildMaterials": {
     "(O)335": 20,
     "(O)337": 5,
@@ -37,6 +39,7 @@
       "TillDirt": true,
       "ClearWeeds": true,
       "DigArtifactSpots": true,
+      "DigSeedSpots": true,
       "HarvestGinger": true
     },
     "MilkPail": {
@@ -74,9 +77,11 @@
       "HarvestFlowers": true,
       "HarvestForage": true,
       "HarvestFruitTrees": true,
+      "HarvestTreeMoss": true,
       "HarvestTreeSeeds": true,
       "HarvestMachines": false,
-      "HarvestGrass": true,
+      "HarvestNonBlueGrass": true,
+      "HarvestBlueGrass": true,
       "ClearDeadCrops": true,
       "ClearWeeds": true
     },

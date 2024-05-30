@@ -9,6 +9,7 @@
 *************************************************/
 
 using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using System.Reflection.Emit;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
@@ -16,6 +17,7 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
+using StardewValley.GameData.Crops;
 using StardewValley.TerrainFeatures;
 using Object = StardewValley.Object;
 
@@ -32,6 +34,10 @@ namespace UltimateFertilizer {
 
             public bool EnableAlwaysFertilizer = true;
             public bool EnableKeepFertilizerAcrossSeason = true;
+            public bool ReplaceHighTier = true;
+            public bool DebugMode = true;
+
+            public byte FertilizerAlpha = 255;
 
             // ReSharper disable FieldCanBeMadeReadOnly.Local
             public List<float> FertilizerSpeedBoost = new() {0.1f, 0.25f, 0.33f};
@@ -40,13 +46,13 @@ namespace UltimateFertilizer {
 
             public List<int> FertilizerQualityBoost = new() {1, 2, 3};
             public List<int> FertilizerQualityAmount = new() {1, 2, 5};
+            public bool FixMultiDropBug = false;
 
             public List<float> FertilizerWaterRetentionBoost = new() {0.33f, 0.66f, 1.0f};
             public List<int> FertilizerWaterRetentionAmount = new() {1, 2, 1};
         }
 
         private static Config _config = null!;
-        private const bool DebugMode = false;
         private static IModHelper _helper = null!;
 
         public override void Entry(IModHelper helper) {
@@ -56,9 +62,13 @@ namespace UltimateFertilizer {
             _harmony = new Harmony(ModManifest.UniqueID);
             _harmony.PatchAll();
             helper.Events.GameLoop.GameLaunched += OnGameLaunched!;
-            helper.Events.GameLoop.SaveLoaded += (object sender, SaveLoadedEventArgs e) => { InitShared.Postfix(); };
+            helper.Events.GameLoop.SaveLoaded += (_, _) => { InitShared.Postfix(); };
 
             Monitor.Log("Plugin is now working.", LogLevel.Info);
+        }
+
+        public override object GetApi() {
+            return new ExposedApi();
         }
 
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e) {
@@ -110,7 +120,13 @@ namespace UltimateFertilizer {
                     };
                 }
             );
-
+            configMenu.AddBoolOption(
+                mod: ModManifest,
+                name: () => _helper.Translation.Get("config.replace_high_tier.title"),
+                tooltip: () => _helper.Translation.Get("config.replace_high_tier.tooltip"),
+                getValue: () => _config.ReplaceHighTier,
+                setValue: value => _config.ReplaceHighTier = value
+            );
             configMenu.AddBoolOption(
                 mod: ModManifest,
                 name: () => _helper.Translation.Get("config.enable_fertilizer_anytime.title"),
@@ -122,6 +138,20 @@ namespace UltimateFertilizer {
                 mod: ModManifest,
                 name: () => _helper.Translation.Get("config.keep_fertilizer_across_season.title"),
                 tooltip: () => _helper.Translation.Get("config.keep_fertilizer_across_season.tooltip"),
+                getValue: () => _config.EnableKeepFertilizerAcrossSeason,
+                setValue: value => _config.EnableKeepFertilizerAcrossSeason = value
+            );
+            configMenu.AddNumberOption(
+                mod: ModManifest,
+                name: () => _helper.Translation.Get("config.fertilizer_alpha.title"),
+                tooltip: () => _helper.Translation.Get("config.fertilizer_alpha.tooltip"),
+                getValue: () => _config.FertilizerAlpha,
+                setValue: value => _config.FertilizerAlpha = (byte) Math.Max(Math.Min(value, 255), 0)
+            );
+            configMenu.AddBoolOption(
+                mod: ModManifest,
+                name: () => _helper.Translation.Get("config.debug_mode.title"),
+                tooltip: () => _helper.Translation.Get("config.debug_mode.tooltip"),
                 getValue: () => _config.EnableKeepFertilizerAcrossSeason,
                 setValue: value => _config.EnableKeepFertilizerAcrossSeason = value
             );
@@ -180,6 +210,13 @@ namespace UltimateFertilizer {
 
             configMenu.AddSectionTitle(mod: ModManifest,
                 text: () => _helper.Translation.Get("config.section.quality_fertilizer"));
+            configMenu.AddBoolOption(
+                mod: ModManifest,
+                name: () => _helper.Translation.Get("config.fix_multi_drop.title"),
+                tooltip: () => _helper.Translation.Get("config.fix_multi_drop.tooltip"),
+                getValue: () => _config.FixMultiDropBug,
+                setValue: value => _config.FixMultiDropBug = value
+            );
             configMenu.AddNumberOption(
                 mod: ModManifest,
                 name: () => _helper.Translation.Get("config.basic_fertilizer_bonus.title"),
@@ -270,8 +307,8 @@ namespace UltimateFertilizer {
         }
 
         public static void Print(string msg) {
-            if (DebugMode) {
-                _logger?.Log(msg, LogLevel.Info);
+            if (_config.DebugMode) {
+                _logger?.Log(msg, LogLevel.Debug);
             }
         }
 
@@ -284,14 +321,15 @@ namespace UltimateFertilizer {
 
                 var data = __instance.GetData();
                 var regrow_day = data?.RegrowDays ?? -1;
-                if (regrow_day <= 0)
+                if (regrow_day <= 0) {
                     return;
+                }
                 if (__instance.dayOfCurrentPhase.Value != regrow_day) {
                     return;
                 }
 
                 var speed = soil.GetFertilizerSpeedBoost();
-                __instance.dayOfCurrentPhase.Value = (int) Math.Ceiling(regrow_day * (1.0 - speed));
+                __instance.dayOfCurrentPhase.Value = Math.Max(1, (int) Math.Floor(regrow_day / (1.0 + speed)));
             }
         }
 
@@ -308,7 +346,7 @@ namespace UltimateFertilizer {
                         "Basic Fertilizer" => _config.FertilizerQualityAmount[0],
                         "Quality Fertilizer" => _config.FertilizerQualityAmount[1],
                         "Deluxe Fertilizer" => _config.FertilizerQualityAmount[2],
-                        "Basic Retaining Soil" => _config.FertilizerQualityAmount[0],
+                        "Basic Retaining Soil" => _config.FertilizerWaterRetentionAmount[0],
                         "Quality Retaining Soil" => _config.FertilizerWaterRetentionAmount[1],
                         "Deluxe Retaining Soil" => _config.FertilizerWaterRetentionAmount[2],
                         _ => -1
@@ -337,20 +375,34 @@ namespace UltimateFertilizer {
 
         [HarmonyPatch(typeof(HoeDirt), nameof(HoeDirt.CheckApplyFertilizerRules))]
         public static class CheckApplyFertilizerRules {
-            private static bool ContainSameType(
-                ICollection<string> fertilizers,
+            private static bool CheckUpgrade(
+                IList<string> fertilizers,
                 string newFertilizerId,
                 string currentFertilizerId
             ) {
-                return fertilizers.Contains(newFertilizerId) &&
-                       fertilizers.Any(currentFertilizerId.Contains);
+                var new_index = fertilizers.IndexOf(newFertilizerId);
+                Print("New index: " + new_index);
+                Print("New Fertilizer: " + newFertilizerId);
+                if (new_index == -1) {
+                    return true;
+                }
+
+                var current_index = fertilizers.TakeWhile(s => !currentFertilizerId.Contains(s)).Count();
+                Print("Current index: " + current_index);
+                if (current_index == fertilizers.Count) {
+                    return true;
+                }
+
+                return new_index > current_index;
             }
 
-            private static bool ContainSameTypes(HoeDirt dirt, string fertilizerId) {
-                return Fertilizers.Any(
-                    fertilizer =>
-                        ContainSameType(fertilizer, fertilizerId, dirt.fertilizer.Value)
-                );
+            private static bool ValidSingleStack(HoeDirt dirt, string fertilizerId) {
+                var fertilizer_type = Fertilizers.Find(fertilizer => fertilizer.Contains(fertilizerId));
+                if (fertilizer_type == null) {
+                    return dirt.fertilizer.Value.Length != 0;
+                }
+
+                return dirt.fertilizer.Value.Split("|").All(fertilizer_type.Contains);
             }
 
             public static bool Prefix(
@@ -375,7 +427,19 @@ namespace UltimateFertilizer {
 
                 switch (_config.FertilizerMode) {
                     case "single-fertilizer-stack":
-                        if (!ContainSameTypes(__instance, fertilizerId)) {
+                        if (ValidSingleStack(__instance, fertilizerId)) {
+                            __result = HoeDirtFertilizerApplyStatus.HasAnotherFertilizer;
+                        }
+
+                        break;
+                    case "multi-fertilizer-single-level":
+                    case "single-fertilizer-replace":
+                        if (_config.ReplaceHighTier) {
+                            break;
+                        }
+
+                        if (!Fertilizers.All(fertilizer =>
+                                CheckUpgrade(fertilizer, fertilizerId, __instance.fertilizer.Value))) {
                             __result = HoeDirtFertilizerApplyStatus.HasAnotherFertilizer;
                         }
 
@@ -434,6 +498,66 @@ namespace UltimateFertilizer {
 
         [HarmonyPatch(typeof(HoeDirt), nameof(HoeDirt.plant))]
         public static class Plant {
+            public static bool ApplyFertilizerOnDirt(HoeDirt dirt, string itemId, Farmer who) {
+                if (!dirt.CanApplyFertilizer(itemId)) {
+                    return false;
+                }
+
+                itemId = ItemRegistry.QualifyItemId(itemId) ?? itemId;
+
+                if (dirt.fertilizer.Value is {Length: > 0}) {
+                    switch (_config.FertilizerMode) {
+                        case "multi-fertilizer-stack":
+                            dirt.fertilizer.Value += "|";
+                            dirt.fertilizer.Value += itemId;
+                            break;
+                        case "multi-fertilizer-single-level":
+                            var fertilizerList = Fertilizers.Find(list => list.Contains(itemId));
+                            if (fertilizerList != null) {
+                                var found = false;
+                                foreach (var s in fertilizerList.Where(s => dirt.fertilizer.Value.Contains(s))) {
+                                    dirt.fertilizer.Value = dirt.fertilizer.Value.Replace(s, itemId);
+                                    found = true;
+                                }
+
+                                if (!found) {
+                                    dirt.fertilizer.Value += "|";
+                                    dirt.fertilizer.Value += itemId;
+                                }
+                            }
+
+                            break;
+                        case "single-fertilizer-stack":
+                            dirt.fertilizer.Value += "|";
+                            dirt.fertilizer.Value += itemId;
+                            break;
+                        case "single-fertilizer-replace":
+                            dirt.fertilizer.Value = itemId;
+                            break;
+                        case "Vanilla":
+                            break;
+                    }
+                }
+                else {
+                    dirt.fertilizer.Value = itemId;
+                }
+
+                Print("Fertilizer value: " + dirt.fertilizer.Value);
+                if (_config.SpeedRemainAfterHarvest && dirt.crop != null &&
+                    dirt.crop.dayOfCurrentPhase.Value != 0) {
+                    var data = dirt.crop.GetData();
+                    var regrow_day = data?.RegrowDays ?? -1;
+                    if (regrow_day > 0) {
+                        var speed = dirt.GetFertilizerSpeedBoost();
+                        dirt.crop.dayOfCurrentPhase.Value = (int) Math.Ceiling(regrow_day / (1.0 + speed));
+                    }
+                }
+
+                dirt.applySpeedIncreases(who);
+
+                return true;
+            }
+
             public static bool Prefix(
                 HoeDirt __instance,
                 string itemId, Farmer who,
@@ -444,63 +568,12 @@ namespace UltimateFertilizer {
                     return true;
                 }
 
-                if (!__instance.CanApplyFertilizer(itemId)) {
-                    __result = false;
+                __result = ApplyFertilizerOnDirt(__instance, itemId, who);
+
+                if (!__result) {
                     return false;
                 }
 
-                itemId = ItemRegistry.QualifyItemId(itemId) ?? itemId;
-                __result = true;
-
-                if (__instance.fertilizer.Value is {Length: > 0}) {
-                    switch (_config.FertilizerMode) {
-                        case "multi-fertilizer-stack":
-                            __instance.fertilizer.Value += "|";
-                            __instance.fertilizer.Value += itemId;
-                            break;
-                        case "multi-fertilizer-single-level":
-                            var fertilizerList = Fertilizers.Find(list => list.Contains(itemId));
-                            if (fertilizerList != null) {
-                                var found = false;
-                                foreach (var s in fertilizerList.Where(s => __instance.fertilizer.Value.Contains(s))) {
-                                    __instance.fertilizer.Value = __instance.fertilizer.Value.Replace(s, itemId);
-                                    found = true;
-                                }
-
-                                if (!found) {
-                                    __instance.fertilizer.Value += "|";
-                                    __instance.fertilizer.Value += itemId;
-                                }
-                            }
-
-                            break;
-                        case "single-fertilizer-stack":
-                            __instance.fertilizer.Value += "|";
-                            __instance.fertilizer.Value += itemId;
-                            break;
-                        case "single-fertilizer-replace":
-                            __instance.fertilizer.Value = itemId;
-                            break;
-                        case "Vanilla":
-                            break;
-                    }
-                }
-                else {
-                    __instance.fertilizer.Value = itemId;
-                }
-
-                Print("Fertilizer value: " + __instance.fertilizer.Value);
-                if (_config.SpeedRemainAfterHarvest && __instance.crop != null &&
-                    __instance.crop.dayOfCurrentPhase.Value != 0) {
-                    var data = __instance.crop.GetData();
-                    var regrow_day = data?.RegrowDays ?? -1;
-                    if (regrow_day > 0) {
-                        var speed = __instance.GetFertilizerSpeedBoost();
-                        __instance.crop.dayOfCurrentPhase.Value = (int) Math.Ceiling(regrow_day * (1.0 - speed));
-                    }
-                }
-
-                __instance.applySpeedIncreases(who);
                 __instance.Location.playSound("dirtyHit");
                 return false;
             }
@@ -517,6 +590,47 @@ namespace UltimateFertilizer {
             }
         }
 
+        [HarmonyPatch(typeof(HoeDirt), nameof(HoeDirt.applySpeedIncreases))]
+        public static class ApplySpeedIncrease {
+            private static bool Prefix(
+                HoeDirt __instance,
+                Farmer who
+            ) {
+                if (__instance.crop == null)
+                    return false;
+                var isCropWatered = __instance.Location != null && __instance.paddyWaterCheck();
+                var fertilizerBoost = __instance.GetFertilizerSpeedBoost();
+                if (((fertilizerBoost != 0.0 ? 1 : (who.professions.Contains(5) ? 1 : 0)) | (isCropWatered ? 1 : 0)) ==
+                    0)
+                    return false;
+                __instance.crop.ResetPhaseDays();
+                var totalPhaseDays = 0;
+                for (var i = 0; i < __instance.crop.phaseDays.Count - 1; ++i)
+                    totalPhaseDays += __instance.crop.phaseDays[i];
+                var totalBoost = fertilizerBoost;
+                if (isCropWatered)
+                    totalBoost += 0.25f;
+                if (who.professions.Contains(5))
+                    totalBoost += 0.1f;
+                var totalDaysToDecrease = (long) Math.Ceiling(totalPhaseDays * (double) totalBoost);
+                for (var i = 0; totalDaysToDecrease > 0 && i < 99; ++i) {
+                    for (var j = 0; j < __instance.crop.phaseDays.Count; ++j) {
+                        if ((j > 0 || __instance.crop.phaseDays[j] > 1) && __instance.crop.phaseDays[j] != 99999 &&
+                            __instance.crop.phaseDays[j] > 0) {
+                            __instance.crop.phaseDays[j]--;
+                            --totalDaysToDecrease;
+                        }
+
+                        if (totalDaysToDecrease <= 0)
+                            break;
+                    }
+                }
+
+                return false;
+            }
+        }
+
+
         private static readonly List<string> FertilizerSpeed = new() {
             HoeDirt.speedGroQID, HoeDirt.superSpeedGroQID, HoeDirt.hyperSpeedGroQID
         };
@@ -529,7 +643,7 @@ namespace UltimateFertilizer {
             HoeDirt.waterRetentionSoilQID, HoeDirt.waterRetentionSoilQualityQID, HoeDirt.waterRetentionSoilDeluxeQID
         };
 
-        private static readonly List<List<string>> Fertilizers = new()
+        public static readonly List<List<string>> Fertilizers = new()
             {FertilizerSpeed, FertilizerQuality, FertilizerWaterRetention};
 
         [HarmonyPatch(typeof(HoeDirt), "GetFertilizerSpeedBoost")]
@@ -637,11 +751,58 @@ namespace UltimateFertilizer {
                 if (fert_batch == null || !__instance.HasFertilizer()) return;
                 var local = Game1.GlobalToLocal(Game1.viewport, __instance.Tile * 64f);
                 var layer = 1.9E-08f;
+                var alphaRatio = _config.FertilizerAlpha / 255f; // Normalize alpha to 0-1 range
+                var color = new Color(Color.White, _config.FertilizerAlpha) * alphaRatio; // Premultiply
+
                 foreach (var id in __instance.fertilizer.Value.Split("|")) {
-                    fert_batch.Draw(Game1.mouseCursors, local, GetFertilizerSourceRect(id), Color.White,
-                        0.0f, Vector2.Zero, 4f, SpriteEffects.None, layer);
-                    layer += 1E-09f;
+                    fert_batch.Draw(
+                        Game1.mouseCursors, local,
+                        GetFertilizerSourceRect(id), color,
+                        0.0f, Vector2.Zero, 4f, SpriteEffects.None, layer
+                    );
+                    layer += 1.9E-08f;
                 }
+            }
+        }
+
+        private static bool in_harvest;
+        private static int current_quality = -1;
+
+        [HarmonyPatch(typeof(Crop), nameof(Crop.harvest))]
+        public static class HarvestSentinel {
+            public static void Prefix() {
+                Print("In Harvest");
+                in_harvest = true;
+            }
+
+            public static void Postfix() {
+                Print("Out Harvest");
+                in_harvest = false;
+                current_quality = -1;
+            }
+        }
+
+        [HarmonyPatch]
+        public static class ItemCreatePatch {
+            static MethodBase TargetMethod() {
+                return AccessTools.FirstMethod(
+                    typeof(ItemRegistry), method => method.Name.Contains("Create") && !method.IsGenericMethod
+                );
+            }
+
+            public static void Prefix(ref int quality) {
+                if (!in_harvest || !_config.FixMultiDropBug) {
+                    return;
+                }
+
+                if (current_quality == -1) {
+                    Print("Set fix quality to: " + quality);
+                    current_quality = quality;
+                    return;
+                }
+                
+                Print("Apply fixed quality");
+                quality = current_quality;
             }
         }
     }

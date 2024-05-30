@@ -18,6 +18,7 @@ using Microsoft.Xna.Framework;
 using Netcode;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Mods;
 
 namespace Farmtronics.Bot {
 	class ModData {
@@ -100,7 +101,7 @@ namespace Farmtronics.Bot {
 			
 			Vector2 position = new Vector2(PositionX, PositionY);
 
-			if (bot.Name != Name) bot.Name = bot.DisplayName = Name;
+			if (bot.Name != Name) bot.Name = bot.displayName = Name;
 			if (bot.facingDirection != Facing) bot.facingDirection = Facing;
 			if (applyEnergy && bot.energy != Energy) bot.energy = Energy;
 			if (Inventory != null) {
@@ -145,7 +146,7 @@ namespace Farmtronics.Bot {
 			this.Save(false);
 		}
 
-		public void Save(ref ModDataDictionary data, bool isSaving) {
+		public void Save(ModDataDictionary data, bool isSaving) {
 			foreach (var kv in GetModData(isSaving)) {
 				data[kv.Key] = kv.Value;
 			}
@@ -159,10 +160,10 @@ namespace Farmtronics.Bot {
 		}
 		
 		public void Save(bool isSaving) {
-			Save(ref bot.modData, isSaving);
+			Save(bot.modData, isSaving);
 		}
 		
-		public void RemoveEnergy(ref ModDataDictionary data) {
+		public void RemoveEnergy(ModDataDictionary data) {
 			data.Remove(ModEntry.GetModDataKey(nameof(Energy).FirstToLower()));
 		}
 		

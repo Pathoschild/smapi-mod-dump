@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-#nullable enable
+#if COMMON_FLOW
 
 using System;
 using System.Collections.Generic;
@@ -17,12 +17,12 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using StardewValley;
-using StardewValley.Menus;
 using StardewValley.BellsAndWhistles;
+using StardewValley.Menus;
 
 namespace Leclair.Stardew.Common.UI.FlowNode;
 
-public struct TextNode : IFlowNode {
+public class TextNode : IFlowNode {
 
 	public static readonly char[] SEPARATORS = new char[] {
             // Whitespace
@@ -40,7 +40,17 @@ public struct TextNode : IFlowNode {
 	};
 
 	public string Text { get; }
-	public TextStyle Style { get; }
+
+	private TextStyle _Style;
+	public TextStyle Style {
+		get => _Style;
+		set {
+			if (_Style.IsFancy() != value.IsFancy() || _Style.Scale != value.Scale || _Style.Font != value.Font || _Style.IsJunimo() != value.IsJunimo())
+				throw new ArgumentException("unable to assign style that would change size of output");
+			_Style = value;
+		}
+	}
+
 	public Alignment Alignment { get; }
 	public object? Extra { get; }
 	public string? UniqueId { get; }
@@ -62,7 +72,7 @@ public struct TextNode : IFlowNode {
 		string? id = null
 	) {
 		Text = text;
-		Style = style ?? TextStyle.EMPTY;
+		_Style = style ?? TextStyle.EMPTY;
 		Alignment = align ?? Alignment.None;
 		OnClick = onClick;
 		OnHover = onHover;
@@ -187,7 +197,7 @@ public struct TextNode : IFlowNode {
 			return new TextSlice(this, pending, start, pendingEnd, pendingSize.X + (pendingSpace ? spaceSize.X : 0), Math.Max(spaceSize.Y, pendingSize.Y), had_new ? WrapMode.ForceAfter : WrapMode.None);
 
 		// If we're dealing with a no-separators-at-all situation, attempt to slice the word.
-		var sliced = ! had_new && start == 0 ? TryPartial(font, final.Length, start, remaining, spaceSize) : null;
+		var sliced = !had_new && start == 0 ? TryPartial(font, final.Length, start, remaining, spaceSize) : null;
 		if (sliced is not null)
 			return sliced;
 
@@ -229,11 +239,15 @@ public struct TextNode : IFlowNode {
 
 		float s = scale * (Style.Scale ?? 1f);
 		SpriteFont font = Style.Font ?? defaultFont;
+		Color? stColor = Style.Color ?? defaultColor;
 		Color color = Style.Color ?? defaultColor ?? Game1.textColor;
 		Color background = Style.BackgroundColor ?? Color.Transparent;
 		Color? shadowColor = Style.ShadowColor ?? defaultShadowColor;
 		if (Style.IsPrismatic())
 			color = Utility.GetPrismaticColor();
+
+		if (Style.Opacity.HasValue)
+			color *= Style.Opacity.Value;
 
 		string text = tslice.Text;
 
@@ -259,7 +273,8 @@ public struct TextNode : IFlowNode {
 				text,
 				(int) position.X, (int) position.Y,
 				junimoText: Style.IsJunimo(),
-				color: color
+				color: stColor,
+				alpha: Style.Opacity ?? 1
 			);
 		else if (Style.IsBold())
 			Utility.drawBoldText(batch, text, font, position, color, s);
@@ -284,9 +299,9 @@ public struct TextNode : IFlowNode {
 		if (Style.IsUnderline())
 			Utility.drawLineWithScreenCoordinates(
 				(int) position.X,
-				(int) (position.Y + tslice.Height * 3/4),
+				(int) (position.Y + tslice.Height * 3 / 4),
 				(int) (position.X + tslice.Width),
-				(int) (position.Y + tslice.Height * 3/4),
+				(int) (position.Y + tslice.Height * 3 / 4),
 				batch,
 				color
 			);
@@ -376,3 +391,5 @@ public struct TextSlice : IFlowNodeSlice {
 		return !(left == right);
 	}
 }
+
+#endif

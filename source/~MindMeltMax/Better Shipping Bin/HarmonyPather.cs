@@ -98,7 +98,7 @@ namespace BetterShipping
                 return;
 
             int value = 0;
-            string text = "Total value : ";
+            string text = ModEntry.IHelper.Translation.Get("Menu.TotalValue");
 
             for (int i = 0; i < menu.ItemsToGrabMenu.actualInventory.Count; i++) 
             {

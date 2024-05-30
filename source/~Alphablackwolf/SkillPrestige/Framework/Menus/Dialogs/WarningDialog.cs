@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using SkillPrestige.Framework.InputHandling;
@@ -21,9 +22,6 @@ namespace SkillPrestige.Framework.Menus.Dialogs
 {
     internal class WarningDialog : IClickableMenu, IInputHandler
     {
-        /*********
-        ** Fields
-        *********/
         private OkayCallback OnOkay { get; }
         private CancelCallback OnCancel { get; }
         private bool ButtonsInstantiated;
@@ -32,20 +30,13 @@ namespace SkillPrestige.Framework.Menus.Dialogs
         private TextureButton CancelButton;
         private readonly string Message;
 
-
-        /*********
-        ** Accessors
-        *********/
         public delegate void OkayCallback();
         public delegate void CancelCallback();
 
-
-        /*********
-        ** Public methods
-        *********/
         public WarningDialog(Rectangle bounds, string message, OkayCallback okayCallback, CancelCallback cancelCallback)
             : base(bounds.X, bounds.Y, bounds.Width, bounds.Height, true)
         {
+            Logger.LogVerbose("Warning dialog created");
             this.OnOkay = okayCallback;
             this.OnCancel = cancelCallback;
             this.exitFunction = this.Cancel;
@@ -97,10 +88,6 @@ namespace SkillPrestige.Framework.Menus.Dialogs
             this.CancelButton.OnButtonPressed(e, isClick);
         }
 
-
-        /*********
-        ** Private methods
-        *********/
         private void Cancel()
         {
             Logger.LogInformation("Warning Dialog - Cancel/Close called.");
@@ -116,13 +103,31 @@ namespace SkillPrestige.Framework.Menus.Dialogs
             const int buttonSize = Game1.tileSize;
             const int buttonPadding = Game1.tileSize * 4;
             var okayButtonBounds = new Rectangle(this.xPositionOnScreen + this.width - buttonSize - spaceToClearSideBorder * 3, this.yPositionOnScreen + this.height - (buttonSize * 1.5).Floor(), buttonSize, buttonSize);
-            this.OkayButton = new TextureButton(okayButtonBounds, Game1.mouseCursors, new Rectangle(128, 256, 64, 64), this.Okay, "Prestige Skill");
+            this.OkayButton = new TextureButton(okayButtonBounds, Game1.mouseCursors, new Rectangle(128, 256, 64, 64), this.Okay, "Prestige Skill")
+                {
+                    ClickableTextureComponent =
+                    {
+                        myID = 1
+                    }
+                };
             Logger.LogVerbose("Warning Dialog - Okay button instantiated.");
             var cancelButtonBounds = okayButtonBounds;
             cancelButtonBounds.X -= buttonSize + buttonPadding;
             this.CancelButton = new TextureButton(cancelButtonBounds, Game1.mouseCursors, new Rectangle(192, 256, 64, 64), () => this.exitThisMenu(false), "Cancel");
             Logger.LogVerbose("Warning Dialog - Cancel button instantiated.");
-
+            this.CancelButton.ClickableTextureComponent.myID = 2;
+            this.OkayButton.ClickableTextureComponent.upNeighborID = this.upperRightCloseButton.myID;
+            this.CancelButton.ClickableTextureComponent.upNeighborID = this.upperRightCloseButton.myID;
+            this.upperRightCloseButton.downNeighborID = this.OkayButton.ClickableTextureComponent.myID;
+            this.upperRightCloseButton.leftNeighborID = this.CancelButton.ClickableTextureComponent.myID;
+            this.OkayButton.ClickableTextureComponent.leftNeighborID = this.CancelButton.ClickableTextureComponent.myID;
+            this.CancelButton.ClickableTextureComponent.rightNeighborID = this.OkayButton.ClickableTextureComponent.myID;
+            this.allClickableComponents = new List<ClickableComponent>
+            {
+                this.upperRightCloseButton,
+                this.OkayButton.ClickableTextureComponent,
+                this.CancelButton.ClickableTextureComponent
+            };
         }
 
         private void Okay()

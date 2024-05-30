@@ -10,8 +10,8 @@
 
 {
   "Name": "Better Truffles",
-  "Author": "tem696969696969",
-  "Version": "1.0.0",
+  "Author": "temisthem",
+  "Version": "1.0.3",
   "Description": "Pigs can dig for truffles in tall grass.",
   "UniqueID": "tem696969696969.BetterTruffles",
   "EntryDll": "BetterTruffles.dll",

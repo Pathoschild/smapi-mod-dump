@@ -269,8 +269,7 @@ namespace ContentPatcher.Framework
                                     ? "unnamed"
                                     : entry.Name;
 
-                                if (!dynamicTokenCountByName.ContainsKey(label))
-                                    dynamicTokenCountByName[label] = -1;
+                                dynamicTokenCountByName.TryAdd(label, -1);
                                 int discriminator = ++dynamicTokenCountByName[label];
                                 localPath = localPath.With($"{entry.Name} {discriminator}");
                             }
@@ -388,6 +387,9 @@ namespace ContentPatcher.Framework
             // update tokens
             this.TokenManager.UpdateContext(out _);
 
+            // unload patches
+            this.PatchLoader.UnloadPatchesLoadedBy(contentPack);
+
             // reload changes to force-reset config token references
             if (!contentPack.TryReloadContent(out string? loadContentError))
             {
@@ -396,7 +398,6 @@ namespace ContentPatcher.Framework
             }
 
             // update patches
-            this.PatchLoader.UnloadPatchesLoadedBy(contentPack);
             this.PatchLoader.LoadPatches(
                 contentPack: contentPack,
                 rawPatches: contentPack.Content.Changes,
@@ -404,6 +405,9 @@ namespace ContentPatcher.Framework
                 path: contentPack.LogPath,
                 parentPatch: null
             );
+
+            // apply any changes
+            this.UpdateContext(ContextUpdateType.All);
         }
 
         /// <summary>Register a config token for a content pack.</summary>

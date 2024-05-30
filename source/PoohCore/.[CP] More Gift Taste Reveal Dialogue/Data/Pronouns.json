@@ -1,0 +1,113 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/poohnhi/PoohCore
+**
+*************************************************/
+
+{
+    "Changes": [
+        {
+            "LogName": "Adding generic default pronouns for NPCs",
+            "Action": "EditData",
+            "Target": "Strings/StringsFromCSFiles",
+            "Entries": {
+                "poohnhi.MoreGiftTasteRevealDialogue.MasculineSubject": "{{i18n:MasculineSubject}}",
+                "poohnhi.MoreGiftTasteRevealDialogue.MasculineObject": "{{i18n:MasculineObject}}",
+                "poohnhi.MoreGiftTasteRevealDialogue.MasculinePossessive": "{{i18n:MasculinePossessive}}",
+                "poohnhi.MoreGiftTasteRevealDialogue.MasculineReflexive": "{{i18n:MasculineReflexive}}",
+                "poohnhi.MoreGiftTasteRevealDialogue.FeminineSubject": "{{i18n:FeminineSubject}}",
+                "poohnhi.MoreGiftTasteRevealDialogue.FeminineObject": "{{i18n:FeminineObject}}",
+                "poohnhi.MoreGiftTasteRevealDialogue.FemininePossessive": "{{i18n:FemininePossessive}}",
+                "poohnhi.MoreGiftTasteRevealDialogue.FeminineReflexive": "{{i18n:FeminineReflexive}}",
+                "poohnhi.MoreGiftTasteRevealDialogue.NeutralSubject": "{{i18n:NeutralSubject}}",
+                "poohnhi.MoreGiftTasteRevealDialogue.NeutralObject": "{{i18n:NeutralObject}}",
+                "poohnhi.MoreGiftTasteRevealDialogue.NeutralPossessive": "{{i18n:NeutralPossessive}}",
+                "poohnhi.MoreGiftTasteRevealDialogue.MasculineSubjectLowercase": "{{i18n:MasculineSubjectLowercase}}",
+                "poohnhi.MoreGiftTasteRevealDialogue.MasculineObjectLowercase": "{{i18n:MasculineObjectLowercase}}",
+                "poohnhi.MoreGiftTasteRevealDialogue.MasculinePossessiveLowercase": "{{i18n:MasculinePossessiveLowercase}}",
+                "poohnhi.MoreGiftTasteRevealDialogue.MasculineReflexiveLowercase": "{{i18n:MasculineReflexiveLowercase}}",
+                "poohnhi.MoreGiftTasteRevealDialogue.FeminineSubjectLowercase": "{{i18n:FeminineSubjectLowercase}}",
+                "poohnhi.MoreGiftTasteRevealDialogue.FeminineObjectLowercase": "{{i18n:FeminineObjectLowercase}}",
+                "poohnhi.MoreGiftTasteRevealDialogue.FemininePossessiveLowercase": "{{i18n:FemininePossessiveLowercase}}",
+                "poohnhi.MoreGiftTasteRevealDialogue.FeminineReflexiveLowercase": "{{i18n:FeminineReflexiveLowercase}}",
+                "poohnhi.MoreGiftTasteRevealDialogue.NeutralSubjectLowercase": "{{i18n:NeutralSubjectLowercase}}",
+                "poohnhi.MoreGiftTasteRevealDialogue.NeutralObjectLowercase": "{{i18n:NeutralObjectLowercase}}",
+                "poohnhi.MoreGiftTasteRevealDialogue.NeutralPossessiveLowercase": "{{i18n:NeutralPossessiveLowercase}}"
+            }
+        },
+        
+        // Sword And Sorcery
+        {
+            "LogName": "Overriding generic default pronouns for Mateo",
+            "Action": "EditData",
+            "Target": "Strings/StringsFromCSFiles",
+            "Entries": {
+                "poohnhi.MoreGiftTasteRevealDialogue.Subject_Mateo": "{{i18n:NeutralSubject}}",
+                "poohnhi.MoreGiftTasteRevealDialogue.Object_Mateo": "{{i18n:NeutralObject}}",
+                "poohnhi.MoreGiftTasteRevealDialogue.Possessive_Mateo": "{{i18n:NeutralPossessive}}",
+                "poohnhi.MoreGiftTasteRevealDialogue.Reflexive_Mateo": "{{i18n:NeutralReflexive}}",
+                "poohnhi.MoreGiftTasteRevealDialogue.SubjectLowercase_Mateo": "{{i18n:NeutralSubjectLowercase}}",
+                "poohnhi.MoreGiftTasteRevealDialogue.ObjectLowercase_Mateo": "{{i18n:NeutralObjectLowercase}}",
+                "poohnhi.MoreGiftTasteRevealDialogue.PossessiveLowercase_Mateo": "{{i18n:NeutralPossessiveLowercase}}",
+                "poohnhi.MoreGiftTasteRevealDialogue.ReflexiveLowercase_Mateo": "{{i18n:NeutralReflexiveLowercase}}"
+            }
+        },
+        {
+            "LogName": "Overriding generic default pronouns for Hector 1",
+            "Action": "EditData",
+            "Target": "Strings/StringsFromCSFiles",
+            "Entries": {
+                "poohnhi.MoreGiftTasteRevealDialogue.Subject_Hector": "{{i18n:MasculineSubject}}",
+                "poohnhi.MoreGiftTasteRevealDialogue.Object_Hector": "{{i18n:MasculineObject}}",
+                "poohnhi.MoreGiftTasteRevealDialogue.Possessive_Hector": "{{i18n:MasculinePossessive}}",
+                "poohnhi.MoreGiftTasteRevealDialogue.Reflexive_Hector": "{{i18n:MasculineReflexive}}",
+                "poohnhi.MoreGiftTasteRevealDialogue.SubjectLowercase_Hector": "{{i18n:MasculineSubjectLowercase}}",
+                "poohnhi.MoreGiftTasteRevealDialogue.ObjectLowercase_Hector": "{{i18n:MasculineObjectLowercase}}",
+                "poohnhi.MoreGiftTasteRevealDialogue.PossessiveLowercase_Hector": "{{i18n:MasculinePossessiveLowercase}}",
+                "poohnhi.MoreGiftTasteRevealDialogue.ReflexiveLowercase_Hector": "{{i18n:MasculineReflexiveLowercase}}"
+            }
+        },
+        {
+            "LogName": "Overriding generic default pronouns for Hector 2",
+            "Action": "EditData",
+            "Target": "Strings/StringsFromCSFiles",
+            "Entries": {
+                "poohnhi.MoreGiftTasteRevealDialogue.Subject_Hector": "{{i18n:FeminineSubject}}",
+                "poohnhi.MoreGiftTasteRevealDialogue.Object_Hector": "{{i18n:FeminineObject}}",
+                "poohnhi.MoreGiftTasteRevealDialogue.Possessive_Hector": "{{i18n:FemininePossessive}}",
+                "poohnhi.MoreGiftTasteRevealDialogue.Reflexive_Hector": "{{i18n:FeminineReflexive}}",
+                "poohnhi.MoreGiftTasteRevealDialogue.SubjectLowercase_Hector": "{{i18n:FeminineSubjectLowercase}}",
+                "poohnhi.MoreGiftTasteRevealDialogue.ObjectLowercase_Hector": "{{i18n:FeminineObjectLowercase}}",
+                "poohnhi.MoreGiftTasteRevealDialogue.PossessiveLowercase_Hector": "{{i18n:FemininePossessiveLowercase}}",
+                "poohnhi.MoreGiftTasteRevealDialogue.ReflexiveLowercase_Hector": "{{i18n:FeminineReflexiveLowercase}}"
+            },
+            "When": {
+                "Random: male, female|key=hector-gender": "female"
+            }
+        },
+
+        // Testing compatibility for mods that changes specific vanilla NPCs pronouns. WIP.
+        {
+            "Action": "EditData",
+            "Target": "Strings/StringsFromCSFiles",
+            "Entries": {
+                "poohnhi.MoreGiftTasteRevealDialogue.Subject_Abigail": "{{i18n:NeutralSubject}}",
+                "poohnhi.MoreGiftTasteRevealDialogue.Object_Abigail": "{{i18n:NeutralObject}}",
+                "poohnhi.MoreGiftTasteRevealDialogue.Possessive_Abigail": "{{i18n:NeutralPossessive}}",
+                "poohnhi.MoreGiftTasteRevealDialogue.Reflexive_Abigail": "{{i18n:NeutralReflexive}}",
+                "poohnhi.MoreGiftTasteRevealDialogue.SubjectLowercase_Abigail": "{{i18n:NeutralSubjectLowercase}}",
+                "poohnhi.MoreGiftTasteRevealDialogue.ObjectLowercase_Abigail": "{{i18n:NeutralObjectLowercase}}",
+                "poohnhi.MoreGiftTasteRevealDialogue.PossessiveLowercase_Abigail": "{{i18n:NeutralPossessiveLowercase}}",
+                "poohnhi.MoreGiftTasteRevealDialogue.ReflexiveLowercase_Abigail": "{{i18n:NeutralReflexiveLowercase}}"
+            },
+            "When": {
+                "HasMod |contains= DSV.Core": true,
+                "DSV.Core/ConfigValue:NonbinaryAbigail |contains= True": true
+            }
+        }
+    ]
+}

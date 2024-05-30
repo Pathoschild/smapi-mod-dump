@@ -10,7 +10,7 @@
 
 namespace StardewMods.FauxCore.Framework.Services;
 
-using StardewMods.Common.Enums;
+using StardewMods.FauxCore.Common.Enums;
 
 /// <summary>Formats the given <see cref="LogLevel" /> into a string.</summary>
 internal static class LocalizedTextManager

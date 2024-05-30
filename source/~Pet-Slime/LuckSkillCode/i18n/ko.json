@@ -1,0 +1,33 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Pet-Slime/StardewValley
+**
+*************************************************/
+
+{
+    "skill.name": "행운",
+    "skill.perk": "좋은 일이 발생할 확률은 높이고, 나쁜 일이 발생할 확률은 낮춥니다.",
+    "skill.perk_bonus": "좋은 일이 발생할 확률은 높이고, 나쁜 일이 발생할 확률은 낮춥니다.",
+
+    "Luck5a.name": "도박꾼Gambler",
+    "Luck5a.desc": "그 날의 행운의 수치가 증가합니다.",
+    "Luck5b.name": "도우미",
+    "Luck5b.desc": "구인 공고가 3배 더 자주 발생합니다.",
+    "Luck10a1.name": "럭키",
+    "Luck10a1.desc": "20% 확률로 그 날의 행운이 최대가 됩니다.",
+    "Luck10a2.name": "점술가",
+    "Luck10a2.desc": "운이 절대 나빠지지 않습니다.",
+    "Luck10b1.name": "유성",
+    "Luck10b1.desc": "밤의 농장 이벤트가 2배 자주 발생합니다.",
+    "Luck10b2.name": "꼬마 정령",
+    "Luck10b2.desc": "선물을 주면 주니모가 행복해집니다. 주니모들이 농장에 도움이 될 수도 있습니다.\n(매일 15%의 확률로 농장에 임의의 도움을 받습니다.)",
+
+    "junimo-rewards.animal-friendship": "주니모들이 당신의 동물들중 일부가 당신을 더 좋아하게 만들었습니다!",
+    "junimo-rewards.grow-crops": "주니모들이 당신의 작물을 발전시켰습니다!",
+    "junimo-rewards.grow-grass": "주니모들이 당신의 잔디를 자라게 하고 울타리를 고쳤습니다!",
+    "junimo-rewards.prismatic-shard": "주니모들이 당신에게 무지갯빛 파편을 선물했습니다!"
+}

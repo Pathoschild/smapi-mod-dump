@@ -110,11 +110,11 @@
 
 	// The remaining strings are the names and descriptions of options in the mod's config menu.
 
-	"InaccuratePredictions.name": "Inaccurate Predictions", // TODO
-	"InaccuratePredictions.description": "Reveal channels whose information is inaccurate due to game version mismatch and/or conflicting mods. For entertainment purposes only.", // TODO
+	"InaccuratePredictions.name": "Prédictions imprécises",
+	"InaccuratePredictions.description": "Révèle des chaînes dont les informations sont imprécises dû à un décalage sur la version du jeu et/ou des conflits de mod.\nÀ des fins de divertissement uniquement.",
 
-	"Cheats.name": "Cheat Options", // TODO
+	"Cheats.name": "Options de triche",
 
-	"BypassFriendships.name": "Bypass Friendships", // TODO
-	"BypassFriendships.description": "Put all TV hosts on the job as soon as applicable, regardless of their friendship level with the player." // TODO
+	"BypassFriendships.name": "Dépasser l’amitié",
+	"BypassFriendships.description": "Laisser tous les hôtes TV accessibles, sans prendre en compte les restrictions de niveau d’amitié avec le joueur."
 }

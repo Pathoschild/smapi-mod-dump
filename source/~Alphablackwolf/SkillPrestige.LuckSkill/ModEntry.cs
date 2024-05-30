@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using LuckSkill;
 using Microsoft.Xna.Framework;
-using SkillPrestige.LuckSkill.Framework;
 using SkillPrestige.Mods;
 using SkillPrestige.Professions;
 using SkillPrestige.SkillTypes;
@@ -24,19 +23,12 @@ namespace SkillPrestige.LuckSkill
     /// <summary>The mod entry class.</summary>
     internal class ModEntry : Mod, ISkillMod
     {
-        /*********
-        ** Fields
-        *********/
         /// <summary>The luck skill type.</summary>
         private SkillType SkillType;
 
         /// <summary>The unique ID for the Luck Skill mod.</summary>
         private const string TargetModId = "spacechase0.LuckSkill";
 
-
-        /*********
-        ** Accessors
-        *********/
         /// <summary>The name to display for the mod in the log.</summary>
         public string DisplayName { get; } = "Luck Skill";
 
@@ -49,10 +41,6 @@ namespace SkillPrestige.LuckSkill
         /// <summary>The prestiges added by this mod.</summary>
         public IEnumerable<Prestige> AdditionalPrestiges => this.GetAddedPrestiges();
 
-
-        /*********
-        ** Public methods
-        *********/
         /// <summary>The mod entry point, called after the mod is first loaded.</summary>
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
@@ -63,10 +51,6 @@ namespace SkillPrestige.LuckSkill
             ModHandler.RegisterMod(this);
         }
 
-
-        /*********
-        ** Private methods
-        *********/
         /// <summary>Get the skills added by this mod.</summary>
         private IEnumerable<Skill> GetAddedSkills()
         {
@@ -76,7 +60,6 @@ namespace SkillPrestige.LuckSkill
             yield return new Skill
             {
                 Type = this.SkillType,
-                SkillScreenPosition = 6,
                 SourceRectangleForSkillIcon = new Rectangle(64, 0, 16, 16),
                 Professions = this.GetAddedProfessions(),
                 GetSkillLevel = () => Game1.player.luckLevel.Value,
@@ -117,7 +100,7 @@ namespace SkillPrestige.LuckSkill
 
             var fortunate = Create<TierOneProfession>(api.FortunateProfessionId);
             var popularHelper = Create<TierOneProfession>(api.PopularHelperProfessionId);
-            var lucky = Create<TierTwoProfession>(api.LuckyProfessionId, new SpecialCharmSpecialHandling());
+            var lucky = Create<TierTwoProfession>(api.LuckyProfessionId);
             var unUnlucky = Create<TierTwoProfession>(api.UnUnluckyProfessionId);
             var shootingStar = Create<TierTwoProfession>(api.ShootingStarProfessionId);
             var spiritChild = Create<TierTwoProfession>(api.SpiritChildProfessionId);

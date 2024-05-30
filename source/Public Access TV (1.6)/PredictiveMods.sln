@@ -5,7 +5,9 @@ VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PredictiveCore", "PredictiveCore\PredictiveCore.csproj", "{14D5C89F-B1EF-4C19-AD9C-E6727ACE4687}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PublicAccessTV", "PublicAccessTV\PublicAccessTV.csproj", "{CE22A68F-427F-4E16-9694-1064647D9869}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PublicAccessTV", "PublicAccessTV\PublicAccessTV.csproj", "{CE22A68F-427F-4E16-9694-1064647D9869}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "[CP] Public Access TV", "[CP] Public Access TV\[CP] Public Access TV.csproj", "{C1D04C22-937B-4F9B-B739-E84B9B48A8B2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{CE22A68F-427F-4E16-9694-1064647D9869}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE22A68F-427F-4E16-9694-1064647D9869}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE22A68F-427F-4E16-9694-1064647D9869}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1D04C22-937B-4F9B-B739-E84B9B48A8B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1D04C22-937B-4F9B-B739-E84B9B48A8B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1D04C22-937B-4F9B-B739-E84B9B48A8B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1D04C22-937B-4F9B-B739-E84B9B48A8B2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

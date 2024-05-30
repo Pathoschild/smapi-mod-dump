@@ -1,0 +1,25 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Pet-Slime/StardewValley
+**
+*************************************************/
+
+{
+
+    "moonslime.Luck.slots_copper.name": "铜老虎机",
+    "moonslime.Luck.slots_copper.description": "插入5块铜锭和一个电池组，可以取回5-20个随机建造此机器的材料。",
+
+    "moonslime.Luck.slots_gold.name": "金老虎机",
+    "moonslime.Luck.slots_gold.description": "插入5块金锭和一个电池组， 可以得到5个随机的矿井物品。",
+
+    "moonslime.Luck.slots_iridium.name": "铱老虎机",
+    "moonslime.Luck.slots_iridium.description": "插入5块铱锭和一个电池组，可以得到1种随机的宝石。",
+
+    "moonslime.Luck.slots_radioactive.name": "放射性老虎机",
+    "moonslime.Luck.slots_radioactive.description": "插入5块放射性矿锭和一个电池组，可以得到随机的1种人们喜爱的礼物。"
+
+}

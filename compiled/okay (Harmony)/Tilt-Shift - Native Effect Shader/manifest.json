@@ -1,7 +1,7 @@
 {
     "Name": "Tilt-Shift - Native Effect Shader",
     "Author": "misterwu",
-    "Version": "1.5.3",
+    "Version": "1.6.3",
     "Description": "Tilt shift effect shader for Stardew Valley",
     "UniqueID": "misterwu.tiltshifteffect",
     "EntryDll": "TiltShiftEffect.dll",

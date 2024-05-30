@@ -45,7 +45,7 @@ namespace DeluxeAutoPetter.helpers
                     return true;
                 }
 
-                if (__instance.QualifiedItemId.Equals($"(BC){ObjectDetails.GetDeluxeAutoPetterID()}"))
+                if (__instance.QualifiedItemId.Equals($"(BC){QuestDetails.GetDeluxeAutoPetterID()}"))
                 {
                     ParsedItemData dataOrErrorItem = ItemRegistry.GetDataOrErrorItem(__instance.QualifiedItemId);
                     Texture2D texture = dataOrErrorItem.GetTexture();

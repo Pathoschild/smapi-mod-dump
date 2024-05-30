@@ -39,8 +39,7 @@ namespace Pathoschild.Stardew.Automate.Framework.Machines.Objects
         /// <summary>Get the machine's processing state.</summary>
         public override MachineState GetState()
         {
-            Farm farm = Game1.getFarm();
-            return this.GetFreeSpace(farm) > 0
+            return this.GetFreeSpace(this.Location) > 0
                 ? MachineState.Empty // 'empty' insofar as it will accept more input, not necessarily empty
                 : MachineState.Disabled;
         }
@@ -56,10 +55,10 @@ namespace Pathoschild.Stardew.Automate.Framework.Machines.Objects
         /// <returns>Returns whether the machine started processing an item.</returns>
         public override bool SetInput(IStorage input)
         {
-            Farm farm = Game1.getFarm();
+            GameLocation location = this.Location;
 
             // skip if full
-            if (this.GetFreeSpace(farm) <= 0)
+            if (this.GetFreeSpace(location) <= 0)
                 return false;
 
             // try to add hay (178) until full
@@ -67,13 +66,13 @@ namespace Pathoschild.Stardew.Automate.Framework.Machines.Objects
             foreach (ITrackedStack stack in input.GetItems().Where(p => p.Sample.QualifiedItemId == "(O)178"))
             {
                 // get free space
-                int space = this.GetFreeSpace(farm);
+                int space = this.GetFreeSpace(location);
                 if (space <= 0)
                     return anyPulled;
 
                 // pull hay
                 int maxToAdd = Math.Min(stack.Count, space);
-                int added = maxToAdd - farm.tryToAddHay(maxToAdd);
+                int added = maxToAdd - location.tryToAddHay(maxToAdd);
                 stack.Reduce(added);
                 if (added > 0)
                     anyPulled = true;
@@ -87,11 +86,11 @@ namespace Pathoschild.Stardew.Automate.Framework.Machines.Objects
         ** Private methods
         *********/
         /// <summary>Get the amount of hay the hopper can still accept before it's full.</summary>
-        /// <param name="farm">The farm to check.</param>
-        /// <remarks>Derived from <see cref="Farm.tryToAddHay"/>.</remarks>
-        private int GetFreeSpace(Farm farm)
+        /// <param name="location">The location to check.</param>
+        /// <remarks>Derived from <see cref="GameLocation.tryToAddHay"/>.</remarks>
+        private int GetFreeSpace(GameLocation location)
         {
-            return farm.GetHayCapacity() - farm.piecesOfHay.Value;
+            return location.GetHayCapacity() - location.piecesOfHay.Value;
         }
     }
 }

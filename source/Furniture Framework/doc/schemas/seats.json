@@ -1,0 +1,46 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Leroymilo/FurnitureFramework
+**
+*************************************************/
+
+{
+	"$schema": "https://json-schema.org/draft-07/schema",
+	"$id": "https://raw.githubusercontent.com/Leroymilo/FurnitureFramework/main/doc/schemas/seats.json",
+	"title": "Seats",
+	"description": "The list of Seats for this Furniture. Can be directional.",
+	"type": "array",
+	"items": {
+		"type": "object",
+		"properties": {
+			"Position": {
+				"$ref": "/Leroymilo/FurnitureFramework/main/doc/schemas/vector.json"
+			},
+	
+			"Player Direction": {
+				"oneOf": [
+					{
+						"type": "integer",
+						"enum": [ 0, 1, 2, 3 ]
+					},
+					{
+						"type": "object",
+						"additionalProperties": {
+							"type": "integer",
+							"enum": [ 0, 1, 2, 3 ]
+						}
+					}
+				]
+			},
+	
+			"Depth": {
+				"$ref": "/Leroymilo/FurnitureFramework/main/doc/schemas/depth.json"
+			}
+		}
+	},
+	"required": [ "Position", "Player Direction" ]
+}

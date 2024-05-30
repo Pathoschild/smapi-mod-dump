@@ -5,6 +5,7 @@ urls:
 mods:
    Faster Transition
    No Hat Treasure in Skull Cave
+   Right Click to Untill Soil
 
 latest commit:
    commit 0ad4f0b19b34f4abce5c893bfc730c12a9b56182

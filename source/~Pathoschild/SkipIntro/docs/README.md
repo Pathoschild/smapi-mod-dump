@@ -17,28 +17,18 @@ much faster.
 3. Run the game using SMAPI.
 
 ## Configure
-### In-game settings
-If you have [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098) installed,
-you can click the cog button (⚙) on the title screen or the "mod options" button at the bottom of
-the in-game menu to configure the mod. Hover the cursor over a field for details, or see the next
-section.
+If you install [Generic Mod Config Menu][], you can click the cog button (⚙) on the title screen
+or the "mod options" button at the bottom of the in-game menu to configure the mod. Hover the
+cursor over a field for details.
 
-![](screenshots/generic-config-menu.png)
-
-### `config.json` file
-The mod creates a `config.json` file in its mod folder the first time you run it. You can open that
-file in a text editor to configure the mod.
-
-These are the available settings:
-
-| setting  | what it affects
-| -------- | -------------------
-| `SkipTo` | Default `Title`. Which screen to skip to; can be `Title`, `Load`, `JoinCoop`, `HostCoop`.
+> ![](screenshots/generic-config-menu.png)
 
 ## Compatibility
-Skip Intro is compatible with Stardew Valley 1.5.6+ on Linux/Mac/Windows, both single-player and
+Skip Intro is compatible with Stardew Valley 1.6+ on Linux/macOS/Windows, both single-player and
 multiplayer. There are no known issues in multiplayer (even if other players don't have it installed).
 
 ## See also
 * [release notes](release-notes.md)
 * [Nexus mod](http://www.nexusmods.com/stardewvalley/mods/533)
+
+[Generic Mod Config Menu]: https://www.nexusmods.com/stardewvalley/mods/5098

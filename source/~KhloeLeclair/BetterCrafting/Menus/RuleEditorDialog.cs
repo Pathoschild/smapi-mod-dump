@@ -10,25 +10,25 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Leclair.Stardew.Common.Events;
 
 using Leclair.Stardew.BetterCrafting.DynamicRules;
-using StardewValley;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
-using Leclair.Stardew.Common.UI.SimpleLayout;
-using System.Diagnostics.CodeAnalysis;
-using Leclair.Stardew.Common.UI;
-using Leclair.Stardew.Common;
 using Leclair.Stardew.BetterCrafting.Models;
-using StardewValley.Menus;
-using Newtonsoft.Json.Linq;
+using Leclair.Stardew.Common;
+using Leclair.Stardew.Common.Events;
+using Leclair.Stardew.Common.UI;
 using Leclair.Stardew.Common.UI.FlowNode;
+using Leclair.Stardew.Common.UI.SimpleLayout;
+
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+
+using Newtonsoft.Json.Linq;
+
+using StardewValley;
+using StardewValley.Menus;
 
 namespace Leclair.Stardew.BetterCrafting.Menus;
 
@@ -46,6 +46,11 @@ public class RuleEditorDialog : MenuSubscriber<ModEntry> {
 	private ISimpleNode Layout;
 	private Vector2 LayoutSize;
 
+	private ISimpleNode ToggleLayout;
+
+	private string? hoverText = null;
+
+
 	public ClickableTextureComponent? btnSave;
 	public ClickableTextureComponent? btnDelete;
 
@@ -58,6 +63,8 @@ public class RuleEditorDialog : MenuSubscriber<ModEntry> {
 	public ClickableTextureComponent? btnPageUp;
 	public ClickableTextureComponent? btnPageDown;
 
+	public ClickableComponent btnToggleInverted;
+
 	public ScrollableFlow? optionPicker;
 	public ClickableComponent? btnPicker;
 
@@ -68,6 +75,14 @@ public class RuleEditorDialog : MenuSubscriber<ModEntry> {
 		Handler = handler;
 		Data = data;
 		OnFinished = onFinished;
+
+		btnToggleInverted = new ClickableComponent(new Rectangle(0, 0, 18, 18), null, null) {
+			myID = 4,
+			upNeighborID = ClickableComponent.SNAP_AUTOMATIC,
+			downNeighborID = ClickableComponent.SNAP_AUTOMATIC,
+			leftNeighborID = ClickableComponent.SNAP_AUTOMATIC,
+			rightNeighborID = ClickableComponent.SNAP_AUTOMATIC
+		};
 
 		if (Handler is ISimpleInputRuleHandler) {
 			string text = "";
@@ -102,9 +117,7 @@ public class RuleEditorDialog : MenuSubscriber<ModEntry> {
 				leftNeighborID = ClickableComponent.SNAP_AUTOMATIC,
 				rightNeighborID = ClickableComponent.SNAP_AUTOMATIC
 			};
-		}
-
-		else if (Handler is IOptionInputRuleHandler opts) {
+		} else if (Handler is IOptionInputRuleHandler opts) {
 			var options = opts.GetOptions(Menu.Cooking);
 			PickedOption = options.First().Key;
 			if (Data.Fields.TryGetValue("Input", out var token) && token.Type == JTokenType.String)
@@ -128,12 +141,12 @@ public class RuleEditorDialog : MenuSubscriber<ModEntry> {
 
 			void OnSelect(string? value) {
 				PickedOption = value;
-				foreach(var entry in nodes) {
+				foreach (var entry in nodes) {
 					entry.Value.Selected = value == entry.Key;
 				}
 			}
 
-			foreach(var entry in options) {
+			foreach (var entry in options) {
 				var b2 = FlowHelper.Builder()
 					.FormatText(entry.Value, align: Alignment.VCenter)
 					.Build();
@@ -275,7 +288,26 @@ public class RuleEditorDialog : MenuSubscriber<ModEntry> {
 	}
 
 	[MemberNotNull(nameof(Layout))]
+	[MemberNotNull(nameof(ToggleLayout))]
 	public void UpdateLayout() {
+
+		ToggleLayout = SimpleHelper
+			.Builder(LayoutDirection.Horizontal)
+			.Texture(
+				Game1.mouseCursors,
+				new Rectangle(227 + (Data.Inverted ? 0 : 9), 425, 9, 9),
+				scale: 2,
+				align: Alignment.VCenter
+			)
+			.Text($" {I18n.Filter_IncludeToggle()}")
+			.GetLayout();
+
+		var size = ToggleLayout.GetSize(Game1.smallFont, Vector2.Zero);
+
+		btnToggleInverted.bounds = btnToggleInverted.bounds with {
+			Width = (int) size.X,
+			Height = (int) size.Y
+		};
 
 		float scale = 48f / Handler.Source.Height;
 		if (scale >= 3)
@@ -291,6 +323,14 @@ public class RuleEditorDialog : MenuSubscriber<ModEntry> {
 				.Text(Handler.DisplayName, font: Game1.dialogueFont, align: Alignment.VCenter)
 				.Space()
 			.EndGroup();
+
+		builder.Divider();
+
+		builder.Group(margin: 8)
+			.Space()
+			.Component(btnToggleInverted, onDraw: DrawToggleInverted)
+			.Space()
+		.EndGroup();
 
 		builder.Divider();
 
@@ -317,6 +357,19 @@ public class RuleEditorDialog : MenuSubscriber<ModEntry> {
 	#endregion
 
 	#region Logic
+
+	private void DrawToggleInverted(SpriteBatch batch, Vector2 position, Vector2 size, Vector2 containerSize, float alpha, SpriteFont defaultFont, Color? defaultColor, Color? defaultShadowColor) {
+		ToggleLayout.Draw(
+			batch,
+			position,
+			size,
+			containerSize,
+			alpha,
+			defaultFont,
+			defaultColor,
+			defaultShadowColor
+		);
+	}
 
 	private void OnComponentDraw(SpriteBatch batch, Vector2 position, Vector2 size, Vector2 containerSize, float alpha, SpriteFont defaultFont, Color? defaultColor, Color? defaultShadowColor) {
 		if (txtText is not null && btnText is not null) {
@@ -385,6 +438,12 @@ public class RuleEditorDialog : MenuSubscriber<ModEntry> {
 		if (optionPicker is not null && optionPicker.ReceiveLeftClick(x, y, playSound))
 			return;
 
+		if (btnToggleInverted.containsPoint(x, y)) {
+			Data.Inverted = !Data.Inverted;
+			Game1.playSound("smallSelect");
+			UpdateLayout();
+		}
+
 		if (btnSave is not null && btnSave.containsPoint(x, y)) {
 			Save();
 			if (playSound)
@@ -405,12 +464,17 @@ public class RuleEditorDialog : MenuSubscriber<ModEntry> {
 	public override void performHoverAction(int x, int y) {
 		base.performHoverAction(x, y);
 
+		hoverText = null;
+
 		if (optionPicker is not null) {
 			if (optionPicker.PerformMiddleScroll(x, y))
 				return;
 
 			optionPicker.PerformHover(x, y);
 		}
+
+		if (btnToggleInverted.containsPoint(x, y))
+			hoverText = I18n.Filter_IncludeToggle_About();
 
 		txtText?.Hover(x, y);
 		btnSave?.tryHover(x, y);
@@ -477,6 +541,17 @@ public class RuleEditorDialog : MenuSubscriber<ModEntry> {
 		Game1.mouseCursorTransparency = 1f;
 		if (!Menu.Theme.CustomMouse || !RenderHelper.DrawMouse(b, Menu.Background, RenderHelper.Sprites.BCraftMouse))
 			drawMouse(b);
+
+		if (!string.IsNullOrEmpty(hoverText)) {
+			var node = new FlowNode(
+				FlowHelper.FormatText(hoverText),
+				wrapText: true,
+				minWidth: 400
+			);
+
+			node.DrawHover(b, Game1.smallFont, minSize: new Vector2(400, 0));
+			//Menu.DrawSimpleNodeHover(node, b);
+		}
 	}
 
 	#endregion

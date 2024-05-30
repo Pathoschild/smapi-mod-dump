@@ -1,0 +1,39 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/chiccenFL/StardewValleyMods
+**
+*************************************************/
+
+{
+  "EnableMod": "启用模组",
+  "OnlyOnFarm": "仅在农场",
+  "OnlyOnFarm.1": "启用此设置仅将自定义设置应用于您农场上的树木。",
+  "GrowthChance": "生长几率",
+  "GrowthChance.1": "树木在一夜之间生长到下一阶段的几率。0（永不生长）到 1（每晚生长）。",
+  "GrowInWinter": "树木在冬季生长",
+  "GrowInWinter.1": "即使没有肥料也能生长！",
+  "GrowNearTrees": "允许在树附近生长",
+  "GrowNearTrees.1": "启用后，即使相邻的格子上有另一棵完全长成的树，树木也仍然可以生长。通常，在生长阶段4时，树木的生长会因为相邻的树木而被阻挡。.",
+  "MossFromMature": "成熟时产生苔藓",
+  "MossfromMature.1": "树木通常要很老时才会产生苔藓。启用此设置后，树木一成熟就能产生苔藓。",
+  "WoodMulti": "木材倍数",
+  "WoodMulti.1": "树木被砍伐时产生的木材量的倍数。如果增加，强烈建议将此倍数保持在5以下，因为超过这个数值就太夸张了。",
+  "MysterChance": "神秘宝箱几率",
+  "MysteryChance.1": "砍伐树木时掉落神秘宝箱的几率。默认 = 0.5%（0.005）",
+  "BookChanceBool": "启用书籍掉落几率更改",
+  "BookChanceBool.1": "启用更改砍伐树木时掉落伐木书籍几率的设置。",
+  "BookChance": "书籍几率",
+  "BookChance.1": "砍伐树木时掉落伐木书籍的几率。极大地修改了几率逻辑，需要启用书籍掉落几率更改。",
+  "Health": "健康值",
+  "Health.1": "一棵树有多少健康值。换句话说，即使用基础斧头也需要多少下才能砍倒。",
+  "SeedChance": "种子几率",
+  "SeedChance.1": "每天摇动树木时掉落种子的几率。种子砍伐几率与此相关。",
+  "SeedSpread": "种子传播几率",
+  "SeedSpread.1": "树木每天随机传播种子的几率。",
+  "Debug": "调试日志",
+  "Debug.1": "用于SMAPI的调试日志。在生成SMAPI日志并发布错误报告之前，请启用此设置。"
+}

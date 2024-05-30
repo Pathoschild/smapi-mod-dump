@@ -1,0 +1,4 @@
+﻿{
+  "config.name.ShareConversionPercent": "Conversion Percent(%)",
+  "config.tips.ShareConversionPercent": "Experience Conversion Percent, range: [0, 100]"
+}

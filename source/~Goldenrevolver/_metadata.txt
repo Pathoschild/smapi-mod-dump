@@ -21,9 +21,9 @@ mods:
    Watering Grants Experience and Crops Can Wither
 
 latest commit:
-   commit 1319aaae1cdf8c99c8aa6f1671541d0751360341
+   commit c0538035636166f0273092f1a2010c1201bc24c7
    Author: Goldenrevolver <22944589+Goldenrevolver@users.noreply.github.com>
-   Date:   Thu Apr 25 04:48:31 2024 +0200
+   Date:   Mon May 20 23:03:51 2024 +0200
    
-       Maritime Secrets: Option to buy pendant without meeting hearts and house upgrade requirements, updated mermaid mod list
+       Maritime Secrets: Added detection and custom dialogue support for 'Give the Mermaid Her Pendant Back'
    

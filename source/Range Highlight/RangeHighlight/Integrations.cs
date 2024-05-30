@@ -137,7 +137,7 @@ namespace RangeHighlight {
                 () => theMod.config.ShowOtherSprinklersWhenHoldingSprinkler,
                 () => {
                     foreach(var entry in getCoverage()) {
-                        coverageMask[entry.Key] = PointsToMask(entry.Value);
+                        coverageMask[entry.Key] = theMod.PointsToMask(entry.Value);
                     }
                 },
                 (item) => {
@@ -169,19 +169,6 @@ namespace RangeHighlight {
             ILineSprinklersApi? api = theMod.helper.ModRegistry.GetApi<ILineSprinklersApi>("hootless.LineSprinklers");
             if (api == null) return;
             IntegrateSprinklerCommon("jltaylor-us.RangeHighlight/line-sprinkler", api.GetSprinklerCoverage, true);
-        }
-        private bool[,] PointsToMask(Vector2[] points) {
-            int maxX = 0;
-            int maxY = 0;
-            foreach (var point in points) {
-                maxX = Math.Max(maxX, Math.Abs((int)point.X));
-                maxY = Math.Max(maxY, Math.Abs((int)point.Y));
-            }
-            bool[,] result = new bool[maxX * 2 + 1, maxY * 2 + 1];
-            foreach (var point in points) {
-                result[(int)point.X + maxX, (int)point.Y + maxY] = true;
-            }
-            return result;
         }
     }
 

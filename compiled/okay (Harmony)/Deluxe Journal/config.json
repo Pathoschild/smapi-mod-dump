@@ -1,0 +1,8 @@
+{
+  "PushRenewedTasksToTheTop": false,
+  "EnableDefaultSmartAdd": true,
+  "EnableVisualTaskCompleteIndicator": false,
+  "ShowSmartAddTip": true,
+  "ShowAddTaskHelpMessage": true,
+  "MoneyViewNetWealth": false
+}

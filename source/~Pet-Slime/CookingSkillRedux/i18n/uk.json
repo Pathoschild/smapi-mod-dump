@@ -1,0 +1,51 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Pet-Slime/StardewValley
+**
+*************************************************/
+
+{
+    "skill.name": "Кулінарія",
+    "skill.perk": "+{{bonus}}% ситності до приготовленої їжі.",
+    "skill.perk_bonus": "+{{bonus}}% ситності до приготовленої їжі",
+
+    "config.AlternativeSkillPageIcon": "Alternative Skill Icon Page",
+    "config.AlternativeSkillPageIcon.tooltip": "Requires restart, change the page icon from a brush and rock to a shovel.",
+
+    "config.ExperienceFromCooking": "Базовий досвід від готовки",
+    "config.ExperienceFromCooking.tooltip": "Базова кількість досвіду, яка надається при готуванні страв (встановить нижче, аби заохотити готувати різні страви).",
+
+    "config.ExperienceFromEdibility": "Бонус ситності",
+    "config.ExperienceFromEdibility.tooltip": "Додатковий досвід, який залежить від ситності страви.",
+
+    "config.BonusExpLimit": "Ліміт бонусу",
+    "config.BonusExpLimit.tooltip": "Скільки разів ви можете готувати страву, отримуючи бонусний досвід.",
+
+    "moonslime.Cooking.no_more_bonus_exp": "Ви вже майстерно готуєте цю страву і не отримаєте більше знань.",
+
+    "cooking5a.name": "Кухар",
+    "cooking5a.desc": "Приготовлені страви мають кращу якість.",
+    "cooking5b.name": "Ненажера",
+    "cooking5b.desc": "Додаткова тривалість бонусу від їжі в залежності від рівня.",
+    "cooking10a1.name": "Кулінар",
+    "cooking10a1.desc": "Дає шанс під час готування подвоїти результат\nготовки, який залежить від рівня кулінарії.",
+    "cooking10a2.name": "Шеф-кухар",
+    "cooking10a2.desc": "Приготовлена їжа коштує більше, в залежності від рівня кулінарії.",
+    "cooking10b1.name": "Гурман",
+    "cooking10b1.desc": "Їжа даватиме на рівень більше бонусів\n(+16 енергії чи магнетизму).",
+    "cooking10b2.name": "Гастроном",
+    "cooking10b2.desc": "Їжа або напої дають випадковий бонус.",
+
+    "moonslime.Cooking.Profession10b2.buff": "Вишуканий смак",
+
+    "moonslime.Cooking.skill_book.levelup": "Ви отримали деякі навички в кулінарії!",
+
+
+    "moonslime.Cooking.soda.code_name": "Сода"
+
+
+}

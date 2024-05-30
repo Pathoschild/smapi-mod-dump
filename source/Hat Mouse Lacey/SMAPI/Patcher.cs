@@ -68,7 +68,8 @@ namespace ichortower_HatMouseLacey
                 return;
             }
             NPC Lacey = Game1.currentLocation.isCharacterAtTile(tileLocation);
-            if (Lacey != null && Lacey.Name.Equals(HML.LaceyInternalName)) {
+            if (Lacey != null && Lacey.Name.Equals(HML.LaceyInternalName) &&
+                    !Lacey.isSleeping.Value) {
                 string hatstr = LCHatString.GetCurrentHatString(who);
                 if (hatstr != null && !LCModData.HasShownHat(hatstr)) {
                     Game1.mouseCursor = Game1.cursor_talk;
@@ -179,6 +180,9 @@ namespace ichortower_HatMouseLacey
                 return true;
             }
             if (!who.hasOrWillReceiveMail($"{HML.MailPrefix}HatReactions")) {
+                return true;
+            }
+            if (__instance.isSleeping.Value) {
                 return true;
             }
             if (who.ActiveObject != null && who.ActiveObject.canBeGivenAsGift()) {

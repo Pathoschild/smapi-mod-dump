@@ -14,9 +14,6 @@ namespace SkillPrestige.Professions
 {
     public partial class Profession
     {
-        /*********
-        ** Accessors
-        *********/
         public static IEnumerable<Profession> CombatProfessions => new List<Profession>
         {
             Fighter,

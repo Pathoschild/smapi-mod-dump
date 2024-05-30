@@ -11,7 +11,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Pathoschild.Stardew.Automate.Framework.Machines;
 using Pathoschild.Stardew.Automate.Framework.Machines.Buildings;
 using Pathoschild.Stardew.Automate.Framework.Machines.Objects;
 using Pathoschild.Stardew.Automate.Framework.Machines.TerrainFeatures;
@@ -22,9 +21,11 @@ using Pathoschild.Stardew.Common.Integrations.GenericModConfigMenu;
 using Pathoschild.Stardew.Common.Utilities;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.GameData.Buildings;
 using StardewValley.GameData.FloorsAndPaths;
 using StardewValley.ItemTypeDefinitions;
 using StardewValley.TerrainFeatures;
+using StardewValley.TokenizableStrings;
 
 namespace Pathoschild.Stardew.Automate.Framework
 {
@@ -305,14 +306,23 @@ namespace Pathoschild.Stardew.Automate.Framework
                 if (data is null)
                     continue; // invalid entry
 
-                string machineId = DataBasedMachine.GetMachineId(data.InternalName);
+                string machineId = BaseMachine.GetDefaultMachineId(data.InternalName);
                 machineIds[machineId] = () => ItemRegistry.GetDataOrErrorItem(itemId).DisplayName;
+            }
+
+            // Data/Buildings
+            foreach ((string buildingType, BuildingData buildingData) in DataLoader.Buildings(Game1.content))
+            {
+                if (buildingData?.ItemConversions?.Count is not > 0)
+                    continue;
+
+                string machineId = BaseMachine.GetDefaultMachineId(buildingType);
+                machineIds[machineId] = () => TokenParser.ParseText(buildingData.Name) ?? buildingType;
             }
 
             // other building machines
             machineIds[BaseMachine.GetDefaultMachineId<FishPondMachine>()] = () => GameI18n.GetBuildingName("Fish Pond");
             machineIds[BaseMachine.GetDefaultMachineId<JunimoHutMachine>()] = () => GameI18n.GetBuildingName("Junimo Hut");
-            machineIds[BaseMachine.GetDefaultMachineId<MillMachine>()] = () => GameI18n.GetBuildingName("Mill");
 
             // other object machines
             machineIds[BaseMachine.GetDefaultMachineId<AutoGrabberMachine>()] = () => GameI18n.GetBigCraftableName("165");

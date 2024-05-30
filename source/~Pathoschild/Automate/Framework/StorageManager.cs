@@ -64,6 +64,24 @@ namespace Pathoschild.Stardew.Automate.Framework
         ** GetItems
         ****/
         /// <inheritdoc />
+        public bool HasLockedContainers()
+        {
+            foreach (IContainer container in this.InputContainers)
+            {
+                if (container.IsLocked)
+                    return true;
+            }
+
+            foreach (IContainer container in this.OutputContainers)
+            {
+                if (container.IsLocked)
+                    return true;
+            }
+
+            return false;
+        }
+
+        /// <inheritdoc />
         public IEnumerable<ITrackedStack> GetItems()
         {
             foreach (IContainer container in this.OutputContainers)

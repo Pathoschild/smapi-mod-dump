@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/23897
+IDs: tiplurka.UnlimitedCommunityCenter
+update keys: Nexus:23897, GitHub:perkmi/Always-On-Server-for-Multiplayer

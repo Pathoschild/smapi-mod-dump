@@ -155,8 +155,8 @@ namespace PublicAccessTV
 			string[] canPos = EventPositions[can.Value].Split ('/');
 			bool canObstructed = can == Garbage.Can.ManorHouse ||
 				can == Garbage.Can.SVE_ManorHouse;
-			string eventScript = Events["79400102/n kdau.never"]
-				.Replace ("<<viewport>>", $"{viewportX} {viewportY}")
+			string eventScript = Game1.content.LoadString("Data\\Events\\Town:79400102/n kdau.never")
+                .Replace ("<<viewport>>", $"{viewportX} {viewportY}")
 				.Replace ("<<farmerstart>>", canObstructed
 					? $"{canLoc.X - 1} {canLoc.Y} 1" : $"{canLoc.X} {canLoc.Y + 1} 0")
 				.Replace ("<<linusstart>>", canPos[0])
@@ -166,8 +166,8 @@ namespace PublicAccessTV
 				.Replace ("<<linusmove3>>", canPos[4])
 			;
 
-			// Run the event, after a delay to allow the can action to finish.
-			DelayedAction.functionAfterDelay (() =>
+            // Run the event, after a delay to allow the can action to finish.
+            DelayedAction.functionAfterDelay (() =>
 				Game1.currentLocation.startEvent (new Event (eventString: eventScript, fromAssetName: null, eventID: EventID)),
 				500);
 		}

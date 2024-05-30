@@ -1,0 +1,67 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Hunter-Chambers/StardewValleyMods
+**
+*************************************************/
+
+{
+    "Format": "2.0.0",
+    "DynamicTokens": [
+        {
+            "Name": "ModDataID",
+            "Value": "Frostiverse.DeluxeAutoPetter"
+        }
+    ],
+    "Changes": [
+        {
+            "Action": "EditImage",
+            "Target": "TileSheets/Craftables",
+            "FromFile": "assets/TileSheets/DeluxeAutoPetter.png",
+            "ToArea": { "X": 0, "Y": 1472, "Width": 48, "Height": 32 }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Quests",
+            "Entries": {
+                "{{ModDataId}}.Quest": "Basic/{{i18n: quest_title}}/{{i18n: quest_description}}/{{i18n: quest_objective}}/null/-1/0/-1/false"
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/mail",
+            "Entries": {
+                "{{ModDataId}}.Mail0": "{{i18n: quest_mail_start}}^{{i18n: quest_mail_details}}^   - {{i18n: robin_name}} %item quest {{ModDataId}}.Quest %%[#]{{i18n: quest_mail_title}}",
+                "{{ModDataId}}.Mail1": "@,^{{i18n: quest_reward_mail_details}}^   - {{i18n: marnie_name}} [#]{{i18n: quest_reward_mail_title}}"
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/BigCraftables",
+            "Entries": {
+                "{{ModDataId}}.DeluxeAutoPetter": {
+                    "Name": "Deluxe Auto-Petter",
+                    "DisplayName": "{{i18n: deluxe_auto_petter_display_name}}",
+                    "Description": "{{i18n: deluxe_auto_petter_description}}",
+                    "SpriteIndex": 368
+                }
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Shops",
+            "TargetField": ["AnimalShop", "Items"],
+            "Entries": {
+                "(BC){{ModDataId}}.DeluxeAutoPetter": {
+                    "Id": "(BC){{ModDataId}}.DeluxeAutoPetter",
+                    "ItemId": "(BC){{ModDataId}}.DeluxeAutoPetter",
+                    "Condition": "PLAYER_HAS_MAIL Current {{ModDataId}}.Mail1 Received",
+                    "Price": 75000
+                }
+            }
+        }
+    ]
+}

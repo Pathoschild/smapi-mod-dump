@@ -16,4 +16,6 @@ These are all continuations of mods from aedenthorn. The original code can be fo
 - [Quest Time Limits](https://www.nexusmods.com/stardewvalley/mods/22349/)
 - [Resource Storage](https://www.nexusmods.com/stardewvalley/mods/22539)
 - [Seed Info](https://www.nexusmods.com/stardewvalley/mods/22519)
+- [Social Page Order Redux](https://www.nexusmods.com/stardewvalley/mods/23374)
+- [Swim](https://www.nexusmods.com/stardewvalley/mods/23169)
 - [Wall Television](https://www.nexusmods.com/stardewvalley/mods/22372)

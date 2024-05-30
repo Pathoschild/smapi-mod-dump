@@ -11,10 +11,16 @@
 {
   "Name": "Wild Flowers Reimagined",
   "Author": "jpp",
-  "Version": "2.1.0",
+  "Version": "3.1.1",
   "Description": "A newer version of WildFlowers",
   "UniqueID": "jpp.WildFlowersReimagined",
   "EntryDll": "WildFlowersReimagined.dll",
-  "MinimumApiVersion": "3.0.0",
-  "UpdateKeys": ["Nexus:21498"]
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:21498" ],
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.SpaceCore",
+      "MinimumVersion": "1.23.0"
+    }
+  ]
 }

@@ -8,18 +8,17 @@
 **
 *************************************************/
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Leclair.Stardew.CloudySkies.LayerData;
+using Leclair.Stardew.Common.Serialization;
 using Leclair.Stardew.Common.Serialization.Converters;
 
 using Microsoft.Xna.Framework;
 
 using Newtonsoft.Json;
+
+using StardewValley.GameData.Locations;
 
 namespace Leclair.Stardew.CloudySkies.Models;
 
@@ -55,6 +54,8 @@ public class WeatherData : IWeatherData {
 	public Point TVSource { get; set; } = Point.Zero;
 	public int TVFrames { get; set; } = 4;
 
+	public float TVSpeed { get; set; } = 150f;
+
 	#endregion
 
 	#region Music
@@ -64,6 +65,8 @@ public class WeatherData : IWeatherData {
 	public float MusicFrequencyOutside { get; set; } = 100f;
 
 	public float MusicFrequencyInside { get; set; } = 100f;
+
+	public List<LocationMusicData>? SoftMusicOverrides { get; set; }
 
 	#endregion
 
@@ -83,6 +86,8 @@ public class WeatherData : IWeatherData {
 
 	#region Behavior Modifications
 
+	public bool? WaterCropsAndPets { get; set; }
+
 	public bool UseNightTiles { get; set; } = false;
 
 	public bool SpawnCritters { get; set; } = true;
@@ -95,8 +100,16 @@ public class WeatherData : IWeatherData {
 
 	#region Screen Tint
 
+	[JsonConverter(typeof(AbstractListConverter<ScreenTintData, IScreenTintData>))]
+	public IList<IScreenTintData> Lighting { get; set; } = new List<IScreenTintData>();
+
+	#region Legacy Screen Ting
+
 	[JsonConverter(typeof(ColorConverter))]
 	public Color? AmbientColor { get; set; }
+
+	public float? AmbientOutdoorOpacity { get; set; }
+
 
 	[JsonConverter(typeof(ColorConverter))]
 	public Color? LightingTint { get; set; }
@@ -110,11 +123,16 @@ public class WeatherData : IWeatherData {
 
 	#endregion
 
+	#endregion
+
 	#region Layers and Effects
 
-	public List<BaseEffectData> Effects { get; set; } = new();
+	[JsonConverter(typeof(AbstractListConverter<BaseEffectData, IEffectData>))]
+	public IList<IEffectData> Effects { get; set; } = new List<IEffectData>();
 
-	public List<BaseLayerData> Layers { get; set; } = new();
+	[JsonConverter(typeof(AbstractListConverter<BaseLayerData, ILayerData>))]
+	public IList<ILayerData> Layers { get; set; } = new List<ILayerData>();
+	//public List<BaseLayerData> Layers { get; set; } = new();
 
 	#endregion
 

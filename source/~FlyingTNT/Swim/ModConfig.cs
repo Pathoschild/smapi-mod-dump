@@ -9,6 +9,7 @@
 *************************************************/
 
 using StardewModdingAPI;
+using StardewModdingAPI.Utilities;
 
 namespace Swim
 {
@@ -22,9 +23,9 @@ namespace Swim
         public bool NoAutoSwimSuit { get; set; }
         public bool ShowOxygenBar { get; set; }
         public int JumpTimeInMilliseconds { get; set; }
-        public SButton SwimKey { get; set; }
-        public SButton SwimSuitKey { get; set; }
-        public SButton DiveKey { get; set; }
+        public KeybindList SwimKey { get; set; }
+        public KeybindList SwimSuitKey { get; set; }
+        public KeybindList DiveKey { get; set; }
         public int OxygenMult { get; set; }
         public int BubbleMult { get; set; }
         public bool AllowActionsWhileInSwimsuit { get; set; }
@@ -48,7 +49,8 @@ namespace Swim
         public int MinOceanChests { get; set; }
         public int MaxOceanChests { get; set; }
         public bool SwimRestoresVitals { get; set; }
-        public SButton ManualJumpButton { get; set; }
+        public KeybindList ManualJumpButton { get; set; }
+        public KeybindList PreventJumpButton { get; set; }
         public float TriggerDistanceMult { get; set; }
         public int TriggerDistanceUp { get; set; }
         public int TriggerDistanceDown { get; set; }
@@ -58,10 +60,11 @@ namespace Swim
 
         public ModConfig()
         {
-            SwimKey = SButton.J;
-            SwimSuitKey = SButton.K;
-            DiveKey = SButton.H;
-            ManualJumpButton = SButton.MouseRight;
+            SwimKey = KeybindList.Parse("J");
+            SwimSuitKey = KeybindList.Parse("K");
+            DiveKey = KeybindList.Parse("H, ControllerA");
+            ManualJumpButton = KeybindList.Parse("MouseRight");
+            PreventJumpButton = KeybindList.Parse("LeftShift, ControllerA");
 
             EnableMod = true;
             ReadyToSwim = true;

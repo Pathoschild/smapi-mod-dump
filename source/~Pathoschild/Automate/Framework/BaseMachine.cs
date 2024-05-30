@@ -9,6 +9,7 @@
 *************************************************/
 
 using System;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Buildings;
@@ -56,6 +57,13 @@ namespace Pathoschild.Stardew.Automate.Framework
                 id = id.Substring(0, id.Length - "Machine".Length);
 
             return id;
+        }
+
+        /// <summary>Get th default ID for a machine instance's internal name.</summary>
+        /// <param name="name">The machine's internal item.</param>
+        public static string GetDefaultMachineId(string name)
+        {
+            return new string(name.Where(char.IsLetterOrDigit).ToArray());
         }
 
         /// <summary>Get the default ID for an Automate machine type.</summary>

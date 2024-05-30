@@ -22,11 +22,8 @@ namespace SkillPrestige.Framework.Menus.Elements.Buttons
     /// <summary>Represents a button in Stardew Valley.</summary>
     internal abstract class Button : IInputHandler
     {
-        /*********
-        ** Fields
-        *********/
-        private Texture2D _buttonTexture;
-        private Rectangle _bounds;
+        private readonly Texture2D _buttonTexture;
+        private readonly Rectangle _bounds;
 
         /// <summary>The texture to draw for the button.</summary>
         protected virtual Texture2D ButtonTexture
@@ -41,12 +38,8 @@ namespace SkillPrestige.Framework.Menus.Elements.Buttons
         protected abstract string Text { get; }
 
         /// <summary>The Stardew Valley component used to draw clickable items.  Certain items are handled better by the original game using the clickable texture component, but not all; the features in the component are not all used by this mod.</summary>
-        protected ClickableTextureComponent ClickableTextureComponent;
+        public ClickableTextureComponent ClickableTextureComponent;
 
-
-        /*********
-        ** Accessors
-        *********/
         /// <summary>The default texture to use for a button background if none is provided.</summary>
         public static Texture2D DefaultButtonTexture { private get; set; }
 
@@ -60,10 +53,6 @@ namespace SkillPrestige.Framework.Menus.Elements.Buttons
             }
         }
 
-
-        /*********
-        ** Public methods
-        *********/
         // ReSharper disable once UnusedMemberInSuper.Global
         public virtual void Draw(SpriteBatch spriteBatch)
         {
@@ -99,11 +88,6 @@ namespace SkillPrestige.Framework.Menus.Elements.Buttons
         /// <param name="isClick">Whether the button press is a click.</param>
         public virtual void OnButtonPressed(ButtonPressedEventArgs e, bool isClick) { }
 
-
-
-        /*********
-        ** Protected methods
-        *********/
         protected void DrawTitleText(SpriteBatch spriteBatch, Vector2? locationRelativeToButton = null)
         {
             var textLocation = locationRelativeToButton;

@@ -13,7 +13,6 @@ namespace StardewMods.BetterChests.Framework.Services;
 using StardewMods.BetterChests.Framework.Enums;
 using StardewMods.BetterChests.Framework.Interfaces;
 using StardewMods.Common.Services;
-using StardewMods.Common.Services.Integrations.FauxCore;
 using StardewValley.Buffs;
 
 /// <summary>Responsible for adding or removing custom buffs.</summary>
@@ -22,12 +21,8 @@ internal sealed class StatusEffectManager : BaseService<StatusEffectManager>
     private readonly IModConfig modConfig;
 
     /// <summary>Initializes a new instance of the <see cref="StatusEffectManager" /> class.</summary>
-    /// <param name="log">Dependency used for monitoring and logging.</param>
-    /// <param name="manifest">Dependency for accessing mod manifest.</param>
     /// <param name="modConfig">Dependency used for accessing config data.</param>
-    public StatusEffectManager(ILog log, IManifest manifest, IModConfig modConfig)
-        : base(log, manifest) =>
-        this.modConfig = modConfig;
+    public StatusEffectManager(IModConfig modConfig) => this.modConfig = modConfig;
 
     /// <summary>Adds a custom status effect to the player.</summary>
     /// <param name="statusEffect">The status effect to add.</param>
@@ -39,13 +34,13 @@ internal sealed class StatusEffectManager : BaseService<StatusEffectManager>
             return;
         }
 
-        this.Log.Trace("Adding effect {0}", statusEffect.ToStringFast());
+        Log.Trace("Adding effect {0}", statusEffect.ToStringFast());
         Game1.player.buffs.Apply(buff);
     }
 
     /// <summary>Checks if the specified status effect is currently active on the player.</summary>
     /// <param name="statusEffect">The status effect to check.</param>
-    /// <returns>true if the status effect is active on the player; otherwise, false.</returns>
+    /// <returns><c>true</c> if the status effect is active on the player; otherwise, <c>false</c>.</returns>
     public bool HasEffect(StatusEffect statusEffect)
     {
         var id = this.GetId(statusEffect);
@@ -62,15 +57,9 @@ internal sealed class StatusEffectManager : BaseService<StatusEffectManager>
             return;
         }
 
-        this.Log.Trace("Removing effect {0}", statusEffect.ToStringFast());
+        Log.Trace("Removing effect {0}", statusEffect.ToStringFast());
         Game1.player.buffs.Remove(id);
     }
-
-    private string GetId(StatusEffect statusEffect) =>
-        statusEffect switch
-        {
-            StatusEffect.Overburdened => this.Prefix + StatusEffect.Overburdened.ToStringFast(), _ => string.Empty,
-        };
 
     private Buff? GetEffect(StatusEffect statusEffect) =>
         statusEffect switch
@@ -83,5 +72,11 @@ internal sealed class StatusEffectManager : BaseService<StatusEffectManager>
                 iconSheetIndex: 13,
                 effects: new BuffEffects { Speed = { this.modConfig.CarryChestSlowAmount } }),
             _ => null,
+        };
+
+    private string GetId(StatusEffect statusEffect) =>
+        statusEffect switch
+        {
+            StatusEffect.Overburdened => this.Prefix + StatusEffect.Overburdened.ToStringFast(), _ => string.Empty,
         };
 }

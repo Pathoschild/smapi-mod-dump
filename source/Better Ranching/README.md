@@ -11,7 +11,7 @@ Stardew Valley mod that prevents failing milking/shearing attempts and adds an i
 
 Compatible with Stardew Valley 1.6+ on Linux, Mac, and Windows. Requires SMAPI 4.0.0 or later.
 
-**Update 2.0.1 (2024/03/26)**: Now working with Stardew Valley 1.6 and SMAPI 4.0.0!!!
+**Update 2.0.5 (2024/05/02)**: Fixed a bug preventing items from being picked up while holding tool. Fixed a bug that was causing the wrong icon to show for custom items. Thank you to kitsutsune and their awesome [Chocobo Valley](https://www.nexusmods.com/stardewvalley/mods/22226/) mod for bringing this to my attention! Also fixed a bug causing the "Hide Hearts w/ Max Friendship" setting to be ignored for pets.
 
 ![Preview image](/better_ranching_preview.gif)
 
@@ -24,8 +24,7 @@ Compatible with Stardew Valley 1.6+ on Linux, Mac, and Windows. Requires SMAPI 4
 
 * 1.0:
     * Initial version
-    * Added speech bubbles to indicate which animals can be milked
-    
+    * Added speech bubbles to indicate which animals can be milked 
 * 1.1:
     * Added override for milk pail left-click to prevent failed attempt animation and sound effect
     * Added "Milking Failed" warning message
@@ -82,8 +81,19 @@ Compatible with Stardew Valley 1.6+ on Linux, Mac, and Windows. Requires SMAPI 4
     * Fixed out of range bug when facing away from animals
     * Added Chinese, French, and German translations
 * 2.0.1:
-    * Fixed issue causing hearts to not display  
+    * Fixed issue causing hearts to not display
+* 2.0.2:
+    * Added compatibility fix for animals spawned from other mods
+* 2.0.3:
+    * Fixed bug causing animal hearts to display over building they are in.
+* 2.0.4:
+	* Added support for custom harvest items to display above animals!
+	* Fixed bug causing "Hide Hearts w/ Max Friendship" setting to be ignored for pets
+* 2.0.5:
+	* Fixed bug causing items to not be able to be picked up while holding tool
+	
 <h2>Other Contributors</h2>
+
 * vaindil -- https://github.com/vaindil
 * Pathoschild -- https://github.com/Pathoschild
 * minervamaga -- https://github.com/minervamaga
@@ -93,3 +103,4 @@ Compatible with Stardew Valley 1.6+ on Linux, Mac, and Windows. Requires SMAPI 4
 * BernieAteUsername﻿﻿ -- https://github.com/BernieAteUsername
 * Tenebrosful -- https://github.com/Tenebrosful
 * Admonstrator -- https://github.com/Admonstrator
+* DecidelyHuman -- https://github.com/DecidedlyHuman

@@ -44,6 +44,7 @@ namespace Unlockable_Bundles.Lib
         public string BundleCompletedMail = "";
 
         public Vector2 ShopPosition;
+        public List<Vector2> AlternativeShopPositions = new();
         public string ShopTexture = null;
         public string ShopAnimation = null;
         public int ShopTextureWidth = 32;
@@ -101,6 +102,7 @@ namespace Unlockable_Bundles.Lib
                 BundleCompletedMail = v.BundleCompletedMail,
 
                 ShopPosition = v.ShopPosition,
+                AlternativeShopPositions = v._alternativeShopPositions.ToList(),
                 ShopTexture = v.ShopTexture,
                 ShopAnimation = v.ShopAnimation,
                 ShopTextureWidth = v.ShopTextureWidth,
@@ -227,7 +229,7 @@ namespace Unlockable_Bundles.Lib
                 return JunimoNoteTexture;
 
             return ShopType switch {
-                ShopType.AltCCBundle => "UnlockableBundles/ShopTextures/AlternativeJunimoNote",
+                ShopType.AltCCBundle => "UnlockableBundles/UI/AlternativeJunimoNote",
                 _ => ""
             };
         }

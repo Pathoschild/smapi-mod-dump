@@ -10,9 +10,9 @@ mods:
    SinZational Spending Services
 
 latest commit:
-   commit a55bb6801e8a7e75b264675cafbc7844536a679b
-   Author: SinZ <github@361zn.is>
-   Date:   Mon Apr 8 11:10:59 2024 +1000
+   commit 1836a3c170da7baad355ba8e36a785a9b4f5f0de
+   Author: Gregory Shayko <greg@shaykos.com>
+   Date:   Tue May 28 23:56:55 2024 -0400
    
-       Add ExemptInteractivity flag, and make chest upgrade preserve Automate modData
+       Case Sensitive Linux Fixes (#2)
    

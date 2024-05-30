@@ -1,0 +1,141 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/lisyce/SDV_Allergies_Mod
+**
+*************************************************/
+
+{
+  "Changes": [
+    {
+      "LogName": "Add gluten free flour to the mill",
+      "Action": "EditData",
+      "Target": "Data/Buildings",
+      "TargetField": [ "Mill", "ItemConversions" ],
+      "Entries": {
+        "BarleyZP.BzpAllergiesCornucopia_OatGfFlour": {
+          "Id": "BarleyZP.BzpAllergiesCornucopia_OatGfFlour",
+          "RequiredTags": [
+            "id_o_cornucopia_oats"
+          ],
+          "MaxDailyConversions": -1,
+          "SourceChest": "Input",
+          "DestinationChest": "Output",
+          "ProducedItems": [
+            {
+              "ItemId": "(O)BarleyZP.BzpAllergies_GfFlour",
+              "ModData": {
+                "BarleyZP.BzpAllergies_MadeWith": ""
+              }
+            }
+          ]
+        },
+        "BarleyZP.BzpAllergiesCornucopia_QuinoaGfFlour": {
+          "Id": "BarleyZP.BzpAllergiesCornucopia_QuinoaGfFlour",
+          "RequiredTags": [
+            "id_o_cornucopia_quinoa"
+          ],
+          "MaxDailyConversions": -1,
+          "SourceChest": "Input",
+          "DestinationChest": "Output",
+          "ProducedItems": [
+            {
+              "ItemId": "(O)BarleyZP.BzpAllergies_GfFlour",
+              "ModData": {
+                "BarleyZP.BzpAllergies_MadeWith": ""
+              }
+            }
+          ]
+        },
+        "BarleyZP.BzpAllergiesCornucopia_AlmondGfFlour": {
+          "Id": "BarleyZP.BzpAllergiesCornucopia_AlmondGfFlour",
+          "RequiredTags": [
+            "id_o_cornucopia_almond"
+          ],
+          "MaxDailyConversions": -1,
+          "SourceChest": "Input",
+          "DestinationChest": "Output",
+          "ProducedItems": [
+            {
+              "ItemId": "(O)BarleyZP.BzpAllergies_GfFlour",
+              "ModData": {
+                "BarleyZP.BzpAllergies_MadeWith": "treenuts,almond"
+              }
+            }
+          ]
+        },
+        "BarleyZP.BzpAllergiesCornucopia_CashewGfFlour": {
+          "Id": "BarleyZP.BzpAllergiesCornucopia_CashewGfFlour",
+          "RequiredTags": [
+            "id_o_cornucopia_cashew"
+          ],
+          "MaxDailyConversions": -1,
+          "SourceChest": "Input",
+          "DestinationChest": "Output",
+          "ProducedItems": [
+            {
+              "ItemId": "(O)BarleyZP.BzpAllergies_GfFlour",
+              "ModData": {
+                "BarleyZP.BzpAllergies_MadeWith": "treenuts,almond"
+              }
+            }
+          ]
+        },
+        "BarleyZP.BzpAllergiesCornucopia_PistachioGfFlour": {
+          "Id": "BarleyZP.BzpAllergiesCornucopia_PistachioGfFlour",
+          "RequiredTags": [
+            "id_o_cornucopia_pistachio"
+          ],
+          "MaxDailyConversions": -1,
+          "SourceChest": "Input",
+          "DestinationChest": "Output",
+          "ProducedItems": [
+            {
+              "ItemId": "(O)BarleyZP.BzpAllergies_GfFlour",
+              "ModData": {
+                "BarleyZP.BzpAllergies_MadeWith": "treenuts,pistachio"
+              }
+            }
+          ]
+        },
+        "BarleyZP.BzpAllergiesCornucopia_WalnutGfFlour": {
+          "Id": "BarleyZP.BzpAllergiesCornucopia_WalnutGfFlour",
+          "RequiredTags": [
+            "id_o_cornucopia_walnut"
+          ],
+          "MaxDailyConversions": -1,
+          "SourceChest": "Input",
+          "DestinationChest": "Output",
+          "ProducedItems": [
+            {
+              "ItemId": "(O)BarleyZP.BzpAllergies_GfFlour",
+              "ModData": {
+                "BarleyZP.BzpAllergies_MadeWith": "treenuts,walnut"
+              }
+            }
+          ]
+        },
+        "BarleyZP.BzpAllergiesCornucopia_PeanutGfFlour": {
+          "Id": "BarleyZP.BzpAllergiesCornucopia_PeanutGfFlour",
+          "RequiredTags": [
+            "id_o_cornucopia_peanut"
+          ],
+          "MaxDailyConversions": -1,
+          "SourceChest": "Input",
+          "DestinationChest": "Output",
+          "ProducedItems": [
+            {
+              "ItemId": "(O)BarleyZP.BzpAllergies_GfFlour",
+              "ModData": {
+                "BarleyZP.BzpAllergies_MadeWith": "peanut"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

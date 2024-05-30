@@ -15,10 +15,10 @@ using StardewMods.BetterChests.Framework.Interfaces;
 using StardewMods.BetterChests.Framework.Models.Containers;
 using StardewMods.BetterChests.Framework.Services.Factory;
 using StardewMods.Common.Enums;
+using StardewMods.Common.Helpers;
 using StardewMods.Common.Interfaces;
 using StardewMods.Common.Models;
-using StardewMods.Common.Services.Integrations.BetterChests.Enums;
-using StardewMods.Common.Services.Integrations.BetterChests.Interfaces;
+using StardewMods.Common.Services.Integrations.BetterChests;
 using StardewMods.Common.Services.Integrations.FauxCore;
 using StardewValley.Inventories;
 using StardewValley.Locations;
@@ -35,18 +35,14 @@ internal sealed class ShopFromChest : BaseFeature<ShopFromChest>
     /// <summary>Initializes a new instance of the <see cref="ShopFromChest" /> class.</summary>
     /// <param name="containerFactory">Dependency used for accessing containers.</param>
     /// <param name="eventManager">Dependency used for managing events.</param>
-    /// <param name="log">Dependency used for logging debug information to the console.</param>
-    /// <param name="manifest">Dependency for accessing mod manifest.</param>
     /// <param name="modConfig">Dependency used for accessing config data.</param>
     /// <param name="patchManager">Dependency used for managing patches.</param>
     public ShopFromChest(
         ContainerFactory containerFactory,
         IEventManager eventManager,
-        ILog log,
-        IManifest manifest,
         IModConfig modConfig,
         IPatchManager patchManager)
-        : base(eventManager, log, manifest, modConfig)
+        : base(eventManager, modConfig)
     {
         ShopFromChest.instance = this;
         this.containerFactory = containerFactory;
@@ -92,29 +88,6 @@ internal sealed class ShopFromChest : BaseFeature<ShopFromChest>
 
     /// <inheritdoc />
     protected override void Deactivate() => this.patchManager.Unpatch(this.UniqueId);
-
-    private static bool ContainsId(Inventory items, string itemId, int minimum)
-    {
-        var amount = Game1.player.Items.CountId(itemId);
-        var remaining = minimum - amount;
-        if (remaining <= 0)
-        {
-            return true;
-        }
-
-        var containers = ShopFromChest.instance.containerFactory.GetAll(ShopFromChest.DefaultPredicate).ToList();
-        foreach (var container in containers)
-        {
-            amount = container.Items.CountId(itemId);
-            remaining -= amount;
-            if (remaining < 0)
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
 
     [SuppressMessage("ReSharper", "InconsistentNaming", Justification = "Harmony")]
     [SuppressMessage("StyleCop", "SA1313", Justification = "Harmony")]
@@ -199,6 +172,41 @@ internal sealed class ShopFromChest : BaseFeature<ShopFromChest>
             AccessTools.DeclaredMethod(typeof(Inventory), nameof(Inventory.ContainsId), [typeof(string), typeof(int)]),
             AccessTools.DeclaredMethod(typeof(ShopFromChest), nameof(ShopFromChest.ContainsId)));
 
+    private static bool ContainsId(Inventory items, string itemId, int minimum)
+    {
+        var amount = Game1.player.Items.CountId(itemId);
+        var remaining = minimum - amount;
+        if (remaining <= 0)
+        {
+            return true;
+        }
+
+        var containers = ShopFromChest.instance.containerFactory.GetAll(ShopFromChest.DefaultPredicate).ToList();
+        foreach (var container in containers)
+        {
+            amount = container.Items.CountId(itemId);
+            remaining -= amount;
+            if (remaining < 0)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static bool DefaultPredicate(IStorageContainer container) =>
+        container is not FarmerContainer
+        && container.ShopFromChest is not FeatureOption.Disabled
+        && container.Items.Count > 0
+        && !ShopFromChest.instance.Config.CraftFromChestDisableLocations.Contains(Game1.player.currentLocation.Name)
+        && !(ShopFromChest.instance.Config.CraftFromChestDisableLocations.Contains("UndergroundMine")
+            && Game1.player.currentLocation is MineShaft)
+        && container.CraftFromChest.WithinRange(
+            container.CraftFromChestDistance,
+            container.Location,
+            container.TileLocation);
+
     private static bool ShopMenu_ConsumeTradeItem_prefix(string itemId, int count)
     {
         itemId = ItemRegistry.QualifyItemId(itemId);
@@ -259,16 +267,4 @@ internal sealed class ShopFromChest : BaseFeature<ShopFromChest>
             return;
         }
     }
-
-    private static bool DefaultPredicate(IStorageContainer container) =>
-        container is not FarmerContainer
-        && container.Options.ShopFromChest is not (FeatureOption.Disabled or FeatureOption.Default)
-        && container.Items.Count > 0
-        && !ShopFromChest.instance.Config.CraftFromChestDisableLocations.Contains(Game1.player.currentLocation.Name)
-        && !(ShopFromChest.instance.Config.CraftFromChestDisableLocations.Contains("UndergroundMine")
-            && Game1.player.currentLocation is MineShaft)
-        && container.Options.CraftFromChest.WithinRange(
-            container.Options.CraftFromChestDistance,
-            container.Location,
-            container.TileLocation);
 }

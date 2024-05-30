@@ -22,12 +22,16 @@ namespace HappyHomeDesigner.Menus
 		internal const int FILTER_HEIGHT = 42;
 		internal const int FILTER_SCALE = 3;
 
-		internal int filter_count;
-		internal int current_filter;
+		protected int filter_count;
+		protected int current_filter;
 
+		/// <returns>The tab representing this page</returns>
 		public abstract ClickableTextureComponent GetTab();
+
+		/// <summary>Called when the page is destroyed</summary>
 		public virtual void Exit() { }
 
+		/// <returns>The number of items this page contains</returns>
 		public abstract int Count();
 
 		public virtual void Resize(Rectangle region)
@@ -38,6 +42,43 @@ namespace HappyHomeDesigner.Menus
 			yPositionOnScreen = region.Y;
 		}
 
+		/// <summary>Draws on top of the whole menu.</summary>
+		public virtual void DrawTooltip(SpriteBatch batch)
+		{
+
+		}
+
+		/// <summary>Draw the magnifier preview for an item</summary>
+		protected static void DrawMagnified(SpriteBatch b, Item hovered)
+		{
+			float scale = ModEntry.config.MagnifyScale;
+			int boxSize = (int)(64f * scale);
+			int itemOffset = (int)(32f * (scale - 1f));
+			const int BORDER = 16;
+			const int CURSOR = 48;
+
+			var mouse = Game1.getMousePosition(true);
+
+			if (mouse.X < boxSize)
+			{
+				mouse.X += CURSOR;
+				mouse.Y -= boxSize + BORDER - 24;
+			} 
+			else
+			{
+				mouse.X -= boxSize + BORDER;
+				mouse.Y += CURSOR;
+			}
+
+			drawTextureBox(b, mouse.X - BORDER, mouse.Y - BORDER, boxSize + (BORDER * 2), boxSize + (BORDER * 2), Color.White);
+			hovered.drawInMenu(b, new(mouse.X + itemOffset, mouse.Y + itemOffset), scale);
+		}
+
+		/// <summary>Activate the clicked filter if possible</summary>
+		/// <param name="x">Mouse X</param>
+		/// <param name="y">Mouse Y</param>
+		/// <param name="playSound">Whether or not to play sound</param>
+		/// <returns>True if a filter was selected, otherwise False</returns>
 		public bool TrySelectFilter(int x, int y, bool playSound)
 		{
 			int relX = x - xPositionOnScreen;
@@ -58,6 +99,9 @@ namespace HappyHomeDesigner.Menus
 			return true;
 		}
 
+		/// <summary>Draws the filter tabs for this page. Icons are treated as a row of 24x24 sprites in the UI texture.</summary>
+		/// <param name="textureRow">The Y pixel coordinate in the UI texture to use for the tab icons</param>
+		/// <param name="ribbonCount">How many of the filters should use the ribbon (favorites) background</param>
 		public void DrawFilters(SpriteBatch batch, int textureRow, int ribbonCount, int x, int y)
 		{
 			int sx = 0;

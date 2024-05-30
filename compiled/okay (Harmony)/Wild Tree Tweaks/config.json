@@ -1,0 +1,16 @@
+{
+  "EnableMod": true,
+  "OnlyOnFarm": false,
+  "GrowInWinter": true,
+  "GrowNearTrees": true,
+  "MossFromMature": true,
+  "Health": 10.0,
+  "WoodMultiplier": 1.0,
+  "MysteryBoxChance": 0.005,
+  "BookChanceBool": false,
+  "BookChance": 0.0005,
+  "GrowthChance": 0.2,
+  "SeedChance": 0.05,
+  "SeedSpreadChance": 0.15,
+  "Debug": false
+}

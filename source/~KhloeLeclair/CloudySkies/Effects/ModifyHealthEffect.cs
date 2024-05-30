@@ -10,16 +10,17 @@
 
 using System;
 
-using Leclair.Stardew.Common.Serialization.Converters;
 using Leclair.Stardew.CloudySkies.Models;
+using Leclair.Stardew.Common.Serialization.Converters;
 
 using Microsoft.Xna.Framework;
+
 using StardewValley;
 
 namespace Leclair.Stardew.CloudySkies.Effects;
 
 [DiscriminatedType("ModifyHealth")]
-public record ModifyHealthEffectData : BaseEffectData {
+public record ModifyHealthEffectData : BaseEffectData, IModifyHealthEffectData {
 
 	public float Chance { get; set; } = 1f;
 
@@ -31,7 +32,7 @@ public record ModifyHealthEffectData : BaseEffectData {
 
 }
 
-public class ModifyHealthEffect : IEffect {
+public class ModifyHealthEffect : IWeatherEffect {
 
 	public ulong Id { get; }
 
@@ -45,7 +46,7 @@ public class ModifyHealthEffect : IEffect {
 
 	private readonly int MaxValue;
 
-	public ModifyHealthEffect(ulong id, ModifyHealthEffectData data) {
+	public ModifyHealthEffect(ulong id, IModifyHealthEffectData data) {
 		Id = id;
 		Rate = data.Rate;
 
@@ -56,7 +57,7 @@ public class ModifyHealthEffect : IEffect {
 	}
 
 	public void Remove() {
-		
+
 	}
 
 	public void Update(GameTime time) {

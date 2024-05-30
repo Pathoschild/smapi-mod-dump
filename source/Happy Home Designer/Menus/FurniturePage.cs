@@ -23,8 +23,8 @@ namespace HappyHomeDesigner.Menus
 		private const int DEFAULT_EXTENDED = 2;
 		private const int DEFAULT_DEFAULT = 4;
 
-		private static readonly int[] ExtendedTabMap = {0, 0, 1, 1, 2, 3, 4, 5, 6, 2, 2, 3, 7, 8, 2, 9, 5, 8};
-		private static readonly int[] DefaultTabMap = {1, 1, 1, 1, 0, 0, 2, 4, 4, 4, 4, 0, 3, 2, 4, 5, 4, 4};
+		private static readonly int[] ExtendedTabMap = [0, 0, 1, 1, 2, 3, 4, 5, 6, 2, 2, 3, 7, 8, 2, 9, 5, 8];
+		private static readonly int[] DefaultTabMap = [1, 1, 1, 1, 0, 0, 2, 4, 4, 4, 4, 0, 3, 2, 4, 5, 4, 4];
 		private List<FurnitureEntry>[] Filters;
 		private int[] Map;
 		private int defaultSlot;
@@ -32,6 +32,7 @@ namespace HappyHomeDesigner.Menus
 		public FurniturePage(IEnumerable<ISalable> items)
 			: base(items, KeyFavs, "furniture") { }
 
+		/// <inheritdoc/>
 		public override void Init()
 		{
 			if (ModEntry.config.ExtendedCategories)
@@ -50,10 +51,11 @@ namespace HappyHomeDesigner.Menus
 			filter_count = Map.Max() + 1;
 			Filters = new List<FurnitureEntry>[filter_count];
 			for (int i = 0; i < Filters.Length; i++)
-				Filters[i] = new();
+				Filters[i] = [];
 			filter_count += 2;
 		}
 
+		/// <inheritdoc/>
 		public override IEnumerable<FurnitureEntry> GetItemsFrom(IEnumerable<ISalable> source, ICollection<string> favorites)
 		{
 			var season = Game1.currentLocation.GetSeason();
@@ -79,6 +81,7 @@ namespace HappyHomeDesigner.Menus
 			}
 		}
 
+		/// <inheritdoc/>
 		public override IReadOnlyList<IGridItem> ApplyFilter()
 		{
 			return	// all items
@@ -89,6 +92,7 @@ namespace HappyHomeDesigner.Menus
 					Favorites;
 		}
 
+		/// <inheritdoc/>
 		public override ClickableTextureComponent GetTab() 
 			=> new(new(0, 0, 64, 64), Catalog.MenuTexture, new(64, 24, 16, 16), 4f);
 	}

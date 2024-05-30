@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/569
+IDs: CinderGarde.SpaceCoreSkillAdapter
+update keys: Nexus:569, GitHub:Alphablackwolf/SkillPrestige

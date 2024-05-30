@@ -93,11 +93,6 @@ static_tile-archaeology_house-childrens_book = Children's Book
 
 # Bathouse
 
-## Men/Women locker room
-
-static_tile-bathhouse_locker-entry_room_door = Entry Room
-static_tile-bathhouse_locker-pool_entrance = Pool Entrance
-
 ## Pool
 
 static_tile-bathhouse_pool-womens_locker_room_door = Women's Locker Room
@@ -171,6 +166,12 @@ static_tile-farm-lumber_pile = Lumber Pile
 # FarmHouse
 
 static_tile-farmhouse-cellar_door = cellar
+
+# FishShop
+
+static_tile-fishshop-bobber_machine = Bobber Machine
+static_tile-fishshop-miniature_frigate = Miniature Frigate
+static_tile-fishshop-tackle_box = Tackle Box
 
 # Forest
 
@@ -509,7 +510,6 @@ static_tile-seed_shop-living_area_door = Living Area
 
 static_tile-sewer-exit_ladder = Exit Ladder
 static_tile-sewer-statue_of_uncertainty = Statue Of Uncertainty
-static_tile-sewer-mutant_bug_lair = Mutant Bug Lair
 static_tile-sewer-sewage_pool = sewage pool
 
 # Scull Cavern Entrance

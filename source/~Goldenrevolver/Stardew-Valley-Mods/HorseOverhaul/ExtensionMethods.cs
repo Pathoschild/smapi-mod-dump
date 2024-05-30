@@ -46,7 +46,7 @@ namespace HorseOverhaul
 
         private const int thinHorseXOffset = 12;
 
-        internal static bool WithinRangeOfPlayer(this Character chara, HorseOverhaul mod, Farmer who)
+        internal static bool WithinRangeOfPlayer(this Character chara, HorseOverhaul mod, Farmer who, int? rangeOverride = null)
         {
             int charX = chara.StandingPixel.X;
 
@@ -55,9 +55,11 @@ namespace HorseOverhaul
                 charX -= thinHorseXOffset;
             }
 
-            if (Math.Abs(charX - who.StandingPixel.X) <= mod.Config.MaximumSaddleBagAndFeedRange)
+            int range = rangeOverride ?? mod.Config.MaximumSaddleBagAndFeedRange;
+
+            if (Math.Abs(charX - who.StandingPixel.X) <= range)
             {
-                return Math.Abs(chara.StandingPixel.Y - who.StandingPixel.Y) <= mod.Config.MaximumSaddleBagAndFeedRange;
+                return Math.Abs(chara.StandingPixel.Y - who.StandingPixel.Y) <= range;
             }
 
             return false;

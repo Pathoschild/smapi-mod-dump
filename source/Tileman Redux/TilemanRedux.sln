@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34407.89
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TilemanRedux", "TilemanRedux\TilemanRedux.csproj", "{602B048C-B1D5-4A21-A4E2-5559A21B9179}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TilemanRedux.Test", "TilemanRedux.Test\TilemanRedux.Test.csproj", "{AD707A55-26FE-41A4-8720-3F7E4499FBCB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{602B048C-B1D5-4A21-A4E2-5559A21B9179}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{602B048C-B1D5-4A21-A4E2-5559A21B9179}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{602B048C-B1D5-4A21-A4E2-5559A21B9179}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{602B048C-B1D5-4A21-A4E2-5559A21B9179}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD707A55-26FE-41A4-8720-3F7E4499FBCB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD707A55-26FE-41A4-8720-3F7E4499FBCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD707A55-26FE-41A4-8720-3F7E4499FBCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD707A55-26FE-41A4-8720-3F7E4499FBCB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0D28991D-9B4E-46A4-A8F9-3DC6321F1907}
+	EndGlobalSection
+EndGlobal

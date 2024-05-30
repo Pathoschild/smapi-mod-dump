@@ -28,12 +28,13 @@ namespace PersonalIndoorFarm.Lib
     {
         public const string FarmsAsset = "DLX.PIF/Farms";
         public const string SpriteSheetAsset = "DLX.PIF_SpriteSheet";
+        private static Texture2D _SpriteSheetTexture;
+        public static Texture2D SpriteSheetTexture { get => _SpriteSheetTexture ??= Helper.GameContent.Load<Texture2D>(SpriteSheetAsset); set => _SpriteSheetTexture = value; }
         public static void Initialize()
         {
             Helper.Events.Content.AssetRequested += OnAssetRequested;
         }
 
-        [EventPriority(EventPriority.Low)]
         private static void OnAssetRequested(object sender, AssetRequestedEventArgs e)
         {
             if (e.NameWithoutLocale.IsEquivalentTo(FarmsAsset)) {
@@ -60,6 +61,8 @@ namespace PersonalIndoorFarm.Lib
                     addDoor(data, "Attic", 20000, "DoorAttic.Name", 30, Door.SoundWoodStep, 2);
                     addDoor(data, "Loft", 20000, "DoorLoft.Name", 32, Door.SoundWoodStep, 2);
                     addDoor(data, "Cellar", 20000, "DoorCellar.Name", 34, Door.SoundWoodStep, 2);
+
+                    addDoor(data, "Spa", 20000, "DoorSpa.Name", 36);
 
                     data.Add(Painting.ItemId,
                         "Painting of the Season" + //name
@@ -88,6 +91,8 @@ namespace PersonalIndoorFarm.Lib
                     data.Add("DLX.PIF.DoorLoft.Name", Helper.Translation.Get("DoorLoft.Name"));
                     data.Add("DLX.PIF.DoorCellar.Name", Helper.Translation.Get("DoorCellar.Name"));
 
+                    data.Add("DLX.PIF.DoorSpa.Name", Helper.Translation.Get("DoorSpa.Name"));
+
                     data.Add("DLX.PIF.Painting.Name", Helper.Translation.Get("Painting.Name"));
                 });
 
@@ -96,11 +101,11 @@ namespace PersonalIndoorFarm.Lib
                     var editor = asset.AsDictionary<string, ObjectData>();
 
                     editor.Data.Add(SpaceTimeSynchronizer.ItemId, new ObjectData() {
-                        Name = "Space Time Synchronizer",
+                        Name = "DLX.PIF.SpaceTimeSynchronizer",
                         DisplayName = Helper.Translation.Get("Synchronizer.Name"),
                         Description = Helper.Translation.Get("Synchronizer.Description"),
-                        Type = "Cooking",
-                        Category = 0,
+                        Type = "Basic",
+                        Category = StardewValley.Object.artisanGoodsCategory,
                         Price = 100,
                         Texture = SpriteSheetAsset,
                         SpriteIndex = 5,
@@ -116,11 +121,11 @@ namespace PersonalIndoorFarm.Lib
                     });
 
                     editor.Data.Add(VoidSeal.ItemId, new ObjectData() {
-                        Name = "Void Seal Liquid",
+                        Name = "DLX.PIF.VoidSealLiquid",
                         DisplayName = Helper.Translation.Get("VoidSeal.Name"),
                         Description = Helper.Translation.Get("VoidSeal.Description"),
-                        Type = "Cooking",
-                        Category = 0,
+                        Type = "Basic",
+                        Category = StardewValley.Object.artisanGoodsCategory,
                         Price = 250,
                         Texture = SpriteSheetAsset,
                         SpriteIndex = 15,
@@ -130,6 +135,20 @@ namespace PersonalIndoorFarm.Lib
                             BuffId = VoidSeal.BuffId,
                             Duration = 30
                         } },
+                        ExcludeFromRandomSale = true,
+                        ExcludeFromShippingCollection = true,
+                        ExcludeFromFishingCollection = true,
+                    });
+
+                    editor.Data.Add(Key.ItemId, new ObjectData() {
+                        Name = "DLX.PIF.Key",
+                        DisplayName = Helper.Translation.Get("Key.Name"),
+                        Description = Helper.Translation.Get("Key.Description"),
+                        Type = "Basic",
+                        Category = 0,
+                        Price = 1250,
+                        Texture = SpriteSheetAsset,
+                        SpriteIndex = 25,
                         ExcludeFromRandomSale = true,
                         ExcludeFromShippingCollection = true,
                         ExcludeFromFishingCollection = true,
@@ -171,9 +190,11 @@ namespace PersonalIndoorFarm.Lib
                         new ShopItemData() { Id = $"{Door.QualifiedItemId}_Attic", ItemId = $"{Door.QualifiedItemId}_{Door.SoundWoodStep}Attic" },
                         new ShopItemData() { Id = $"{Door.QualifiedItemId}_Loft", ItemId = $"{Door.QualifiedItemId}_{Door.SoundWoodStep}Loft" },
                         new ShopItemData() { Id = $"{Door.QualifiedItemId}_Cellar", ItemId = $"{Door.QualifiedItemId}_{Door.SoundWoodStep}Cellar" },
+                        new ShopItemData() { Id = $"{Door.QualifiedItemId}_Spa", ItemId = $"{Door.QualifiedItemId}_Spa" },
                         new ShopItemData() { Id = Painting.QualifiedItemId, ItemId = Painting.QualifiedItemId },
                         new ShopItemData() { Id = SpaceTimeSynchronizer.QualifiedItemId, ItemId = SpaceTimeSynchronizer.QualifiedItemId },
                         new ShopItemData() { Id = VoidSeal.QualifiedItemId, ItemId = VoidSeal.QualifiedItemId },
+                        new ShopItemData() { Id = Key.QualifiedItemId, ItemId = Key.QualifiedItemId },
                     });
 
                 });

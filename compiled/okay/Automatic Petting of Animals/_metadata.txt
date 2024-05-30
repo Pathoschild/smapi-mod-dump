@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/23539
+IDs: yangZ.AutomaticPettingOfAnimals
+update keys: Nexus:23539

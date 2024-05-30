@@ -12,6 +12,7 @@ namespace HorseOverhaul
 {
     using StardewModdingAPI;
     using StardewModdingAPI.Utilities;
+    using StardewValley;
     using System;
 
     public enum SaddleBagOption
@@ -28,6 +29,19 @@ namespace HorseOverhaul
         Trough = 0,
         Bucket = 1,
         All = 2
+    }
+
+    public enum SaddleBagUnlockConditionOption
+    {
+        None = 0,
+        Buy_From_Animal_Shop = 1
+    }
+
+    public enum WarpHorseFluteRequirementOption
+    {
+        None = 0,
+        In_Inventory = 1,
+        Owned = 2
     }
 
     /// <summary>
@@ -48,6 +62,10 @@ namespace HorseOverhaul
         public float MaxMovementSpeedBonus { get; set; } = 2.5f;
 
         public bool SaddleBag { get; set; } = true;
+
+        public string SaddleBagUnlockCondition { get; set; } = SaddleBagUnlockConditionOption.None.ToString();
+
+        public int SaddleBagUnlockPrice { get; set; } = 10000;
 
         public string VisibleSaddleBags { get; set; } = SaddleBagOption.Green.ToString();
 
@@ -75,6 +93,16 @@ namespace HorseOverhaul
 
         public bool InteractWithFruitTreesWhileRiding { get; set; } = true;
 
+        public bool InteractWithTrashCansWhileRiding { get; set; } = false;
+
+        public bool WarpHorseWithYou { get; set; } = true;
+
+        public string WarpHorseFluteRequirement { get; set; } = WarpHorseFluteRequirementOption.None.ToString();
+
+        public int MaximumWarpDetectionRange { get; set; } = 200;
+
+        public bool WarpHorseWithFluteIgnoresRange { get; set; } = false;
+
         public bool HorseHoofstepEffects { get; set; } = true;
 
         public bool Feeding { get; set; } = true;
@@ -101,9 +129,32 @@ namespace HorseOverhaul
 
         public bool DisableHorseSounds { get; set; } = false;
 
+        public static void InvalidateCache(HorseOverhaul mod)
+        {
+            try
+            {
+                // currently, I'm always applying the saddle bag skillbook objects addition
+                // mod.Helper.GameContent.InvalidateCacheAndLocalized("Data/Objects");
+
+                mod.Helper.GameContent.InvalidateCacheAndLocalized("Data/Powers");
+
+                mod.Helper.GameContent.InvalidateCacheAndLocalized("Data/Shops");
+            }
+            catch (Exception e)
+            {
+                mod.DebugLog($"Exception when trying to invalidate cache on config change {e}");
+            }
+        }
+
         public static void VerifyConfigValues(HorseOverhaulConfig config, HorseOverhaul mod)
         {
             bool invalidConfig = false;
+
+            if (config.SaddleBagUnlockPrice < 0)
+            {
+                config.SaddleBagUnlockPrice = 0;
+                invalidConfig = true;
+            }
 
             if (config.MaxMovementSpeedBonus < 0f)
             {
@@ -114,6 +165,17 @@ namespace HorseOverhaul
             if (config.MaximumSaddleBagAndFeedRange < 0)
             {
                 config.MaximumSaddleBagAndFeedRange = 0;
+                invalidConfig = true;
+            }
+
+            if (Enum.TryParse(config.SaddleBagUnlockCondition, true, out SaddleBagUnlockConditionOption saddleBagUnlock))
+            {
+                // reassign to ensure casing is correct
+                config.SaddleBagUnlockCondition = saddleBagUnlock.ToString();
+            }
+            else
+            {
+                config.SaddleBagUnlockCondition = SaddleBagUnlockConditionOption.None.ToString();
                 invalidConfig = true;
             }
 
@@ -173,12 +235,14 @@ namespace HorseOverhaul
                     else
                     {
                         config = new HorseOverhaulConfig();
+                        InvalidateCache(mod);
                     }
                 },
                 save: delegate
                 {
                     mod.Helper.WriteConfig(config);
                     VerifyConfigValues(config, mod);
+                    InvalidateCache(mod);
                 }
             );
 
@@ -187,7 +251,14 @@ namespace HorseOverhaul
             api.AddSectionTitle(manifest, () => "General", null);
 
             api.AddBoolOption(manifest, () => config.ThinHorse, (bool val) => config.ThinHorse = val, () => "Thin Horse", null);
-            api.AddBoolOption(manifest, () => config.SaddleBag, (bool val) => config.SaddleBag = val, () => "Saddle Bags", null);
+
+            api.AddSectionTitle(manifest, () => "Saddle Bags", null);
+
+            api.AddBoolOption(manifest, () => config.SaddleBag, (bool val) => config.SaddleBag = val, () => "Enable Saddle Bags", () => "If this is disabled, then none of the settings below do anything");
+
+            api.AddTextOption(manifest, () => config.SaddleBagUnlockCondition, (string val) => config.SaddleBagUnlockCondition = val, () => "Saddle Bag Unlock Condition", null, Enum.GetNames(typeof(SaddleBagUnlockConditionOption)), (s) => s.Replace('_', ' '));
+            api.AddNumberOption(manifest, () => config.SaddleBagUnlockPrice, (int val) => config.SaddleBagUnlockPrice = val, () => "Saddle Bag Unlock Price", null, 0);
+
             api.AddTextOption(manifest, () => config.VisibleSaddleBags, (string val) => config.VisibleSaddleBags = val, () => "Visible Saddle Bags", null, Enum.GetNames(typeof(SaddleBagOption)), (s) => s.Replace('_', ' '));
 
             api.AddSectionTitle(manifest, () => "Friendship", null);
@@ -223,6 +294,19 @@ namespace HorseOverhaul
                 () => "Interact With Trees", null);
             api.AddBoolOption(manifest, () => config.InteractWithFruitTreesWhileRiding, (bool val) => config.InteractWithFruitTreesWhileRiding = val,
                 () => "Interact With Fruit Trees", null);
+            api.AddBoolOption(manifest, () => config.InteractWithTrashCansWhileRiding, (bool val) => config.InteractWithTrashCansWhileRiding = val,
+                () => "Interact With Trash Cans", () => "This may cause issues with some trash can or event mods that don't expect you to be riding a horse, but should work with almost all of them");
+
+            api.AddSectionTitle(manifest, () => "Warp Horse With You", null);
+
+            api.AddBoolOption(manifest, () => config.WarpHorseWithYou, (bool val) => config.WarpHorseWithYou = val,
+                () => "Enable Warp Horse With You", () => "When using a warp totem, obelisk or scepter, also teleport your horse with you if it's nearby");
+            api.AddTextOption(manifest, () => config.WarpHorseFluteRequirement, (string val) => config.WarpHorseFluteRequirement = val,
+                () => "Warp Horse Flute Requirement", () => "Whether you need the horse flute for 'Warp Horse With You'", Enum.GetNames(typeof(WarpHorseFluteRequirementOption)), (s) => s.Replace('_', ' '));
+            api.AddNumberOption(manifest, () => config.MaximumWarpDetectionRange, (int val) => config.MaximumWarpDetectionRange = val,
+                () => "Maximum Warp\nDetection Range", () => "How close the horse has to be to be considered nearby");
+            api.AddBoolOption(manifest, () => config.WarpHorseWithFluteIgnoresRange, (bool val) => config.WarpHorseWithFluteIgnoresRange = val,
+                () => "Warp Horse With Flute\nIgnores Range", () => "When using 'Warp Horse With You' while you have a horse flute, always teleport your horse, even if it's not nearby");
 
             api.AddSectionTitle(manifest, () => "Other", null);
 
@@ -246,5 +330,21 @@ namespace HorseOverhaul
             // if the world is ready, then we are not in the main menu
             api.AddParagraph(manifest, () => Context.IsWorldReady ? "(All other settings are available in the main menu GMCM)" : string.Empty);
         }
+    }
+
+    /// <summary>
+    /// Extension methods for IGameContentHelper.
+    /// </summary>
+    public static class GameContentHelperExtensions
+    {
+        /// <summary>
+        /// Invalidates both an asset and the locale-specific version of an asset.
+        /// </summary>
+        /// <param name="helper">The game content helper.</param>
+        /// <param name="assetName">The (string) asset to invalidate.</param>
+        /// <returns>if something was invalidated.</returns>
+        public static bool InvalidateCacheAndLocalized(this IGameContentHelper helper, string assetName)
+            => helper.InvalidateCache(assetName)
+                | (helper.CurrentLocaleConstant != LocalizedContentManager.LanguageCode.en && helper.InvalidateCache(assetName + "." + helper.CurrentLocale));
     }
 }

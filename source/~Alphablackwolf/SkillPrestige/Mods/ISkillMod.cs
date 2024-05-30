@@ -15,9 +15,6 @@ namespace SkillPrestige.Mods
     /// <summary>Interface that all skill mods need to implement in order to register with Skill Prestige.</summary>
     public interface ISkillMod
     {
-        /*********
-        ** Accessors
-        *********/
         /// <summary>The name to display for the mod in the log.</summary>
         string DisplayName { get; }
 

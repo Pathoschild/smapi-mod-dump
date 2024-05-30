@@ -39,7 +39,7 @@
   "config.BypassInventory.description": "Whether to bypass your inventory when depositing animal drops, and go straight to the chests you have defined. Defaults to false.",
 
   "config.ChestCoords": "ChestCoords",
-  "config.ChestCoords.description": "These are the coordinates of the default chest where overflow items are placed. It defaults to (73,14) which is the tile location, when you are looking at your screen, is to the immediate right of the sell-box.",
+  "config.ChestCoords.description": "These are the coordinates of the default chest where overflow items are placed. It defaults to (87,18) which is the tile location, when you are looking at your screen, is to the immediate left of the sell-box.",
 
   "config.ChestDefs": "ChestDefs",
   "config.ChestDefs.description": "This is a bar-separated list of chest locations that you have defined for specific items. It defaults to blank, but here is an example: '430,70,14|340,7,4,FarmHouse' You can see there are 2 options.",

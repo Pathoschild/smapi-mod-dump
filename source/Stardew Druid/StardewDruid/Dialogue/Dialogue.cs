@@ -9,11 +9,15 @@
 *************************************************/
 
 
+using StardewDruid.Data;
 using StardewDruid.Journal;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Constants;
+using StardewValley.Menus;
 using StardewValley.Minigames;
+using StardewValley.Monsters;
+using StardewValley.Quests;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,8 +28,10 @@ namespace StardewDruid.Dialogue
 {
     public class Dialogue
     {
-        
-        public StardewDruid.Character.Character npc;
+
+        public CharacterData.characters characterType = CharacterData.characters.none;
+
+        public StardewDruid.Character.Character npc = null;
 
         public List<string> promptDialogue = new();
 
@@ -37,11 +43,24 @@ namespace StardewDruid.Dialogue
 
         public Dictionary<string, DialogueSpecial> specialDialogue = new();
 
-        public Dialogue(StardewDruid.Character.Character NPC)
+        public string currentSpecial;
+
+        public CharacterData.subjects currentSubject;
+
+        public int currentIndex;
+
+        public Dialogue(CharacterData.characters CharacterType)
         {
-            
-            npc = NPC;
-        
+
+            characterType = CharacterType;
+
+            if (Mod.instance.characters.ContainsKey(CharacterType))
+            {
+
+                npc = Mod.instance.characters[CharacterType];
+
+            }
+               
         }
 
         public virtual void DialogueApproach()
@@ -60,7 +79,7 @@ namespace StardewDruid.Dialogue
 
             }
 
-            string str = "Welcome";
+            string str = CharacterData.DialogueString(characterType, CharacterData.subjects.approach);
 
             if(introDialogue.Count > 0)
             {
@@ -76,11 +95,36 @@ namespace StardewDruid.Dialogue
             if (questDialogue.Count > 0)
             {
 
-                responseList.Add(new("quests", "what is the latest quest?"));
+                responseList.Add(new("quests", CharacterData.DialogueString(characterType, CharacterData.subjects.quests)));
 
             }
 
-            responseList.Add(new("none", "(say nothing)"));
+            List<CharacterData.subjects> subjects = new()
+            {
+                CharacterData.subjects.lore,
+                CharacterData.subjects.adventure,
+                CharacterData.subjects.attune,
+            };
+
+            foreach(CharacterData.subjects subject in subjects)
+            {
+                string option = CharacterData.DialogueString(characterType, subject);
+
+                if (option != null)
+                {
+
+                    responseList.Add(new(subject.ToString(), option));
+
+
+                }
+
+            }
+
+            Response nevermind = new ("none", CharacterData.DialogueString(characterType, CharacterData.subjects.nevermind));
+
+            nevermind.SetHotKey(Microsoft.Xna.Framework.Input.Keys.Escape);
+
+            responseList.Add(nevermind);
 
             GameLocation.afterQuestionBehavior questionBehavior = new(AnswerApproach);
 
@@ -113,10 +157,6 @@ namespace StardewDruid.Dialogue
                             
                             string questId = questDialogue[q];
 
-                            questDialogue.RemoveAt(q);
-
-                            archiveDialogue.Add(questId);
-
                             if (Mod.instance.save.progress.ContainsKey(questId))
                             {
 
@@ -134,6 +174,46 @@ namespace StardewDruid.Dialogue
 
                     break;
 
+                default:
+
+                    List<CharacterData.subjects> subjects = new()
+                    {
+                        CharacterData.subjects.lore,
+                        CharacterData.subjects.adventure,
+                        CharacterData.subjects.attune,
+                    };
+
+                    foreach (CharacterData.subjects subject in subjects)
+                    {
+                        
+                        if (answer == subject.ToString())
+                        {
+
+                            currentSubject = subject;
+
+                            currentIndex = 0;
+
+                            currentSpecial = subject.ToString();
+
+                            DialogueSpecial generateSpecial = CharacterData.DialogueGenerator(characterType, subject);
+
+                            if(generateSpecial == null)
+                            {
+
+                                break;
+
+                            }
+
+                            AddSpecialDialogue(subject.ToString(), generateSpecial);
+
+                            RunSpecialDialogue(subject.ToString());
+
+                        }
+
+                    }
+
+                    break;
+
             }
 
             return;
@@ -148,20 +228,9 @@ namespace StardewDruid.Dialogue
             if(specialEntry.responses.Count > 0)
             {
 
-                GameLocation.afterQuestionBehavior questionBehavior = new(RespondSpecialDialogue);
+                currentSpecial = prompt;
 
-                List<Response> responseList = new();
-
-                int respondIndex = 1;
-
-                foreach (string respond in specialEntry.responses)
-                {
-
-                    responseList.Add(new(prompt+"|"+respondIndex.ToString(), respond));
-
-                }
-
-                Game1.player.currentLocation.createQuestionDialogue(specialEntry.intro, responseList.ToArray(), questionBehavior, npc);
+                DelayedAction.functionAfterDelay(RunSpecialQuestion, 100);
 
                 return;
 
@@ -170,52 +239,133 @@ namespace StardewDruid.Dialogue
             if (specialEntry.questId != null)
             {
 
-                Mod.instance.questHandle.DialogueCheck(specialEntry.questId, specialEntry.questContext, npc);
+                Mod.instance.questHandle.DialogueCheck(specialEntry.questId, specialEntry.questContext, characterType);
+
+                questDialogue.Remove(prompt);
+
+                archiveDialogue.Add(prompt);
 
             }
 
-            npc.CurrentDialogue.Push(new(npc, "0", specialEntry.intro));
-
-            //specialDialogue.Clear();
-
-            Game1.drawDialogue(npc);
-
-            DelayedAction.functionAfterDelay(DialogueApproach, 100);
+            RunSpecialAnswer(specialEntry.intro);
 
         }
+
+        public virtual void RunSpecialQuestion()
+        {
+
+            DialogueSpecial specialEntry = specialDialogue[currentSpecial];
+
+            GameLocation.afterQuestionBehavior questionBehavior = new(RespondSpecialDialogue);
+
+            List<Response> responseList = new();
+
+            for (int r = 0; r < specialEntry.responses.Count; r++)
+            {
+
+                responseList.Add(new(r.ToString(), specialEntry.responses[r]));
+
+            }
+
+            responseList.Add(new Response("999", CharacterData.DialogueString(characterType, CharacterData.subjects.nevermind)).SetHotKey(Microsoft.Xna.Framework.Input.Keys.Escape));
+
+            Game1.player.currentLocation.createQuestionDialogue(specialEntry.intro, responseList.ToArray(), questionBehavior, npc);
+
+        }
+
+        public virtual void RunSpecialAnswer(string answer)
+        {
+
+            Game1.currentSpeaker = npc;
+
+            StardewValley.Dialogue dialogue = new(npc, "0", answer);
+
+            Game1.activeClickableMenu = new DialogueBox(dialogue);
+
+            Game1.player.Halt();
+
+            Game1.player.CanMove = false;
+
+
+        }
+
 
         public virtual void RespondSpecialDialogue(Farmer visitor, string dialogueId)
         {
 
-            string[] ids = dialogueId.Split('|');
+            string specialId = currentSpecial;
 
-            DialogueSpecial special = specialDialogue[ids[0]];
+            DialogueSpecial special = specialDialogue[specialId];
 
             int id = Convert.ToInt32(dialogueId);
 
-            if(special.outros.Count >= id)
+            if (id == 999)
             {
 
-                introDialogue.Add(special.outros[id]);
-
-            }
-            else if(special.outros.Count > 0)
-            {
-
-                introDialogue.Add(special.outros.First());
+                return;
 
             }
 
-            if(special.questId != null)
+            if (special.lead)
             {
 
-                Mod.instance.questHandle.DialogueCheck(special.questId, special.questContext, npc, Convert.ToInt32(ids[1]));
+                currentIndex++;
+
+                int answer = Convert.ToInt32(special.answers[id]);
+
+                DialogueSpecial nextEntry = CharacterData.DialogueGenerator(characterType, currentSubject, currentIndex, answer);
+
+                if (nextEntry == null)
+                {
+
+                    return;
+
+                }
+
+                AddSpecialDialogue(currentSpecial, nextEntry);
+
+                if (nextEntry.responses.Count > 0)
+                {
+
+                    DelayedAction.functionAfterDelay(RunSpecialQuestion, 100);
+
+                    return;
+
+                }
+
+                RunSpecialAnswer(nextEntry.intro);
+
+                return;
+
+            }
+
+            if (special.questId != null)
+            {
+
+                Mod.instance.questHandle.DialogueCheck(special.questId, special.questContext, characterType, id);
+
+                questDialogue.Remove(specialId);
+
+                archiveDialogue.Add(specialId);
+
+            }
+
+            if (special.answers.Count > 0)
+            {
+
+                RunSpecialAnswer(special.answers[id]);
+
+                return;
+
+            }
+            else if(special.outro != null)
+            {
+
+                introDialogue.Add(special.outro);
 
             }
 
             DelayedAction.functionAfterDelay(DialogueApproach,100);
-
-            //specialDialogue.Clear();
 
         }
 
@@ -223,7 +373,12 @@ namespace StardewDruid.Dialogue
         public virtual void AddSpecialDialogue(string eventId, DialogueSpecial special)
         {
 
-            specialDialogue.Clear();
+            if(special == null)
+            {
+
+                return;
+
+            }
 
             specialDialogue[eventId] = special;
 
@@ -236,8 +391,13 @@ namespace StardewDruid.Dialogue
 
             if(special.questId != null)
             {
+                
+                if(special.questContext < 2)
+                {
+                    
+                    questDialogue.Add(eventId);
 
-                questDialogue.Add(eventId);
+                }
 
             }
 
@@ -285,22 +445,17 @@ namespace StardewDruid.Dialogue
 
         public List<string> responses = new();
 
-        public List<string> outros = new();
+        public List<string> answers = new();
 
-        public enum type{
-
-            none,
-            special,
-            quest,
-            active,
-
-        }
+        public string outro;
 
         public bool prompt;
 
         public string questId;
 
         public int questContext;
+
+        public bool lead;
 
     }
 

@@ -14,6 +14,7 @@ using DeluxeJournal.Events;
 namespace DeluxeJournal.Framework.Listeners
 {
     /// <summary>Listens for Quest.type_itemDelivery completion checks.</summary>
+    [Obsolete]
     internal class ItemDeliveryListener : QuestEventListener
     {
         public event EventHandler<GiftEventArgs>? ItemGifted;
@@ -26,7 +27,7 @@ namespace DeluxeJournal.Framework.Listeners
         {
             if (npc != null && item != null)
             {
-                ItemGifted?.Invoke(null, new GiftEventArgs(npc, item));
+                ItemGifted?.Invoke(null, new GiftEventArgs(Game1.player, npc, item));
             }
         }
     }

@@ -1,12 +1,26 @@
 {
   "dialog.title": "Wähle einen Ort:",
-  "dialog.location.farm": "Der Hof",
-  "dialog.location.beach": "Der Strand",
-  "dialog.location.mountain": "Die Berge",
-  "dialog.location.desert": "Die Calico-Wüste",
-  "dialog.location.island": "Die Ingwerinsel",
-  "dialog.location.islandFarm": "Insel Bauernhaus",
-  "dialog.location.miniObelisk": "Mini-Obelisk",
-  "dialog.location.miniObeliskNumber": "Mini-Obelisk #{{number}}",
-  "dialog.cancel": "Abbrechen"
+  
+  "common.save": "Speichern",
+  "common.cancel": "Abbrechen",
+  
+  "configuration-menu.title": "Konfiguration",
+  
+  "settings-menu.title": "Einstellungen",
+  
+  "configuration-menu.button-hover.rename": "Namen ändern",
+  "configuration-menu.button-hover.hidden": "Versteckt",
+  "configuration-menu.button-hover.visible": "Sichtbar",
+  "configuration-menu.button-hover.move-up": "Hoch",
+  "configuration-menu.button-hover.move-down": "Runter",
+  
+  "rename-menu.reset-to-default": "Zurücksetzen",
+  
+  "teleport-scroll.farm": "Der Hof",
+  "teleport-scroll.beach": "Der Strand",
+  "teleport-scroll.mountain": "Die Berge",
+  "teleport-scroll.desert": "Die Calico-Wüst",
+  "teleport-scroll.island": "Die Ingwerinsel",
+  "teleport-scroll.island-farm": "Insel Bauernhaus",
+  "teleport-scroll.mini-obelisk": "Mini-Obelisk"
 }

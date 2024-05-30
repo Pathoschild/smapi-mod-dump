@@ -95,8 +95,6 @@ namespace StardewDruid.Event
 
                     Texture2D redFire = Mod.instance.Helper.ModContent.Load<Texture2D>(Path.Combine("Images", "Fire.png"));
 
-                    Texture2D shadowTexture = Mod.instance.Helper.ModContent.Load<Texture2D>(Path.Combine("Images", "Shadow.png"));
-
                     brazier = new(0, 99999f, 1, 1, position - new Vector2(0, 64), false, false)
                     {
 
@@ -148,14 +146,16 @@ namespace StardewDruid.Event
 
                     location.temporarySprites.Add(fire);
 
+                    Microsoft.Xna.Framework.Rectangle shadowRect = Mod.instance.iconData.CursorRect(Data.IconData.cursors.shadow);
+
                     shadow = new(0, 99999f, 1, 1, position + new Vector2(-8, 4), false, false)
                     {
 
-                        sourceRect = new(0, 0, 32, 32),
+                        sourceRect = shadowRect,
 
-                        sourceRectStartingPos = new Vector2(0, 0),
+                        sourceRectStartingPos = new Vector2(shadowRect.X, shadowRect.Y),
 
-                        texture = shadowTexture,
+                        texture = Mod.instance.iconData.cursorTexture,
 
                         scale = 2.5f, //* size,
 

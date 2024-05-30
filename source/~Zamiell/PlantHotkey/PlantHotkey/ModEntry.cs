@@ -176,9 +176,14 @@ namespace PlantHotkey
                     }
                 }
 
-                // Doors
+                // Buildings (for automatically entering doors)
                 foreach (Building building in location.buildings)
                 {
+                    if (building.buildingType.Value == "Silo")
+                    {
+                        continue;
+                    }
+
                     if (building.isActionableTile((int)tile.X, (int)tile.Y, Game1.player))
                     {
                         bool success = location.checkAction(tileLocation, Game1.viewport, Game1.player);
@@ -194,8 +199,6 @@ namespace PlantHotkey
                 StardewValley.Object obj = location.getObjectAtTile((int)tile.X, (int)tile.Y);
                 if (obj is not null)
                 {
-                    Log(obj.Name);
-
                     // Auto empty nearby objects (e.g. Crystalariums)
                     if (obj.readyForHarvest.Value)
                     {
@@ -324,6 +327,16 @@ namespace PlantHotkey
                                 return;
                             }
                         }
+                        else if ((tile.X == 34 && tile.Y == 96) || (tile.X == 35 && tile.Y == 96)) // The two lower sewer tiles.
+                        {
+                            bool success = location.performAction("EnterSewer", Game1.player, tileLocation);
+                            if (success)
+                            {
+                                warpingInThisLocation = true;
+                                return;
+                            }
+                        }
+
                         break;
 
                     case "BusStop":

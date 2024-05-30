@@ -90,20 +90,24 @@ namespace HappyHomeDesigner.Patches
 		{
 			return FurnitureID switch
 			{
-				"1308" => CatalogType.Wallpaper,
-				"1226" => CatalogType.Furniture,
-				AssetManager.CATALOGUE_ID => CatalogType.Furniture | CatalogType.Wallpaper,
-				AssetManager.COLLECTORS_ID => CatalogType.Collector,
-				AssetManager.DELUXE_ID => CatalogType.Furniture | CatalogType.Wallpaper | CatalogType.Collector,
+				"(F)1308" => CatalogType.Wallpaper,
+				"(F)1226" => CatalogType.Furniture,
+				"(F)" + AssetManager.CATALOGUE_ID => CatalogType.Furniture | CatalogType.Wallpaper,
+				"(F)" + AssetManager.COLLECTORS_ID => CatalogType.Collector,
+				"(F)" + AssetManager.DELUXE_ID or
+				"(O)" + AssetManager.PORTABLE_ID or
+				"(T)" + AssetManager.PORTABLE_ID
+					=> CatalogType.Furniture | CatalogType.Wallpaper | CatalogType.Collector,
 				_ => CatalogType.None
 			};
 		}
 
 		private static bool CheckAction(Furniture __instance, ref bool __result)
 		{
-			string HeldID = (__instance.heldObject.Value as Furniture)?.ItemId;
-			var heldType = GetCatalogTypeOf(HeldID);
-			var baseType = GetCatalogTypeOf(__instance.ItemId);
+			const CatalogType Deluxe = CatalogType.Collector | CatalogType.Furniture | CatalogType.Wallpaper;
+
+			var heldType = GetCatalogTypeOf(__instance.heldObject.Value?.QualifiedItemId);
+			var baseType = GetCatalogTypeOf(__instance.QualifiedItemId);
 
 			var combined = baseType | heldType;
 
@@ -130,6 +134,12 @@ namespace HappyHomeDesigner.Patches
 					// one of my catalogues
 					if (baseType is not CatalogType.None)
 						Catalog.ShowCatalog(GenerateCombined(combined), combined.ToString());
+
+					// something else holding the portable catalogue
+					else if (__instance.heldObject.Value?.ItemId == AssetManager.PORTABLE_ID)
+						Catalog.ShowCatalog(GenerateCombined(Deluxe), Deluxe.ToString());
+
+					// other
 					else
 						return true;
 					break;

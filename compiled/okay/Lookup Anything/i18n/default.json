@@ -9,6 +9,7 @@
 
     // generic values
     "generic.unknown": "unknown",
+    "generic.list-separator": ", ", // text between listed values (like ", " in "A, B, C")
 
     // generic field values
     "generic.percent": "{{percent}}%",
@@ -98,43 +99,54 @@
     "data.item.box.description": "Break apart to obtain sundry goods.",
 
     // location names
-    "location.backwoods": "backwoods",
-    "location.beach": "beach",
-    "location.beach.east-pier": "beach (eastern pier)",
-    "location.bugLand": "mutant bug lair",
-    "location.busStop": "bus stop",
-    "location.desert": "desert",
-    "location.desert.topPond": "desert (north pond)",
-    "location.farm": "farm",
-    "location.farmCave": "farm cave",
-    "location.farmHouse": "farmhouse",
-    "location.forest": "forest",
-    "location.forest.island-tip": "forest river (south tip of large island)",
-    "location.forest.lake": "forest pond",
-    "location.forest.river": "forest river",
-    "location.mountain": "mountain",
-    "location.railroad": "railroad",
-    "location.sewer": "sewers",
-    "location.submarine": "Night Market submarine",
-    "location.town": "town",
-    "location.town.northmost-bridge": "town (northmost bridge)",
-    "location.tunnel": "bus tunnel",
-    "location.undergroundMine": "mines",
-    "location.undergroundMine.level": "mine level {{level}}",
-    "location.witchSwamp": "witch's swamp",
-    "location.woods": "secret woods",
+    "location.beach.east-pier": "{{locationName}} (eastern pier)",
+    "location.bugLand": "Mutant Bug Lair",
+    "location.desert.topPond": "{{locationName}} (north pond)",
+    "location.farmCave": "Farm Cave",
+    "location.farmHouse": "Farmhouse",
+    "location.forest.island-tip": "{{locationName}} (river near south tip of large island)",
+    "location.forest.lake": "{{locationName}} (pond)",
+    "location.forest.river": "{{locationName}} (river)",
+    "location.submarine": "Night Market Submarine",
+    "location.town.northmost-bridge": "{{locationName}} (northmost bridge)",
+    "location.undergroundMine": "Mines",
+    "location.undergroundMine.level": "Mine Level {{level}}",
+    "location.witchSwamp": "Witch's Swamp",
 
-    "location.caldera": "Ginger Island caldera",
-    "location.islandEast": "Ginger Island east",
-    "location.islandNorth": "Ginger Island north",
-    "location.islandSouth": "Ginger Island south",
-    "location.islandSouthEast": "Ginger Island southeast",
-    "location.islandSouthEastCave": "Ginger Island southeast cave",
-    "location.islandWest": "Ginger Island west",
-    "location.islandWest.freshwater": "Ginger Island west (pond)",
-    "location.islandWest.ocean": "Ginger Island west (ocean)",
+    "location.caldera": "Ginger Island Caldera",
+    "location.islandEast": "Ginger Island East",
+    "location.islandNorth": "Ginger Island North",
+    "location.islandSouth": "Ginger Island South",
+    "location.islandSouthEast": "Ginger Island Southeast",
+    "location.islandSouthEastCave": "Ginger Island Southeast Cave",
+    "location.islandWest": "Ginger Island West",
+    "location.islandWest.freshwater": "Ginger Island West (pond)",
+    "location.islandWest.ocean": "Ginger Island West (ocean)",
 
+    "location.fish-area": "{{locationName}} ({{areaName}})",
     "location.unknown-fish-area": "{{locationName}} (fishing area {{id}})",
+
+
+    /*********
+    ** Conditions & context tags
+    *********/
+    "condition-or-context-tag.negate": "not {{value}}",
+
+    "condition.item-type.input": "input item",
+    "condition.item-type.target": "target item",
+
+    "condition.item-context-tag": "{{item}} has context tag {{tags}}",
+    "condition.item-context-tags": "{{item}} has context tags {{tags}}",
+    "condition.item-context-tag.value": "'{{tag}}'", // the format of each context tag in the list (each context tag isn't translated)
+
+    "condition.item-edibility.edible": "{{item}} is edible",
+    "condition.item-edibility.min": "{{item}} has edibility of {{min}} or more",
+    "condition.item-edibility.range": "{{item}} has edibility of {{min}} to {{max}}",
+
+    "context-tag.bone": "any bone",
+    "context-tag.egg": "any egg",
+    "context-tag.large-egg": "any large egg",
+    "context-tag.preserved-item": "preserved {{name}}",
 
 
     /*********
@@ -316,9 +328,13 @@
     "item.needed-for.gourmet-chef": "gourmet chef achievement (cook {{recipes}})",
     "item.needed-for.craft-master": "craft master achievement (make {{recipes}})",
     "item.needed-for.quests": "current quests ({{quests}})",
+    "item.unknown-recipes": "{{count}} unknown recipes",
     "item.sells-to.shipping-box": "shipping box",
     "item.recipes-for-ingredient.entry": "{{name}} (needs {{count}})",
     "item.recipes-for-machine.multiple-items": "{{name}} x{{count}}",
+    "item.recipes-for-machine.same-as-input": "[same as input]", // e.g. crystalarium produces same item that was put in
+    "item.recipes-for-machine.conditions": "[conditions: {{conditions}}]",
+    "item.recipes-for-machine.too-complex": "Some machine rules are too dynamic to display.",
     "item.number-owned.summary": "you own {{count}} of these",
     "item.number-crafted.summary": "you made {{count}} of these",
 
@@ -538,7 +554,7 @@
 
     // values
     "puzzle.solution.solved": "Puzzle solved!",
-    "puzzle.solution.hidden": "Puzzle solutions are hidden in progression mode.",
+    "puzzle.solution.hidden": "Puzzle solutions are hidden per your settings.",
 
 
     /*********
@@ -644,10 +660,20 @@
     *********/
     // main options
     "config.title.main-options": "Main options",
-    "config.progression-mode.name": "Progression mode",
-    "config.progression-mode.desc": "Whether to hide some content (e.g. gift tastes and puzzle solutions) until you've discovered it in-game.",
     "config.force-full-screen.name": "Force full screen",
     "config.force-full-screen.desc": "Whether the menu should always be full-screen, instead of centered in the window. This is mainly useful when viewing data mining fields.",
+
+    // progression mode
+    "config.title.progression": "Progression mode",
+
+    "config.progression.show-unknown-gift-tastes.name": "Show unknown gift tastes",
+    "config.progression.show-unknown-gift-tastes.desc": "Whether to show gift tastes you haven't learned about in-game yet (e.g. from dialogue text or experimenting).",
+
+    "config.progression.show-unknown-recipes.name": "Show unknown recipes",
+    "config.progression.show-unknown-recipes.desc": "Whether to show recipes you haven't learned in-game yet.",
+
+    "config.progression.show-puzzle-solutions.name": "Show puzzle solutions",
+    "config.progression.show-puzzle-solutions.desc": "Whether to show puzzle solutions.",
 
     // gift tastes
     "config.title.gift-tastes": "Gift tastes",
@@ -667,6 +693,17 @@
 
     "config.highlight-unrevealed-gift-tastes.name": "Highlight unrevealed gifts",
     "config.highlight-unrevealed-gift-tastes.desc": "Whether to highlight item gift tastes which haven't been revealed in the NPC profile. When enabled, unrevealed gift tastes will be bold.",
+
+    // collapse fields
+    "config.title.collapse-fields": "Collapse large fields",
+
+    "config.collapse-fields.enabled.name": "Enabled",
+    "config.collapse-fields.enabled.desc": "Whether to collapse large fields, so the lookup menu will replace the list with a clickable 'show X values' link to expand it.",
+
+    "config.collapse-fields.building-recipes.name": "Building lookup: recipes",
+    "config.collapse-fields.item-recipes.name": "Item lookup: recipes",
+    "config.collapse-fields.npc-gift-tastes.name": "NPC lookup: gift tastes",
+    "config.collapse-fields.any.desc": "If the field contains this many values, the lookup menu will replace the list with a clickable 'show X values' link to expand it.",
 
     // advanced options
     "config.title.advanced-options": "Advanced options",

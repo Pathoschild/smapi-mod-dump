@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-#nullable enable
+#if COMMON_FLOW
 
 using System;
 using System.Collections.Generic;
@@ -86,7 +86,7 @@ public struct DividerNode : IFlowNode {
 		int shadowOffset = (int) ShadowOffset;
 		int x = (int) position.X;
 		int y = (int) position.Y + (int) Padding;
-		
+
 		if (shadowOffset != 0)
 			batch.Draw(
 				Game1.uncoloredMenuTexture,
@@ -148,3 +148,5 @@ public struct DividerNode : IFlowNode {
 		return !(left == right);
 	}
 }
+
+#endif

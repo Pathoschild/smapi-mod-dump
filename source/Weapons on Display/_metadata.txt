@@ -6,9 +6,9 @@ mods:
    Weapons on Display
 
 latest commit:
-   commit 3abf271f997a166da2c38ab63581f2840f6b55b3
+   commit 3561cc8dd17b26c2a293f70971e0be28d89e3de4
    Author: Anthony Hilyard <anthony.hilyard@gmail.com>
-   Date:   Thu Jul 1 07:40:35 2021 -0700
+   Date:   Tue Apr 30 10:12:45 2024 -0700
    
-       Added slingshot proxy class to better support slingshots.
+       Updated to support 1.6.
    

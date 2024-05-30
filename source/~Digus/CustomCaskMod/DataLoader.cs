@@ -262,7 +262,7 @@ namespace CustomCaskMod
 
         private static string GetId(object identifier)
         {
-            if (ItemRegistry.IsQualifiedItemId(identifier.ToString()))
+            if (ItemRegistry.IsQualifiedItemId(identifier.ToString()) && ItemRegistry.Exists(identifier.ToString()))
             {
                 return identifier.ToString();
             }
@@ -272,7 +272,7 @@ namespace CustomCaskMod
             }
             else
             {
-                var pair = Game1.objectData.FirstOrDefault(o => o.Value.Name.Equals(identifier));
+                var pair = Game1.objectData.FirstOrDefault(o => identifier.Equals(o.Value.Name));
                 if (pair.Value != null)
                 {
                     return ItemRegistry.QualifyItemId(pair.Key);
@@ -359,6 +359,8 @@ namespace CustomCaskMod
                 api.AddBoolOption(manifest, () => DataLoader.ModConfig.DisableLetter, (bool val) => DataLoader.ModConfig.DisableLetter = val, ()=>"Disable Letter", ()=>"You won't receive the letter about Custom Cask changes and the cask recipe in case you don't know it.");
 
                 api.AddBoolOption(manifest, () => DataLoader.ModConfig.EnableCasksAnywhere, (bool val) => DataLoader.ModConfig.EnableCasksAnywhere = val, () => "Casks Anywhere", () => "Casks will accept items anywhere.");
+                
+                api.AddBoolOption(manifest, () => DataLoader.ModConfig.EnableCustomAgersAnywhere, (bool val) => DataLoader.ModConfig.EnableCustomAgersAnywhere = val, () => "Custom Agers Anywhere", () => "Custom Agers will accept items anywhere.");
 
                 api.AddBoolOption(manifest, () => DataLoader.ModConfig.EnableMoreThanOneQualityIncrementPerDay, (bool val) => DataLoader.ModConfig.EnableMoreThanOneQualityIncrementPerDay = val, () => "Quality++", () => "Casks will be able to increase more than one quality lever per day.");
 

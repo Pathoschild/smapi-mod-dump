@@ -1,4 +1,24 @@
-﻿1.4.0
+﻿1.4.3
+-fixed code assuming Chests Anywhere is installed
+-find issue with world map blowing up during return to title
+-fixed issue with translations not working
+-refined world map graphics
+-fixed issue with double adding expansions
+-fixed string loading issue with new game
+-fixed bug with autograbber not resetting plant texture
+-disabled world map and warproom hooks when no expansions packs are loaded
+-updated deluxe-grabber to better integrate with 1.6
+-added compatibility patch for Smaller Fish Ponds
+
+1.4.2
+-fixed another custom weather bug
+-more user reported bug fixes
+
+1.4.1
+-fixed bug with custom weather blowing up
+-assorted reported bug fixes
+
+1.4.0
 -initial SDV 1.6 release
 -a release of less code, 100s of lines of code removed thanks to changes in 1.6
 -expanssions are workable by farm hands in multiplayer
@@ -28,6 +48,7 @@
 -fixed issue with NPCs running at double time
 -added additional expansion map validation to remove invalid expansions
 -disabled custom buildings on vanilla farm, there are a few bugs that need fixing
+
 
 1.1.0
 -fixes bug with duplicate seeds types

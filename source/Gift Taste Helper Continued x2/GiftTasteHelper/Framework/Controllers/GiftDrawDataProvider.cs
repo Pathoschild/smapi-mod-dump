@@ -26,20 +26,21 @@ namespace GiftTasteHelper.Framework
     internal class GiftDrawData
     {
         public string NpcName { get; }
-        public GiftInfo[] Gifts;
+        public GiftInfo[] Gifts { get; }
 
-        public GiftDrawData(string npcName)
+        public GiftDrawData(string npcName, GiftInfo[] gifts)
         {
             this.NpcName = npcName;
+            this.Gifts = gifts;
         }
     }
 
     internal class GiftDrawDataProvider : IGiftDrawDataProvider
     {
-        private IGiftDataProvider GiftDataProvider;
+        private readonly IGiftDataProvider GiftDataProvider;
 
         // Contains all the gift info for all npcs (or just what's known if we're in prog mode).
-        private static Dictionary<string, NpcGiftInfo> NpcGiftInfo;
+        private static Dictionary<string, NpcGiftInfo>? NpcGiftInfo;
 
         public GiftDrawDataProvider(IGiftDataProvider GiftDataProvider, bool rebuildGiftData = true)
         {
@@ -58,33 +59,53 @@ namespace GiftTasteHelper.Framework
 
         public bool HasDataForNpc(string npcName)
         {
-            return NpcGiftInfo.ContainsKey(npcName);
+            return NpcGiftInfo is not null && NpcGiftInfo.ContainsKey(npcName);
         }
 
-        public GiftDrawData GetDrawData(string npcName, GiftTaste[] tastesToDisplay, bool includeUniversal)
+        public GiftDrawData? GetDrawData(string npcName, GiftTaste[] tastesToDisplay, bool includeUniversal)
         {
-            if (tastesToDisplay.Length == 0 || !NpcGiftInfo.ContainsKey(npcName))
+            if (tastesToDisplay.Length == 0 || !HasDataForNpc(npcName))
             {
                 return null;
             }
 
-            return new GiftDrawData(npcName)
-            {
-                Gifts = GetGiftsOfTaste(npcName, tastesToDisplay, includeUniversal).ToArray()
-            };
+            return new GiftDrawData(npcName, GetGiftsOfTaste(npcName, tastesToDisplay, includeUniversal).ToArray());
         }
 
-        private IEnumerable<GiftInfo> GetGiftsOfTaste(string npcName, GiftTaste[] tastes, bool includeUniversal)
+        private static IEnumerable<GiftInfo> GetGiftsOfTaste(string npcName, GiftTaste[] tastes, bool includeUniversal)
         {
-            NpcGiftInfo infoForNpc = NpcGiftInfo[npcName];
+
+            NpcGiftInfo? infoForNpc = NpcGiftInfo?.GetValueOrDefault(npcName);
+            if (infoForNpc is null)
+            {
+                yield break;
+            }
+
             if (includeUniversal)
             {
+                IEnumerable<string> GetExcludes()
+                {
+                    foreach (var (taste, items) in infoForNpc.Gifts)
+                    {
+                        if (taste is GiftTaste.Neutral)
+                        {
+                            continue;
+                        }
+
+                        foreach (var item in items)
+                        {
+                            yield return item.ID;
+                        }
+                    }
+                }
+
+                var excludes = new HashSet<string>(GetExcludes());
                 foreach (var taste in tastes)
                 {
                     foreach (var gift in infoForNpc.UniversalGifts[taste].OrderBy(x => x.Name))
                     {
                         // Allow npc gift tastes override universal gift tastes
-                        if (!infoForNpc.Gifts.Any(pair => pair.Key != GiftTaste.Neutral && pair.Value.Contains(gift)))
+                        if (!excludes.Contains(gift.ID))
                         {
                             yield return new GiftInfo() { Item = gift, Taste = taste, Universal = true };
                         }
@@ -111,12 +132,12 @@ namespace GiftTasteHelper.Framework
                 string npcName = giftTaste.Key;
 
                 // We only want NPC's
-                if (Utils.UniversalTastes.Keys.Contains(npcName))
+                if (Utils.UniversalTastes.ContainsKey(npcName))
                 {
                     continue;
                 }
 
-                NpcGiftInfo npcInfo = new NpcGiftInfo();
+                NpcGiftInfo npcInfo = new();
                 foreach (GiftTaste taste in Enum.GetValues(typeof(GiftTaste)))
                 {
                     if (taste == GiftTaste.MAX)

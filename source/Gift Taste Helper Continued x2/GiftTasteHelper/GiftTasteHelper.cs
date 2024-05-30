@@ -8,10 +8,6 @@
 **
 *************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using GenericModConfigMenu;
 using GiftTasteHelper.Framework;
 using StardewModdingAPI;
@@ -23,17 +19,108 @@ namespace GiftTasteHelper
 {
     internal class GiftTasteHelper : Mod
     {
+        internal class MultiplayerContext
+        {
+            public Dictionary<Type, IGiftHelper> GiftHelpers = new();
+            public IGiftHelper? CurrentGiftHelper = null;
+            public bool Active = false;
+        }
+
         /*********
         ** Properties
         *********/
-        private ModConfig Config;
-        private Dictionary<Type, IGiftHelper> GiftHelpers;
-        private IGiftHelper CurrentGiftHelper;
-        private IGiftDatabase GiftDatabase;
-        private IGiftMonitor GiftMonitor;
+        private ModConfig Config = new();
+        private readonly Dictionary<long, MultiplayerContext> MultiplayerGiftHelperMap = new();
+        private Dictionary<Type, IGiftHelper> GiftHelpers 
+        { 
+            get
+            {
+                if (MultiplayerGiftHelperMap.TryGetValue(Game1.player.UniqueMultiplayerID, out var context))
+                {
+                    return context.GiftHelpers;
+                }
+                else
+                {
+                    return new();
+                }
+            }
+            set
+            {
+                if (MultiplayerGiftHelperMap.TryGetValue(Game1.player.UniqueMultiplayerID, out var context))
+                {
+                    context.GiftHelpers = value;
+                }
+                else
+                {
+                    MultiplayerGiftHelperMap[Game1.player.UniqueMultiplayerID] = new() 
+                    { 
+                        GiftHelpers = value
+                    };
+                }
+            }
+        }
+        private IGiftHelper? CurrentGiftHelper
+        {
+            get
+            {
+                if (MultiplayerGiftHelperMap.TryGetValue(Game1.player.UniqueMultiplayerID, out var context))
+                {
+                    return context.CurrentGiftHelper;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            set
+            {
+                if (MultiplayerGiftHelperMap.TryGetValue(Game1.player.UniqueMultiplayerID, out var context))
+                {
+                    context.CurrentGiftHelper = value;
+                }
+                else
+                {
+                    MultiplayerGiftHelperMap[Game1.player.UniqueMultiplayerID] = new()
+                    {
+                        CurrentGiftHelper = value
+                    };
+                }
+            }
+        }
+        private IGiftDatabase? GiftDatabase;
+        private IGiftMonitor? GiftMonitor;
+        private IGiftDataProvider? DataProvider;
         private bool ReloadHelpers = false;
         private bool WasResized;
         private bool CheckGiftGivenNextInput = false;
+        private bool IsActiveMenu
+        {
+            get
+            {
+                if (MultiplayerGiftHelperMap.TryGetValue(Game1.player.UniqueMultiplayerID, out var context))
+                {
+                    return context.Active;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            set
+            {
+                if (MultiplayerGiftHelperMap.TryGetValue(Game1.player.UniqueMultiplayerID, out var context))
+                {
+                    context.Active = value;
+                }
+                else
+                {
+                    MultiplayerGiftHelperMap[Game1.player.UniqueMultiplayerID] = new()
+                    {
+                        Active = value
+                    };
+                }
+            }
+        }
 
         /*********
         ** Public methods
@@ -53,9 +140,23 @@ namespace GiftTasteHelper
             helper.Events.GameLoop.ReturnedToTitle += (sender, e) => Shutdown();
             helper.Events.GameLoop.DayStarted += this.OnDayStarted;
             helper.Events.GameLoop.GameLaunched += RegisterConfigMenu;
+            helper.Events.Multiplayer.PeerConnected += OnPeerConnected;
+            helper.Events.Multiplayer.PeerDisconnected += OnPeerDisconnected;
 
             InitDebugCommands(this.Helper);
             Startup();
+        }
+
+        private void OnPeerDisconnected(object? sender, PeerDisconnectedEventArgs e)
+        {
+            MultiplayerGiftHelperMap.Remove(e.Peer.PlayerID);
+        }
+
+        private void OnPeerConnected(object? sender, PeerConnectedEventArgs e)
+        {
+            var context = new MultiplayerContext();
+            RebuildGiftHelpers(Helper, context);
+            MultiplayerGiftHelperMap.Add(e.Peer.PlayerID, context);
         }
 
         // Called when the mod starts up or is being hot-reloaded.
@@ -73,13 +174,16 @@ namespace GiftTasteHelper
         // Must be called after a save has been loaded.
         private void Initialize()
         {
-            this.GiftMonitor.Load();
+            this.GiftMonitor?.Load();
 
             if (this.ReloadHelpers)
             {
                 Utils.DebugLog("Reloading gift helpers");
-                LoadGiftHelpers(Helper);
                 this.ReloadHelpers = false;
+
+                var context = new MultiplayerContext();
+                RebuildDataProvider(Helper, context);
+                MultiplayerGiftHelperMap[Game1.player.UniqueMultiplayerID] = context;
             }
         }
 
@@ -88,22 +192,22 @@ namespace GiftTasteHelper
             return new Action<T>(value =>
             {
                 action.Invoke(value);
-                Utils.DebugLog("Reloading gift helpers");
-                // Unsubscripe from events that may be subscribed to in LoadGiftHelpers
-                Helper.Events.Input.ButtonPressed -= CheckGift_OnButtonPressed;
-                Helper.Events.Display.MenuChanged -= OnMenuChanged;
-
-                LoadGiftHelpers(Helper);
-                this.ReloadHelpers = false;
+                Shutdown();
+                if (Context.IsWorldReady)
+                {
+                    Initialize();
+                }
             });
         }
 
-        private void RegisterConfigMenu(object sender, GameLaunchedEventArgs e)
+        private void RegisterConfigMenu(object? sender, GameLaunchedEventArgs e)
         {
             // get Generic Mod Config Menu's API (if it's installed)
             var configMenu = this.Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
             if (configMenu is null)
+            {
                 return;
+            }
 
             // register mod
             configMenu.Register(
@@ -176,7 +280,7 @@ namespace GiftTasteHelper
             configMenu.AddSectionTitle(
                 mod: this.ModManifest,
                 text: () => Helper.Translation.Get("options.other")
-                );
+            );
 
             configMenu.AddNumberOption(
                 mod: this.ModManifest,
@@ -210,27 +314,27 @@ namespace GiftTasteHelper
         /// <summary>Raised after the game begins a new day (including when the player loads a save).</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
-        private void OnDayStarted(object sender, DayStartedEventArgs e)
+        private void OnDayStarted(object? sender, DayStartedEventArgs e)
         {
             if (Game1.dayOfMonth == 1 && this.GiftHelpers.ContainsKey(typeof(Billboard)))
             {
                 // Reset the birthdays when season changes
                 this.GiftHelpers[typeof(Billboard)].Reset();
             }
-            this.GiftMonitor.Reset();
+            this.GiftMonitor?.Reset();
         }
 
-        private void LoadGiftHelpers(IModHelper helper)
+        private void RebuildDataProvider(IModHelper helper, MultiplayerContext context)
         {
             Utils.DebugLog("Initializing gift helpers");
 
             // TODO: add a reload method to the gift helpers instead of fully re-creating them
             // Force the gift info to be rebuilt
-            IGiftDataProvider dataProvider = null;
+            DataProvider = null;
             if (Config.ShowOnlyKnownGifts)
             {
                 // The prefix is purely for convenience. Mostly so I know which is which.
-                string prefix = new string(Game1.player.Name.Where(char.IsLetterOrDigit).ToArray());
+                string prefix = new(Game1.player.Name.Where(char.IsLetterOrDigit).ToArray());
                 string path = this.Config.ShareKnownGiftsWithAllSaves
                     ? Path.Combine(StoredGiftDatabase.DBRoot, StoredGiftDatabase.DBFileName)
                     : Path.Combine(StoredGiftDatabase.DBRoot, $"{prefix}_{Game1.player.UniqueMultiplayerID}", StoredGiftDatabase.DBFileName);
@@ -239,40 +343,66 @@ namespace GiftTasteHelper
 
                 if (!this.Config.ShareKnownGiftsWithAllSaves)
                 {
-                    string oldPath = Path.Combine(StoredGiftDatabase.DBRoot, Constants.SaveFolderName, StoredGiftDatabase.DBFileName);
-                    string fullOldPath = Path.Combine(helper.DirectoryPath, oldPath);
-                    if (File.Exists(fullOldPath))
+                    var folderName = Constants.SaveFolderName;
+                    if (folderName is not null)
                     {
-                        Utils.DebugLog($"Found old DB at {oldPath}. Migrating to {path}.", LogLevel.Info);
-                        StoredGiftDatabase dbRef = (StoredGiftDatabase)GiftDatabase;
-                        StoredGiftDatabase.MigrateDatabase(helper, oldPath, ref dbRef);
+                        string oldPath = Path.Combine(StoredGiftDatabase.DBRoot, folderName, StoredGiftDatabase.DBFileName);
+                        string fullOldPath = Path.Combine(helper.DirectoryPath, oldPath);
+                        if (File.Exists(fullOldPath))
+                        {
+                            Utils.DebugLog($"Found old DB at {oldPath}. Migrating to {path}.", LogLevel.Info);
+                            StoredGiftDatabase dbRef = (StoredGiftDatabase)GiftDatabase;
+                            StoredGiftDatabase.MigrateDatabase(helper, oldPath, ref dbRef);
+                        }
                     }
                 }
 
-                dataProvider = new ProgressionGiftDataProvider(GiftDatabase);
+                DataProvider = new ProgressionGiftDataProvider(GiftDatabase);
                 helper.Events.Input.ButtonPressed += CheckGift_OnButtonPressed;
             }
             else
             {
                 GiftDatabase = new GiftDatabase(helper);
-                dataProvider = new AllGiftDataProvider(GiftDatabase);
+                DataProvider = new AllGiftDataProvider(GiftDatabase);
                 helper.Events.Input.ButtonPressed -= CheckGift_OnButtonPressed;
             }
 
+            RebuildGiftHelpers(helper, context);
+            helper.Events.Display.MenuChanged += OnMenuChanged;
+        }
+
+        private void RebuildGiftHelpers(IModHelper helper, MultiplayerContext context)
+        {
+            if (DataProvider is null)
+            {
+                Utils.DebugLog($"{nameof(RebuildGiftHelpers)} called when {nameof(DataProvider)} is null", LogLevel.Debug);
+                return;
+            }
 
             // Add the helpers if they're enabled in config
-            CurrentGiftHelper = null;
-            this.GiftHelpers = new Dictionary<Type, IGiftHelper>();
+            context.CurrentGiftHelper = null;
+            context.GiftHelpers = new Dictionary<Type, IGiftHelper>();
             if (Config.ShowOnCalendar)
             {
-                this.GiftHelpers.Add(typeof(Billboard), new CalendarGiftHelper(dataProvider, Config, helper.Reflection, helper.Translation));
+                context.GiftHelpers.Add(typeof(Billboard), new CalendarGiftHelper(DataProvider, Config, helper.Reflection, helper.Translation));
             }
             if (Config.ShowOnSocialPage)
             {
-                this.GiftHelpers.Add(typeof(GameMenu), new SocialPageGiftHelper(dataProvider, Config, helper.Reflection, helper.Translation));
+                context.GiftHelpers.Add(typeof(GameMenu), new SocialPageGiftHelper(DataProvider, Config, helper.Reflection, helper.Translation));
+            }
+        }
+
+        private bool HasActiveMenu()
+        {
+            foreach (var context in MultiplayerGiftHelperMap.Values)
+            {
+                if (context.Active)
+                {
+                    return true;
+                }
             }
 
-            helper.Events.Display.MenuChanged += OnMenuChanged;
+            return false;
         }
 
         #region Gift Monitor Handling
@@ -286,7 +416,7 @@ namespace GiftTasteHelper
             if (taste != GiftTaste.MAX)
             {
                 Utils.DebugLog($"Gift given to Npc: {npc} | item: {itemId} | taste: {taste}");
-                this.GiftDatabase.AddGift(npc, itemId, taste);
+                this.GiftDatabase?.AddGift(npc, itemId, taste);
             }
 
             this.CheckGiftGivenNextInput = false;
@@ -295,13 +425,20 @@ namespace GiftTasteHelper
         /// <summary>Raised after the player presses a button on the keyboard, controller, or mouse.</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
-        private void CheckGift_OnButtonPressed(object sender, ButtonPressedEventArgs e)
+        private void CheckGift_OnButtonPressed(object? sender, ButtonPressedEventArgs e)
         {
+            if (this.GiftMonitor is null)
+            {
+                return;
+            }
+
             // Giving a gift with a controller is done on button down so we can't use the same
             // trick to do the check if the gift was given. Since a dialogue is always opened after giving a gift
             // the user has to press something to proceed so it's during that input that we'll do the check (if the flag is set).
             if (this.CheckGiftGivenNextInput)
+            {
                 this.GiftMonitor.CheckGiftGiven();
+            }
 
             switch (e.Button)
             {
@@ -325,8 +462,13 @@ namespace GiftTasteHelper
         /// <summary>Raised after a game menu is opened, closed, or replaced.</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
-        private void OnMenuChanged(object sender, MenuChangedEventArgs e)
+        private void OnMenuChanged(object? sender, MenuChangedEventArgs e)
         {
+            if (Game1.activeClickableMenu != e.NewMenu)
+            {
+                return;
+            }
+
             // menu closed
             if (e.NewMenu == null)
             {
@@ -362,7 +504,7 @@ namespace GiftTasteHelper
             }
 
 
-            if (this.GiftHelpers.ContainsKey(newMenuType))
+            if (this.GiftHelpers.TryGetValue(newMenuType, out var helper))
             {
                 // Close the current gift helper
                 if (this.CurrentGiftHelper != null)
@@ -374,7 +516,7 @@ namespace GiftTasteHelper
                     this.CurrentGiftHelper.OnClose();
                 }
 
-                this.CurrentGiftHelper = this.GiftHelpers[newMenuType];
+                this.CurrentGiftHelper = helper;
                 if (!this.CurrentGiftHelper.IsInitialized)
                 {
                     Utils.DebugLog("[OnClickableMenuChanged] initialized helper: " + this.CurrentGiftHelper.GetType());
@@ -396,12 +538,12 @@ namespace GiftTasteHelper
         /// <summary>Raised after the player moves the in-game cursor.</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
-        private void OnCursorMoved(object sender, CursorMovedEventArgs e)
+        private void OnCursorMoved(object? sender, CursorMovedEventArgs e)
         {
             // This is now supported after changing settings in-game
             // Debug.Assert(this.CurrentGiftHelper != null, "OnCursorMoved listener invoked when currentGiftHelper is null.");
 
-            if (this.CurrentGiftHelper != null && this.CurrentGiftHelper.CanTick())
+            if (IsActiveMenu && this.CurrentGiftHelper != null && this.CurrentGiftHelper.CanTick())
             {
                 this.CurrentGiftHelper.OnCursorMoved(e);
             }
@@ -410,23 +552,23 @@ namespace GiftTasteHelper
         /// <summary>Raised after the game draws to the sprite patch in a draw tick, just before the final sprite batch is rendered to the screen.</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
-        private void OnRendered(object sender, RenderedActiveMenuEventArgs e)
+        private void OnRendered(object? sender, RenderedActiveMenuEventArgs e)
         {
             // This is now supported after changing settings in-game
             // Debug.Assert(this.CurrentGiftHelper != null, "OnPostRenderEvent listener invoked when currentGiftHelper is null.");
 
-            if (this.CurrentGiftHelper != null && this.CurrentGiftHelper.CanDraw())
+            if (IsActiveMenu && this.CurrentGiftHelper != null && this.CurrentGiftHelper.CanDraw())
             {
                 this.CurrentGiftHelper.OnDraw();
             }
         }
 
-        private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
+        private void OnUpdateTicked(object? sender, UpdateTickedEventArgs e)
         {
             // This is now supported after changing settings in-game
             // Debug.Assert(this.CurrentGiftHelper != null, "OnUpdateTicked listener invoked when currentGiftHelper is null.");
 
-            if (this.CurrentGiftHelper != null && this.CurrentGiftHelper.CanTick())
+            if (IsActiveMenu && this.CurrentGiftHelper != null && this.CurrentGiftHelper.CanTick())
             {
                 this.CurrentGiftHelper.OnPostUpdate(e);
             }
@@ -434,23 +576,30 @@ namespace GiftTasteHelper
 
         private void UnsubscribeEvents()
         {
-            Helper.Events.Input.CursorMoved -= OnCursorMoved;
-            Helper.Events.Display.RenderedActiveMenu -= this.OnRendered;
-            Helper.Events.GameLoop.UpdateTicked -= OnUpdateTicked;
+            IsActiveMenu = false;
+
+            if (!HasActiveMenu())
+            {
+                Helper.Events.Input.CursorMoved -= OnCursorMoved;
+                Helper.Events.Display.RenderedActiveMenu -= this.OnRendered;
+                Helper.Events.GameLoop.UpdateTicked -= OnUpdateTicked;
+            }
         }
 
         private void SubscribeEvents()
         {
-            Helper.Events.Input.CursorMoved += OnCursorMoved;
-            Helper.Events.Display.RenderedActiveMenu += this.OnRendered;
-
-            if (this.CurrentGiftHelper != null && this.CurrentGiftHelper.WantsUpdateEvent())
+            if (!HasActiveMenu())
             {
+                Helper.Events.Input.CursorMoved += OnCursorMoved;
+                Helper.Events.Display.RenderedActiveMenu += OnRendered;
                 Helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
             }
+
+            IsActiveMenu = true;
         }
 
         #region Debug
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "DEBUG")]
         void InitDebugCommands(IModHelper helper)
         {
 #if DEBUG
@@ -476,7 +625,7 @@ namespace GiftTasteHelper
                 {
                     friendship.Value.GiftsThisWeek = 0;
                     friendship.Value.GiftsToday = 0;
-                    this.GiftMonitor.Reset();
+                    this.GiftMonitor?.Reset();
                 }
             });
 
@@ -509,18 +658,20 @@ namespace GiftTasteHelper
                 }
                 Game1.warpFarmer(location, x / Game1.tileSize, y / Game1.tileSize, false);
             });
-            /*
+
             helper.ConsoleCommands.Add("setup", "", (name, args) =>
             {
-                helper.ConsoleCommands.Trigger("world_settime", new string[] { "1000" });
-                helper.ConsoleCommands.Trigger("teleport", new string[] { "SamHouse", "306", "339" });
-                var items = new int[] { 74, 773, 417, 324, 92, 220, 176, 417, 404, 22, 18 }; // Test items for all of jodi's tastes.
+                Game1.timeOfDay = 1000;
+                Game1.warpFarmer("SamHouse", 306, 339, false);
+                // DebugCommands.TryHandle(new[] { "world_settime", "1000" });
+                // DebugCommands.TryHandle(new[] { "teleport", "SamHouse", "306", "339" });
+                var items = new[] { "74", "773", "417", "324", "92", "220", "176", "417", "404", "22", "18" }; // Test items for all of jodi's tastes.
                 foreach (var item in items)
                 {
-                    helper.ConsoleCommands.Trigger("player_add", new string[] { "Object", item.ToString(), "10" });
+                    Game1.player.addItemToInventory(ItemRegistry.Create(item, 10));
+                    // DebugCommands.TryHandle(new[] { "player_add", "Object", item.ToString(), "10" });
                 }
             });
-            */
 #endif
         }
         #endregion

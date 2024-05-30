@@ -1,28 +1,36 @@
 {
   "DefaultOptions": {
+    "DisplayName": "An unknown storage type.",
+    "Description": "Other",
     "AccessChest": "Location",
+    "AccessChestPriority": 0,
     "AutoOrganize": "Enabled",
     "CarryChest": "Enabled",
     "CategorizeChest": "Enabled",
-    "CategorizeChestBlockItems": "Default",
+    "CategorizeChestBlockItems": "Disabled",
     "CategorizeChestSearchTerm": "",
     "CategorizeChestIncludeStacks": "Enabled",
     "ChestFinder": "Enabled",
-    "ChestInfo": "Default",
-    "CollectItems": "Default",
+    "CollectItems": "Enabled",
     "ConfigureChest": "Enabled",
     "CookFromChest": "Location",
     "CraftFromChest": "Location",
     "CraftFromChestDistance": -1,
     "HslColorPicker": "Enabled",
+    "InventoryTabs": "Enabled",
     "OpenHeldChest": "Enabled",
     "ResizeChest": "Large",
     "ResizeChestCapacity": 70,
     "SearchItems": "Enabled",
     "ShopFromChest": "Enabled",
+    "SortInventory": "Enabled",
+    "SortInventoryBy": "",
     "StashToChest": "Location",
     "StashToChestDistance": 16,
     "StashToChestPriority": "Default",
+    "StorageIcon": "",
+    "StorageInfo": "Enabled",
+    "StorageInfoHover": "Enabled",
     "StorageName": ""
   },
   "StorageOptions": {},
@@ -34,10 +42,13 @@
     "AccessChests": "B",
     "AccessPreviousChest": "LeftTrigger",
     "AccessNextChest": "RightTrigger",
+    "ClearSearch": "Escape",
     "ConfigureChest": "End",
+    "Copy": "LeftControl + C, RightControl + C",
     "LockSlot": "LeftAlt",
     "OpenCrafting": "K",
     "OpenFoundChest": "LeftShift + Enter, RightShift + Enter",
+    "Paste": "LeftControl + V, RightControl + V",
     "ScrollDown": "DPadDown",
     "ScrollPage": "LeftShift, RightShift",
     "ScrollUp": "DPadUp",
@@ -49,12 +60,71 @@
     "TransferItemsReverse": "LeftAlt, RightAlt"
   },
   "CraftFromChestDisableLocations": [],
+  "DebugMode": false,
   "HslColorPickerHueSteps": 29,
   "HslColorPickerSaturationSteps": 16,
   "HslColorPickerLightnessSteps": 16,
   "HslColorPickerPlacement": "Right",
-  "LockItem": "Default",
+  "InventoryTabList": [
+    {
+      "Icon": "furyx639.BetterChests/Clothing",
+      "Label": "Clothing",
+      "SearchTerm": "category_clothing category_boots category_hat"
+    },
+    {
+      "Icon": "furyx639.BetterChests/Cooking",
+      "Label": "Cooking",
+      "SearchTerm": "category_syrup category_artisan_goods category_ingredients category_sell_at_pierres_and_marnies category_sell_at_pierres category_meat category_cooking category_milk category_egg"
+    },
+    {
+      "Icon": "furyx639.BetterChests/Crops",
+      "Label": "Crops",
+      "SearchTerm": "category_greens category_flowers category_fruits category_vegetable"
+    },
+    {
+      "Icon": "furyx639.BetterChests/Equipment",
+      "Label": "Equipment",
+      "SearchTerm": "category_equipment category_ring category_tool category_weapon"
+    },
+    {
+      "Icon": "furyx639.BetterChests/Fishing",
+      "Label": "Fish",
+      "SearchTerm": "category_bait category_fish category_tackle category_sell_at_fish_shop"
+    },
+    {
+      "Icon": "furyx639.BetterChests/Materials",
+      "Label": "Materials",
+      "SearchTerm": "category_monster_loot category_metal_resources category_building_resources category_minerals category_crafting category_gem"
+    },
+    {
+      "Icon": "furyx639.BetterChests/Miscellaneous",
+      "Label": "Miscellaneous",
+      "SearchTerm": "category_big_craftable category_furniture category_junk"
+    },
+    {
+      "Icon": "furyx639.BetterChests/Seeds",
+      "Label": "Seeds",
+      "SearchTerm": "category_seeds category_fertilizer"
+    }
+  ],
+  "LockItem": "Enabled",
   "LockItemHold": true,
   "SearchItemsMethod": "GrayedOut",
-  "StashToChestDisableLocations": []
+  "StashToChestDisableLocations": [],
+  "StorageInfoHoverItems": [
+    "Icon",
+    "Name",
+    "Type",
+    "Capacity",
+    "TotalValue"
+  ],
+  "StorageInfoMenuItems": [
+    "Type",
+    "Location",
+    "Position",
+    "Inventory",
+    "TotalItems",
+    "UniqueItems",
+    "TotalValue"
+  ]
 }

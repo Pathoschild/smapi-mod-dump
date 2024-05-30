@@ -1,0 +1,73 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/jasisco5/UncannyValleyMod
+**
+*************************************************/
+
+/************************************************************************************************************************************************************
+*																																							*
+*																Marriage Dialogue																			*
+*			These are specific to the spouse and are nearly all needed.... Just fill it in.																	*
+*																																							*
+*************************************************************************************************************************************************************/
+{    
+	"Rainy_Day_0": "  ",
+    "Rainy_Day_1": "  ",
+    "Rainy_Day_2": "  ",
+    "Rainy_Day_3": "  ",
+    "Rainy_Day_4": "  ",
+    "patio_NPCName": " You need to declare the spouse name. (Example: patio_Haley)",
+    "Rainy_Day_NPCName": "Be sure to put your NPC's name.",
+    "Rainy_Night_0": "  ",
+    "Rainy_Night_1": "  ",
+    "Rainy_Night_2": "  ",
+    "Rainy_Night_3": "  ",
+    "Rainy_Night_4": "  ",
+    "Rainy_Night_5": "  ",
+    "Rainy_Night_NPCName": "  ",
+    "Indoor_Day_0": "  ",
+    "Indoor_Day_1": "  ",
+    "Indoor_Day_2": "  ",
+    "Indoor_Day_3": "  ",
+    "Indoor_Day_4": "  ",
+    "Indoor_Day_NPCName": "  ",
+    "Indoor_Night_0": "  ",
+    "Indoor_Night_1": "  ",
+    "Indoor_Night_2": "  ",
+    "Indoor_Night_3": "  ",
+    "Indoor_Night_4": "  ",
+    "Indoor_Night_NPCName": "Don't forget to fill in your NPC's Name",
+    "Outdoor_0": "  ",
+    "Outdoor_1": "  ",
+    "Outdoor_2": "  ",
+    "Outdoor_3": "  ",
+    "Outdoor_4": "  ",
+    "Outdoor_NPCName": "Don't forget to fill in your NPC's Name",
+    "funLeave_NPCName": "Don't forget to fill in your NPC's Name",
+    "funReturn_NPCName": "Don't forget to fill in your NPC's Name",
+    "OneKid_3": "You can have 3 of these",
+    "TwoKids_0": "  ",
+    "TwoKids_2": "  ",
+    "TwoKids_3": "  ",
+    "Good_1": "  ",
+    "Good_2": "  ",
+    "Good_3": "  ",
+    "Good_4": "  ",
+    "Good_5": "  ",
+    "Good_6": "  ",
+    "Good_7": "  ",
+    "Neutral_0": "  ",
+    "Neutral_1": "  ",
+    "Neutral_6": "  ",
+    "Neutral_7": "  ",
+    "Neutral_8": "  ",
+    "Neutral_9": "  ",
+    "Bad_7": "  ",
+    "Bad_8": "  ",
+    "Bad_9": "  ",
+
+}

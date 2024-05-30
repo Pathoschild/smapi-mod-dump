@@ -1,0 +1,21 @@
+{
+  "PlayerInfoBox.Me": "(Me)",
+  "PlayerInfoBox.Host": "(Host)",
+
+  "Config.Enabled.Name": "Enabled",
+  "Config.ToggleButton.Name": "Toggle Button",
+  "Config.ToggleButton.Description": "The button used to toggle the displays",
+  "Config.ShowSelf.Name": "Show Self",
+  "Config.ShowSelf.Description": "Whether or not to show a display with your own info",
+  "Config.ShowHostCrown.Name": "Show Host Crown",
+  "Config.ShowHostCrown.Description": "Show a crown icon on the display of the server host",
+  "Config.HideBars.Name": "Hide Health and Stamina Bars",
+  "Config.PositionBoxes.Name": "Position of boxes",
+  "Config.PositionBoxes.Description": "The general position on the screen where the boxes should be drawn",
+  "Config.XOffset.Name": "X Offset",
+  "Config.XOffset.Description": "Offset the boxes horizontally",
+  "Config.YOffset.Name": "Y Offset",
+  "Config.YOffset.Description": "Offset the boxes vertically",
+  "Config.SpaceBetween.Name": "Space Between Boxes",
+  "Config.SpaceBetween.Description": "The distance between boxes"
+}

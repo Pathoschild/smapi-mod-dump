@@ -1,0 +1,44 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/jasisco5/UncannyValleyMod
+**
+*************************************************/
+
+/************************************************************************************************************************************************************************
+*																																										*
+*																																										*
+*															Dialogue Template: Day to Day speech																		*
+*																																										*
+*			This file determines what your NPC says during the days.  You can use different tokens to symbolize your character's personality. 							*
+*																																										*
+*   Basic Keys: Mon, Tue, Wed, Thu, Fri, Sat, Sun : These are the days of the week and must have a capitol letter to be parsed correctly.								*
+*	Heart-Level is determined with a number at the end. (example: Mon4 is for Monday with 4 hearts.) You can only use even numbers.										*
+*	Seasonal Dialogue is determined with the season name (lowercase) and the day of the week after an underscore. (summer_Wed)											*
+*	You can combine some tokens to make more dialogue: winter_Tue6 for example, means on a Tuesday during winter when you have 6 hearts.								*
+*	You may also specify an exact day using Season followed by the day (1-28): fall_14 means the 14th day of fall.  This is useful for specific events.					*
+*	Response Dialogue goes here from Events and Questions made for the NPC.  They are determined by you and some examples are provided below.							*
+*	Introduction is a one time use dialogue used to Introduce your NPC to the player.																					*
+*	danceRejection, dumped_Girls (dumped_Guys), secondChance_Girls (secondChance_Guys), and divorced are not all needed but you should put them in if your NPC can		*
+*		get married.																																					*
+*																																										*
+*	There are plenty of options to dialogue use.  If you wish to use the full range of dialogue, see: https://stardewvalleywiki.com/Modding:Dialogue					*
+*																																										*
+*************************************************************************************************************************************************************************/
+
+{
+
+	"Introduction": "Welcome to the manor, I suppose. As stated, I am the butler of this establishment.$s#$b# The master is currently out, and has been for quite some time.",
+	"Mon": "Hey @, I got a quick question for you...#$b#$q 6000/6001 mon_template#Did you believe in ghosts before this whole thing?#$r 6000 250 mon_yes#Sure did#$r 6001 500 mon_no#Nope",
+	"mon_yes": "I always believed they were real. I mean, they had to exist somewhere, right?",
+	"mon_no": "No? Huh, I always did.",
+	"mon_template": "$p 6000#I mean, ghosts are really cool when you think about it.",
+	"Tue": "Ghosts huh? I guess stranger things have happened.",
+	"Wed": "It's crazy to think that there were ghosts living near us this whole time.",
+	"Thu": "I remember as a kid, I thought my uncle was the coolest guy in the world!#$b#Now, eh, he's still cool I guess...",
+	"Fri": "It's friday, and I am at a ghost mansion."
+
+}

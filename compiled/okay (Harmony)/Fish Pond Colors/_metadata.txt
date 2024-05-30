@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/23449
+IDs: BB.FishPondColors
+update keys: Nexus:23449

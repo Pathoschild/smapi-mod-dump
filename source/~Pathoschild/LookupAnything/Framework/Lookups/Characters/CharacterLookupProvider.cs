@@ -294,7 +294,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Characters
                 npc: npc,
                 type: this.GetSubjectType(npc),
                 metadata: this.GameHelper.Metadata,
-                progressionMode: config.ProgressionMode,
+                showUnknownGiftTastes: config.ShowUnknownGiftTastes,
                 highlightUnrevealedGiftTastes: config.HighlightUnrevealedGiftTastes,
                 showGiftTastes: config.ShowGiftTastes,
                 collapseFieldsConfig: config.CollapseLargeFields,

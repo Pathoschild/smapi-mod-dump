@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/15100
+IDs: ricehit.SevenDeadlySinsSAMPI
+update keys: Nexus:15100

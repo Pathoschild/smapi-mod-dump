@@ -4,7 +4,7 @@
     *********/
     "buff.name": "トラクターの力",
     "garage.name": "トラクターガレージ",
-    "garage.description": "トラクターを格納するガレージ。 トラクター付き!",
+    "garage.description": "トラクターを格納するガレージ。トラクター付き！",
 
 
     /*********
@@ -13,213 +13,232 @@
     /****
     ** Section titles
     ****/
-    // TODO
-    "config.main-options": "Main Options",
-    "config.controls": "Controls",
-    "config.axe": "Axe Features",
-    "config.hoe": "Hoe Features",
-    "config.pickaxe": "Pickaxe Features",
-    "config.scythe": "Scythe Features",
-    "config.melee-blunt": "Melee Blunt Weapons Features",
-    "config.melee-dagger": "Melee Dagger Features",
-    "config.melee-sword": "Melee Sword Features",
-    "config.other-tools": "Other Tools",
-    "config.custom-tools": "Custom Tools",
+    "config.main-options": "メインオプション",
+    "config.audio": "オーディオ",
+    "config.controls": "操作方法",
+    "config.axe": "オノの特徴",
+    "config.hoe": "クワの特徴",
+    "config.pickaxe": "ツルハシの特徴",
+    "config.scythe": "カマの特徴",
+    "config.melee-blunt": "クラブ(武器)の特徴",
+    "config.melee-dagger": "短剣(武器)の特徴",
+    "config.melee-sword": "剣(武器)の特徴",
+    "config.other-tools": "その他どうぐ",
+    "config.custom-tools": "カスタムツール",
+
+
+    /****
+    ** Warnings
+    ****/
+    "config.questable-tractor-warning": "Questable Tractorがインストールされています。このMODはトラクターの設定を上書きして動作するので、ここで行った変更をリセットしてしまうかもしれません。",
 
 
     /****
     ** Main options
     ****/
+    "config.distance.name": "距離(範囲)",
+    "config.distance.tooltip": "トラクターの下及び周りに影響を与える各方向のタイルの数。 標準は{{defaultValue}}。{{maxRecommendedValue}}を超えると、表示されている画面のほとんどをカバーしてしまい、ゲームのパフォーマンスに悪影響を及ぼす可能性があります。",
+
+    "config.speed.name": "トラクターの速度",
+    "config.speed.tooltip": "トラクターに乗ったときの速度修正。標準は{{defaultValue}}。",
+
+    "config.magnetic-radius.name": "アイテムを引きつける範囲",
+    "config.magnetic-radius.tooltip": "値が高いほど遠くのものを引きつける。標準は{{defaultValue}}。",
+
+    "config.build-price.name": "販売価格",
+    "config.build-price.tooltip": "トラクターガレージの購入費。標準は{{defaultValue}}gです。",
+
     // TODO
-    "config.distance.name": "Distance",
-    "config.distance.tooltip": "The number of tiles in each direction around the tractor to affect (in addition to the tile under it). Default {{defaultValue}}; a value of {{maxRecommendedValue}} covers most of the visible screen, and higher values may negatively impact game performance.",
+    "config.require-build-materials.name": "Require Build Materials",
+    "config.require-build-materials.tooltip": "Whether you need to provide materials to build a tractor garage, in addition to the gold price.",
 
-    "config.speed.name": "Tractor Speed",
-    "config.speed.tooltip": "The speed modifier when riding a tractor. Default {{defaultValue}}.",
+    "config.can-summon-without-garage.name": "ガレージなしで使用する",
+    "config.can-summon-without-garage.tooltip": "ガレージなしでトラクターを呼び出す。",
 
-    "config.magnetic-radius.name": "Magnetic Radius",
-    "config.magnetic-radius.tooltip": "The item magnetism amount (higher values attract items from father away). Default {{defaultValue}}.",
+    "config.invincible-on-tractor.name": "無敵のトラクター",
+    "config.invincible-on-tractor.tooltip": "トラクターに乗車中はあらゆるダメージを無効にする。",
 
-    "config.tractor-sounds.name": "Sound Effects",
-    "config.tractor-sounds.tooltip": "Which sound effects to play while riding the tractor. Changes may not fully take effect until you reload the save. Default {{defaultValue}}.",
-    "config.tractor-sounds.value.None": "no sounds",
-    "config.tractor-sounds.value.Horse": "horse sounds",
-    "config.tractor-sounds.value.Tractor": "tractor sounds",
+    "config.highlight-radius.name": "有効距離(範囲)の強調表示(デバック向け)",
+    "config.highlight-radius.tooltip": "トラクターの有効距離(範囲)を強調表示する。距離オプションの確認などで役立ちます。",
 
-    "config.build-price.name": "Build Price",
-    "config.build-price.tooltip": "The gold price to buy a tractor garage. Default {{defaultValue}}g.",
 
-    "config.can-summon-without-garage.name": "Can Summon Without Garage",
-    "config.can-summon-without-garage.tooltip": "Whether you can summon a temporary tractor without building a garage first.",
+    /****
+    ** Audio
+    ****/
+    "config.tractor-sounds.name": "効果音",
+    "config.tractor-sounds.tooltip": "トラクター乗車中に再生する効果音。セーブをリロードするまで変更が完全に反映されない場合があります。標準は{{defaultValue}}。",
+    "config.tractor-sounds.value.None": "効果音なし",
+    "config.tractor-sounds.value.Horse": "馬",
+    "config.tractor-sounds.value.Tractor": "トラクター",
 
-    "config.invincible-on-tractor.name": "Invincible on Tractor",
-    "config.invincible-on-tractor.tooltip": "Whether you should be immune to damage from any source when riding the tractor.",
-
-    "config.highlight-radius.name": "Highlight Radius (Debug)",
-    "config.highlight-radius.tooltip": "Whether to highlight the tractor radius when riding one, to help visualize the distance option.",
+    "config.tractor-volume.name": "効果音の音量",
+    "config.tractor-volume.tooltip": "トラクターの効果音の音量レベル。標準は{{defaultValue}}%。",
 
 
     /****
     ** Keybind options
     ****/
-    // TODO
-    "config.summon-key.name": "Summon Tractor",
-    "config.summon-key.tooltip": "Warp an available tractor to your position. Default backspace.",
+    "config.summon-key.name": "トラクターの呼び出し",
+    "config.summon-key.tooltip": "利用可能なトラクターを自分の位置にワープさせる。デフォルトはBackSpace。",
 
-    "config.dismiss-key.name": "Dismiss Tractor",
-    "config.dismiss-key.tooltip": "Return the tractor you're riding to its home.",
+    "config.dismiss-key.name": "トラクターの解体",
+    "config.dismiss-key.tooltip": "呼び出したトラクターを自宅に戻す。",
 
-    "config.hold-to-activate-key.name": "Hold to Activate",
-    "config.hold-to-activate-key.tooltip": "If specified, the tractor will only do something while you're holding this button. If nothing is specified, the tractor will work automatically while you're riding it.",
+    "config.hold-to-activate-key.name": "長押しで起動",
+    "config.hold-to-activate-key.tooltip": "設定した場合、トラクターはこのボタンを押している間だけアクションをします。何も指定しない場合、乗車中は自動でアクションをする。",
 
 
     /****
     ** Trees & bushes
     ****/
-    // TODO
-    "config.chop-fruit-trees-seeds.name": "Chop Fruit Trees (Seeds)",
-    "config.chop-fruit-trees-seeds.tooltip": "Whether to clear fruit tree seeds.",
+    "config.chop-fruit-trees-seeds.name": "果樹の苗を切る",
+    "config.chop-fruit-trees-seeds.tooltip": "果樹の苗を伐採する。",
 
-    "config.chop-fruit-trees-saplings.name": "Chop Fruit Trees (Saplings)",
-    "config.chop-fruit-trees-saplings.tooltip": "Whether to clear fruit trees which aren't fully grown.",
+    "config.chop-fruit-trees-saplings.name": "果樹の苗木を切る",
+    "config.chop-fruit-trees-saplings.tooltip": "成長しきっていない果樹を伐採する。",
 
-    "config.chop-fruit-trees-grown.name": "Chop Fruit Trees (Grown)",
-    "config.chop-fruit-trees-grown.tooltip": "Whether to cut fully-grown fruit trees.",
+    "config.chop-fruit-trees-grown.name": "果樹の成木を切る",
+    "config.chop-fruit-trees-grown.tooltip": "成長した果樹を伐採する。",
 
-    "config.chop-trees-seeds.name": "Chop Trees (Seeds)",
-    "config.chop-trees-seeds.tooltip": "Whether to clear non-fruit tree seeds.",
+    "config.chop-trees-seeds.name": "樹木のタネや苗を切る",
+    "config.chop-trees-seeds.tooltip": "樹木のタネや苗を伐採する。",
 
-    "config.chop-trees-saplings.name": "Chop Trees (Saplings)",
-    "config.chop-trees-saplings.tooltip": "Whether to clear non-fruit trees which aren't fully grown.",
+    "config.chop-trees-saplings.name": "樹木の苗木を切る",
+    "config.chop-trees-saplings.tooltip": "成長しきっていない樹木を伐採する。",
 
-    "config.chop-trees-grown.name": "Chop Trees (Grown)",
-    "config.chop-trees-grown.tooltip": "Whether to clear fully-grown non-fruit trees.",
+    "config.chop-trees-grown.name": "樹木の成木を切る",
+    "config.chop-trees-grown.tooltip": "成長した樹木を伐採する。",
 
-    "config.chop-trees-stumps.name": "Chop Trees (Stumps)",
-    "config.chop-trees-stumps.tooltip": "Whether to clear non-fruit tree stumps. (This doesn't affect giant stumps, which count as debris.)",
+    "config.chop-trees-stumps.name": "切り株を切る",
+    "config.chop-trees-stumps.tooltip": "切り株を伐採する。おおきな切り株には影響しない。",
 
-    "config.chop-bushes.name": "Chop Bushes",
-    "config.chop-bushes.tooltip": "Whether to cut bushes that can be chopped.",
+    "config.chop-bushes.name": "茂みを切る",
+    "config.chop-bushes.tooltip": "茂みを伐採する。",
 
-    "config.harvest-fruit-trees.name": "Harvest Fruit Trees",
-    "config.harvest-fruit-trees.tooltip": "Whether to harvest fruit trees.",
+    "config.harvest-fruit-trees.name": "果樹の収穫",
+    "config.harvest-fruit-trees.tooltip": "果樹から作物を収穫する。",
+
+    "config.harvest-tree-moss.name": "コケの採取",
+    "config.harvest-tree-moss.tooltip": "木からコケを採取する。",
+
+    "config.harvest-tree-seeds.name": "樹木のタネの採取",
+    "config.harvest-tree-seeds.tooltip": "樹木からタネを採取する。",
 
 
     /****
     ** Crops/forage/grass
     ****/
-    // TODO
-    "config.clear-dead-crops.name": "Clear Dead Crops",
-    "config.clear-dead-crops.tooltip": "Whether to destroy dead crops.",
+    "config.clear-dead-crops.name": "枯れた作物を除去",
+    "config.clear-dead-crops.tooltip": "枯れた作物を除去する。",
 
-    "config.clear-live-crops.name": "Clear Live Crops",
-    "config.clear-live-crops.tooltip": "Whether to destroy live crops.",
+    "config.clear-live-crops.name": "作物を除去",
+    "config.clear-live-crops.tooltip": "作物を除去する。",
 
-    "config.harvest-giant-crops.name": "Harvest Giant Crops",
-    "config.harvest-giant-crops.tooltip": "Whether to cut giant crops.",
+    "config.harvest-giant-crops.name": "巨大な作物の収穫",
+    "config.harvest-giant-crops.tooltip": "巨大な作物を収穫する。",
 
-    "config.harvest-crops.name": "Harvest Crops",
-    "config.Harvest Crops.tooltip": "Whether to harvest crops.",
+    "config.harvest-crops.name": "作物の収穫",
+    "config.Harvest Crops.tooltip": "作物を収穫する。",
 
-    "config.harvest-flowers.name": "Harvest Flowers",
-    "config.harvest-flowers.tooltip": "Whether to harvest flowers.",
+    "config.harvest-flowers.name": "花の収穫",
+    "config.harvest-flowers.tooltip": "花を収穫する。",
 
-    "config.harvest-forage.name": "Harvest Forage",
-    "config.harvest-forage.tooltip": "Whether to harvest forage.",
+    "config.harvest-forage.name": "採取アイテムの回収",
+    "config.harvest-forage.tooltip": "採取アイテムを回収する。",
 
-    "config.harvest-grass.name": "Harvest Grass",
-    "config.harvest-grass.tooltip": "Whether to cut grass. If you have free silo space, this gives you hay as usual.",
+    "config.harvest-blue-grass.name": "青葉の収穫",
+    "config.harvest-blue-grass.tooltip": "青葉を収穫する。サイロに空きがあれば、ほし草を入手可能。",
+
+    "config.harvest-non-blue-grass.name": "牧草の収穫",
+    "config.harvest-non-blue-grass.tooltip": "牧草を収穫する。サイロに空きがあれば、ほし草を入手可能。",
 
 
     /****
     ** Debris
     ****/
-    // TODO
-    "config.clear-debris.name": "Clear Debris",
-    "config.clear-debris.tooltip": "Whether to destroy debris like weeds, twigs, giant stumps, and fallen logs.",
+    "config.clear-debris.name": "障害物の除去",
+    "config.clear-debris.tooltip": "雑草、枝、おおきな切り株、おおきな丸太などを除去する。",
 
-    "config.clear-weeds.name": "Clear Weeds",
-    "config.clear-weeds.tooltip": "Whether to destroy weeds.",
+    "config.clear-weeds.name": "雑草の除去",
+    "config.clear-weeds.tooltip": "雑草を除去する。",
 
 
     /****
     ** Dirt
     ****/
-    // TODO
-    "config.till-dirt.name": "Till Dirt",
-    "config.till-dirt.tooltip": "Whether to till empty dirt.",
+    "config.till-dirt.name": "土を耕す",
+    "config.till-dirt.tooltip": "土を耕す。",
 
-    "config.dig-artifact-spots.name": "Dig Artifact Spots",
-    "config.dig-artifact-spots.tooltip": "Whether to dig up artifact spots.",
+    "config.dig-artifact-spots.name": "発掘品を掘り起こす",
+    "config.dig-artifact-spots.tooltip": "発掘品を掘り起こす。",
 
-    "config.clear-tilled-dirt.name": "Clear Tilled Dirt",
-    "config.clear-tilled-dirt.tooltip": "Whether to clear tilled dirt.",
+    "config.dig-seed-spots.name": "タネポイントを掘り起こす",
+    "config.dig-seed-spots.tooltip": "タネポイントを掘り起こす。",
+
+    "config.clear-tilled-dirt.name": "耕した土を戻す",
+    "config.clear-tilled-dirt.tooltip": "耕した土をもとに戻す。",
 
 
     /****
     ** Mining
     ****/
-    // TODO
-    "config.break-boulders-and-meteorites.name": "Break Boulders and Meteorites",
-    "config.break-boulders-and-meteorites.tooltip": "Whether to break boulders and meteorites.",
+    "config.break-boulders-and-meteorites.name": "巨石やいん石の破壊",
+    "config.break-boulders-and-meteorites.tooltip": "巨石やいん石を破壊する。",
 
-    "config.harvest-mine-spawns.name": "Harvest Mine Spawns",
-    "config.harvest-mine-spawns.tooltip": "Whether to harvest spawned mine items like quartz and frozen tears.",
+    "config.harvest-mine-spawns.name": "鉱物アイテムの回収",
+    "config.harvest-mine-spawns.tooltip": "水晶やイエティのなみだのような、出現した鉱物アイテムを回収する。",
 
 
     /****
     ** Placed items
     ****/
-    // TODO
-    "config.break-flooring.name": "Break Flooring",
-    "config.break-flooring.tooltip": "Whether to break placed flooring.",
+    "config.break-flooring.name": "フロリーングの破壊",
+    "config.break-flooring.tooltip": "フローリングを壊す。",
 
-    "config.break-objects.name": "Break Objects",
-    "config.break-objects.tooltip": "Whether to break placed objects.",
+    "config.break-objects.name": "オブジェクトの破壊",
+    "config.break-objects.tooltip": "配置されたオブジェクトを壊す。",
 
-    "config.break-mine-containers.name": "Break Mine Containers",
-    "config.break-mine-containers.tooltip": "Whether to break containers in the mine.",
+    "config.break-mine-containers.name": "コンテナの破壊",
+    "config.break-mine-containers.tooltip": "ダンジョン内のコンテナを壊す。",
 
-    "config.harvest-machines.name": "Harvest Machines",
-    "config.harvest-machines.tooltip": "Whether to collect machine output.",
+    "config.harvest-machines.name": "生産品の回収",
+    "config.harvest-machines.tooltip": "生産設備で作成した加工品を回収する。",
 
 
     /****
     ** Melee
     ****/
-    // TODO
-    "config.Attack-monsters.name": "Attack Monsters",
-    "config.Attack-monsters.tooltip": "Whether to attack monsters. (This is massively overpowered due to the tractor tool speed.)",
+    "config.Attack-monsters.name": "モンスターへの攻撃",
+    "config.Attack-monsters.tooltip": "モンスターを攻撃する。これはトラクターの速度で攻撃するため、非常にオーバーパワーである。",
 
 
     /****
     ** Other
     ****/
-    // TODO
-    "config.milk-pail.name": "Enable Milk Pail",
-    "config.milk-pail.tooltip": "Whether to collect milk from farm animals using the milk pail.",
+    "config.milk-pail.name": "ミルクいれ",
+    "config.milk-pail.tooltip": "ミルクいれを使って家畜からミルクを入手する。",
 
-    "config.shears.name": "Enable Shears",
-    "config.shears.tooltip": "Whether to collect wool from farm animals using the shears.",
+    "config.shears.name": "大ハサミ",
+    "config.shears.tooltip": "大ハサミを使って家畜からウールを入手する。",
 
-    "config.watering-can.name": "Enable Watering Can",
-    "config.watering-can.tooltip": "Whether to water nearby tiles using the watering can. This doesn't consume water in the watering can.",
+    "config.watering-can.name": "ジョウロ",
+    "config.watering-can.tooltip": "近くのタイルにジョウロで水をやるか。水は消費されない。",
 
-    "config.fertilizer.name": "Enable Fertilizer",
-    "config.fertilizer.tooltip": "Whether to apply fertilizer to crops and tilled dirt.",
+    "config.fertilizer.name": "肥料",
+    "config.fertilizer.tooltip": "作物や耕した土に肥料を与える。",
 
-    "config.grass-starters.name": "Enable Grass Starters",
-    "config.grass-starters.tooltip": "Whether to plant grass starters.",
+    "config.grass-starters.name": "牧草栽培キット",
+    "config.grass-starters.tooltip": "牧草栽培キットを植える。",
 
-    "config.seeds.name": "Enable Seeds",
-    "config.seeds.tooltip": "Whether to plant seeds.",
+    "config.seeds.name": "タネまき",
+    "config.seeds.tooltip": "タネをまく。",
 
-    "config.seed-bags.name": "Enable Seed Bags",
-    "config.seed-bags.tooltip": "Whether to plant seeds from the Seed Bag mod.",
+    "config.seed-bags.name": "Seed Bagでのタネまき",
+    "config.seed-bags.tooltip": "MOD：Seed Bagのタネをまく。",
 
-    "config.slingshot.name": "Enable Slingshot",
-    "config.slingshot.tooltip": "Whether to fire the slingshot towards the cursor. (This is massively overpowered and will consume ammo voraciously due to the tractor tool speed.)",
+    "config.slingshot.name": "パチンコ",
+    "config.slingshot.tooltip": "カーソルに向かってパチンコを発射する。これはトラクターの速度で攻撃するため弾薬の消費に注意。",
 
-    "config.custom-tool-names.name": "Custom Tool Names",
-    "config.custom-tool-names.tooltip": "The custom items/tools to enable while riding the tractor. Tools will be used on each surrounding tile, while items will be put down. If you specify something that's already supported (like the axe), this overrides all limitations on its use. You must specify the exact internal name (not the translated display name), like 'Axe' or 'Mega Bomb'. Separate multiple values with commas."
+    "config.custom-tool-names.name": "カスタムツールの名前",
+    "config.custom-tool-names.tooltip": "トラクターに乗っているときに有効になるアイテムやどうぐ。どうぐは周囲のタイルで使用され、アイテムは下に置かれる。すでにサポートされているもの(オノなど)を指定すると、その使用に関するすべての制限が上書きされます。翻訳された名称ではなく正確な内部名(英名)を指定する必要があります。例えばメガボムなら「Mega Bomb」とします。複数の値はカンマで区切ってください。"
 }

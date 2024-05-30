@@ -8,12 +8,7 @@
 **
 *************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
 
 using HarmonyLib;
 
@@ -42,6 +37,11 @@ internal static class PatchHelper {
 
 		return null;
 	}
+
+	internal static CachedTintData? GetTintData(GameLocation? location = null) {
+		return Mod?.GetCachedTint(location);
+	}
+
 
 	internal static int? AsInt(this CodeInstruction instr) {
 		if (instr.opcode == OpCodes.Ldc_I4_0)
@@ -95,63 +95,110 @@ internal static class PatchHelper {
 	#region Color Access
 
 	internal static bool HasAmbientColor(GameLocation? location) {
-		var wd = GetWeatherData(location);
-		if (wd is null)
+		var tint = GetTintData(location);
+		if (!tint.HasValue)
 			return Game1.IsRainingHere(location);
 
-		return wd.AmbientColor.HasValue;
+		return tint.Value.HasAmbientColor;
 	}
 
 	internal static Color GetAmbientColor(GameLocation? location) {
-		var wd = GetWeatherData(location);
-		if (wd is not null)
-			return wd.AmbientColor ?? Color.White;
+		var tint = GetTintData(location);
+		if (!tint.HasValue)
+			return Game1.IsRainingHere(location)
+				? new Color(255, 200, 80)
+				: Color.White;
 
-		if (Game1.IsRainingHere(location))
-			return new Color(255, 200, 80);
+		if (tint.Value.EndTime == int.MaxValue)
+			return tint.Value.StartAmbientColor;
 
-		return Color.White;
+		int minutes = Utility.CalculateMinutesBetweenTimes(tint.Value.StartTime, Game1.timeOfDay) / 10;
+		float progress = (minutes + (Game1.gameTimeInterval / (float) Game1.realMilliSecondsPerGameTenMinutes)) / tint.Value.DurationInTenMinutes;
+
+		if (tint.Value.StartAmbientColor == tint.Value.EndAmbientColor)
+			return tint.Value.StartAmbientColor;
+		else
+			return new Color(
+				(byte) Utility.Lerp(tint.Value.StartAmbientColor.R, tint.Value.EndAmbientColor.R, progress),
+				(byte) Utility.Lerp(tint.Value.StartAmbientColor.G, tint.Value.EndAmbientColor.G, progress),
+				(byte) Utility.Lerp(tint.Value.StartAmbientColor.B, tint.Value.EndAmbientColor.B, progress)
+			);
 	}
 
 	internal static bool HasLightingTint(GameLocation? location) {
-		var wd = GetWeatherData(location);
-		if (wd is null)
+		var tint = GetTintData(location);
+		if (!tint.HasValue)
 			return Game1.IsRainingHere(location);
 
-		return wd.LightingTint.HasValue;
+		return tint.Value.HasLightingTint;
 	}
 
 	internal static Color GetLightingTint(GameLocation? location) {
-		var wd = GetWeatherData(location);
-		if (wd is not null) {
-			if (wd.LightingTint.HasValue)
-				return wd.LightingTint.Value * wd.LightingTintOpacity;
-			return Color.White;
-		}
+		var tint = GetTintData(location);
+		if (!tint.HasValue)
+			return Color.OrangeRed * 0.45f;
 
-		return Color.OrangeRed * 0.45f;
+		if (!tint.Value.HasLightingTint)
+			return Color.White;
+
+		if (tint.Value.EndTime == int.MaxValue)
+			return tint.Value.StartLightingTint * tint.Value.StartLightingTintOpacity;
+
+		int minutes = Utility.CalculateMinutesBetweenTimes(tint.Value.StartTime, Game1.timeOfDay) / 10;
+		float progress = (minutes + (Game1.gameTimeInterval / (float) Game1.realMilliSecondsPerGameTenMinutes)) / tint.Value.DurationInTenMinutes;
+
+		Color color;
+		if (tint.Value.StartLightingTint == tint.Value.EndLightingTint)
+			color = tint.Value.StartLightingTint;
+		else
+			color = new Color(
+				(byte) Utility.Lerp(tint.Value.StartLightingTint.R, tint.Value.EndLightingTint.R, progress),
+				(byte) Utility.Lerp(tint.Value.StartLightingTint.G, tint.Value.EndLightingTint.G, progress),
+				(byte) Utility.Lerp(tint.Value.StartLightingTint.B, tint.Value.EndLightingTint.B, progress)
+			);
+
+		float opacity = Utility.Lerp(tint.Value.StartLightingTintOpacity, tint.Value.EndLightingTintOpacity, progress);
+
+		return color * opacity;
 	}
 
 	internal static bool HasPostLightingTint(GameLocation? location) {
-		var wd = GetWeatherData(location);
-		if (wd is null)
+		var tint = GetTintData(location);
+		if (!tint.HasValue)
 			return Game1.IsRainingHere(location);
 
-		return wd.PostLightingTint.HasValue;
+		return tint.Value.HasPostLightingTint;
 	}
 
 	internal static Color GetPostLightingTint(GameLocation? location) {
-		var wd = GetWeatherData(location);
-		if (wd is not null) {
-			if (wd.PostLightingTint.HasValue)
-				return wd.PostLightingTint.Value * wd.PostLightingTintOpacity;
+		var tint = GetTintData(location);
+		if (!tint.HasValue)
+			return Game1.IsGreenRainingHere(location)
+				? new Color(0, 120, 150) * 0.22f
+				: Color.Blue * 0.2f;
+
+		if (!tint.Value.HasPostLightingTint)
 			return Color.Transparent;
-		}
 
-		if (Game1.IsGreenRainingHere(location))
-			return new Color(0, 120, 150) * 0.22f;
+		if (tint.Value.EndTime == int.MaxValue)
+			return tint.Value.StartPostLightingTint * tint.Value.StartPostLightingTintOpacity;
 
-		return Color.Blue * 0.2f;
+		int minutes = Utility.CalculateMinutesBetweenTimes(tint.Value.StartTime, Game1.timeOfDay) / 10;
+		float progress = (minutes + (Game1.gameTimeInterval / (float) Game1.realMilliSecondsPerGameTenMinutes)) / tint.Value.DurationInTenMinutes;
+
+		Color color;
+		if (tint.Value.StartPostLightingTint == tint.Value.EndPostLightingTint)
+			color = tint.Value.StartPostLightingTint;
+		else
+			color = new Color(
+				(byte) Utility.Lerp(tint.Value.StartPostLightingTint.R, tint.Value.EndPostLightingTint.R, progress),
+				(byte) Utility.Lerp(tint.Value.StartPostLightingTint.G, tint.Value.EndPostLightingTint.G, progress),
+				(byte) Utility.Lerp(tint.Value.StartPostLightingTint.B, tint.Value.EndPostLightingTint.B, progress)
+			);
+
+		float opacity = Utility.Lerp(tint.Value.StartPostLightingTintOpacity, tint.Value.EndPostLightingTintOpacity, progress);
+
+		return color * opacity;
 	}
 
 	#endregion
@@ -186,5 +233,13 @@ internal static class PatchHelper {
 	}
 
 	#endregion
+
+	internal static bool ShouldWaterCropsAndBowls(GameLocation? location) {
+		var wd = GetWeatherData(location);
+		if (wd != null)
+			return wd.WaterCropsAndPets ?? wd.IsRaining;
+
+		return Game1.IsRainingHere(location);
+	}
 
 }

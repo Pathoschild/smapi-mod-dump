@@ -1,7 +1,7 @@
 {
     "Name": "Stardew Valley Recipe Tracker",
     "Author": "Nox Chimaera",
-    "Version": "1.0.4",
+    "Version": "1.0.5",
     "Description": "Provides pinnable crafting recipes and junimo bundles",
     "UniqueID": "NoxChimaera.StardewValleyTodo",
     "EntryDll": "StardewValleyTodo.dll",

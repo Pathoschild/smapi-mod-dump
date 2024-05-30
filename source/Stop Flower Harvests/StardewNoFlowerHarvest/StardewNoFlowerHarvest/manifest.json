@@ -1,0 +1,19 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/seichen/Stardew-Stop-Flower-Harvests
+**
+*************************************************/
+
+{
+    "Name": "Stop Flower Harvests",
+    "Author": "BlobLeader",
+    "Version": "1.0.0",
+    "Description": "For when you're tired of harvesting flowers when collecting honey.",
+    "UniqueID": "BlobLeader.StopFlowerHarvests",
+    "EntryDll": "StopFlowerHarvests.dll",
+    "UpdateKeys": []
+}

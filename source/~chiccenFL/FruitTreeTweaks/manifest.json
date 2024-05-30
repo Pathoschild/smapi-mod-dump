@@ -1,0 +1,32 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/chiccenFL/StardewValleyMods
+**
+*************************************************/
+
+{
+  "Name": "Fruit Tree Tweaks",
+  "Author": "chiccen",
+  "Version": "0.5.11",
+  "Description": "Fruit Tree Tweaks.",
+  "UniqueID": "chiccen.FruitTreeTweaks",
+  "EntryDll": "FruitTreeTweaks.dll",
+  "MinimumApiVersion": "3.15.0",
+  "ModUpdater": {
+    "Repository": "FruitTreeTweaks",
+    "User": "chiccen",
+    "Directory": "_releases",
+    "ModFolder": "FruitTreeTweaks"
+  },
+	"UpdateKeys": [ "Nexus:21449" ],
+  "Dependencies": [
+    {
+      "UniqueID": "Platonymous.ModUpdater",
+      "IsRequired": false
+    }
+  ]
+}

@@ -6,11 +6,11 @@ mods:
    Name Tags
 
 latest commit:
-   commit 16eae96447db5c45aff43e0bb0b26192f247d947
+   commit 96f94e73cd18fcf9f0ef2a461e280ad1b2e57b47
    Author: Enaium <32991121+Enaium@users.noreply.github.com>
-   Date:   Tue Apr 23 01:03:20 2024 +0800
+   Date:   Tue May 21 22:39:47 2024 +0800
    
-       Merge pull request #6 from Enaium-StardewValleyMods/develop
+       Merge pull request #7 from Enaium/develop
        
-       Add background and target line
+       update code
    

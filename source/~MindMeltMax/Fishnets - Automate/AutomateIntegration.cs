@@ -10,11 +10,9 @@
 
 using Pathoschild.Stardew.Automate;
 using StardewValley.Buildings;
-using StardewValley.Locations;
 using StardewValley.TerrainFeatures;
 using StardewValley;
 using Microsoft.Xna.Framework;
-using Fishnets.Data;
 
 namespace Fishnets.Automate
 {
@@ -45,7 +43,7 @@ namespace Fishnets.Automate
             fishNet = entity;
             Location = location;
             TileLocation = tile;
-            TileArea = new Rectangle((int)tile.X, (int)tile.Y, 1, 1);
+            TileArea = new((int)tile.X, (int)tile.Y, 1, 1);
         }
 
         public MachineState GetState()
@@ -55,10 +53,8 @@ namespace Fishnets.Automate
                 state = MachineState.Empty;
             else
                 state = fishNet.readyForHarvest.Value ? MachineState.Done : MachineState.Processing;
-
-            var modData = Statics.GetModDataAt(Location, TileLocation);
             
-            if (state == MachineState.Empty && (!string.IsNullOrWhiteSpace(modData?.BaitId) || Game1.getFarmer(fishNet.owner.Value).professions.Contains(11)))
+            if (state == MachineState.Empty && (Statics.HasModData(fishNet) || Game1.getFarmer(fishNet.owner.Value).professions.Contains(11)))
                 state = MachineState.Processing;
 
             return state;
@@ -71,7 +67,7 @@ namespace Fishnets.Automate
             owner.caughtFish(i.ItemId, -1);
             fishNet.heldObject.Value = null;
             fishNet.readyForHarvest.Value = false;
-            Statics.SetModDataAt(Location, TileLocation, Statics.GetModDataAt(Location, TileLocation) with { BaitId = "", BaitQuality = 0 });
+            Statics.RemoveModData(fishNet);
             Statics.ClearTileIndexData(fishNet);
         });
 
@@ -80,7 +76,7 @@ namespace Fishnets.Automate
             if (input.TryGetIngredient(x => x.Sample.Category == Object.baitCategory, 1, out IConsumable bait))
             {
                 Item baitObj = bait.Take();
-                Statics.SetModDataAt(Location, TileLocation, Statics.GetModDataAt(Location, TileLocation) with { BaitId = baitObj.ItemId, BaitQuality = baitObj.Quality });
+                Statics.SetModData(fishNet, new(baitObj.ItemId, baitObj.Quality));
                 Statics.SetTileIndexData(fishNet, true, 3, 0);
                 return true;
             }

@@ -21,7 +21,9 @@ namespace DeluxeAutoPetter.helpers
          * Class Variables
          ********************** **/
         private static string? QUEST_ID;
-        private static string? QUEST_DETAILS;
+        private static string? QUEST_MAIL_ID;
+        private static string? QUEST_REWARD_MAIL_ID;
+        private static string? DELUXE_AUTO_PETTER_ID;
 
         private static readonly string AUTO_PETTER_ID = "(BC)272";
         private static readonly string HARDWOOD_ID = "(O)709";
@@ -29,7 +31,7 @@ namespace DeluxeAutoPetter.helpers
 
         private static readonly string DROPBOX_GAME_LOCATION = "Mountain";
         private static readonly Vector2 DROPBOX_LOCATION = new Vector2(18.5f, 25.5f) * Game1.tileSize;
-        private static readonly Vector2 DROPBOX_INDICATOR_LOCATION = new Vector2(DROPBOX_LOCATION.X - 3, DROPBOX_LOCATION.Y - Game1.tileSize); // the indicator is 6px wide, so -3px to center it
+        private static readonly Vector2 DROPBOX_INDICATOR_LOCATION = new(DROPBOX_LOCATION.X - 3, DROPBOX_LOCATION.Y - Game1.tileSize); // the indicator is 6px wide, so -3px to center it
         private static readonly Rectangle DROPBOX_BOUNDING_BOX = new((int)DROPBOX_LOCATION.X - (int)(Game1.tileSize * 1.5), (int)DROPBOX_LOCATION.Y - (int)(Game1.tileSize * 2.5), Game1.tileSize * 3, Game1.tileSize * 3);
 
         private static readonly Dictionary<string, int> DONATION_REQUIREMENTS = new()
@@ -68,11 +70,18 @@ namespace DeluxeAutoPetter.helpers
             return QUEST_ID;
         }
 
-        public static string GetQuestDetails()
+        public static string GetQuestMailID()
         {
-            if (QUEST_DETAILS is null) throw new ArgumentNullException($"{nameof(QUEST_DETAILS)} has not been initialized! The {nameof(Initialize)} method must be called first!");
+            if (QUEST_MAIL_ID is null) throw new ArgumentNullException($"{nameof(QUEST_MAIL_ID)} has not been initialized! The {nameof(Initialize)} method must be called first!");
 
-            return QUEST_DETAILS;
+            return QUEST_MAIL_ID;
+        }
+
+        public static string GetDeluxeAutoPetterID()
+        {
+            if (DELUXE_AUTO_PETTER_ID is null) throw new ArgumentNullException($"{nameof(DELUXE_AUTO_PETTER_ID)} has not been initialized! The {nameof(Initialize)} method must be called first!");
+
+            return DELUXE_AUTO_PETTER_ID;
         }
 
         // Data Getters
@@ -105,7 +114,9 @@ namespace DeluxeAutoPetter.helpers
         public static void Initialize(string modID)
         {
             QUEST_ID = $"{modID}.Quest";
-            QUEST_DETAILS = $"Basic/{I18n.QuestTitle()}/{I18n.QuestDescription()}/{I18n.QuestObjective()}/null/-1/0/-1/false";
+            DELUXE_AUTO_PETTER_ID = $"{modID}.DeluxeAutoPetter";
+            QUEST_MAIL_ID = $"{modID}.Mail0";
+            QUEST_REWARD_MAIL_ID = $"{modID}.Mail1";
         }
 
         public static void LoadQuestData(long playerID)
@@ -117,11 +128,6 @@ namespace DeluxeAutoPetter.helpers
         public static bool IsQuestDataNull()
         {
             return QUEST_DATA is null;
-        }
-
-        public static void LoadQuest()
-        {
-            DataLoader.Quests(Game1.content)[GetQuestID()] = GetQuestDetails();
         }
 
         // Visual Methods
@@ -170,6 +176,8 @@ namespace DeluxeAutoPetter.helpers
 
         private static void UpdateDonationCounts()
         {
+            if (QUEST_ID is null) throw new ArgumentNullException($"{nameof(QUEST_ID)} has not been initialized! The {nameof(Initialize)} method must be called first!");
+            if (QUEST_REWARD_MAIL_ID is null) throw new ArgumentNullException($"{nameof(QUEST_REWARD_MAIL_ID)} has not been initialized! The {nameof(Initialize)} method must be called first!");
             if (DONATED_ITEMS is null) throw new ArgumentNullException($"{nameof(DONATED_ITEMS)} has not been initialized! The {nameof(LoadQuestData)} method must be called first!");
             if (QUEST_DATA is null) throw new ArgumentNullException($"{nameof(QUEST_DATA)} has not been initialized! The {nameof(LoadQuestData)} method must be called first!");
 
@@ -180,7 +188,7 @@ namespace DeluxeAutoPetter.helpers
             {
                 Game1.player.completeQuest(QUEST_ID);
                 ShowDropboxLocator(false);
-                Game1.player.mailForTomorrow.Add(QuestMail.GetQuestRewardMailID());
+                Game1.player.mailForTomorrow.Add(QUEST_REWARD_MAIL_ID);
             }
         }
 

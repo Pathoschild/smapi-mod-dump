@@ -1,0 +1,42 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Esca-MMC/TransparencySettings
+**
+*************************************************/
+
+{
+  "Building.Title.Name": "Paramètres des bâtiments",
+  "Building.Title.Desc": "Paramètres de transparence pour les bâtiments de ferme construits par le joueur.",
+  "Building.Enable.Name": "Activer",
+  "Building.Enable.Desc": "Cochez cette case pour activer les paramètres personnalisés de transparence des bâtiments.\n\nDécochez cette case pour utiliser la transparence par défaut de Stardew.",
+  "Building.Below.Name": "Sous le joueur uniquement",
+  "Building.Below.Desc": "Si cette case est cochée, les bâtiments ne seront transparents que s'ils sont verticalement inférieurs à votre personnage.",
+  "Building.Distance.Name": "Cases de distance",
+  "Building.Distance.Desc": "Si le nombre de cases entre votre personnage et un bâtiment est inférieur à ce réglage, le bâtiment sera transparent.",
+  "Bush.Title.Name": "Paramètres des buissons",
+  "Bush.Title.Desc": "Paramètres de transparence pour les buissons.\n\nRemarque : Ces paramètres n'affectent que les buissons avec lesquels les joueurs peuvent interagir.",
+  "Bush.Enable.Name": "Activer",
+  "Bush.Enable.Desc": "Cochez cette case pour activer les paramètres personnalisés de transparence des buissons.\n\nDécochez cette case pour utiliser la transparence par défaut de Stardew.",
+  "Bush.Below.Name": "Sous le joueur uniquement",
+  "Bush.Below.Desc": "Si cette case est cochée, les buissons ne seront transparents que s'ils sont verticalement inférieurs à votre personnage.",
+  "Bush.Distance.Name": "Cases de distance",
+  "Bush.Distance.Desc": "Si le nombre de cases entre votre personnage et un buisson est inférieur à ce réglage, le buisson sera transparent.",
+  "Tree.Title.Name": "Paramètres des arbres",
+  "Tree.Title.Desc": "Paramètres de transparence pour les arbres.\n\nRemarque : Ces paramètres n'affectent que les arbres avec lesquels les joueurs peuvent interagir.",
+  "Tree.Enable.Name": "Activer",
+  "Tree.Enable.Desc": "Cochez cette case pour activer les paramètres personnalisés de transparence des arbres.\n\nDécochez cette case pour utiliser la transparence par défaut de Stardew.",
+  "Tree.Below.Name": "Sous le joueur uniquement",
+  "Tree.Below.Desc": "Si cette case est cochée, les arbres ne seront transparents que s'ils sont verticalement inférieurs à votre personnage.",
+  "Tree.Distance.Name": "Cases de distance",
+  "Tree.Distance.Desc": "Si le nombre de tuiles entre votre personnage et un arbre est inférieur à ce réglage, l'arbre sera transparent.",
+  "KeyBindings.Title.Name": "Raccourcis clavier",
+  "KeyBindings.Title.Desc": "Paramètres de raccourcis clavier pour les raccourcis facultatifs de ce mod.",
+  "KeyBindings.Disable.Name": "Désactiver la transparence",
+  "KeyBindings.Disable.Desc": "Le raccourci clavier pour basculer entre les paramètres de ce mod et la transparence normale de Stardew.\n\nConsultez le wiki pour plus d'informations sur les raccourcis clavier multiples : https://stardewvalleywiki.com/Modding:Player_Guide/Key_Bindings",
+  "KeyBindings.Full.Name": "Transparence totale",
+  "KeyBindings.Full.Desc": "Le raccourci clavier pour basculer entre les paramètres de ce mod et une transparence maximale sur tous les objets.\n\nConsultez le wiki pour plus d'informations sur les raccourcis clavier multiples : https://stardewvalleywiki.com/Modding:Player_Guide/Key_Bindings"
+}

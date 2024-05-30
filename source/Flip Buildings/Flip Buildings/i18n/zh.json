@@ -1,0 +1,17 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/mouahrara/FlipBuildings
+**
+*************************************************/
+
+{
+	"Carpenter_Flip": "翻转建筑物",
+	"Carpenter_SelectBuilding_Flip": "选择要翻转的建筑物",
+	"Carpenter_CannotFlip": "这栋楼不能翻转" ,
+	"Carpenter_CannotFlip_Permission": "您无权翻转此建筑",
+	"Carpenter_CannotFlip_PlayerHere": "当玩家在建筑物上时无法翻转"
+}

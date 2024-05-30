@@ -20,12 +20,12 @@ namespace Custom_Farm_Loader.Lib.Enums
     {
         Furniture,
         Chest,
-        Dungeon_Chest,
+        DungeonChest,
         Giftbox,
-        Purple_Giftbox,
-        Blue_Giftbox,
-        Trashcan_Giftbox,
-        Brown_Giftbox,
+        PurpleGiftbox,
+        BlueGiftbox,
+        TrashcanGiftbox,
+        BrownGiftbox,
         Wallpaper,
         Floor,
         Object

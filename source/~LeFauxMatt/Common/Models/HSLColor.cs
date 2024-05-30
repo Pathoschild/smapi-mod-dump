@@ -8,7 +8,11 @@
 **
 *************************************************/
 
+#if IS_FAUXCORE
+namespace StardewMods.FauxCore.Common.Models;
+#else
 namespace StardewMods.Common.Models;
+#endif
 
 using Microsoft.Xna.Framework;
 

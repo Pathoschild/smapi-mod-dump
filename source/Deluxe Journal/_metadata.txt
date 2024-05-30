@@ -6,9 +6,9 @@ mods:
    Deluxe Journal
 
 latest commit:
-   commit c5be9acf482b5d30f27d92685ab5bb784ba276e6
+   commit 6b4e05e5f40a0774f16eeec0088e9af20e29d9ee
    Author: Alec Hogerland <alechogerland@gmail.com>
-   Date:   Sun Mar 27 12:32:01 2022 -0400
+   Date:   Sun May 5 23:13:44 2024 -0400
    
-       Remove Spanish translation.
+       Protect me from getting blamed for other people's broken mods
    

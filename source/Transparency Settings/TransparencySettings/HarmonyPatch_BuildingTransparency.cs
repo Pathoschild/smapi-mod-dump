@@ -8,13 +8,10 @@
 **
 *************************************************/
 
-using Harmony;
+using HarmonyLib;
 using Microsoft.Xna.Framework;
-using Netcode;
 using StardewModdingAPI;
-using StardewValley;
 using StardewValley.Buildings;
-using StardewValley.TerrainFeatures;
 using System;
 using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
@@ -30,10 +27,10 @@ namespace TransparencySettings
         private static IMonitor Monitor { get; set; } = null;
 
         /// <summary>Applies this Harmony patch to the game.</summary>
-        /// <param name="harmony">The <see cref="HarmonyInstance"/> created with this mod's ID.</param>
+        /// <param name="harmony">The <see cref="Harmony"/> created with this mod's ID.</param>
         /// <param name="helper">The <see cref="IModHelper"/> provided to this mod by SMAPI. Used for events and other API access.</param>
         /// <param name="monitor">The <see cref="IMonitor"/> provided to this mod by SMAPI. Used for log messages.</param>
-        public static void ApplyPatch(HarmonyInstance harmony, IModHelper helper, IMonitor monitor)
+        public static void ApplyPatch(Harmony harmony, IModHelper helper, IMonitor monitor)
         {
             if (!Applied && helper != null && monitor != null) //if NOT already applied AND valid tools were provided
             {
@@ -60,12 +57,12 @@ namespace TransparencySettings
                 {
                     if (__instance.fadeWhenPlayerIsBehind.Value == true) //if SDV normally allows this building to be transparent
                     {
-                        var alpha = Helper.Reflection.GetField<NetFloat>(__instance, "alpha", true); //get the building's alpha field
+                        var alpha = Helper.Reflection.GetField<float>(__instance, "alpha", true); //get the building's alpha field
 
                         if (ShouldBeTransparent(__instance)) //if this building should be MORE transparent this tick
-                            alpha.GetValue().Value = CacheManager.GetAlpha(__instance, -0.05f);
+                            alpha.SetValue(CacheManager.GetAlpha(__instance, -0.05f, ModEntry.Config.BuildingSettings.MinimumOpacity));
                         else //if this building should be LESS transparent this tick
-                            alpha.GetValue().Value = CacheManager.GetAlpha(__instance, 0.05f);
+                            alpha.SetValue(CacheManager.GetAlpha(__instance, 0.05f, ModEntry.Config.BuildingSettings.MinimumOpacity));
                     }
                 }
             }

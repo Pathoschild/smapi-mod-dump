@@ -36,17 +36,17 @@ namespace RidgesideVillage
             Helper = ModInstance.Helper;
             Monitor = ModInstance.Monitor;
 
-            TileActionHandler.RegisterTileAction("RSVOpenDaiaBook", RSVOpenDaiaBook);
-            TileActionHandler.RegisterTileAction("MyLetter", MyLetter);
-            TileActionHandler.RegisterTileAction("RSVFoxbloomHint", GetFoxbloomHint);
+            GameLocation.RegisterTileAction("RSVOpenDaiaBook", RSVOpenDaiaBook);
+            GameLocation.RegisterTileAction("MyLetter", MyLetter);
+            GameLocation.RegisterTileAction("RSVFoxbloomHint", GetFoxbloomHint);
         }
 
-        private static void GetFoxbloomHint(string tileActionString, Vector2 position)
+        private static bool GetFoxbloomHint(GameLocation location, string[] arg2, Farmer farmer, Point point)
         {
             if (!Game1.player.eventsSeen.Contains(RSVConstants.E_CLEANSED))
             {
                 Game1.activeClickableMenu = new DialogueBox(Helper.Translation.Get("FoxbloomHint.Uncleansed"));
-                return;
+                return true;
             }
 
             if (!dialogueShown)
@@ -59,6 +59,8 @@ namespace RidgesideVillage
             {
                 OnFirstExit();
             }
+
+            return true;
         }
 
         private static void OnFirstExit()
@@ -76,7 +78,7 @@ namespace RidgesideVillage
             switch(year)
             {
                 case > 4:
-                    int? randomseed = (int?)(Game1.stats?.daysPlayed ?? SaveGame.loaded?.stats?.daysPlayed);
+                    int? randomseed = (int?)(Game1.stats?.DaysPlayed);
                     if (randomseed is not null)
                     {   //Seed the random with a seed that changes every 28 days (like Foxbloom)
                         Random random = new Random((int)Game1.uniqueIDForThisGame + ((randomseed.Value - 1) / 28));
@@ -98,23 +100,25 @@ namespace RidgesideVillage
             Game1.activeClickableMenu = letter;
         }
 
-        private static void MyLetter(string tileActionString, Vector2 position)
+        private static bool MyLetter(GameLocation location, string[] arg2, Farmer farmer, Point point)
         {
             Game1.activeClickableMenu = new LetterViewerMenu(Helper.Translation.Get("RSV.MyLetter"));
+            return true;
         }
 
-        private static void RSVOpenDaiaBook(string tileActionString, Vector2 position)
+        private static bool RSVOpenDaiaBook(GameLocation location, string[] arg2, Farmer farmer, Point point)
         {
             Game1.playSound("shadowpeep");
-            OpenDaiaBook();
+            OpenDaiaBook(location, arg2, farmer, point);
+            return true;
         }
 
-        private static void OpenDaiaBook()
+        private static void OpenDaiaBook(GameLocation location, string[] arg2, Farmer farmer, Point point)
         {
             Game1.activeClickableMenu = new DialogueBox(Helper.Translation.Get("Daia.BookOpen"));
             if (!Game1.player.eventsSeen.Contains(RSVConstants.E_RAEUNSEAL))
             {
-                var responses = new List<Response>
+                var responses = new Response[]
                 {
                     new Response("page1", Helper.Translation.Get("Daia.Page1")),
                     new Response("page2", Helper.Translation.Get("Daia.Page2")),
@@ -138,7 +142,7 @@ namespace RidgesideVillage
                     },
                     delegate
                     {
-                        ImageMenu.Open("ShowImage \"LooseSprites/RSVDaiaPage4\" 4f", Vector2.Zero);
+                        ImageMenu.Open(location, "ShowImage \"LooseSprites/RSVDaiaPage4\" 4f".Split(' '), Game1.player, point);
                     },
                     delegate{}
                 };
@@ -147,7 +151,7 @@ namespace RidgesideVillage
             }
             else if (Game1.player.eventsSeen.Contains(RSVConstants.E_RAEUNSEAL) && !Game1.player.eventsSeen.Contains(RSVConstants.E_CLEANSED))
             {
-                var responses = new List<Response>
+                var responses = new Response[]
                 {
                     new Response("page1", Helper.Translation.Get("Daia.Page1")),
                     new Response("page2", Helper.Translation.Get("Daia.Page2")),
@@ -174,7 +178,7 @@ namespace RidgesideVillage
                     },
                     delegate
                     {
-                        ImageMenu.Open("ShowImage \"LooseSprites/RSVDaiaPage4\" 4f", Vector2.Zero);
+                        ImageMenu.Open(location, "ShowImage \"LooseSprites/RSVDaiaPage4\" 4f".Split(' '), Game1.player, point);
                     },
                     delegate
                     {
@@ -186,8 +190,8 @@ namespace RidgesideVillage
                     },
                     delegate
                     {
-                        ImageMenu.Open("ShowImage \"LooseSprites/RSVDaiaPage7\" 4f", Vector2.Zero);
-                    },
+                        ImageMenu.Open(location, "ShowImage \"LooseSprites/RSVDaiaPage7\" 4f".Split(' '),  Game1.player, point);
+            },
                     delegate{}
                 };
 
@@ -195,7 +199,7 @@ namespace RidgesideVillage
             }
             else if (Game1.player.eventsSeen.Contains(RSVConstants.E_CLEANSED))
             {
-                var responses = new List<Response>
+                var responses = new Response[]
                 {
                     new Response("page1", Helper.Translation.Get("Daia.Page1")),
                     new Response("page2", Helper.Translation.Get("Daia.Page2")),
@@ -223,7 +227,7 @@ namespace RidgesideVillage
                     },
                     delegate
                     {
-                        ImageMenu.Open("ShowImage \"LooseSprites/RSVDaiaPage4\" 4f", Vector2.Zero);
+                        ImageMenu.Open(location, "ShowImage \"LooseSprites/RSVDaiaPage4\" 4f".Split(' '),  Game1.player, point);
                     },
                     delegate
                     {
@@ -235,11 +239,11 @@ namespace RidgesideVillage
                     },
                     delegate
                     {
-                        ImageMenu.Open("ShowImage \"LooseSprites/RSVDaiaPage7\" 4f", Vector2.Zero);
+                        ImageMenu.Open(location, "ShowImage \"LooseSprites/RSVDaiaPage7\" 4f".Split(' '),  Game1.player, point);
                     },
                     delegate
                     {
-                        ImageMenu.Open("ShowImage \"LooseSprites/RSVDaiaPage8\" 4f", Vector2.Zero);
+                        ImageMenu.Open(location, "ShowImage \"LooseSprites/RSVDaiaPage8\" 4f".Split(' '), Game1.player, point);
                     },
                     delegate{}
                 };

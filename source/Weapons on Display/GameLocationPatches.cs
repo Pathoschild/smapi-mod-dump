@@ -20,6 +20,11 @@ using xTile.Dimensions;
 using xTile.ObjectModel;
 using xTile.Tiles;
 using System.Reflection;
+using StardewValley.Mods;
+using StardewValley.Buildings;
+using StardewValley.Audio;
+using StardewValley.Monsters;
+using StardewValley.GameData;
 
 namespace WeaponsOnDisplay
 {
@@ -31,184 +36,249 @@ namespace WeaponsOnDisplay
 			ModHooks hooks = (ModHooks) typeof(Game1).GetField("hooks", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
 			__result = hooks.OnGameLocation_CheckAction(__instance, tileLocation, viewport, who, delegate
 			{
-				if (who.IsSitting())
+				who.ignoreItemConsumptionThisFrame = false;
+			Microsoft.Xna.Framework.Rectangle tileRect = new Microsoft.Xna.Framework.Rectangle(tileLocation.X * 64, tileLocation.Y * 64, 64, 64);
+			if (!location.objects.ContainsKey(new Vector2((float)tileLocation.X, (float)tileLocation.Y)) && location.CheckPetAnimal(tileRect, who))
+			{
+				return true;
+			}
+			using (List<Building>.Enumerator enumerator = location.buildings.GetEnumerator())
+			{
+				while (enumerator.MoveNext())
 				{
-					who.StopSitting();
+					if (enumerator.Current.doAction(new Vector2((float)tileLocation.X, (float)tileLocation.Y), who))
+					{
+						return true;
+					}
+				}
+			}
+			if (who.IsSitting())
+			{
+				who.StopSitting(true);
+				return true;
+			}
+			foreach (Farmer farmer in location.farmers)
+			{
+				if (farmer != Game1.player && farmer.GetBoundingBox().Intersects(tileRect) && farmer.checkAction(who, location))
+				{
 					return true;
 				}
-				Microsoft.Xna.Framework.Rectangle value = new Microsoft.Xna.Framework.Rectangle(tileLocation.X * 64, tileLocation.Y * 64, 64, 64);
-				foreach (Farmer current in location.farmers)
+			}
+			if (location.currentEvent != null && location.currentEvent.isFestival)
+			{
+				return location.currentEvent.checkAction(tileLocation, viewport, who);
+			}
+			foreach (NPC i in location.characters)
+			{
+				if (i != null && !i.IsMonster && (!who.isRidingHorse() || !(i is Horse)) && i.GetBoundingBox().Intersects(tileRect) && i.checkAction(who, location))
 				{
-					if (current != Game1.player && current.GetBoundingBox().Intersects(value) && current.checkAction(who, location))
+					if (who.FarmerSprite.IsPlayingBasicAnimation(who.FacingDirection, false) || who.FarmerSprite.IsPlayingBasicAnimation(who.FacingDirection, true))
 					{
-						return true;
+						who.faceGeneralDirection(i.getStandingPosition(), 0, false, false);
 					}
+					return true;
 				}
-				if (location.currentEvent != null && location.currentEvent.isFestival)
+			}
+			int tid = location.getTileIndexAt(tileLocation, "Buildings");
+			if (location.NameOrUniqueName.Equals("SkullCave") && (tid == 344 || tid == 349))
+			{
+				if (Game1.player.team.SpecialOrderActive("QiChallenge10"))
 				{
-					return location.currentEvent.checkAction(tileLocation, viewport, who);
+					who.doEmote(40);
+					return false;
 				}
-				foreach (NPC current2 in location.characters)
+				if (!Game1.player.team.completedSpecialOrders.Contains("QiChallenge10"))
 				{
-					if (current2 != null && !current2.IsMonster && (!who.isRidingHorse() || !(current2 is Horse)) && current2.GetBoundingBox().Intersects(value) && current2.checkAction(who, location))
+					who.doEmote(8);
+					return false;
+				}
+				if (!Game1.player.team.toggleSkullShrineOvernight.Value)
+				{
+					if (!Game1.player.team.skullShrineActivated.Value)
 					{
-						if (who.FarmerSprite.IsPlayingBasicAnimation(who.FacingDirection, carrying: false) || who.FarmerSprite.IsPlayingBasicAnimation(who.FacingDirection, carrying: true))
-						{
-							who.faceGeneralDirection(current2.getStandingPosition(), 0, opposite: false, useTileCalculations: false);
-						}
-						return true;
-					}
-				}
-				if (who.IsLocalPlayer && who.currentUpgrade != null && location.name.Equals("Farm") && tileLocation.Equals(new Location((int)(who.currentUpgrade.positionOfCarpenter.X + 32f) / 64, (int)(who.currentUpgrade.positionOfCarpenter.Y + 32f) / 64)))
-				{
-					if (who.currentUpgrade.daysLeftTillUpgradeDone == 1)
-					{
-						Game1.drawDialogue(Game1.getCharacterFromName("Robin"), Game1.content.LoadString("Data\\ExtraDialogue:Farm_RobinWorking_ReadyTomorrow"));
+						location.createQuestionDialogue(Game1.content.LoadString("Strings\\Locations:ChallengeShrine_NotYetHard"), location.createYesNoResponses(), "ShrineOfSkullChallenge");
 					}
 					else
 					{
-						Game1.drawDialogue(Game1.getCharacterFromName("Robin"), Game1.content.LoadString("Data\\ExtraDialogue:Farm_RobinWorking" + (Game1.random.Next(2) + 1)));
+						Game1.player.team.toggleSkullShrineOvernight.Value = true;
+						Game1.showGlobalMessage(Game1.content.LoadString("Strings\\Locations:ChallengeShrine_Activated"));
+						Game1.Multiplayer.globalChatInfoMessage(Game1.player.team.skullShrineActivated.Value ? "HardModeSkullCaveDeactivated" : "HardModeSkullCaveActivated", new string[] { who.Name });
+						location.playSound(Game1.player.team.skullShrineActivated.Value ? "skeletonStep" : "serpentDie", null, null, SoundContext.Default);
 					}
 				}
-				foreach (ResourceClump current3 in location.resourceClumps)
+				else if (Game1.player.team.toggleSkullShrineOvernight.Value && Game1.player.team.skullShrineActivated.Value)
 				{
-					if (current3.getBoundingBox(current3.tile).Intersects(value) && current3.performUseAction(new Vector2(tileLocation.X, tileLocation.Y), location))
+					Game1.player.team.toggleSkullShrineOvernight.Value = false;
+					Game1.showGlobalMessage(Game1.content.LoadString("Strings\\UI:PendingProposal_Canceling"));
+					location.playSound("skeletonStep", null, null, SoundContext.Default);
+				}
+				return true;
+			}
+			else
+			{
+				foreach (ResourceClump stump in location.resourceClumps)
+				{
+					if (stump.getBoundingBox().Intersects(tileRect) && stump.performUseAction(new Vector2((float)tileLocation.X, (float)tileLocation.Y)))
 					{
 						return true;
 					}
 				}
-				Vector2 vector = new Vector2(tileLocation.X, tileLocation.Y);
-				if (location.objects.ContainsKey(vector) && location.objects[vector].Type != null)
+
+				Vector2 tilePos = new Vector2((float)tileLocation.X, (float)tileLocation.Y);
+				if (location.objects.TryGetValue(tilePos, out StardewValley.Object obj))
 				{
-					if (who.isRidingHorse() && !(location.objects[vector] is Fence))
+					bool isErrorItem = ItemRegistry.GetDataOrErrorItem(obj.QualifiedItemId).IsErrorItem;
+					if (obj.Type != null || isErrorItem)
 					{
-						return false;
-					}
-					if (vector.Equals(who.getTileLocation()) && !location.objects[vector].isPassable())
-					{
-						Tool tool = new Pickaxe();
-						tool.DoFunction(Game1.currentLocation, -1, -1, 0, who);
-						if (location.objects[vector].performToolAction(tool, location))
+						if (who.isRidingHorse() && !(obj is Fence))
 						{
-							location.objects[vector].performRemoveAction(location.objects[vector].tileLocation, Game1.currentLocation);
-							location.objects[vector].dropItem(location, who.GetToolLocation(), new Vector2(who.GetBoundingBox().Center.X, who.GetBoundingBox().Center.Y));
-							Game1.currentLocation.Objects.Remove(vector);
-							return true;
+							return false;
 						}
-						tool = new Axe();
-						tool.DoFunction(Game1.currentLocation, -1, -1, 0, who);
-						if (location.objects.ContainsKey(vector) && location.objects[vector].performToolAction(tool, location))
+						if (tilePos == who.Tile && !obj.isPassable())
 						{
-							location.objects[vector].performRemoveAction(location.objects[vector].tileLocation, Game1.currentLocation);
-							location.objects[vector].dropItem(location, who.GetToolLocation(), new Vector2(who.GetBoundingBox().Center.X, who.GetBoundingBox().Center.Y));
-							Game1.currentLocation.Objects.Remove(vector);
-							return true;
-						}
-						if (!location.objects.ContainsKey(vector))
-						{
-							return true;
-						}
-					}
-					if (location.objects.ContainsKey(vector) && (location.objects[vector].Type.Equals("Crafting") || location.objects[vector].Type.Equals("interactive")))
-					{
-						if (who.ActiveObject == null && location.objects[vector].checkForAction(who))
-						{
-							return true;
-						}
-						if (location.objects.ContainsKey(vector))
-						{
-							if (who.CurrentItem != null)
+							Fence fence = obj as Fence;
+							if (fence == null || !fence.isGate.Value)
 							{
-								StardewValley.Object value2 = location.objects[vector].heldObject.Value;
-								location.objects[vector].heldObject.Value = null;
-								bool flag = location.objects[vector].performObjectDropInAction(who.CurrentItem, probe: true, who);
-								location.objects[vector].heldObject.Value = value2;
-								bool flag2 = location.objects[vector].performObjectDropInAction(who.CurrentItem, probe: false, who);
-								if ((flag | flag2) && who.isMoving())
+								Tool t = ItemRegistry.Create<Tool>("(T)Pickaxe", 1, 0, false);
+								t.DoFunction(Game1.currentLocation, -1, -1, 0, who);
+								if (obj.performToolAction(t))
+								{
+									obj.performRemoveAction();
+									obj.dropItem(location, who.GetToolLocation(false), Utility.PointToVector2(who.StandingPixel));
+									Game1.currentLocation.Objects.Remove(tilePos);
+									return true;
+								}
+								t = ItemRegistry.Create<Tool>("(T)Axe", 1, 0, false);
+								t.DoFunction(Game1.currentLocation, -1, -1, 0, who);
+								if (location.objects.TryGetValue(tilePos, out obj) && obj.performToolAction(t))
+								{
+									obj.performRemoveAction();
+									obj.dropItem(location, who.GetToolLocation(false), Utility.PointToVector2(who.StandingPixel));
+									Game1.currentLocation.Objects.Remove(tilePos);
+									return true;
+								}
+								if (!location.objects.TryGetValue(tilePos, out obj))
+								{
+									return true;
+								}
+							}
+						}
+						if (location.objects.TryGetValue(tilePos, out obj) && (obj.Type == "Crafting" || obj.Type == "interactive"))
+						{
+							if (who.ActiveObject == null && obj.checkForAction(who, false))
+							{
+								return true;
+							}
+							if (location.objects.TryGetValue(tilePos, out obj))
+							{
+								if (who.CurrentItem == null)
+								{
+									return obj.checkForAction(who, false);
+								}
+								StardewValley.Object old_held_object = obj.heldObject.Value;
+								obj.heldObject.Value = null;
+								bool probe_returned_true = obj.performObjectDropInAction(who.CurrentItem, true, who, false);
+								obj.heldObject.Value = old_held_object;
+								bool perform_returned_true = obj.performObjectDropInAction(who.CurrentItem, false, who, true);
+								if ((probe_returned_true || perform_returned_true) && who.isMoving())
 								{
 									Game1.haltAfterCheck = false;
 								}
-								if (flag2)
+								if (who.ignoreItemConsumptionThisFrame)
+								{
+									return true;
+								}
+								if (perform_returned_true)
 								{
 									who.reduceActiveItemByOne();
 									return true;
 								}
-								return location.objects[vector].checkForAction(who) | flag;
-							}
-							return location.objects[vector].checkForAction(who);
-						}
-					}
-					else if (location.objects.ContainsKey(vector) && (bool)location.objects[vector].isSpawnedObject)
-					{
-						int quality = location.objects[vector].quality;
-						Random random = new Random((int)Game1.uniqueIDForThisGame / 2 + (int)Game1.stats.DaysPlayed + (int)vector.X + (int)vector.Y * 777);
-						if (who.professions.Contains(16) && location.objects[vector].isForage(location))
-						{
-							location.objects[vector].Quality = 4;
-						}
-						else if (location.objects[vector].isForage(location))
-						{
-							if (random.NextDouble() < (double)((float)who.ForagingLevel / 30f))
-							{
-								location.objects[vector].Quality = 2;
-							}
-							else if (random.NextDouble() < (double)((float)who.ForagingLevel / 15f))
-							{
-								location.objects[vector].Quality = 1;
+								return obj.checkForAction(who, false) || probe_returned_true;
 							}
 						}
-						if ((bool)location.objects[vector].questItem && location.objects[vector].questId.Value != 0 && !who.hasQuest(location.objects[vector].questId))
+						else if (location.objects.TryGetValue(tilePos, out obj) && (obj.IsSpawnedObject || isErrorItem))
 						{
-							return false;
-						}
-						if (who.couldInventoryAcceptThisItem(location.objects[vector]))
-						{
-							if (who.IsLocalPlayer)
+							int oldQuality = obj.Quality;
+							Random r = Utility.CreateDaySaveRandom((double)tilePos.X, (double)(tilePos.Y * 777f), 0.0);
+							if (who.professions.Contains(16) && obj.isForage())
 							{
-								location.localSound("pickUpItem");
-								DelayedAction.playSoundAfterDelay("coin", 300);
+								obj.Quality = 4;
 							}
-							who.animateOnce(279 + who.FacingDirection);
-							if (!location.isFarmBuildingInterior())
+							else if (obj.isForage())
 							{
-								if (location.objects[vector].isForage(location))
+								if (r.NextDouble() < (double)((float)who.ForagingLevel / 30f))
 								{
-									who.gainExperience(2, 7);
+									obj.Quality = 2;
+								}
+								else if (r.NextDouble() < (double)((float)who.ForagingLevel / 15f))
+								{
+									obj.Quality = 1;
 								}
 							}
-							else
+							if (obj.questItem.Value && obj.questId.Value != null && obj.questId.Value != "0" && !who.hasQuest(obj.questId.Value))
 							{
-								who.gainExperience(0, 5);
+								return false;
 							}
-							who.addItemToInventoryBool(location.objects[vector].getOne());
-							Game1.stats.ItemsForaged++;
-							if (who.professions.Contains(13) && random.NextDouble() < 0.2 && !location.objects[vector].questItem && who.couldInventoryAcceptThisItem(location.objects[vector]) && !location.isFarmBuildingInterior())
+							if (who.couldInventoryAcceptThisItem(obj))
 							{
-								who.addItemToInventoryBool(location.objects[vector].getOne());
-								who.gainExperience(2, 7);
+								if (who.IsLocalPlayer)
+								{
+									location.localSound("pickUpItem", null, null, SoundContext.Default);
+									DelayedAction.playSoundAfterDelay("coin", 300, null, null, -1, false);
+								}
+								who.animateOnce(279 + who.FacingDirection);
+								if (!location.isFarmBuildingInterior())
+								{
+									if (obj.isForage())
+									{
+										if (obj.SpecialVariable == 724519)
+										{
+											who.gainExperience(2, 2);
+											who.gainExperience(0, 3);
+										}
+										else
+										{
+											who.gainExperience(2, 7);
+										}
+									}
+									if (obj.ItemId.Equals("789") && location.Name.Equals("LewisBasement"))
+									{
+										Bat b = new Bat(Vector2.Zero, -789);
+										b.focusedOnFarmers = true;
+										Game1.changeMusicTrack("none", false, MusicContext.Default);
+										location.playSound("cursed_mannequin", null, null, SoundContext.Default);
+										location.characters.Add(b);
+									}
+								}
+								else
+								{
+									who.gainExperience(0, 5);
+								}
+								who.addItemToInventoryBool(obj.getOne(), false);
+								Stats stats = Game1.stats;
+								uint itemsForaged = stats.ItemsForaged;
+								stats.ItemsForaged = itemsForaged + 1U;
+								if (who.professions.Contains(13) && r.NextDouble() < 0.2 && !obj.questItem.Value && who.couldInventoryAcceptThisItem(obj) && !location.isFarmBuildingInterior())
+								{
+									who.addItemToInventoryBool(obj.getOne(), false);
+									who.gainExperience(2, 7);
+								}
+								location.objects.Remove(tilePos);
+								return true;
 							}
-							location.objects.Remove(vector);
-							return true;
+							obj.Quality = oldQuality;
 						}
-						location.objects[vector].Quality = quality;
 					}
 				}
+
 				if (who.isRidingHorse())
 				{
 					who.mount.checkAction(who, location);
 					return true;
 				}
-				foreach (MapSeat current4 in location.mapSeats)
+				foreach (KeyValuePair<Vector2, TerrainFeature> v in location.terrainFeatures.Pairs)
 				{
-					if (current4.OccupiesTile(tileLocation.X, tileLocation.Y) && !current4.IsBlocked(location))
-					{
-						who.BeginSitting(current4);
-						return true;
-					}
-				}
-				foreach (KeyValuePair<Vector2, TerrainFeature> current5 in location.terrainFeatures.Pairs)
-				{
-					if (current5.Value.getBoundingBox(current5.Key).Intersects(value) && current5.Value.performUseAction(current5.Key, location))
+					if (v.Value.getBoundingBox().Intersects(tileRect) && v.Value.performUseAction(v.Key))
 					{
 						Game1.haltAfterCheck = false;
 						return true;
@@ -216,82 +286,94 @@ namespace WeaponsOnDisplay
 				}
 				if (location.largeTerrainFeatures != null)
 				{
-					foreach (LargeTerrainFeature current6 in location.largeTerrainFeatures)
+					foreach (LargeTerrainFeature f in location.largeTerrainFeatures)
 					{
-						if (current6.getBoundingBox().Intersects(value) && current6.performUseAction(current6.tilePosition, location))
+						if (f.getBoundingBox().Intersects(tileRect) && f.performUseAction(f.Tile))
 						{
 							Game1.haltAfterCheck = false;
 							return true;
 						}
 					}
 				}
-				string text = null;
+
 				Tile tile = location.map.GetLayer("Buildings").PickTile(new Location(tileLocation.X * 64, tileLocation.Y * 64), viewport.Size);
-				if (tile != null)
+				string action = null;
+				if (tile != null && tile.Properties.TryGetValue("Action", out PropertyValue actionValue))
 				{
-					tile.Properties.TryGetValue("Action", out PropertyValue value3);
-					if (value3 != null)
-					{
-						text = value3.ToString();
-					}
+					action = actionValue;
 				}
-				if (text == null)
+
+				if (tile == null || action == null)
 				{
-					text = location.doesTileHaveProperty(tileLocation.X, tileLocation.Y, "Action", "Buildings");
+					action = location.doesTileHaveProperty(tileLocation.X, tileLocation.Y, "Action", "Buildings", false);
 				}
-				NPC nPC = location.isCharacterAtTile(vector + new Vector2(0f, 1f));
-				if (text != null)
+				if (action != null)
 				{
-					if (location.currentEvent == null && nPC != null && !nPC.IsInvisible && !nPC.IsMonster && (!who.isRidingHorse() || !(nPC is Horse)) && Utility.withinRadiusOfPlayer(nPC.getStandingX(), nPC.getStandingY(), 1, who) && nPC.checkAction(who, location))
+					NPC characterAtTile = location.isCharacterAtTile(tilePos + new Vector2(0f, 1f));
+					if (location.currentEvent == null && characterAtTile != null && !characterAtTile.IsInvisible && !characterAtTile.IsMonster && (!who.isRidingHorse() || !(characterAtTile is Horse)))
 					{
-						if (who.FarmerSprite.IsPlayingBasicAnimation(who.FacingDirection, who.IsCarrying()))
+						Point characterPixel = characterAtTile.StandingPixel;
+						if (Utility.withinRadiusOfPlayer(characterPixel.X, characterPixel.Y, 1, who) && characterAtTile.checkAction(who, location))
 						{
-							who.faceGeneralDirection(nPC.getStandingPosition(), 0, opposite: false, useTileCalculations: false);
+							if (who.FarmerSprite.IsPlayingBasicAnimation(who.FacingDirection, who.IsCarrying()))
+							{
+								who.faceGeneralDirection(Utility.PointToVector2(characterPixel), 0, false, false);
+							}
+							return true;
 						}
-						return true;
 					}
-					return location.performAction(text, who, tileLocation);
+					return location.performAction(action, who, tileLocation);
 				}
 				if (tile != null && location.checkTileIndexAction(tile.TileIndex))
 				{
 					return true;
 				}
-				Point value4 = new Point(tileLocation.X * 64, (tileLocation.Y - 1) * 64);
-				bool flag3 = Game1.didPlayerJustRightClick();
-				foreach (Furniture current7 in location.furniture)
+				foreach (MapSeat seat in location.mapSeats)
 				{
-					if (current7.boundingBox.Value.Contains((int)(vector.X * 64f), (int)(vector.Y * 64f)) && (int)current7.furniture_type != 12)
+					if (seat.OccupiesTile(tileLocation.X, tileLocation.Y) && !seat.IsBlocked(location))
 					{
-						if (flag3)
-						{
-							if (who.ActiveObject != null && current7.performObjectDropInAction(who.ActiveObject, probe: false, who))
-							{
-								return true;
-							}
-
-							if (who.CurrentTool != null && (who.CurrentTool is MeleeWeapon || who.CurrentTool is Slingshot) && current7.performObjectDropInAction(who.CurrentTool, probe: false, who))
-							{
-								return true;
-							}
-							return current7.checkForAction(who);
-						}
-						return current7.clicked(who);
-					}
-					if ((int)current7.furniture_type == 6 && current7.boundingBox.Value.Contains(value4))
-					{
-						if (flag3)
-						{
-							if (who.ActiveObject != null && current7.performObjectDropInAction(who.ActiveObject, probe: false, who))
-							{
-								return true;
-							}
-							return current7.checkForAction(who);
-						}
-						return current7.clicked(who);
+						who.BeginSitting(seat);
+						return true;
 					}
 				}
-				return false;
-			});
+				Point vectOnWall = new Point(tileLocation.X * 64, (tileLocation.Y - 1) * 64);
+				bool didRightClick = Game1.didPlayerJustRightClick(false);
+				Furniture paintingFound = null;
+				foreach (Furniture f2 in location.furniture)
+				{
+					if (f2.boundingBox.Value.Contains((int)(tilePos.X * 64f), (int)(tilePos.Y * 64f)) && f2.furniture_type.Value != 12)
+					{
+						if (!didRightClick)
+						{
+							return f2.clicked(who);
+						}
+						if (who.ActiveObject != null && f2.performObjectDropInAction(who.ActiveObject, false, who, false))
+						{
+							return true;
+						}
+
+						if (who.CurrentTool != null && (who.CurrentTool is MeleeWeapon || who.CurrentTool is Slingshot) && f2.performObjectDropInAction(who.CurrentTool, false, who))
+						{
+							return true;
+						}
+						return f2.checkForAction(who, false);
+					}
+					else if (f2.furniture_type.Value == 6 && f2.boundingBox.Value.Contains(vectOnWall))
+					{
+						paintingFound = f2;
+					}
+				}
+				if (paintingFound == null)
+				{
+					return Game1.didPlayerJustRightClick(true) && location.animals.Length > 0 && location.CheckInspectAnimal(tileRect, who);
+				}
+				if (didRightClick)
+				{
+					return (who.ActiveObject != null && paintingFound.performObjectDropInAction(who.ActiveObject, false, who, false)) || paintingFound.checkForAction(who, false);
+				}
+				return paintingFound.clicked(who);
+			}
+		});
 
 			return false;
 		}

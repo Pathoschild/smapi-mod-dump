@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/23048
+IDs: DaLion.Chargeable
+update keys: Nexus:23048, GitHub:daleao/sdv

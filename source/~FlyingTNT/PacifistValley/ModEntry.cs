@@ -61,7 +61,7 @@ namespace PacifistValley
             );
             harmony.Patch(
                original: AccessTools.Method(typeof(MeleeWeapon), nameof(MeleeWeapon.setFarmerAnimating)),
-               prefix: new HarmonyMethod(typeof(ModEntry), nameof(ModEntry.setFarmerAnimating_prefix))
+               prefix: new HarmonyMethod(typeof(ModEntry), nameof(ModEntry.MeleeWeapon_setFarmerAnimating_prefix))
             );
             harmony.Patch(
                original: AccessTools.Method(typeof(MeleeWeapon), nameof(MeleeWeapon.drawDuringUse), new Type[] {typeof(int), typeof(int), typeof(SpriteBatch), typeof(Vector2), typeof(Farmer), typeof(string), typeof(int), typeof(bool)}),
@@ -739,7 +739,7 @@ namespace PacifistValley
                 monster.doEmote(20, true);
         }
 
-        private static bool setFarmerAnimating_prefix(MeleeWeapon __instance, Farmer who, ref bool ___anotherClick, Farmer ___lastUser)
+        private static bool MeleeWeapon_setFarmerAnimating_prefix(MeleeWeapon __instance, Farmer who, ref bool ___anotherClick, Farmer ___lastUser)
         {
             if (__instance.isScythe())
             {
@@ -792,9 +792,9 @@ namespace PacifistValley
         /// </summary>
         /// <param name="facingDirection"></param>
         /// <param name="frameOfFarmerAnimation"></param>
-        private static void MeleeWeapon_drawDuringUse_Prefix(MeleeWeapon __instance, ref int facingDirection, ref int frameOfFarmerAnimation)
+        private static void MeleeWeapon_drawDuringUse_Prefix(ref int facingDirection, ref int frameOfFarmerAnimation, string weaponItemId)
         {
-            if (__instance is not null && __instance.isScythe())
+            if (MeleeWeapon.IsScythe(weaponItemId))
                 return;
             facingDirection = facingDirection == 0 || facingDirection == 3 ? 3 : 2;
             frameOfFarmerAnimation = facingDirection == 3 ? 2 : 0;

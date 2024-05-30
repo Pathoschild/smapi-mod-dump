@@ -11,7 +11,7 @@
 {
   "Name": "PredictiveCore",
   "Author": "John Peters (you know, the farmer?)", // original by kdau
-  "Version": "3.0.3",
+  "Version": "3.0.11",
   "Description": "Framework used by mods to predict future events.",
   "UniqueID": "JohnPeters.PredictiveCore",
   "EntryDll": "PredictiveCore.dll",

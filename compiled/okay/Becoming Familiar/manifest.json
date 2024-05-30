@@ -1,7 +1,7 @@
 {
   "Name": "Becoming Familiar",
   "Author": "Krutonium",
-  "Version": "1.0.2",
+  "Version": "1.0.3",
   "Description": "Increase Friendship with the villagers by being near to them.",
   "UniqueID": "ca.krutonium.becomingfamiliar",
   "EntryDll": "Becoming Familiar.dll",

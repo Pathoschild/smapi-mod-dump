@@ -1,0 +1,53 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/chiccenFL/StardewValleyMods
+**
+*************************************************/
+
+{
+  "EnableMod": "Mod Enabled",
+  "CropsBlock": "Crops Block",
+  "CropsBlock.1": "Set true if you want crops to prevent growth",
+  "TreesBlock": "Trees Block",
+  "TreesBlock.1": "Set true if you want other trees to prevent growth",
+  "ObjectsBlock": "Objects Block",
+  "ObjectsBlock.1": "Set true if you want objects to prevent growth",
+  "PlantAnywhere": "Plant Anywhere",
+  "PlantAnywhere.1": "Removes map restriction",
+  "PlantOnPaths": "Plant On Paths",
+  "PlantOnPaths.1": "Allow trees to be planted on paths and floors",
+  "FruitAllSeasons": "Fruit All Seasons",
+  "FruitAllSeasons.1": "Excludes Winter",
+  "FruitInWinter": "Fruit In Winter",
+  "FruitInWinter.1": "Expands Fruit All Seasons to include Winter. Fruit All Seasons must be enabled.",
+  "MaxFruitTree": "Max Fruit / Tree",
+  "DaysUntilMature": "Days to Mature",
+  "SaplingMaturity": "Use Base Sapling Maturity",
+  "SaplingMaturity.1": "Enable to use vanilla Days to Mature value for sapling of silver+ quality",
+  "MinFruitDay": "Min Fruit Per Day",
+  "MinFruitDay.1": "For a specific number of fruit/day, set this value to match Max Fruit Per Day",
+  "MaxFruitDay": "Max Fruit Per Day",
+  "MaxFruitDay.1": "For a specific number of fruit/day, set this value to match Min Fruit Per Day",
+  "DaysUntilSilver": "Days Until Silver",
+  "DaysUntilGold": "Days Until Gold",
+  "DaysUntilIridium": "Days Until Iridium",
+  "DaysUntilTip": "After fully mature",
+  "Debug": "Debug Logs",
+  "Debug.1": "Enable this if generating SMAPI log for a bug report or troubleshooting. Gives more verbose SMAPI logs.",
+  "GodMode": "God Mode",
+  "GodMode.1": "WARNING: EXTREMELY DANGEROUS SETTING TO ENABLE. This setting will let you place fruit trees ANYWHERE, even ridiculous locations. It bypasses ALL collision checks. Enable at your own risk!",
+  "Section.title": "Draw Options",
+  "Section.tooltip": "These can only be edited from the title screen, as changes won't take effect mid-game",
+  "ColorVar": "Color Variation",
+  "ColorVar.1": "0 - 255, applied randomly to R, B, and G for each fruit, only applied cosmetically while on tree",
+  "SizeVar": "Size Variation",
+  "SizeVar.1": "0 - 99, applied randomly for each fruit, only applied cosmetically while on tree",
+  "BufferX": "Fruit Buffer X",
+  "BufferX.1": "Left and right border on the canopy to limit fruit spawn locations",
+  "BufferY": "Fruit Buffer Y",
+  "BufferY.1": "Top and bottom border on the canopy to limit fruit spawn locations"
+}

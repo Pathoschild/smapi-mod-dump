@@ -1,0 +1,21 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Leroymilo/FurnitureFramework
+**
+*************************************************/
+
+{
+	"Name": "Furniture Framework",
+	"Author": "leroymilo",
+	"Version": "2.2.0",
+	"MinimumApiVersion": "4.0",
+	"MinimumGameVersion": "1.6",
+	"Description": "Allows a Content Pack to create highly customized Furniture",
+	"UniqueID": "leroymilo.FurnitureFramework",
+	"EntryDll": "FurnitureFramework.dll",
+	"UpdateKeys": [ "Nexus:23458" ]
+}

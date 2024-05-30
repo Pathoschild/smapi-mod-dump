@@ -1,0 +1,49 @@
+{
+  "edibles": [
+    [
+      "Gaelic Root",
+      "10/5"
+    ],
+    [
+      "Sabi Root",
+      "10/0"
+    ],
+    [
+      "Bardic Root",
+      "25/10"
+    ],
+    ///烹饪
+    [
+      "Dandelion and Bardic",
+      "0/50"
+    ],
+    [
+      "Gaelic Bread",
+      "40/0"
+    ],
+    [
+      "Gaelic Crusted Halibut",
+      "45/15"
+    ],
+    [
+      "Kinpira Gobo",
+      "45/10"
+    ],
+    [
+      "Nigiri",
+      "40/10"
+    ],
+    [
+      "Sabi Root Paste",
+      "5/0"
+    ],
+    [
+      "Temaki",
+      "40/15"
+    ],
+    [
+      "Root Beer",
+      "0/55"
+    ]
+  ]
+}

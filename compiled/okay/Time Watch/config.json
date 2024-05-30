@@ -1,0 +1,12 @@
+{
+  "IncreaseTimeKeyBind": "Add",
+  "DecreaseTimeKeyBind": "Subtract",
+  "ShowTimeChangedNotify": true,
+  "UpdateGameObjects": false,
+  "MultiPlayHostOnly": false,
+  "DefaultSeekTimeValue": 6,
+  "HoldShiftSeekTimeValue": 1,
+  "HoldCtrlSeekTimeValue": 3,
+  "MaximumStorableTime": 18,
+  "DailyMaximumStorableTime": 18
+}

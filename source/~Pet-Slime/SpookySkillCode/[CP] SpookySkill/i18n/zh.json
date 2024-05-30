@@ -1,0 +1,26 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Pet-Slime/StardewValley
+**
+*************************************************/
+
+{
+    "moonslime.Spooky.strobberies.name": "草莓大盗",
+    "moonslime.Spooky.strobberies.description": "别让它们拿到萝卜。",
+    "moonslime.Spooky.candy_corn.name": "糖玉米",
+    "moonslime.Spooky.candy_corn.description": "纯度足够的糖带来的速度。",
+    "moonslime.Spooky.carrot_cake.name": "胡萝卜咖啡",
+    "moonslime.Spooky.carrot_cake.description": "美味！",
+    "moonslime.Spooky.dark_floor.name": "黑暗楼梯",
+    "moonslime.Spooky.dark_floor.description": "允许一个人在上面快且无声的移动。",
+    "moonslime.Spooky.skill_book.name": "夜之交响曲",
+    "moonslime.Spooky.skill_book.description": "献给夜之子。",
+    "moonslime.Spooky.scary_brazier.name": "恐怖火炬",
+    "moonslime.Spooky.scary_brazier.description": "这火炬上看着有张脸？",
+    "moonslime.Spooky.dark_brazier.name": "暗黑火炬",
+    "moonslime.Spooky.dark_brazier.description": "赞美月亮！"
+}

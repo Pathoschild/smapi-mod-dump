@@ -1,4 +1,4 @@
-# Features
+# Featuresen.
 
 ## Object Tracker
 
@@ -244,6 +244,7 @@ tile_name-flooring = Flooring
 tile-volcano_dungeon-pressure_pad = Pressure Pad
 tile-volcano_dungeon-gate = Gate
 tile-forest-giant_tree_sump = Giant Tree Stump
+tile-town-bookseller = Bookseller
 
 ## Entrances
 
@@ -329,9 +330,21 @@ npc_name-ruby_gem_bird = Ruby Gem Bird
 npc_name-amethyst_gem_bird = Amethyst Gem Bird
 npc_name-topaz_gem_bird = Topaz Gem Bird
 npc_name-gem_bird_common = Gem Bird
-npc-farm_animal_info = {$name}, {$type}, {$age} {$age ->
-    [1] month
-    *[other] months
+npc-farm_animal_info = {$name}, {$is_hungry ->
+    [1] Hungry
+    *[other] {EMPTYSTRING()}
+  } {$is_baby ->
+    [1] Baby
+    *[other] {EMPTYSTRING()}
+  } {$type}, {$is_age_in_days ->
+    [1] {$age ->
+      [1] 1 day
+      *[other] {$age} days
+    }
+    *[other] {$age ->
+      [1] 1 month
+      *[other] {$age} months
+    }
   }
 npc_name-horse_with_no_name = A horse with no name
 monster_name-armored = Armored {$monster_name}
@@ -354,6 +367,7 @@ monster_name-truffle_crab = Truffle Crab
 event_tile-egg_festival_shop-name = Egg Festival Shop
 event_tile-flower_dance_shop-name = Flower Dance Shop
 event_tile-soup_pot-name = Soup Pot
+event_tile-luau-pierre_booth = Pierre's Booth
 event_tile-spirits_eve_shop-name = Spirit's Eve Shop
 event_tile-stardew_valley_fair_shop-name = Stardew Valley Fair Shop
 event_tile-slingshot_game-name = Slingshot Game

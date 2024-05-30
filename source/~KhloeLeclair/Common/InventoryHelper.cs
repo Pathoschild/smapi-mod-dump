@@ -8,41 +8,34 @@
 **
 *************************************************/
 
-#nullable enable
+#if COMMON_INVENTORY
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Collections.Generic;
 using System.Linq;
-
-using Microsoft.Xna.Framework;
 
 using Leclair.Stardew.Common.Enums;
 using Leclair.Stardew.Common.Inventory;
 using Leclair.Stardew.Common.Types;
 
-using StardewValley;
-using StardewValley.Objects;
-using StardewValley.Network;
-using StardewValley.TerrainFeatures;
+using Microsoft.Xna.Framework;
+
+using Netcode;
 
 using StardewModdingAPI;
-using Leclair.Stardew.Common.Integrations.StackQuality;
+
+using StardewValley;
 using StardewValley.Buildings;
-using Netcode;
 using StardewValley.Inventories;
+using StardewValley.Network;
+using StardewValley.Objects;
+using StardewValley.TerrainFeatures;
 
 namespace Leclair.Stardew.Common;
 
 public record struct LocatedInventory(object Source, GameLocation? Location);
 
 public static class InventoryHelper {
-
-	private static SQIntegration? intSQ;
-
-	public static void InitializeStackQuality(Mod mod) {
-		intSQ ??= new SQIntegration(mod);
-	}
 
 	#region Discovery
 
@@ -198,7 +191,7 @@ public static class InventoryHelper {
 		Chest? fridge = location.GetFridge(false);
 		Vector2? fridgePos = location.GetFridgePosition()?.ToVector2();
 
-		foreach(object thing in GetAllThingsInLocation(location, buildings: discover_buildings)) {
+		foreach (object thing in GetAllThingsInLocation(location, buildings: discover_buildings)) {
 			provider = getProvider(thing);
 			if (provider != null && provider.IsValid(thing, location, who)) {
 				Vector2? pos = thing == fridge ? fridgePos : thing switch {
@@ -299,7 +292,7 @@ public static class InventoryHelper {
 			locations = Game1.Multiplayer.activeLocations();
 
 		foreach (var location in locations) {
-			foreach(object obj in GetAllThingsInLocation(location, buildings: discover_buildings)) { 
+			foreach (object obj in GetAllThingsInLocation(location, buildings: discover_buildings)) {
 				provider = getProvider(obj);
 				if (provider != null && provider.IsValid(obj, location, who))
 					result.Add(new(obj, location));
@@ -327,19 +320,19 @@ public static class InventoryHelper {
 			}
 
 		if (buildings)
-			foreach(var obj in location.buildings) {
+			foreach (var obj in location.buildings) {
 				if (obj is not null)
 					yield return obj;
 			}
 
 		if (furniture)
-			foreach(var obj in location.furniture) {
+			foreach (var obj in location.furniture) {
 				if (obj is not null)
 					yield return obj;
 			}
 
 		if (features)
-			foreach(var obj in location.terrainFeatures.Values) {
+			foreach (var obj in location.terrainFeatures.Values) {
 				if (obj is not null)
 					yield return obj;
 			}
@@ -359,7 +352,7 @@ public static class InventoryHelper {
 
 		int i = 0;
 
-		foreach(object obj in GetAllThingsInLocation(location, buildings: discover_buildings)) {
+		foreach (object obj in GetAllThingsInLocation(location, buildings: discover_buildings)) {
 			IInventoryProvider? provider = getProvider(obj);
 			if (provider != null && provider.IsValid(obj, location, who))
 				result.Add(new(obj, location));
@@ -371,7 +364,7 @@ public static class InventoryHelper {
 
 		// TODO: Better handling of the scanLimit.
 		if (enter_buildings)
-			foreach(var building in location.buildings) {
+			foreach (var building in location.buildings) {
 				if (building is not null && building.GetIndoors() is GameLocation loc) {
 					var output = DiscoverLocation(loc, who, getProvider, scanLimit - i, targetLimit - result.Count, discover_buildings, false);
 					result.AddRange(output);
@@ -613,7 +606,7 @@ public static class InventoryHelper {
 		IInventoryProvider? provider;
 
 		// Iterate over all our objects.
-		foreach(object obj in GetAllThingsInLocation(indoors)) { 
+		foreach (object obj in GetAllThingsInLocation(indoors)) {
 			provider = getProvider(obj);
 			if (provider != null && provider.IsValid(obj, indoors, who))
 				result.Add(new(obj, indoors));
@@ -812,6 +805,15 @@ public static class InventoryHelper {
 		return roots;
 	}
 
+	public static void RemoveInvalidInventories(ref IList<LocatedInventory> inventories, Func<object, bool> isInvalid) {
+		for (int i = 0; i < inventories.Count; i++) {
+			if (isInvalid(inventories[i].Source)) {
+				inventories.RemoveAt(i);
+				i--;
+			}
+		}
+	}
+
 	public static void RemoveInactiveInventories(ref IList<LocatedInventory> inventories, Func<object, IInventoryProvider?> getProvider) {
 		var roots = GetActiveRoots();
 		var places = Context.IsMainPlayer ? null : Game1.Multiplayer.activeLocations().ToHashSet();
@@ -906,6 +908,30 @@ public static class InventoryHelper {
 		}
 
 		return GetUnsafeInventories(located, getProvider, who, nullLocationValid);
+	}
+
+	public static IEnumerable<Item> GetInventoryItems(
+		IEnumerable<LocatedInventory> inventories,
+		Func<object, IInventoryProvider?> getProvider,
+		Farmer? who
+	) {
+		foreach (LocatedInventory loc in inventories) {
+			if (loc.Source is not Item sourceItem)
+				continue;
+
+			IInventoryProvider? provider = getProvider(loc.Source);
+			if (provider == null || !provider.IsValid(loc.Source, loc.Location, who))
+				continue;
+
+			// Try to get the mutex. If we can't, and the mutex is required,
+			// then skip this entry.
+			NetMutex? mutex = provider.GetMutex(loc.Source, loc.Location, who);
+			if (mutex == null && provider.IsMutexRequired(loc.Source, loc.Location, who))
+				continue;
+
+			// This one seems valid, then.
+			yield return sourceItem;
+		}
 	}
 
 	public static List<IBCInventory> GetUnsafeInventories(
@@ -1078,45 +1104,23 @@ public static class InventoryHelper {
 	/// <param name="passed_quality">Whether or not any matching slots were passed
 	/// up because they exceeded the <see cref="max_quality"/></param>
 	/// <param name="max_quality">The maximum quality of item to consume.</param>
+	/// <param name="matchingItems">An optional list of items that, if present, we will
+	/// only consume item instances in that list.</param>
 	/// <param name="consumedItems">An optional list to store consumed Item stacks in.</param>
 	/// <returns>The number of items remaining to consume.</returns>
-	public static int ConsumeItem(Func<Item, bool> matcher, int amount, IList<Item?> items, out bool nullified, out bool passed_quality, int max_quality = int.MaxValue, IList<Item>? consumedItems = null) {
+	public static int ConsumeItem(Func<Item, bool> matcher, int amount, IList<Item?> items, out bool nullified, out bool passed_quality, int max_quality = int.MaxValue, IList<Item>? matchingItems = null, IList<Item>? consumedItems = null) {
 
 		nullified = false;
 		passed_quality = false;
 
-		for (int idx = items.Count - 1; idx >= 0; --idx) {
+		for (int idx = 0; idx < items.Count; idx++) {
 			Item? item = items[idx];
 			if (item == null || !matcher(item))
 				continue;
 
-			// Special logic for Stack Quality
-			if (intSQ is not null && intSQ.IsLoaded && item is SObject sobj) {
-				int consumed = amount;
-				amount = intSQ.ConsumeItem(sobj, amount, out bool set_null, out bool set_quality, max_quality);
-				consumed -= amount;
-
-				if (consumedItems != null && consumed >= 0) {
-					var other = sobj.getOne();
-					other.Stack = consumed;
-					consumedItems.Add(other);
-				}
-
-				if (set_null) {
-					items[idx] = null;
-					nullified = true;
-				}
-
-				if (set_quality)
-					passed_quality = true;
-
-				if (amount <= 0)
-					return amount;
-
+			if (matchingItems is not null && !matchingItems.Contains(item))
 				continue;
-			}
 
-			// Normal logic, without Stack Quality
 			int quality = item is SObject obj ? obj.Quality : 0;
 			if (quality > max_quality) {
 				passed_quality = true;
@@ -1146,11 +1150,11 @@ public static class InventoryHelper {
 		return amount;
 	}
 
-	public static int CountItem(Func<Item, bool> matcher, Farmer? who, IEnumerable<Item?>? items, out bool passed_quality, int max_quality = int.MaxValue, int? limit = null) {
+	public static int CountItem(Func<Item, bool> matcher, Farmer? who, IEnumerable<Item?>? items, out bool passed_quality, int max_quality = int.MaxValue, int? limit = null, IList<Item>? matchingItems = null) {
 		int amount;
 
 		if (who is not null)
-			amount = CountItem(matcher, who.Items, out passed_quality, max_quality: max_quality, limit: limit);
+			amount = CountItem(matcher, who.Items, out passed_quality, max_quality: max_quality, limit: limit, matchingItems: matchingItems);
 		else {
 			amount = 0;
 			passed_quality = false;
@@ -1160,14 +1164,14 @@ public static class InventoryHelper {
 			return amount;
 
 		if (items is not null) {
-			amount += CountItem(matcher, items, out bool pq, max_quality: max_quality, limit: limit is not null ? limit - amount : null);
+			amount += CountItem(matcher, items, out bool pq, max_quality: max_quality, limit: limit is not null ? limit - amount : null, matchingItems: matchingItems);
 			passed_quality |= pq;
 		}
 
 		return amount;
 	}
 
-	public static int CountItem(Func<Item, bool> matcher, IEnumerable<Item?> items, out bool passed_quality, int max_quality = int.MaxValue, int? limit = null) {
+	public static int CountItem(Func<Item, bool> matcher, IEnumerable<Item?> items, out bool passed_quality, int max_quality = int.MaxValue, int? limit = null, IList<Item>? matchingItems = null) {
 		passed_quality = false;
 		int amount = 0;
 
@@ -1175,28 +1179,19 @@ public static class InventoryHelper {
 			if (item == null || !matcher(item))
 				continue;
 
-			// Special logic for Stack Quality -- only needed if we're using
-			// a maximum quality lower than Iridium.
-			if (max_quality < 4 && intSQ is not null && intSQ.IsLoaded && item is SObject sobj) {
-				amount += intSQ.CountItem(sobj, out bool set_passed, max_quality);
-				if (set_passed)
-					passed_quality = true;
-
-				if (limit is not null && amount >= limit)
-					return amount;
-
-				continue;
-			}
-
 			int quality = item is SObject obj ? obj.Quality : 0;
 			if (quality > max_quality) {
 				passed_quality = true;
 				continue;
 			}
 
-			amount += item.Stack;
-			if (limit is not null && amount >= limit)
-				return amount;
+			if (item.Stack > 0) {
+				matchingItems?.Add(item);
+
+				amount += item.Stack;
+				if (limit is not null && amount >= limit)
+					return amount;
+			}
 		}
 
 		return amount;
@@ -1215,7 +1210,11 @@ public static class InventoryHelper {
 	/// <param name="max_quality">The maximum quality of item to consume.</param>
 	/// <param name="low_quality_first">Whether or not to consume low quality
 	/// items first.</param>
-	public static void ConsumeItems(IEnumerable<KeyValuePair<string, int>> items, Farmer? who, IEnumerable<IBCInventory>? inventories, int max_quality = int.MaxValue, bool low_quality_first = false, IList<Item>? consumedItems = null) {
+	/// <param name="matchingItems">An optional list of item instances that,
+	/// if included, we will only consume item instances in that list.</param>
+	/// <param name="consumedItems">An optional list to append a list of
+	/// consumed items to.</param>
+	public static void ConsumeItems(IEnumerable<KeyValuePair<string, int>> items, Farmer? who, IEnumerable<IBCInventory>? inventories, int max_quality = int.MaxValue, bool low_quality_first = false, IList<Item>? matchingItems = null, IList<Item>? consumedItems = null) {
 		if (items is null)
 			return;
 
@@ -1225,9 +1224,12 @@ public static class InventoryHelper {
 			inventories,
 			max_quality,
 			low_quality_first,
+			matchingItems,
 			consumedItems
 		);
 	}
+
+	internal static (IEnumerable<IBCInventory>, bool[])? GlobalModified;
 
 	/// <summary>
 	/// Consume matching items from a player, and also from a set of
@@ -1241,9 +1243,20 @@ public static class InventoryHelper {
 	/// <param name="max_quality">The maximum quality of item to consume.</param>
 	/// <param name="low_quality_first">Whether or not to consume low quality
 	/// items first.</param>
-	public static void ConsumeItems(IEnumerable<(Func<Item, bool>, int)> items, Farmer? who, IEnumerable<IBCInventory>? inventories, int max_quality = int.MaxValue, bool low_quality_first = false, IList<Item>? consumedItems = null) {
+	/// <param name="matchingItems">An optional list of item instances that,
+	/// if included, we will only consume item instances in that list.</param>
+	/// <param name="consumedItems">An optional list to append a list of
+	/// consumed items to.</param>
+	public static void ConsumeItems(IEnumerable<(Func<Item, bool>, int)> items, Farmer? who, IEnumerable<IBCInventory>? inventories, int max_quality = int.MaxValue, bool low_quality_first = false, IList<Item>? matchingItems = null, IList<Item>? consumedItems = null) {
 		IList<IBCInventory>? working = (inventories as IList<IBCInventory>) ?? inventories?.ToList();
-		bool[]? modified = working == null ? null : new bool[working.Count];
+
+		bool is_global_modified = GlobalModified.HasValue && GlobalModified.Value.Item1 == inventories;
+		bool[]? modified = working == null
+			? null
+			: is_global_modified
+				? GlobalModified?.Item2
+				: new bool[working.Count];
+
 		IList<Item?>?[] invs = working?.Select(val => val.CanExtractItems() ? val.GetItems() : null).ToArray() ?? [];
 
 		foreach ((Func<Item, bool>, int) pair in items) {
@@ -1257,7 +1270,7 @@ public static class InventoryHelper {
 			for (int q = mq; q <= max_quality; q++) {
 				bool passed;
 				if (who != null)
-					remaining = ConsumeItem(matcher, remaining, who.Items, out bool m, out passed, q, consumedItems);
+					remaining = ConsumeItem(matcher, remaining, who.Items, out bool m, out passed, q, matchingItems, consumedItems);
 				else
 					passed = false;
 
@@ -1270,7 +1283,7 @@ public static class InventoryHelper {
 						if (inv == null || inv.Count == 0)
 							continue;
 
-						remaining = ConsumeItem(matcher, remaining, inv, out bool modded, out bool p, q, consumedItems);
+						remaining = ConsumeItem(matcher, remaining, inv, out bool modded, out bool p, q, matchingItems, consumedItems);
 						if (modded)
 							modified![iidx] = true;
 
@@ -1286,7 +1299,7 @@ public static class InventoryHelper {
 			}
 		}
 
-		if (working != null)
+		if (working != null && !is_global_modified)
 			for (int idx = 0; idx < modified!.Length; idx++) {
 				if (modified[idx])
 					working[idx].CleanInventory();
@@ -1421,7 +1434,7 @@ public static class InventoryHelper {
 					return null;
 				}
 			}
-		} 
+		}
 
 		int capacity = inventory.GetActualCapacity();
 		while (capacity > 0 && items.Count < capacity) {
@@ -1452,3 +1465,5 @@ public static class InventoryHelper {
 	#endregion
 
 }
+
+#endif

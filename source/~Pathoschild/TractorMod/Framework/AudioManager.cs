@@ -42,6 +42,9 @@ namespace Pathoschild.Stardew.TractorMod.Framework
         /// <summary>Whether to play audio effects.</summary>
         private readonly Func<bool> IsActive;
 
+        /// <summary>Get the volume level for tractor sound effects, as a value between 0 (silent) and 100 (full volume).</summary>
+        private readonly Func<int> GetVolume;
+
         /// <summary>The sound currently being played.</summary>
         private ICue? ActiveSound;
 
@@ -52,10 +55,12 @@ namespace Pathoschild.Stardew.TractorMod.Framework
         /// <summary>Construct an instance.</summary>
         /// <param name="directoryPath">The absolute path to the Tractor Mod folder.</param>
         /// <param name="isActive">Whether to play audio effects.</param>
-        public AudioManager(string directoryPath, Func<bool> isActive)
+        /// <param name="getVolume">Get the volume level for tractor sound effects, as a value between 0 (silent) and 100 (full volume).</param>
+        public AudioManager(string directoryPath, Func<bool> isActive, Func<int> getVolume)
         {
             this.DirectoryPath = directoryPath;
             this.IsActive = isActive;
+            this.GetVolume = getVolume;
         }
 
         /// <inheritdoc cref="IContentEvents.AssetRequested"/>
@@ -127,6 +132,13 @@ namespace Pathoschild.Stardew.TractorMod.Framework
                 this.StartUnlessPlaying(this.IdleSoundId);
         }
 
+        /// <summary>Update the volume level for the current audio to match the configured value.</summary>
+        public void UpdateVolume()
+        {
+            if (this.ActiveSound != null)
+                this.ActiveSound.Volume = this.GetVolume() / 100f;
+        }
+
         /// <inheritdoc />
         public void Dispose()
         {
@@ -155,6 +167,7 @@ namespace Pathoschild.Stardew.TractorMod.Framework
 
             this.ActiveSound = Game1.soundBank.GetCue(id);
             this.ActiveSound.Play();
+            this.ActiveSound.Volume = this.GetVolume() / 100f; // note: need to set volume after sound starts playing, or it'll be ignored
         }
 
         /// <summary>Immediately stop all tractor audio effects.</summary>

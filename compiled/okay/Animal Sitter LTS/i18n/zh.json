@@ -40,10 +40,10 @@
   "config.BypassInventory.description": "产品被收集后，是否不进入背包，而是存放在你指定的箱子中，默认为否。",
 
   "config.ChestCoords": "指定箱子位置",
-  "config.ChestCoords.description": "背包不够，产品溢出时，存放溢出物的箱子位置坐标。默认为(73,14)。",
+  "config.ChestCoords.description": "背包不够产品溢出时或者想要把所有收集物品存放到指定箱子，箱子位置坐标。默认为(87,18)。这是贩卖箱左边的一格。",
 
-  "config.ChestDefs": "ChestDefs",
-  "config.ChestDefs.description": "This is a bar-separated list of chest locations that you have defined for specific items. It defaults to blank, but here is an example: '430,70,14|340,7,4,FarmHouse' You can see there are 2 options.",
+  "config.ChestDefs": "指定物品存放位置",
+  "config.ChestDefs.description": "这是一个用 竖线 分隔的字符串，用于指定你希望把某些特别的物品放在特别的箱子位置。默认为空。这儿有一个简单的例子： '430,70,14|340,7,4,FarmHouse' 这里定义了两个操作，具体请查看 README 或者 Mod Page。",
 
   "dialog.comment_1": "Indexes in this file that are prefixed with an X rely on specific ordering for the in game dialog to make sense. Other ones are randomly selected, so order doesn't matter. Indexes also need to be in the format group_id, with a single underscore.",
   "dialog.Xdialog_1": " {{spouse}} 已经照料完动物了。",

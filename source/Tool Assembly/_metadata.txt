@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/ofts-cqm/ToolAssembly
+   Git: https://github.com/ofts-cqm/ToolAssembly.git
+
+mods:
+   Tool Assembly
+
+latest commit:
+   commit d59afa0ed79e01b34ee786145e720f82dc9472e4
+   Author: OFTS_CQM <qianmuchen.sam@gmail.com>
+   Date:   Tue May 14 15:58:49 2024 -0700
+   
+       fix destroy button
+   

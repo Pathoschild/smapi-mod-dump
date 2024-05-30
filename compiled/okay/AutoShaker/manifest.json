@@ -9,11 +9,15 @@
   "UniqueID": "HedgehogTechnologies.AutoForager",
   "Name": "Auto Forager",
   "Author": "Jag3Dagster",
-  "Version": "3.3.0",
+  "Version": "3.6.0",
   "Description": "Automatically forage items simply by moving near them.",
   "MinimumApiVersion": "4.0",
   "EntryDll": "AutoForager.dll",
   "Dependencies": [
+    {
+      "UniqueID": "Esca.FarmTypeManager",
+      "IsRequired": false
+    },
     {
       "UniqueID": "furyx639.CustomBush",
       "IsRequired": false

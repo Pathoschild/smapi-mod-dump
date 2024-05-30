@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/HeyImAmethyst/Ars-Venefici
+   Git: https://github.com/HeyImAmethyst/Ars-Venefici.git
+
+mods:
+   Ars Venefici
+
+latest commit:
+   commit ec73992109eb5a11da89ad301881aba562140b41
+   Author: HeyImAmethyst <HeyImAmethyst44@gmail.com>
+   Date:   Thu May 30 01:05:16 2024 -0400
+   
+       Added Haste component
+   

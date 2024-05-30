@@ -9,7 +9,6 @@
 *************************************************/
 
 using System.Collections.Generic;
-using System.Linq;
 using StardewValley;
 using StardewValley.Menus;
 using StardewValleyTodo.Helpers;
@@ -17,14 +16,20 @@ using StardewValleyTodo.Tracker;
 
 namespace StardewValleyTodo.Controllers {
     public class CarpenterMenuController {
-        public void ProcessInput(CarpenterMenu menu, InventoryTracker inventoryTracker) {
+        private readonly InventoryTracker _inventoryTracker;
+
+        public CarpenterMenuController(InventoryTracker inventoryTracker) {
+            _inventoryTracker = inventoryTracker;
+        }
+
+        public void ProcessInput(CarpenterMenu menu) {
             var blueprint = menu.Blueprint;
             var name = blueprint.DisplayName;
             var cost = blueprint.BuildCost;
             var displayName = $"{name} ({cost} g.)";
 
-            if (inventoryTracker.Has(displayName)) {
-                inventoryTracker.Off(displayName);
+            if (_inventoryTracker.Has(displayName)) {
+                _inventoryTracker.Off(displayName);
 
                 return;
             }
@@ -33,8 +38,7 @@ namespace StardewValleyTodo.Controllers {
             var components = new List<CountableItem>(materials.Count);
 
             foreach (var material in materials) {
-                // Converts "(O)388" to "388"
-                var id = material.Id.Split(')').Last();
+                var id = ObjectKey.Parse(material.Id);
                 var info = Game1.objectData[id];
                 var materialName = LocalizedStringLoader.Load(info.DisplayName);
 
@@ -42,7 +46,7 @@ namespace StardewValleyTodo.Controllers {
             }
 
             var recipe = new TrackableRecipe(displayName, components);
-            inventoryTracker.Toggle(recipe);
+            _inventoryTracker.Toggle(recipe);
         }
     }
 }

@@ -8,11 +8,14 @@
 **
 *************************************************/
 
+using System.Collections;
 using System.Collections.Generic;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
+using StardewValley.GameData.BigCraftables;
 using Pathoschild.Stardew.Automate;
+using Microsoft.Xna.Framework.Graphics;
 
 using SObject = StardewValley.Object;
 
@@ -36,6 +39,43 @@ public class AssetHandler {
       dict["(BC)264"] = new TapperModel();
       dict["(BC)264"].AlsoUseBaseGameRules = true;
       e.LoadFrom(() => dict, AssetLoadPriority.Low);
+    }
+
+    // Load water planter texture
+    if (e.NameWithoutLocale.IsEquivalentTo($"Mods/{ModEntry.UniqueId}/WaterPlanterTexture")) {
+        e.LoadFromModFile<Texture2D>("assets/WaterPlanter.png", AssetLoadPriority.Medium);
+    }
+
+    // Load water planters
+    if (e.NameWithoutLocale.IsEquivalentTo("Data/BigCraftables")) {
+        e.Edit(asset => {
+            var bigCraftables = asset.AsDictionary<string, BigCraftableData>();
+            bigCraftables.Data[WaterIndoorPotUtils.WaterPlanterItemId] = new BigCraftableData {
+              Name = WaterIndoorPotUtils.WaterPlanterItemId,
+              DisplayName = ModEntry.Helper.Translation.Get($"{WaterIndoorPotUtils.WaterPlanterItemId}.name"),
+              Description = ModEntry.Helper.Translation.Get($"{WaterIndoorPotUtils.WaterPlanterItemId}.description"),
+              Texture = $"Mods/{ModEntry.UniqueId}/WaterPlanterTexture",
+              SpriteIndex = 0,
+              ContextTags = ["custom_crab_pot_item"]
+            };
+            bigCraftables.Data[WaterIndoorPotUtils.WaterPotItemId] = new BigCraftableData {
+              Name = WaterIndoorPotUtils.WaterPotItemId,
+              DisplayName = ModEntry.Helper.Translation.Get($"{WaterIndoorPotUtils.WaterPotItemId}.name"),
+              Description = ModEntry.Helper.Translation.Get($"{WaterIndoorPotUtils.WaterPotItemId}.description"),
+              Texture = $"Mods/{ModEntry.UniqueId}/WaterPlanterTexture",
+              SpriteIndex = 2,
+            };
+          });
+        }
+
+    if (e.NameWithoutLocale.IsEquivalentTo("Data/CraftingRecipes")) {
+      e.Edit(asset => {
+          var craftingRecipes = asset.AsDictionary<string, string>();
+          craftingRecipes.Data[WaterIndoorPotUtils.WaterPlanterItemId] =
+          $"388 20/Home/{WaterIndoorPotUtils.WaterPlanterItemId}/true/none";
+          craftingRecipes.Data[WaterIndoorPotUtils.WaterPotItemId] = 
+          $"(BC)62 1/Home/{WaterIndoorPotUtils.WaterPotItemId}/true/none";
+          });
     }
   }
 

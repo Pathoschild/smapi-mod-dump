@@ -1,0 +1,22 @@
+{
+  /*
+   | This file is automatically updated by ModManifestBuilder
+   | when the project is compiled.
+   | 
+   | Changes made to this file may be overwritten.
+   | 
+   */
+  "$schema": "https://smapi.io/schemas/manifest.json",
+  "UniqueID": "KCC.SnS",
+  "Name": "NEA & COT [SMAPI]",
+  "Author": "DestyNova, spacechase0",
+  "Version": "1.10.0",
+  "Description": "...",
+  "EntryDll": "SwordAndSorcerySMAPI.dll",
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.SpaceCore",
+      "MinimumVersion": "1.23.1"
+    }
+  ]
+}

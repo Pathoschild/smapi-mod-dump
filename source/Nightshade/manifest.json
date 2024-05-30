@@ -1,0 +1,21 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ichortower/Nightshade
+**
+*************************************************/
+
+{
+	"Name": "Nightshade",
+	"Author": "ichortower",
+	"Description": "Adds configurable pixel shaders to recolor the game and add a depth-of-field effect.",
+	"Version": "1.0.5",
+	"UniqueID": "ichortower.Nightshade",
+	"EntryDll": "Nightshade.dll",
+	"MinimumApiVersion": "4.0.0",
+	"UpdateKeys": ["Nexus:23742", "GitHub:ichortower/Nightshade"],
+	"Dependencies": []
+}

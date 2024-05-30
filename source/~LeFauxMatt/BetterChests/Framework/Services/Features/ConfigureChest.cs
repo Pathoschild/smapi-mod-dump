@@ -10,102 +10,62 @@
 
 namespace StardewMods.BetterChests.Framework.Services.Features;
 
-using HarmonyLib;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
+using StardewMods.BetterChests.Framework.Enums;
 using StardewMods.BetterChests.Framework.Models.Events;
-using StardewMods.BetterChests.Framework.Models.StorageOptions;
 using StardewMods.BetterChests.Framework.Services.Factory;
-using StardewMods.Common.Enums;
+using StardewMods.BetterChests.Framework.UI.Menus;
 using StardewMods.Common.Interfaces;
-using StardewMods.Common.Models;
-using StardewMods.Common.Services.Integrations.BetterChests.Enums;
-using StardewMods.Common.Services.Integrations.BetterChests.Interfaces;
+using StardewMods.Common.Services.Integrations.BetterChests;
 using StardewMods.Common.Services.Integrations.FauxCore;
 using StardewMods.Common.Services.Integrations.GenericModConfigMenu;
+using StardewMods.Common.UI.Menus;
 using StardewValley.Menus;
 
 /// <summary>Configure storages individually.</summary>
 internal sealed class ConfigureChest : BaseFeature<ConfigureChest>
 {
-    private static ConfigureChest instance = null!;
-
-    private readonly PerScreen<ClickableTextureComponent> configButton;
     private readonly ConfigManager configManager;
     private readonly ContainerFactory containerFactory;
+    private readonly ContainerHandler containerHandler;
+    private readonly IExpressionHandler expressionHandler;
     private readonly GenericModConfigMenuIntegration genericModConfigMenuIntegration;
+    private readonly IIconRegistry iconRegistry;
     private readonly IInputHelper inputHelper;
-    private readonly PerScreen<bool> isActive = new();
     private readonly PerScreen<IStorageContainer?> lastContainer = new();
-    private readonly LocalizedTextManager localizedTextManager;
-    private readonly IManifest manifest;
-    private readonly MenuManager menuManager;
-    private readonly IPatchManager patchManager;
+    private readonly MenuHandler menuHandler;
 
     /// <summary>Initializes a new instance of the <see cref="ConfigureChest" /> class.</summary>
-    /// <param name="assetHandler">Dependency used for handling assets.</param>
-    /// <param name="commandHelper">Dependency used for handling console commands.</param>
-    /// <param name="configManager">Dependency used for accessing config data.</param>
+    /// <param name="configManager">Dependency used for managing config data.</param>
     /// <param name="containerFactory">Dependency used for accessing containers.</param>
+    /// <param name="containerHandler">Dependency used for handling operations by containers.</param>
     /// <param name="eventManager">Dependency used for managing events.</param>
+    /// <param name="expressionHandler">Dependency used for parsing expressions.</param>
     /// <param name="genericModConfigMenuIntegration">Dependency for Generic Mod Config Menu integration.</param>
+    /// <param name="iconRegistry">Dependency used for registering and retrieving icons.</param>
     /// <param name="inputHelper">Dependency used for checking and changing input state.</param>
-    /// <param name="menuManager">Dependency used for managing the current menu.</param>
-    /// <param name="localizedTextManager">Dependency used for formatting and translating text.</param>
-    /// <param name="log">Dependency used for logging debug information to the console.</param>
-    /// <param name="manifest">Dependency for accessing mod manifest.</param>
-    /// <param name="patchManager">Dependency used for managing patches.</param>
+    /// <param name="menuHandler">Dependency used for managing the current menu.</param>
     public ConfigureChest(
-        AssetHandler assetHandler,
-        ICommandHelper commandHelper,
         ConfigManager configManager,
         ContainerFactory containerFactory,
+        ContainerHandler containerHandler,
         IEventManager eventManager,
+        IExpressionHandler expressionHandler,
         GenericModConfigMenuIntegration genericModConfigMenuIntegration,
+        IIconRegistry iconRegistry,
         IInputHelper inputHelper,
-        MenuManager menuManager,
-        LocalizedTextManager localizedTextManager,
-        ILog log,
-        IManifest manifest,
-        IPatchManager patchManager)
-        : base(eventManager, log, manifest, configManager)
+        MenuHandler menuHandler)
+        : base(eventManager, configManager)
     {
-        ConfigureChest.instance = this;
         this.configManager = configManager;
         this.containerFactory = containerFactory;
+        this.containerHandler = containerHandler;
+        this.expressionHandler = expressionHandler;
         this.genericModConfigMenuIntegration = genericModConfigMenuIntegration;
+        this.iconRegistry = iconRegistry;
         this.inputHelper = inputHelper;
-        this.menuManager = menuManager;
-        this.localizedTextManager = localizedTextManager;
-        this.manifest = manifest;
-        this.patchManager = patchManager;
-        this.configButton = new PerScreen<ClickableTextureComponent>(
-            () => new ClickableTextureComponent(
-                new Rectangle(0, 0, Game1.tileSize, Game1.tileSize),
-                assetHandler.Icons.Value,
-                new Rectangle(0, 0, 16, 16),
-                Game1.pixelZoom)
-            {
-                name = this.Id,
-                hoverText = I18n.Button_Configure_Name(),
-                myID = 42_069,
-                region = ItemGrabMenu.region_organizationButtons,
-            });
-
-        // Commands
-        commandHelper.Add("bc_player_config", "Configure the player backpack", this.ConfigurePlayer);
-
-        // Patches
-        this.patchManager.Add(
-            this.UniqueId,
-            new SavedPatch(
-                AccessTools.DeclaredMethod(typeof(ItemGrabMenu), nameof(ItemGrabMenu.RepositionSideButtons)),
-                AccessTools.DeclaredMethod(
-                    typeof(ConfigureChest),
-                    nameof(ConfigureChest.ItemGrabMenu_RepositionSideButtons_postfix)),
-                PatchType.Postfix));
+        this.menuHandler = menuHandler;
     }
 
     /// <inheritdoc />
@@ -113,18 +73,20 @@ internal sealed class ConfigureChest : BaseFeature<ConfigureChest>
         this.Config.DefaultOptions.ConfigureChest != FeatureOption.Disabled
         && this.genericModConfigMenuIntegration.IsLoaded;
 
+    private IIcon CategorizeIcon => this.iconRegistry.Icon(InternalIcon.Miscellaneous);
+
+    private IIcon ConfigureIcon => this.iconRegistry.Icon(InternalIcon.Config);
+
+    private IIcon SortIcon => this.iconRegistry.Icon(InternalIcon.Debug);
+
     /// <inheritdoc />
     protected override void Activate()
     {
         // Events
         this.Events.Subscribe<MenuChangedEventArgs>(this.OnMenuChanged);
-        this.Events.Subscribe<RenderedActiveMenuEventArgs>(this.OnRenderedActiveMenu);
         this.Events.Subscribe<ButtonPressedEventArgs>(this.OnButtonPressed);
         this.Events.Subscribe<ButtonsChangedEventArgs>(this.OnButtonsChanged);
-        this.Events.Subscribe<InventoryMenuChangedEventArgs>(this.OnInventoryMenuChanged);
-
-        // Patches
-        this.patchManager.Patch(this.UniqueId);
+        this.Events.Subscribe<ItemHighlightingEventArgs>(ConfigureChest.OnItemHighlighting);
     }
 
     /// <inheritdoc />
@@ -132,155 +94,98 @@ internal sealed class ConfigureChest : BaseFeature<ConfigureChest>
     {
         // Events
         this.Events.Unsubscribe<MenuChangedEventArgs>(this.OnMenuChanged);
-        this.Events.Unsubscribe<RenderedActiveMenuEventArgs>(this.OnRenderedActiveMenu);
         this.Events.Unsubscribe<ButtonPressedEventArgs>(this.OnButtonPressed);
         this.Events.Unsubscribe<ButtonsChangedEventArgs>(this.OnButtonsChanged);
-        this.Events.Unsubscribe<InventoryMenuChangedEventArgs>(this.OnInventoryMenuChanged);
-
-        // Patches
-        this.patchManager.Unpatch(this.UniqueId);
+        this.Events.Unsubscribe<ItemHighlightingEventArgs>(ConfigureChest.OnItemHighlighting);
     }
 
-    [SuppressMessage("ReSharper", "InconsistentNaming", Justification = "Harmony")]
-    [SuppressMessage("StyleCop", "SA1313", Justification = "Harmony")]
-    private static void ItemGrabMenu_RepositionSideButtons_postfix(ItemGrabMenu __instance)
+    private static void OnItemHighlighting(ItemHighlightingEventArgs e)
     {
-        if (!ConfigureChest.instance.isActive.Value)
+        if (Game1.activeClickableMenu?.GetChildMenu() is Dropdown<KeyValuePair<string, string>>)
         {
-            return;
+            e.UnHighlight();
+        }
+    }
+
+    private string GetHoverText(IIcon icon)
+    {
+        if (icon.Id == this.ConfigureIcon.Id)
+        {
+            return I18n.Configure_Options_Name();
         }
 
-        var configButton = ConfigureChest.instance.configButton.Value;
-        if (__instance.allClickableComponents?.Contains(configButton) == false)
+        if (icon.Id == this.CategorizeIcon.Id)
         {
-            __instance.allClickableComponents.Add(configButton);
+            return I18n.Configure_Categorize_Name();
         }
 
-        configButton.bounds.Y = 0;
-        var buttons =
-            new[]
-                {
-                    __instance.organizeButton,
-                    __instance.fillStacksButton,
-                    __instance.colorPickerToggleButton,
-                    __instance.specialButton,
-                    __instance.junimoNoteIcon,
-                }
-                .Where(component => component is not null)
-                .ToList();
-
-        buttons.Add(configButton);
-        var stepSize = Game1.tileSize + buttons.Count switch { >= 4 => 8, _ => 16 };
-        var yOffset = buttons[0].bounds.Y;
-
-        var xPosition = Math.Max(buttons[0].bounds.X, __instance.okButton.bounds.X);
-
-        for (var index = 0; index < buttons.Count; ++index)
+        if (icon.Id == this.SortIcon.Id)
         {
-            var button = buttons[index];
-            if (index > 0 && buttons.Count > 1)
-            {
-                button.downNeighborID = buttons[index - 1].myID;
-            }
-
-            if (index < buttons.Count - 1 && buttons.Count > 1)
-            {
-                button.upNeighborID = buttons[index + 1].myID;
-            }
-
-            button.bounds.X = xPosition;
-            button.bounds.Y = yOffset - (stepSize * index);
+            return I18n.Configure_Sorting_Name();
         }
 
-        foreach (var component in __instance.ItemsToGrabMenu.GetBorder(InventoryMenu.BorderSide.Right))
-        {
-            component.rightNeighborID =
-                buttons.MinBy(c => Math.Abs(c.bounds.Center.Y - component.bounds.Center.Y))?.myID ?? -1;
-        }
+        return string.Empty;
     }
 
     private void OnButtonPressed(ButtonPressedEventArgs e)
     {
-        if (!this.isActive.Value
-            || e.Button is not (SButton.MouseLeft or SButton.ControllerA)
-            || !this.menuManager.CanFocus(this))
+        if (e.Button is not (SButton.MouseLeft or SButton.ControllerA)
+            || e.IsSuppressed(e.Button)
+            || !this.menuHandler.TryGetFocus(this, out var focus))
         {
             return;
         }
 
-        var (mouseX, mouseY) = Game1.getMousePosition(true);
-        if (!this.configButton.Value.containsPoint(mouseX, mouseY))
+        var cursor = e.Cursor.GetScaledScreenPixels();
+        IStorageContainer? container = null;
+        ClickableComponent? icon = null;
+        if (this.menuHandler.Top.Container?.ConfigureChest is FeatureOption.Enabled
+            && this.menuHandler.Top.Icon?.bounds.Contains(cursor) == true)
         {
+            container = this.menuHandler.Top.Container;
+            icon = this.menuHandler.Top.Icon;
+        }
+
+        if (container is null
+            && this.menuHandler.Bottom.Container?.ConfigureChest is FeatureOption.Enabled
+            && this.menuHandler.Bottom.Icon?.bounds.Contains(cursor) == true)
+        {
+            container = this.menuHandler.Bottom.Container;
+            icon = this.menuHandler.Bottom.Icon;
+        }
+
+        if (container is null || icon is null)
+        {
+            focus.Release();
             return;
         }
 
-        this.lastContainer.Value = this.menuManager.Top.Container;
-        this.lastContainer.Value ??= this.menuManager.Bottom.Container;
-        if (this.lastContainer.Value is null)
+        var options = new List<IIcon>
         {
-            return;
-        }
+            this.ConfigureIcon,
+            this.CategorizeIcon,
+            this.SortIcon,
+        };
 
+        focus.Release();
         this.inputHelper.Suppress(e.Button);
-        this.ShowMenu();
+        var dropdown = new IconDropdown(icon, options, 3, 1, this.GetHoverText);
+        dropdown.IconSelected += (_, i) => this.ShowMenu(container, i);
+        Game1.activeClickableMenu?.SetChildMenu(dropdown);
     }
 
     private void OnButtonsChanged(ButtonsChangedEventArgs e)
     {
-        if (!this.isActive.Value || !this.menuManager.CanFocus(this))
-        {
-            return;
-        }
-
         if (!Context.IsPlayerFree
             || !this.Config.Controls.ConfigureChest.JustPressed()
-            || !this.containerFactory.TryGetOne(Game1.player, Game1.player.CurrentToolIndex, out var container)
-            || container.Options.ConfigureChest != FeatureOption.Enabled)
+            || (!this.containerFactory.TryGetOne(Game1.player, Game1.player.CurrentToolIndex, out var container)
+                && !this.containerFactory.TryGetOne(Game1.player.currentLocation, e.Cursor.Tile, out container)))
         {
             return;
         }
 
         this.inputHelper.SuppressActiveKeybinds(this.Config.Controls.ConfigureChest);
-        this.lastContainer.Value = container;
-        this.ShowMenu();
-    }
-
-    [Priority(1000)]
-    private void OnInventoryMenuChanged(InventoryMenuChangedEventArgs e)
-    {
-        switch (this.menuManager.CurrentMenu)
-        {
-            case ItemGrabMenu itemGrabMenu:
-                if (this.menuManager.Top.Container?.Options.ConfigureChest != FeatureOption.Enabled)
-                {
-                    this.isActive.Value = false;
-                    return;
-                }
-
-                this.isActive.Value = true;
-                itemGrabMenu.RepositionSideButtons();
-                return;
-
-            case InventoryPage inventoryPage:
-                if (this.menuManager.Bottom.Container?.Options.ConfigureChest != FeatureOption.Enabled)
-                {
-                    this.isActive.Value = false;
-                    return;
-                }
-
-                this.isActive.Value = true;
-                inventoryPage.allClickableComponents.Add(this.configButton.Value);
-                this.configButton.Value.bounds.X = inventoryPage.organizeButton.bounds.X;
-                this.configButton.Value.bounds.Y = inventoryPage.organizeButton.bounds.Y
-                    - Game1.tileSize
-                    - (IClickableMenu.borderWidth / 2);
-
-                return;
-
-            default:
-                this.isActive.Value = false;
-                return;
-        }
+        this.ShowMenu(container, this.ConfigureIcon);
     }
 
     private void OnMenuChanged(MenuChangedEventArgs e)
@@ -304,129 +209,25 @@ internal sealed class ConfigureChest : BaseFeature<ConfigureChest>
         this.lastContainer.Value = null;
     }
 
-    private void OnRenderedActiveMenu(RenderedActiveMenuEventArgs e)
+    private void ShowMenu(IStorageContainer container, IIcon? icon)
     {
-        if (!this.isActive.Value)
-        {
-            return;
-        }
-
-        var (mouseX, mouseY) = Game1.getMousePosition(true);
-        this.configButton.Value.tryHover(mouseX, mouseY);
-        e.SpriteBatch.Draw(
-            this.configButton.Value.texture,
-            new Vector2(
-                this.configButton.Value.bounds.X + (8 * Game1.pixelZoom),
-                this.configButton.Value.bounds.Y + (8 * Game1.pixelZoom)),
-            new Rectangle(64, 0, 16, 16),
-            Color.White,
-            0f,
-            new Vector2(8, 8),
-            this.configButton.Value.scale,
-            SpriteEffects.None,
-            0.86f);
-
-        this.configButton.Value.draw(e.SpriteBatch);
-        if (!this.configButton.Value.containsPoint(mouseX, mouseY))
-        {
-            return;
-        }
-
-        switch (this.menuManager.CurrentMenu)
-        {
-            case ItemGrabMenu itemGrabMenu:
-                itemGrabMenu.hoverText = this.configButton.Value.hoverText;
-                return;
-
-            case InventoryPage inventoryPage:
-                inventoryPage.hoverText = this.configButton.Value.hoverText;
-                return;
-        }
-    }
-
-    private void ConfigurePlayer(string commands, string[] args)
-    {
-        if (!this.containerFactory.TryGetOne(Game1.player, out var container))
-        {
-            return;
-        }
-
         this.lastContainer.Value = container;
-        this.ShowMenu();
-    }
-
-    private void ShowMenu()
-    {
-        if (!this.genericModConfigMenuIntegration.IsLoaded || this.lastContainer.Value is null)
+        if (icon is null || icon.Id == this.ConfigureIcon.Id)
         {
+            this.containerHandler.Configure(container);
             return;
         }
 
-        this.Log.Info("{0}: Configuring {1}", this.Id, this.lastContainer.Value);
-
-        var gmcm = this.genericModConfigMenuIntegration.Api;
-        var defaultOptions = new DefaultStorageOptions();
-        var options = new TemporaryStorageOptions(this.lastContainer.Value.Options.GetActualOptions(), defaultOptions);
-        var parentOptions = this.lastContainer.Value.Options.GetParentOptions();
-        this.genericModConfigMenuIntegration.Register(options.Reset, Save);
-
-        gmcm.AddSectionTitle(
-            this.manifest,
-            () => this.lastContainer.Value.DisplayName,
-            this.lastContainer.Value.ToString);
-
-        gmcm.AddTextOption(
-            this.manifest,
-            () => options.StorageName,
-            value => options.StorageName = value,
-            I18n.Config_StorageName_Name,
-            I18n.Config_StorageName_Tooltip);
-
-        if (this.lastContainer.Value.Options.StashToChest is not (RangeOption.Disabled or RangeOption.Default))
+        if (icon.Id == this.CategorizeIcon.Id)
         {
-            gmcm.AddNumberOption(
-                this.manifest,
-                () => (int)options.StashToChestPriority,
-                value => options.StashToChestPriority = (StashPriority)value,
-                I18n.Config_StashToChestPriority_Name,
-                I18n.Config_StashToChestPriority_Tooltip,
-                -3,
-                3,
-                1,
-                this.localizedTextManager.FormatStashPriority);
+            Game1.activeClickableMenu = new CategorizeMenu(container, this.expressionHandler, this.iconRegistry);
+
+            return;
         }
 
-        // Categorize Chest
-        if (this.lastContainer.Value.Options.CategorizeChest is not (FeatureOption.Disabled or FeatureOption.Default))
+        if (icon.Id == this.SortIcon.Id)
         {
-            gmcm.AddTextOption(
-                this.manifest,
-                () => options.CategorizeChestSearchTerm,
-                value => options.CategorizeChestSearchTerm = value,
-                I18n.Config_CategorizeChestSearchTerm_Name,
-                I18n.Config_CategorizeChestSearchTerm_Tooltip);
-
-            gmcm.AddTextOption(
-                this.manifest,
-                () => options.CategorizeChestIncludeStacks.ToStringFast(),
-                value => options.CategorizeChestIncludeStacks = FeatureOptionExtensions.TryParse(value, out var option)
-                    ? option
-                    : FeatureOption.Default,
-                I18n.Config_CategorizeChestIncludeStacks_Name,
-                I18n.Config_CategorizeChestIncludeStacks_Tooltip,
-                FeatureOptionExtensions.GetNames(),
-                this.localizedTextManager.FormatOption(parentOptions?.CategorizeChestIncludeStacks));
-        }
-
-        gmcm.AddPageLink(this.manifest, "Main", I18n.Section_Main_Name, I18n.Section_Main_Description);
-        this.configManager.AddMainOption("Main", I18n.Section_Main_Name, options, parentOptions: parentOptions);
-        gmcm.OpenModMenu(this.manifest);
-        return;
-
-        void Save()
-        {
-            this.Log.Trace("Config changed: {0}\n{1}", this.lastContainer.Value, options);
-            options.Save();
+            Game1.activeClickableMenu = new SortMenu(container, this.expressionHandler, this.iconRegistry);
         }
     }
 }

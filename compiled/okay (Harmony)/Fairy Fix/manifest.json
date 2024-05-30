@@ -1,0 +1,10 @@
+{
+  "Name": "Fairy Fix",
+  "Author": "MindMeltMax",
+  "Version": "1.0.1",
+  "Description": "Add some control over what crops the crop fairy can interact with",
+  "UniqueID": "MindMeltMax.FairyFix",
+  "EntryDll": "FairyFix.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "nexus:24469" ]
+}

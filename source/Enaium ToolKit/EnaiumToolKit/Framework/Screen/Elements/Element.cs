@@ -8,7 +8,9 @@
 **
 *************************************************/
 
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using StardewValley;
 
 namespace EnaiumToolKit.Framework.Screen.Elements;
 
@@ -17,40 +19,51 @@ public abstract class Element
     public bool Hovered;
     public bool Visibled;
     public bool Enabled;
+    public bool Focused;
     public int Width;
     public int Height;
-    public string Title;
-    public string Description;
-        
-    public Action OnLeftClicked = () => { };
-    public Action OnLeftReleased = () => { };
-    public Action OnRightClicked = () => { };
+    public string? Title;
+    public string? Description;
 
-    protected Element(string title, string description)
+    public Action? OnLeftClicked = null;
+    public Action? OnLeftReleased = null;
+    public Action? OnRightClicked = null;
+
+    public const int DefaultWidth = 800;
+    public const int DefaultHeight = 75;
+
+    protected Element(string? title, string? description)
     {
         Title = title;
         Description = description;
-        Width = 800;
-        Height = 75;
+        Width = DefaultWidth;
+        Height = DefaultHeight;
         Hovered = false;
         Visibled = true;
         Enabled = true;
     }
-        
-    public abstract void Render(SpriteBatch b, int x, int y);
-        
+
+    public virtual void Render(SpriteBatch b, int x, int y)
+    {
+        Hovered = new Rectangle(x, y, Width, Height).Contains(Game1.getMouseX(), Game1.getMouseY());
+    }
+
     public virtual void MouseLeftClicked(int x, int y)
     {
-        OnLeftClicked.Invoke();
+        OnLeftClicked?.Invoke();
     }
 
     public virtual void MouseLeftReleased(int x, int y)
     {
-        OnLeftReleased.Invoke();
+        OnLeftReleased?.Invoke();
     }
 
     public virtual void MouseRightClicked(int x, int y)
     {
-        OnRightClicked.Invoke();
+        OnRightClicked?.Invoke();
+    }
+
+    public virtual void LostFocus(int x, int y)
+    {
     }
 }

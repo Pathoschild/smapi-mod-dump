@@ -1,0 +1,16 @@
+urls:
+   web: https://github.com/xeru98/StardewMods
+   Git: https://github.com/xeru98/StardewMods.git
+
+mods:
+   Better Special Orders
+
+latest commit:
+   commit 9c6b029c608d9c5e0780396c3ad3cd35b1880fe3
+   Author: Patrick Critz <xeru98@gmail.com>
+   Date:   Fri May 17 02:17:20 2024 -0400
+   
+       Merge pull request #2 from xeru98/BetterSpecialOrders-1.0.1
+       
+       Added update keys
+   

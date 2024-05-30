@@ -1,5 +1,6 @@
 {
   "RefreshInterval": 6,
+  "ShowOverlaps": true,
   "ShowJunimoRange": true,
   "ShowSprinklerRange": true,
   "ShowScarecrowRange": true,
@@ -8,6 +9,8 @@
   "ShowBombRange": true,
   "HighlightBuildingsOnMouseover": true,
   "HighlightActionLocation": "Always",
+  "HideAtMouseOnMovement": true,
+  "SprinklerModCompatibility": "MoreCompatible",
   "ShowOtherSprinklersWhenHoldingSprinkler": true,
   "ShowOtherScarecrowsWhenHoldingScarecrow": true,
   "ShowOtherBeehousesWhenHoldingBeehouse": false,

@@ -4,11 +4,13 @@
   "tools.name.paint_brush": "แปรงทาสี",
   "tools.name.scissors": "กรรไกร",
   "tools.name.spray_can": "กระป๋องสเปรย์",
+  "tools.name.catalogue": "แค็ตตาล็อกพื้นผิว",
 
   "tools.description.paint_bucket": "อนุญาตให้คุณปรับใช้พื้นผิวที่ แตกต่างกันกับวัตถุที่รองรับ",
   "tools.description.paint_brush": "อนุญาตให้คุณคัดลอกพื้นผิว และนำไปใช้กับวัตถุอื่นที่เป็น ประเภทเดียวกัน",
   "tools.description.scissors": "อนุญาตให้คุณปรับเปลี่ยน รูปแบบให้สิ่งของต่างๆ ที่มีอยู่ได้",
   "tools.description.spray_can": "อนุญาตให้คุณใช้พื้นผิวแบบสุ่ม กับวัตถุภายในรัศมี",
+  "tools.description.catalogue": "แสดงรายการพื้นผิวทางเลือกที่มีอยู่ทั้งหมด",
 
   // Messages
   "messages.warning.no_textures_for_season": "{{itemName}} ไม่มีพื้นผิวทางเลือกสำหรับฤดูกาลนี้!",
@@ -21,5 +23,10 @@
   "messages.warning.custom_building_not_supported": "({{itemName}}) เป็นสิ่งที่สร้างขึ้นเอง จึงไม่รองรับการปรับเปลี่ยนพื้นผิวอื่นๆ",
 
   "messages.info.texture_copied": "คัดลอกพื้นผิวแล้ว!",
-  "messages.info.cleared_brush": "ล้างแปรงแล้ว!"
+  "messages.info.cleared_brush": "ล้างแปรงแล้ว!",
+
+  // UI
+  "ui.labels.catalogue": "แค็ตตาล็อก",
+  "ui.labels.paint_brush.copied": "คัดลอกพื้นผิวไปยังแปรงทาสีของคุณแล้ว!",
+  "ui.labels.paint_brush.not_found": "ไม่สามารถคัดลอกพื้นผิวได้: ไม่พบแปรงทาสีในช่องเก็บของของคุณ!"
 }

@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/KyuubiRan/TimeWatch
+   Git: https://github.com/KyuubiRan/TimeWatch.git
+
+mods:
+   Time Watch
+
+latest commit:
+   commit 2e61404aafaa195873103de274ab63528ca99d36
+   Author: Kitsune <KyuubiRan@qq.com>
+   Date:   Wed May 8 03:17:39 2024 +0800
+   
+       Add Chinese readme
+   

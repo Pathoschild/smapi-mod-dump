@@ -11,7 +11,7 @@
 {
     "Name": "Skill Prestige for Cooking Skill",
     "Author": "CinderGarde",
-    "Version": "1.2.6",
+    "Version": "1.3.2",
     "Description": "Extends Skill Prestige to support the Cooking Skill mod.",
     "UniqueID": "Alphablackwolf.CookingSkillPrestigeAdapter",
     "EntryDll": "SkillPrestige.CookingSkill.dll",

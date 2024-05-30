@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/23818
+IDs: Dragoon23.CustomizeTrinkets
+update keys: Nexus:23818

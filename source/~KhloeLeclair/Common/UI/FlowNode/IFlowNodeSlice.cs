@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-#nullable enable
+#if COMMON_FLOW
 
 using System;
 
@@ -34,3 +34,5 @@ public enum WrapMode {
 	ForceBefore = 4,
 	ForceAfter = 8
 }
+
+#endif

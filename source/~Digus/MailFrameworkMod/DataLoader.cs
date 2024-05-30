@@ -111,20 +111,29 @@ namespace MailFrameworkMod
                     //Populate all Indexes based on the given name. Ignore the letter otherwise.
                     if (mailItem.CollectionConditions != null && mailItem.CollectionConditions.Any(c =>
                     {
-                        if (c.Name != null && c.Collection != Collection.Crafting)
+                        c.Ids ??= new HashSet<string>();
+                        if (c.Index != null) c.Ids.Add(c.Index);
+                        if (c.Name != null)
                         {
-                            KeyValuePair<string, ObjectData> pair = Game1.objectData.FirstOrDefault(o => o.Value.Name.Equals(c.Name));
-                            if (pair.Value != null)
+                            if (c.Collection != Collection.Crafting)
                             {
-                                c.Index = pair.Key;
+                                KeyValuePair<string, ObjectData> pair = Game1.objectData.FirstOrDefault(o => c.Name.Equals(o.Value.Name));
+                                if (pair.Value != null)
+                                {
+                                    c.Ids.Add(pair.Key);
+                                }
+                                else
+                                {
+                                    MailFrameworkModEntry.ModMonitor.Log(
+                                        $"No object found with the name '{c.Name}' for a condition for letter '{mailItem.Id}'.\n This letter will be ignored.",
+                                        LogLevel.Warn);
+                                    MailRepository.RemoveLetter(new Letter(mailItem.Id, null, null));
+                                    return true;
+                                }
                             }
                             else
                             {
-                                MailFrameworkModEntry.ModMonitor.Log(
-                                    $"No object found with the name '{c.Name}' for a condition for letter '{mailItem.Id}'.\n This letter will be ignored.",
-                                    LogLevel.Warn);
-                                MailRepository.RemoveLetter(new Letter(mailItem.Id, null, null));
-                                return true;
+                                c.Ids.Add(c.Name);
                             }
                         }
 
@@ -159,19 +168,12 @@ namespace MailFrameworkMod
                                  MailFrameworkModEntry.ModHelper.Reflection
                                      .GetProperty<uint>(Game1.player.stats, s.StatsName.ToString()).GetValue() >= s.Amount)))
                         && (mailItem.CollectionConditions == null || (mailItem.CollectionConditions.TrueForAll(c =>
-                                (c.Collection == Collection.Shipped && Game1.player.basicShipped.ContainsKey(c.Index) &&
-                                 Game1.player.basicShipped[c.Index] >= c.Amount)
-                                || (c.Collection == Collection.Fish && Game1.player.fishCaught.ContainsKey(c.Index) &&
-                                    Game1.player.fishCaught[c.Index][0] >= c.Amount)
-                                || (c.Collection == Collection.Artifacts &&
-                                    Game1.player.archaeologyFound.ContainsKey(c.Index) &&
-                                    Game1.player.archaeologyFound[c.Index][0] >= c.Amount)
-                                || (c.Collection == Collection.Minerals && Game1.player.mineralsFound.ContainsKey(c.Index) &&
-                                    Game1.player.mineralsFound[c.Index] >= c.Amount)
-                                || (c.Collection == Collection.Cooking && Game1.player.recipesCooked.ContainsKey(c.Index) &&
-                                    Game1.player.recipesCooked[c.Index] >= c.Amount)
-                                || (c.Collection == Collection.Crafting && Game1.player.craftingRecipes.ContainsKey(c.Name) &&
-                                    Game1.player.craftingRecipes[c.Name] >= c.Amount)
+                                (c.Collection == Collection.Shipped && c.Ids.Sum(i => Game1.player.basicShipped.ContainsKey(i) ? Game1.player.basicShipped[i] : 0)   >= c.Amount)
+                                || (c.Collection == Collection.Fish && c.Ids.Sum(i => Game1.player.fishCaught.ContainsKey(i) ? Game1.player.fishCaught[i][0] : 0) >= c.Amount)
+                                || (c.Collection == Collection.Artifacts && c.Ids.Sum(i => Game1.player.archaeologyFound.ContainsKey(i) ? Game1.player.archaeologyFound[i][0] : 0) >= c.Amount)
+                                || (c.Collection == Collection.Minerals && c.Ids.Sum(i => Game1.player.mineralsFound.ContainsKey(i) ? Game1.player.mineralsFound[i] : 0) >= c.Amount)
+                                || (c.Collection == Collection.Cooking && c.Ids.Sum(i => Game1.player.recipesCooked.ContainsKey(i) ? Game1.player.recipesCooked[i] : 0) >= c.Amount)
+                                || (c.Collection == Collection.Crafting && c.Ids.Sum(i => Game1.player.craftingRecipes.ContainsKey(i) ? Game1.player.craftingRecipes[i] : 0) >= c.Amount)
                             )))
                         && (mailItem.RandomChance == null ||
                             new Random((int) (((ulong) Game1.stats.DaysPlayed * 1000000000000000) +
@@ -216,346 +218,36 @@ namespace MailFrameworkMod
 
                     ;
 
+                    if (mailItem.CustomTextColorName != null)
+                    {
+                        try
+                        {
+                            mailItem.CustomTextColor = DataLoader.Helper.Reflection.GetProperty<Color>(typeof(Color), mailItem.CustomTextColorName).GetValue();
+                        }
+                        catch (Exception)
+                        {
+                            MailFrameworkModEntry.ModMonitor.Log($"Color '{mailItem.CustomTextColorName}' isn't valid. Check XNA Color Chart for valid names. This color will be ignored.");
+                        }
+                    }
+
+                    var contentPackTranslation = hasTranslation ? contentPack.Translation : null;
+                    Action<Letter> callback = (l) =>
+                    {
+                        Game1.player.mailReceived.Add(l.Id);
+                        if (mailItem.AdditionalMailReceived != null) Game1.player.mailReceived.AddRange(mailItem.AdditionalMailReceived);
+                        if (mailItem.ReplyConfig != null) ReplyController.OpenReplyDialog(mailItem.ReplyConfig, contentPackTranslation);
+                    };
+
                     if (mailItem.Attachments != null && mailItem.Attachments.Count > 0)
                     {
-                        List<Item> attachments = new List<Item>();
-                        mailItem.Attachments.ForEach(i =>
-                        {
-                            if (i == null) return;
-                            switch (i.Type)
-                            {
-                                case ItemType.Object:
-                                    if (i.Name != null)
-                                    {
-                                        var pair = Game1.objectData.FirstOrDefault(o => o.Value.Name.Equals(i.Name));
-                                        if (pair.Value != null)
-                                        {
-                                            i.Index = pair.Key;
-                                        }
-                                        else
-                                        {
-                                            MailFrameworkModEntry.ModMonitor.Log(
-                                                $"No object found with the name {i.Name} for letter {mailItem.Id}.",
-                                                LogLevel.Warn);
-                                        }
-                                    }
-
-                                    if (i.Index != null)
-                                    {
-                                        attachments.Add(new StardewValley.Object(i.Index, i.Stack ?? 1, quality: i.Quality));
-                                    }
-                                    else
-                                    {
-                                        MailFrameworkModEntry.ModMonitor.Log(
-                                            $"An index value is required to attach an object for letter {mailItem.Id}.",
-                                            LogLevel.Warn);
-                                    }
-
-                                    break;
-                                case ItemType.BigObject:
-                                case ItemType.BigCraftable:
-                                    if (i.Name != null)
-                                    {
-                                        var pair = Game1.bigCraftableData.FirstOrDefault(o => o.Value.Name.Equals(i.Name));
-                                        if (pair.Value != null)
-                                        {
-                                            i.Index = pair.Key;
-                                        }
-                                        else
-                                        {
-                                            MailFrameworkModEntry.ModMonitor.Log(
-                                                $"No big craftable found with the name {i.Name} for letter {mailItem.Id}.",
-                                                LogLevel.Warn);
-                                        }
-                                    }
-
-                                    if (i.Index != null)
-                                    {
-                                        Item item = new StardewValley.Object(Vector2.Zero, i.Index);
-                                        if (i.Stack.HasValue)
-                                        {
-                                            item.Stack = i.Stack.Value;
-                                        }
-
-                                        attachments.Add(item);
-                                    }
-                                    else
-                                    {
-                                        MailFrameworkModEntry.ModMonitor.Log(
-                                            $"An index value is required to attach a big craftable for letter {mailItem.Id}.",
-                                            LogLevel.Warn);
-                                    }
-
-                                    break;
-                                case ItemType.Tool:
-                                    Tool tool = null;
-                                    switch (i.Name)
-                                    {
-                                        case "Axe":
-                                            tool = new Axe();
-                                            break;
-                                        case "Hoe":
-                                            tool = new Hoe();
-                                            break;
-                                        case "Watering Can":
-                                            tool = new WateringCan();
-                                            break;
-                                        case "Scythe":
-                                            tool = new MeleeWeapon("47");
-                                            break;
-                                        case "Golden Scythe":
-                                            tool = new MeleeWeapon("53");
-                                            break;
-                                        case "Pickaxe":
-                                            tool = new Pickaxe();
-                                            break;
-                                        case "Milk Pail":
-                                            tool = new MilkPail();
-                                            break;
-                                        case "Shears":
-                                            tool = new Shears();
-                                            break;
-                                        case "Fishing Rod":
-                                            tool = new FishingRod(i.UpgradeLevel ?? 0);
-                                            break;
-                                        case "Pan":
-                                            tool = new Pan();
-                                            break;
-                                        case "Return Scepter":
-                                            tool = new Wand();
-                                            break;
-                                        default:
-                                            MailFrameworkModEntry.ModMonitor.Log(
-                                                $"Tool with name {i.Name} not found for letter {mailItem.Id}.", LogLevel.Warn);
-                                            break;
-                                    }
-
-                                    if (tool != null)
-                                    {
-                                        if (!NoUpgradeLevelTools.Contains(i.Name))
-                                        {
-                                            tool.UpgradeLevel = i.UpgradeLevel ?? 0;
-                                        }
-
-                                        attachments.Add(tool);
-                                    }
-
-                                    break;
-                                case ItemType.Ring:
-                                    if (i.Name != null)
-                                    {
-                                        KeyValuePair<string, ObjectData> pair = Game1.objectData.FirstOrDefault(o => o.Value.Name.Equals(i.Name));
-                                        if (pair.Value != null)
-                                        {
-                                            i.Index = pair.Key;
-                                        }
-                                        else
-                                        {
-                                            MailFrameworkModEntry.ModMonitor.Log(
-                                                $"No ring found with the name {i.Name} for letter {mailItem.Id}.",
-                                                LogLevel.Warn);
-                                        }
-                                    }
-
-                                    if (i.Index != null)
-                                    {
-                                        if (Game1.objectData[i.Index].Type.Equals("Ring"))
-                                        {
-                                            attachments.Add(new Ring(i.Index));
-                                        }
-                                        else
-                                        {
-                                            MailFrameworkModEntry.ModMonitor.Log(
-                                                $"A valid ring is required to attach an ring for letter {mailItem.Id}.",
-                                                LogLevel.Warn);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        MailFrameworkModEntry.ModMonitor.Log(
-                                            $"An index value is required to attach an ring for letter {mailItem.Id}.",
-                                            LogLevel.Warn);
-                                    }
-
-                                    break;
-                                case ItemType.Furniture:
-                                    if (i.Name != null)
-                                    {
-                                        Dictionary<string, string> furnitures =
-                                            MailFrameworkModEntry.ModHelper.GameContent.Load<Dictionary<string, string>>(
-                                                PathUtilities.NormalizeAssetName("Data/Furniture"));
-                                        KeyValuePair<string, string> pair =
-                                            furnitures.FirstOrDefault(o => o.Value.StartsWith(i.Name + "/"));
-                                        if (pair.Value != null)
-                                        {
-                                            i.Index = pair.Key;
-                                        }
-                                        else
-                                        {
-                                            MailFrameworkModEntry.ModMonitor.Log(
-                                                $"No furniture found with the name {i.Name} for letter {mailItem.Id}.",
-                                                LogLevel.Warn);
-                                        }
-                                    }
-
-                                    if (i.Index != null)
-                                    {
-                                        attachments.Add(Furniture.GetFurnitureInstance(i.Index));
-                                    }
-                                    else
-                                    {
-                                        MailFrameworkModEntry.ModMonitor.Log(
-                                            $"An index value is required to attach a furniture for letter {mailItem.Id}.",
-                                            LogLevel.Warn);
-                                    }
-
-                                    break;
-                                case ItemType.Weapon:
-                                    if (i.Name != null)
-                                    {
-                                        var pair = Game1.weaponData.FirstOrDefault(o => o.Value.Name.Equals(i.Name));
-                                        if (pair.Value != null)
-                                        {
-                                            i.Index = pair.Key;
-                                        }
-                                        else
-                                        {
-                                            MailFrameworkModEntry.ModMonitor.Log(
-                                                $"No weapon found with the name {i.Name} for letter {mailItem.Id}.",
-                                                LogLevel.Warn);
-                                        }
-                                    }
-
-                                    if (i.Index != null)
-                                    {
-                                        string index = i.Index;
-                                        attachments.Add(SlingshotIndexes.Contains(index)
-                                            ? (Item) new Slingshot(index.Replace("(W)",""))
-                                            : (Item) new MeleeWeapon(index));
-                                    }
-                                    else
-                                    {
-                                        MailFrameworkModEntry.ModMonitor.Log(
-                                            $"An index value is required to attach a weapon for letter {mailItem.Id}.",
-                                            LogLevel.Warn);
-                                    }
-
-                                    break;
-                                case ItemType.Boots:
-                                    if (i.Name != null)
-                                    {
-                                        var boots = MailFrameworkModEntry.ModHelper.GameContent.Load<Dictionary<string, string>>(PathUtilities.NormalizeAssetName("Data/Boots"));
-                                        var pair = boots.FirstOrDefault(o => o.Value.StartsWith(i.Name + "/"));
-                                        if (pair.Value != null)
-                                        {
-                                            i.Index = pair.Key;
-                                        }
-                                        else
-                                        {
-                                            MailFrameworkModEntry.ModMonitor.Log(
-                                                $"No boots found with the name {i.Name} for letter {mailItem.Id}.",
-                                                LogLevel.Warn);
-                                        }
-                                    }
-
-                                    if (i.Index != null)
-                                    {
-                                        attachments.Add(new Boots(i.Index));
-                                    }
-                                    else
-                                    {
-                                        MailFrameworkModEntry.ModMonitor.Log(
-                                            $"An index value is required to attach a boots for letter {mailItem.Id}.",
-                                            LogLevel.Warn);
-                                    }
-
-                                    break;
-                                case ItemType.DGA:
-                                    if (DgaApi != null)
-                                    {
-                                        try
-                                        {
-                                            object dgaObject = DgaApi.SpawnDGAItem(i.Name);
-                                            if (dgaObject is StardewValley.Item dgaItem)
-                                            {
-                                                if (dgaItem is StardewValley.Object)
-                                                {
-                                                    dgaItem.Stack = i.Stack ?? 1;
-                                                    dgaItem.Quality = i.Quality;
-                                                }
-                                                else
-                                                {
-                                                    dgaItem.Stack = 1;
-                                                }
-
-                                                attachments.Add(dgaItem);
-                                            }
-                                            else
-                                            {
-                                                MailFrameworkModEntry.ModMonitor.Log(
-                                                    $"No DGA item found with the ID {i.Name} for letter {mailItem.Id}.",
-                                                    LogLevel.Warn);
-                                            }
-                                        }
-                                        catch (Exception ex)
-                                        {
-                                            MailFrameworkModEntry.ModMonitor.Log(
-                                                $"Error trying to create item with the DGA ID {i.Name} for letter {mailItem.Id}.",
-                                                LogLevel.Warn);
-                                            MailFrameworkModEntry.ModMonitor.Log(ex.Message, LogLevel.Trace);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        MailFrameworkModEntry.ModMonitor.Log(
-                                            $"No DGA API found, so item with the ID {i.Name} for letter {mailItem.Id} will be ignored.",
-                                            LogLevel.Warn);
-                                    }
-
-                                    break;
-                                case ItemType.QualifiedItemId:
-                                    if (i.Index != null)
-                                    {
-                                        Item item = ItemRegistry.Create(i.Index, i.Stack ?? 1, i.Quality);
-                                        attachments.Add(item);
-                                    }
-                                    else
-                                    {
-                                        MailFrameworkModEntry.ModMonitor.Log(
-                                            $"An index value is required to attach a FullId Item for letter {mailItem.Id}.",
-                                            LogLevel.Warn);
-                                    }
-
-                                    break;
-                                default:
-                                    MailFrameworkModEntry.ModMonitor.Log(
-                                        $"Invalid attachment type '{i.Type}' found in letter {mailItem.Id}.", LogLevel.Warn);
-                                    break;
-                            }
-                        });
-                        if (mailItem.CustomTextColorName != null)
-                        {
-                            try
-                            {
-                                mailItem.CustomTextColor = DataLoader.Helper.Reflection.GetProperty<Color>(typeof(Color), mailItem.CustomTextColorName).GetValue();
-                            }
-                            catch (Exception)
-                            {
-                                MailFrameworkModEntry.ModMonitor.Log($"Color '{mailItem.CustomTextColorName}' isn't valid. Check XNA Color Chart for valid names. This color will be ignored.");
-                            }
-                        }
+                        var attachments = GetAttachments(mailItem);
                         MailRepository.SaveLetter(
                             new Letter(
                                 mailItem.Id
                                 , mailItem.Text
                                 , attachments
                                 , Condition
-                                , (l) =>
-                                {
-                                    Game1.player.mailReceived.Add(l.Id);
-                                    if (mailItem.AdditionalMailReceived != null)
-                                        Game1.player.mailReceived.AddRange(mailItem.AdditionalMailReceived);
-                                }
+                                , callback
                                 , mailItem.WhichBG
                             )
                             {
@@ -570,7 +262,7 @@ namespace MailFrameworkMod
                                     ? GetTextureAsset(contentPack, mailItem.UpperRightCloseButton)
                                     : null,
                                 AutoOpen = mailItem.AutoOpen,
-                                I18N = hasTranslation ? contentPack.Translation : null
+                                I18N = contentPackTranslation
                             });
                     }
                     else
@@ -581,12 +273,7 @@ namespace MailFrameworkMod
                                 , mailItem.Text
                                 , mailItem.Recipe
                                 , Condition
-                                , (l) =>
-                                {
-                                    Game1.player.mailReceived.Add(l.Id);
-                                    if (mailItem.AdditionalMailReceived != null)
-                                        Game1.player.mailReceived.AddRange(mailItem.AdditionalMailReceived);
-                                }
+                                , callback
                                 , mailItem.WhichBG
                             )
                             {
@@ -601,7 +288,7 @@ namespace MailFrameworkMod
                                     ? GetTextureAsset(contentPack, mailItem.UpperRightCloseButton)
                                     : null,
                                 AutoOpen = mailItem.AutoOpen,
-                                I18N = hasTranslation ? contentPack.Translation : null
+                                I18N = contentPackTranslation
                             });
                     }
                 }
@@ -612,6 +299,328 @@ namespace MailFrameworkMod
                     $"Ignoring content pack: {contentPack.Manifest.Name} {contentPack.Manifest.Version} from {contentPack.DirectoryPath}\nIt does not have an mail.json file.",
                     LogLevel.Warn);
             }
+        }
+
+        private static List<Item> GetAttachments(MailItem mailItem)
+        {
+            var attachments = new List<Item>();
+            mailItem.Attachments.ForEach(i =>
+            {
+                if (i == null) return;
+                switch (i.Type)
+                {
+                    case ItemType.Object:
+                        if (i.Name != null)
+                        {
+                            var pair = Game1.objectData.FirstOrDefault(o => i.Name.Equals(o.Value.Name));
+                            if (pair.Value != null)
+                            {
+                                i.Index = pair.Key;
+                            }
+                            else
+                            {
+                                MailFrameworkModEntry.ModMonitor.Log(
+                                    $"No object found with the name {i.Name} for letter {mailItem.Id}.",
+                                    LogLevel.Warn);
+                            }
+                        }
+
+                        if (i.Index != null)
+                        {
+                            attachments.Add(new StardewValley.Object(i.Index, i.Stack ?? 1, quality: i.Quality));
+                        }
+                        else
+                        {
+                            MailFrameworkModEntry.ModMonitor.Log(
+                                $"An index value is required to attach an object for letter {mailItem.Id}.",
+                                LogLevel.Warn);
+                        }
+
+                        break;
+                    case ItemType.BigObject:
+                    case ItemType.BigCraftable:
+                        if (i.Name != null)
+                        {
+                            var pair = Game1.bigCraftableData.FirstOrDefault(o => i.Name.Equals(o.Value.Name));
+                            if (pair.Value != null)
+                            {
+                                i.Index = pair.Key;
+                            }
+                            else
+                            {
+                                MailFrameworkModEntry.ModMonitor.Log(
+                                    $"No big craftable found with the name {i.Name} for letter {mailItem.Id}.",
+                                    LogLevel.Warn);
+                            }
+                        }
+
+                        if (i.Index != null)
+                        {
+                            Item item = new StardewValley.Object(Vector2.Zero, i.Index);
+                            if (i.Stack.HasValue)
+                            {
+                                item.Stack = i.Stack.Value;
+                            }
+
+                            attachments.Add(item);
+                        }
+                        else
+                        {
+                            MailFrameworkModEntry.ModMonitor.Log(
+                                $"An index value is required to attach a big craftable for letter {mailItem.Id}.",
+                                LogLevel.Warn);
+                        }
+
+                        break;
+                    case ItemType.Tool:
+                        Tool tool = null;
+                        switch (i.Name)
+                        {
+                            case "Axe":
+                                tool = new Axe();
+                                break;
+                            case "Hoe":
+                                tool = new Hoe();
+                                break;
+                            case "Watering Can":
+                                tool = new WateringCan();
+                                break;
+                            case "Scythe":
+                                tool = new MeleeWeapon("47");
+                                break;
+                            case "Golden Scythe":
+                                tool = new MeleeWeapon("53");
+                                break;
+                            case "Pickaxe":
+                                tool = new Pickaxe();
+                                break;
+                            case "Milk Pail":
+                                tool = new MilkPail();
+                                break;
+                            case "Shears":
+                                tool = new Shears();
+                                break;
+                            case "Fishing Rod":
+                                tool = new FishingRod(i.UpgradeLevel ?? 0);
+                                break;
+                            case "Pan":
+                                tool = new Pan();
+                                break;
+                            case "Return Scepter":
+                                tool = new Wand();
+                                break;
+                            default:
+                                MailFrameworkModEntry.ModMonitor.Log(
+                                    $"Tool with name {i.Name} not found for letter {mailItem.Id}.", LogLevel.Warn);
+                                break;
+                        }
+
+                        if (tool != null)
+                        {
+                            if (!NoUpgradeLevelTools.Contains(i.Name))
+                            {
+                                tool.UpgradeLevel = i.UpgradeLevel ?? 0;
+                            }
+
+                            attachments.Add(tool);
+                        }
+
+                        break;
+                    case ItemType.Ring:
+                        if (i.Name != null)
+                        {
+                            KeyValuePair<string, ObjectData> pair =
+                                Game1.objectData.FirstOrDefault(o => i.Name.Equals(o.Value.Name));
+                            if (pair.Value != null)
+                            {
+                                i.Index = pair.Key;
+                            }
+                            else
+                            {
+                                MailFrameworkModEntry.ModMonitor.Log(
+                                    $"No ring found with the name {i.Name} for letter {mailItem.Id}.",
+                                    LogLevel.Warn);
+                            }
+                        }
+
+                        if (i.Index != null)
+                        {
+                            if (Game1.objectData[i.Index].Type.Equals("Ring"))
+                            {
+                                attachments.Add(new Ring(i.Index));
+                            }
+                            else
+                            {
+                                MailFrameworkModEntry.ModMonitor.Log(
+                                    $"A valid ring is required to attach an ring for letter {mailItem.Id}.",
+                                    LogLevel.Warn);
+                            }
+                        }
+                        else
+                        {
+                            MailFrameworkModEntry.ModMonitor.Log(
+                                $"An index value is required to attach an ring for letter {mailItem.Id}.",
+                                LogLevel.Warn);
+                        }
+
+                        break;
+                    case ItemType.Furniture:
+                        if (i.Name != null)
+                        {
+                            Dictionary<string, string> furnitures =
+                                MailFrameworkModEntry.ModHelper.GameContent.Load<Dictionary<string, string>>(
+                                    PathUtilities.NormalizeAssetName("Data/Furniture"));
+                            KeyValuePair<string, string> pair =
+                                furnitures.FirstOrDefault(o => o.Value.StartsWith(i.Name + "/"));
+                            if (pair.Value != null)
+                            {
+                                i.Index = pair.Key;
+                            }
+                            else
+                            {
+                                MailFrameworkModEntry.ModMonitor.Log(
+                                    $"No furniture found with the name {i.Name} for letter {mailItem.Id}.",
+                                    LogLevel.Warn);
+                            }
+                        }
+
+                        if (i.Index != null)
+                        {
+                            attachments.Add(Furniture.GetFurnitureInstance(i.Index));
+                        }
+                        else
+                        {
+                            MailFrameworkModEntry.ModMonitor.Log(
+                                $"An index value is required to attach a furniture for letter {mailItem.Id}.",
+                                LogLevel.Warn);
+                        }
+
+                        break;
+                    case ItemType.Weapon:
+                        if (i.Name != null)
+                        {
+                            var pair = Game1.weaponData.FirstOrDefault(o => i.Name.Equals(o.Value.Name));
+                            if (pair.Value != null)
+                            {
+                                i.Index = pair.Key;
+                            }
+                            else
+                            {
+                                MailFrameworkModEntry.ModMonitor.Log(
+                                    $"No weapon found with the name {i.Name} for letter {mailItem.Id}.",
+                                    LogLevel.Warn);
+                            }
+                        }
+
+                        if (i.Index != null)
+                        {
+                            string index = i.Index;
+                            attachments.Add(SlingshotIndexes.Contains(index)
+                                ? (Item)new Slingshot(index.Replace("(W)", ""))
+                                : (Item)new MeleeWeapon(index));
+                        }
+                        else
+                        {
+                            MailFrameworkModEntry.ModMonitor.Log(
+                                $"An index value is required to attach a weapon for letter {mailItem.Id}.",
+                                LogLevel.Warn);
+                        }
+
+                        break;
+                    case ItemType.Boots:
+                        if (i.Name != null)
+                        {
+                            var boots = MailFrameworkModEntry.ModHelper.GameContent.Load<Dictionary<string, string>>(
+                                PathUtilities.NormalizeAssetName("Data/Boots"));
+                            var pair = boots.FirstOrDefault(o => o.Value.StartsWith(i.Name + "/"));
+                            if (pair.Value != null)
+                            {
+                                i.Index = pair.Key;
+                            }
+                            else
+                            {
+                                MailFrameworkModEntry.ModMonitor.Log(
+                                    $"No boots found with the name {i.Name} for letter {mailItem.Id}.",
+                                    LogLevel.Warn);
+                            }
+                        }
+
+                        if (i.Index != null)
+                        {
+                            attachments.Add(new Boots(i.Index));
+                        }
+                        else
+                        {
+                            MailFrameworkModEntry.ModMonitor.Log(
+                                $"An index value is required to attach a boots for letter {mailItem.Id}.",
+                                LogLevel.Warn);
+                        }
+
+                        break;
+                    case ItemType.DGA:
+                        if (DgaApi != null)
+                        {
+                            try
+                            {
+                                object dgaObject = DgaApi.SpawnDGAItem(i.Name);
+                                if (dgaObject is StardewValley.Item dgaItem)
+                                {
+                                    if (dgaItem is StardewValley.Object)
+                                    {
+                                        dgaItem.Stack = i.Stack ?? 1;
+                                        dgaItem.Quality = i.Quality;
+                                    }
+                                    else
+                                    {
+                                        dgaItem.Stack = 1;
+                                    }
+
+                                    attachments.Add(dgaItem);
+                                }
+                                else
+                                {
+                                    MailFrameworkModEntry.ModMonitor.Log(
+                                        $"No DGA item found with the ID {i.Name} for letter {mailItem.Id}.",
+                                        LogLevel.Warn);
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                MailFrameworkModEntry.ModMonitor.Log(
+                                    $"Error trying to create item with the DGA ID {i.Name} for letter {mailItem.Id}.",
+                                    LogLevel.Warn);
+                                MailFrameworkModEntry.ModMonitor.Log(ex.Message, LogLevel.Trace);
+                            }
+                        }
+                        else
+                        {
+                            MailFrameworkModEntry.ModMonitor.Log(
+                                $"No DGA API found, so item with the ID {i.Name} for letter {mailItem.Id} will be ignored.",
+                                LogLevel.Warn);
+                        }
+
+                        break;
+                    case ItemType.QualifiedItemId:
+                        if (i.Index != null)
+                        {
+                            Item item = ItemRegistry.Create(i.Index, i.Stack ?? 1, i.Quality);
+                            attachments.Add(item);
+                        }
+                        else
+                        {
+                            MailFrameworkModEntry.ModMonitor.Log(
+                                $"An index value is required to attach a FullId Item for letter {mailItem.Id}.",
+                                LogLevel.Warn);
+                        }
+
+                        break;
+                    default:
+                        MailFrameworkModEntry.ModMonitor.Log(
+                            $"Invalid attachment type '{i.Type}' found in letter {mailItem.Id}.", LogLevel.Warn);
+                        break;
+                }
+            });
+            return attachments;
         }
 
         private static Child GetChild(int childNumber)

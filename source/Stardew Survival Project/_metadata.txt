@@ -6,9 +6,11 @@ mods:
    Stardew Survival Project
 
 latest commit:
-   commit 187e64c49443778a40d2a2ac5c46c2386b1e3c8b
-   Author: NeroYuki <neroyuki241@gmail.com>
-   Date:   Wed Mar 20 22:51:44 2024 +0700
+   commit 67d59fb3ed4dacc567c8d7dddb99ce8585019056
+   Author: Nguyen Ngoc Dang <kingrfminecraft@gmail.com>
+   Date:   Tue May 21 13:34:51 2024 +0700
    
-       remove build artifact accidentally included, oops
+       Merge pull request #4 from D3c3453d/main
+       
+       Fixed indoors temperature
    

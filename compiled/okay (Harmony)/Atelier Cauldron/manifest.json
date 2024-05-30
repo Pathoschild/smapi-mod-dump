@@ -1,0 +1,22 @@
+{
+  "Name": "Atelier Cauldron",
+  "Author": "Kedi & sophiesalacia & wildflourmods",
+  "Description": "Manages config options for Wildflour Atelier Goods packs.",
+  "Version": "1.0.9",
+  "UniqueID": "Atelier.Cauldron",
+  "UpdateKeys": ["Nexus:22926"],
+  "MinimumApiVersion": "4.0.0",
+  "EntryDll": "Cauldron.dll",
+  "Dependencies": [
+    {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "MinimumVersion": "1.27.0",
+      "IsRequired": true
+    },
+    {
+      "UniqueID": "spacechase0.GenericModConfigMenu",
+      "MinimumVersion": "1.8.2",
+      "IsRequired": false
+    }
+  ]
+}

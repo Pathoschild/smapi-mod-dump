@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/rokugin/StardewMods
+**
+*************************************************/
+
+{
+  "Name": "No Indoor Dismount",
+  "Author": "Rokugin",
+  "Version": "1.0.0",
+  "Description": "Stops you from being automatically dismounted when entering indoor locations while mounted.",
+  "UniqueID": "rokugin.nodismount",
+  "EntryDll": "NoIndoorDismount.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "" ]
+}

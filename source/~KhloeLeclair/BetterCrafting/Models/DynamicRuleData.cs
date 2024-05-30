@@ -38,16 +38,27 @@ public class DynamicRuleData : IDynamicRuleData {
 
 	public string Id { get; set; } = string.Empty;
 
+	/// <summary>
+	/// Whether or not this rule is inverted. If a rule is inverted, it
+	/// removes matching recipes rather than adding them.
+	/// </summary>
+	public bool Inverted { get; set; } = false;
+
 	[JsonExtensionData]
 	public IDictionary<string, JToken> Fields { get; set; } = new Dictionary<string, JToken>();
 
 	public static DynamicRuleData FromGeneric(IDynamicRuleData other) {
 		var result = new DynamicRuleData {
-			Id = other.Id
+			Id = other.Id,
+			Inverted = other is DynamicRuleData drd && drd.Inverted,
 		};
 
-		foreach(var entry in other.Fields)
-			result.Fields.Add(entry.Key, entry.Value);
+		foreach (var entry in other.Fields) {
+			if (entry.Key == "Inverted")
+				result.Inverted = (bool) entry.Value;
+			else
+				result.Fields.Add(entry.Key, entry.Value);
+		}
 
 		return result;
 	}

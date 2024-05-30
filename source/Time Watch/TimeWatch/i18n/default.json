@@ -1,0 +1,47 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/KyuubiRan/TimeWatch
+**
+*************************************************/
+
+{
+  // Config
+  "config.IncreaseTimeKeyBinding": "Store Time Key",
+  "config.IncreaseTimeKeyBindingTooltip": "Default: Add",
+  "config.DecreaseTimeKeyBinding": "Turn Back Time Key",
+  "config.DecreaseTimeKeyBindingTooltip": "Default: Subtract",
+  "config.ShowTimeChangedNotify": "Show Notify",
+  "config.ShowTimeChangedNotifyTooltip": "Show notify when time stored or turn back",
+  "config.SeekTimeValue": "Seek Value",
+  "config.SeekTimeValueTooltip": "Unit: 10 minutes\n[1-36] Default: 6",
+  "config.HoldShiftSeekTimeValue": "Hold Shift Seek Value",
+  "config.HoldShiftSeekTimeValueTooltip": "Unit: 10 minutes\n[1-36] Default: 1",
+  "config.HoldCtrlSeekTimeValue": "Hold Ctrl Seek Value",
+  "config.HoldCtrlSeekTimeValueTooltip": "Unit: 10 minutes\n[1-36] Default: 3",
+  "config.MaximumStorableTime": "Maximum Storable",
+  "config.MaximumStorableTimeTooltip": "Unit: 1 hour\n[0-672] Default: 6, 0 if unlimited, 672 = 28 days = 1 season",
+  "config.MultiPlayHostOnly": "Host Only",
+  "config.MultiPlayHostOnlyTooltip": "In multi play game, only host can store and turn back time",
+  "config.UpdateObjects": "Update Objects",
+  "config.UpdateObjectsTooltip": "※NOT RECOMMEND\nUse performTenMinuteClockUpdate instead direct set time\nWill update game objects when time stored",
+  "config.DailyMaximumStorableTime": "Daily Maximum Storable",
+  "config.DailyMaximumStorableTimeTooltip": "Unit: 10 minutes\n[0-108] Default: 18, 0 if unlimited\nWill increase the value when turning back time",
+  // Item
+  "item.TimeWatch": "Magic Time Watch",
+  "item.TimeWatchTooltip": "Current stored time: {0}\nMaximum storable time: {1}\nRemaining storable time of today: {2}",
+  "item.TimeWatch.StoreTime.Unlimited": "Unlimited",
+  // Message
+  "message.TimeStored": "Time stored {0}, Current {1}",
+  "message.TimeReleased": "Time turn backed {0}, Current {1}",
+  "message.TimeStoredMultiPlay": "Time stored {0} by {1}",
+  "message.TimeReleasedMultiPlay": "Time turn backed {0} by {1}",
+  "message.StoreFailedMaximum": "Store time failed: Exceeds the maximum storable time (Current: {0}, Maximum: {1})",
+  "message.ReleaseFailedNotEnough": "Turn back time failed: Not enough time (Current: {0}, Need: {1})",
+  "message.StoreFailedExceedZeroOClock": "Store time failed: The time after storage cannot exceed 00:00",
+  "message.ReleaseFailedEarlierSixOClock": "Turn back time failed: The time after turn backed cannot be earlier than 06:00",
+  "message.StoreFailedExceedDailyMaximum": "Store time failed: Exceeds the daily maximum storable time."
+}

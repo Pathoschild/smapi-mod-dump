@@ -1,0 +1,31 @@
+{
+	"mod.name": "Cloudy Skies",
+
+	"setting.weather-tooltip": "天気予報のツールチップを表示",
+	"setting.weather-tooltip.about": "有効にすると、時計の天気アイコンの上にカーソルを置いたときに、現在の天気の名前がツールチップで表示されます。",
+
+	"setting.debug": "デバッグタイミングを表示する",
+	"setting.debug.about": "有効にすると、天気の更新とレンダリングにかかった時間を示すタイマーが画面に表示されます。これは、カスタム天気を作成するときに、やり過ぎないようにするのに便利です。",
+
+	"setting.debug.shaders": "デバッグ：シェーダーの再コンパイル",
+	"setting.debug.shaders.about": "有効にすると、シェーダのソースコードがコンパイルされた 「.mgfx」ファイルと一緒に「.fx」ファイルに存在する場合、Cloudy Skies は 「mgfxc」ユーティリティでシェーダの再コンパイルを試みる。",
+
+	"setting.replace-tv-menu": "天気予報の変更",
+	"setting.replace-tv-menu.about": "有効にすると、テレビの天気予報をより多くの場所の天気を表示するカスタムバージョンに置き換えます。",
+
+	"setting.custom-ginger-isle": "ジンジャーアイランドの天気予報デザイン",
+	"setting.custom-ginger-isle.about": "有効にすると、カスタム天気予報のジンジャーアイランドのアートを、他のアートに合うカスタムアートに置き換えます。",
+
+	"tv.select-location": "場所を選択：",
+
+	"location.stardew-valley": "スターデューバレー",
+	"location.calico-desert": "カリコ砂漠",
+
+	"weather.sunny": "晴れ",
+	"weather.rain": "雨",
+	"weather.debris": "風",
+	"weather.lightning": "嵐",
+	"weather.festival": "晴れ",
+	"weather.snow": "雪",
+	"weather.green": "緑の雨"
+}

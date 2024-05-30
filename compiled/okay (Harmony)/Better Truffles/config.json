@@ -1,0 +1,10 @@
+{
+  "Enabled": true,
+  "PigsDigInGrass": true,
+  "ShowBubbles": true,
+  "RenderOnTop": false,
+  "OffsetY": 0,
+  "OffsetX": 0,
+  "OpacityPercent": 75,
+  "SizePercent": 75
+}

@@ -9,6 +9,7 @@
 
     // generic values
     "generic.unknown": "невідомо",
+    "generic.list-separator": ", ", // text between listed values (like ", " in "A, B, C")
 
     // generic field values
     "generic.percent": "{{percent}}%",
@@ -24,9 +25,9 @@
     "generic.days": "{{count}} дн.",
     "generic.in-x-days": "за {{count}} дн.",
     "generic.x-days-ago": "{{count}} дн. тому",
-    "generic.price": "{{price}} з.",
-    "generic.price-for-quality": "{{price}} з. ({{quality}})",
-    "generic.price-for-stack": "{{price}} з. за набір з {{count}} од.",
+    "generic.price": "{{price}} зол.",
+    "generic.price-for-quality": "{{price}} зол. ({{quality}})",
+    "generic.price-for-stack": "{{price}} зол. за набір з {{count}} од.",
     "generic.show-x-results": "show {{count}} results", // TODO
 
     // types
@@ -98,31 +99,19 @@
     "data.item.box.description": "Розбийте, щоб отримати різні речі.",
 
     // location names
-    "location.backwoods": "Задні ліси",
-    "location.beach": "Пляж",
     "location.beach.east-pier": "Пляж (східний пірс)",
     "location.bugLand": "Лігво жуків-мутантів",
-    "location.busStop": "Автобусна зупинка",
-    "location.desert": "Пустеля",
-    "location.desert.topPond": "desert (north pond)", // TODO
-    "location.farm": "Ферма",
+    "location.desert.topPond": "пустеля (північний ставок)",
     "location.farmCave": "Печера ферми",
     "location.farmHouse": "Будинок ферми",
-    "location.forest": "Ліс",
     "location.forest.island-tip": "Лісова річка (південна частина великого острова)",
     "location.forest.lake": "Лісове озеро",
     "location.forest.river": "Лісова річка",
-    "location.mountain": "Гори",
-    "location.railroad": "Залізниця",
-    "location.sewer": "Каналізація",
     "location.submarine": "Підводний човен Нічного ринку",
-    "location.town": "Місто",
     "location.town.northmost-bridge": "Місто (найпівнічніший міст)",
-    "location.tunnel": "Автобусний тунель",
     "location.undergroundMine": "Шахта",
     "location.undergroundMine.level": "{{level}} рівень шахти",
     "location.witchSwamp": "Болото відьми",
-    "location.woods": "Таємний ліс",
 
     "location.caldera": "Жерло вулкана Імбирного острова",
     "location.islandEast": "Східна частина Імбирного острова",
@@ -134,7 +123,31 @@
     "location.islandWest.freshwater": "Західна частина Імбирного острова (ставок)",
     "location.islandWest.ocean": "Західна частина Імбирного острова (океан)",
 
+    "location.fish-area": "{{locationName}} ({{areaName}})",
     "location.unknown-fish-area": "{{locationName}} (риболовна місцина {{id}})",
+
+
+    /*********
+    ** Conditions & context tags
+    *********/
+    // TODO
+    "condition-or-context-tag.negate": "not {{value}}",
+
+    "condition.item-type.input": "input item",
+    "condition.item-type.target": "target item",
+
+    "condition.item-context-tag": "{{item}} has context tag {{tags}}",
+    "condition.item-context-tags": "{{item}} has context tags {{tags}}",
+    "condition.item-context-tag.value": "'{{tag}}'", // the format of each context tag in the list (each context tag isn't translated)
+
+    "condition.item-edibility.edible": "{{item}} is edible",
+    "condition.item-edibility.min": "{{item}} has edibility of {{min}} or more",
+    "condition.item-edibility.range": "{{item}} has edibility of {{min}} to {{max}}",
+
+    "context-tag.bone": "any bone",
+    "context-tag.egg": "any egg",
+    "context-tag.large-egg": "any large egg",
+    "context-tag.preserved-item": "preserved {{name}}",
 
 
     /*********
@@ -184,7 +197,7 @@
     "building.output-processing": "У черзі",
     "building.output-ready": "Готово",
     "building.slimes.summary": "{{count}} з {{max}} слаймів",
-    "building.stored-hay.summary": "{{hayCount}} of {{maxHayInLocation}} hay in this location (max capacity in this building: {{maxHayInBuilding}})", // TODO
+    "building.stored-hay.summary": "{{hayCount}} з {{maxHayInLocation}} снопів сіна (максимальна місткість цієї будівлі: {{maxHayInBuilding}})",
     "building.upgrades.barn.0": "До 4-ох тварин, розблоковує : корови",
     "building.upgrades.barn.1": "До 8-ох тварин, розблоковує : кози та вагітність тварин",
     "building.upgrades.barn.2": "До 12-ох тварин, розблоковує : автоматичне подавання корму, свині та вівці",
@@ -299,26 +312,30 @@
     "item.see-also": "Також подивіться",
     "item.sells-for": "Продається за",
     "item.sells-to": "Місце продажу",
-    "item.can-be-dyed": "Можно пофарбувати",
+    "item.can-be-dyed": "Можна пофарбувати",
     "item.produces-dye": "Продукує барвник",
 
     // values
-    "item.custom-item.summary": "added by {{modName}}", // TODO
+    "item.custom-item.summary": "додано модом {{modName}}",
     "item.contents.placed": "Містить {{name}}",
     "item.contents.ready": "{{name}} готово",
     "item.contents.partial": "{{name}} за {{time}}",
     "item.undiscovered-gift-taste": "{{count}} незнайомих містян",
     "item.undiscovered-gift-taste-appended": " та {{count}} незнайомих містян",
     "item.needed-for.community-center": "Громадський клуб ({{bundles}})",
-    "item.needed-for.full-shipment": "Досягнення \"Майстер-вантаж\" (Надішліть на продаж 1 од.)",
-    "item.needed-for.polyculture": "Досягнення \"Сівозміна\" (Надішліть на продаж {{count}} од. або більше)",
-    "item.needed-for.full-collection": "Досягнення \"Повна колекція\" (Пожертвуйте музею артефакт чи мінерал)",
-    "item.needed-for.gourmet-chef": "Досягнення \"Шеф-кухар\" (Притогуйте страву : {{recipes}})",
-    "item.needed-for.craft-master": "Досягнення \"Найкращий з ремісників\" (Створіть предмет : {{recipes}})",
+    "item.needed-for.full-shipment": "Досягнення «Майстер-вантаж» (Надішліть на продаж 1 од.)",
+    "item.needed-for.polyculture": "Досягнення «Сівозміна» (Надішліть на продаж {{count}} од. або більше)",
+    "item.needed-for.full-collection": "Досягнення «Повна колекція» (Пожертвуйте музею артефакт чи мінерал)",
+    "item.needed-for.gourmet-chef": "Досягнення «Шеф-кухар» (Приготуйте страву : {{recipes}})",
+    "item.needed-for.craft-master": "Досягнення «Найкращий з ремісників» (Створіть предмет : {{recipes}})",
     "item.needed-for.quests": "Завдання наразі ({{quests}})",
+    "item.unknown-recipes": "{{count}} unknown recipes", // TODO
     "item.sells-to.shipping-box": "Ящик для продажу",
     "item.recipes-for-ingredient.entry": "{{name}} ({{count}} од.)",
     "item.recipes-for-machine.multiple-items": "{{name}} {{count}} од.",
+    "item.recipes-for-machine.same-as-input": "[same as input]", // e.g. crystalarium produces same item that was put in // TODO
+    "item.recipes-for-machine.conditions": "[conditions: {{conditions}}]", // TODO
+    "item.recipes-for-machine.too-complex": "Some machine rules are too dynamic to display.", // TODO
     "item.number-owned.summary": "Ви маєте {{count}} од.",
     "item.number-crafted.summary": "Ви створили {{count}} од.",
 
@@ -343,7 +360,7 @@
     // labels
     "item.crabpot-bait": "Наживка",
     "item.crabpot-bait-needed": "Потрібна наживка!",
-    "item.crabpot-bait-not-needed": "Непотрібно, бо ви обрали професію \"Майстер з наживки\".",
+    "item.crabpot-bait-not-needed": "Непотрібно, бо ви обрали професію «Майстер з наживки».",
 
 
     /*********
@@ -387,7 +404,7 @@
     "item.melee-weapon.damage": "Шкода",
     "item.melee-weapon.defense": "Захист",
     "item.melee-weapon.knockback": "Відбиття",
-    "item.melee-weapon.reach": "Дальніть",
+    "item.melee-weapon.reach": "Дальність",
     "item.melee-weapon.speed": "Швидкість атаки",
 
     // values
@@ -538,7 +555,7 @@
 
     // values
     "puzzle.solution.solved": "Складанку розв'язано!",
-    "puzzle.solution.hidden": "Розв'яки складанок приховані в режимі прогресу.",
+    "puzzle.solution.hidden": "Розв'язки складанок приховані відповідно до ваших налаштувань.",
 
 
     /*********
@@ -587,7 +604,7 @@
     "tile.tile-index": "{{layerName}}: індекс клітини",
     "tile.tilesheet": "{{layerName}}: таблиця клітини",
     "tile.blend-mode": "{{layerName}}: режим перекриття",
-    "tile.index-property": "{{layerName}}: їx властивості : {{propertyName}}",
+    "tile.index-property": "{{layerName}}: їх властивості : {{propertyName}}",
     "tile.tile-property": "{{layerName}}: властивості : {{propertyName}}",
 
     // values
@@ -599,7 +616,7 @@
     *********/
     // labels
     "trash-bear-or-gourmand.item-wanted": "Потрібен предмет",
-    "trash-bear-or-gourmand.quest-progress": "Прогресс завдання",
+    "trash-bear-or-gourmand.quest-progress": "Прогрес завдання",
 
 
     /*********
@@ -618,17 +635,17 @@
     "tree.name.oak": "Дуб",
     "tree.name.palm": "Пальма",
     "tree.name.pine": "Сосна",
-    "tree.name.mossy": "Mossy Tree", // TODO
-    "tree.name.mystic": "Mystic Tree", // TODO
+    "tree.name.mossy": "Замшіле дерево",
+    "tree.name.mystic": "Містичне дерево",
     "tree.name.unknown": "Невідоме дерево",
     "tree.stage.done": "Повністю виросло",
     "tree.stage.partial": "{{stageName}} ({{step}} з {{max}})",
     "tree.next-growth.winter": "Не може рости взимку поза теплицею",
     "tree.next-growth.adjacent-trees": "Не може рости, бо поряд займано місце",
     "tree.next-growth.chance": "{{chance}}% шанс, що завтра буде {{stage}}",
-    "tree.seed.not-ready": "Not ready", // TODO
-    "tree.seed.probability-daily": "{{chance}}% chance of {{itemName}} each day.", // TODO
-    "tree.seed.probability-on-chop": "{{chance}}% chance of dropping {{itemName}} when chopped down.", // TODO
+    "tree.seed.not-ready": "Не готово",
+    "tree.seed.probability-daily": "{{chance}}% шанс {{itemName}} щодня.",
+    "tree.seed.probability-on-chop": "{{chance}}% шанс випасти {{itemName}} якщо зрубати.",
 
     // growth stages
     "tree.stages.seed": "Насінина",
@@ -644,23 +661,34 @@
     *********/
     // main options
     "config.title.main-options": "Основні налаштування",
-    "config.progression-mode.name": "Режим прогресу",
-    "config.progression-mode.desc": "Приховувавання деякого вмісту (Наприклад, улюблені подарунки і рішення головоломок), доки ви не знайдете їх в грі.",
     "config.force-full-screen.name": "Примусово на весь екран",
     "config.force-full-screen.desc": "Меню завжди буде повноекранним, а не центрованим у вікні. Це в основному корисно під час перегляду даних.",
+
+    // progression mode
+    // TODO
+    "config.title.progression": "Режим прогресу",
+
+    "config.progression.show-unknown-gift-tastes.name": "Show unknown gift tastes",
+    "config.progression.show-unknown-gift-tastes.desc": "Whether to show gift tastes you haven't learned about in-game yet (e.g. from dialogue text or experimenting).",
+
+    "config.progression.show-unknown-recipes.name": "Show unknown recipes",
+    "config.progression.show-unknown-recipes.desc": "Whether to show recipes you haven't learned in-game yet.",
+
+    "config.progression.show-puzzle-solutions.name": "Show puzzle solutions",
+    "config.progression.show-puzzle-solutions.desc": "Whether to show puzzle solutions.",
 
     // gift tastes
     "config.title.gift-tastes": "Вподобання",
     "config.show-gift-tastes.loved.name": "Показувати улюблені подарунки",
-    "config.show-gift-tastes.loved.desc": "Чи показувати улюблені подарунки в дос'є НІПів та предметів.",
+    "config.show-gift-tastes.loved.desc": "Чи показувати улюблені подарунки в досьє НІПів та предметів.",
     "config.show-gift-tastes.liked.name": "Показувати вподобані подарунки",
-    "config.show-gift-tastes.liked.desc": "Чи показувати вподобані подарунки в дос'є НІПів та предметів.",
+    "config.show-gift-tastes.liked.desc": "Чи показувати вподобані подарунки в досьє НІПів та предметів.",
     "config.show-gift-tastes.neutral.name": "Показувати звичайні подарунки",
-    "config.show-gift-tastes.neutral.desc": "Чи показувати звичайні подарунки в дос'є НІПів та предметів.",
+    "config.show-gift-tastes.neutral.desc": "Чи показувати звичайні подарунки в досьє НІПів та предметів.",
     "config.show-gift-tastes.disliked.name": "Показувати невподобані\nподарунки",
-    "config.show-gift-tastes.disliked.desc": "Чи показувати невподобані подарунки в дос'є НІПів та предметів.",
+    "config.show-gift-tastes.disliked.desc": "Чи показувати невподобані подарунки в досьє НІПів та предметів.",
     "config.show-gift-tastes.hated.name": "Показувати жахливі подарунки",
-    "config.show-gift-tastes.hated.desc": "Чи показувати жахливі подарунки в дос'є НІПів та предметів.",
+    "config.show-gift-tastes.hated.desc": "Чи показувати жахливі подарунки в досьє НІПів та предметів.",
 
     "config.show-unowned-gifts.name": "Показувати незвідані вподобання",
     "config.show-unowned-gifts.desc": "Чи показувати незвідані вподобання предметів, якими гравець не володіє десь у світі.",
@@ -668,14 +696,26 @@
     "config.highlight-unrevealed-gift-tastes.name": "Підкреслити незвідані улюблені\nподарунки",
     "config.highlight-unrevealed-gift-tastes.desc": "Виділення улюблених подарунків, які не були виявлені в профілі НП. Якщо ввімкнено, не виявлені улюблені подарунки будуть жирними.",
 
+    // collapse fields
+    // TODO
+    "config.title.collapse-fields": "Collapse large fields",
+
+    "config.collapse-fields.enabled.name": "Enabled",
+    "config.collapse-fields.enabled.desc": "Whether to collapse large fields, so the lookup menu will replace the list with a clickable 'show X values' link to expand it.",
+
+    "config.collapse-fields.building-recipes.name": "Building lookup: recipes",
+    "config.collapse-fields.item-recipes.name": "Item lookup: recipes",
+    "config.collapse-fields.npc-gift-tastes.name": "NPC lookup: gift tastes",
+    "config.collapse-fields.any.desc": "If the field contains this many values, the lookup menu will replace the list with a clickable 'show X values' link to expand it.",
+
     // advanced options
     "config.title.advanced-options": "Розширені опції",
     "config.tile-lookups.name": "Пізнати клітини",
     "config.tile-lookups.desc": "Включення фрагменту світу як ціль пошуку.",
     "config.data-mining-fields.name": "Показати поле аналізу даних",
-    "config.data-mining-fields.desc": "Показ необроблених данних, корисних для шукачів даних (Як окремі поля внизу результатів пошуку). Це розширена функція, яка не призначена для більшості гравців.",
+    "config.data-mining-fields.desc": "Показ необроблених даних, корисних для шукачів даних (Як окремі поля внизу результатів пошуку). Це розширена функція, яка не призначена для більшості гравців.",
     "config.target-redirection.name": "Цільове переспрямування",
-    "config.target-redirection.desc": "У деяких випадках гра породжує тимчасову сутність, яка представляє іншу. Наприклад, Абіґейл в шахтах насправді є тимчасовим НП на ім'я \"AbigailMine\", тому пошук її не покаже справжню інформацію про Абіґейл. Якщо цей параметр увімкнено, Lookup Anything шукатиме оригінальну Абіґейл.",
+    "config.target-redirection.desc": "У деяких випадках гра породжує тимчасову сутність, яка представляє іншу. Наприклад, Абіґейл в шахтах насправді є тимчасовим НП на ім'я «AbigailMine», тому пошук її не покаже справжню інформацію про Абіґейл. Якщо цей параметр увімкнено, Lookup Anything шукатиме оригінальну Абіґейл.",
     "config.scroll-amount.name": "Число прокрутки",
     "config.scroll-amount.desc": "Кількість пікселів для зміщення вмісту під час кожного прокручування вгору/вниз.",
 

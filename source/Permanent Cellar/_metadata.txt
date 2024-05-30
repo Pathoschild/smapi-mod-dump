@@ -6,9 +6,9 @@ mods:
    Permanent Cellar
 
 latest commit:
-   commit 6cf2f8c242aa5b74e4ec2666965c616b7e0b2a77
+   commit ff9cd168246e46d29ea211bbe1acd6c35c936015
    Author: CyanFireUK <killa796@hotmail.com>
-   Date:   Sun Mar 31 16:06:57 2024 +0100
+   Date:   Sun Apr 28 13:24:34 2024 +0100
    
-       Added config option to re-add Casks to cellar if the player has removed them but wants them back later in the game
+       Code cleanup
    

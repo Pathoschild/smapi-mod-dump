@@ -1,12 +1,26 @@
 {
   "dialog.title": "Choisir un emplacement:",
-  "dialog.location.farm": "La ferme",
-  "dialog.location.beach": "La plage",
-  "dialog.location.mountain": "La Montagne",
-  "dialog.location.desert": "Le Désert de Calico",
-  "dialog.location.island": "L'Île Gingembre",
-  "dialog.location.islandFarm": "Ferme de l'île",
-  "dialog.location.miniObelisk": "Mini-obélisque",
-  "dialog.location.miniObeliskNumber": "Mini-obélisque #{{number}}",
-  "dialog.cancel": "Annuler"
+  
+  "common.save": "Enregistrer",
+  "common.cancel": "Annuler",
+  
+  "configuration-menu.title": "configuration-menu.title",
+  
+  "settings-menu.title": "Paramètres",
+  
+  "configuration-menu.button-hover.rename": "Changer le nom",
+  "configuration-menu.button-hover.hidden": "Caché",
+  "configuration-menu.button-hover.visible": "configuration-menu.button-hover.visible",
+  "configuration-menu.button-hover.move-up": "Vers le haut",
+  "configuration-menu.button-hover.move-down": "Vers le bas",
+  
+  "rename-menu.reset-to-default": "Valeurs par défaut",
+  
+  "teleport-scroll.farm": "La ferme",
+  "teleport-scroll.beach": "La plage",
+  "teleport-scroll.mountain": "La Montagne",
+  "teleport-scroll.desert": "Le Désert de Calico",
+  "teleport-scroll.island": "L'Île Gingembre",
+  "teleport-scroll.island-farm": "Ferme de l'île",
+  "teleport-scroll.mini-obelisk": "Mini-obélisque"
 }

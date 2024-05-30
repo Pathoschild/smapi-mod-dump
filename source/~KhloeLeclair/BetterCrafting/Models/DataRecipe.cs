@@ -11,11 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-using Leclair.Stardew.BetterCrafting.Integrations.SpaceCore;
-using Leclair.Stardew.BetterCrafting.Patches;
 using Leclair.Stardew.Common;
 using Leclair.Stardew.Common.Crafting;
 
@@ -52,7 +48,7 @@ public class DataRecipe : IRecipe {
 					string[]? tags = ingredient.ContextTags != null && ingredient.ContextTags.Length > 0 ? ingredient.ContextTags : null;
 					string? itemId = !string.IsNullOrEmpty(ingredient.ItemId) ? ingredient.ItemId : null;
 
-					if (tags != null && itemId != null || tags != null && ingredient.Query != null || itemId != null && ingredient.Query != null )
+					if (tags != null && itemId != null || tags != null && ingredient.Query != null || itemId != null && ingredient.Query != null)
 						ings.Add(new ErrorIngredient());
 					if (tags == null && itemId == null && ingredient.Query == null)
 						ings.Add(new ErrorIngredient());
@@ -82,8 +78,7 @@ public class DataRecipe : IRecipe {
 								}
 								return false;
 							};
-						}
-						else
+						} else
 							itemMatches = _ => false;
 
 						Lazy<Item?> item = new(() => Mod.ItemCache.GetMatchingItems(itemMatches).FirstOrDefault());
@@ -154,7 +149,8 @@ public class DataRecipe : IRecipe {
 					return new SpriteInfo(
 						texture,
 						rect,
-						baseScale: icon.Scale
+						baseScale: icon.Scale,
+						baseFrames: icon.Frames
 					);
 				}
 
@@ -215,8 +211,8 @@ public class DataRecipe : IRecipe {
 	public Item? CreateItem() {
 
 		ItemQueryContext ctx = new ItemQueryContext(Game1.currentLocation, Game1.player, Game1.random);
-		foreach(var entry in Data.Output) {
-			if ( string.IsNullOrEmpty(entry.Condition) || GameStateQuery.CheckConditions(entry.Condition, Game1.currentLocation, Game1.player) ) {
+		foreach (var entry in Data.Output) {
+			if (string.IsNullOrEmpty(entry.Condition) || GameStateQuery.CheckConditions(entry.Condition, Game1.currentLocation, Game1.player)) {
 				Item result = ItemQueryResolver.TryResolveRandomItem(entry, ctx, avoidRepeat: false, null, null, null, (query, error) => {
 					Mod.Log($"Error attempting to spawn item for custom recipe {Name} with query '{query}': {error}", LogLevel.Error);
 				});

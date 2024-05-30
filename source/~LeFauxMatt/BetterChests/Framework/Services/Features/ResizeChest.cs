@@ -16,7 +16,7 @@ using StardewMods.BetterChests.Framework.Services.Factory;
 using StardewMods.Common.Enums;
 using StardewMods.Common.Interfaces;
 using StardewMods.Common.Models;
-using StardewMods.Common.Services.Integrations.BetterChests.Enums;
+using StardewMods.Common.Services.Integrations.BetterChests;
 using StardewMods.Common.Services.Integrations.FauxCore;
 using StardewValley.Objects;
 
@@ -31,18 +31,14 @@ internal sealed class ResizeChest : BaseFeature<ResizeChest>
     /// <summary>Initializes a new instance of the <see cref="ResizeChest" /> class.</summary>
     /// <param name="containerFactory">Dependency used for accessing containers.</param>
     /// <param name="eventManager">Dependency used for managing events.</param>
-    /// <param name="log">Dependency used for logging debug information to the console.</param>
-    /// <param name="manifest">Dependency for accessing mod manifest.</param>
     /// <param name="modConfig">Dependency used for accessing config data.</param>
     /// <param name="patchManager">Dependency used for managing patches.</param>
     public ResizeChest(
         ContainerFactory containerFactory,
         IEventManager eventManager,
-        ILog log,
-        IManifest manifest,
         IModConfig modConfig,
         IPatchManager patchManager)
-        : base(eventManager, log, manifest, modConfig)
+        : base(eventManager, modConfig)
     {
         ResizeChest.instance = this;
         this.containerFactory = containerFactory;
@@ -78,14 +74,14 @@ internal sealed class ResizeChest : BaseFeature<ResizeChest>
         __result = Math.Max(
             container.Items.Count, // Guarantee space for existing items
             Math.Max(
-                (int)container.Options.ResizeChest, // Guarantee space for menu size
-                container.Options.ResizeChestCapacity switch
+                (int)container.ResizeChest, // Guarantee space for menu size
+                container.ResizeChestCapacity switch
                 {
                     // Always allocate +1 space for unlimited storage
                     < 0 => container.Items.Count + 1,
 
                     // Allocate assigned space
-                    > 0 => container.Options.ResizeChestCapacity,
+                    > 0 => container.ResizeChestCapacity,
 
                     // Allocate vanilla space
                     _ => __result,

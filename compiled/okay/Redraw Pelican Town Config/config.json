@@ -1,14 +1,11 @@
 {
   "GreenFall": true,
-  "GreenHills": true,
   "PetBowlShadow": "",
+  "Furniture": true,
   "Interiors": true,
-  "Bushes": true,
+  "Vegetation": true,
   "SnOverlay": true,
   "Extras": true,
   "IridiumOasis": false,
-  "GrandpasGrass": true,
-  "GrandpasNoFence": true,
-  "GrandpasSandbox": true,
   "EdNygma": false
 }

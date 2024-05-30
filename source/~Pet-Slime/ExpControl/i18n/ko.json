@@ -1,0 +1,27 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Pet-Slime/StardewValley
+**
+*************************************************/
+
+{
+
+    "config.FarmingEXP": "농사 경험치 배수",
+    "config.FarmingEXP.tooltip": "농사 경험치에 적용될 배수를 조절합니다.",
+
+    "config.MiningEXP": "채광 경험치 배수",
+    "config.MiningEXP.tooltip": "채광 경험치에 적용될 배수를 조절합니다.",
+
+    "config.FishingEXP": "낚시 경험치 배수",
+    "config.FishingEXP.tooltip": "낚시 경험치에 적용될 배수를 조절합니다.",
+
+    "config.ForagingEXP": "채집 경험치 배수",
+    "config.ForagingEXP.tooltip": "채집 경험치에 적용될 배수를 조절합니다.",
+
+    "config.CombatEXP": "전투 경험치 배수",
+    "config.CombatEXP.tooltip": "전투 경험치에 적용될 배수를 조절합니다."
+}

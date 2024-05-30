@@ -21,6 +21,8 @@ using StardewValley.Menus;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI.Utilities;
+using StardewValley.SpecialOrders;
+using StardewValley.SpecialOrders.Objectives;
 
 namespace RidgesideVillage
 {
@@ -56,7 +58,7 @@ namespace RidgesideVillage
                 {
                     __instance.HostHandleQuestEnd();
                 }
-                __instance.questState.Value = SpecialOrder.QuestState.Failed;
+                __instance.questState.Value = SpecialOrderStatus.Failed;
                 return false;
             }
             catch (Exception ex)

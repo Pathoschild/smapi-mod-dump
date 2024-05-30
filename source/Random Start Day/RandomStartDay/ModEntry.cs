@@ -22,8 +22,9 @@ using StardewValley.Objects;
 using StardewValley.Quests;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Text;
+using System.Reflection;
 
 namespace RandomStartDay
 {
@@ -32,32 +33,30 @@ namespace RandomStartDay
     public class ModEntry : Mod
     {
         private static ModConfig config;
+        private static IMonitor monitor;
         static int dayOfMonth;
         static Season season = Season.Spring;
         static Season[] allowedSeasons = Array.Empty<Season>();
-        
+
         static bool needWheatSeeds = false;
         static bool isWinter28 = false;
-        string errorString;
+        static string errorString;
         static IModHelper modHelper;
 
         public override void Entry(IModHelper helper)
         {
-            
             config = this.Helper.ReadConfig<ModConfig>();
+            monitor = this.Monitor;
             modHelper = helper;
+            var harmony = new Harmony(this.ModManifest.UniqueID);
 
             // run when disableAll is false or verification failed
             if (!config.DisableAll && Verification(out errorString))
             {
                 helper.Events.Specialized.LoadStageChanged += this.Specialized_LoadStageChanged;
-                helper.Events.Content.AssetRequested += this.Content_AssetRequested;
                 helper.Events.GameLoop.DayEnding += this.GameLoop_DayEnding;
                 helper.Events.GameLoop.DayStarted += this.GameLoop_DayStarted;
                 helper.Events.GameLoop.ReturnedToTitle += GameLoop_ReturnedToTitle;
-
-                var harmony = new Harmony(this.ModManifest.UniqueID);
-                string tipMethodName = Helper.Reflection.GetMethod(new TV(), "getTodaysTip").MethodInfo.Name;
 
                 harmony.Patch(
                     original: AccessTools.Method(typeof(TitleMenu), nameof(TitleMenu.createdNewCharacter)),
@@ -71,24 +70,36 @@ namespace RandomStartDay
                     original: AccessTools.Method(typeof(Farmer), nameof(Farmer.addQuest)),
                     postfix: new HarmonyMethod(typeof(ModEntry), nameof(Harmony_Quest6ToWheatQuest))
                     );
-                harmony.Patch(
-                    original: AccessTools.Method(typeof(TV), tipMethodName),
-                    postfix: new HarmonyMethod(typeof(ModEntry), nameof(Harmony_ChangeTodaysTip))
-                    );
             }
             else
             {
-                helper.Events.GameLoop.GameLaunched += this.GameLoop_GameLaunched;
+                helper.Events.GameLoop.GameLaunched += this.ErrorLogging;
             }
+
+            harmony.Patch(
+            original: AccessTools.Method(typeof(TV), "getTodaysTip"),
+            postfix: new HarmonyMethod(typeof(ModEntry), nameof(Harmony_ChangeTodaysTip))
+            );
+            if (config.TVRecipeWithSeasonContext)
+            {
+                harmony.Patch(
+                    original: AccessTools.Method(typeof(TV), "getWeeklyRecipe"),
+                    postfix: new HarmonyMethod(typeof(ModEntry), nameof(Harmony_ChangeCookingChannel))
+                    );
+            }
+            helper.ConsoleCommands.Add("rsd_set_date", "Change date without changing number of days played. SMAPI console commands do with that.\n" +
+                    "Usage: rsd_set_date [-d <day>] [-s <season>] [-y <year>] [-nv]\n-nv: No validation for day of month and year. This may cause errors.", SetDate);
+            helper.ConsoleCommands.Add("days_played", "Print number of days played on cosole.", PrintDaysPlayed);
         }
 
+        // EVENTS
         private void GameLoop_ReturnedToTitle(object sender, ReturnedToTitleEventArgs e)
         {
             Initialize();
         }
 
-        // run when disabled all only
-        private void GameLoop_GameLaunched(object sender, GameLaunchedEventArgs e)
+        // logging
+        private void ErrorLogging(object sender, GameLaunchedEventArgs e)
         {
             if (config.DisableAll)
                 Monitor.Log("This mod is DISABLED. To enable, fix config and re-launch the game.", LogLevel.Debug);
@@ -96,11 +107,9 @@ namespace RandomStartDay
                 Monitor.Log(errorString, LogLevel.Error);
         }
 
-        // EVENTS
         private void Specialized_LoadStageChanged(object sender, LoadStageChangedEventArgs e)
         {
             // randomize: after character created(Harmony)
-
             if (e.NewStage == LoadStage.CreatedInitialLocations)
             {
                 Apply();
@@ -137,11 +146,13 @@ namespace RandomStartDay
                 Game1.mailbox.Add("GreenRainGus");
 
             // When an email that should be received last year exists and not received yet
-            Dictionary<string, string> mailData = Game1.content.Load<Dictionary<string, string>>("Data\\mail");
+            string dataPath = Path.Combine(new string[] { "Data", "mail" });
+            Dictionary<string, string> mailData = Game1.content.Load<Dictionary<string, string>>(dataPath);
             string lastYearMailName = Game1.currentSeason + "_" + Game1.dayOfMonth + "_" + (Game1.year - 1);
             if (mailData.ContainsKey(lastYearMailName))
             {
-                if (!Game1.player.hasOrWillReceiveMail(lastYearMailName)) {
+                if (!Game1.player.hasOrWillReceiveMail(lastYearMailName))
+                {
                     // add last year mail and remove this year mail
                     Game1.mailbox.Add(lastYearMailName);
                     Game1.mailbox.Remove(season + "_" + Game1.dayOfMonth + "_" + Game1.year);
@@ -166,38 +177,173 @@ namespace RandomStartDay
                     });
                 }
             }
+        }
 
-            // edit quest #6
-            if (e.NameWithoutLocale.IsEquivalentTo("Data/Quests"))
+        // CONSOLE COMMANDS
+        private static void SetDate(string command, string[] args)
+        {
+            // method termination if not the intended command
+            if (command != "rsd_set_date")
             {
-                string cropWord = GetWheatWord(out string parsnipWord);
-                e.Edit(asset =>
-                {
-                    // add quest
-                    var data = asset.AsDictionary<string, string>().Data;
-                    data.TryGetValue("6", out string questString);
-                    StringBuilder stringBuilder = new(questString);
-                    stringBuilder = stringBuilder.Replace(parsnipWord, cropWord).Replace("24", "262");
-                    //data.Add("idermailer.RandomStartDay.harvestWheat", stringBuilder.ToString());
-                    data["idermailer.RandomStartDay.harvestWheat"] = stringBuilder.ToString();
-                });
+                monitor.Log("Oh no! Something seems wrong.\nConsole command entered: " + command + "\nAction executed: SetDate(string command, string[] args)", LogLevel.Error);
+                return;
             }
+
+            bool doValidation = true;
+            bool changedDay = false;
+            bool changedSeason = false;
+            bool changedYear = false;
+
+            int d = 1;
+            Season s = Season.Spring;
+            int y = 1;
+            if (args.Length == 0 || (args.Length == 1 && args[0] == "-nv"))
+            {
+                monitor.Log("This command requires at least one of the following arguments: day, season, or year.\n" +
+                    "If you're not sure what to input, try typing \"help rsd_set_date\" into the console.", LogLevel.Info);
+                return;
+            }
+
+            if (args.Contains("-nv"))
+                doValidation = false;
+
+            for (var i = 0; i < args.Length; i++)
+            {
+                // dayOfMonth set
+                if (args[i] == "-d" && !changedDay)
+                {
+                    if (args.Length == i + 1) // if "-d"is last arg
+                    {
+                        monitor.Log("There are no arguments for the day of month to be changed.", LogLevel.Info);
+                        return;
+                    }
+                    else if (!int.TryParse(args[i + 1], out d)) // failed parse arg
+                    {
+                        monitor.Log("The argument could not be parsed.\nArgument: " + args[i + 1], LogLevel.Info);
+                        return;
+                    }
+                    else
+                    {
+                        if (doValidation)
+                        {
+                            if (d < 1 || d > 28)
+                            {
+                                monitor.Log("Validation failed. Proper range for day of month is 1 ~ 28.\nArgument: " + args[i + 1]
+                                    + "\nIf you intended that value, disable validation by adding the \"-nv\" argument to the command.", LogLevel.Info);
+                                return;
+                            }
+                        }
+                        changedDay = true;
+                    }
+                }
+
+                // season set
+                if (args[i] == "-s" && !changedSeason)
+                {
+                    if (args.Length == i + 1) // if "-s"is last arg
+                    {
+                        monitor.Log("There are no arguments for the season to be changed.", LogLevel.Info);
+                        return;
+                    }
+                    else if (!Enum.TryParse(args[i + 1], true, out s)) // failed parse arg
+                    {
+                        monitor.Log("The argument could not be parsed.\nArgument: " + args[i + 1], LogLevel.Info);
+                        return;
+                    }
+                    else
+                    {
+                        changedSeason = true;
+                    }
+                }
+
+                // year set
+                if (args[i] == "-y" && !changedYear)
+                {
+                    if (args.Length == i + 1) // if "-d"is last arg
+                    {
+                        monitor.Log("There are no arguments for year to be changed.", LogLevel.Info);
+                        return;
+                    }
+                    else if (!int.TryParse(args[i + 1], out y)) // failed parse arg
+                    {
+                        monitor.Log("The argument could not be parsed.\nArgument: " + args[i + 1], LogLevel.Info);
+                        return;
+                    }
+                    else
+                    {
+                        if (doValidation)
+                        {
+                            if (y < 1)
+                            {
+                                monitor.Log("Validation failed. Proper value is greater than or equal to 1.\nArgument: " + args[i + 1]
+                                    + "\nIf you intended that value, disable validation by adding the \"-nv\" argument to the command.", LogLevel.Info);
+                                return;
+                            }
+                        }
+
+                        changedYear = true;
+                    }
+                }
+            }
+
+            if (!changedDay && !changedSeason && !changedYear)
+            {
+                monitor.Log("None of the day, season or year has changed.", LogLevel.Info);
+                return;
+            }
+            else
+            {
+                if (changedDay)
+                    Game1.dayOfMonth = d;
+                if (changedSeason)
+                    Game1.season = s;
+                if (changedYear)
+                    Game1.year = y;
+                monitor.Log("Now is Day " + Game1.dayOfMonth + " of " + Game1.season.ToString() + ", Year " + Game1.year, LogLevel.Info);
+            }
+        }
+
+        private static void PrintDaysPlayed(string command, string[] args)
+        {
+            // method termination if not the intended command
+            if (command != "days_played")
+            {
+                monitor.Log("Oh no! Something seems wrong.\nConsole command entered: " + command + "\nAction executed: PrintDaysPlayed(string command, string[] args)", LogLevel.Error);
+                return;
+            }
+
+            monitor.Log("The number of days you played is " + Game1.stats.DaysPlayed, LogLevel.Info);
         }
 
         // METHODS
         private static bool Verification(out string errorString)
         {
-            // if AllowSpringSummerFallWinter is all false, verification fails.
+            bool succeeded = true;
+            errorString = "";
+
+            // check if allowedSeasons is not empty
             for (var i = 0; i < config.AllowSpringSummerFallWinter.Length; i++)
             {
                 if (config.AllowSpringSummerFallWinter[i])
                 {
-                    errorString = "";
-                    return true;
+                    allowedSeasons = allowedSeasons.AddToArray((Season)i);
                 }
             }
-            errorString = "All seasons are not allowed. Please allow at least one season.\nThis mod will be DISABLED. To enable, fix config and re-launch the game.";
-            return false;
+            if (allowedSeasons.Length == 0)
+            {
+                errorString += "- All seasons are not allowed. Please allow at least one season. This mod will be DISABLED.\nTo enable, fix config and re-launch the game.\n";
+                succeeded = false;
+            }
+
+            // check if content pack is not found
+            if (!modHelper.ModRegistry.IsLoaded("idermailer.RandomStartDayContentPatch"))
+            {
+                errorString += "- Content Pack for this mod is not found. This mod will be DISABLED.\n" +
+                    "To enable, you will probably need to check directory structure, or reinstall this mod.\n";
+                succeeded = false;
+            }
+
+            return succeeded;
         }
 
         private static void Initialize()
@@ -224,15 +370,9 @@ namespace RandomStartDay
             }
             else
                 random = new();
-            
+
             // get allowed seasons
-            for (var i = 0; i < config.AllowSpringSummerFallWinter.Length; i++)
-            {
-                if (config.AllowSpringSummerFallWinter[i])
-                {
-                    allowedSeasons = allowedSeasons.AddToArray((Season)i);
-                }
-            }
+
 
             // randomize
             // if use legacy random, other random options are disabled,
@@ -275,7 +415,7 @@ namespace RandomStartDay
                             continue;
                         }
                     }
-                    
+
                 } while (conflicts);
             }
 
@@ -292,32 +432,19 @@ namespace RandomStartDay
 
         private static void Apply()
         {
+
             Game1.dayOfMonth = dayOfMonth;
             Game1.season = season;
-            
+
             // refresh all locations
             foreach (GameLocation location in (IEnumerable<GameLocation>)Game1.locations)
             {
-                // this is initial objects, so call seasonal method
+                // there are initial objects, so call season update method
                 location.seasonUpdate(false);
             }
 
             // make sure outside not dark, for Dynamic Night Time or something similar
             Game1.timeOfDay = 1200;
-        }
-
-        private string GetWheatWord(out string parsnipWord)
-        {
-            var stringData = Helper.GameContent.Load<Dictionary<string, string>>("Strings/Objects");
-
-            //get parsnip word
-            parsnipWord = stringData.GetValueSafe("Parsnip_Name").ToLower();
-            //exception: de-DE
-            if (Helper.GameContent.CurrentLocale == "de-DE")
-                parsnipWord = "Pastinake";
-
-            //get wheat word
-            return stringData.GetValueSafe("Wheat_Name").ToLower();
         }
 
         public static bool NeedToGiveWheatSeeds()
@@ -331,9 +458,12 @@ namespace RandomStartDay
                 return true;
         }
 
-        private static void PutSeasonalSeeds(bool wheatSeed) {
-            if (!wheatSeed || Game1.whichModFarm?.Id == "MeadowlandsFarm")
+        private static void PutSeasonalSeeds(bool wheatSeed)
+        {
+            // continue only if you need wheat seeds
+            if (!wheatSeed)
                 return;
+
             GameLocation farmHouse = Game1.getLocationFromName("FarmHouse");
             Farm farm = Game1.getFarm();
 
@@ -349,13 +479,41 @@ namespace RandomStartDay
                 };
             }
 
+            Chest chest = new(null, Vector2.Zero, true, giftboxIsStarterGift: true);
+            // put items in new chest
+            if (farm.TryGetMapProperty("FarmHouseStarterGift", out string customStarterGiftString))
+            {
+                string[] splitedString = customStarterGiftString.Split(' ');
+                for (var i = 0; i < splitedString.Length; i += 2)
+                {
+                    Item item;
+                    if (splitedString.Length != i + 1)
+                    {
+                        // if the item is 15 Parsnip Seeds, replace it with 18 Wheat Seeds.
+                        if (splitedString[i] == "(O)472" && splitedString[i + 1] == "15")
+                        {
+                            item = ItemRegistry.Create("(O)483", 18);
+                        }
+                        else
+                        {
+                            item = ItemRegistry.Create(splitedString[i], int.Parse(splitedString[i + 1]));
+                        }
+                    }
+                    // if the quantity of the last item is omitted, it is considered 1
+                    else
+                    {
+                        item = ItemRegistry.Create(splitedString[i], 1);
+                    }
+                    chest.Items.Add(item);
+                }
+            }
+            else
+            {
+                chest.Items.Add(ItemRegistry.Create("(O)483", 18));
+            }
+
             // change seed chest
             farmHouse.objects.Remove(seedBoxLocation);
-            Chest chest = new(null, Vector2.Zero, true, giftboxIsStarterGift: true);
-
-            // put items in new chest
-            chest.Items.Add(ItemRegistry.Create("(O)483", 18));
-
             farmHouse.objects.Add(seedBoxLocation, chest);
         }
 
@@ -363,30 +521,58 @@ namespace RandomStartDay
         public static void Harmony_ChangeTodaysTip(ref string __result)
         {
             string resultString;
-                Dictionary<string, string> dic = Game1.temporaryContent.Load<Dictionary<string, string>>("Data\\TV\\TipChannel");
-                var date = SDate.Now();
-                int year = (date.Year + 1) % 2;
-                int season = date.SeasonIndex;
-                int day = date.Day;
-                int todayNumber = 112 * year + (28 * season) + day;
-                if (dic.ContainsKey(todayNumber.ToString()))
-                {
-                    resultString = dic[todayNumber.ToString()];
-                }
-                else
-                {
-                    resultString = Game1.content.LoadString("Strings\\StringsFromCSFiles:TV.cs.13148");
+            Dictionary<string, string> tips = DataLoader.Tv_TipChannel(Game1.content);
+            int todayNumber = Game1.Date.TotalDays + 1;
+            if (tips.ContainsKey(todayNumber.ToString()))
+            {
+                resultString = tips[todayNumber.ToString()];
+            }
+            else
+            {
+                string stringPath = Path.Combine(new string[] { "Strings", "StringsFromCSFiles" });
+                Dictionary<string, string> CSStrings = Game1.temporaryContent.Load<Dictionary<string, string>>(stringPath);
+                CSStrings.TryGetValue("TV.cs.13148", out resultString);
+            }
 
-                }
+            if (resultString != null)
+            {
                 __result = resultString;
+            }
+            else
+            {
+                __result = "Strings\\StringsFromCSFiles:TV.cs.13148";
+            }
+            return;
+        }
+
+        public static void Harmony_ChangeCookingChannel(ref string[] __result, ref StardewValley.Objects.TV __instance)
+        {
+            // only affected on Sunday
+            if (Game1.shortDayNameFromDayOfSeason(Game1.dayOfMonth) != "Sun")
                 return;
+
+            Dictionary<string, string> cookingData = DataLoader.Tv_CookingChannel(Game1.content);
+            int todayNumber = Game1.Date.TotalDays + 1;
+
+            int recipeNum = todayNumber % 224 / 7;
+            if (todayNumber % 224 == 0)
+                recipeNum = 32;
+            MethodInfo m = AccessTools.Method(typeof(StardewValley.Objects.TV), "getWeeklyRecipe", new Type[] { typeof(Dictionary<string, string>), typeof(System.String) });
+            try
+            {
+                __result = (string[])m.Invoke(__instance, new object[] { cookingData, recipeNum.ToString() });
+            }
+            catch
+            {
+                __result = (string[])m.Invoke(__instance, new object[] { cookingData, "1" });
+            }
         }
 
         public static void Harmony_ChangeIntroSeason(ref Texture2D ___roadsideTexture, ref Texture2D ___treeStripTexture)
         {
             if (season != Season.Spring)
             {
-                ___roadsideTexture = Game1.content.Load<Texture2D>("Maps\\" + season + "_outdoorsTileSheet");
+                ___roadsideTexture = Game1.content.Load<Texture2D>("Maps/" + season + "_outdoorsTileSheet");
                 ___treeStripTexture = modHelper.ModContent.Load<Texture2D>("assets/treestrip_" + season.ToString().ToLower() + ".png");
                 Game1.changeMusicTrack(season.ToString().ToLower() + "_day_ambient");
             }
@@ -405,16 +591,15 @@ namespace RandomStartDay
             {
                 if (questId == "6")
                 {
-                    // To prevent infinite call of the same method, used code in the method
                     Quest questFromId = Quest.getQuestFromId("idermailer.RandomStartDay.harvestWheat");
-                    if (questFromId == null)
-                        return;
-                    else
+                    if (questFromId != null)
                     {
                         Game1.player.questLog.Add(questFromId);
-                        if (!questFromId.IsHidden())
-                            Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString("Strings\\StringsFromCSFiles:Farmer.cs.2011"), 2));
                         Game1.player.removeQuest("6");
+                    }
+                    else
+                    {
+                        monitor.Log("Quest \"idermailer.RandomStartDay.harvestWheat\" is not found.");
                     }
                 }
             }
@@ -422,9 +607,6 @@ namespace RandomStartDay
 
         private static void Debug________()
         {
-            //method for test
-            season = Season.Fall;
-            dayOfMonth = 23;
         }
     }
 }

@@ -12,6 +12,7 @@ using AlternativeTextures.Framework.Interfaces;
 using AlternativeTextures.Framework.Models;
 using AlternativeTextures.Framework.Patches.Entities;
 using AlternativeTextures.Framework.Utilities;
+using AlternativeTextures.Framework.Utilities.Extensions;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
@@ -88,7 +89,7 @@ namespace AlternativeTextures.Framework.Patches
 
         internal static string GetModelNameWithoutSeason(string modelName, string season)
         {
-            return modelName.Replace($"_{season}", String.Empty, StringComparison.OrdinalIgnoreCase);
+            return modelName.ReplaceLastInstance($"_{season}", String.Empty);
         }
 
         internal static string GetObjectName(Object obj)
@@ -503,7 +504,11 @@ namespace AlternativeTextures.Framework.Patches
             var textureModel = AlternativeTextures.textureManager.GetRandomTextureModel(modelName);
 
             var selectedVariation = Game1.random.Next(-1, textureModel.Variations);
-            if (textureModel.ManualVariations.Count() > 0)
+            if (textureModel.DefaultVariation is not null)
+            {
+                selectedVariation = textureModel.DefaultVariation.Value;
+            }
+            else if (textureModel.ManualVariations.Count() > 0)
             {
                 var weightedSelection = textureModel.ManualVariations.Where(v => v.ChanceWeight > Game1.random.NextDouble()).ToList();
                 if (weightedSelection.Count > 0)

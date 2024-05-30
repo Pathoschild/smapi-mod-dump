@@ -12,9 +12,11 @@ mods:
    Tree Shake Mod
 
 latest commit:
-   commit 3250208f176a34fa7d6c3dad8d3734530f0d801a
-   Author: ncarigon <ncarigon@outlook.com>
-   Date:   Thu Apr 25 15:58:27 2024 -0400
+   commit 3930caee3d143d49a5da83f1dd2c20f4f7a1d030
+   Author: ncarigon <40006646+ncarigon@users.noreply.github.com>
+   Date:   Wed May 8 15:25:02 2024 -0400
    
-       Prevent farmhands from placing down filled garden pots, due to unknown error source during dayUpdate(). Added Evelyn heart event configuration for early garden pot.
+       Merge pull request #2 from mitekano23/patch-1
+       
+       Create ja.json
    

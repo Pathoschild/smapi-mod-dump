@@ -7,15 +7,9 @@ mods:
    Farm Tablet
 
 latest commit:
-   commit b43de33d0676102ed6ce28417ad0ed77846d4c7e
-   Author: Tiago Padilha <padilhatiagu@gmail.com>
-   Date:   Fri Apr 19 10:25:03 2024 -0300
+   commit a5d0f270f5b572c35a65bdbaa4eb400021cb03aa
+   Author: Floogen <31755155+Floogen@users.noreply.github.com>
+   Date:   Mon May 13 15:28:14 2024 -0500
    
-       Add portuguese translation (#63)
-       
-       * Update README.md
-       
-       * Update AlternativeTextures.csproj
-       
-       * Add files via upload
+       v7.3.0 released
    

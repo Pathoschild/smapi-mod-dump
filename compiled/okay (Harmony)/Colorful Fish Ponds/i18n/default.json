@@ -1,0 +1,10 @@
+{
+  "mod-enabled.label": "Enabled",
+  "mod-enabled.tooltip": "Toggle mod functionality, disable if there's an issue. Default: true",
+  "default-colors.label": "Use Dye Colors",
+  "default-colors.tooltip": "Toggle using dye colors of fish if no overrides are supplied. Default: true",
+  "single-overrides.label": "Disable Individual Overrides",
+  "single-overrides.tooltip": "Primarily for compatibility with mods that change fish pond colors. Set to true to disable individual fish overrides. Default: false",
+  "required-population.label": "Required Population",
+  "required-population.tooltip": "Number of fish required for context color changes only. Default: 2"
+}

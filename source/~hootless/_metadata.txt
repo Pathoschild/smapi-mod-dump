@@ -7,11 +7,9 @@ mods:
    Line Sprinklers
 
 latest commit:
-   commit 451ae9d1eeac798d90324f36f2d8e3b158edc6cc
-   Author: hootless <jmsjunior96@gmail.com>
-   Date:   Wed Aug 12 20:06:47 2020 -0500
+   commit 3c3c961df976676c4357108a4be4a5b0b0e41c76
+   Author: nanz <jmsjunior96@gmail.com>
+   Date:   Mon Apr 29 12:59:42 2024 -0500
    
-       LineSprinklers - Reclaim Sprinklers
-       
-       Added ability to press R, Middle Click, or on controller Left Stick Click while the cursor has a line sprinkler selected. This destroys the line sprinkler and drops it as the base sprinkler, allowing for conversion to other types
+       Merge branch 'pr/8'
    

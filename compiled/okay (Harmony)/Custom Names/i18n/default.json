@@ -1,0 +1,10 @@
+{
+  "Config.CostToName.Name": "Cost to name",
+  "Config.CostToName.Description": "The number of cinder shards required to rename an item",
+  "Config.UnforgeClearsName.Name": "Unforge clears name",
+  "Config.UnforgeClearsName.Description": "Whether or not to clear the name when the item is unforged (Could happen regardless for un-combining rings)",
+  "Config.ShowCompanionName.Name": "Show companion name",
+  "Config.ShowCompanionName.Description": "Whether or not to show the name of the companion when the mouse is over them",
+  "Config.ShowToolbar.Name": "Show toolbar name",
+  "Config.ShowToolbar.Description": "Whether or not to show the name of the current tool above/under the toolbar for a second when it's selected"
+}

@@ -105,17 +105,13 @@
 					"Id": "BuffGarlic"
 				},
 				{
-					"Id": "BuffLife"
-				},
-				{
-					"Id": "BuffMuscle"
-				},
-				{
 					"Id": "BuffSquidInk"
-				},
-				{
-					"Id": "BuffMonsterMusk"
 				}
+			],
+			"Recipes": [
+				"Life Elixir",
+				"Muscle Remedy",
+				"Monster Musk"
 			]
 		},
 		{

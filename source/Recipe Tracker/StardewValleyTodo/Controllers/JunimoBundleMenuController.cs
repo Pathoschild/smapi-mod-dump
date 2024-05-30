@@ -14,7 +14,15 @@ using StardewValleyTodo.Tracker;
 
 namespace StardewValleyTodo.Controllers {
     public class JunimoBundleController {
-        public void ProcessInput(JunimoNoteMenu menu, InventoryTracker inventoryTracker, JunimoBundles bundles) {
+        private readonly InventoryTracker _inventoryTracker;
+        private readonly JunimoBundles _junimoBundles;
+
+        public JunimoBundleController(InventoryTracker inventoryTracker, JunimoBundles junimoBundles) {
+            _inventoryTracker = inventoryTracker;
+            _junimoBundles = junimoBundles;
+        }
+
+        public void ProcessInput(JunimoNoteMenu menu) {
             // Not a bundle page
             if (menu.ingredientSlots.Count == 0) {
                 return;
@@ -26,13 +34,13 @@ namespace StardewValleyTodo.Controllers {
             }
 
             var name = currentPage.label;
-            if (inventoryTracker.Has(name)) {
-                inventoryTracker.Off(name);
+            if (_inventoryTracker.Has(name)) {
+                _inventoryTracker.Off(name);
             }
 
-            var bundle = bundles.Find(name);
+            var bundle = _junimoBundles.Find(name);
             var todo = new TrackableJunimoBundle(bundle);
-            inventoryTracker.Toggle(todo);
+            _inventoryTracker.Toggle(todo);
         }
     }
 }

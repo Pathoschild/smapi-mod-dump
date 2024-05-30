@@ -1,0 +1,18 @@
+{
+	"Name": "[DLL] Weather Wonders",
+	"Author": "Kanadeyoru",
+	"Version": "1.3.4",
+	"Description": "Expansion for the weather system, everything made to be vanilla-friendly!",
+	"UniqueID": "Kana.WeatherWonders.DLL",
+	"MinimumApiVersion": "4.0.0",
+	"MinimumGameVersion": "1.6",
+	"EntryDll": "WeatherWonders.dll",
+	"UpdateKeys": [
+		"Nexus:23868"
+	],
+	"Dependencies": [
+		{
+			"UniqueID": "Kana.WeatherWonders"
+		}
+	]
+}

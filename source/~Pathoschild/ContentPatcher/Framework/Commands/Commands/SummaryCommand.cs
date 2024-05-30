@@ -375,6 +375,15 @@ namespace ContentPatcher.Framework.Commands.Commands
                             }
                         }
 
+                        // log locale if set
+                        if (patch.TargetAssetLocale != null)
+                        {
+                            output.Append(string.IsNullOrWhiteSpace(patch.TargetAssetLocale)
+                                ? " (locale: base only)"
+                                : $" (locale: {patch.TargetAssetLocale} only)"
+                            );
+                        }
+
                         // log reason not applied
                         string? errorReason = patch.GetReasonNotLoaded();
                         if (errorReason != null)
@@ -432,10 +441,11 @@ namespace ContentPatcher.Framework.Commands.Commands
                             if (!changeLabels.Any())
                                 continue;
 
-                            if (patch.ParsedTargetAsset?.Value != null)
+                            string? displayTarget = patch.GetDisplayTarget();
+                            if (displayTarget != null)
                             {
-                                if (!effectsByPatch.TryGetValue(patch.ParsedTargetAsset.Value, out MutableInvariantSet? effects))
-                                    effectsByPatch[patch.ParsedTargetAsset.Value] = effects = new MutableInvariantSet();
+                                if (!effectsByPatch.TryGetValue(displayTarget, out MutableInvariantSet? effects))
+                                    effectsByPatch[displayTarget] = effects = new MutableInvariantSet();
 
                                 effects.AddMany(patch.GetChangeLabels());
                             }

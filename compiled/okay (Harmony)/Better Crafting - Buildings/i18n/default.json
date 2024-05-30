@@ -2,6 +2,12 @@
 	"mod.name": "Better Crafting: Buildings",
 	"category.name": "Buildings",
 
+	"recipe.upgrade-house": "Upgrade Farm House",
+	"recipe.upgrade-house.desc": "Instantly upgrade your house to the next level.",
+
+	"recipe.upgrade-house.error-visitors": "@C{red}You cannot upgrade your house while someone is inside it.",
+	"recipe.upgrade-house.error-upgraded": "@C{red}You have already upgraded your house to the maximum level.",
+
 	"error.not-buildable": "@C{red}You cannot build in your current location.",
 	"error.cant-upgrade": "@C{red}There is not an existing @B{{other}}@b to upgrade.",
 
@@ -30,6 +36,12 @@
 
 	"setting.greenhouse-move": "Allow Moving Broken Greenhouse",
 	"setting.greenhouse-move.tip": "When enabled, you'll be able to move the Greenhouse with BC: Buildings even before repairing it.",
+
+	"setting.allow-house-upgrades": "Allow Farm House Upgrades",
+	"setting.allow-house-upgrades.tip": "When enabled, you'll be able to instantly upgrade your house using BC: Buildings.",
+
+	"setting.allow-house-renovation": "Allow House Renovations",
+	"setting.allow-house-renovation.tip": "When enabled, you'll be able to instantly renovate your house using BC: Buildings.",
 
 	"filter.name": "Buildings and Actions",
 	"filter.about": "This rule matches buildings, and actions performed on buildings."

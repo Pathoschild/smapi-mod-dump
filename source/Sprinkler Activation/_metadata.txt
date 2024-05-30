@@ -6,9 +6,9 @@ mods:
    Sprinkler Activation
 
 latest commit:
-   commit ac8289bafd12a14c5e1cd7205d20d4a4d69e9b97
+   commit 4c0ff75fec1076838559d5b7873973ce8c3c7473
    Author: Blaxsmith <37184639+Blaxsmith@users.noreply.github.com>
-   Date:   Sun Apr 7 01:59:21 2024 +0200
+   Date:   Wed May 22 20:26:34 2024 +0200
    
-       Update README.md
+       Updated to version 1.1.1
    

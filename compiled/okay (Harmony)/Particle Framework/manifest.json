@@ -1,0 +1,17 @@
+{
+  "Name": "Particle Framework",
+  "Author": "Espy",
+  "Version": "1.2.2",
+  "Description": "Particle Framework",
+  "UniqueID": "Espy.ParticleFramework",
+  "EntryDll": "ParticleFramework.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:23544" ],
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.GenericModConfigMenu",
+      "MinimumVersion": "1.12.0",
+      "IsRequired": false
+    }
+  ]
+}

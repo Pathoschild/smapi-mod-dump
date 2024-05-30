@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7957
-IDs: aedenthorn.ParrotPerch
-update keys: Nexus:7957, GitHub:aedenthorn/StardewValleyMods

@@ -19,7 +19,8 @@ using StardewMods.BetterChests.Framework.Services.Factory;
 using StardewMods.Common.Enums;
 using StardewMods.Common.Interfaces;
 using StardewMods.Common.Models;
-using StardewMods.Common.Services.Integrations.BetterChests.Enums;
+using StardewMods.Common.Services;
+using StardewMods.Common.Services.Integrations.BetterChests;
 using StardewMods.Common.Services.Integrations.FauxCore;
 using StardewValley.Locations;
 using StardewValley.Objects;
@@ -39,8 +40,6 @@ internal sealed class CarryChest : BaseFeature<CarryChest>
     /// <param name="containerFactory">Dependency used for accessing containers.</param>
     /// <param name="eventManager">Dependency used for managing events.</param>
     /// <param name="inputHelper">Dependency used for checking and changing input state.</param>
-    /// <param name="log">Dependency used for logging debug information to the console.</param>
-    /// <param name="manifest">Dependency for accessing mod manifest.</param>
     /// <param name="modConfig">Dependency used for accessing config data.</param>
     /// <param name="patchManager">Dependency used for managing patches.</param>
     /// <param name="proxyChestFactory">Dependency used for creating virtualized chests.</param>
@@ -49,13 +48,11 @@ internal sealed class CarryChest : BaseFeature<CarryChest>
         ContainerFactory containerFactory,
         IEventManager eventManager,
         IInputHelper inputHelper,
-        ILog log,
-        IManifest manifest,
         IModConfig modConfig,
         IPatchManager patchManager,
         ProxyChestFactory proxyChestFactory,
         StatusEffectManager statusEffectManager)
-        : base(eventManager, log, manifest, modConfig)
+        : base(eventManager, modConfig)
     {
         CarryChest.instance = this;
         this.containerFactory = containerFactory;
@@ -120,32 +117,14 @@ internal sealed class CarryChest : BaseFeature<CarryChest>
         // Copy data from chest
         placedChest.GlobalInventoryId = chest.GlobalInventoryId;
         placedChest.playerChoiceColor.Value = chest.playerChoiceColor.Value;
-        foreach (var (key, value) in chest.modData.Pairs)
+        placedChest.fridge.Value = chest.fridge.Value;
+        foreach (var (key, value) in __instance.modData.Pairs)
         {
             placedChest.modData[key] = value;
         }
 
         // Restore proxy
         CarryChest.instance.proxyChestFactory.TryRestoreProxy(placedChest);
-    }
-
-    private void OnOneSecondUpdateTicked(OneSecondUpdateTickedEventArgs e)
-    {
-        if (this.Config.CarryChestSlowLimit == 0)
-        {
-            return;
-        }
-
-        if (Game1.player.Items.Count(this.proxyChestFactory.IsProxy) >= this.Config.CarryChestSlowLimit)
-        {
-            this.statusEffectManager.AddEffect(StatusEffect.Overburdened);
-            return;
-        }
-
-        if (this.statusEffectManager.HasEffect(StatusEffect.Overburdened))
-        {
-            this.statusEffectManager.RemoveEffect(StatusEffect.Overburdened);
-        }
     }
 
     private void OnButtonPressed(ButtonPressedEventArgs e)
@@ -160,7 +139,10 @@ internal sealed class CarryChest : BaseFeature<CarryChest>
             return;
         }
 
-        if (!Game1.currentLocation.Objects.TryGetValue(e.Cursor.GrabTile, out var obj) || obj is not Chest chest)
+        if (!Game1.currentLocation.Objects.TryGetValue(e.Cursor.GrabTile, out var obj)
+            || obj is not Chest chest
+            || !this.containerFactory.TryGetOne(chest.Location, chest.TileLocation, out var container)
+            || container.CarryChest != FeatureOption.Enabled)
         {
             return;
         }
@@ -170,12 +152,6 @@ internal sealed class CarryChest : BaseFeature<CarryChest>
             && chest.HasContextTag("swappable_chest")
             && Game1.player.CurrentItem.Name.Contains("Chest")
             && (Game1.player.CurrentItem.Name.Contains("Big") || !chest.ItemId.Contains("Big")))
-        {
-            return;
-        }
-
-        if (!this.containerFactory.TryGetOne(Game1.currentLocation, e.Cursor.GrabTile, out var container)
-            || container.Options.CarryChest != FeatureOption.Enabled)
         {
             return;
         }
@@ -203,10 +179,10 @@ internal sealed class CarryChest : BaseFeature<CarryChest>
         }
 
         // Remove chest from world
-        this.Log.Info(
+        Log.Info(
             "{0}: Grabbed chest from {1} at ({2}, {3})",
             this.Id,
-            Game1.player.currentLocation.Name,
+            Game1.currentLocation.Name,
             e.Cursor.GrabTile.X,
             e.Cursor.GrabTile.Y);
 
@@ -214,5 +190,24 @@ internal sealed class CarryChest : BaseFeature<CarryChest>
         Game1.currentLocation.Objects.Remove(e.Cursor.GrabTile);
         Game1.playSound("pickUpItem");
         this.inputHelper.Suppress(e.Button);
+    }
+
+    private void OnOneSecondUpdateTicked(OneSecondUpdateTickedEventArgs e)
+    {
+        if (this.Config.CarryChestSlowLimit == 0)
+        {
+            return;
+        }
+
+        if (Game1.player.Items.Count(this.proxyChestFactory.IsProxy) >= this.Config.CarryChestSlowLimit)
+        {
+            this.statusEffectManager.AddEffect(StatusEffect.Overburdened);
+            return;
+        }
+
+        if (this.statusEffectManager.HasEffect(StatusEffect.Overburdened))
+        {
+            this.statusEffectManager.RemoveEffect(StatusEffect.Overburdened);
+        }
     }
 }

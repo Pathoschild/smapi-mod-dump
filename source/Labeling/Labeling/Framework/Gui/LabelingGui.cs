@@ -14,9 +14,9 @@ using Labeling.Framework.Screen;
 
 namespace Labeling.Framework.Gui;
 
-public class LabelGui : ScreenGui
+public class LabelingGui : ScreenGui
 {
-    public LabelGui() : base(ModEntry.GetInstance().GetTranslation("labeling.labelingGui.title"))
+    public LabelingGui() : base(ModEntry.GetInstance().GetTranslation("labeling.labelingGui.title"))
     {
         var recordTitle = ModEntry.GetInstance().GetTranslation("labeling.labelingGui.record");
         AddElement(new Button(recordTitle, recordTitle)

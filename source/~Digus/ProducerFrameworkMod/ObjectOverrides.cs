@@ -24,6 +24,7 @@ using System.Text.RegularExpressions;
 using StardewValley.Inventories;
 using StardewValley.ItemTypeDefinitions;
 using Object = StardewValley.Object;
+using StardewValley.GameData.Machines;
 #pragma warning disable IDE1006
 
 namespace ProducerFrameworkMod
@@ -406,17 +407,19 @@ namespace ProducerFrameworkMod
                     {
                         Game1.haltAfterCheck = false;
                     }
+                    bool check_for_reload = false;
                     Object previousObject = __instance.heldObject.Value;
-                    __instance.heldObject.Value = (Object)null;
                     if (who.IsLocalPlayer)
                     {
-                        if (!who.addItemToInventoryBool((Item)previousObject, false))
+                        __instance.heldObject.Value = (Object)null;
+                        if (!who.addItemToInventoryBool(previousObject))
                         {
                             __instance.heldObject.Value = previousObject;
                             Game1.showRedMessage(Game1.content.LoadString("Strings\\StringsFromCSFiles:Crop.cs.588"));
                             return __result = false;
                         }
                         Game1.playSound("coin");
+                        check_for_reload = true;
                         producerConfig.IncrementStats(previousObject);
                     }
                     ProducerRuleController.ClearProduction(__instance, who.currentLocation);
@@ -445,6 +448,23 @@ namespace ProducerFrameworkMod
                             }
                         }
                     }
+                    MachineData machineData = __instance.GetMachineData();
+                    if (machineData is { ExperienceGainOnHarvest: not null })
+                    {
+                        string[] expSplit = machineData.ExperienceGainOnHarvest.Split(' ');
+                        for (int i = 0; i < expSplit.Length; i += 2)
+                        {
+                            int skill = Farmer.getSkillNumberFromName(expSplit[i]);
+                            if (skill != -1 && ArgUtility.TryGetInt(expSplit, i + 1, out var amount, out var _))
+                            {
+                                who.gainExperience(skill, amount);
+                            }
+                        }
+                    }
+                    if (check_for_reload && producerConfig.NoInputStartMode == null)
+                    {
+                        __instance.AttemptAutoLoad(who);
+                    }
                     return false;
                 }
             }
@@ -470,6 +490,10 @@ namespace ProducerFrameworkMod
                         {
                             if (producerConfig.NoInputStartMode == NoInputStartMode.DayUpdate || (producerConfig.NoInputStartMode == NoInputStartMode.Placement))
                             {
+                                if (__instance.GetMachineData()?.ClearContentsOvernightCondition == "TRUE")
+                                {
+                                    ProducerRuleController.ClearProduction(__instance, location);
+                                }
                                 if (__instance.heldObject.Value == null)
                                 {
                                     try

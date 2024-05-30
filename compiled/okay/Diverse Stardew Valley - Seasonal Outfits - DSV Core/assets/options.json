@@ -8,7 +8,7 @@
 	{
 		"Name": "CompatibilityLink",
 		"Type": "pageLink",
-		"EnableWithMod": "Yoshimax.BefriendMarlon||Wolf.Marlon||supert.adventureguildexpanded||BURAKMESE.SKE||Wolf.Gun||Rafseazz.RSVCP||foggy.LfL||uglynt.town.interiors||baguettemagiqu7.NPCParkJaemin",
+		"EnableWithMod": "supert.adventureguildexpanded||BURAKMESE.SKE||Wolf.Gun||Rafseazz.RSVCP||foggy.LfL||mush.loveydovey||mush.loveydovey||uglynt.town.interiors||baguettemagiqu7.NPCParkJaemin",
 		"PageID": "1" //Compatibility Options
 	},
 	{
@@ -89,6 +89,12 @@
 		"EnableWithMod": "DSVTeam.DiverseStardewValley",
 		"PageID": "14"
 	},
+	{
+		"Name": "AddonsLink",
+		"Type": "pageLink",
+		"EnableWithMod": "DSVTeam.AddOnPack.MedinaquirinPinzolHarvey||DSVTeam.AddOnPack.AirynJodi||DSVTeam.AddOnPack.BittybeePenny",
+		"PageID": "15"
+	},
 	//----------------------------------------------------------
 	{
 		"Name": "0",
@@ -163,6 +169,17 @@
 		"Default": "False",
 		"Type": "bool",
 		"EnableWithMod": "Wolf.Gun"
+	},
+	{
+		"Name": "Mike",
+		"Type": "subtitle",
+		"EnableWithMod": "SYS.mike"
+	},
+	{
+		"Name": "TurkishMike",
+		"Default": "True",
+		"Type": "bool",
+		"EnableWithMod": "SYS.mike"
 	},
 	/*{
 		"Name": "MarlonCompatibility",
@@ -285,6 +302,31 @@
 		]
 	},
 	{
+		"Name": "SpousePortraitsReworked",
+		"Type": "subtitle",
+		"EnableWithMod": "Hitme.SpousePortraitsReworked"
+	},
+	{
+		"Name": "TonedDown",
+		"Default": "False",
+		"Type": "bool",
+		"EnableWithMod": "Hitme.SpousePortraitsReworked"
+	},
+	{
+		"Name": "EmilyPortrait",
+		"Type": "int",
+		"AllowedValues": "2",
+		"Default": "2",
+		"EnableWithMod": "Hitme.SpousePortraitsReworked"
+	},
+	{
+		"Name": "WizardPortrait",
+		"Type": "int",
+		"AllowedValues": "2",
+		"Default": "2",
+		"EnableWithMod": "Hitme.SpousePortraitsReworked"
+	},
+	{
 		"Name": "LessUglyTownInteriors",
 		"Type": "subtitle",
 		"EnableWithMod": "uglynt.town.interiors"
@@ -315,70 +357,70 @@
 	{
 		"Name": "LookingForLove",
 		"Type": "subtitle",
-		"EnableWithMod": "foggy.LfL"
+		"EnableWithMod": "foggy.LfL||mush.loveydovey"
 	},
 	{
 		"Name": "LFLPam",
 		"Type": "string",
 		"AllowedValues": "Default, LookingForLove",
 		"Default": "Default",
-		"EnableWithMod": "foggy.LfL"
+		"EnableWithMod": "foggy.LfL||mush.loveydovey"
 	},
 	{
 		"Name": "LFLWilly",
 		"Type": "string",
 		"AllowedValues": "Default, LookingForLove",
 		"Default": "Default",
-		"EnableWithMod": "foggy.LfL"
+		"EnableWithMod": "foggy.LfL||mush.loveydovey"
 	},
 	{
 		"Name": "LFLGus",
 		"Type": "string",
 		"AllowedValues": "Default, LookingForLove",
 		"Default": "Default",
-		"EnableWithMod": "foggy.LfL"
+		"EnableWithMod": "foggy.LfL||mush.loveydovey"
 	},
 	{
 		"Name": "LFLWizard",
 		"Type": "string",
 		"AllowedValues": "Default, LookingForLove",
 		"Default": "Default",
-		"EnableWithMod": "foggy.LfL"
+		"EnableWithMod": "foggy.LfL||mush.loveydovey"
 	},
 	{
 		"Name": "LFLLinus",
 		"Type": "string",
 		"AllowedValues": "Default, LookingForLove",
 		"Default": "Default",
-		"EnableWithMod": "foggy.LfL"
+		"EnableWithMod": "foggy.LfL||mush.loveydovey"
 	},
 	{
 		"Name": "LFLLewis",
 		"Type": "string",
 		"AllowedValues": "Default, LookingForLove",
 		"Default": "Default",
-		"EnableWithMod": "foggy.LfL"
+		"EnableWithMod": "foggy.LfL||mush.loveydovey"
 	},
 	{
 		"Name": "LFLSandy",
 		"Type": "string",
 		"AllowedValues": "Default, LookingForLove",
 		"Default": "Default",
-		"EnableWithMod": "foggy.LfL"
+		"EnableWithMod": "foggy.LfL||mush.loveydovey"
 	},
 	{
 		"Name": "LFLMarnie",
 		"Type": "string",
 		"AllowedValues": "Default, LookingForLove",
 		"Default": "Default",
-		"EnableWithMod": "foggy.LfL"
+		"EnableWithMod": "foggy.LfL||mush.loveydovey"
 	},
 	{
 		"Name": "LFLClint",
 		"Type": "string",
 		"AllowedValues": "Default, LookingForLove",
 		"Default": "Default",
-		"EnableWithMod": "foggy.LfL"
+		"EnableWithMod": "foggy.LfL||mush.loveydovey"
 	},
 	//----------------------------------------------------------
 	{
@@ -1610,5 +1652,58 @@
 		"Name": "LinusEventChanges",
 		"Type": "bool",
 		"Default": "True"
+	},
+	//----------------------------------------------------------
+	{
+		"Name": "15",
+		"Type": "page",
+		"PageID": "15"
+	},
+	{
+		"Name": "MedinaquirinPinzolHarvey",
+		"Type": "subtitle",
+		"EnableWithMod": "DSVTeam.AddOnPack.MedinaquirinPinzolHarvey"
+	},
+	{
+		"Name": "AddonHarveyGlasses",
+		"Default": "False",
+		"Type": "bool",
+		"EnableWithMod": "DSVTeam.AddOnPack.MedinaquirinPinzolHarvey"
+	},
+	{
+		"Name": "AirynJodi",
+		"Type": "subtitle",
+		"EnableWithMod": "DSVTeam.AddOnPack.AirynJodi"
+	},
+	{
+		"Name": "AddonJodiHair",
+		"Type": "string",
+		"AllowedValues": "Brunette, StrawberryBlonde",
+		"Default": "Brunette",
+		"EnableWithMod": "DSVTeam.AddOnPack.AirynJodi"
+	},
+	{
+		"Name": "BittybeePenny",
+		"Type": "subtitle",
+		"EnableWithMod": "DSVTeam.AddOnPack.BittybeePenny"
+	},
+	{
+		"Name": "AddonPennyEyes",
+		"Type": "string",
+		"AllowedValues": "Brown, Green",
+		"Default": "Brown",
+		"EnableWithMod": "DSVTeam.AddOnPack.BittybeePenny"
+	},
+	{
+		"Name": "AirynWizard",
+		"Type": "subtitle",
+		"EnableWithMod": "DSVTeam.AddOnPack.AirynWizard"
+	},
+	{
+		"Name": "AddonWizardVariant",
+		"Type": "string",
+		"AllowedValues": "Vanilla, Modded",
+		"Default": "Vanilla",
+		"EnableWithMod": "DSVTeam.AddOnPack.AirynWizard"
 	}
 ]

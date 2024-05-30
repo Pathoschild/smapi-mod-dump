@@ -55,7 +55,7 @@
     "config.enable-shipping-bin.name": "Увімкнути ящик для продажу",
     "config.enable-shipping-bin.desc": "Увімкнення доступу до ящика для продажу.",
     "config.add-organize-player-items.name": "Додати кнопку сортування предметів гравця.",
-    "config.add-organize-player-items.desc": "Додавання кнопки \"Сортувати\" в інтерфейсах скриньки для інвентарю гравця.",
+    "config.add-organize-player-items.desc": "Додавання кнопки «Сортувати» в інтерфейсах скриньки для інвентарю гравця.",
     "config.range.name": "Діапазон дії",
     "config.range.desc": "Діапазон, на якому скрині доступні через меню.",
     "config.range.unlimited": "Усі скрині",
@@ -90,7 +90,7 @@
     // disable in locations
     "config.title.disable-in-locations": "Вимкнути в локаціях",
     "config.disable-mines.name": "Шахта та Печера Черепа",
-    "config.disable-mines.desc": "Заборона доступу до скринь під час перебування в шахтв чи Печері Черепа.",
+    "config.disable-mines.desc": "Заборона доступу до скринь під час перебування в шахті чи Печері Черепа.",
     "config.disable-custom-names.name": "Користувацькі назви локацій",
     "config.disable-custom-names.desc": "Внутрішні назви (як показано в моді Debug Mode) для локацій, з яких можна вимкнути доступ до скринь. Ви можете перерахувати кілька комами."
 }

@@ -11,7 +11,8 @@
 {
   "$schema": "https://smapi.io/schemas/manifest.json",
   "Name": "[AF] Mushrooms of Ferngill Forage",
-  "Description": "Forage added by Mushrooms of Ferngill",
+  // https://www.nexusmods.com/stardewvalley/mods/8828
+  "Description": "Forage added by Nrc5Skyrim's Mushrooms of Ferngill",
   "Author": "Jag3Dagster",
   "UniqueID": "HedgehogTechnologies.FoFMushroomsForageAF",
   "Version": "1.0.1",

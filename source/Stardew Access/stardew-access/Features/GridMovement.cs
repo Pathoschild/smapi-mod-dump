@@ -210,6 +210,12 @@ internal class GridMovement : FeatureBase
 			tileLocation = Vector2.Add(tileLocation, directionVectors[direction]);
 		}
 
+		// if (Game1.currentLocation.isCollidingPosition(CurrentPlayer.FacingTileBoundingBox, Game1.viewport, isFarmer: true, -1, glider: false, Game1.player))
+		if (TileInfo.IsCollidingAtTile(Game1.currentLocation, CurrentPlayer.FacingTile))
+		{
+			return;
+		}
+
 		#if DEBUG
 		Log.Verbose($"Move To: {tileLocation}");
 		#endif

@@ -18,9 +18,6 @@ namespace SkillPrestige.Framework.Commands
     /// <summary>Represents a command called in the SMAPI console interface.</summary>
     internal abstract class SkillPrestigeCommand
     {
-        /*********
-        ** Fields
-        *********/
         /// <summary>The name used to call the command in the console.</summary>
         private string Name { get; }
 
@@ -30,10 +27,6 @@ namespace SkillPrestige.Framework.Commands
         /// <summary>Whether the command is used only in test mode.</summary>
         private bool TestingCommand { get; }
 
-
-        /*********
-        ** Public methods
-        *********/
         /// <summary>Register all loaded command types.</summary>
         /// <param name="helper">The SMAPI command helper.</param>
         /// <param name="testCommands">Whether to only register testing commands.</param>
@@ -52,10 +45,6 @@ namespace SkillPrestige.Framework.Commands
             }
         }
 
-
-        /*********
-        ** Protected methods
-        *********/
         /// <summary>Construct an instance.</summary>
         /// <param name="name">The name used to call the command in the console.</param>
         /// <param name="description">The help description for the command.</param>

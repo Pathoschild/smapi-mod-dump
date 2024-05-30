@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-#nullable enable
+#if COMMON_GMCM
 
 using System;
 using System.Collections.Generic;
@@ -461,3 +461,5 @@ public class GMCMIntegration<T, M> : BaseAPIIntegration<IGenericModConfigMenuApi
 	#endregion
 
 }
+
+#endif

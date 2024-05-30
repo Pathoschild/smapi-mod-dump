@@ -14,7 +14,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
-using Leclair.Stardew.BetterCrafting.Models;
 using Leclair.Stardew.Common;
 using Leclair.Stardew.Common.Crafting;
 using Leclair.Stardew.Common.Events;
@@ -38,6 +37,9 @@ public class BulkCraftingMenu : MenuSubscriber<ModEntry> {
 
 	// Caching
 	private readonly Dictionary<IIngredient, int> AvailableQuantity = [];
+	private readonly Dictionary<IIngredient, List<Item>> MatchingItems = [];
+
+	private int Quality;
 
 	public int Quantity { get; private set; } = 1;
 	private ISimpleNode Layout;
@@ -70,11 +72,13 @@ public class BulkCraftingMenu : MenuSubscriber<ModEntry> {
 		Menu = menu;
 		Recipe = recipe;
 
+		Item? obj = Recipe.CreateItemSafe();
+		Quality = obj is null ? 0 : obj.Quality;
+
 		if (!Menu.cooking || Mod.Config.UseSeasoning == SeasoningMode.Disabled)
 			Seasoning = SeasoningMode.Disabled;
 		else {
-			Item? obj = Recipe.CreateItemSafe();
-			if (obj is SObject sobj && sobj.Quality == 0) {
+			if (obj is SObject sobj && Quality == 0) {
 				Seasoning = Mod.Config.UseSeasoning;
 				SeasonIngred = BetterCraftingPage.SEASONING_RECIPE[0];
 			} else
@@ -181,7 +185,7 @@ public class BulkCraftingMenu : MenuSubscriber<ModEntry> {
 		};
 
 		int ingredients = Recipe.Ingredients?.Length ?? 0;
-		if ( ingredients > 20 ) {
+		if (ingredients > 20) {
 			totalPages = (int) Math.Ceiling(ingredients / 20f);
 
 			btnPrev = new ClickableTextureComponent(
@@ -290,7 +294,9 @@ public class BulkCraftingMenu : MenuSubscriber<ModEntry> {
 					amount = 0;
 
 				ingredients.Add(BuildIngredientRow(entry, amount, crafts));
-				if (ingredients.Count >= 20)
+				ingredients.Add(BuildIngredientItems(entry, amount, crafts));
+
+				if (ingredients.Count >= 40)
 					break;
 			}
 
@@ -307,8 +313,8 @@ public class BulkCraftingMenu : MenuSubscriber<ModEntry> {
 				.Space()
 				.Sprite(
 					Recipe is IDynamicDrawingRecipe ddr
-						? new DynamicRecipeSpriteInfo(ddr)
-						: new SpriteInfo(Recipe.Texture, Recipe.SourceRectangle),
+						? new DynamicRecipeSpriteInfo(ddr, quality: Quality)
+						: new SpriteInfo(Recipe.Texture, Recipe.SourceRectangle, quality: Quality),
 					quantity: Quantity
 				)
 				.Space(expand: false)
@@ -322,7 +328,7 @@ public class BulkCraftingMenu : MenuSubscriber<ModEntry> {
 		if (ingredients.Count > 0) {
 			builder.Divider();
 
-			if (ingredients.Count < 4)
+			if (ingredients.Count < 8)
 				builder.AddSpacedRange(4, ingredients);
 			else {
 				List<ISimpleNode> left = [];
@@ -330,11 +336,14 @@ public class BulkCraftingMenu : MenuSubscriber<ModEntry> {
 
 				bool right_side = false;
 
-				foreach (var ing in ingredients) {
-					if (right_side)
-						right.Add(ing);
-					else
-						left.Add(ing);
+				for (int i = 0; i < ingredients.Count; i += 2) {
+					if (right_side) {
+						right.Add(ingredients[i]);
+						right.Add(ingredients[i + 1]);
+					} else {
+						left.Add(ingredients[i]);
+						left.Add(ingredients[i + 1]);
+					}
 
 					right_side = !right_side;
 				}
@@ -373,7 +382,7 @@ public class BulkCraftingMenu : MenuSubscriber<ModEntry> {
 
 				maxWidth = LayoutSize.X;
 
-				for(int page = 2; page <= totalPages; page++) {
+				for (int page = 2; page <= totalPages; page++) {
 					currentPage = page;
 					UpdateLayout();
 				}
@@ -387,6 +396,64 @@ public class BulkCraftingMenu : MenuSubscriber<ModEntry> {
 			LayoutSize.X = maxWidth;
 		else
 			maxWidth = LayoutSize.X;
+	}
+
+	private ISimpleNode BuildIngredientItems(IIngredient ing, int available, int crafts) {
+		if (!MatchingItems.TryGetValue(ing, out var matching) || matching.Count == 0)
+			return EmptyNode.Instance;
+
+		int quant = ing.Quantity * crafts;
+
+		int qq = 0;
+		int i = 0;
+
+		bool had_quality = false;
+
+		while (qq < quant && i < matching.Count) {
+			var item = matching[i];
+			if (item.Quality > 0) {
+				had_quality = true;
+				break;
+			}
+
+			int consumed = Math.Min(quant - qq, item.Stack);
+			qq += consumed;
+			i++;
+		}
+
+		var config = Mod.Config.ShowMatchingItem;
+		bool wanted = config == ShowMatchingItemMode.Always ||
+			(config != ShowMatchingItemMode.Disabled && ing is IConsumptionPreTrackingIngredient cpt2 && cpt2.IsFuzzyIngredient) ||
+			(config == ShowMatchingItemMode.FuzzyQuality && had_quality);
+
+		if (!wanted)
+			return EmptyNode.Instance;
+
+		var fb = FlowHelper.Builder()
+			.Text(" ");
+
+		qq = 0;
+		i = 0;
+		while (qq < quant && i < matching.Count) {
+			var item = matching[i];
+			int consumed = Math.Min(quant - qq, item.Stack);
+			qq += consumed;
+			fb.Text(" ");
+			fb.Sprite(
+				SpriteHelper.GetSprite(item),
+				2f,
+				align: Alignment.VCenter,
+				quantity: consumed
+			);
+			fb.Text($" {item.DisplayName}",
+				shadow: false,
+				color: (Menu.Theme.TooltipTextColor ?? Menu.Theme.TextColor ?? Game1.textColor) * 0.5f,
+				align: Alignment.VCenter
+			);
+			i++;
+		}
+
+		return new FlowNode(fb.Build());
 	}
 
 	private ISimpleNode BuildIngredientRow(IIngredient ing, int available, int crafts) {
@@ -454,7 +521,24 @@ public class BulkCraftingMenu : MenuSubscriber<ModEntry> {
 
 		if (Recipe.Ingredients is not null)
 			foreach (var entry in Recipe.Ingredients) {
-				int amount = entry.GetAvailableQuantity(Game1.player, items, unsaf, Menu.Quality);
+				int amount;
+				if (entry is IConsumptionPreTrackingIngredient cpt) {
+					List<Item> matching = [];
+					MatchingItems[entry] = matching;
+					amount = cpt.GetAvailableQuantity(Game1.player, items, unsaf, Menu.Quality, matching);
+
+					if (Mod.Config.LowQualityFirst)
+						matching.Sort((a, b) => {
+							if (a.Quality < b.Quality) return -1;
+							if (b.Quality < a.Quality) return 1;
+							return 0;
+						});
+
+				} else {
+					MatchingItems.Remove(entry);
+					amount = entry.GetAvailableQuantity(Game1.player, items, unsaf, Menu.Quality);
+				}
+
 				int quant = entry.Quantity * crafts;
 
 				Craftable = Math.Min(amount / entry.Quantity, Craftable);
@@ -508,7 +592,7 @@ public class BulkCraftingMenu : MenuSubscriber<ModEntry> {
 		if (txtQuantity != null && !txtQuantity.Selected)
 			txtQuantity.Text = Quantity.ToString();
 
-		if (old == Quantity && ! changed)
+		if (old == Quantity && !changed)
 			return false;
 
 		if (do_update) {

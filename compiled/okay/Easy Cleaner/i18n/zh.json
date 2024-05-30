@@ -1,8 +1,14 @@
 {
   "config.name.EasyCleanerAssistKey": "一键清理辅助快捷键",
-  "config.tips.EasyCleanerAssistKey": "手持工具，按下辅助快捷键并点击鼠标右键后开始清理",
+  "config.tips.EasyCleanerAssistKey": "手持工具，按下辅助快捷键并点击鼠标右键后开始清理(杂草、树枝、石块，拥有铁制工具时可清理硬木桩、大石块)",
   "config.name.CleanTreeSeedInFarm": "允许清理农场中散落的树种",
-  "config.tips.CleanTreeSeedInFarm": "可清理农场中树周围散落的树种子，会忽略已经施肥的种子",
+  "config.tips.CleanTreeSeedInFarm": "斧头在身上时可清理农场中树周围散落的树种子，会忽略已经施肥的种子",
   "config.name.EnableIndoorsLocation": "允许清理室内区域",
-  "config.tips.EnableIndoorsLocation": "可清理矿井、火山等内部区域的杂草、树枝、石块等"
+  "config.tips.EnableIndoorsLocation": "可清理矿井、火山等内部区域的杂草、树枝、石块等",
+  "config.name.CleanWitheredCrops": "允许清理枯萎作物",
+  "config.tips.CleanWitheredCrops": "可使用镰刀快速清理因换季等原因枯萎了的作物",
+  "config.name.CleanBigTreesOutFarm": "允许清理农场外大树",
+  "config.tips.CleanBigTreesOutFarm": "可清理农场外已经长成的大树，会忽略带树挂、已施树肥的树及蘑菇树/神秘树/椰子树",
+  "config.name.CleanBigTreesInFarm": "允许清理农场内大树",
+  "config.tips.CleanBigTreesInFarm": "可清理农场内已经长成的大树，会忽略带树挂、已施树肥的树及蘑菇树/神秘树/椰子树"
 }

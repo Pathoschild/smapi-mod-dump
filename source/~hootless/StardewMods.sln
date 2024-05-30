@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28705.295
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32421.90
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LineSprinklers", "LineSprinklers\LineSprinklers.csproj", "{6C694A47-2DE6-4FEA-AE7C-C4B082AC1366}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusLocations", "BusLocations\BusLocations.csproj", "{697EE09F-95F4-4EF8-920A-6599E6117B20}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusLocations", "BusLocations\BusLocations.csproj", "{697EE09F-95F4-4EF8-920A-6599E6117B20}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,10 +13,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6C694A47-2DE6-4FEA-AE7C-C4B082AC1366}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6C694A47-2DE6-4FEA-AE7C-C4B082AC1366}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6C694A47-2DE6-4FEA-AE7C-C4B082AC1366}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6C694A47-2DE6-4FEA-AE7C-C4B082AC1366}.Release|Any CPU.Build.0 = Release|Any CPU
 		{697EE09F-95F4-4EF8-920A-6599E6117B20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{697EE09F-95F4-4EF8-920A-6599E6117B20}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{697EE09F-95F4-4EF8-920A-6599E6117B20}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -26,6 +22,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {07E90C10-6567-453B-87F8-33C81EE52931}
+		SolutionGuid = {9AD19A05-2711-41F7-A383-42006E0747F6}
 	EndGlobalSection
 EndGlobal

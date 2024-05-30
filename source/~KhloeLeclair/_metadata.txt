@@ -15,9 +15,9 @@ mods:
    Theme Manager
 
 latest commit:
-   commit 757838f849b8de2f7a0694742d310418faf8ce5b
+   commit 772bb54fec811257b163fc2d0e3fc2153b6f8089
    Author: Khloe Leclair <xivkhloeleclair@gmail.com>
-   Date:   Fri Apr 26 01:15:54 2024 -0400
+   Date:   Mon May 27 17:21:32 2024 -0400
    
-       Add a bit to the author guide about `ModifyHealth` and `ModifyStamina`.
+       Better Crafting 2.12.0
    

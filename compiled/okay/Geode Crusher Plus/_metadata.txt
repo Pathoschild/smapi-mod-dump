@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/24254
+IDs: tomokisan.geodeCrusherPlus
+update keys: Nexus:24254

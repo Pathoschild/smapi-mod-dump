@@ -93,7 +93,7 @@ namespace Pathoschild.Stardew.Automate.Framework
         /// <param name="monitor">The monitor with which to log errors.</param>
         public IEnumerable<IMachineGroup> GetMachineGroups(GameLocation location, IMonitor monitor)
         {
-            MachineGroupBuilder builder = new(this.GetLocationKey(location), this.SortMachines, this.BuildStorage);
+            MachineGroupBuilder builder = new(this.GetLocationKey(location), this.SortMachines, this.BuildStorage, this.Monitor);
             LocationFloodFillIndex locationIndex = new(location, monitor);
             ISet<Vector2> visited = new HashSet<Vector2>();
             foreach (Vector2 tile in location.GetTiles())

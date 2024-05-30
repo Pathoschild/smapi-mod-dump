@@ -9,7 +9,7 @@
   "UniqueID": "HedgehogTechnologies.FullFishingBar",
   "Name": "Full Fishing Bar",
   "Author": "Jag3Dagster",
-  "Version": "1.1.0",
+  "Version": "1.1.3",
   "Description": "Resize the fishing bobber bar to your desired size",
   "MinimumApiVersion": "4.0",
   "EntryDll": "FullFishingBar.dll",

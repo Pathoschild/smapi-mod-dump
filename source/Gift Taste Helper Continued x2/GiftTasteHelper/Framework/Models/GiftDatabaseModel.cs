@@ -19,6 +19,11 @@ namespace GiftTasteHelper.Framework
     {
         public string ItemId { get; set; }
 
+        public GiftModel(string itemId)
+        {
+            this.ItemId = itemId;
+        }
+
         public static explicit operator string(GiftModel model)
         {
             return model.ItemId;
@@ -29,13 +34,15 @@ namespace GiftTasteHelper.Framework
     internal class CharacterTasteModel
     {
         // Indexed by GiftTaste
-        public Dictionary<GiftTaste, List<GiftModel>> Entries { get; set; } = new Dictionary<GiftTaste, List<GiftModel>>();
+        public Dictionary<GiftTaste, List<GiftModel>> Entries { get; set; } = new();
 
+        /*
         public List<GiftModel> this[GiftTaste taste]
         {
             get => Entries.ContainsKey(taste) ? Entries[taste] : null;
             private set => Entries[taste] = value;
         }
+        */
 
         public bool Contains(GiftTaste taste, string itemId)
         {

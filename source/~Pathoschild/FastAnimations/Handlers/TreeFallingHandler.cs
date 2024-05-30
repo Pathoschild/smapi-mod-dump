@@ -33,13 +33,11 @@ namespace Pathoschild.Stardew.FastAnimations.Handlers
         /*********
         ** Public methods
         *********/
-        /// <summary>Construct an instance.</summary>
-        /// <param name="multiplier">The animation speed multiplier to apply.</param>
+        /// <inheritdoc />
         public TreeFallingHandler(float multiplier)
             : base(multiplier) { }
 
-        /// <summary>Perform any updates needed when the player enters a new location.</summary>
-        /// <param name="location">The new location.</param>
+        /// <inheritdoc />
         public override void OnNewLocation(GameLocation location)
         {
             this.Trees =
@@ -63,8 +61,7 @@ namespace Pathoschild.Stardew.FastAnimations.Handlers
                 .ToDictionary(p => p.Key, p => p.Value.Value);
         }
 
-        /// <summary>Get whether the animation is currently active.</summary>
-        /// <param name="playerAnimationID">The player's current animation ID.</param>
+        /// <inheritdoc />
         public override bool IsEnabled(int playerAnimationID)
         {
             return
@@ -72,8 +69,7 @@ namespace Pathoschild.Stardew.FastAnimations.Handlers
                 && this.GetFallingTrees().Any();
         }
 
-        /// <summary>Perform any logic needed on update while the animation is active.</summary>
-        /// <param name="playerAnimationID">The player's current animation ID.</param>
+        /// <inheritdoc />
         public override void Update(int playerAnimationID)
         {
             GameTime gameTime = Game1.currentGameTime;

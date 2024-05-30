@@ -20,7 +20,7 @@ internal class ComponentScreen : GuiScreen
     {
         AddComponent(new Button("Button", "Button", 20, 20, 150, 50));
         var slot = new Slot<LabelSlot>("Slot", "", 10, 60, 200, 560, 80);
-        for (int i = 0; i < 10; i++)
+        for (var i = 0; i < 10; i++)
         {
             slot.AddEntry(new LabelSlot(i + ""));
         }

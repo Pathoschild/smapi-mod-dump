@@ -9,6 +9,7 @@
   "FlowerQueensCrownImmersionMode": "True",
   "BeachStyle": "DSVStyle",
   "AlternateCecily": "False",
+  "TurkishMike": "True",
   "AGEGabriel": "False",
   "AGEZinnia": "False",
   "AGEDaisy": "False",
@@ -20,6 +21,9 @@
   "SKEAdrian": "Off",
   "SKEDouglas": "Off",
   "SKETina": "Off",
+  "TonedDown": "False",
+  "EmilyPortrait": "2",
+  "WizardPortrait": "2",
   "LUTIWilly": "False",
   "LUTISandy": "False",
   "JaeminSamFamilyDialogue": "False",
@@ -201,5 +205,9 @@
   "WillySpiritsEve": "True",
   "ClintScar": "False",
   "ClintBeard": "False",
-  "LinusEventChanges": "True"
+  "LinusEventChanges": "True",
+  "AddonHarveyGlasses": "False",
+  "AddonJodiHair": "Brunette",
+  "AddonPennyEyes": "Brown",
+  "AddonWizardVariant": "Vanilla"
 }

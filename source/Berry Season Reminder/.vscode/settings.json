@@ -18,5 +18,6 @@
 		"rightclick",
 		"vpbounds",
 		"workerhuts"
-	]
+	],
+	"omnisharp.sdkPath": "C:\\program files\\dotnet\\sdk\\6.0.419"
 }

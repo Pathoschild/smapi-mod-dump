@@ -15,6 +15,7 @@ using StardewValley;
 using StardewValley.Menus;
 using UIInfoSuite2.AdditionalFeatures;
 using UIInfoSuite2.Compatibility;
+using UIInfoSuite2.Compatibility.CustomBush;
 using UIInfoSuite2.Infrastructure;
 using UIInfoSuite2.Options;
 
@@ -22,11 +23,23 @@ namespace UIInfoSuite2;
 
 public class ModEntry : Mod
 {
+  private static SkipIntro _skipIntro; // Needed so GC won't throw away object with subscriptions
+  private static ModConfig _modConfig;
+
+  private static EventHandler<ButtonsChangedEventArgs> _calendarAndQuestKeyBindingsHandler;
+
+  private ModOptions _modOptions;
+  private ModOptionsPageHandler _modOptionsPageHandler;
+
+  public static IReflectionHelper Reflection { get; private set; } = null!;
+
+  public static IMonitor MonitorObject { get; private set; } = null!;
+
 #region Entry
   public override void Entry(IModHelper helper)
   {
+    Reflection = helper.Reflection;
     MonitorObject = Monitor;
-    DGA = new DynamicGameAssetsEntry(Helper, Monitor);
     I18n.Init(helper.Translation);
 
     _skipIntro = new SkipIntro(helper.Events);
@@ -37,6 +50,8 @@ public class ModEntry : Mod
     helper.Events.GameLoop.Saved += OnSaved;
     helper.Events.GameLoop.GameLaunched += OnGameLaunched;
     helper.Events.Display.Rendering += IconHandler.Handler.Reset;
+
+    IconHandler.Handler.IsQuestLogPermanent = helper.ModRegistry.IsLoaded("MolsonCAD.DeluxeJournal");
   }
 #endregion
 
@@ -46,18 +61,9 @@ public class ModEntry : Mod
     SoundHelper.Instance.Initialize(Helper);
 
     // get Generic Mod Config Menu's API (if it's installed)
-    ISemanticVersion? modVersion = Helper.ModRegistry.Get("spacechase0.GenericModConfigMenu")?.Manifest?.Version;
-    var minModVersion = "1.6.0";
-    if (modVersion?.IsOlderThan(minModVersion) == true)
-    {
-      Monitor.Log(
-        $"Detected Generic Mod Config Menu {modVersion} but expected {minModVersion} or newer. Disabling integration with that mod.",
-        LogLevel.Warn
-      );
-      return;
-    }
+    var configMenu = ApiManager.TryRegisterApi<IGenericModConfigMenuApi>(Helper, ModCompat.Gmcm, "1.6.0");
+    ApiManager.TryRegisterApi<ICustomBushApi>(Helper, ModCompat.CustomBush, "1.2.1", true);
 
-    var configMenu = Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
     if (configMenu is null)
     {
       return;
@@ -97,20 +103,6 @@ public class ModEntry : Mod
     );
   }
 #endregion
-
-#region Properties
-  public static IMonitor MonitorObject { get; private set; }
-  public static DynamicGameAssetsEntry DGA { get; private set; }
-
-  private static SkipIntro _skipIntro; // Needed so GC won't throw away object with subscriptions
-  private static ModConfig _modConfig;
-
-  private ModOptions _modOptions;
-  private ModOptionsPageHandler _modOptionsPageHandler;
-
-  private static EventHandler<ButtonsChangedEventArgs> _calendarAndQuestKeyBindingsHandler;
-#endregion
-
 
 #region Event subscriptions
   private void OnReturnedToTitle(object sender, ReturnedToTitleEventArgs e)

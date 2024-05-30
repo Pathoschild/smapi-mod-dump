@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using System.Runtime.Loader;
 using HarmonyLib;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
@@ -17,24 +18,31 @@ namespace StardewVariableSeasons
 {
     internal sealed class ModEntry : Mod
     {
-        public static int ChangeDate;
-        public static int CropSurvivalCounter;
-        public static Season SeasonByDay;
+        public static int ChangeDate { get; set; }
+        public static int CropSurvivalCounter { get; set; }
+        public static Season SeasonByDay { get; set; }
         
         public override void Entry(IModHelper helper)
         {
             var harmony = new Harmony(ModManifest.UniqueID);
             
             harmony.Patch(
-                original: AccessTools.Method(typeof(Game1), "_newDayAfterFade"),
-                transpiler: new HarmonyMethod(typeof(NewDayAfterFadeTranspiler), nameof(NewDayAfterFadeTranspiler.Transpiler))
-            );
-            
-            harmony.Patch(
                 original: AccessTools.Method(typeof(StardewValley.Objects.TV), "getWeatherForecast"),
                 postfix: new HarmonyMethod(typeof(CustomWeatherChannelMessage), nameof(CustomWeatherChannelMessage.Postfix))
             );
 
+            harmony.Patch(
+                original: AccessTools.Method(typeof(Game1), "_newDayAfterFade"),
+                prefix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPrefix)),
+                postfix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPostfix))
+            );
+            
+            harmony.Patch(
+                original: AccessTools.Method(typeof(Game1), "UpdateWeatherForNewDay"),
+                prefix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPrefix)),
+                postfix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPostfix))
+            );
+            
             harmony.Patch(
                 original: AccessTools.Method(typeof(Utility), "isFestivalDay"),
                 prefix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPrefix)),
@@ -99,7 +107,9 @@ namespace StardewVariableSeasons
                 prefix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPrefix)),
                 postfix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPostfix))
             );
-            
+
+            helper.Events.GameLoop.GameLaunched +=
+                (sender, e) => GameLaunchedActions.OnGameLaunched(Monitor, Helper, ModManifest, sender, e);
             helper.Events.GameLoop.DayEnding += (sender, e) => DayEndingActions.OnDayEnding(Monitor, Helper, sender, e);
             helper.Events.GameLoop.SaveLoaded +=
                 (sender, e) => SaveLoadedActions.OnSaveLoaded(Monitor, Helper, sender, e);

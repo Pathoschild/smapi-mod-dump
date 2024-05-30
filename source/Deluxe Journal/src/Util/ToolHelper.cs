@@ -9,88 +9,154 @@
 *************************************************/
 
 using StardewValley;
+using StardewValley.GameData.Tools;
 using StardewValley.Tools;
 
 namespace DeluxeJournal.Util
 {
-    public class ToolHelper
+    public static class ToolHelper
     {
-        /// <summary>Extract a ToolDescription from a Tool.</summary>
-        public static ToolDescription GetToolDescription(Tool tool)
+        /// <summary>Get the upgraded version of a tool or a tool with a specific upgrade level.</summary>
+        /// <param name="toolData">The tool data.</param>
+        /// <param name="upgradeLevel">
+        /// A specific upgrade level or a value less than zero to upgrade to <c>toolData.UpgradeLevel+1</c>.
+        /// </param>
+        /// <returns>The upgraded tool or <c>null</c> if one could not be created.</returns>
+        public static Tool? GetToolUpgrade(ToolData toolData, int upgradeLevel = -1)
         {
-            return tool.GetType().Name switch
+            upgradeLevel = upgradeLevel < 0 ? toolData.UpgradeLevel + 1 : upgradeLevel;
+
+            foreach (KeyValuePair<string, ToolData> pair in Game1.toolData)
             {
-                nameof(Axe) => new ToolDescription(0, (byte)tool.UpgradeLevel),
-                nameof(Hoe) => new ToolDescription(1, (byte)tool.UpgradeLevel),
-                nameof(Pickaxe) => new ToolDescription(2, (byte)tool.UpgradeLevel),
-                nameof(WateringCan) => new ToolDescription(3, (byte)tool.UpgradeLevel),
-                nameof(FishingRod) => new ToolDescription(4, (byte)tool.UpgradeLevel),
-                nameof(Pan) => new ToolDescription(5, (byte)tool.UpgradeLevel),
-                nameof(Shears) => new ToolDescription(6, (byte)tool.UpgradeLevel),
-                nameof(MilkPail) => new ToolDescription(7, (byte)tool.UpgradeLevel),
-                nameof(Wand) => new ToolDescription(8, (byte)tool.UpgradeLevel),
-                _ => new ToolDescription(0, 0),
-            };
-        }
-
-        /// <summary>Create a Tool from a ToolDescription.</summary>
-        public static Tool? GetToolFromDescription(byte index, byte upgradeLevel)
-        {
-            return index switch
-            {
-                0 => new Axe() { UpgradeLevel = upgradeLevel },
-                1 => new Hoe() { UpgradeLevel = upgradeLevel },
-                2 => new Pickaxe() { UpgradeLevel = upgradeLevel },
-                3 => new WateringCan() { UpgradeLevel = upgradeLevel },
-                4 => new FishingRod() { UpgradeLevel = upgradeLevel },
-                5 => new Pan() { UpgradeLevel = upgradeLevel },
-                6 => new Shears() { UpgradeLevel = upgradeLevel },
-                7 => new MilkPail() { UpgradeLevel = upgradeLevel },
-                8 => new Wand() { UpgradeLevel = upgradeLevel },
-                _ => null
-            };
-        }
-
-        /// <summary>Get the upgrade level for a Tool owned by the local player.</summary>
-        /// <param name="toolType">The type value of the Tool.</param>
-        /// <returns>The upgrade level for the Tool, or the base level if not found.</returns>
-        public static int GetLocalToolUpgradeLevel(Type toolType)
-        {
-            int level = -1;
-            int fallback = 0;
-
-            if (Game1.player.toolBeingUpgraded.Value is Tool tool && tool.GetType() == toolType)
-            {
-                return tool.UpgradeLevel;
-            }
-
-            Utility.iterateAllItems(searchForTool);
-            Utility.iterateChestsAndStorage(searchForTool);
-
-            if (level == -1)
-            {
-                return fallback;
-            }
-
-            return level;
-
-            void searchForTool(Item item)
-            {
-                if (level == -1 && item is Tool tool && tool.GetType() == toolType)
+                if (pair.Value.ClassName == toolData.ClassName && pair.Value.UpgradeLevel == upgradeLevel)
                 {
-                    if (tool.getLastFarmerToUse() == null)
-                    {
-                        fallback = tool.UpgradeLevel;
-                    }
-                    else if (tool.getLastFarmerToUse().IsLocalPlayer)
-                    {
-                        level = tool.UpgradeLevel;
-                    }
+                    return ItemRegistry.Create<Tool>(ItemRegistry.type_tool + pair.Key);
                 }
             }
+
+            return null;
         }
 
-        /// <summary>Get the price for a Tool upgrade (at the blacksmith shop) for the given upgrade level.</summary>
+        /// <summary>
+        /// Find a tool owned by a given player and return its upgrade.
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// "Ownership" here is defined as the last player to use a tool or the tool in a
+        /// player's inventory. When enabling both <paramref name="includeUsedTools"/> and
+        /// <paramref name="includeUnusedTools"/>, unused tools are always prioritized over used
+        /// ones and the tool of the highest upgrade level is chosen when breaking ties.
+        /// </remarks>
+        /// 
+        /// <param name="toolData">The tool data.</param>
+        /// <param name="player">The player that owns the tool.</param>
+        /// <param name="includeUsedTools">Allow tools that were last used by another player.</param>
+        /// <param name="includeUnusedTools">Allow tools that were not used by any player.</param>
+        /// <returns>
+        /// The upgraded tool. If no match is found, or the upgraded tool would exceed iridium
+        /// quality, then the original tool with associated <paramref name="toolData"/> is returned.
+        /// If the original tool could not be created, then <c>null</c>.
+        /// </returns>
+        public static Tool? GetToolUpgradeForPlayer(ToolData toolData, Farmer player, bool includeUsedTools = true, bool includeUnusedTools = true)
+        {
+            Tool? foundTool = null;
+
+            if (IsTrashCan(toolData))
+            {
+                return GetToolUpgrade(toolData, Math.Max(toolData.UpgradeLevel, player.trashCanLevel + 1));
+            }
+            else if (player.toolBeingUpgraded.Value is Tool upgradedTool && upgradedTool.GetToolData()?.ClassName == toolData.ClassName)
+            {
+                return upgradedTool;
+            }
+
+            foreach (Item item in player.Items)
+            {
+                if (item is Tool tool && tool.GetToolData() is ToolData playerToolData && playerToolData.ClassName == toolData.ClassName)
+                {
+                    foundTool = tool;
+                    break;
+                }
+            }
+
+            if (foundTool == null)
+            {
+                Utility.ForEachItem(searchForTool);
+            }
+
+            return foundTool?.GetToolData() is ToolData foundToolData
+                ? GetToolUpgrade(foundToolData)
+                : GetToolUpgrade(toolData, toolData.UpgradeLevel);
+
+            bool searchForTool(Item item)
+            {
+                if (item is Tool worldTool && worldTool.GetToolData() is ToolData worldToolData && worldToolData.ClassName == toolData.ClassName)
+                {
+                    Farmer? owner = worldTool.getLastFarmerToUse();
+
+                    if (owner != null && owner.UniqueMultiplayerID == player.UniqueMultiplayerID)
+                    {
+                        foundTool = worldTool;
+                        return false;
+                    }
+                    else if ((includeUnusedTools || includeUsedTools) && worldTool.UpgradeLevel < Tool.iridium)
+                    {
+                        if ((owner == null && !includeUnusedTools) || (owner != null && !includeUsedTools))
+                        {
+                            return true;
+                        }
+
+                        if (foundTool != null)
+                        {
+                            bool guessedToolUnowned = foundTool.getLastFarmerToUse() == null;
+                            bool downgradeGuess = foundTool.UpgradeLevel > worldTool.UpgradeLevel;
+
+                            if ((owner == null && guessedToolUnowned && downgradeGuess) ||
+                                (owner != null && (guessedToolUnowned || downgradeGuess)))
+                            {
+                                return true;
+                            }
+                        }
+
+                        foundTool = worldTool;
+                    }
+                }
+
+                return true;
+            }
+        }
+
+        /// <summary>Is the tool with the associated <see cref="ToolData"/> a trash can?</summary>
+        /// <param name="toolData">The tool data.</param>
+        public static bool IsTrashCan(ToolData toolData)
+        {
+            return toolData.ClassName == nameof(GenericTool) && (toolData.SpriteIndex >= 13 || toolData.SpriteIndex <= 16);
+        }
+
+        /// <summary>
+        /// Is the tool type with the associated <see cref="ToolData"/> upgradable at the blacksmith?
+        /// Does not check upgrade level.
+        /// </summary>
+        /// <param name="toolData">The tool data.</param>
+        public static bool IsToolUpgradable(ToolData toolData)
+        {
+            return toolData.ClassName == nameof(Axe)
+                || toolData.ClassName == nameof(Pickaxe)
+                || toolData.ClassName == nameof(Hoe)
+                || toolData.ClassName == nameof(WateringCan)
+                || toolData.ClassName == nameof(Pan)
+                || IsTrashCan(toolData);
+        }
+
+        /// <summary>Is the tool with the associated <see cref="ToolData"/> at its base upgrade level?</summary>
+        /// <param name="toolData">The tool data.</param>
+        public static bool IsToolBaseUpgradeLevel(ToolData toolData)
+        {
+            return toolData.UpgradeLevel < 1 || (toolData.UpgradeLevel < 2 && (toolData.ClassName == nameof(Pan) || IsTrashCan(toolData)));
+        }
+
+        /// <summary>Get the price for a tool upgrade (at the blacksmith shop) for the given upgrade level.</summary>
+        /// <param name="level">The <see cref="Tool.UpgradeLevel"/> for a given tool.</param>
         public static int PriceForToolUpgradeLevel(int level)
         {
             return level switch

@@ -11,7 +11,7 @@
 {
     "Name": "Artisan Products Copy Quality",
     "Author": "justastranger",
-    "Version": "1.1.0",
+    "Version": "1.1.1",
     "Description": "Iterates through certain machines and all of their outputs so the CopyQuality flag can be enabled. Replicates 'Quality Artisan Products' in pure SMAPI code that is much easier to expand.",
     "UniqueID": "JAS.ArtisanProductsCopyQuality",
     "EntryDll": "ArtisanProductsCopyQuality.dll",

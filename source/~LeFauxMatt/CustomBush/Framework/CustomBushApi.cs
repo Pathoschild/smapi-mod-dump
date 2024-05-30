@@ -11,7 +11,6 @@
 namespace StardewMods.CustomBush.Framework;
 
 using StardewMods.Common.Services.Integrations.CustomBush;
-using StardewMods.Common.Services.Integrations.FauxCore;
 using StardewMods.CustomBush.Framework.Services;
 using StardewValley.TerrainFeatures;
 
@@ -19,21 +18,18 @@ using StardewValley.TerrainFeatures;
 public sealed class CustomBushApi : ICustomBushApi
 {
     private readonly AssetHandler assetHandler;
-    private readonly ILog log;
     private readonly IModInfo modInfo;
     private readonly ModPatches modPatches;
 
     /// <summary>Initializes a new instance of the <see cref="CustomBushApi" /> class.</summary>
     /// <param name="assetHandler">Dependency used for handling assets.</param>
-    /// <param name="modPatches">Dependency for managing custom bushes.</param>
     /// <param name="modInfo">Mod info from the calling mod.</param>
-    /// <param name="log">Dependency used for monitoring and logging.</param>
-    internal CustomBushApi(AssetHandler assetHandler, ModPatches modPatches, IModInfo modInfo, ILog log)
+    /// <param name="modPatches">Dependency for managing custom bushes.</param>
+    internal CustomBushApi(AssetHandler assetHandler, IModInfo modInfo, ModPatches modPatches)
     {
         this.assetHandler = assetHandler;
-        this.modPatches = modPatches;
         this.modInfo = modInfo;
-        this.log = log;
+        this.modPatches = modPatches;
     }
 
     /// <inheritdoc />
@@ -44,15 +40,33 @@ public sealed class CustomBushApi : ICustomBushApi
     public bool IsCustomBush(Bush bush) => this.modPatches.IsCustomBush(bush);
 
     /// <inheritdoc />
-    public bool TryGetCustomBush(Bush bush, out ICustomBush? customBush)
+    public bool TryGetCustomBush(Bush bush, out ICustomBush? customBush) =>
+        this.TryGetCustomBush(bush, out customBush, out _);
+
+    /// <inheritdoc />
+    public bool TryGetCustomBush(Bush bush, out ICustomBush? customBush, out string? id)
     {
         if (this.modPatches.TryGetCustomBush(bush, out var customBushInstance))
         {
+            // Replace blank name with default
+            if (string.IsNullOrWhiteSpace(customBushInstance.DisplayName))
+            {
+                customBushInstance.DisplayName = I18n.Default_Name();
+            }
+
+            // Replace blank description with default
+            if (string.IsNullOrWhiteSpace(customBushInstance.Description))
+            {
+                customBushInstance.Description = I18n.Default_Description();
+            }
+
             customBush = customBushInstance;
+            id = customBushInstance.Id;
             return true;
         }
 
         customBush = null;
+        id = null;
         return false;
     }
 

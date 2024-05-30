@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Aflojack/BetterWateringCanAndHoe
+**
+*************************************************/
+
+{
+    "Name": "Better Watering Can And Hoe",
+    "Author": "Aflojack45",
+    "Version": "2.1.0",
+    "Description": "This mod make possible to use your tools in your preferred mode. If you want to use with 3x3 always you don't have to wait every time for power-up your tool. You can use it as your single click. You can use with Watering Cans and Hoes too.",
+    "UniqueID": "Aflojack45.BetterWateringCanAndHoe",
+    "EntryDll": "BetterWateringCanAndHoe.dll",
+    "MinimumApiVersion": "4.0.0",
+    "UpdateKeys": ["Nexus:23946"]
+  }

@@ -22,9 +22,7 @@ namespace SkillPrestige.Framework.Menus.Elements.Buttons
 {
     internal class IntegerEditor : Button
     {
-        /*********
-        ** Fields
-        *********/
+
         protected override string HoverText => string.Empty;
         protected override string Text { get; }
         private const int PixelsWide = 7;
@@ -36,19 +34,11 @@ namespace SkillPrestige.Framework.Menus.Elements.Buttons
         private int Increment { get; }
 
         private readonly ClickCallback OnClick;
-        private readonly TextureButton MinusButton;
-        private readonly TextureButton PlusButton;
+        public TextureButton MinusButton;
+        public TextureButton PlusButton;
 
-
-        /*********
-        ** Accessors
-        *********/
         public delegate void ClickCallback(int number);
 
-
-        /*********
-        ** Public methods
-        *********/
         public IntegerEditor(string text, int startingNumber, int minimum, int maximum, Vector2 location, ClickCallback onClickCallback, int increment = 1)
         {
             if (maximum <= minimum)
@@ -91,11 +81,11 @@ namespace SkillPrestige.Framework.Menus.Elements.Buttons
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            Vector2 location = new Vector2(this.Bounds.X, this.Bounds.Y);
+            var location = new Vector2(this.Bounds.X, this.Bounds.Y);
             spriteBatch.DrawString(Game1.smallFont, this.Text, location, Game1.textColor);
             location.Y += Game1.smallFont.MeasureString(this.Text).Y + LinePadding;
             this.MinusButton.Draw(spriteBatch, this.Value == this.Minimum ? Color.Gray : Color.White);
-            Vector2 numberLocation = location;
+            var numberLocation = location;
             int controlAreaWidth = this.PlusButton.Bounds.X + this.PlusButton.Bounds.Width - this.Bounds.X;
             numberLocation.X += controlAreaWidth / 2 + GetNumberXOffset(this.Value) / 2;
             numberLocation.Y += LinePadding;
@@ -103,10 +93,6 @@ namespace SkillPrestige.Framework.Menus.Elements.Buttons
             this.PlusButton.Draw(spriteBatch, this.Value == this.Maximum ? Color.Gray : Color.White);
         }
 
-
-        /*********
-        ** Private methods
-        *********/
         private void MinusButtonClicked()
         {
             Logger.LogVerbose($"{this.Text} minus button clicked.");
@@ -144,7 +130,7 @@ namespace SkillPrestige.Framework.Menus.Elements.Buttons
             // Numbers are printed starting at the given location, then moving to the left for each digit. This does
             // *NOT* mean that the location given is the right edge. Instead, the location given to the number would be
             // at the X location in this pixel diagram for the number 703, This is why we subtract a single digit width.
-            //   __   _ X__
+            //   __   _  X__
             //    /  | |  _|
             //   /   |_| __|
             return MeasureNumberWidth(number) - SingleDigitWidth;

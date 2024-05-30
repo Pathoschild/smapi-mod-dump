@@ -81,6 +81,7 @@ namespace ModularZenGarden {
 				"Earth Obelisk" => types["stones"],
 				"Water Obelisk" => types["tree"],
 				"Desert Obelisk" => types["lantern"],
+				"Island Obelisk" => types["parrot"],
 				// Excludes the Island Obelisk for now
 				_ => throw new InvalidDataException("This type name has no garden associated."),
 			};

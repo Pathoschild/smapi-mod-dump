@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Grow That Giant Crop",
+  "Author": "MercuryVN",
+  "Version": "0.3.0",
+  "Description": "Instantly grow a giant crop at the push of a button if all requirements are met",
+  "UniqueID": "MercuryVN.GrowThatGiantCrop",
+  "EntryDll": "GrowThatGiantCrop.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "nexus:23760" ]
+}

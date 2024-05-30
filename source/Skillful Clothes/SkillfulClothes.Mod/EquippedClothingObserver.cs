@@ -165,16 +165,16 @@ namespace SkillfulClothes
             CurrentEffect = null;
         }
 
-        public bool HasRingEffect(int ringIndex)
+        public bool HasRingEffect(string ringId)
         {
             if (isSuspended) return false;
 
             if(CurrentEffect is EffectSet set)
             {
-                return set.Effects.Any(x => (x is RingEffect re) && (int)re.Parameters.Ring == ringIndex);
+                return set.Effects.Any(x => (x is RingEffect re) && ((int)re.Parameters.Ring).ToString() == ringId);
             } else 
             { 
-                return (CurrentEffect is RingEffect re) && (int)re.Parameters.Ring == ringIndex;
+                return (CurrentEffect is RingEffect re) && ((int)re.Parameters.Ring).ToString() == ringId;
             }
         }
     }

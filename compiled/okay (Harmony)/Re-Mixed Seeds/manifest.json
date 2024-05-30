@@ -1,7 +1,7 @@
 {
     "Name": "MixedSeedMod",
     "Author": "nein",
-    "Version": "1.0.5",
+    "Version": "1.0.6",
     "Description": "Improve mixed seeds",
     "UniqueID": "nein.MixedSeedMod",
     "EntryDll": "MixedSeedMod.dll",

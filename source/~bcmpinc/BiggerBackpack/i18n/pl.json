@@ -1,0 +1,18 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/bcmpinc/StardewHack
+**
+*************************************************/
+
+{
+    SetBackpackSizeCommand: "Ustaw rozmiar plecaka gracza. Musi być wielokrotność 12",
+    Purchase: "Kup za ({{cost}} zł)",
+    BackpackUpgrade: "Rozszerzenie Plecaka do 48 miejsc",
+    PremiumPack: "Pakiet Premium",
+    BackpackCostName: "Koszt plecaka", 
+    BackpackCostTooltip: "Ile musisz zapłacić, aby kupić ten plecak w sklepie.",
+}

@@ -67,6 +67,8 @@ namespace HorseOverhaul
 
                 InteractPatches.ApplyPatches(horseOverhaul, harmony);
 
+                WarpHorsePatches.ApplyPatches(horseOverhaul, harmony);
+
                 HorseDrawPatches.ApplyPatches(horseOverhaul, harmony);
             }
             catch (Exception e)

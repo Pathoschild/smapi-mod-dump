@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34728.123
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LineSprinklersRedux", "LineSprinklersRedux\LineSprinklersRedux.csproj", "{02DEE621-65F1-4FA3-8A90-B1BCFE09C3DB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{02DEE621-65F1-4FA3-8A90-B1BCFE09C3DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02DEE621-65F1-4FA3-8A90-B1BCFE09C3DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02DEE621-65F1-4FA3-8A90-B1BCFE09C3DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02DEE621-65F1-4FA3-8A90-B1BCFE09C3DB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {66DC51BA-63F0-4D1B-B330-E1203FB36405}
+	EndGlobalSection
+EndGlobal

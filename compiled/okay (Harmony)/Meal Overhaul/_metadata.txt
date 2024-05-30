@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/23528
+IDs: stardemod.MealOverhaul
+update keys: Nexus:23528

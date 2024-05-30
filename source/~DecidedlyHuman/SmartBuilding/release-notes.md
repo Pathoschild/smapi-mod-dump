@@ -7,6 +7,12 @@ for queries and analysis.**
 ----
 
 # Smart Building release notes
+## 1.8.10
+####
+* Finally fixed an issue with picking up furniture either giving you zero of the item, or multiple.
+## 1.8.9
+#### Fixes
+* Fixed placement of some modded seeds/trees. Everything here should be 100% fine now!
 ## 1.8.8
 #### Fixes
 * Potentially fixed an issue with modded crops.

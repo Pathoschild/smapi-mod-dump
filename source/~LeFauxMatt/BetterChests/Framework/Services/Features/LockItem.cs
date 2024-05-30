@@ -18,34 +18,26 @@ using StardewMods.BetterChests.Framework.Models.Events;
 using StardewMods.Common.Helpers;
 using StardewMods.Common.Interfaces;
 using StardewMods.Common.Models;
-using StardewMods.Common.Services.Integrations.BetterChests.Enums;
-using StardewMods.Common.Services.Integrations.FauxCore;
+using StardewMods.Common.Services;
+using StardewMods.Common.Services.Integrations.BetterChests;
 using StardewValley.Menus;
 
 /// <summary>Locks items in inventory so they cannot be stashed.</summary>
 internal sealed class LockItem : BaseFeature<LockItem>
 {
     private readonly IInputHelper inputHelper;
-    private readonly MenuManager menuManager;
+    private readonly MenuHandler menuHandler;
 
     /// <summary>Initializes a new instance of the <see cref="LockItem" /> class.</summary>
     /// <param name="eventManager">Dependency used for managing events.</param>
     /// <param name="inputHelper">Dependency used for checking and changing input state.</param>
-    /// <param name="menuManager">Dependency used for managing the current menu.</param>
-    /// <param name="log">Dependency used for logging debug information to the console.</param>
-    /// <param name="manifest">Dependency for accessing mod manifest.</param>
+    /// <param name="menuHandler">Dependency used for managing the current menu.</param>
     /// <param name="modConfig">Dependency used for accessing config data.</param>
-    public LockItem(
-        IEventManager eventManager,
-        IInputHelper inputHelper,
-        MenuManager menuManager,
-        ILog log,
-        IManifest manifest,
-        IModConfig modConfig)
-        : base(eventManager, log, manifest, modConfig)
+    public LockItem(IEventManager eventManager, IInputHelper inputHelper, MenuHandler menuHandler, IModConfig modConfig)
+        : base(eventManager, modConfig)
     {
         this.inputHelper = inputHelper;
-        this.menuManager = menuManager;
+        this.menuHandler = menuHandler;
     }
 
     /// <inheritdoc />
@@ -71,44 +63,6 @@ internal sealed class LockItem : BaseFeature<LockItem>
         this.Events.Unsubscribe<ButtonsChangedEventArgs>(this.OnButtonsChanged);
         this.Events.Unsubscribe<ItemTransferringEventArgs>(this.OnItemTransferring);
         this.Events.Unsubscribe<ItemHighlightingEventArgs>(this.OnItemHighlighting);
-    }
-
-    private bool TryGetMenu(int mouseX, int mouseY, [NotNullWhen(true)] out InventoryMenu? inventoryMenu)
-    {
-        inventoryMenu = this.menuManager.CurrentMenu switch
-        {
-            ItemGrabMenu
-            {
-                inventory:
-                { } inventory,
-            } when inventory.isWithinBounds(mouseX, mouseY) => inventory,
-            ItemGrabMenu
-            {
-                ItemsToGrabMenu:
-                { } itemsToGrabMenu,
-            } when itemsToGrabMenu.isWithinBounds(mouseX, mouseY) => itemsToGrabMenu,
-            InventoryPage
-            {
-                inventory:
-                { } inventoryPage,
-            } => inventoryPage,
-            _ => null,
-        };
-
-        return inventoryMenu is not null;
-    }
-
-    private void OnRenderedActiveMenu(RenderedActiveMenuEventArgs e)
-    {
-        if (this.menuManager.Top.Menu is not null)
-        {
-            this.DrawOverlay(e.SpriteBatch, this.menuManager.Top.Menu);
-        }
-
-        if (this.menuManager.Bottom.Menu is not null)
-        {
-            this.DrawOverlay(e.SpriteBatch, this.menuManager.Bottom.Menu);
-        }
     }
 
     private void DrawOverlay(SpriteBatch spriteBatch, InventoryMenu inventoryMenu)
@@ -142,6 +96,9 @@ internal sealed class LockItem : BaseFeature<LockItem>
         }
     }
 
+    private bool IsUnlocked(Item item) =>
+        !item.modData.TryGetValue(this.UniqueId, out var locked) || locked != "Locked";
+
     private void OnButtonPressed(ButtonPressedEventArgs e)
     {
         if (!this.Config.LockItemHold || e.Button is not SButton.MouseLeft || !this.Config.Controls.LockSlot.IsDown())
@@ -149,13 +106,13 @@ internal sealed class LockItem : BaseFeature<LockItem>
             return;
         }
 
-        var (mouseX, mouseY) = Game1.getMousePosition(true);
-        if (!this.TryGetMenu(mouseX, mouseY, out var inventoryMenu))
+        var cursor = e.Cursor.GetScaledScreenPixels().ToPoint();
+        if (!this.TryGetMenu(cursor, out var inventoryMenu))
         {
             return;
         }
 
-        var slot = inventoryMenu.inventory.FirstOrDefault(slot => slot.containsPoint(mouseX, mouseY));
+        var slot = inventoryMenu.inventory.FirstOrDefault(slot => slot.bounds.Contains(cursor));
         var index = slot?.name.GetInt(-1) ?? -1;
         if (index == -1)
         {
@@ -179,13 +136,13 @@ internal sealed class LockItem : BaseFeature<LockItem>
             return;
         }
 
-        var (mouseX, mouseY) = Game1.getMousePosition(true);
-        if (!this.TryGetMenu(mouseX, mouseY, out var inventoryMenu))
+        var cursor = e.Cursor.GetScaledScreenPixels().ToPoint();
+        if (!this.TryGetMenu(cursor, out var inventoryMenu))
         {
             return;
         }
 
-        var slot = inventoryMenu.inventory.FirstOrDefault(slot => slot.containsPoint(mouseX, mouseY));
+        var slot = inventoryMenu.inventory.FirstOrDefault(slot => slot.bounds.Contains(cursor));
         var index = slot?.name.GetInt(-1) ?? -1;
         if (index == -1)
         {
@@ -204,7 +161,7 @@ internal sealed class LockItem : BaseFeature<LockItem>
 
     private void OnItemHighlighting(ItemHighlightingEventArgs e)
     {
-        if (!this.IsUnlocked(e.Item))
+        if (this.menuHandler.CurrentMenu is not InventoryPage && !this.IsUnlocked(e.Item))
         {
             e.UnHighlight();
         }
@@ -219,20 +176,55 @@ internal sealed class LockItem : BaseFeature<LockItem>
         }
     }
 
+    private void OnRenderedActiveMenu(RenderedActiveMenuEventArgs e)
+    {
+        if (this.menuHandler.Top.InventoryMenu is not null && this.menuHandler.Top.Container is not null)
+        {
+            this.DrawOverlay(e.SpriteBatch, this.menuHandler.Top.InventoryMenu);
+        }
+
+        if (this.menuHandler.Bottom.InventoryMenu is not null && this.menuHandler.Bottom.Container is not null)
+        {
+            this.DrawOverlay(e.SpriteBatch, this.menuHandler.Bottom.InventoryMenu);
+        }
+    }
+
     private void ToggleLock(Item item)
     {
         if (this.IsUnlocked(item))
         {
-            this.Log.Info("{0}: Locking item {1}", this.Id, item.DisplayName);
+            Log.Info("{0}: Locking item {1}", this.Id, item.DisplayName);
             item.modData[this.UniqueId] = "Locked";
         }
         else
         {
-            this.Log.Info("{0}: Unlocking item {1}", this.Id, item.DisplayName);
+            Log.Info("{0}: Unlocking item {1}", this.Id, item.DisplayName);
             item.modData.Remove(this.UniqueId);
         }
     }
 
-    private bool IsUnlocked(Item item) =>
-        !item.modData.TryGetValue(this.UniqueId, out var locked) || locked != "Locked";
+    private bool TryGetMenu(Point cursor, [NotNullWhen(true)] out InventoryMenu? inventoryMenu)
+    {
+        inventoryMenu = this.menuHandler.CurrentMenu switch
+        {
+            ItemGrabMenu
+            {
+                inventory:
+                { } inventory,
+            } when inventory.isWithinBounds(cursor.X, cursor.Y) => inventory,
+            ItemGrabMenu
+            {
+                ItemsToGrabMenu:
+                { } itemsToGrabMenu,
+            } when itemsToGrabMenu.isWithinBounds(cursor.X, cursor.Y) => itemsToGrabMenu,
+            InventoryPage
+            {
+                inventory:
+                { } inventoryPage,
+            } => inventoryPage,
+            _ => null,
+        };
+
+        return inventoryMenu is not null;
+    }
 }

@@ -11,10 +11,9 @@
 using Microsoft.Xna.Framework;
 using StardewDruid.Cast;
 using StardewDruid.Data;
-using StardewDruid.Journal;
-using StardewDruid.Monster.Boss;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Buildings;
 using StardewValley.Locations;
 using StardewValley.Minigames;
 using StardewValley.Objects;
@@ -26,13 +25,82 @@ using xTile;
 using xTile.Dimensions;
 using xTile.Layers;
 using xTile.Tiles;
+using static StardewDruid.Data.IconData;
+using static StardewValley.Minigames.CraneGame;
 
 namespace StardewDruid.Location
 {
+
+    public class LocationTile
+    {
+
+        public IconData.tilesheets tilesheet = IconData.tilesheets.druid;
+
+        public Microsoft.Xna.Framework.Vector2 position;
+
+        public Microsoft.Xna.Framework.Rectangle rectangle;
+
+        public float layer;
+
+        public float frame;
+
+        public float interval;
+
+        public bool shadow;
+
+        public LocationTile(int x, int y, int w, int h, int offset, bool Shadow = false)
+        {
+
+            tilesheet = IconData.tilesheets.druid;
+
+            position = new Vector2(x, y) * 64;
+
+            rectangle = new(w*16,h*16,16,16);
+
+            layer = ((((float)y + (float)offset) * 64f) / 10000f);//Game1.player.drawLayerDisambiguator;
+
+            shadow = Shadow;
+
+        }
+
+    }
+
+    public class WarpTile
+    {
+
+        public string location;
+
+        public int enterX;
+
+        public int enterY;
+
+        public int exitX;
+
+        public int exitY;
+
+        public WarpTile(int x, int y, string Location, int a, int b)
+        {
+
+            enterX = x;
+
+            enterY = y;
+
+            location = Location;
+
+            exitX = a;
+
+            exitY = b;
+
+        }
+
+    }
+
     public static class LocationData
     {
 
-        public const string druid_grove_name = "18465_Druid_Grove";
+        public const string druid_grove_name = "18465_Grove";
+
+        public const string druid_atoll_name = "18465_Atoll";
 
         public static void LocationEdit(QueryData query)
         {
@@ -95,7 +163,6 @@ namespace StardewDruid.Location
 
         }
 
-
         public static void LocationReturn(QueryData query)
         {
 
@@ -113,8 +180,8 @@ namespace StardewDruid.Location
         public static void QuestComplete(QueryData query)
         {
 
-            switch (query.name)
-            {
+            //switch (query.name)
+            //{
 
                 /*case "challengeSandDragon":
                 case "challengeMuseum":
@@ -122,48 +189,70 @@ namespace StardewDruid.Location
 
                     new Throw(Game1.player, Game1.player.Position, 74).ThrowObject(); break;*/
 
-                case "swordEther":
-                    new Throw().ThrowSword(Game1.player, 57, Game1.player.Position, 500); break;
-            }
+                //case "swordEther":
+                //    new ThrowHandle().ThrowSword(Game1.player, 57, Game1.player.Position, 500); break;
+            //}
 
         }
 
-        public static void WarpResets()
+        public static void DruidLocations(string map)
         {
 
-            DruidGrove grove = Game1.getLocationFromName(LocationData.druid_grove_name) as DruidGrove;
-
-            if( grove != null )
+            switch (map)
             {
-                
-                foreach (WarpBack warpBack in grove.warpBacks)
-                {
 
-                    Game1.getLocationFromName(warpBack.location).warps[warpBack.index] = warpBack.warp;
+                case druid_grove_name:
 
-                }
+
+                    if (Mod.instance.locations.ContainsKey(druid_grove_name))
+                    {
+
+                        return;
+
+                    }
+
+                    GameLocation grove = Game1.getLocationFromName(druid_grove_name);
+
+                    if (grove == null)
+                    {
+
+                        grove = new Location.Grove(druid_grove_name);
+
+                        Mod.instance.locations.Add(druid_grove_name, grove);
+
+                        Game1.locations.Add(grove);
+
+                    }
+
+                    return;
+
+                case druid_atoll_name:
+
+
+                    if (Mod.instance.locations.ContainsKey(druid_atoll_name))
+                    {
+
+                        return;
+
+                    }
+
+                    GameLocation atoll = Game1.getLocationFromName(druid_atoll_name);
+
+                    if (atoll == null)
+                    {
+
+                        atoll = new Location.Atoll(druid_atoll_name);
+
+                        Game1.locations.Add(atoll);
+
+                        Mod.instance.locations.Add(druid_atoll_name, atoll);
+
+                    }
+
+                    return;
 
             }
 
-        }
-
-        public static void DruidEdit()
-        {
-            Mod.instance.Monitor.Log("madeGrove", LogLevel.Debug);
-            GameLocation grove = Game1.getLocationFromName(druid_grove_name);
-
-            if (grove != null)
-            {
-
-                return;
-
-            }
-
-            grove = new Location.DruidGrove(druid_grove_name);
-
-            Game1.locations.Add(grove);
-
-            Mod.instance.locations.Add(druid_grove_name);
 
         }
 
@@ -324,7 +413,6 @@ namespace StardewDruid.Location
 
 
         }
-
 
         public static void SkullCavernWarp()
         {
@@ -535,7 +623,7 @@ namespace StardewDruid.Location
 
             Game1.locations.Add(crypt);
 
-            Mod.instance.locations.Add("18465_Crypt");
+            Mod.instance.locations.Add("18465_Crypt",crypt);
 
         }
 
@@ -554,6 +642,277 @@ namespace StardewDruid.Location
 
         }
 
+        // =====================================================
+        // Summoning
+
+        public static Vector2 SummoningVectors(GameLocation location)
+        {
+
+            Vector2 summonVector = Vector2.Zero;
+
+            switch (location.Name)
+            {
+                case druid_grove_name:
+
+                    summonVector = new Vector2(12, 13) * 64;
+
+                    break;
+
+                case druid_atoll_name:
+
+                    summonVector = new Vector2(18, 13) * 64;
+
+                    break;
+
+            }
+
+            return summonVector;
+
+        }
+
+        public static Vector2 SummoningVoices(GameLocation location)
+        {
+
+            Vector2 summonVector = Vector2.Zero;
+
+            switch (location.Name)
+            {
+                case druid_grove_name:
+
+                    summonVector = new Vector2(6, 11) * 64;
+
+                    break;
+
+                case druid_atoll_name:
+
+                    summonVector = new Vector2(16, 17) * 64;
+
+                    break;
+            }
+
+            return summonVector;
+
+        }
+
+        public static List<TemporaryAnimatedSprite> SummoningEffects(GameLocation location, int level = 1)
+        {
+
+            List<TemporaryAnimatedSprite> effects = new();
+
+            Vector2 summonVector = Vector2.Zero;
+
+            int layerOffset = 0;
+
+            Microsoft.Xna.Framework.Rectangle lineRect = new();
+
+            switch (location.Name)
+            {
+
+                case druid_grove_name:
+
+                    switch (level)
+                    {
+
+                        case 1:
+
+                            //-------------------------------------
+
+                            summonVector = new Vector2(10, 7) * 64;
+
+                            lineRect = new(64, 0, 16, 32);
+
+                            layerOffset = 1;
+
+                            TemporaryAnimatedSprite rockline = new(0, 10000f, 1, 1, summonVector, false, false)
+                            {
+
+                                sourceRect = lineRect,
+
+                                sourceRectStartingPos = new Vector2(lineRect.X, lineRect.Y),
+
+                                texture = Mod.instance.iconData.sheetTextures[tilesheets.druid],
+
+                                scale = 4f,
+
+                                layerDepth = (summonVector.Y + (layerOffset * 64) + 1) / 10000,
+
+                            };
+
+                            location.temporarySprites.Add(rockline);
+
+                            effects.Add(rockline);
+
+                            //-------------------------------------
+
+                            lineRect = new(0, 0, 32, 32);
+
+                            summonVector = new Vector2(11, 5) * 64;
+
+                            layerOffset = 3;
+
+                            TemporaryAnimatedSprite rocklineTwo = new(0, 10000f, 1, 1, summonVector, false, false)
+                            {
+
+                                sourceRect = lineRect,
+
+                                sourceRectStartingPos = new Vector2(lineRect.X, lineRect.Y),
+
+                                texture = Mod.instance.iconData.sheetTextures[tilesheets.druid],
+
+                                scale = 4f,
+
+                                layerDepth = (summonVector.Y + (layerOffset * 64) + 1) / 10000,
+
+                            };
+
+                            location.temporarySprites.Add(rocklineTwo);
+
+                            effects.Add(rocklineTwo);
+
+                            //-------------------------------------
+
+                            lineRect = new(64, 32, 16, 16);
+
+                            summonVector = new Vector2(14, 7) * 64;
+
+                            layerOffset = 1;
+
+                            TemporaryAnimatedSprite rocklineThree = new(0, 10000f, 1, 1, summonVector, false, false)
+                            {
+
+                                sourceRect = lineRect,
+
+                                sourceRectStartingPos = new Vector2(lineRect.X, lineRect.Y),
+
+                                texture = Mod.instance.iconData.sheetTextures[tilesheets.druid],
+
+                                scale = 4f,
+
+                                layerDepth = (summonVector.Y + (layerOffset * 64) + 1) / 10000,
+
+                            };
+
+                            location.temporarySprites.Add(rocklineThree);
+
+                            effects.Add(rocklineThree);
+
+                            //-------------------------------------
+
+                            summonVector = new Vector2(6, 12) * 64;
+
+                            lineRect = new(8 * 16, 1 * 16, 16, 16);
+
+                            layerOffset = 0;
+
+                            break;
+
+                        case 2:
+
+                            summonVector = new Vector2(17, 12) * 64;
+
+                            lineRect = new(9 * 16, 1 * 16, 16, 16);
+
+                            layerOffset = 0;
+
+                            break;
+
+                        case 3:
+
+                            summonVector = new Vector2(8, 17) * 64;
+
+                            lineRect = new(8 * 16, 3 * 16, 16, 16);
+
+                            layerOffset = 0;
+
+                            break;
+
+                        case 4:
+
+                            summonVector = new Vector2(15, 17) * 64;
+
+                            lineRect = new(9 * 16, 3 * 16, 16, 16);
+
+                            layerOffset = 0;
+
+                            break;
+                    }
+
+                    break;
+
+                case druid_atoll_name:
+
+                    switch (level)
+                    {
+
+                        case 1:
+
+                            summonVector = new Vector2(15,17) * 64;
+
+                            lineRect = new(144, 64, 32, 32);
+
+                            layerOffset = 3;
+
+                            break;
+
+                        case 2:
+
+                            summonVector = new Vector2(10, 18) * 64;
+
+                            lineRect = new(144, 96, 32, 32);
+
+                            layerOffset = 2;
+
+                            break;
+
+                        case 3:
+
+                            summonVector = new Vector2(5,14) * 64;
+
+                            lineRect = new(144, 112, 16, 16);
+
+                            layerOffset = 2;
+
+                            break;
+
+                        case 4:
+
+                            summonVector = new Vector2(30,8) * 64;
+
+                            lineRect = new(160, 112, 16, 16);
+
+                            layerOffset = 2;
+
+                            break;
+                    }
+
+
+                    break;
+            }
+
+            TemporaryAnimatedSprite leyline = new(0, 10000f, 1, 1, summonVector, false, false)
+            {
+
+                sourceRect = lineRect,
+
+                sourceRectStartingPos = new Vector2(lineRect.X, lineRect.Y),
+
+                texture = Mod.instance.iconData.sheetTextures[tilesheets.druid],
+
+                scale = 4f,
+
+                layerDepth = (summonVector.Y + (layerOffset*64) + 1) / 10000,
+
+            };
+
+            location.temporarySprites.Add(leyline);
+
+            effects.Add(leyline);
+
+            Mod.instance.iconData.AnimateBolt(location, summonVector);
+
+            return effects;
+
+        }
 
     }
 

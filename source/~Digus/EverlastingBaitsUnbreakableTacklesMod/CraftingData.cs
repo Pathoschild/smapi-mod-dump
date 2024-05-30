@@ -24,6 +24,7 @@ namespace EverlastingBaitsAndUnbreakableTacklesMod
         public String UnbreakableSpinner;
         public String UnbreakableLeadBobber;
         public String UnbreakableTrapBobber;
+        public String UnbreakableSonarBobber;
         public String UnbreakableCorkBobber;
         public String UnbreakableTreasureHunter;
         public String UnbreakableBarbedHook;
@@ -38,6 +39,7 @@ namespace EverlastingBaitsAndUnbreakableTacklesMod
             UnbreakableSpinner = "335 4 337 2";
             UnbreakableLeadBobber = "117 1 337 3";
             UnbreakableTrapBobber = "334 2 92 20 369 5 309 1 337 3";
+            UnbreakableSonarBobber = "335 4 338 4 72 1 337 3";
             UnbreakableCorkBobber = "388 20 709 10 766 20 557 1 337 4";
             UnbreakableTreasureHunter = "336 8 337 4";
             UnbreakableBarbedHook = "334 2 335 2 336 2 337 5";

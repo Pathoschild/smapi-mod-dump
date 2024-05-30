@@ -11,10 +11,10 @@
 {
   "Name": "Hats on Pets Plus",
   "Author": "Syma",
-  "Version": "1.0.2",
+  "Version": "1.0.4",
   "Description": "A Stardew Valley framework that aims to let modders place hats on their custom pets",
   "UniqueID": "Syma.HatsOnPetsPlus",
   "EntryDll": "HatsOnPetsPlus.dll",
   "MinimumApiVersion": "3.0.0",
-  "UpdateKeys": [ "GitHub:SymaLoernn/Stardew_HatsOnPetsPlus", "Nexus:22631" ]
+  "UpdateKeys": [ "Nexus:22631", "GitHub:SymaLoernn/Stardew_HatsOnPetsPlus" ]
 }

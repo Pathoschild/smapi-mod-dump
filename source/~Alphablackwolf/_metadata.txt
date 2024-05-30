@@ -4,14 +4,17 @@ urls:
 
 mods:
    Skill Prestige
+   Skill Prestige for All SpaceCore Skill Mods
    Skill Prestige for Cooking Skill
    Skill Prestige for Luck Skill
    Skill Prestige for Magic
 
 latest commit:
-   commit b501abe051338508860dc36c99dcecfe639cad35
-   Author: Alphablackwolf <Christopher.r.couture@gmail.com>
-   Date:   Sun Apr 21 23:53:54 2024 -0400
+   commit 60b23cd3daeea0145b7a0321720ebdf5099eb10a
+   Author: Chris <Christopher.r.couture@gmail.com>
+   Date:   Fri May 17 14:04:16 2024 -0400
    
-       1.2.6 update
+       Merge pull request #25 from Alphablackwolf/multiplayer-fix
+       
+       1.4.2 complete
    

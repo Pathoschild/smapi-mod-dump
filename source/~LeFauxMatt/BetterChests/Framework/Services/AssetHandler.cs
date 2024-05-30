@@ -12,184 +12,159 @@ namespace StardewMods.BetterChests.Framework.Services;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using StardewModdingAPI.Events;
+using StardewMods.BetterChests.Framework.Enums;
 using StardewMods.BetterChests.Framework.Interfaces;
 using StardewMods.BetterChests.Framework.Models;
 using StardewMods.BetterChests.Framework.Models.StorageOptions;
+using StardewMods.Common.Helpers;
 using StardewMods.Common.Interfaces;
 using StardewMods.Common.Models;
+using StardewMods.Common.Models.Data;
 using StardewMods.Common.Models.Events;
 using StardewMods.Common.Services;
+using StardewMods.Common.Services.Integrations.ContentPatcher;
 using StardewMods.Common.Services.Integrations.FauxCore;
 using StardewValley.GameData.BigCraftables;
 using StardewValley.GameData.Buildings;
 using StardewValley.GameData.Locations;
 
-/// <summary>Responsible for handling assets provided by this mod.</summary>
-internal sealed class AssetHandler : BaseService
+/// <inheritdoc />
+internal sealed class AssetHandler : BaseAssetHandler
 {
-    private readonly IGameContentHelper gameContentHelper;
-    private readonly string hslTexturePath;
-    private readonly Lazy<IManagedTexture> icons;
-    private readonly IModConfig modConfig;
+    private static readonly InternalIcon[] Icons =
+    [
+        InternalIcon.Clothing,
+        InternalIcon.Cooking,
+        InternalIcon.Crops,
+        InternalIcon.Equipment,
+        InternalIcon.Fishing,
+        InternalIcon.Materials,
+        InternalIcon.Miscellaneous,
+        InternalIcon.Seeds,
+        InternalIcon.Config,
+        InternalIcon.Stash,
+        InternalIcon.Craft,
+        InternalIcon.Search,
+        InternalIcon.Copy,
+        InternalIcon.Save,
+        InternalIcon.Paste,
+        InternalIcon.TransferUp,
+        InternalIcon.TransferDown,
+        InternalIcon.Hsl,
+        InternalIcon.Debug,
+        InternalIcon.NoStack,
+    ];
 
+    private readonly IModConfig modConfig;
     private HslColor[]? hslColors;
-    private Texture2D? hslTexture;
     private Color[]? hslTextureData;
 
     /// <summary>Initializes a new instance of the <see cref="AssetHandler" /> class.</summary>
-    /// <param name="eventSubscriber">Dependency used for subscribing to events.</param>
+    /// <param name="contentPatcherIntegration">Dependency for Content Patcher integration.</param>
+    /// <param name="eventManager">Dependency used for managing events.</param>
     /// <param name="gameContentHelper">Dependency used for loading game assets.</param>
-    /// <param name="log">Dependency used for logging debug information to the console.</param>
-    /// <param name="manifest">Dependency for accessing mod manifest.</param>
+    /// <param name="iconRegistry">Dependency used for registering and retrieving icons.</param>
     /// <param name="modConfig">Dependency used for accessing config data.</param>
     /// <param name="modContentHelper">Dependency used for accessing mod content.</param>
     /// <param name="themeHelper">Dependency used for swapping palettes.</param>
     public AssetHandler(
-        IEventSubscriber eventSubscriber,
+        ContentPatcherIntegration contentPatcherIntegration,
+        IEventManager eventManager,
         IGameContentHelper gameContentHelper,
-        ILog log,
-        IManifest manifest,
+        IIconRegistry iconRegistry,
         IModConfig modConfig,
         IModContentHelper modContentHelper,
         IThemeHelper themeHelper)
-        : base(log, manifest)
+        : base(contentPatcherIntegration, eventManager, gameContentHelper, modContentHelper)
     {
-        // Init
-        this.gameContentHelper = gameContentHelper;
         this.modConfig = modConfig;
-        this.hslTexturePath = this.ModId + "/HueBar";
 
-        this.icons = new Lazy<IManagedTexture>(
-            () => themeHelper.AddAsset(
-                this.ModId + "/Icons",
-                modContentHelper.Load<IRawTextureData>("assets/icons.png")));
+        this.Asset($"{Mod.Id}/HueBar").Load<Texture2D>("assets/hue.png");
+        this
+            .Asset("Data/BigCraftables")
+            .Edit(
+                this.AddOptions<BigCraftableData>(
+                    "BigCraftables",
+                    data => data.CustomFields ??= new Dictionary<string, string>()));
+
+        this
+            .Asset("Data/Buildings")
+            .Edit(
+                this.AddOptions<BuildingData>(
+                    "Buildings",
+                    data => data.CustomFields ??= new Dictionary<string, string>()));
+
+        this
+            .Asset("Data/Locations")
+            .Edit(
+                this.AddOptions<LocationData>(
+                    "Locations",
+                    data => data.CustomFields ??= new Dictionary<string, string>()));
+
+        themeHelper.AddAsset($"{Mod.Id}/UI", modContentHelper.Load<IRawTextureData>("assets/icons.png"));
+
+        for (var index = 0; index < AssetHandler.Icons.Length; index++)
+        {
+            iconRegistry.AddIcon(
+                AssetHandler.Icons[index].ToStringFast(),
+                $"{Mod.Id}/UI",
+                new Rectangle(16 * (index % 5), 16 * (int)(index / 5f), 16, 16));
+        }
 
         // Events
-        eventSubscriber.Subscribe<AssetRequestedEventArgs>(this.OnAssetRequested);
-        eventSubscriber.Subscribe<ConfigChangedEventArgs<DefaultConfig>>(this.OnConfigChanged);
+        eventManager.Subscribe<ConfigChangedEventArgs<DefaultConfig>>(this.OnConfigChanged);
     }
 
     /// <summary>Gets the hsl colors data.</summary>
-    public HslColor[] HslColors
+    public HslColor[] HslColors =>
+        this.hslColors ??= this.HslTextureData.Select(HslColor.FromColor).Distinct().ToArray();
+
+    /// <summary>Gets the hsl texture.</summary>
+    public Texture2D HslTexture => this.Asset($"{Mod.Id}/HueBar").Require<Texture2D>();
+
+    private IEnumerable<Color> HslTextureData
     {
         get
         {
             if (this.hslTextureData is not null)
             {
-                return this.hslColors ??= this.hslTextureData.Select(HslColor.FromColor).Distinct().ToArray();
+                return this.hslTextureData;
             }
 
             this.hslTextureData = new Color[this.HslTexture.Width * this.HslTexture.Height];
             this.HslTexture.GetData(this.hslTextureData);
-            return this.hslColors ??= this.hslTextureData.Select(HslColor.FromColor).Distinct().ToArray();
+            return this.hslTextureData;
         }
     }
 
-    /// <summary>Gets the hsl texture.</summary>
-    public Texture2D HslTexture => this.hslTexture ??= this.gameContentHelper.Load<Texture2D>(this.hslTexturePath);
-
-    /// <summary>Gets the managed icons texture.</summary>
-    public IManagedTexture Icons => this.icons.Value;
-
-    private void OnAssetRequested(AssetRequestedEventArgs e)
-    {
-        if (e.Name.IsEquivalentTo(this.hslTexturePath))
+    private Action<IAssetData> AddOptions<T>(string key, Func<T, Dictionary<string, string>> getCustomFields) =>
+        asset =>
         {
-            e.LoadFromModFile<Texture2D>("assets/hue.png", AssetLoadPriority.Exclusive);
-            return;
-        }
+            if (!this.modConfig.StorageOptions.TryGetValue(key, out var storageTypes))
+            {
+                return;
+            }
 
-        if (e.Name.IsEquivalentTo("Data/BigCraftables")
-            && this.modConfig.StorageOptions.TryGetValue("BigCraftables", out var storageTypes))
-        {
-            e.Edit(
-                asset =>
+            var data = asset.AsDictionary<string, T>().Data;
+            foreach (var (storageId, storageOptions) in storageTypes)
+            {
+                if (!data.TryGetValue(storageId, out var typeData))
                 {
-                    var data = asset.AsDictionary<string, BigCraftableData>().Data;
-                    foreach (var (storageId, storageOptions) in storageTypes)
-                    {
-                        if (!data.TryGetValue(storageId, out var bigCraftableData))
-                        {
-                            continue;
-                        }
+                    continue;
+                }
 
-                        bigCraftableData.CustomFields ??= new Dictionary<string, string>();
-                        var customFieldStorageOptions =
-                            new CustomFieldsStorageOptions(_ => bigCraftableData.CustomFields);
-
-                        var temporaryStorageOptions = new TemporaryStorageOptions(
-                            customFieldStorageOptions,
-                            storageOptions);
-
-                        temporaryStorageOptions.Reset();
-                        temporaryStorageOptions.Save();
-                    }
-                });
-
-            return;
-        }
-
-        if (e.Name.IsEquivalentTo("Data/Buildings")
-            && this.modConfig.StorageOptions.TryGetValue("Buildings", out storageTypes))
-        {
-            e.Edit(
-                asset =>
-                {
-                    var data = asset.AsDictionary<string, BuildingData>().Data;
-                    foreach (var (storageId, storageOptions) in storageTypes)
-                    {
-                        if (!data.TryGetValue(storageId, out var buildingData))
-                        {
-                            continue;
-                        }
-
-                        buildingData.CustomFields ??= new Dictionary<string, string>();
-                        var customFieldStorageOptions = new CustomFieldsStorageOptions(_ => buildingData.CustomFields);
-                        var temporaryStorageOptions = new TemporaryStorageOptions(
-                            customFieldStorageOptions,
-                            storageOptions);
-
-                        temporaryStorageOptions.Reset();
-                        temporaryStorageOptions.Save();
-                    }
-                });
-
-            return;
-        }
-
-        if (e.Name.IsEquivalentTo("Data/Locations")
-            && this.modConfig.StorageOptions.TryGetValue("Locations", out storageTypes))
-        {
-            e.Edit(
-                asset =>
-                {
-                    var data = asset.AsDictionary<string, LocationData>().Data;
-                    foreach (var (storageId, storageOptions) in storageTypes)
-                    {
-                        if (!data.TryGetValue(storageId, out var locationData))
-                        {
-                            continue;
-                        }
-
-                        locationData.CustomFields ??= new Dictionary<string, string>();
-                        var customFieldStorageOptions = new CustomFieldsStorageOptions(_ => locationData.CustomFields);
-                        var temporaryStorageOptions = new TemporaryStorageOptions(
-                            customFieldStorageOptions,
-                            storageOptions);
-
-                        temporaryStorageOptions.Reset();
-                        temporaryStorageOptions.Save();
-                    }
-                });
-        }
-    }
+                var customFields = getCustomFields(typeData);
+                var typeModel = new DictionaryModel(() => customFields);
+                var typeOptions = new DictionaryStorageOptions(typeModel);
+                storageOptions.CopyTo(typeOptions);
+            }
+        };
 
     private void OnConfigChanged(ConfigChangedEventArgs<DefaultConfig> e)
     {
         foreach (var dataType in e.Config.StorageOptions.Keys)
         {
-            this.gameContentHelper.InvalidateCache($"Data/{dataType}");
+            this.GameContentHelper.InvalidateCache($"Data/{dataType}");
         }
     }
 }

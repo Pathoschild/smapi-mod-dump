@@ -4,9 +4,7 @@
   "Controls": {
     "ToggleOverlay": "U"
   },
-  "ConnectorNames": [
-    "Workbench"
-  ],
+  "ConnectorNames": [],
   "JunimoHutBehaviorForGems": "AutoDetect",
   "JunimoHutBehaviorForFertilizer": "AutoDetect",
   "JunimoHutBehaviorForSeeds": "AutoDetect",

@@ -14,6 +14,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Pathoschild.Stardew.Common;
+using StardewModdingAPI;
 
 namespace Pathoschild.Stardew.Automate.Framework
 {
@@ -46,13 +47,15 @@ namespace Pathoschild.Stardew.Automate.Framework
         /// <summary>Construct an instance.</summary>
         /// <param name="sortMachines">Sort machines by priority.</param>
         /// <param name="buildStorage">Build a storage manager for the given containers.</param>
-        public JunimoMachineGroup(Func<IEnumerable<IMachine>, IEnumerable<IMachine>> sortMachines, Func<IContainer[], StorageManager> buildStorage)
+        /// <param name="monitor">Encapsulates monitoring and logging.</param>
+        public JunimoMachineGroup(Func<IEnumerable<IMachine>, IEnumerable<IMachine>> sortMachines, Func<IContainer[], StorageManager> buildStorage, IMonitor monitor)
             : base(
                 locationKey: null,
                 machines: Array.Empty<IMachine>(),
                 containers: Array.Empty<IContainer>(),
                 tiles: Array.Empty<Vector2>(),
-                buildStorage: buildStorage
+                buildStorage: buildStorage,
+                monitor: monitor
             )
         {
             this.IsJunimoGroup = true;

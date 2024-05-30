@@ -1,0 +1,127 @@
+{
+	/*********
+	** Config
+	*********/
+
+	"config.position_x.name": "X Position",
+	"config.position_y.name": "Y Position",
+
+	"config.position_x.tooltip": "The pixel X position at which to draw the spell lable, relative to the top-left corner of the screen.",
+	"config.position_y.tooltip": "The pixel X position at which to draw the spell lable, relative to the top-left corner of the screen.",
+
+	"config.open_spellbook_key.name": "Open Spell Book Button",
+	"config.open_spellbook_key.tooltip": "Press Shift and this button to open the spell book.",
+
+	"config.move_spell_lable_key.name": "Move Spell Lable Button",
+	"config.move_spell_lable_key.tooltip": "Press Shift and this button to move the spell lable.",
+
+	"config.next_spell_key.name": "Next Spell Button",
+	"config.next_spell_key.tooltip": "The button to move to the next spell.",
+
+	"config.previous_spell_key.name": "Previous Spell Button",
+	"config.previous_spell_key.tooltip": "The button to move to the previous spell.",
+
+	"config.cast_spell_key.name": "Cast Spell Button",
+	"config.cast_spell_key.tooltip": "The button to cast the current spell.",
+
+	/*********
+	** Spell Parts
+	*********/
+
+	"spellpart.self.name": "Self",
+	"spellpart.self.description": "Applies effects to you.",
+
+	"spellpart.projectile.name": "Projectile",
+	"spellpart.projectile.description": "Shoots a ball of magic.",
+
+	"spellpart.touch.name": "Touch",
+	"spellpart.touch.description": "Will target terrain that you touch.",
+
+	"spellpart.etherial_touch.name": "Etherial Touch",
+	"spellpart.etherial_touch.description": "Will target terrain under the mouse cursor.",
+
+	"spellpart.aoe.name": "Area of Effect",
+	"spellpart.aoe.description": "Will cast the spell in an area around the place where it's triggered. This shape must be placed last.",
+
+
+	"spellpart.dig.name": "Dig",
+	"spellpart.dig.description": "Breaks rocks, depris, and chops trees.",
+
+	"spellpart.plow.name": "Plow",
+	"spellpart.plow.description": "Plows tillable ground.",
+
+	"spellpart.grow.name": "Grow",
+	"spellpart.grow.description": "Grows tress and crops.",
+
+	"spellpart.harvest.name": "Harvest",
+	"spellpart.harvest.description": "Harvests harvestable crops.",
+
+	"spellpart.create_water.name": "Create Water",
+	"spellpart.create_water.description": "Waters tilled ground.",
+
+	"spellpart.explosion.name": "Explosion",
+	"spellpart.explosion.description": "Creates an explosion.",
+
+	"spellpart.blink.name": "Blink",
+	"spellpart.blink.description": "Teleports the target to the specified location. Only works with the shapes, Touch and Etherial Touch. Will only teleport the caster.",
+
+	"spellpart.light.name": "Light",
+	"spellpart.light.description": "Places a torch at the specified location. Torches created with this will not be recoverable.",
+
+	"spellpart.heal.name": "Heal",
+	"spellpart.heal.description": "If used with self, you are able to heal yourself or other players when used with projectile.",
+
+	"spellpart.life_drain.name": "Life Drain",
+	"spellpart.life_drain.description": "Damages the target and heals you based on the damage dealt.",
+
+	"spellpart.physical_damage.name": "Physical Damage",
+	"spellpart.physical_damage.description": "Damages the target.",
+
+
+	"spellpart.damage.name": "Damage",
+	"spellpart.damage.description": "Strengthens the damage of damaged based components.",
+
+	"spellpart.range.name": "Range",
+	"spellpart.range.description": "Increases the range of AOE shapes and certain components.",
+
+	"spellpart.bounce.name": "Bounce",
+	"spellpart.bounce.description": "Will make projectile spells bounce off walls until it hits a monster, mineable terrain, or disappears.",
+
+	"spellpart.piercing.name": "Piercing",
+	"spellpart.piercing.description": "Increases number of times the projectile can pierce through an enemy before being destroyed.",
+
+	"spellpart.velocity.name": "Velocity",
+	"spellpart.velocity.description": "Makes projectiles faster.",
+
+	"spellpart.healing.name": "Healing",
+	"spellpart.healing.description": "Strengthens the potency of healing components.",
+
+	/*********
+    ** Wizard learn-magic event
+    *********/
+
+	"event.wizard.1": "Greetings @.",
+	"event.wizard.2": "I have noticed your strong interest in magic.",
+	"event.wizard.3": "Would you be interested in me showing you how to create spells?",
+	"event.wizard.4": "Very Well. Here is a spell book for you to create spells.",
+
+	"event.message.1": "The wizard gave you a spell book! You will now be able to create spells! Press shift and 'B' to open it.",
+
+	"event.wizard.5": "The spell book will show you all the different spell parts you can use.",
+	"event.wizard.6": "To create a spells, you will need to place one or multiple shapes, which are squares, into each shape group on the spell page you are on.",
+	"event.wizard.7": "Then you will need to place one or multiple components, which are octagons, into the spell grammar section of the page.",
+	"event.wizard.8": "You can change the way shapes, and components behave with modifiers, which are diamonds.",
+	"event.wizard.9": "Be sure to give your spell a name. Once you have created your spell, you can close your spell book and the spell will be saved.",
+	"event.wizard.10": "Once you have closed your spell book, you can cycle through your list of spells.",
+
+	"event.message.2": "Use 'Z' and 'X' to move through your list of spells. You can also use shift and 'Z' and shift and 'X' to cycle through a spell's shape groups.",
+
+	"event.wizard.11": "Once you have the spell you want, you will be able to cast it.",
+
+	"event.message.3": "To cast a spell, press Q.",
+	"event.message.4": "These controls can be adjusted in Ars Veneficus's config file.",
+
+	"event.wizard.12": "Good luck on your magic endeavors.",
+
+	"event.wizard.abovehead": "WIZARDRY"
+}

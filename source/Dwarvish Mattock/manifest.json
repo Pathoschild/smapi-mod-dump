@@ -11,10 +11,10 @@
 {
 	"Name": "Dwarvish Mattock",
 	"Author": "Grend",
-	"Version": "1.0.4",
+	"Version": "1.1.0",
 	"Description": "Adds a new unlockable end-game tool, the Dwarvish Mattock.  This tool combines the functions of the pickaxe, axe, and scythe.",
 	"UniqueID": "com.anthonyhilyard.dwarvishmattock",
 	"EntryDll": "DwarvishMattock.dll",
-	"MinimumApiVersion": "3.0.0",
+	"MinimumApiVersion": "4.0.0",
 	"UpdateKeys": []
   }

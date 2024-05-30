@@ -66,7 +66,7 @@ namespace EnchantedGalaxyWeapons
                 save: () => this.Helper.WriteConfig(Config)
             );
 
-            ModMenu.BuildMenu(this.ModManifest, configMenu);
+            ModMenu.BuildMenu(this.Helper, this.ModManifest, configMenu);
         }
 
         /// <summary> Check if player obtained galaxy or infinity weapons</summary>
@@ -131,7 +131,7 @@ namespace EnchantedGalaxyWeapons
                     }
                     p = new Point(mineRandom.Next(backLayer.LayerWidth), mineRandom.Next(backLayer.LayerHeight));
                 }
-                Message = HUDMessage.ForCornerTextbox("Powerful aura is in the air");
+                Message = HUDMessage.ForCornerTextbox(this.Helper.Translation.Get("game.aura-felt"));
                 Game1.addHUDMessage(Message);
             }
             else
@@ -154,7 +154,7 @@ namespace EnchantedGalaxyWeapons
                 {
                     mine.objects.Add(objectPos, CustomBreakableObject.GetBarrelForMines(objectPos, mine));
 
-                    Message = HUDMessage.ForCornerTextbox("Powerful aura is in the air");
+                    Message = HUDMessage.ForCornerTextbox(this.Helper.Translation.Get("game.aura-felt"));
                     Game1.addHUDMessage(Message);
                 }
             }

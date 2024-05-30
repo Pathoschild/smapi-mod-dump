@@ -12,8 +12,8 @@
     "Name": "[CP] Uncle Iroh Approved Tea",
     "Author": "slimerrain",
     "Description": "Content patches relating to tea.",
-    "Version": "1.1.5",
-    "MinimumApiVersion": "3.0.0",
+    "Version": "1.1.6",
+    "MinimumApiVersion": "4.0.0",
     "UniqueID": "slimerrain.uncleirohapprovedteacp",
     "ContentPackFor": { "UniqueID": "Pathoschild.ContentPatcher" },
     "Dependencies": [

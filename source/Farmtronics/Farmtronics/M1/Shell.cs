@@ -38,7 +38,7 @@ namespace Farmtronics.M1 {
 			set {
 				_name = value;
 				if (bot == null) PerPlayerData.HomeComputerName = value;
-				else bot.Name = bot.DisplayName = value;
+				else bot.Name = bot.displayName = value;
 			}
 		}
 

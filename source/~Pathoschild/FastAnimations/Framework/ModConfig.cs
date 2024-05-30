@@ -31,6 +31,9 @@ namespace Pathoschild.Stardew.FastAnimations.Framework
         /// <summary>The speed multiplier for harvesting crops or forage.</summary>
         public float HarvestSpeed { get; set; } = 3;
 
+        /// <summary>The speed multiplier for holding up an item.</summary>
+        public float HoldUpItemSpeed { get; set; } = 5;
+
         /// <summary>The speed multiplier for playing the horse flute.</summary>
         public float HorseFluteSpeed { get; set; } = 6;
 
@@ -40,6 +43,9 @@ namespace Pathoschild.Stardew.FastAnimations.Framework
         /// <summary>The speed multiplier for mounting or dismounting the horse.</summary>
         public float MountOrDismountSpeed { get; set; } = 2;
 
+        /// <summary>The speed multiplier for reading a book.</summary>
+        public float ReadBookSpeed { get; set; } = 2;
+
         /// <summary>The speed multiplier for shearing.</summary>
         public float ShearSpeed { get; set; } = 5;
 
@@ -48,6 +54,9 @@ namespace Pathoschild.Stardew.FastAnimations.Framework
 
         /// <summary>The speed multiplier for using tools.</summary>
         public float ToolSwingSpeed { get; set; } = 1;
+
+        /// <summary>The speed multiplier for using a totem.</summary>
+        public float UseTotemSpeed { get; set; } = 4;
 
         /// <summary>The speed multiplier for using weapons.</summary>
         public float WeaponSwingSpeed { get; set; } = 1;
@@ -61,11 +70,26 @@ namespace Pathoschild.Stardew.FastAnimations.Framework
         /// <summary>The speed multiplier for the casino slots minigame.</summary>
         public float CasinoSlotsSpeed { get; set; } = 8;
 
+        /// <summary>The speed multiplier for opening a fishing treasure chest.</summary>
+        public float FishingTreasureSpeed { get; set; } = 4;
+
+        /// <summary>The speed multiplier for the volcano forge.</summary>
+        public float ForgeSpeed { get; set; } = 8;
+
+        /// <summary>The speed multiplier for opening a chest.</summary>
+        public float OpenChestSpeed { get; set; } = 4;
+
         /// <summary>The speed multiplier when Pam's bus is driving to/from the desert.</summary>
         public float PamBusSpeed { get; set; } = 6;
 
+        /// <summary>The speed multiplier for Lewis' ticket prize machine.</summary>
+        public float PrizeTicketMachineSpeed { get; set; } = 20;
+
         /// <summary>The speed multiplier for falling trees.</summary>
         public float TreeFallSpeed { get; set; } = 1;
+
+        /// <summary>The speed multiplier for the Stardew Valley Fair wheel spin minigame.</summary>
+        public float WheelSpinSpeed { get; set; } = 16;
 
         /****
         ** UI animations

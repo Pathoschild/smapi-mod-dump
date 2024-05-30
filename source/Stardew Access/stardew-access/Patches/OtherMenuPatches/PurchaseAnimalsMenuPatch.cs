@@ -48,9 +48,11 @@ internal class PurchaseAnimalsMenuPatch : IPatch
             {
                 NarrateNamingMenu(__instance, ___textBox, x, y);
             }
-            else if (___onFarm && !___namingAnimal)
+            else if (___onFarm && !___namingAnimal && !Game1.IsFading())
             {
                 firstTimeInNamingMenu = true;
+	        string selectBuildingPrompt = Game1.content.LoadString("Strings\\StringsFromCSFiles:PurchaseAnimalsMenu.cs.11355", animalBeingPurchased.displayHouse, animalBeingPurchased.displayType);
+                MainClass.ScreenReader.SayWithMenuChecker(selectBuildingPrompt, true);
             }
             else if (!___onFarm && !___namingAnimal)
             {
@@ -113,7 +115,7 @@ internal class PurchaseAnimalsMenuPatch : IPatch
             translationKey = "menu-purchase_animal-animal_info";
             translationTokens = new
             {
-                name = TokenParser.ParseText(farmAnimalData.DisplayName),
+                name = FarmAnimal.GetDisplayName(__instance.hovered.hoverText, forShop: true),
                 price = __instance.hovered.item.salePrice(),
                 description = TokenParser.ParseText(farmAnimalData.ShopDescription)
             };

@@ -3,8 +3,17 @@
   "Taxes": true,
   "Dynamic_Pricing": true,
   "Stamina_Balance": true,
+  "Subsidized_Crops": true,
+  "Dynamic_Honey": true,
   "Price_Exemption": "",
   "MenuHotkey": "OemTilde",
+  "Sub_Reduction": 1,
+  "Sub_RatioReq": 0.25,
+  "Sub_TotalReq": 25,
+  "Honey_MaxRatio": 8,
+  "Honey_RatioRate": 0.4,
+  "Honey_BaseRate": 0.8,
+  "Honey_DRReduction": 5,
   "Tax_IncomeOffset": 0.0,
   "Tax_MarriedReduction": 0.1,
   "Tax_ChildReduction": 0.05,
@@ -34,6 +43,6 @@
   "Sta_Hoe": 1.0,
   "Sta_WateringCan": 1.0,
   "Sta_FishingRod": 3.0,
-  "Sta_Scythe": 0.0,
-  "Sta_Weapons": 0.0
+  "Sta_Scythe": 2.0,
+  "Sta_Weapons": 0.5
 }

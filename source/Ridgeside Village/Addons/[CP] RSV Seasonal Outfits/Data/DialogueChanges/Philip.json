@@ -45,7 +45,6 @@
    "Action": "EditData",
    "Target": "Data/Festivals/fall27",
    "When": {
-		"HasMod": "aedenthorn.FreeLove",
    	"Relationship:Philip": "Married",
 		"IsOddYear": true,
 		"Philip": "enabled, festivals only",
@@ -60,7 +59,6 @@
    "Action": "EditData",
    "Target": "Data/Festivals/fall27",
    "When": {
-		"HasMod": "aedenthorn.FreeLove",
    	"Relationship:Philip": "Married",
 		"IsOddYear": false,
 		"Philip": "enabled, festivals only",

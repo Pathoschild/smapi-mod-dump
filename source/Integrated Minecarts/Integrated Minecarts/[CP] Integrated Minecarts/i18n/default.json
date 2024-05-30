@@ -56,26 +56,31 @@
     "Lumisteria.MtVapius_TrainStation": "Mount Vapius - Train Station",
     "Lumisteria.MtVapius_Hamlet": "Mount Vapius - Glimsap Hamlet",
     "WaFFCave": "Waterfall Cave",
-
+    "Lantana": "Lantana Lagoon",
+    "ModestFarmCave": "Farm Cave",
+    "GrampletonFieldsE": "Grampleton Fields - East",
+    "GrampletonFieldsS": "Grampleton Fields - South",
+    "GrampletonFieldsW": "Grampleton Fields - West",
+    "IslandFarm": "Island Farm",	
+	
     //Config Menu translation
     //General
     "config.section.General.name": "General",
-    "config.section.FarmLocation.name": "Farm Minecart Settings",
     "config.PriceToRide.name": "Price to Ride",
     "config.PriceToRide.description": "This sets the price for riding on the minecarts. Leave blank or set to 0 to disable",
-    "config.Numbering.name": "Enumerated List",
+    "config.Numbering.name": "Numbering",
     "config.Numbering.description": "This enables/disables enumeration of the destinations in the minecart menu e.g. \"1. Farm\" when enabled or \"Farm\" when disabled",
     //Destination order
     "config.section.DestinationOrder.name": "Destination Order",
-    "config.section.DestinationOrder.description": "The following options in this section determine the positioning of the destinations in the minecart menu. The selected destination will be moved to the corresponding position in the list. Each minecart should only be selected once, otherwise the highest numbered option will be used. Selections use the MinecartID, see the Minecart Enabled section for a list. Check the tooltips for the source mod and minecart location. See ",
+    "config.section.DestinationOrder.description": "The following options in this section determine the positioning of the destinations in the minecart menu. The selected destination will be moved to the corresponding position in the list. Each minecart should only be selected once, otherwise the highest numbered option will be used. Selections use the MinecartID, see the Minecart Enabled section for a list. Check the tooltips for the source mod and minecart location.",
     "config.1..description": "This and the following options in this section determine the positioning of the destinations in the minecart menu. The selected destination will be moved to the corresponding position in the list. Each minecart should only be selected once, otherwise the highest numbered option will be used. Selections use the MinecartID, see the Minecart Enabled section for a list. Check the tooltips for the source mod and minecart location",
     //Minecart Enabled
     "config.section.IsEnabled.name": "Minecart Enabled",
     "config.section.IsEnabled.description": "Enables/Disables each minecart and/or enables/disables enumeration and reordering depending on source of minecart. If the third party mod adds the minecart anyway, the minecart will still show up out of order if disabled. Options are listed by minecart ID, matching the destination option. See tooltips for the source mod.",
     //Note for Translators, do not translate each of the name fields in this section as they show the minecart ID used in the above section.
     //The description will show the mod name, and can be translated if necessary.
-    "config.EnableIntegratedFarm.name": "IntegratedFarm",
-    "config.EnableIntegratedFarm.description": "Integrated Minecarts - Moveable Farm Minecart",
+    "config.EnableIntegratedFarm.name": "Enable IntegratedFarm",
+    "config.EnableIntegratedFarm.description": "Enables/Disables the Farm Minecart",
     "config.EnableBus.name": "Bus",
     "config.EnableBus.description": "Vanilla Bus Stop",
     "config.EnableCommunityCenter.name": "CommunityCenter",
@@ -162,93 +167,27 @@
     "config.EnableLumisteria.MtVapiusHamletToRailroad.description": "Lumisteria Visit Mount Vapius - Adds Railroad Destination to VMV Minecart Network",
     "config.EnableWaFFCave.name": "WaFFCave",
     "config.EnableWaFFCave.description": "WaFF or WaFFLE - Waterfall Cave",
+    "config.EnableLantana.name": "Lantana",
+    "config.EnableLantana.description": "PolyAmory Sweet - Lantana Lagoon",
+    "config.EnableModestFarmCave.name": "ModestFarmCave",
+    "config.EnableModestFarmCave.description": "Modest Farm Cave",
+    "config.EnableGrampletonFields.name": "GrampletonFields",
+    "config.EnableGrampletonFields.description": "Grampleton Fields - All minecarts",
+	"config.EnableGingerIslandFarm.name": "IslandFarm",
+    "config.EnableGingerIslandFarm.description": "Integrated Minecarts - Ginger Island Farm",	
     //Farm Location
-    "config.FarmCartStyle.name": "Farm Minecart Style",
-    "config.FarmCartStyle.description": "Sets the style of the Farm Minecart. Use Cart for open areas. Use CartEntrance if setting into a wall.",
-    //Standard Farm + Default Custom FarmTypes
-    "config.IntegratedFarmX.name": "Farm Minecart X Coordinate",
-    "config.IntegratedFarmX.description": "USE THIS if not playing on any of the farms below. Sets horizontal coordinate for IntegratedFarm minecart. 0 being left edge of map.",
-    "config.IntegratedFarmY.name": "Farm Minecart Y Coordinate",
-    "config.IntegratedFarmY.description": "USE THIS if not playing on any of the farms below. Sets vertical coordinate for IntegratedFarm minecart. 0 being top edge of map.",
-    //Hilltop Farm
-    "config.HilltopFarmX.name": "Hilltop Farm Minecart X Coordinate",
-    "config.HilltopFarmX.description": "ONLY USED IF PLAYING ON Hilltop Farm. Sets horizontal coordinate for IntegratedFarm minecart. 0 being left edge of map.",
-    "config.HilltopFarmY.name": "Hilltop Farm Minecart Y Coordinate",
-    "config.HilltopFarmY.description": "ONLY USED IF PLAYING ON Hilltop Farm. Sets vertical coordinate for IntegratedFarm minecart. 0 being top edge of map.",
-    //Forest Farm
-    "config.ForestFarmX.name": "Forest Farm Minecart X Coordinate",
-    "config.ForestFarmX.description": "ONLY USED IF PLAYING ON Forest Farm. Sets horizontal coordinate for IntegratedFarm minecart. 0 being left edge of map.",
-    "config.ForestFarmY.name": "Forest Farm Minecart Y Coordinate",
-    "config.ForestFarmY.description": "ONLY USED IF PLAYING ON Forest Farm. Sets vertical coordinate for IntegratedFarm minecart. 0 being top edge of map.",
-    //Wilderness Farm
-    "config.WildernessFarmX.name": "Wilderness Farm Minecart X Coordinate",
-    "config.WildernessFarmX.description": "ONLY USED IF PLAYING ON Wilderness Farm. Sets horizontal coordinate for IntegratedFarm minecart. 0 being left edge of map.",
-    "config.WildernessFarmY.name": "Wilderness Farm Minecart Y Coordinate",
-    "config.WildernessFarmY.description": "ONLY USED IF PLAYING ON Wilderness Farm. Sets vertical coordinate for IntegratedFarm minecart. 0 being top edge of map.",
-    //Riverland Farm
-    "config.RiverlandFarmX.name": "Riverland Farm Minecart X Coordinate",
-    "config.RiverlandFarmX.description": "ONLY USED IF PLAYING ON Riverland Farm. Sets horizontal coordinate for IntegratedFarm minecart. 0 being left edge of map.",
-    "config.RiverlandFarmY.name": "Riverland Farm Minecart Y Coordinate",
-    "config.RiverlandFarmY.description": "ONLY USED IF PLAYING ON Riverland Farm. Sets vertical coordinate for IntegratedFarm minecart. 0 being top edge of map.",
-    //Beach Farm
-    "config.BeachFarmX.name": "Beach Farm Minecart X Coordinate",
-    "config.BeachFarmX.description": "ONLY USED IF PLAYING ON Beach Farm. Sets horizontal coordinate for IntegratedFarm minecart. 0 being left edge of map.",
-    "config.BeachFarmY.name": "Beach Farm Minecart Y Coordinate",
-    "config.BeachFarmY.description": "ONLY USED IF PLAYING ON Beach Farm. Sets vertical coordinate for IntegratedFarm minecart. 0 being top edge of map.",
-    //FourCorners Farm
-    "config.FourCornersFarmX.name": "Four Corners Farm Minecart X Coordinate",
-    "config.FourCornersFarmX.description": "ONLY USED IF PLAYING ON Four Corners Farm. Sets horizontal coordinate for IntegratedFarm minecart. 0 being left edge of map.",
-    "config.FourCornersFarmY.name": "Four Corners Farm Minecart Y Coordinate",
-    "config.FourCornersFarmY.description": "ONLY USED IF PLAYING ON Four Corners Farm. Sets vertical coordinate for IntegratedFarm minecart. 0 being top edge of map.",
-    //WaFF Farm
-    "config.WaFFFarmX.name": "WaFF Farm Minecart X Coordinate",
-    "config.WaFFFarmX.description": "ONLY USED IF PLAYING ON WaFF Farm. Sets horizontal coordinate for IntegratedFarm minecart. 0 being left edge of map.",
-    "config.WaFFFarmY.name": "WaFF Farm Minecart Y Coordinate",
-    "config.WaFFFarmY.description": "ONLY USED IF PLAYING ON WaFF Farm. Sets vertical coordinate for IntegratedFarm minecart. 0 being top edge of map.",
-    //WaFFLE Farm
-    "config.WaFFLEFarmX.name": "WaFFLE Farm Minecart X Coordinate",
-    "config.WaFFLEFarmX.description": "ONLY USED IF PLAYING ON WaFFLE Farm. Sets horizontal coordinate for IntegratedFarm minecart. 0 being left edge of map.",
-    "config.WaFFLEFarmY.name": "WaFFLE Farm Minecart Y Coordinate",
-    "config.WaFFLEFarmY.description": "ONLY USED IF PLAYING ON WaFFLE Farm. Sets vertical coordinate for IntegratedFarm minecart. 0 being top edge of map.",
-    //Grandpa's Farm Location
-    "config.GrandpaFarmX.name": "Grandpa's Farm Minecart X Coordinate",
-    "config.GrandpaFarmX.description": "ONLY USED IF PLAYING ON Grandpa's Farm. Sets horizontal coordinate for IntegratedFarm minecart. 0 being left edge of map.",
-    "config.GrandpaFarmY.name": "Grandpa's Farm Minecart Y Coordinate",
-    "config.GrandpaFarmY.description": "ONLY USED IF PLAYING ON Grandpa's Farm. Sets vertical coordinate for IntegratedFarm minecart. 0 being top edge of map.",
-    //Immersive Farm 2 Remaster Farm Location
-    "config.IF2RFarmX.name": "Immersive Farm 2 Remaster Minecart X Coordinate",
-    "config.IF2RFarmX.description": "ONLY USED IF PLAYING ON Immersive Farm 2 Remaster. Sets horizontal coordinate for IntegratedFarm minecart. 0 being left edge of map.",
-    "config.IF2RFarmY.name": "Immersive Farm 2 Remaster Minecart Y Coordinate",
-    "config.IF2RFarmY.description": "ONLY USED IF PLAYING ON Immersive Farm 2 Remaster. Sets vertical coordinate for IntegratedFarm minecart. 0 being top edge of map.",
-    //Kanjinuma's PersonalV1 Farm Location
-    "config.PersonalV1FarmX.name": "Kanjinuma's PersonalV1 Farm Minecart X Coordinate",
-    "config.PersonalV1FarmX.description": "ONLY USED IF PLAYING ON Kanjinuma's PersonalV1 Farm. Sets horizontal coordinate for IntegratedFarm minecart. 0 being left edge of map.",
-    "config.PersonalV1FarmY.name": "Kanjinuma's PersonalV1 Farm Minecart Y Coordinate",
-    "config.PersonalV1FarmY.description": "ONLY USED IF PLAYING ON Kanjinuma's PersonalV1 Farm. Sets vertical coordinate for IntegratedFarm minecart. 0 being top edge of map.",
-    //Kanjinuma's PersonalV2 Farm Location
-    "config.PersonalV2FarmX.name": "Kanjinuma's PersonalV2 Farm Minecart X Coordinate",
-    "config.PersonalV2FarmX.description": "ONLY USED IF PLAYING ON Kanjinuma's PersonalV2 Farm. Sets horizontal coordinate for IntegratedFarm minecart. 0 being left edge of map.",
-    "config.PersonalV2FarmY.name": "Kanjinuma's PersonalV2 Farm Minecart Y Coordinate",
-    "config.PersonalV2FarmY.description": "ONLY USED IF PLAYING ON Kanjinuma's PersonalV2 Farm. Sets vertical coordinate for IntegratedFarm minecart. 0 being top edge of map.",
-    //Kanjinuma's PersonalV3 Farm Location
-    "config.PersonalV3FarmX.name": "Kanjinuma's PersonalV3 Farm Minecart X Coordinate",
-    "config.PersonalV3FarmX.description": "ONLY USED IF PLAYING ON Kanjinuma's PersonalV3 Farm. Sets horizontal coordinate for IntegratedFarm minecart. 0 being left edge of map.",
-    "config.PersonalV3FarmY.name": "Kanjinuma's PersonalV3 Farm Minecart Y Coordinate",
-    "config.PersonalV3FarmY.description": "ONLY USED IF PLAYING ON Kanjinuma's PersonalV3 Farm. Sets vertical coordinate for IntegratedFarm minecart. 0 being top edge of map.",
-    //LNH Mini Farm Location
-    "config.LNHMiniFarmX.name": "LNH Mini Farm Minecart X Coordinate",
-    "config.LNHMiniFarmX.description": "ONLY USED IF PLAYING ON LNH Mini Farm. Sets horizontal coordinate for IntegratedFarm minecart. 0 being left edge of map.",
-    "config.LNHMiniFarmY.name": "LNH Mini Farm Minecart Y Coordinate",
-    "config.LNHMiniFarmY.description": "ONLY USED IF PLAYING ON LNH Mini Farm. Sets vertical coordinate for IntegratedFarm minecart. 0 being top edge of map.",
-    //Meadowlands Farm Location
-    "config.MeadowlandsFarmX.name": "Meadowlands Farm Minecart X Coordinate",
-    "config.MeadowlandsFarmX.description": "ONLY USED IF PLAYING ON Meadowlands Farm. Sets horizontal coordinate for IntegratedFarm minecart. 0 being left edge of map.",
-    "config.MeadowlandsFarmY.name": "Meadowlands Farm Minecart Y Coordinate",
-    "config.MeadowlandsFarmY.description": "ONLY USED IF PLAYING ON Meadowlands Farm. Sets vertical coordinate for IntegratedFarm minecart. 0 being top edge of map.",
-    //DaisyNiko's Zenith Farm Location
-    "config.DNZenithFarmX.name": "DaisyNiko's Zenith Farm Minecart X Coordinate",
-    "config.DNZenithFarmX.description": "ONLY USED IF PLAYING ON DaisyNiko's Zenith Farm. Sets horizontal coordinate for IntegratedFarm minecart. 0 being left edge of map.",
-    "config.DNZenithFarmY.name": "DaisyNiko's Zenith Farm Minecart Y Coordinate",
-    "config.DNZenithFarmY.description": "ONLY USED IF PLAYING ON DaisyNiko's Zenith Farm. Sets vertical coordinate for IntegratedFarm minecart. 0 being top edge of map.",
+    "config.section.FarmLocation.name": "Farm Minecart Settings",
+    "config.section.FarmLocation.description": "The settings in this section relate to the Farm Minecart. Use the settings relevant to the farm you are playing on below",
 
+    //Custom Farm
+    "config.UseCustomFarmMap.name": "Use Custom Farm Map",
+    "config.UseCustomFarmMap.description": "If not playing on any of the farms listed below, and the Farm minecart does not show up, use the options in this section. If the minecart does show up, but the farm is not listed, try Standard. Note that this option will disable all other Farm settings. Disable this when not playing on the Custom Farm",
+    "config.CustomFarmMap.name": "Custom Farm Map",
+    "config.CustomFarmMap.description": "If using a CP Farm mod, check the content.json for a line in the format \"Target\": \"Maps/{MapName}\" followed by \"FromFile\": \"{path}/{MapFileName}\", use the MapName in this field. For a CFL Farm map, it will be in the format CFL_Map/{ModId}/{MapName}. ModId can be found from manifest.json. If you cannot find the MapName in the content.json, try the map file name without the file extension. You will need to enter in the whole string in this field.",
+    "config.CustomFarmCartStyle.description": "Sets the style of the Farm Minecart. Use Cart for open areas. Use CartEntrance if setting into a wall. Use CartEntranceNarrow if CartEntrance is too wide.",
+    "config.CustomFarmX.description": "This and the X settings below sets the horizontal coordinate for the Farm minecart. 0 being left edge of map.",
+    "config.CustomFarmY.description": "This and the X settings below sets the vertical coordinate for the Farm minecart. 0 being top edge of map.",
+    //LNH Mini Farm Location
+    "config.LNHMiniFarmReplacement.name": "LNH Mini Farm Replacement",
+    "config.LNHMiniFarmReplacement.description": "Must be used if playing on LNH Mini Farm. Setting must match the Farm Type setting in LNH Mini Farm. Keep disabled if not using LNH Mini Farm, or using the (Custom Farm) version.",
 }

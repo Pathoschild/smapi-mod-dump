@@ -8,13 +8,11 @@
 **
 *************************************************/
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
+using Leclair.Stardew.Common.Serialization;
 using Leclair.Stardew.Common.Serialization.Converters;
+using Leclair.Stardew.Common.Types;
 
 using Microsoft.Xna.Framework;
 
@@ -23,13 +21,14 @@ using Newtonsoft.Json;
 namespace Leclair.Stardew.CloudySkies.LayerData;
 
 [DiscriminatedType("Debris")]
-public record DebrisLayerData : BaseLayerData {
+public record DebrisLayerData : BaseLayerData, IDebrisLayerData {
+
+	public int UseSeasonal { get; set; } = -1;
 
 	public string? Texture { get; set; }
 
+	[JsonConverter(typeof(AbstractConverter<ValueEqualityList<Rectangle>, List<Rectangle>>))]
 	public List<Rectangle>? Sources { get; set; }
-
-	public int UseSeasonal { get; set; } = -1;
 
 	public int MinTimePerFrame { get; set; } = 76;
 

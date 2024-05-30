@@ -60,6 +60,31 @@
           "Layer": "Buildings",
           "SetProperties": {"Action": "LockedDoorWarp 3 17 {{ModId}}_MouseHouse 730 2200 {{Lacey}} 500"}
         },
+        // stone stoops
+        {
+          "Position": {"X": 30, "Y": 96},
+          "Layer": "Back",
+          "SetTilesheet": "outdoors",
+          "SetIndex": 972
+        },
+        {
+          "Position": {"X": 31, "Y": 96},
+          "Layer": "Back",
+          "SetTilesheet": "outdoors",
+          "SetIndex": 973
+        },
+        {
+          "Position": {"X": 32, "Y": 96},
+          "Layer": "Back",
+          "SetTilesheet": "outdoors",
+          "SetIndex": 974
+        },
+        {
+          "Position": {"X": 33, "Y": 96},
+          "Layer": "Back",
+          "SetTilesheet": "outdoors",
+          "SetIndex": 972
+        },
         // stop Lacey from pathing over maple island
         {
           "Position": {"X": 77, "Y": 49},

@@ -1,0 +1,134 @@
+[
+  {
+    "npcName": "Lewis",
+    "Items": [
+      {
+        "Price": 15000,
+        "ItemId": "(O)PurpleBook"
+      },
+      {
+        "Price": 20000,
+        "ItemId": "(O)Book_Friendship"
+      }
+    ]
+  },
+  {
+    "npcName": "Linus",
+    "Items": [
+      {
+        "Price": 20000,
+        "ItemId": "(O)Book_Trash"
+      },
+      {
+        "Price": 20000,
+        "ItemId": "(O)Book_WildSeeds"
+      },
+      {
+        "Price": 20000,
+        "ItemId": "(O)Book_Woodcutting"
+      }
+    ]
+  },
+  {
+    "npcName": "Willy",
+    "Items": [
+      {
+        "Price": 20000,
+        "ItemId": "(O)Book_Crabbing"
+      },
+      {
+        "Price": 20000,
+        "ItemId": "(O)Book_Roe"
+      }
+    ]
+  },
+  {
+    "npcName": "Dwarf",
+    "Items": [
+      {
+        "Price": 20000,
+        "ItemId": "(O)Book_Defense"
+      },
+      {
+        "Price": 20000,
+        "ItemId": "(O)Book_Marlon"
+      }
+    ]
+  },
+  {
+    "npcName": "Krobus",
+    "Items": [
+      {
+        "Price": 20000,
+        "ItemId": "(O)Book_Void"
+      }
+    ]
+  },
+  {
+    "npcName": "Wizard",
+    "Items": [
+      {
+        "Price": 5000,
+        "ItemId": "(O)SkillBook_0"
+      },
+      {
+        "Price": 5000,
+        "ItemId": "(O)SkillBook_1"
+      },
+      {
+        "Price": 5000,
+        "ItemId": "(O)SkillBook_2"
+      },
+      {
+        "Price": 5000,
+        "ItemId": "(O)SkillBook_3"
+      },
+      {
+        "Price": 5000,
+        "ItemId": "(O)SkillBook_4"
+      }
+    ]
+  },
+  {
+    "npcName": "Sandy",
+    "Items": [
+      {
+        "Price": 20000,
+        "ItemId": "(O)Book_Artifact"
+      },
+      {
+        "Price": 50000,
+        "ItemId": "(O)Book_QueenOfSauce"
+      }
+    ]
+  },
+  {
+    "npcName": "Marnie",
+    "Items": [
+      {
+        "Price": 5000,
+        "ItemId": "(O)Book_AnimalCatalogue"
+      },
+      {
+        "Price": 50000,
+        "ItemId": "(BC)272",
+        "Item_tips": "Auto-Petter 自动抚摸机"
+      },
+      {
+        "Price": 1000,
+        "ItemId": "(O)440",
+        "Item_tips": "Wool 羊毛 340g"
+      },
+      {
+        "Price": 300,
+        "ItemId": "(O)184",
+        "Item_tips": "Milk 牛奶 125g"
+      },
+      {
+        "Price": 200,
+        "ItemId": "(O)176",
+        "Item_tips": "Egg 鸡蛋 50g"
+      }
+    ]
+  }
+]

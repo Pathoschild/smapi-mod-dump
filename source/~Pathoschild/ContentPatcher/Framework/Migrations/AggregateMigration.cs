@@ -177,7 +177,7 @@ namespace ContentPatcher.Framework.Migrations
             IAssetName? target = null;
 
             foreach (IRuntimeMigration migration in this.RuntimeMigrations)
-                target = migration.RedirectTarget(target ?? assetName, patch);
+                target = migration.RedirectTarget(target ?? assetName, patch) ?? target;
 
             return target;
         }

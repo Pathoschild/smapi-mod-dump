@@ -10,16 +10,17 @@
 
 namespace StardewMods.ToolbarIcons.Framework.Services.Integrations.Vanilla;
 
+using StardewMods.ToolbarIcons.Framework.Enums;
 using StardewMods.ToolbarIcons.Framework.Interfaces;
 
 /// <inheritdoc />
 internal sealed class ToggleCollision : IVanillaIntegration
 {
     /// <inheritdoc />
-    public int Index => 10;
+    public string HoverText => I18n.Button_NoClip();
 
     /// <inheritdoc />
-    public string HoverText => I18n.Button_NoClip();
+    public string Icon => InternalIcon.ToggleCollision.ToStringFast();
 
     /// <inheritdoc />
     public void DoAction()

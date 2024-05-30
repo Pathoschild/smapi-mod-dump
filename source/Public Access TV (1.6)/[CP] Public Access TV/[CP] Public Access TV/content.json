@@ -1,0 +1,49 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/emurphy42/PredictiveMods
+**
+*************************************************/
+
+{
+    "Format": "2.0.0",
+    "Changes": [
+        {
+            "Action": "EditData",
+            "Target": "Data/Events/Railroad",
+            "Entries": {
+                "79400101/n kdau.never": "archaeo/39 46/farmer 30 55 0 Demetrius 28 46 1/addBigProp 29 46 106/move farmer 0 -9 3 true/pause 750/animate Demetrius true false 500 24/pause 250/playSound openBox/pause 1000/faceDirection Demetrius 2/jump Demetrius 4/pause 1250/faceDirection Demetrius 1/speak Demetrius \"{{i18n:trains.event.demetrius01}}\"/animate Demetrius true false 1000 24/pause 750/playSound woodyHit/removeObject 29 46/pause 250/move Demetrius 1 0 1/speak Demetrius \"{{i18n:trains.event.demetrius02}}$h#$b#{{i18n:trains.event.demetrius03}}\"/viewport move -4 4 1500/advancedMove Demetrius false 0 4/advancedMove farmer false 0 4/pause 1450/stopAdvancedMoves/pause 50/faceDirection Demetrius 1 true/faceDirection farmer 3/pause 50/speak Demetrius \"{{i18n:trains.event.demetrius04}}$s#$b#{{i18n:trains.event.demetrius05}}\"/emote farmer 16/speak Demetrius \"$q -1 null#{{i18n:trains.event.demetrius06}}#$r -1 30 kdau.PublicAccessTV.trains1#{{i18n:trains.event.farmer01}}#$r -1 0 kdau.PublicAccessTV.trains2#{{i18n:trains.event.farmer02}}#$r -1 -30 kdau.PublicAccessTV.trains3#{{i18n:trains.event.farmer03}}\"/fork 79400101_Reject/pause 500/speak Demetrius \"{{i18n:trains.event.demetrius08}}\"/advancedMove farmer false 0 10/advancedMove Demetrius false 0 10/pause 1500/stopAdvancedMoves/mail kdau.PublicAccessTV.trains%&NL&%/end dialogue Demetrius \"{{i18n:trains.event.demetrius09}}\"",
+                "79400101_Reject": "stopMusic/pause 1000/speak Demetrius \"{{i18n:trains.event.demetrius08}}$s\"/advancedMove Demetrius false 0 10/pause 1500/stopAdvancedMoves/end invisible Demetrius"
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Events/Town",
+            "Entries": {
+                "79400102/n kdau.never": "echos/<<viewport>>/farmer <<farmerstart>> Linus <<linusstart>>/move Linus <<linusmove1>> true/playSound dirtyHit/pause 1000/playSound dirtyHit/pause 1000/textAboveHead Linus \"{{i18n:garbage.event.linus01}}\"/pause 250/jump farmer/pause 750/faceDirection farmer <<farmerface>>/pause 250/emote farmer 16/move Linus <<linusmove2>>/pause 500/speak Linus \"{{i18n:garbage.event.linus02}}#$b#{{i18n:garbage.event.linus03}}$h\"/emote farmer 32/speak Linus \"{{i18n:garbage.event.linus04}}#$b#{{i18n:garbage.event.linus05}}\"/emote farmer 40/speak Linus \"$q -1 null#{{i18n:garbage.event.linus06}}#$r -1 50 kdau.PublicAccessTV.garbage1#{{i18n:garbage.event.farmer01}}#$r -1 0 kdau.PublicAccessTV.garbage2#{{i18n:garbage.event.farmer02}}#$r -1 -50 kdau.PublicAccessTV.garbage3#{{i18n:garbage.event.farmer03}}\"/pause 500/speak Linus \"{{i18n:garbage.event.linus08}}\"/move Linus <<linusmove3>> 2 true/viewport move <<linusmove3>> 6000/fade/viewport -1000 -1000/fork 79400102_Reject/mail kdau.PublicAccessTV.garbage%&NL&%/end dialogue Linus \"{{i18n:garbage.event.linus09}}\"",
+                "79400102_Reject": "end invisible Linus"
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Characters/Dialogue/Demetrius",
+            "Entries": {
+                "kdau.PublicAccessTV.trains1": "{{i18n:trains.event.demetrius07a}}$h",
+		"kdau.PublicAccessTV.trains2": "{{i18n:trains.event.demetrius07b}}",
+		"kdau.PublicAccessTV.trains3": "{{i18n:trains.event.demetrius07c}}%fork$a"
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Characters/Dialogue/Linus",
+            "Entries": {
+                "kdau.PublicAccessTV.garbage1": "{{i18n:garbage.event.linus07a}}$h",
+                "kdau.PublicAccessTV.garbage2": "{{i18n:garbage.event.linus07b}}",
+                "kdau.PublicAccessTV.garbage3": "{{i18n:garbage.event.linus07c}}%fork$s",
+            }
+        }
+    ]
+}

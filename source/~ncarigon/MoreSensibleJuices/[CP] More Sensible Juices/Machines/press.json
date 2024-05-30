@@ -78,8 +78,14 @@
 									"RequiredTags": [
 										"category_vegetable"
 									]
+								},
+								{
+									"Id": "{{ModId}}_Juice_Forage",
+									"RequiredTags": [
+										"category_greens"
+									],
+									"Condition": "!ITEM_CONTEXT_TAG Input edible_mushroom, ITEM_EDIBILITY Input 1"
 								}
-
 							],
 							"OutputItem": [
 								{

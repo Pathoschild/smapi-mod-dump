@@ -1,3 +1,6 @@
 {
-  "TestNpcDateName": "Haley"
+  "TestNpcDateName": "Haley",
+  "SpouseAlwaysGivingLetter": true,
+  "MinRequiredHearts": 2,
+  "ChancePerHeart": 10
 }

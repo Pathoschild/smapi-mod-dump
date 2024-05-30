@@ -21,9 +21,9 @@ namespace DwarvishMattock
 			if (__instance is VolcanoDungeon)
 			{
 				// If the mattock artifact hasn't already been donated, you have a 2.5% chance to find it whenever digging in the volcano.
-				if (!(Game1.getLocationFromName("ArchaeologyHouse") as LibraryMuseum).museumAlreadyHasArtifact(934) && Game1.random.NextDouble() < 0.025)
+				if (!LibraryMuseum.HasDonatedArtifact(ModEntry.MATTOCK_ARTIFACT_ID) && Game1.random.NextDouble() < 0.025)
 				{
-					Game1.createObjectDebris(934, xLocation, yLocation, who.UniqueMultiplayerID, __instance);
+					Game1.createObjectDebris(ModEntry.MATTOCK_ARTIFACT_ID, xLocation, yLocation, who.UniqueMultiplayerID, __instance);
 				}
 			}
 

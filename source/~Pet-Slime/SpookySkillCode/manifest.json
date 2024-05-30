@@ -1,0 +1,42 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Pet-Slime/StardewValley
+**
+*************************************************/
+
+{
+    "Name": "Scaring / Thieving Skill",
+    "Author": "moonslime",
+    "Version": "1.1.2",
+    "Description": "Scare(or steal from) NPCs, get items",
+    "UniqueID": "moonslime.SpookySkill",
+    "EntryDll": "SpookySkillCode.dll",
+    "MinimumApiVersion": "4.0.0",
+    "UpdateKeys": [
+        "Nexus:23791"
+    ],
+    "Dependencies": [
+        {
+            "UniqueID": "DaLion.Overhaul",
+            "IsRequired": false
+        },
+        {
+            "UniqueID": "drbirbdev.BirbCore"
+        },
+        {
+            "UniqueID": "Pathoschild.ContentPatcher"
+        },
+        {
+            "UniqueID": "spacechase0.GenericModConfigMenu",
+            "IsRequired": false
+        },
+        {
+            "UniqueID": "spacechase0.SpaceCore",
+            "MinimumVersion": "1.21.0"
+        }
+    ]
+}

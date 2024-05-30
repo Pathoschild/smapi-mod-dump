@@ -18,12 +18,17 @@ namespace RangeHighlight {
     internal enum HighlightActionLocationStyle {
         Never, WhenMouseHidden, Always
     }
+    internal enum SprinklerModCompatibilityOption {
+        Faster, MoreCompatible
+    }
     internal class ModConfig {
         private uint _refreshInterval = 6; // once every 0.1s or so
         public uint RefreshInterval {
             get => _refreshInterval;
             set => _refreshInterval = Math.Clamp(value, 1, 60);
         }
+        public bool ShowOverlaps { get; set; } = true;
+
         public bool ShowJunimoRange { get; set; } = true;
         public bool ShowSprinklerRange { get; set; } = true;
         public bool ShowScarecrowRange { get; set; } = true;
@@ -33,6 +38,10 @@ namespace RangeHighlight {
 
         public bool HighlightBuildingsOnMouseover { get; set; } = true;
         public HighlightActionLocationStyle HighlightActionLocation { get; set; } = HighlightActionLocationStyle.Always;
+        public bool HideAtMouseOnMovement { get; set; } = true;
+
+        public SprinklerModCompatibilityOption SprinklerModCompatibility { get; set; } = SprinklerModCompatibilityOption.MoreCompatible;
+
         public bool ShowOtherSprinklersWhenHoldingSprinkler { get; set; } = true;
         public bool ShowOtherScarecrowsWhenHoldingScarecrow { get; set; } = true;
         public bool ShowOtherBeehousesWhenHoldingBeehouse { get; set; } = false;
@@ -112,6 +121,18 @@ namespace RangeHighlight {
                 formatAllowedValue: (v) => theMod.helper.Translation.Get("config.highlight-action-location-style." + v),
                 getValue: () => theMod.config.HighlightActionLocation.ToString(),
                 setValue: (v) => theMod.config.HighlightActionLocation = Enum.Parse<HighlightActionLocationStyle>(v));
+            gmcm.AddBoolOption(
+                mod: mod,
+                name: I18n.Config_HideAtMouseLocationOnMovement,
+                tooltip: I18n.Config_HideAtMouseLocationOnMovement_Tooltip,
+                getValue: () => theMod.config.HideAtMouseOnMovement,
+                setValue: (v) => theMod.config.HideAtMouseOnMovement = v);
+            gmcm.AddBoolOption(
+                mod: mod,
+                name: I18n.Config_ShowOverlaps,
+                tooltip: I18n.Config_ShowOverlaps_Tooltip,
+                getValue: () => theMod.config.ShowOverlaps,
+                setValue: (v) => theMod.config.ShowOverlaps = v);
 
             // Junimo Huts
             gmcm.AddSectionTitle(mod, I18n.Config_Junimo);
@@ -163,6 +184,14 @@ namespace RangeHighlight {
                 getValue: () => theMod.config.SprinklerRangeTint,
                 setValue: (v) => theMod.config.SprinklerRangeTint = v,
                 colorPickerStyle: defaultColorPickerStyle);
+            gmcm.AddTextOption(
+                mod: mod,
+                name: I18n.Config_SprinklerModCompatibility,
+                tooltip: I18n.Config_SprinklerModCompatibilityTooltip,
+                allowedValues: Enum.GetNames<SprinklerModCompatibilityOption>(),
+                formatAllowedValue: (v) => theMod.helper.Translation.Get("config.sprinkler-mod-compatibility-option." + v),
+                getValue: () => theMod.config.SprinklerModCompatibility.ToString(),
+                setValue: (v) => theMod.config.SprinklerModCompatibility = Enum.Parse<SprinklerModCompatibilityOption>(v));
 
 
             // Scarecrows

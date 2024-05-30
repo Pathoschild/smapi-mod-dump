@@ -25,26 +25,47 @@ namespace DefaultWindowSize
             "\tSet the resolution of the Stardew Valley window. (Minimum 1280x720)";
 
         private static readonly string _commandUsage = $"\nUsage: \t\t\t{_commandName} <Resolution>\n";
-        private ModConfig _config;
-        private IModHelper _helper;
-        private Logger _logger;
+        private ModConfig config;
+        private IModHelper helper;
+        private Logger logger;
+        private bool previousFullscreenSetting;
 
         public override void Entry(IModHelper helper)
         {
-            this._logger = new Logger(this.Monitor);
-            this._helper = helper;
-            this._config = this._helper.ReadConfig<ModConfig>();
+            this.logger = new Logger(this.Monitor);
+            this.helper = helper;
+            this.config = this.helper.ReadConfig<ModConfig>();
 
             helper.ConsoleCommands.Add(_commandName,
                 $"{_commandDescription}\n\n{_commandUsage}", this.SetResolutionCommand);
             helper.Events.GameLoop.GameLaunched += this.GameLaunched;
+            helper.Events.Display.WindowResized += this.DisplayOnWindowResized;
 
-            if (this._config.SetOnStart)
+            if (this.config.SetOnStart)
             {
-                var newRes = new Resolution(this._config.StartResolution);
+                var newRes = new Resolution(this.config.StartResolution);
 
                 this.SetResolution(newRes);
             }
+        }
+
+        private void DisplayOnWindowResized(object? sender, WindowResizedEventArgs e)
+        {
+            if (this.previousFullscreenSetting != Game1.graphics.IsFullScreen)
+            {
+                // We're switching to/from fullscreen.
+
+                if (Game1.graphics.IsFullScreen)
+                {
+                    this.previousFullscreenSetting = Game1.graphics.IsFullScreen;
+                    return;
+                }
+
+                // We're switching *from* fullscreen, so we set our resolution.
+                this.SetResolution(new Resolution(this.config.StartResolution));
+            }
+
+            this.previousFullscreenSetting = Game1.graphics.IsFullScreen;
         }
 
         private void GameLaunched(object sender, GameLaunchedEventArgs e)
@@ -55,8 +76,10 @@ namespace DefaultWindowSize
             }
             catch (Exception ex)
             {
-                this._logger.Log("User doesn't appear to have GMCM installed. This is not a bug.");
+                this.logger.Log("User doesn't appear to have GMCM installed. This is not a bug.");
             }
+
+            this.previousFullscreenSetting = Game1.graphics.IsFullScreen;
         }
 
         private void SetResolutionCommand(string command, string[] args)
@@ -84,8 +107,8 @@ namespace DefaultWindowSize
 
         private void PrintUsage(string error)
         {
-            this._logger.Log(error);
-            this._logger.Log(_commandUsage);
+            this.logger.Log(error);
+            this.logger.Log(_commandUsage);
         }
 
         private void RegisterWithGmcm()
@@ -94,14 +117,14 @@ namespace DefaultWindowSize
                 this.Helper.ModRegistry.GetApi<GenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
 
             configMenuApi.Register(this.ModManifest,
-                () => this._config = new ModConfig(),
-                () => this.Helper.WriteConfig(this._config));
+                () => this.config = new ModConfig(),
+                () => this.Helper.WriteConfig(this.config));
 
             configMenuApi.AddBoolOption(
                 this.ModManifest,
                 name: () => "Set on Start",
-                getValue: () => this._config.SetOnStart,
-                setValue: value => this._config.SetOnStart = value);
+                getValue: () => this.config.SetOnStart,
+                setValue: value => this.config.SetOnStart = value);
 
             configMenuApi.AddParagraph(
                 this.ModManifest,
@@ -111,8 +134,8 @@ namespace DefaultWindowSize
             configMenuApi.AddTextOption(
                 this.ModManifest,
                 name: () => "Start Resolution",
-                getValue: () => this._config.StartResolution,
-                setValue: value => this._config.StartResolution = value);
+                getValue: () => this.config.StartResolution,
+                setValue: value => this.config.StartResolution = value);
 
             configMenuApi.AddParagraph(
                 this.ModManifest,

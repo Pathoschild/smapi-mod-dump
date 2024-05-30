@@ -301,9 +301,11 @@ namespace ScheduleViewer
                 {
                     Schedule.ScheduleEntry entry = line.Value;
                     string entryString = entry?.ToString();
+                    int stringWidth = 0;
                     if (!string.IsNullOrEmpty(entryString))
                     {
-                        this.hoverTextOptions.Add(Tuple.Create(new Rectangle(x, y + (int)yOffset, (int)font.MeasureString(entryString).X + 2, (int)lineHeight), entry?.HoverText));
+                        stringWidth = (int)font.MeasureString(entryString).X;
+                        this.hoverTextOptions.Add(Tuple.Create(new Rectangle(x, y + (int)yOffset, stringWidth + 2, (int)lineHeight), entry?.HoverText));
                     }
                     if (entry != null)
                     {
@@ -314,6 +316,18 @@ namespace ScheduleViewer
                         else
                         {
                             b.DrawString(font, entryString, new Vector2(x, y + yOffset), Game1.textColor);
+                        }
+                        // draw inaccesible icon
+                        if (!line.Value.CanAccess)
+                        {
+                            if (ModEntry.Config.UseLargerFontForScheduleDetails)
+                            {
+                                b.Draw(Game1.mouseCursors, new Vector2(x + stringWidth + 6, y + yOffset + 12), new Rectangle(218, 428, 7, 6), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 1f);
+                            }
+                            else
+                            {
+                                b.Draw(Game1.mouseCursors, new Vector2(x + stringWidth + 4, y + yOffset + 7), new Rectangle(218, 428, 7, 6), Color.White, 0f, Vector2.Zero, 3f, SpriteEffects.None, 1f);
+                            }
                         }
                         yOffset += lineHeight;
                     }

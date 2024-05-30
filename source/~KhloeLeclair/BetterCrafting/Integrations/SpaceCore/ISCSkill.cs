@@ -31,9 +31,18 @@ public static class ISCSkill_Extensions {
 	public static string SafeGetName(this ISCSkill skill) {
 		try {
 			return skill.GetName() ?? skill.Id;
-		} catch(Exception ex) {
+		} catch (Exception ex) {
 			ModEntry.Instance.Log($"Unable to access SpaceCore custom skill. Did the mod author make it internal or private?", StardewModdingAPI.LogLevel.Warn, ex, once: true);
 			return skill.Id;
+		}
+	}
+
+	public static Texture2D? SafeGetTexture(this ISCSkill? skill) {
+		try {
+			return skill?.SkillsPageIcon;
+		} catch (Exception ex) {
+			ModEntry.Instance.Log($"Unable to access SpaceCore custom skill. Did the mod author make it internal or private?", StardewModdingAPI.LogLevel.Warn, ex, once: true);
+			return null;
 		}
 	}
 

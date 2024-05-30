@@ -6,9 +6,9 @@ mods:
    Custom NPC Exclusions
 
 latest commit:
-   commit 941bb125c8e56f7708535305656a025e200e2452
+   commit 91d288b9163ecfbacef399cc9a36d0c667082155
    Author: Esca-MMC <esca.mmc@gmail.com>
-   Date:   Tue Mar 19 10:02:58 2024 -0500
+   Date:   Thu May 16 10:00:45 2024 -0500
    
-       Set version to 1.6.0, update license year
+       Replace license
    

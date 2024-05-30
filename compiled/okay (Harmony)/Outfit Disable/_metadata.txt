@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/23346
+IDs: idermailer.OutfitDisable
+update keys: Nexus:23346, GitHub:idermailer/OutfitDisable

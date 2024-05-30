@@ -1,0 +1,83 @@
+##################################################
+##
+## You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+## for queries and analysis.
+##
+## This is *not* the original file, and not necessarily the latest version.
+## Source repository: https://github.com/alcmoe/SVMods
+##
+##################################################
+
+name: Build FreezeTime
+on:
+  workflow_dispatch:
+    
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 6.0.x
+    - name: Setup game and SMAPI
+      uses: actions/checkout@v4
+      with:
+        repository: StardewModders/mod-reference-assemblies
+        fetch-tags: true
+        ref: refs/tags/SDV1.6.3-SMAPI4.0.2
+        path: GamePath
+    - name: Set game path
+      run: |
+        echo "GamePath=$GITHUB_WORKSPACE/GamePath" >> "$GITHUB_ENV"
+        echo "<Project><PropertyGroup><GamePath>$GITHUB_WORKSPACE/GamePath</GamePath></PropertyGroup></Project>" > "$HOME/stardewvalley.targets"
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --no-restore --configuration Release
+    - name: Fetch version
+      run: |
+        echo "FreezeTime_version=$(cat $GITHUB_WORKSPACE/FreezeTime/bin/Release/version.txt)" >> $GITHUB_ENV
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: FreezeTime
+        path: FreezeTime/bin/Release/FreezeTime.zip
+
+  upload:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 6.0.x
+    - name: Install strip json comments
+      run: |
+        npm install --global strip-json-comments-cli
+    - name: Install uploader
+      run: |
+        dotnet tool install -g Digitalroot.ModUploader
+    - name: Check keys
+      env:
+        NEXUSMOD_API_KEY: ${{ secrets.NEXUSMOD_API_KEY }}
+        NEXUSMOD_COOKIE_SID_DEVELOP: ${{ secrets.NEXUSMOD_COOKIE_SID_DEVELOP }}
+      run: |
+        drmu nx check
+    - name: Download artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: FreezeTime
+    - name: Get mod info
+      run: |
+        unzip FreezeTime.zip -d mod
+        echo "ModVersion=$(cat mod/FreezeTime/manifest.json | strip-json-comments | jq --raw-output '.Version')" >> $GITHUB_ENV
+        echo "ModId=$(cat mod/FreezeTime/manifest.json | strip-json-comments | jq --raw-output '.UpdateKeys[] | select(startswith("Nexus:"))' | grep -o '[0-9]*')" >> $GITHUB_ENV
+    - name: Upload mod
+      env:
+        NEXUSMOD_API_KEY: ${{ secrets.NEXUSMOD_API_KEY }}
+        NEXUSMOD_COOKIE_SID_DEVELOP: ${{ secrets.NEXUSMOD_COOKIE_SID_DEVELOP }}
+      run: |
+        drmu nexusmods upload $ModId FreezeTime.zip -f "FreezeTime $ModVersion" -v $ModVersion -t Main -g stardewvalley
+        

@@ -1,7 +1,7 @@
 ﻿{
   "Name": "AlvadeasMiningShack",
   "Author": "Alja",
-  "Version": "2.0.1",
+  "Version": "2.0.2",
   "Description": "Add a new shack map",
   "UniqueID": "Alja.Shack",
   "EntryDll": "AlvadeasMiningShack.dll",
@@ -9,7 +9,7 @@
   "Dependencies": [
     {
       "UniqueID": "alvadea.minemap",
-      "IsRequired": false // disabled locally
+      "IsRequired": true
     }
   ]
 }

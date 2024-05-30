@@ -6,12 +6,9 @@ mods:
    Hats on Pets Plus
 
 latest commit:
-   commit 72832d583ec6a9609930d758029d0e5074aa4507
+   commit 66eb751a3c90919c755a2c239ce481f58cb2db15
    Author: Syma <48735156+SymaLoernn@users.noreply.github.com>
-   Date:   Sun Apr 21 11:12:10 2024 +0200
+   Date:   Sat Apr 27 11:45:38 2024 +0200
    
-       Update README.md
-       
-       Updated the "flipped" part of the doc thanks to the additional data provided by elizabethcd.
-       Also fixed a few typos and rewrote a few sentences to clarify them
+       Updated the documentation for version 1.0.4
    

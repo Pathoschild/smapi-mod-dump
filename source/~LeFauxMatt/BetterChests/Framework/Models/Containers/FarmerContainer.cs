@@ -11,7 +11,6 @@
 namespace StardewMods.BetterChests.Framework.Models.Containers;
 
 using Microsoft.Xna.Framework;
-using StardewMods.Common.Services.Integrations.BetterChests.Interfaces;
 using StardewValley.Inventories;
 using StardewValley.Locations;
 using StardewValley.Menus;
@@ -22,18 +21,21 @@ using StardewValley.Network;
 internal sealed class FarmerContainer : BaseContainer<Farmer>
 {
     /// <summary>Initializes a new instance of the <see cref="FarmerContainer" /> class.</summary>
-    /// <param name="baseOptions">The type of storage object.</param>
     /// <param name="farmer">The farmer whose inventory is holding the container.</param>
-    public FarmerContainer(IStorageOptions baseOptions, Farmer farmer)
-        : base(baseOptions) =>
-        this.Source = new WeakReference<Farmer>(farmer);
+    public FarmerContainer(Farmer farmer)
+        : base(farmer) =>
+        this.InitOptions();
+
+    /// <inheritdoc />
+    public override int Capacity => this.Farmer.MaxItems;
 
     /// <summary>Gets the source farmer of the container.</summary>
+    /// <exception cref="ObjectDisposedException">Thrown when the Farmer is disposed.</exception>
     public Farmer Farmer =>
         this.Source.TryGetTarget(out var target) ? target : throw new ObjectDisposedException(nameof(FarmerContainer));
 
     /// <inheritdoc />
-    public override int Capacity => this.Farmer.MaxItems;
+    public override bool IsAlive => this.Source.TryGetTarget(out _);
 
     /// <inheritdoc />
     public override IInventory Items => this.Farmer.Items;
@@ -42,22 +44,39 @@ internal sealed class FarmerContainer : BaseContainer<Farmer>
     public override GameLocation Location => this.Farmer.currentLocation;
 
     /// <inheritdoc />
-    public override Vector2 TileLocation => this.Farmer.Tile;
-
-    /// <inheritdoc />
     public override ModDataDictionary ModData => this.Farmer.modData;
 
     /// <inheritdoc />
     public override NetMutex? Mutex => (Utility.getHomeOfFarmer(this.Farmer) as Cabin)?.inventoryMutex;
 
     /// <inheritdoc />
-    public override bool IsAlive => this.Source.TryGetTarget(out _);
+    public override Vector2 TileLocation => this.Farmer.Tile;
 
     /// <inheritdoc />
-    public override WeakReference<Farmer> Source { get; }
+    public override int ResizeChestCapacity
+    {
+        get => this.Farmer.MaxItems;
+        set
+        {
+            this.Farmer.MaxItems = value;
+            this.Farmer.Items.RemoveEmptySlots();
+            while (this.Farmer.Items.Count < this.Farmer.MaxItems)
+            {
+                this.Farmer.Items.Add(null);
+            }
+        }
+    }
 
     /// <inheritdoc />
-    public override void ShowMenu(bool playSound = false) => Game1.activeClickableMenu = new GameMenu();
+    public override string StorageName
+    {
+        get => this.Farmer.Name;
+        set { }
+    }
+
+    /// <inheritdoc />
+    public override void ShowMenu(bool playSound = false) =>
+        Game1.activeClickableMenu = new GameMenu(playOpeningSound: playSound);
 
     /// <inheritdoc />
     public override bool TryAdd(Item item, out Item? remaining)
@@ -77,5 +96,16 @@ internal sealed class FarmerContainer : BaseContainer<Farmer>
 
         this.Farmer.removeItemFromInventory(item);
         return true;
+    }
+
+    /// <inheritdoc />
+    protected override void InitOptions()
+    {
+        base.InitOptions();
+
+        if (string.IsNullOrWhiteSpace(this.StorageIcon))
+        {
+            this.StorageIcon = "StardewValley.Vanilla/Backpack";
+        }
     }
 }

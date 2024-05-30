@@ -1,0 +1,24 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/BinaryLip/ScheduleViewer
+**
+*************************************************/
+
+{
+  "Custom_AndyHouse": "Andy's House",
+  "Custom_CastleVillageOutpost": "Castle Village Outpost",
+  "Custom_DayEnd_WarpRoom": "Zuzu City",
+  "Custom_FirstSlashGuild": "First Slash Guild Hall",
+  "Custom_JenkinsHouse": "Jenkins' Residence",
+  "Custom_OliviaCellar": "Olivia's Cellar",
+  "Custom_ScarlettHouse": "Scarlett's House",
+  "Custom_SophiaHouse": "Sophia's House",
+  "Custom_SusanHouse": "Susan's House",
+  "Custom_WizardBasement": "Wizard's Basement",
+  "EmeraldFarm": "Emerald Farm",
+  "FairhavenFarm": "Fairhaven Farm"
+}

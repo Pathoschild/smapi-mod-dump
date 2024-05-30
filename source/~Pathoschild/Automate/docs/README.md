@@ -21,10 +21,9 @@ automatically pull raw items from the chest and push processed items into it.
   * [Machine priority](#machine-priority)
   * [Machine pipelines](#machine-pipelines)
 * [Configure](#configure)
-  * [In-game mod settings](#in-game-mod-settings)
-  * [In-game chest settings](#in-game-chest-settings)
+  * [Mod settings](#mod-settings)
   * [Per-machine settings](#per-machine-settings)
-  * [config.json](#configjson)
+  * [In-game chest settings](#in-game-chest-settings)
 * [Compatibility](#compatibility)
 * [Troubleshooting](#troubleshooting)
   * [In-game overlay](#in-game-overlay)
@@ -45,7 +44,7 @@ of it.
 
 By default, Automate supports...
 
-* custom machines using the Stardew Valley 1.6+ format;
+* custom buildings and machines using the Stardew Valley 1.6+ format;
 * all vanilla machines, including:
   * [anvils](https://stardewvalleywiki.com/Anvil);
   * [auto-grabbers](https://stardewvalleywiki.com/Auto-Grabber);
@@ -85,17 +84,18 @@ By default, Automate supports...
   * [statues of true perfection](https://stardewvalleywiki.com/Statue_Of_True_Perfection);
   * [wood chippers](https://stardewvalleywiki.com/Wood_Chipper);
   * and [worm bins](https://stardewvalleywiki.com/Worm_Bin) (including deluxe worm bins);
-* some things you wouldn't normally consider machines:
-  * bushes (including [blackberry](https://stardewvalleywiki.com/Blackberry), [salmonberry](https://stardewvalleywiki.com/Salmonberry), and [tea](https://stardewvalleywiki.com/Tea_Bush) bushes);
+* all vanilla buildings with input/output, including:
   * [fish ponds](https://stardewvalleywiki.com/Fish_Pond) (for output only);
-  * [fruit trees](https://stardewvalleywiki.com/Fruit_Trees);
-  * [garbage cans](https://stardewvalleywiki.com/Garbage_Can);
   * [Junimo huts](https://stardewvalleywiki.com/Junimo_Hut);
   * [mills](https://stardewvalleywiki.com/Mill);
+  * and [silos](https://stardewvalleywiki.com/Silo);
+* some things you wouldn't normally consider machines:
+  * bushes (including [blackberry](https://stardewvalleywiki.com/Blackberry), [salmonberry](https://stardewvalleywiki.com/Salmonberry), and [tea](https://stardewvalleywiki.com/Tea_Bush) bushes);
+  * [fruit trees](https://stardewvalleywiki.com/Fruit_Trees);
+  * [garbage cans](https://stardewvalleywiki.com/Garbage_Can);
   * [shipping bin](https://stardewvalleywiki.com/Shipping) (configurable);
-  * [silos](https://stardewvalleywiki.com/Silo);
   * [tappers](https://stardewvalleywiki.com/Tapper);
-  * [trees](https://stardewvalleywiki.com/Trees);
+  * and [trees](https://stardewvalleywiki.com/Trees);
 * and these containers:
   * [chests](https://stardewvalleywiki.com/Chest) (including variants like [big chests](https://stardewvalleywiki.com/Big_Chest) and [stone chests](https://stardewvalleywiki.com/Stone_Chest));
   * farmhouse/cabin fridges;
@@ -158,8 +158,7 @@ together. For example, here are wooden paths used as connectors:
 
 > ![](screenshots/connectors.png)
 
-Workbenches are the only connectors by default. You can edit the `config.json` to add connectors
-(see _[configure](#configure)_ below).
+You can [edit the mod settings](#configure) to add connectors.
 
 ### Junimo chests
 Every machine and chest connected to a [Junimo chest](https://stardewvalleywiki.com/Junimo_Chest)
@@ -252,13 +251,14 @@ processed items.
 
 </dd>
 
-<dt>Advanced pipeline with Super Hopper</dt>
+<dt>Advanced pipeline with Filtered Chest Hopper</dt>
 <dd>
 
-[Super Hopper](https://www.nexusmods.com/stardewvalley/mods/9418) is a mod which lets hoppers
-transfer items from the chest above them to the one below. These are ignored by Automate, so you
-can use them to create a chain of machine groups. That lets you support any number of input items
-without sending unprocessed items to the shipping bin or wrong machine.
+[Filtered Chest Hopper](https://www.nexusmods.com/stardewvalley/mods/21730) is a mod which lets you
+transfer items from the chest above them to the one below, with optional item filtering rules.
+
+These are ignored by Automate, so you create a chain of machine groups. That lets you support any
+number of input items without sending unprocessed items to the shipping bin or wrong machine.
 
 The trick is:
 
@@ -267,51 +267,59 @@ The trick is:
    receives items processed by the connected machines). [Use Chests Anywhere to set the chests'
    automation options](#Configure) to "_never put items in this chest_" and "_never take items from
    this chest_" respectively.
-3. Add a super hopper below the 'output chest' of one group, and the 'input chest' of the next.
+3. Add a filtered chest hopper below the 'output chest' of one group, and the 'input chest' of the
+   next.
 
-Here's the same example using super hoppers:
+Here's the same example using filtered chest hoppers:
 ```
-                   1. milk turned into cheese
-                   ────────────────────────────────────────────────────>
-                 ┌──────────┐┌──────────┐┌──────────┐┌──────────┐┌──────────┐
-                 │  input   ││  cheese  ││  cheese  ││  cheese  ││  output  │  │
-                 │  chest   ││  press   ││  press   ││  press   ││  chest   │  │
-                 └──────────┘└──────────┘└──────────┘└──────────┘└──────────┘  │
-                                                                 ┌──────────┐  │ 2.
-                                                                 │  super   │  │ Super Hopper
-                                                                 │  hopper  │  │ transfers item
-                                                                 └──────────┘  │ to next group
-                 ┌──────────┐┌──────────┐┌──────────┐┌──────────┐┌──────────┐  │
-               │ │  output  ││   cask   ││   cask   ││   cask   ││  input   │  v
-               │ │  chest   ││          ││          ││          ││  chest   │
-4.             │ └──────────┘└──────────┘└──────────┘└──────────┘└──────────┘
-Super Hopper   │ ┌──────────┐  <────────────────────────────────────────────
-transfers item │ │  super   │               3. cheese aged to iridum quality
-to next group  │ │  hopper  │
-               │ └──────────┘
-               │ ┌──────────┐┌──────────┐┌──────────┐┌──────────┐┌──────────┐
-               v │  input   ││ mini     ││ mini     ││ mini     ││ mini     │
-                 │  chest   ││ ship bin ││ ship bin ││ ship bin ││ ship bin │
-                 └──────────┘└──────────┘└──────────┘└──────────┘└──────────┘
-                   ────────────────────────────────────────────────────>
-                   5. item shipped
+                    1. milk turned into cheese
+                    ────────────────────────────────────────────────────>
+                  ┌──────────┐┌──────────┐┌──────────┐┌──────────┐┌──────────┐
+                  │  input   ││  cheese  ││  cheese  ││  cheese  ││  output  │  │
+                  │  chest   ││  press   ││  press   ││  press   ││  chest   │  │
+                  └──────────┘└──────────┘└──────────┘└──────────┘└──────────┘  │
+                                                                  ┌──────────┐  │ 2.
+                                                                  │ filtered │  │ Filtered Chest Hopper
+                                                                  │  hopper  │  │ transfers item
+                                                                  └──────────┘  │ to next group
+                  ┌──────────┐┌──────────┐┌──────────┐┌──────────┐┌──────────┐  │
+                │ │  output  ││   cask   ││   cask   ││   cask   ││  input   │  v
+                │ │  chest   ││          ││          ││          ││  chest   │
+4.              │ └──────────┘└──────────┘└──────────┘└──────────┘└──────────┘
+Filtered Hopper │ ┌──────────┐  <────────────────────────────────────────────
+transfers item  │ │ filtered │               3. cheese aged to iridum quality
+to next group   │ │  hopper  │
+                │ └──────────┘
+                │ ┌──────────┐┌──────────┐┌──────────┐┌──────────┐┌──────────┐
+                v │  input   ││ mini     ││ mini     ││ mini     ││ mini     │
+                  │  chest   ││ ship bin ││ ship bin ││ ship bin ││ ship bin │
+                  └──────────┘└──────────┘└──────────┘└──────────┘└──────────┘
+                    ────────────────────────────────────────────────────>
+                    5. item shipped
 ```
 
 </dd>
 </dl>
 
 ## Configure
-### In-game mod settings
-If you have [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098) installed,
-you can click the cog button (⚙) on the title screen or the "mod options" button at the bottom of
-the in-game menu to configure the mod. Hover the cursor over a field for details, or see the next
-section.
+### Mod settings
+If you install [Generic Mod Config Menu][], you can click the cog button (⚙) on the title screen
+or the "mod options" button at the bottom of the in-game menu to configure the mod. Hover the
+cursor over a field for details.
 
-![](screenshots/generic-config-menu.png)
+> ![](screenshots/generic-config-menu.png)
+
+### Per-machine settings
+You can also configure individual machine types through [Generic Mod Config Menu][]. This works for
+all machines, including those added by other mods.
+
+For example, you can uncheck 'Enabled' under _Shipping Bin settings_ if you don't want Automate to
+move items into shipping bins:
+
+> ![](screenshots/generic-config-menu-machines.png)
 
 ### In-game chest settings
-Installing [Chests Anywhere](https://www.nexusmods.com/stardewvalley/mods/518) lets you set
-per-chest options directly in-game:
+Installing [Chests Anywhere][] lets you set per-chest options directly in-game:
 > ![](screenshots/chests-anywhere-config.png)
 
 This adds two options for Automate:
@@ -329,159 +337,24 @@ This adds two options for Automate:
 
 (To configure chest automation from another mod, see the [technical documentation](technical.md#can-i-change-in-game-settings-without-chests-anywhere).)
 
-### Per-machine settings
-_This is advanced; most players won't need to configure Automate to this extent._
-
-You can set some options for individual machine types by [editing the `config.json`](#configure),
-and adding an entry to the `MachineOverrides` field. If a machine isn't listed in that field, it'll
-use the default values defined in `assets/data.json`. This works for all automated machines,
-including those added by other mods.
-
-Each entry in `MachineOverrides` is identified by the internal machine type ID (_not_ the machine
-name you see in-game). You can [run the `automate summary` command](#console-commands) to see a list
-of machines being automated; the names shown in the list are the machine type IDs.
-
-
-For example:
-```js
-"MachineOverrides": {
-    "ShippingBin": {
-        "Enabled": true,
-        "Priority": -1
-    },
-    "Tapper": {
-        "Enabled": true,
-        "Priority": 0
-    },
-}
-```
-
-Available options for each machine:
-
-field | purpose
------ | -------
-`Enabled` | Whether the machine type should be automated (default `true`).
-`Priority` | The order in which this machine should be processed relative to other machines (default `0`). Higher values are processed first for both input and output.
-
-### config.json
-The mod creates a `config.json` file in its mod folder the first time you run it. You can open that
-file in a text editor to configure the mod.
-
-These are the available settings:
-
-<table>
-<tr>
-  <th>setting</th>
-  <th>what it affects</th>
-</tr>
-<tr>
-<tr>
-  <td><code>Enabled</code></td>
-  <td>
-
-Whether Automate features are enabled. If this is `false`, no machines will be automated and the overlay won't appear.
-
-  </td>
-</tr>
-<tr>
-  <td><code>AutomationInterval</code></td>
-  <td>
-
-The number of update ticks between each automation cycle (one second is ≈60 ticks). Default `60`.
-
-  </td>
-</tr>
-<tr>
-  <td><code>Controls</code></td>
-  <td>
-
-The configured controller, keyboard, and mouse buttons (see [key bindings](https://stardewvalleywiki.com/Modding:Key_bindings)).
-The default value is `U` to toggle the automation overlay.
-
-You can separate bindings with commas (like `U, LeftShoulder` for either one), and set multi-key
-bindings with plus signs (like `LeftShift + U`).
-
-  </td>
-</tr>
-<tr>
-  <td><code>ConnectorNames</code></td>
-  <td>
-
-A list of placed item names to treat as [connectors](#connectors) which connect adjacent machines
-together. You must specify the exact _English_ names for any in-game items to use. For example:
-
-```js
-"ConnectorNames": [
-   "Wood Path",
-   "Crystal Path"
-]
-```
-
-Contains `Workbench` by default.
-
-  </td>
-</tr>
-<tr>
-  <td><code>MachineOverrides</code></td>
-  <td>
-
-The configuration to override for specific machine IDs. See [_per-machine settings_](#per-machine-settings)
-for more info.
-
-  </td>
-</tr>
-<tr>
-  <td><code>CollectTreeMoss</code></td>
-  <td>
-
-Whether to collect moss on trees. Default true.
-
-For example, you may want to disable this to keep moss on trees to boost the quality of mushrooms
-from [mushroom logs](https://stardewvalleywiki.com/Mushroom_Log).
-
-  </td>
-</tr>
-<tr>
-  <td><code>JunimoHutBehaviorForGems</code><br /><code>JunimoHutBehaviorForFertilizer</code><br /><code>JunimoHutBehaviorForSeeds</code></td>
-  <td>
-
-How [Junimo huts](https://stardewvalleywiki.com/Junimo_Hut) should automate the given item types.
-
-The possible values are:
-
-value | result
------ | ------
-`Ignore` | Ignore items of this type, so they're not transferred either way.
-`MoveIntoChests` | Move any items of this type from the Junimo Hut into connected chests.
-`MoveIntoHut` | Move any items of this type from connected chests into the Junimo Hut.
-`AutoDetect` | <p>Apply the default logic based on the installed mods.</p><p>For gems, this is equivalent to `Ignore` (so you can add gems manually to change the color of Junimos).</p><p>For fertilizer and seeds, this is equivalent to `Ignore` if [Better Junimos](https://www.nexusmods.com/stardewvalley/mods/2221) is installed (so you can replant seeds/fertilizer), else `MoveIntoChests`.</p>
-  </td>
-</tr>
-<tr>
-  <td><code>WarnForMissingBridgeMod</code></td>
-  <td>
-
-Whether to log a warning if you install a custom-machine mod that requires a separate compatibility
-patch which isn't installed.
-
-  </td>
-</tr>
-</table>
-
 ## Compatibility
-Automate is compatible with Stardew Valley 1.5.6+ on Linux/Mac/Windows, both single-player and
+Automate is compatible with Stardew Valley 1.6+ on Linux/macOS/Windows, both single-player and
 multiplayer. In multiplayer mode, only the main player can automate machines; other players can
 keep it installed and use the overlay, their mod just won't automate anything.
 
 Pairs well with...
 
-* [Better Junimos﻿](https://www.nexusmods.com/stardewvalley/mods/2221) adds more crop automation
-  (like replanting) and other improvements. Automate will automaticall ignore seeds/fertilizer in
-  Junimo huts if it's installed.
-* [Deluxe Grabber Redux﻿](https://www.nexusmods.com/stardewvalley/mods/7920) makes auto-grabbers
-  collect nearby animal products, forage, crops, and indoor pot crops too.
+* [Better Junimos﻿](https://smapi.io/mods/#Better_Junimos) adds more crop automation (like
+  replanting) and other improvements. Automate will automaticall ignore seeds/fertilizer in Junimo
+  huts if it's installed.
+* [Deluxe Grabber Redux﻿](https://smapi.io/mods/#Deluxe_Grabber_Redux) makes auto-grabbers collect
+  nearby animal products, forage, crops, and indoor pot crops too.
+* [Filtered Chest Hoppers](https://www.nexusmods.com/stardewvalley/mods/21730) enables advanced
+  [machine pipelines](#machine-pipelines).
 * [Non-Destructive NPCs﻿](https://www.nexusmods.com/stardewvalley/mods/5176) prevents NPCs from
   destroying chests and machines.
+* [Workbench Helper](https://www.nexusmods.com/stardewvalley/mods/21294) lets you chain chests to
+  workbenches for manual crafting.
 
 ## Troubleshooting
 ### In-game overlay
@@ -508,19 +381,11 @@ tested with up to [630 machines in one group](https://community.playstarbound.co
 (which worked fine). The most I've seen is [21,134 automated machines in one save](https://smapi.io/log/24Q970ju).
 
 ### Does Automate support custom machines?
-Yes, but some custom machines need a separate mod which tells Automate how they work:
-
-* For Custom Farming Redux machines, install [CFAutomate](https://www.nexusmods.com/stardewvalley/mods/991?tab=files) 
-  from its optional downloads.
-* For Producer Framework Mod machines (including PPJA Artisan Valley), install [PFMAutomate](https://www.nexusmods.com/stardewvalley/mods/5038).
-
-(For mod authors: you can [use the Automate API](https://github.com/Pathoschild/StardewMods/blob/develop/Automate/technical.md#extensibility-for-modders)
-to add custom machines to Automate.)
+Yes! Most custom machines will work out of the box with Automate. For machines added through
+Producer Framework Mod, install install [PFMAutomate](https://www.nexusmods.com/stardewvalley/mods/5038).
 
 ### How do I use path connectors?
-Path connectors aren't enabled by default. See the "Enable path connectors (config.json)" download
-on [the mod page's Files tab](https://www.nexusmods.com/stardewvalley/mods/1063/?tab=files) which
-enables some for you, or see [_connectors_ above](#connectors) for more info.
+Path connectors aren't enabled by default. You can [enable them in the settings](#configure).
 
 ### In multiplayer, who gets XP and whose professions apply?
 A few machines give XP, update player stats, or check player skills based on the player who uses
@@ -546,15 +411,7 @@ and fish ponds.</small>
 Yep; see _[in-game settings](#in-game-settings)_.
 
 ### Can I disable the shipping bin automation?
-Yep, you can disable it using [per-machine settings](#per-machine-settings). More specifically,
-replace the `"MachineOverrides": {}` line in to your `config.json` file with this:
-```js
-"MachineOverrides": {
-    "ShippingBin": {
-        "Enabled": false
-    }
-}
-```
+Yep, you can disable it using [per-machine settings](#per-machine-settings).
 
 ### Why did my chests/machines disappear?
 Some common reasons:
@@ -581,3 +438,6 @@ other changes. For more info, see the [technical documentation](technical.md).
 * [Technical documentation](technical.md)
 * [Release notes](release-notes.md)
 * [Nexus mod](https://www.nexusmods.com/stardewvalley/mods/1063)
+
+[Chests Anywhere]: https://www.nexusmods.com/stardewvalley/mods/518
+[Generic Mod Config Menu]: https://www.nexusmods.com/stardewvalley/mods/5098

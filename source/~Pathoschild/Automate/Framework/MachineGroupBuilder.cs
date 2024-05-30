@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Pathoschild.Stardew.Common;
+using StardewModdingAPI;
 
 namespace Pathoschild.Stardew.Automate.Framework
 {
@@ -24,6 +25,9 @@ namespace Pathoschild.Stardew.Automate.Framework
         *********/
         /// <summary>The location containing the group, as formatted by <see cref="MachineGroupFactory.GetLocationKey"/>.</summary>
         private readonly string LocationKey;
+
+        /// <summary>Encapsulates monitoring and logging.</summary>
+        private readonly IMonitor Monitor;
 
         /// <summary>The machines in the group.</summary>
         private readonly HashSet<IMachine> Machines = new();
@@ -55,11 +59,13 @@ namespace Pathoschild.Stardew.Automate.Framework
         /// <param name="locationKey">The location containing the group, as formatted by <see cref="MachineGroupFactory.GetLocationKey"/>.</param>
         /// <param name="sortMachines">Sort machines by priority.</param>
         /// <param name="buildStorage">Build a storage manager for the given containers.</param>
-        public MachineGroupBuilder(string locationKey, Func<IEnumerable<IMachine>, IEnumerable<IMachine>> sortMachines, Func<IContainer[], StorageManager> buildStorage)
+        /// <param name="monitor">Encapsulates monitoring and logging.</param>
+        public MachineGroupBuilder(string locationKey, Func<IEnumerable<IMachine>, IEnumerable<IMachine>> sortMachines, Func<IContainer[], StorageManager> buildStorage, IMonitor monitor)
         {
             this.LocationKey = locationKey;
             this.SortMachines = sortMachines;
             this.BuildStorage = buildStorage;
+            this.Monitor = monitor;
         }
 
         /// <summary>Add a machine to the group.</summary>
@@ -97,7 +103,7 @@ namespace Pathoschild.Stardew.Automate.Framework
         public IMachineGroup Build()
         {
             var machines = this.SortMachines(this.Machines.Select(p => new MachineWrapper(p)));
-            return new MachineGroup(this.LocationKey, machines, this.Containers, this.Tiles, this.BuildStorage);
+            return new MachineGroup(this.LocationKey, machines, this.Containers, this.Tiles, this.BuildStorage, this.Monitor);
         }
 
         /// <summary>Clear the saved data.</summary>

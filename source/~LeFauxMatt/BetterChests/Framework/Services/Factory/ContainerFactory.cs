@@ -15,18 +15,16 @@ using Microsoft.Xna.Framework;
 using StardewMods.BetterChests.Framework.Interfaces;
 using StardewMods.BetterChests.Framework.Models.Containers;
 using StardewMods.BetterChests.Framework.Models.StorageOptions;
-using StardewMods.Common.Services;
-using StardewMods.Common.Services.Integrations.BetterChests.Interfaces;
-using StardewMods.Common.Services.Integrations.FauxCore;
+using StardewMods.Common.Models.Data;
+using StardewMods.Common.Services.Integrations.BetterChests;
 using StardewValley.Buildings;
-using StardewValley.GameData.BigCraftables;
-using StardewValley.GameData.Buildings;
-using StardewValley.GameData.Locations;
+using StardewValley.Characters;
 using StardewValley.Menus;
 using StardewValley.Objects;
+using StardewValley.TokenizableStrings;
 
 /// <summary>Provides access to all known storages for other services.</summary>
-internal sealed class ContainerFactory : BaseService
+internal sealed class ContainerFactory
 {
     private readonly ConditionalWeakTable<object, IStorageContainer> cachedContainers = new();
     private readonly IModConfig modConfig;
@@ -34,69 +32,12 @@ internal sealed class ContainerFactory : BaseService
     private readonly Dictionary<string, IStorageOptions> storageOptions = new();
 
     /// <summary>Initializes a new instance of the <see cref="ContainerFactory" /> class.</summary>
-    /// <param name="log">Dependency used for logging debug information to the console.</param>
-    /// <param name="manifest">Dependency for accessing mod manifest.</param>
     /// <param name="modConfig">Dependency used for accessing config data.</param>
     /// <param name="proxyChestFactory">Dependency used for creating virtualized chests.</param>
-    public ContainerFactory(ILog log, IManifest manifest, IModConfig modConfig, ProxyChestFactory proxyChestFactory)
-        : base(log, manifest)
+    public ContainerFactory(IModConfig modConfig, ProxyChestFactory proxyChestFactory)
     {
         this.modConfig = modConfig;
         this.proxyChestFactory = proxyChestFactory;
-    }
-
-    /// <summary>Retrieves the storage options for a given item.</summary>
-    /// <param name="item">The item for which to retrieve the storage options.</param>
-    /// <returns>The storage options for the given item.</returns>
-    public IStorageOptions GetStorageOptions(Item item)
-    {
-        if (this.storageOptions.TryGetValue(item.QualifiedItemId, out var storageOption))
-        {
-            return storageOption;
-        }
-
-        storageOption = new BigCraftableStorageOptions(() => this.modConfig.DefaultOptions, GetData);
-        this.storageOptions.Add(item.QualifiedItemId, storageOption);
-        return storageOption;
-
-        BigCraftableData GetData() =>
-            Game1.bigCraftableData.TryGetValue(item.ItemId, out var data) ? data : new BigCraftableData();
-    }
-
-    /// <summary>Retrieves the storage options for a given location.</summary>
-    /// <param name="location">The location for which to retrieve the storage options.</param>
-    /// <returns>The storage options for the given item.</returns>
-    public IStorageOptions GetStorageOptions(GameLocation location)
-    {
-        if (this.storageOptions.TryGetValue($"(L){location.Name}", out var storageOption))
-        {
-            return storageOption;
-        }
-
-        storageOption = new LocationStorageOptions(() => this.modConfig.DefaultOptions, GetData);
-        this.storageOptions.Add($"(L){location.Name}", storageOption);
-        return storageOption;
-
-        LocationData GetData() =>
-            DataLoader.Locations(Game1.content).TryGetValue(location.Name, out var data) ? data : new LocationData();
-    }
-
-    /// <summary>Retrieves the storage options for a given building.</summary>
-    /// <param name="building">The building for which to retrieve the storage options.</param>
-    /// <returns>The storage options for the given item.</returns>
-    public IStorageOptions GetStorageOptions(Building building)
-    {
-        if (this.storageOptions.TryGetValue($"(B){building.buildingType.Value}", out var storageOption))
-        {
-            return storageOption;
-        }
-
-        storageOption = new BuildingStorageOptions(() => this.modConfig.DefaultOptions, GetData);
-        this.storageOptions.Add($"(B){building.buildingType.Value}", storageOption);
-        return storageOption;
-
-        BuildingData GetData() =>
-            Game1.buildingData.TryGetValue(building.buildingType.Value, out var data) ? data : new BuildingData();
     }
 
     /// <summary>Retrieves all containers that match the optional predicate.</summary>
@@ -133,15 +74,15 @@ internal sealed class ContainerFactory : BaseService
     {
         foreach (var item in parentContainer.Items)
         {
-            if (item is null || !this.TryGetAny(item, out var childContainer))
+            if (item is not SObject @object || !this.TryGetAny(@object, out var childContainer))
             {
                 continue;
             }
 
-            var container = new ChildContainer(parentContainer, childContainer);
-            if (predicate is null || predicate(container))
+            childContainer.Parent = parentContainer;
+            if (predicate is null || predicate(childContainer))
             {
-                yield return container;
+                yield return childContainer;
             }
         }
     }
@@ -163,10 +104,10 @@ internal sealed class ContainerFactory : BaseService
             }
         }
 
-        // Search for containers from placed objects
-        foreach (var obj in location.Objects.Values)
+        // Search for containers from buildings
+        foreach (var building in location.buildings)
         {
-            if (!this.TryGetAny(obj, out container))
+            if (!this.TryGetOne(building, out container))
             {
                 continue;
             }
@@ -177,10 +118,38 @@ internal sealed class ContainerFactory : BaseService
             }
         }
 
-        // Search for containers from buildings
-        foreach (var building in location.buildings)
+        // Search for containers from NPCs
+        foreach (var npc in location.characters.OfType<NPC>())
         {
-            if (!this.TryGetOne(building, out container))
+            if (!this.TryGetOne(npc, out container))
+            {
+                continue;
+            }
+
+            if (predicate is null || predicate(container))
+            {
+                yield return container;
+            }
+        }
+
+        // Search for containers from placed objects
+        foreach (var (pos, obj) in location.Objects.Pairs)
+        {
+            if (pos.X <= 0 || pos.Y <= 0 || !this.TryGetAny(obj, out container))
+            {
+                continue;
+            }
+
+            if (predicate is null || predicate(container))
+            {
+                yield return container;
+            }
+        }
+
+        // Search for containers from placed furniture
+        foreach (var furniture in location.furniture.OfType<StorageFurniture>())
+        {
+            if (!this.TryGetAny(furniture, out container))
             {
                 continue;
             }
@@ -212,94 +181,143 @@ internal sealed class ContainerFactory : BaseService
         // Search for containers from farmer inventory
         foreach (var item in farmer.Items)
         {
-            if (item is null || !this.TryGetAny(item, out var childContainer))
+            if (item is not SObject @object || !this.TryGetAny(@object, out var childContainer))
             {
                 continue;
             }
 
-            var container = new ChildContainer(farmerContainer, childContainer);
-            if (predicate is null || predicate(container))
+            childContainer.Parent = farmerContainer;
+            if (predicate is null || predicate(childContainer))
             {
-                yield return container;
+                yield return childContainer;
             }
         }
     }
 
     /// <summary>Tries to retrieve a container from the active menu.</summary>
+    /// <param name="menu">The menu to retrieve a container from.</param>
     /// <param name="container">When this method returns, contains the container if found; otherwise, null.</param>
-    /// <returns>true if a container is found; otherwise, false.</returns>
-    public bool TryGetOne([NotNullWhen(true)] out IStorageContainer? container)
+    /// <returns><c>true</c> if a container is found; otherwise, <c>false</c>.</returns>
+    public bool TryGetOne(IClickableMenu? menu, [NotNullWhen(true)] out IStorageContainer? container)
     {
-        if (Game1.activeClickableMenu is not ItemGrabMenu itemGrabMenu)
+        // Get the actual menu
+        var actualMenu = menu switch
         {
-            container = null;
-            return false;
-        }
+            { } menuWithChild when menuWithChild.GetChildMenu() is
+                { } childMenu => childMenu,
+            GameMenu gameMenu => gameMenu.GetCurrentPage(),
+            not null => menu,
+            _ => Game1.activeClickableMenu,
+        };
 
-        switch (itemGrabMenu.context)
+        // Get a default actual inventory for the menu
+        var actualInventory = actualMenu switch
         {
-            case Chest chest:
-                if (chest == Game1.player.ActiveObject
-                    && this.TryGetOne(Game1.player, Game1.player.CurrentToolIndex, out container))
-                {
-                    return true;
-                }
-
-                if (chest.Location is not null && this.TryGetOne(chest.Location, chest.TileLocation, out container))
-                {
-                    return true;
-                }
-
-                break;
-
-            case SObject
+            InventoryMenu inventoryMenu => inventoryMenu.actualInventory,
+            ItemGrabMenu
             {
-                heldObject.Value: Chest,
-            } obj:
-                if (obj.Location is not null && this.TryGetOne(obj.Location, obj.TileLocation, out container))
+                ItemsToGrabMenu:
+                { } itemsToGrabMenu,
+                showReceivingMenu: true,
+            } => itemsToGrabMenu.actualInventory,
+            InventoryPage
+            {
+                inventory:
+                { } inventory,
+            } => inventory.actualInventory,
+            ShopMenu
+            {
+                source: StorageFurniture furniture,
+            } => furniture.heldItems,
+            ShopMenu
+            {
+                inventory:
+                { } inventory,
+            } => inventory.actualInventory,
+            _ => null,
+        };
+
+        // Get the context for the menu
+        var context = Game1.activeClickableMenu switch
+        {
+            ItemGrabMenu itemGrabMenu => itemGrabMenu.context,
+            ShopMenu shopMenu => shopMenu.source,
+            GameMenu => Game1.player,
+            _ => null,
+        };
+
+        // Find container based on the context
+        container = context switch
+        {
+            // The same storage container
+            IStorageContainer contextContainer when actualInventory is null
+                || actualInventory.Equals(contextContainer.Items) => contextContainer,
+
+            // Farmer backpack container
+            not null when actualInventory is not null
+                && actualInventory.Equals(Game1.player.Items)
+                && this.TryGetOne(Game1.player, out var farmerContainer) => farmerContainer,
+
+            // Placed chest container
+            Chest chest when actualInventory is not null
+                && actualInventory.Equals(chest.GetItemsForPlayer())
+                && chest.Location is not null
+                && this.TryGetOne(chest.Location, chest.TileLocation, out var placedContainer) => placedContainer,
+
+            // Held chest container
+            Chest chest when chest == Game1.player.ActiveObject
+                && actualInventory is not null
+                && this.TryGetOne(Game1.player, Game1.player.CurrentToolIndex, out var heldContainer)
+                && actualInventory.Equals(heldContainer.Items) => heldContainer,
+
+            // Placed object container
+            SObject
                 {
-                    return true;
-                }
+                    heldObject.Value: Chest heldChest,
+                } @object when actualInventory is not null
+                && actualInventory.Equals(heldChest.GetItemsForPlayer())
+                && @object.Location is not null
+                && this.TryGetOne(@object.Location, @object.TileLocation, out var objectContainer) => objectContainer,
 
-                break;
+            // Proxy container
+            SObject @object when @object == Game1.player.ActiveObject
+                && actualInventory is not null
+                && this.TryGetOne(Game1.player, Game1.player.CurrentToolIndex, out var proxyContainer)
+                && actualInventory.Equals(proxyContainer.Items) => proxyContainer,
 
-            case SObject obj:
-                if (obj == Game1.player.ActiveObject
-                    && this.TryGetOne(Game1.player, Game1.player.CurrentToolIndex, out container))
-                {
-                    return true;
-                }
+            // Building container
+            Building building when this.TryGetOne(building, out var buildingContainer)
+                && (actualInventory is null || actualInventory.Equals(buildingContainer.Items)) => buildingContainer,
 
-                break;
+            // Storage furniture container
+            StorageFurniture furniture when actualInventory is not null
+                && furniture.heldItems.Equals(actualInventory)
+                && this.TryGetOne(furniture, out var furnitureContainer) => furnitureContainer,
 
-            case Building building:
-                if (this.TryGetOne(building, out container))
-                {
-                    return true;
-                }
+            // Return the shipping bin (Chests Anywhere)
+            Farm farm when this.TryGetOne(farm.getBuildingByType("Shipping Bin"), out var shippingContainer)
+                && (actualInventory is null || actualInventory.Equals(shippingContainer.Items)) => shippingContainer,
 
-                break;
+            // Return the saddle bag (Horse Overhaul)
+            Stable stable when actualInventory is not null
+                && this.TryGetOne(stable.getStableHorse(), out var stableContainer)
+                && actualInventory.Equals(stableContainer.Items) => stableContainer,
+            Horse horse when actualInventory is not null
+                && this.TryGetOne(horse, out var horseContainer)
+                && actualInventory.Equals(horseContainer.Items) => horseContainer,
 
-            // Chests Anywhere
-            case Farm farm:
-                var shippingBin = farm.getBuildingByType("Shipping Bin");
-                if (shippingBin is not null && this.TryGetOne(shippingBin, out container))
-                {
-                    return true;
-                }
+            // Unknown or unsupported
+            _ => null,
+        };
 
-                break;
-        }
-
-        container = null;
-        return false;
+        return container is not null;
     }
 
     /// <summary>Tries to get a container from the specified farmer.</summary>
     /// <param name="farmer">The player whose container will be retrieved.</param>
     /// <param name="index">The index of the player's inventory. Defaults to the active item.</param>
     /// <param name="container">When this method returns, contains the container if found; otherwise, null.</param>
-    /// <returns>true if a container is found; otherwise, false.</returns>
+    /// <returns><c>true</c> if a container is found; otherwise, <c>false</c>.</returns>
     public bool TryGetOne(Farmer farmer, int index, [NotNullWhen(true)] out IStorageContainer? container)
     {
         var item = farmer.Items.ElementAtOrDefault(index);
@@ -314,13 +332,15 @@ internal sealed class ContainerFactory : BaseService
             return true;
         }
 
-        if (!this.TryGetAny(item, out var childContainer) || !this.TryGetOne(farmer, out var farmerContainer))
+        if (item is not SObject @object
+            || !this.TryGetAny(@object, out container)
+            || !this.TryGetOne(farmer, out var farmerContainer))
         {
             container = null;
             return false;
         }
 
-        container = new ChildContainer(farmerContainer, childContainer);
+        container.Parent = farmerContainer;
         this.cachedContainers.AddOrUpdate(item, container);
         return true;
     }
@@ -328,7 +348,7 @@ internal sealed class ContainerFactory : BaseService
     /// <summary>Tries to get a container from the specified farmer.</summary>
     /// <param name="farmer">The farmer to get a container from.</param>
     /// <param name="farmerContainer">When this method returns, contains the container if found; otherwise, null.</param>
-    /// <returns>true if a container is found; otherwise, false.</returns>
+    /// <returns><c>true</c> if a container is found; otherwise, <c>false</c>.</returns>
     public bool TryGetOne(Farmer farmer, [NotNullWhen(true)] out IStorageContainer? farmerContainer)
     {
         if (this.cachedContainers.TryGetValue(farmer, out farmerContainer))
@@ -336,8 +356,26 @@ internal sealed class ContainerFactory : BaseService
             return true;
         }
 
-        var storageType = new BackpackStorageOptions(farmer);
-        farmerContainer = new FarmerContainer(storageType, farmer);
+        // Create the farmer container
+        farmerContainer = new FarmerContainer(farmer);
+
+        // Add type options for the backpack
+        if (this.modConfig.StorageOptions.GetValueOrDefault("Characters")?.GetValueOrDefault("Farmer") is not null)
+        {
+            var backpackOptions = new ConfigStorageOptions(
+                () => this.modConfig.StorageOptions["Characters"]["Farmer"],
+                I18n.Storage_Backpack_Tooltip,
+                I18n.Storage_Backpack_Name);
+
+            farmerContainer.AddOptions(StorageOption.Type, backpackOptions);
+        }
+
+        // Add mod options for the farmer
+        var farmerModel = new ModDataModel(farmer.modData);
+        var farmerOptions = new DictionaryStorageOptions(farmerModel);
+        farmerContainer.AddOptions(StorageOption.Individual, farmerOptions);
+
+        // Cache container to instance
         this.cachedContainers.AddOrUpdate(farmer, farmerContainer);
         return true;
     }
@@ -345,7 +383,7 @@ internal sealed class ContainerFactory : BaseService
     /// <summary>Tries to get a container from the specified building.</summary>
     /// <param name="building">The building to get a container from.</param>
     /// <param name="buildingContainer">When this method returns, contains the container if found; otherwise, null.</param>
-    /// <returns>true if a container is found; otherwise, false.</returns>
+    /// <returns><c>true</c> if a container is found; otherwise, <c>false</c>.</returns>
     public bool TryGetOne(Building building, [NotNullWhen(true)] out IStorageContainer? buildingContainer)
     {
         if (this.cachedContainers.TryGetValue(building, out buildingContainer))
@@ -353,47 +391,195 @@ internal sealed class ContainerFactory : BaseService
             return true;
         }
 
-        var storageType = this.GetStorageOptions(building);
-        if (building is ShippingBin shippingBin)
+        // Create the building container
+        switch (building)
         {
-            buildingContainer = new BuildingContainer(storageType, shippingBin);
-            this.cachedContainers.AddOrUpdate(shippingBin, buildingContainer);
-            return true;
+            case ShippingBin shippingBin:
+                buildingContainer = new BuildingContainer(shippingBin);
+                break;
+
+            case not null when building.GetBuildingChest("Output") is
+                { } chest:
+                // Check if output chest has already been cached
+                if (this.cachedContainers.TryGetValue(chest, out buildingContainer))
+                {
+                    this.cachedContainers.AddOrUpdate(building, buildingContainer);
+                    return true;
+                }
+
+                buildingContainer = new BuildingContainer(building, chest);
+
+                // Cache building chest to the building storage container
+                this.cachedContainers.AddOrUpdate(chest, buildingContainer);
+                break;
+
+            default: return false;
         }
 
-        var chest = building.GetBuildingChest("Output");
-        if (chest is null)
+        // Add global options to the building container
+        buildingContainer.AddOptions(StorageOption.Global, this.modConfig.DefaultOptions);
+
+        // Add mod options to the building container
+        var buildingModel = new ModDataModel(building.modData);
+        var buildingOptions = new DictionaryStorageOptions(buildingModel);
+        buildingContainer.AddOptions(StorageOption.Individual, buildingOptions);
+
+        // Add type options to the building container
+        if (!this.storageOptions.TryGetValue($"(B){building.buildingType.Value}", out var typeOptions))
         {
-            return false;
+            var typeModel = new DictionaryModel(GetCustomFields);
+            typeOptions = new DictionaryStorageOptions(typeModel, GetDescription, GetDisplayName);
+            this.storageOptions.Add($"(B){building.buildingType.Value}", typeOptions);
         }
 
-        if (this.cachedContainers.TryGetValue(chest, out buildingContainer))
-        {
-            return true;
-        }
+        buildingContainer.AddOptions(StorageOption.Type, typeOptions);
 
-        buildingContainer = new BuildingContainer(storageType, building, chest);
+        // Cache container to instance
         this.cachedContainers.AddOrUpdate(building, buildingContainer);
-        this.cachedContainers.AddOrUpdate(chest, buildingContainer);
         return true;
+
+        Dictionary<string, string>? GetCustomFields() =>
+            Game1.buildingData.TryGetValue(building.buildingType.Value, out var buildingData)
+                ? buildingData.CustomFields
+                : null;
+
+        string GetDescription() =>
+            Game1.buildingData.TryGetValue(building.buildingType.Value, out var buildingData)
+                ? TokenParser.ParseText(buildingData.Description)
+                : I18n.Storage_Other_Name();
+
+        string GetDisplayName() =>
+            Game1.buildingData.TryGetValue(building.buildingType.Value, out var buildingData)
+                ? TokenParser.ParseText(buildingData.Name)
+                : I18n.Storage_Other_Tooltip();
+    }
+
+    /// <summary>Tries to get a container from the specified NPC.</summary>
+    /// <param name="npc">The NPC to get a container from.</param>
+    /// <param name="npcContainer">When this method returns, contains the container if found; otherwise, null.</param>
+    /// <returns><c>true</c> if a container is found; otherwise, <c>false</c>.</returns>
+    public bool TryGetOne(NPC npc, [NotNullWhen(true)] out IStorageContainer? npcContainer)
+    {
+        if (this.cachedContainers.TryGetValue(npc, out npcContainer))
+        {
+            return true;
+        }
+
+        switch (npc)
+        {
+            // Horse Overhaul
+            case Horse horse:
+                var stable = horse.TryFindStable();
+                if (stable is null
+                    || !stable.modData.TryGetValue("Goldenrevolver.HorseOverhaul/stableID", out var stableData)
+                    || string.IsNullOrWhiteSpace(stableData)
+                    || !int.TryParse(stableData, out var stableId)
+                    || !Game1.getFarm().Objects.TryGetValue(new Vector2(stableId, 0), out var saddleBag)
+                    || saddleBag is not Chest saddleBagChest)
+                {
+                    return false;
+                }
+
+                // Check if saddle bag chest has already been cached
+                if (this.cachedContainers.TryGetValue(saddleBagChest, out npcContainer))
+                {
+                    this.cachedContainers.AddOrUpdate(npc, npcContainer);
+                    return true;
+                }
+
+                // Create the horse container
+                npcContainer = new NpcContainer(horse, saddleBagChest);
+
+                // Add global options to the horse container
+                npcContainer.AddOptions(StorageOption.Global, this.modConfig.DefaultOptions);
+
+                // Add mod options to the horse container
+                var npcModel = new ModDataModel(horse.modData);
+                var npcOptions = new DictionaryStorageOptions(npcModel);
+                npcContainer.AddOptions(StorageOption.Individual, npcOptions);
+
+                // Add type options to the horse container
+                if (!this.storageOptions.TryGetValue($"(B){stable.buildingType.Value}", out var typeOptions))
+                {
+                    var typeModel = new DictionaryModel(GetCustomFields);
+                    typeOptions = new DictionaryStorageOptions(
+                        typeModel,
+                        I18n.Storage_Saddlebag_Tooltip,
+                        I18n.Storage_Saddlebag_Name);
+
+                    this.storageOptions.Add($"(B){stable.buildingType.Value}", typeOptions);
+                }
+
+                npcContainer.AddOptions(StorageOption.Type, typeOptions);
+
+                // Cache container to instance
+                this.cachedContainers.AddOrUpdate(npc, npcContainer);
+                this.cachedContainers.AddOrUpdate(saddleBagChest, npcContainer);
+                return true;
+
+                Dictionary<string, string>? GetCustomFields() =>
+                    Game1.buildingData.TryGetValue(stable.buildingType.Value, out var buildingData)
+                        ? buildingData.CustomFields
+                        : null;
+
+            default: return false;
+        }
     }
 
     /// <summary>Tries to get a container from the specified location and position.</summary>
     /// <param name="location">The location to get a container from.</param>
     /// <param name="pos">The position to get a the container from.</param>
     /// <param name="container">When this method returns, contains the container if found; otherwise, null.</param>
-    /// <returns>true if a container is found; otherwise, false.</returns>
+    /// <returns><c>true</c> if a container is found; otherwise, <c>false</c>.</returns>
     public bool TryGetOne(GameLocation location, Vector2 pos, [NotNullWhen(true)] out IStorageContainer? container)
     {
+        // Try getting fridge container
         if (pos.Equals(Vector2.Zero) && this.TryGetOne(location, out container))
         {
             return true;
         }
 
-        // Container is a placed object
-        if (location.Objects.TryGetValue(pos, out var obj) && this.TryGetAny(obj, out container))
+        // Create intersection tile
+        var bounds = new Rectangle(
+            (int)(pos.X * Game1.tileSize),
+            (int)(pos.Y * Game1.tileSize),
+            Game1.tileSize,
+            Game1.tileSize);
+
+        // Get container if it's a placed object
+        foreach (var @object in location.Objects.Values)
         {
-            return true;
+            if (@object.GetBoundingBox().Intersects(bounds) && this.TryGetAny(@object, out container))
+            {
+                return true;
+            }
+        }
+
+        // Get container if it's a building
+        foreach (var building in location.buildings)
+        {
+            if (building.GetBoundingBox().Intersects(bounds) && this.TryGetOne(building, out container))
+            {
+                return true;
+            }
+        }
+
+        // Get container if it's a storage furniture
+        foreach (var furniture in location.furniture.OfType<StorageFurniture>())
+        {
+            if (furniture.IntersectsForCollision(bounds) && this.TryGetAny(furniture, out container))
+            {
+                return true;
+            }
+        }
+
+        // Get container if it's an npc
+        foreach (var npc in location.characters.OfType<NPC>())
+        {
+            if (npc.GetBoundingBox().Intersects(bounds) && this.TryGetOne(npc, out container))
+            {
+                return true;
+            }
         }
 
         container = null;
@@ -403,7 +589,7 @@ internal sealed class ContainerFactory : BaseService
     /// <summary>Tries to get a container from the specified location.</summary>
     /// <param name="location">The location to get a container from.</param>
     /// <param name="locationContainer">When this method returns, contains the container if found; otherwise, null.</param>
-    /// <returns>true if a container is found; otherwise, false.</returns>
+    /// <returns><c>true</c> if a container is found; otherwise, <c>false</c>.</returns>
     public bool TryGetOne(GameLocation location, [NotNullWhen(true)] out IStorageContainer? locationContainer)
     {
         if (this.cachedContainers.TryGetValue(location, out locationContainer))
@@ -411,28 +597,58 @@ internal sealed class ContainerFactory : BaseService
             return true;
         }
 
+        // Only return containers for locations that have a fridge
         if (location.GetFridge() is not
             { } fridge)
         {
             return false;
         }
 
+        // Check if fridge has already been cached
         if (this.cachedContainers.TryGetValue(fridge, out locationContainer))
         {
+            this.cachedContainers.AddOrUpdate(location, locationContainer);
             return true;
         }
 
-        var storageType = this.GetStorageOptions(location);
-        locationContainer = new FridgeContainer(storageType, location, fridge);
+        // Create the fridge container
+        locationContainer = new FridgeContainer(location, fridge);
+
+        // Add global options to the fridge container
+        locationContainer.AddOptions(StorageOption.Global, this.modConfig.DefaultOptions);
+
+        // Add mod options to the fridge container
+        var buildingModel = new ModDataModel(location.modData);
+        var buildingOptions = new DictionaryStorageOptions(buildingModel);
+        locationContainer.AddOptions(StorageOption.Individual, buildingOptions);
+
+        // Add type options to the fridge container
+        if (!this.storageOptions.TryGetValue($"(L){location.Name}", out var typeOptions))
+        {
+            var typeModel = new DictionaryModel(GetCustomFields);
+            typeOptions = new DictionaryStorageOptions(
+                typeModel,
+                I18n.Storage_Fridge_Tooltip,
+                I18n.Storage_Fridge_Name);
+
+            this.storageOptions.Add($"(L){location.Name}", typeOptions);
+        }
+
+        locationContainer.AddOptions(StorageOption.Type, typeOptions);
+
+        // Cache container to instance
         this.cachedContainers.AddOrUpdate(fridge, locationContainer);
         this.cachedContainers.AddOrUpdate(location, locationContainer);
         return true;
+
+        Dictionary<string, string>? GetCustomFields() =>
+            DataLoader.Locations(Game1.content).GetValueOrDefault(location.Name)?.CustomFields;
     }
 
     /// <summary>Tries to get a container from the specified object.</summary>
     /// <param name="item">The item to get a container from.</param>
     /// <param name="itemContainer">When this method returns, contains the container if found; otherwise, null.</param>
-    /// <returns>true if a container is found; otherwise, false.</returns>
+    /// <returns><c>true</c> if a container is found; otherwise, <c>false</c>.</returns>
     public bool TryGetOne(Item item, [NotNullWhen(true)] out IStorageContainer? itemContainer)
     {
         if (this.cachedContainers.TryGetValue(item, out itemContainer))
@@ -440,8 +656,24 @@ internal sealed class ContainerFactory : BaseService
             return true;
         }
 
-        itemContainer = this.GetAll(Predicate).FirstOrDefault();
-        return itemContainer is not null;
+        switch (item)
+        {
+            // Try finding container based on location
+            case SObject
+            {
+                Location: not null,
+            } @object when this.TryGetOne(@object.Location, @object.TileLocation, out itemContainer):
+                this.cachedContainers.AddOrUpdate(item, itemContainer);
+                return true;
+
+            // Do an exhaustive search for the container
+            case not null when this.GetAll(Predicate).FirstOrDefault() is
+                { } foundContainer:
+                itemContainer = foundContainer;
+                return true;
+
+            default: return false;
+        }
 
         bool Predicate(IStorageContainer container) =>
             container switch
@@ -452,22 +684,22 @@ internal sealed class ContainerFactory : BaseService
             };
     }
 
-    private IEnumerable<IStorageContainer> GetAllFromPlayers(
+    private IEnumerable<IStorageContainer> GetAllFromContainers(
         ISet<IStorageContainer> foundContainers,
         Queue<IStorageContainer> containerQueue,
         Func<IStorageContainer, bool>? predicate = default)
     {
-        foreach (var farmer in Game1.getAllFarmers())
+        while (containerQueue.TryDequeue(out var container))
         {
-            foreach (var container in this.GetAll(farmer, predicate))
+            foreach (var childContainer in this.GetAll(container, predicate))
             {
-                if (!foundContainers.Add(container))
+                if (!foundContainers.Add(childContainer))
                 {
                     continue;
                 }
 
-                containerQueue.Enqueue(container);
-                yield return container;
+                containerQueue.Enqueue(childContainer);
+                yield return childContainer;
             }
         }
     }
@@ -480,9 +712,14 @@ internal sealed class ContainerFactory : BaseService
         var foundLocations = new HashSet<GameLocation>();
         var locationQueue = new Queue<GameLocation>();
 
+        locationQueue.Enqueue(Game1.currentLocation);
+
         foreach (var location in Game1.locations)
         {
-            locationQueue.Enqueue(location);
+            if (!location.Equals(Game1.currentLocation))
+            {
+                locationQueue.Enqueue(location);
+            }
         }
 
         while (locationQueue.TryDequeue(out var location))
@@ -513,65 +750,151 @@ internal sealed class ContainerFactory : BaseService
         }
     }
 
-    private IEnumerable<IStorageContainer> GetAllFromContainers(
+    private IEnumerable<IStorageContainer> GetAllFromPlayers(
         ISet<IStorageContainer> foundContainers,
         Queue<IStorageContainer> containerQueue,
         Func<IStorageContainer, bool>? predicate = default)
     {
-        while (containerQueue.TryDequeue(out var container))
+        foreach (var farmer in Game1.getAllFarmers())
         {
-            foreach (var childContainer in this.GetAll(container, predicate))
+            foreach (var container in this.GetAll(farmer, predicate))
             {
-                if (!foundContainers.Add(childContainer))
+                if (!foundContainers.Add(container))
                 {
                     continue;
                 }
 
-                containerQueue.Enqueue(childContainer);
-                yield return childContainer;
+                containerQueue.Enqueue(container);
+                yield return container;
             }
         }
     }
 
-    private bool TryGetAny(Item item, [NotNullWhen(true)] out IStorageContainer? container)
+    private bool TryGetAny(SObject @object, [NotNullWhen(true)] out IStorageContainer? container)
     {
-        if (this.cachedContainers.TryGetValue(item, out container))
+        if (this.cachedContainers.TryGetValue(@object, out container))
         {
             return true;
         }
 
-        if (item is Chest chest)
+        switch (@object)
         {
-            if (!chest.playerChest.Value)
+            case Chest
             {
-                container = null;
-                return false;
-            }
-        }
-        else if (item is SObject obj && obj.heldObject.Value is Chest objChest)
-        {
-            chest = objChest;
-        }
-        else if (this.proxyChestFactory.TryGetProxy(item, out var proxyChest))
-        {
-            chest = proxyChest;
-        }
-        else
-        {
-            container = null;
-            return false;
+                playerChest.Value: true,
+            } chest:
+                // Create the chest container
+                container = new ChestContainer(chest);
+                break;
+
+            case
+            {
+                heldObject.Value: Chest chestObject,
+            }:
+                // Check if object chest has already been cached
+                if (this.cachedContainers.TryGetValue(chestObject, out container))
+                {
+                    this.cachedContainers.AddOrUpdate(@object, container);
+                    return true;
+                }
+
+                // Create the object container
+                container = new ObjectContainer(@object, chestObject);
+
+                // Cache chest object to the container
+                this.cachedContainers.AddOrUpdate(@object, container);
+                break;
+
+            case not null when this.proxyChestFactory.TryGetProxy(@object, out var proxyChest):
+                // Check if proxy chest has already been cached
+                if (this.cachedContainers.TryGetValue(proxyChest, out container))
+                {
+                    this.cachedContainers.AddOrUpdate(@object, container);
+                    return true;
+                }
+
+                // Create the chest container
+                container = new ChestContainer(proxyChest);
+
+                // Cache proxy chest to the container
+                this.cachedContainers.AddOrUpdate(proxyChest, container);
+                break;
+
+            case StorageFurniture furniture:
+                // Create the furniture container
+                container = new FurnitureContainer(furniture);
+
+                // Add global options to the furniture container
+                container.AddOptions(StorageOption.Global, this.modConfig.DefaultOptions);
+
+                // Add mod options to the furniture container
+                var furnitureModel = new ModDataModel(furniture.modData);
+                var furnitureOptions = new DictionaryStorageOptions(furnitureModel);
+                container.AddOptions(StorageOption.Individual, furnitureOptions);
+
+                // Add type options if furniture exists in config
+                if (this.modConfig.StorageOptions.GetValueOrDefault("Furniture")?.GetValueOrDefault(@object.ItemId) is
+                    not null)
+                {
+                    var furnitureTypeOptions = new ConfigStorageOptions(
+                        () => this.modConfig.StorageOptions["Furniture"][@object.ItemId],
+                        () => TokenParser.ParseText(
+                            ItemRegistry.RequireTypeDefinition("(F)").GetData(@object.ItemId).Description),
+                        () => TokenParser.ParseText(
+                            ItemRegistry.RequireTypeDefinition("(F)").GetData(@object.ItemId).DisplayName));
+
+                    container.AddOptions(StorageOption.Type, furnitureTypeOptions);
+                }
+
+                // Cache container to instance
+                this.cachedContainers.AddOrUpdate(@object, container);
+                return true;
+
+            default: return false;
         }
 
-        var storageOption = this.GetStorageOptions(item);
-        container = item switch
-        {
-            Chest => new ChestContainer(storageOption, chest),
-            SObject obj => new ObjectContainer(storageOption, obj, chest),
-            _ => new ChestContainer(storageOption, chest),
-        };
+        // Add global options to the object container
+        container.AddOptions(StorageOption.Global, this.modConfig.DefaultOptions);
 
-        this.cachedContainers.AddOrUpdate(item, container);
-        this.cachedContainers.AddOrUpdate(chest, container);
+        // Add mod options to the object container
+        var objectModel = new ModDataModel(@object.modData);
+        var objectOptions = new DictionaryStorageOptions(objectModel);
+        container.AddOptions(StorageOption.Individual, objectOptions);
+
+        // Add type options to the object container
+        if (!this.storageOptions.TryGetValue(@object.QualifiedItemId, out var typeOptions))
+        {
+            var typeModel = new DictionaryModel(GetCustomFields);
+            typeOptions = new DictionaryStorageOptions(typeModel, GetDescription, GetDisplayName);
+            this.storageOptions.Add(@object.QualifiedItemId, typeOptions);
+        }
+
+        container.AddOptions(StorageOption.Type, typeOptions);
+
+        // Cache container to instance
+        this.cachedContainers.AddOrUpdate(@object, container);
+
+        // Initialize fridge if cook from chest is enabled
+        if (@object is Chest storageChest)
+        {
+            storageChest.fridge.Value = typeOptions.CookFromChest is not RangeOption.Disabled;
+        }
+
         return true;
+
+        Dictionary<string, string>? GetCustomFields() =>
+            Game1.bigCraftableData.TryGetValue(@object.ItemId, out var bigCraftableData)
+                ? bigCraftableData.CustomFields
+                : null;
+
+        string GetDescription() =>
+            Game1.bigCraftableData.TryGetValue(@object.ItemId, out var bigCraftableData)
+                ? TokenParser.ParseText(bigCraftableData.Description)
+                : I18n.Storage_Other_Name();
+
+        string GetDisplayName() =>
+            Game1.bigCraftableData.TryGetValue(@object.ItemId, out var bigCraftableData)
+                ? TokenParser.ParseText(bigCraftableData.Name)
+                : I18n.Storage_Other_Tooltip();
     }
 }

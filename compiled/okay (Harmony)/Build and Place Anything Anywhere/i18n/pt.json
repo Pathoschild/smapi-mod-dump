@@ -1,0 +1,104 @@
+{
+  // Furniture Configs
+  "Config.AnythingAnywhere.Placing.Title": "Colocação",
+
+  "Config.AnythingAnywhere.EnablePlacing.Name": "Permitir colocação",
+  "Config.AnythingAnywhere.EnablePlacing.Description": "Permite colocar objetos (móveis, baús, etc) em qualquer lugar.",
+
+  "Config.AnythingAnywhere.EnableFreePlace.Name": "Coloque em qualquer lugar",
+  "Config.AnythingAnywhere.EnableFreePlace.Description": "Permite colocar móveis em qualquer local, até mesmo em paredes.",
+
+  "Config.AnythingAnywhere.EnableRugRemovalBypass.Name": "Ignorar remoção de tapete",
+  "Config.AnythingAnywhere.EnableRugRemovalBypass.Description": "Permite pegar tapetes com móveis em cima.",
+
+  "Config.AnythingAnywhere.EnableWallFurnitureIndoors.Name": "Móveis de parede no interior",
+  "Config.AnythingAnywhere.EnableWallFurnitureIndoors.Description": "Permite colocar móveis de parede em qualquer lugar dentro de locais decoráveis.",
+
+  // Building Configs
+  "Config.AnythingAnywhere.Building.Title": "Construção",
+
+  "Config.AnythingAnywhere.EnableBuilding.Name": "Habilitar construção",
+  "Config.AnythingAnywhere.EnableBuilding.Description": "Habilita todos os recursos de construção deste mod.",
+
+  "Config.AnythingAnywhere.EnableBuildAnywhere.Name": "Construa em qualquer lugar",
+  "Config.AnythingAnywhere.EnableBuildAnywhere.Description": "Permite construir em qualquer ladrilho, possibilitando construir em paredes ou fazer com que as construções se cruzem.",
+
+  "Config.AnythingAnywhere.EnableInstantBuild.Name": "Construa instantaneamente",
+  "Config.AnythingAnywhere.EnableInstantBuild.Description": "Permite construir instantaneamente.",
+
+  "Config.AnythingAnywhere.EnableFreeBuild.Name": "Construção grátis",
+  "Config.AnythingAnywhere.EnableFreeBuild.Description": "Permite construir de graça.",
+
+  "Config.AnythingAnywhere.BuildMenu.Name": "Menu de construção em qualquer lugar",
+  "Config.AnythingAnywhere.BuildMenu.Description": "Abre o menu da carpintaria em qualquer lugar.",
+
+  "Config.AnythingAnywhere.WizardBuildMenu.Name": "Menu de construções do Feiticeiro",
+  "Config.AnythingAnywhere.WizardBuildMenu.Description": "Abre o menu de construção do Feiticeiro em qualquer lugar.",
+
+  "Config.AnythingAnywhere.BuildModifier.Name": "Tecla de modificação de construção",
+  "Config.AnythingAnywhere.BuildModifier.Description": "Quando segurado durante a colocação, destruir ou melhorar uma construção não fará você voltar ao menu de construção.",
+
+  "Config.AnythingAnywhere.EnableGreenhouse.Name": "Habilitar a estufa",
+  "Config.AnythingAnywhere.EnableGreenhouse.Description": "Torna a estufa construível.",
+
+  "Config.AnythingAnywhere.RemoveBuildConditions.Name": "Remover condições de construção",
+  "Config.AnythingAnywhere.RemoveBuildConditions.Description": "Remove as condições de construção de todos os projetos.",
+
+  "Config.AnythingAnywhere.EnableBuildingIndoors.Name": "Construa do interior",
+  "Config.AnythingAnywhere.EnableBuildingIndoors.Description": "Permite construir de dentro das construções.",
+
+  "Config.AnythingAnywhere.BypassMagicInk.Name": "Ignorar tinta mágica",
+  "Config.AnythingAnywhere.BypassMagicInk.Description": "Ignora a necessidade de tinta mágica.",
+
+  // Buildable Locations Config
+  "Config.AnythingAnywhere.BlacklistedLocations.Title": "Esconder localização",
+  "Config.AnythingAnywhere.BlacklistedLocations.Button": "Localização atual",
+  "Config.AnythingAnywhere.BlacklistedLocations.Description": "Impede que a localização atual apareça no menu da Robin",
+
+  // Farming Config
+  "Config.AnythingAnywhere.Farming.Title": "Plantação",
+
+  "Config.AnythingAnywhere.EnablePlanting.Name": "Habilitar Plantação",
+  "Config.AnythingAnywhere.EnablePlanting.Description": "Permite plantar em qualquer local.",
+
+  "Config.AnythingAnywhere.EnableDiggingAll.Name": "Cave qualquer coisa",
+  "Config.AnythingAnywhere.EnableDiggingAll.Description": "Permite cavar com a enxada em qualquer lugar.",
+
+  "Config.AnythingAnywhere.EnableFruitTreeTweaks.Name": "Ajuste de árvores frutiferas",
+  "Config.AnythingAnywhere.EnableFruitTreeTweaks.Description": "Remove as restrições de crescimento de árvores frutíferas.",
+
+  "Config.AnythingAnywhere.EnableWildTreeTweaks.Name": "Ajuste de árvores selvagens",
+  "Config.AnythingAnywhere.EnableWildTreeTweaks.Description": "Remove as restrições de crescimento de árvores selvagens. Isso ficará rapidamente fora de controle.",
+
+  // Other Config
+  "Config.AnythingAnywhere.Other.Title": "Diversos",
+
+  "Config.AnythingAnywhere.EnableAnimalRelocate.Name": "Relocação de Animais",
+  "Config.AnythingAnywhere.EnableAnimalRelocate.Description": "Permite realocar animais de um local para o outro.",
+
+  "Config.AnythingAnywhere.EnableCaskFunctionality.Name": "Ajuste do Barril",
+  "Config.AnythingAnywhere.EnableCaskFunctionality.Description": "Permite que o barril funcione em qualquer lugar.",
+
+  "Config.AnythingAnywhere.EnableJukeboxFunctionality.Name": "Ajuste da Jukebox",
+  "Config.AnythingAnywhere.EnableJukeboxFunctionality.Description": "Permite que a jukebox funcione em qualquer lugar. (exceto na chuva)",
+
+  "Config.AnythingAnywhere.EnableGoldClockAnywhere.Name": "Ajuste do Relógio dourado",
+  "Config.AnythingAnywhere.EnableGoldClockAnywhere.Description": "Permite que o Relógio dourado funcione em qualquer lugar.",
+
+  "Config.AnythingAnywhere.MultipleMiniObelisks.Name": "Múltiplos Mini Obeliscos",
+  "Config.AnythingAnywhere.MultipleMiniObelisks.Description": "Permite colocar mais de dois mini obeliscos por local.",
+
+  "Config.AnythingAnywhere.EnableCabinsAnywhere.Name": "Cabanas/Casas de Fazenda em qualquer lugar",
+  "Config.AnythingAnywhere.EnableCabinsAnywhere.Description": "ISTO CAUSARÁ ERROS! Desativa as verificações de Cabanas e Casas de Fazenda.",
+
+  // Button
+  "Config.AnythingAnywhere.ResetPage.Button": "Resetar página",
+
+  // Player Messages
+  "Message.AnythingAnywhere.NoBuildingIndoors": "A construção interna está desativada.",
+  "Message.AnythingAnywhere.NoMovingBuildingLocation": "{{buildingName}} não pode ser movida para outro mapa.",
+  "Message.AnythingAnywhere.NoMagicInk": "Você precisa de tinta mágica para abrir o menu de construção do Feiticeiro.",
+  "Message.AnythingAnywhere.MultiplayerRelocate": "Você não pode mover construções para outros locais no modo multijogador.",
+  "Message.AnythingAnywhere.ChooseBuildingLocation": "Para onde você deseja mover a construção?",
+  "Message.AnythingAnywhere.ChooseAnimalLocation": "Para onde você deseja mover os animais?"
+}

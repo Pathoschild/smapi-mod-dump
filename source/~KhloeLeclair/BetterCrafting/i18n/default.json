@@ -101,6 +101,19 @@
 	"setting.key.tooltip": "Show Hotkeys in Tool-tips",
 	"setting.key.tooltip.tip": "When enabled, hotkeys will be displayed at the bottom of Better Crafting's tool-tips.",
 
+	"setting.show-matching-items": "Show Matching Items",
+	"setting.show-matching-items.never": "Never",
+	"setting.show-matching-items.always": "Always",
+	"setting.show-matching-items.fuzzy": "Fuzzy Ingredients",
+	"setting.show-matching-items.fuzzy-quality": "Fuzzy / High Quality Ingredients",
+	"setting.show-matching-items.tip": "Whether or not to display the list of items to be consumed when crafting an item in Better Crafting's tool-tips. 'Fuzzy' here means an ingredient that can match more than one item, such as 'Egg (Any)'. High Quality means any item with a quality higher than base quality.",
+
+	"setting.source-mod": "Show Source Mod in Tool-tips",
+	"setting.source-mod.tip": "When enabled, the mod that added any given item will be displayed at the bottom of Better Crafting's tool-tips.",
+
+	"setting.enforce-multiplayer": "Enforce Multiplayer Balance",
+	"setting.enforce-multiplayer.tip": "When enabled, some settings that may be 'cheaty' can only be controlled by the multiplayer host. This applies to 'Recover Trash', recycling, and showing gift tastes.",
+
 	"setting.ttwhen.Never": "Never",
 	"setting.ttwhen.ForController": "When Using Controller",
 	"setting.ttwhen.Always": "Always",
@@ -110,6 +123,9 @@
 	"setting.action.Favorite": "Toggle Favorite",
 	"setting.action.BulkCraft": "Bulk Craft",
 	"setting.action.BulkCook": "Bulk Cook",
+
+	"setting.invalid-storage-types": "Disallowed Storage Types",
+	"setting.invalid-storage-types.tip": "This allows you to disable certain types of storage objects (Chests, Hoppers, etc.) from being used.",
 
 	"setting.nearby": "Extended Workbench",
 	"setting.nearby.tip": "This feature allows Workbenches and your kitchen to connect to more chests at once, improving on the game's default range of one block. You can create chains of connected chests, or use allowed connectors to bridge gaps.",
@@ -146,8 +162,14 @@
 	"setting.nearby.fences": "Fences",
 	"setting.nearby.other": "Other Examples",
 
+	"setting.recover-trash": "Recover Trash",
+	"setting.recover-trash.about": "When this is enabled, you can right-click on your trash can to open a menu for recovering trashed items. Please note that the menu will only remember up to 36 items at a time.",
+
 	"setting.recycle": "Recycling",
 	"setting.recycle.about": "When this is enabled, you can use the crafting menu to recycle items and get back the items that were used to craft it.",
+
+	"setting.recycle.higher-quality": "Allow Higher Quality",
+	"setting.recycle.higher-quality.tip": "When this is enabled, you can recycle an item if it's of a higher quality than the recipe produces. You can never recycle an item of a lower quality than the recipe produces.",
 
 	"setting.recycle.fuzzy": "Fuzzy Item Matching",
 	"setting.recycle.fuzzy.tip": "Some crafting recipes don't require specific items, instead matching things like \"Egg (Any)\". By default, these aren't returned. Enabling this will return the cheapest matching item in such cases.",
@@ -233,6 +255,9 @@
 	"seasoning.enabled": "Always",
 	"seasoning.inventory": "Inventory Only",
 
+	"setting.show-unknown": "Show Unknown Recipes",
+	"setting.show-unknown.tip": "When enabled, recipes you haven't learned yet will be displayed in the menu similarly to how unknown cooking recipes are.",
+
 	"setting.hide-unknown": "Hide Unknown Recipes",
 	"setting.hide-unknown.tip": "When enabled, recipes you haven't learned yet won't be displayed in the menu.",
 
@@ -317,6 +342,8 @@
 	"ingredient.error": "Invalid Ingredient",
 
 	"error.locking": "Unable to access some inventories.",
+	"error.crafting": "An error happened while trying to craft.",
+	"error.crafting.source": "The mod '{{source}}' errored while we were trying to craft.",
 	"error.pasting": "Unable to paste category.",
 
 	// Bulk Crafting
@@ -366,14 +393,17 @@
 	"filter.add-new": "Add New Rule",
 	"filter.from-rule": "Enabled By Rule",
 
+	"filter.include-toggle": "Include in Category",
+	"filter.include-toggle.about": "Whether recipes matching this rule should be included in or excluded from the category.",
+
 	"filter.storage": "Storage",
 	"filter.storage.about": "This rule matches items that act as storage, like chests or hoppers.",
 
 	"filter.everything": "Everything",
 	"filter.everything.about": "This rule matches every recipe.",
 
-	"filter.buff": "Buff: {{type}}",
-	"filter.buff.about": "This rule matches items that give a {{type}} buff when consumed.",
+	"filter.new-buff": "Buff",
+	"filter.new-buff.about": "This rule matches items that give a certain buff when consumed.",
 
 	"filter.uncrafted": "Not Yet Crafted",
 	"filter.uncrafted.about": "This rule matches items that you haven't crafted yet.",
@@ -383,6 +413,13 @@
 
 	"filter.mod": "Items From Mod",
 	"filter.mod.about": "This rule will attempt to match all recipes added by a specific mod.",
+
+	"filter.gift-taste": "Gift Taste: {{taste}}",
+	"filter.gift-taste.about": "This rule will attempt to match items that an NPC {{taste}}. This only displays known tastes unless you have \"Show Undiscovered Gift Tastes\" enabled.",
+	"filter.gift-taste.likes": "Likes",
+	"filter.gift-taste.loves": "Loves",
+	"filter.gift-taste.dislikes": "Dislikes",
+	"filter.gift-taste.hates": "Hates",
 
 	"filter.machine": "Machines",
 	"filter.machine.about": "This rule matches items that act as machines, processing items or performing some other function.",

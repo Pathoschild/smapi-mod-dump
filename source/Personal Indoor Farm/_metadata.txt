@@ -6,9 +6,9 @@ mods:
    Personal Indoor Farm
 
 latest commit:
-   commit b6b6ea22920a5bf32512ffa2b111690318c8e285
+   commit 47896df4b47acc1e88129f94963d731d4a21bb79
    Author: DeLiXx <fake122344@gmail.com>
-   Date:   Thu Apr 18 19:51:26 2024 +0200
+   Date:   Fri May 10 18:38:08 2024 +0200
    
-       Fixed Furniture name not being translated when changing languages
+       updated to 1.0.5
    

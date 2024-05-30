@@ -25,7 +25,7 @@ internal partial class Mod {
     public static void Postfix(Object __instance, SpriteBatch spriteBatch, int x, int y, float alpha = 1f) {
       if (!Config.Enabled) return;
       if (!Config.ShowBubbles) return;
-      if (__instance.QualifiedItemId != "(O)430") return;
+      if (__instance.QualifiedItemId != "(O)430" && !__instance.HasContextTag("temisthem_bettertruffles")) return;
 
       var item = ItemRegistry.GetDataOrErrorItem(__instance.QualifiedItemId);
       var tileLocation = __instance.TileLocation;
@@ -44,7 +44,7 @@ internal partial class Mod {
         Vector2.Zero, 
         4f * (Config.SizePercent / 100f), 
         SpriteEffects.None, 
-        base_sort + 1E-06f);
+        Config.RenderOnTop ? 0.99f : base_sort + 1E-06f);
 
       spriteBatch.Draw(
         item.GetTexture(),
@@ -57,7 +57,7 @@ internal partial class Mod {
         new Vector2(8f, 8f), 
         4f * (Config.SizePercent / 100f),
         SpriteEffects.None, 
-        base_sort + 1E-05f
+        Config.RenderOnTop ? 0.991f : base_sort + 1E-05f
       );
     }
   }  

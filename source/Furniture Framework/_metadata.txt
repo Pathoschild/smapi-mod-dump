@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/Leroymilo/FurnitureFramework
+   Git: https://github.com/Leroymilo/FurnitureFramework.git
+
+mods:
+   Furniture Framework
+
+latest commit:
+   commit 64946b5253cfd3ba2dac3fa78470062ef65f86ec
+   Author: leroymilo <adriaanboxmail@gmail.com>
+   Date:   Wed May 29 20:57:58 2024 +0900
+   
+       working custom description
+   

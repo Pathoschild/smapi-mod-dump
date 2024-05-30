@@ -9,6 +9,7 @@
 
     // generic values
     "generic.unknown": "unbekannt",
+    "generic.list-separator": ", ", // text between listed values (like ", " in "A, B, C")
 
     // generic field values
     "generic.percent": "{{percent}}%",
@@ -98,31 +99,19 @@
     "data.item.box.description": "Zerschlage sie um verschiedenes Gut zu erhalten.",
 
     // location names
-    "location.backwoods": "Unentdeckter Wald",
-    "location.beach": "Strand",
     "location.beach.east-pier": "Strand (östliches Pier)",
     "location.bugLand": "Mutantenkäferhöhle",
-    "location.busStop": "Bushaltestelle",
-    "location.desert": "Wüste",
     "location.desert.topPond": "Wüste (nördlicher Teich)",
-    "location.farm": "Bauernhof",
     "location.farmCave": "Bauernhof-Höhle",
     "location.farmHouse": "Bauernhaus",
-    "location.forest": "Wald",
     "location.forest.island-tip": "Waldfluss (Südspitze der großen Insel)",
     "location.forest.lake": "Waldteich",
     "location.forest.river": "Waldfluss",
-    "location.mountain": "Berge",
-    "location.railroad": "Eisenbahn",
-    "location.sewer": "Kanalisation",
     "location.submarine": "Nachtmarkt Tiefsee-U-Boot",
-    "location.town": "Stadt",
     "location.town.northmost-bridge": "Stadt (Nord-östliche Brücke)",
-    "location.tunnel": "Bus Tunnel",
     "location.undergroundMine": "Mine",
     "location.undergroundMine.level": "Minenebene {{level}}",
     "location.witchSwamp": "Hexensumpf",
-    "location.woods": "Geheime Wälder",
 
     "location.caldera": "Feuerberg",
     "location.islandEast": "Insel Ost",
@@ -134,7 +123,31 @@
     "location.islandWest.freshwater": "Insel West (Teich)",
     "location.islandWest.ocean": "Insel West (Meer)",
 
+    "location.fish-area": "{{locationName}} ({{areaName}})",
     "location.unknown-fish-area": "{{locationName}} (Angelgebiet {{id}})",
+
+
+    /*********
+    ** Conditions & context tags
+    *********/
+    // TODO
+    "condition-or-context-tag.negate": "not {{value}}",
+
+    "condition.item-type.input": "input item",
+    "condition.item-type.target": "target item",
+
+    "condition.item-context-tag": "{{item}} has context tag {{tags}}",
+    "condition.item-context-tags": "{{item}} has context tags {{tags}}",
+    "condition.item-context-tag.value": "'{{tag}}'", // the format of each context tag in the list (each context tag isn't translated)
+
+    "condition.item-edibility.edible": "{{item}} is edible",
+    "condition.item-edibility.min": "{{item}} has edibility of {{min}} or more",
+    "condition.item-edibility.range": "{{item}} has edibility of {{min}} to {{max}}",
+
+    "context-tag.bone": "any bone",
+    "context-tag.egg": "any egg",
+    "context-tag.large-egg": "any large egg",
+    "context-tag.preserved-item": "preserved {{name}}",
 
 
     /*********
@@ -316,9 +329,13 @@
     "item.needed-for.gourmet-chef": "\"Gourmetkoch\" Errungenschaft (koche {{recipes}})",
     "item.needed-for.craft-master": "\"Handwerksmeister\" Errungenschaft (stelle {{recipes}} her)",
     "item.needed-for.quests": "aktuelle Aufgaben ({{quests}})",
+    "item.unknown-recipes": "{{count}} unknown recipes", // TODO
     "item.sells-to.shipping-box": "Versandkiste",
     "item.recipes-for-ingredient.entry": "{{name}} (braucht {{count}})",
     "item.recipes-for-machine.multiple-items": "{{name}} x{{count}}",
+    "item.recipes-for-machine.same-as-input": "[same as input]", // e.g. crystalarium produces same item that was put in // TODO
+    "item.recipes-for-machine.conditions": "[conditions: {{conditions}}]", // TODO
+    "item.recipes-for-machine.too-complex": "Some machine rules are too dynamic to display.", // TODO
     "item.number-owned.summary": "Du besitzt {{count}} davon",
     "item.number-crafted.summary": "Du hast bereits {{count}} davon hergestellt",
 
@@ -538,7 +555,7 @@
 
     // values
     "puzzle.solution.solved": "Rätsel gelöst!",
-    "puzzle.solution.hidden": "Lösungen der Rätsel sind im Fortschrittsmodus nicht sichtbar.",
+    "puzzle.solution.hidden": "Lösungen der Rätsel sind gemäß Ihrer Einstellungen nicht sichtbar.",
 
 
     /*********
@@ -643,10 +660,21 @@
     *********/
     // main options
     "config.title.main-options": "Hauptoptionen",
-    "config.progression-mode.name": "Fortschrittsmodus",
-    "config.progression-mode.desc": "Ob bestimmte Inhalte (z. B. Geschenkvorlieben und Rätsellösungen) versteckt werden sollen, bis man sie im Spiel entdeckt hat.",
     "config.force-full-screen.name": "Erzwinge Vollbild",
     "config.force-full-screen.desc": "Legt fest, ob das Menü immer als Vollbild angezeigt werden soll, anstatt in der Mitte des Fensters. Dies ist vor allem bei der Anzeige von Data Mining Feldern nützlich.",
+
+    // progression mode
+    // TODO
+    "config.title.progression": "Fortschrittsmodus",
+
+    "config.progression.show-unknown-gift-tastes.name": "Show unknown gift tastes",
+    "config.progression.show-unknown-gift-tastes.desc": "Whether to show gift tastes you haven't learned about in-game yet (e.g. from dialogue text or experimenting).",
+
+    "config.progression.show-unknown-recipes.name": "Show unknown recipes",
+    "config.progression.show-unknown-recipes.desc": "Whether to show recipes you haven't learned in-game yet.",
+
+    "config.progression.show-puzzle-solutions.name": "Show puzzle solutions",
+    "config.progression.show-puzzle-solutions.desc": "Whether to show puzzle solutions.",
 
     // gift tastes
     "config.title.gift-tastes": "Geschenke-Geschmäcker",
@@ -666,6 +694,18 @@
 
     "config.highlight-unrevealed-gift-tastes.name": "Hebe unentdeckte Geschenkvorlieben hervor",
     "config.highlight-unrevealed-gift-tastes.desc": "Hervorhebung von Gegenstandsgeschenken, die im NSC-Profil noch nicht offenbart wurden. Wenn diese Option aktiviert ist, werden nicht enthüllte Geschenkvorlieben fett dargestellt.",
+
+    // collapse fields
+    // TODO
+    "config.title.collapse-fields": "Collapse large fields",
+
+    "config.collapse-fields.enabled.name": "Enabled",
+    "config.collapse-fields.enabled.desc": "Whether to collapse large fields, so the lookup menu will replace the list with a clickable 'show X values' link to expand it.",
+
+    "config.collapse-fields.building-recipes.name": "Building lookup: recipes",
+    "config.collapse-fields.item-recipes.name": "Item lookup: recipes",
+    "config.collapse-fields.npc-gift-tastes.name": "NPC lookup: gift tastes",
+    "config.collapse-fields.any.desc": "If the field contains this many values, the lookup menu will replace the list with a clickable 'show X values' link to expand it.",
 
     // advanced options
     "config.title.advanced-options": "Erweiterte Optionen",

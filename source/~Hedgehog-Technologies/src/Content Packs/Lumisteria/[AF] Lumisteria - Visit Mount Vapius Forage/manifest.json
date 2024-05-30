@@ -11,10 +11,11 @@
 {
   "$schema": "https://smapi.io/schemas/manifest.json",
   "Name": "[AF] Lumisteria - Visit Mount Vapius Forage",
-  "Description": "Forage added by Lumisteria - Visit Mount Vapius",
+  // https://www.nexusmods.com/stardewvalley/mods/9600
+  "Description": "Forage added by Lumisteria's Visit Mount Vapius",
   "Author": "Jag3Dagster",
   "UniqueID": "HedgehogTechnologies.LVMVForageAF",
-  "Version": "1.0.1",
+  "Version": "1.0.2",
   "MinimumApiVersion": "4.0",
   "ContentPackFor": {
     "UniqueID": "HedgehogTechnologies.AutoForager",

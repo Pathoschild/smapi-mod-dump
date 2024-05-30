@@ -13,6 +13,8 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Constants;
+using StardewValley.Extensions;
 using StardewValley.Objects;
 using SObject = StardewValley.Object;
 
@@ -46,7 +48,7 @@ namespace Pathoschild.Stardew.Automate.Framework.Machines.Objects
             this.Monitor = monitor;
         }
 
-        /// <summary>Get the machine's processing state.</summary>
+        /// <inheritdoc />
         public override MachineState GetState()
         {
             MachineState state = this.GetGenericState();
@@ -57,20 +59,34 @@ namespace Pathoschild.Stardew.Automate.Framework.Machines.Objects
             return state;
         }
 
-        /// <summary>Get the output item.</summary>
+        /// <inheritdoc />
+        /// <remarks>Derived from <see cref="CrabPot.checkForAction"/>.</remarks>
         public override ITrackedStack? GetOutput()
         {
-            return this.GetTracked(this.Machine.heldObject.Value, onEmpty: this.Reset);
+            CrabPot pot = this.Machine;
+            Item? output = pot.heldObject.Value;
+
+            // The Art o' Crabbing book adds a 25% chance at double output when you check the crab pot.
+            //
+            // It's possible that there's only room for some of the output, which means a player could collect part of
+            // the output multiple times. That's hard to solve, it's technically an issue in the base game too, and it
+            // only works until the 25% chance fails, so it's probably fine as a known limitation here.
+            if (output != null && Game1.player.stats.Get(StatKeys.Book_Crabbing) > 0 && Utility.CreateDaySaveRandom(Game1.uniqueIDForThisGame, Game1.stats.DaysPlayed * 77, pot.TileLocation.X * 777 + pot.TileLocation.Y).NextBool(.25))
+            {
+                output = output.getOne();
+                output.Stack = pot.heldObject.Value.Stack * 2;
+            }
+
+            return this.GetTracked(output, onEmpty: this.Reset);
         }
 
-        /// <summary>Provide input to the machine.</summary>
-        /// <param name="input">The available items.</param>
-        /// <returns>Returns whether the machine started processing an item.</returns>
+        /// <inheritdoc />
         public override bool SetInput(IStorage input)
         {
             // get bait
             if (input.TryGetIngredient(p => p.Sample.TypeDefinitionId == ItemRegistry.type_object && p.Sample.Category == SObject.baitCategory, 1, out IConsumable? bait))
             {
+                this.Machine.owner.Value = Game1.player.UniqueMultiplayerID;
                 this.Machine.bait.Value = (SObject)bait.Take()!;
                 this.Machine.lidFlapping = true;
                 this.Machine.lidFlapTimer = CrabPot.lidFlapTimerInterval;
@@ -84,7 +100,7 @@ namespace Pathoschild.Stardew.Automate.Framework.Machines.Objects
         /*********
         ** Private methods
         *********/
-        /// <summary>Reset the machine so it's ready to accept a new input.</summary>
+        /// <summary>Reset the machine, so it's ready to accept a new input.</summary>
         /// <param name="item">The output item that was taken.</param>
         /// <remarks>XP and achievement logic based on <see cref="CrabPot.checkForAction"/>.</remarks>
         private void Reset(Item item)

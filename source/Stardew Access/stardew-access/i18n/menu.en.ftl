@@ -349,9 +349,15 @@ menu-animal_query-animal_info =
   }, {$heart_count ->
     [1] 1 heart
     *[other] {$heart_count} hearts
-  }, {$age ->
-    [1] 1 month
-    *[other] {$age} months
+  }, {$is_age_in_days ->
+    [1] {$age ->
+      [1] 1 day
+      *[other] {$age} days
+    }
+    *[other] {$age ->
+      [1] 1 month
+      *[other] {$age} months
+    }
   } old{$parent_name ->
     [null] {EMPTYSTRING()}
     *[other] , Parent: {$parent_name}.
@@ -578,6 +584,13 @@ menu-purchase_animal-animal_name_text_box = Name text box{$value ->
 ### Title Text Input Menu
 
 menu-title_text_input-paste_button = Paste button
+
+### Renovate Menu
+
+menu-renovate-info = Left click to renovate. Affected areas,
+  {$areas_info}
+menu-renovate-area_dimension_info = {$index}: At {$tile_x} {$tile_y} with {$width} width and {$height} height,
+
 
 ### Shipping Menu
 

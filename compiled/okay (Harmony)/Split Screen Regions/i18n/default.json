@@ -1,0 +1,45 @@
+{
+  "Config.SplitScreenRegions.EnableMod.Name": "Enable Mod",
+  "Config.SplitScreenRegions.EnableMod.Description": "Enables the mod",
+
+  "Config.SplitScreenRegions.2PViewports.Title": "2-Player Viewports",
+  "Config.SplitScreenRegions.3PViewports.Title": "3-Player Viewports",
+  "Config.SplitScreenRegions.4PViewports.Title": "4-Player Viewports",
+  "Config.SplitScreenRegions.2P.Title": "2-Player",
+  "Config.SplitScreenRegions.3P.Title": "3-Player",
+  "Config.SplitScreenRegions.4P.Title": "4-Player",
+
+  "Config.SplitScreenRegions.Player1.Title": "Player 1",
+  "Config.SplitScreenRegions.Player2.Title": "Player 2",
+  "Config.SplitScreenRegions.Player3.Title": "Player 3",
+  "Config.SplitScreenRegions.Player4.Title": "Player 4",
+
+  "Config.SplitScreenRegions.PlayerString": "Player {{player}}",
+  "Config.SplitScreenRegions.X.Name": "Player {{player}} - X",
+  "Config.SplitScreenRegions.Y.Name": "Player {{player}} - Y",
+  "Config.SplitScreenRegions.W.Name": "Player {{player}} - Width",
+  "Config.SplitScreenRegions.H.Name": "Player {{player}} - Height",
+
+  "Config.SplitScreenRegions.X.Description": "The left position of Player {{player}}'s viewport.",
+  "Config.SplitScreenRegions.Y.Description": "The top position of Player {{player}}'s viewport.",
+  "Config.SplitScreenRegions.W.Description": "The width of Player {{player}}'s viewport.",
+  "Config.SplitScreenRegions.H.Description": "The height of Player {{player}}'s viewport.",
+
+  "Config.SplitScreenRegions.Reset.Name": "Reset",
+  "Config.SplitScreenRegions.Reset.Description": "Resets this players values",
+
+  "Config.SplitScreenRegions.ResetPage.Name": "Reset All Players",
+  "Config.SplitScreenRegions.ResetPage.Description": "Resets the all values on this page",
+
+  "Config.SplitScreenRegions.UpdateMainPlayer.Name": "Live Update Main Player",
+  "Config.SplitScreenRegions.UpdateMainPlayer.Description": "Update the main player live, like the rest of the players",
+
+  "Config.SplitScreenRegions.BackOutOnReset.Name": "Back Out On Reset",
+  "Config.SplitScreenRegions.BackOutOnReset.Description": "Backs the player out to the main mod page when a reset button is clicked",
+
+  "Config.SplitScreenRegions.ResetKey.Name": "Reset Key",
+  "Config.SplitScreenRegions.ResetKey.Description": "Resets all viewports to default",
+
+  "Config.SplitScreenRegions.Other.Title": "Other"
+
+}

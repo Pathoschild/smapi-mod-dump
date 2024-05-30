@@ -16,6 +16,6 @@
   "MinimumGameVersion": "1.6",
   "EntryDll": "MoreNightlyEvents.dll",
   "UpdateKeys": [
-    "Nexus:22612"
+    "Nexus:22612@main" // fixed locally
   ]
 }

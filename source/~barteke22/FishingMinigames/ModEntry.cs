@@ -26,13 +26,13 @@ using System.Text.RegularExpressions;
 
 namespace FishingMinigames
 {
-    public class ModEntry : Mod, IAssetEditor
+    public class ModEntry : Mod
     {
         public static ITranslationHelper translate;
         public static ModConfig config;
         public static Regex exception = new Regex(@"([^\\]*)\.cs:.*");
         private readonly PerScreen<Minigames> minigame = new PerScreen<Minigames>();
-        private Dictionary<string, int> itemIDs = new Dictionary<string, int>();
+        private Dictionary<string, string> itemIDs = new();
         private bool canStartEditingAssets = false;
 
         private enum StartMinigame { DDR, Hangman }
@@ -47,7 +47,8 @@ namespace FishingMinigames
                 Game1.content.Load<Texture2D>("LooseSprites\\boardGameBorder"),
                 Game1.content.Load<Texture2D>("LooseSprites\\CraneGame"),
                 Game1.content.Load<Texture2D>("LooseSprites\\buildingPlacementTiles"),
-                Helper.Content.Load<Texture2D>("assets/Textures.png", ContentSource.ModFolder)};
+                Helper.ModContent.Load<Texture2D>("assets/Textures.png") //custom textures
+            };
 
 
             helper.Events.Display.Rendered += Display_Rendered;
@@ -58,6 +59,7 @@ namespace FishingMinigames
             helper.Events.Display.RenderedActiveMenu += GenericModConfigMenuIntegration;
             helper.Events.GameLoop.SaveLoaded += GameLoop_SaveLoaded;
             helper.Events.Multiplayer.ModMessageReceived += OnModMessageReceived;
+            Helper.Events.Content.AssetRequested += OnAssetRequested;
             //helper.Events.Player.Warped += OnWarped;
 
             helper.ConsoleCommands.Add("startminigametest", "For testing the Start Minigame of the Fishing Minigames mod. If holding a fishing rod/net, its data will be used, otherwise uses a basic one.\n\n" +
@@ -79,10 +81,10 @@ namespace FishingMinigames
             Helper.Events.Display.RenderedActiveMenu -= GenericModConfigMenuIntegration;
             if (Context.IsSplitScreen) return;
             canStartEditingAssets = true;
-            Helper.Content.InvalidateCache("TileSheets/tools");
-            Helper.Content.InvalidateCache("Maps/springobjects");
-            Helper.Content.InvalidateCache("Strings/StringsFromCSFiles");
-            Helper.Content.InvalidateCache("Data/ObjectInformation");
+            Helper.GameContent.InvalidateCache("TileSheets/tools");
+            Helper.GameContent.InvalidateCache("Maps/springobjects");
+            Helper.GameContent.InvalidateCache("Strings/StringsFromCSFiles");
+            Helper.GameContent.InvalidateCache("Data/ObjectInformation");
 
             var GenericMC = Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
             if (GenericMC != null)
@@ -194,10 +196,10 @@ namespace FishingMinigames
             GenericMC.AddBoolOption(ModManifest, () => config.FreeAim[screen], (bool val) => config.FreeAim[screen] = val,
                 () => translate.Get("GenericMC.FreeAim"), () => translate.Get("GenericMC.FreeAimDesc"));
 
-            GenericMC.AddTextOption(ModManifest, name: () => translate.Get("GenericMC.StartMinigameStyle"),  tooltip: () => translate.Get("GenericMC.StartMinigameStyleDesc"),
+            GenericMC.AddTextOption(ModManifest, name: () => translate.Get("GenericMC.StartMinigameStyle"), tooltip: () => translate.Get("GenericMC.StartMinigameStyleDesc"),
                 getValue: () => config.StartMinigameStyle[screen].ToString(),
                 setValue: value => config.StartMinigameStyle[screen] = int.Parse(value),
-                allowedValues: new string[] { "0", "1", "2" },
+                allowedValues: new string[] { "0", "1" },
                 formatAllowedValue: value => value == "0" ? translate.Get($"GenericMC.Disabled") : translate.Get($"GenericMC.StartMinigameStyle{value}"));
 
             GenericMC.AddTextOption(ModManifest, name: () => translate.Get("GenericMC.EndMinigameStyle"), tooltip: () => translate.Get("GenericMC.EndMinigameStyleDesc"),
@@ -402,146 +404,156 @@ namespace FishingMinigames
         }
 
 
-        /// <summary>Get whether this instance can edit the given asset.</summary>
-        public bool CanEdit<T>(IAssetInfo asset)
+        private void OnAssetRequested(object sender, AssetRequestedEventArgs e)
         {
-            if (canStartEditingAssets && (asset.AssetNameEquals("TileSheets/tools") || asset.AssetNameEquals("Maps/springobjects") || asset.AssetNameEquals("Strings/StringsFromCSFiles") || asset.AssetNameEquals("Data/ObjectInformation"))) return true;
-            return false;
-        }
-        /// <summary>Edits the asset if CanEdit</summary>
-        public void Edit<T>(IAssetData asset)
-        {
-            if (asset.AssetNameEquals("Strings/StringsFromCSFiles"))
+            if (canStartEditingAssets)
             {
-                translate = Helper.Translation;
-                IDictionary<string, string> data = asset.AsDictionary<string, string>().Data;
-                foreach (string itemID in data.Keys.ToArray())
+                if (e.Name.IsEquivalentTo("Strings/StringsFromCSFiles"))
+                {
+                    translate = Helper.Translation;
+                    e.Edit(asset =>
+                    {
+                        var data = asset.AsDictionary<string, string>().Data;
+                        foreach (string itemID in data.Keys.ToArray())
+                        {
+                            try
+                            {
+                                switch (itemID)
+                                {
+                                    case "FishingRod.cs.14041":
+                                        data[itemID] = translate.Get("Rod.Fishing");
+                                        break;
+                                    case "FishingRod.cs.14042":
+                                        data[itemID] = translate.Get("Rod.FishingDesc");
+                                        break;
+                                    case "FishingRod.cs.trainingRodDescription":
+                                        data[itemID] = AddEffectDescriptions("Training Rod", translate.Get("Rod.TrainingDesc"));
+                                        break;
+                                    case "FishingRod.cs.14045":
+                                        data[itemID] = translate.Get("Bamboo Pole");
+                                        break;
+                                    case "FishingRod.cs.14046":
+                                        data[itemID] = translate.Get("Training Rod");
+                                        break;
+                                    case "FishingRod.cs.14047":
+                                        data[itemID] = translate.Get("Fiberglass Rod");
+                                        break;
+                                    case "FishingRod.cs.14048":
+                                        data[itemID] = translate.Get("Iridium Rod");
+                                        break;
+                                    case "SkillPage.cs.11598":
+                                        data[itemID] = translate.Get("Rod.Skill");
+                                        break;
+                                    case "FishingRod.cs.14083":
+                                        if (config.ConvertToMetric) data[itemID] = "{0} cm";
+                                        break;
+                                    default:
+                                        continue;
+                                }
+                            }
+                            catch (Exception)
+                            {
+                                Monitor.Log("Could not load string for Rod to Net change, line: " + data[itemID] + ". Are the translations missing? Ignore if you removed them intentionally.", LogLevel.Warn);
+                            }
+                        }
+                    });
+                }
+                else if (e.Name.IsEquivalentTo("Data/ObjectInformation"))
+                {
+                    translate = Helper.Translation;
+                    e.Edit(asset =>
+                    {
+                        var data = asset.AsDictionary<string, string>().Data;
+                        foreach (string itemID in data.Keys.ToArray())
+                        {
+                            try
+                            {
+                                string[] itemData = data[itemID].Split('/');
+                                switch (itemID)
+                                {
+                                    //bait
+                                    case "(O)685"://bait
+                                    case "(O)774"://wild bait
+                                        itemData[5] = AddEffectDescriptions(itemData[0]);
+                                        break;
+                                    case "(O)703"://magnet
+                                    case "(O)908"://magic bait
+                                        itemData[5] = AddEffectDescriptions(itemData[0], itemData[5]);
+                                        break;
+                                    //tackle
+                                    case "(O)686"://spinner
+                                    case "(O)687"://dressed
+                                    case "(O)694"://trap
+                                    case "(O)695"://cork
+                                    case "(O)692"://lead
+                                    case "(O)693"://treasure
+                                    case "(O)691"://barbed
+                                    case "(O)877"://quality
+                                        itemData[4] = translate.Get(itemData[0]);
+                                        itemData[5] = AddEffectDescriptions(itemData[0]);
+                                        break;
+                                    case "(O)856"://curiosity
+                                        itemData[4] = translate.Get(itemData[0]);
+                                        itemData[5] = AddEffectDescriptions(itemData[0], itemData[5]);
+                                        break;
+                                    default:
+                                        continue;
+                                }
+                                data[itemID] = string.Join("/", itemData);
+                                itemIDs[itemData[0]] = itemID;
+                            }
+                            catch (Exception)
+                            {
+                                Monitor.LogOnce("Could not load string for Rod to Net change, line: " + data[itemID] + ". Are the translations missing? Ignore if you removed them intentionally.", LogLevel.Warn);
+                            }
+                        }
+                    });
+                }
+                else
                 {
                     try
                     {
-                        switch (itemID)
+                        if (e.Name.IsEquivalentTo("Maps/springobjects"))
                         {
-                            case "FishingRod.cs.14041":
-                                data[itemID] = translate.Get("Rod.Fishing");
-                                break;
-                            case "FishingRod.cs.14042":
-                                data[itemID] = translate.Get("Rod.FishingDesc");
-                                break;
-                            case "FishingRod.cs.trainingRodDescription":
-                                data[itemID] = AddEffectDescriptions("Training Rod", translate.Get("Rod.TrainingDesc"));
-                                break;
-                            case "FishingRod.cs.14045":
-                                data[itemID] = translate.Get("Bamboo Pole");
-                                break;
-                            case "FishingRod.cs.14046":
-                                data[itemID] = translate.Get("Training Rod");
-                                break;
-                            case "FishingRod.cs.14047":
-                                data[itemID] = translate.Get("Fiberglass Rod");
-                                break;
-                            case "FishingRod.cs.14048":
-                                data[itemID] = translate.Get("Iridium Rod");
-                                break;
-                            case "SkillPage.cs.11598":
-                                data[itemID] = translate.Get("Rod.Skill");
-                                break;
-                            case "FishingRod.cs.14083":
-                                if (config.ConvertToMetric) data[itemID] = "{0} cm";
-                                break;
-                            default:
-                                continue;
+                            e.Edit(asset =>
+                            {
+                                Texture2D sourceImage;
+                                var editor = asset.AsImage();
+                                sourceImage = Helper.ModContent.Load<Texture2D>("assets/bait_magnet.png");
+                                editor.PatchImage(sourceImage, targetArea: new Rectangle(112, 464, 16, 16));
+                                sourceImage = Helper.ModContent.Load<Texture2D>("assets/tackle_basic.png");
+                                editor.PatchImage(sourceImage, targetArea: new Rectangle(304, 448, 80, 16));
+                                sourceImage = Helper.ModContent.Load<Texture2D>("assets/tackle_curiosity.png");
+                                editor.PatchImage(sourceImage, targetArea: new Rectangle(256, 560, 16, 16));
+                                sourceImage = Helper.ModContent.Load<Texture2D>("assets/tackle_quality.png");
+                                editor.PatchImage(sourceImage, targetArea: new Rectangle(208, 576, 16, 16));
+                                sourceImage = Helper.ModContent.Load<Texture2D>("assets/tackle_spinners.png");
+                                editor.PatchImage(sourceImage, targetArea: new Rectangle(224, 448, 32, 16));
+                                sourceImage.Dispose();
+                            });
+                        }
+                        else if (e.Name.IsEquivalentTo("TileSheets/tools"))
+                        {
+                            e.Edit(asset =>
+                            {
+                                Texture2D sourceImage;
+                                var editor = asset.AsImage();
+                                sourceImage = Helper.ModContent.Load<Texture2D>("assets/rod_sprites.png");
+                                editor.PatchImage(sourceImage, targetArea: new Rectangle(128, 0, 64, 16));
+                                sourceImage = Helper.ModContent.Load<Texture2D>("assets/rod_farmer.png");
+                                editor.PatchImage(sourceImage, targetArea: new Rectangle(0, 289, 295, 95));
+                                sourceImage.Dispose();
+                            });
                         }
                     }
                     catch (Exception)
                     {
-                        Monitor.Log("Could not load string for Rod to Net change, line: " + data[itemID] + ". Are the translations missing? Ignore if you removed them intentionally.", LogLevel.Warn);
+                        Monitor.Log("Could not load images for the " + ((e.Name.IsEquivalentTo("Maps/springobjects")) ? "bait/tackles" : "fishing nets") + "! Are the assets missing? Ignore if you removed them intentionally.", LogLevel.Warn);
                     }
-                }
-
-            }
-            else if (asset.AssetNameEquals("Data/ObjectInformation"))
-            {
-                translate = Helper.Translation;
-                IDictionary<int, string> data = asset.AsDictionary<int, string>().Data;
-                foreach (int itemID in data.Keys.ToArray())
-                {
-                    try
-                    {
-                        string[] itemData = data[itemID].Split('/');
-                        switch (itemID)
-                        {
-                            //bait
-                            case 685://bait
-                            case 774://wild bait
-                                itemData[5] = AddEffectDescriptions(itemData[0]);
-                                break;
-                            case 703://magnet
-                            case 908://magic bait
-                                itemData[5] = AddEffectDescriptions(itemData[0], itemData[5]);
-                                break;
-                            //tackle
-                            case 686://spinner
-                            case 687://dressed
-                            case 694://trap
-                            case 695://cork
-                            case 692://lead
-                            case 693://treasure
-                            case 691://barbed
-                            case 877://quality
-                                itemData[4] = translate.Get(itemData[0]);
-                                itemData[5] = AddEffectDescriptions(itemData[0]);
-                                break;
-                            case 856://curiosity
-                                itemData[4] = translate.Get(itemData[0]);
-                                itemData[5] = AddEffectDescriptions(itemData[0], itemData[5]);
-                                break;
-                            default:
-                                continue;
-                        }
-                        data[itemID] = string.Join("/", itemData);
-                        itemIDs[itemData[0]] = itemID;
-                    }
-                    catch (Exception)
-                    {
-                        Monitor.LogOnce("Could not load string for Rod to Net change, line: " + data[itemID] + ". Are the translations missing? Ignore if you removed them intentionally.", LogLevel.Warn);
-                    }
-                }
-            }
-            else
-            {
-                var editor = asset.AsImage();
-
-                Texture2D sourceImage;
-                try
-                {
-                    if (asset.AssetNameEquals("Maps/springobjects"))
-                    {
-                        sourceImage = Helper.Content.Load<Texture2D>("assets/bait_magnet.png", ContentSource.ModFolder);
-                        editor.PatchImage(sourceImage, targetArea: new Rectangle(112, 464, 16, 16));
-                        sourceImage = Helper.Content.Load<Texture2D>("assets/tackle_basic.png", ContentSource.ModFolder);
-                        editor.PatchImage(sourceImage, targetArea: new Rectangle(304, 448, 80, 16));
-                        sourceImage = Helper.Content.Load<Texture2D>("assets/tackle_curiosity.png", ContentSource.ModFolder);
-                        editor.PatchImage(sourceImage, targetArea: new Rectangle(256, 560, 16, 16));
-                        sourceImage = Helper.Content.Load<Texture2D>("assets/tackle_quality.png", ContentSource.ModFolder);
-                        editor.PatchImage(sourceImage, targetArea: new Rectangle(208, 576, 16, 16));
-                        sourceImage = Helper.Content.Load<Texture2D>("assets/tackle_spinners.png", ContentSource.ModFolder);
-                        editor.PatchImage(sourceImage, targetArea: new Rectangle(224, 448, 32, 16));
-                    }
-                    else
-                    {
-                        sourceImage = Helper.Content.Load<Texture2D>("assets/rod_sprites.png", ContentSource.ModFolder);
-                        editor.PatchImage(sourceImage, targetArea: new Rectangle(128, 0, 64, 16));
-                        sourceImage = Helper.Content.Load<Texture2D>("assets/rod_farmer.png", ContentSource.ModFolder);
-                        editor.PatchImage(sourceImage, targetArea: new Rectangle(0, 289, 295, 95));
-                    }
-                    sourceImage.Dispose();
-                }
-                catch (Exception)
-                {
-                    Monitor.Log("Could not load images for the " + ((asset.AssetNameEquals("Maps/springobjects")) ? "bait/tackles" : "fishing nets") + "! Are the assets missing? Ignore if you removed them intentionally.", LogLevel.Warn);
                 }
             }
         }
+
         public static string AddEffectDescriptions(string itemName, string initialText = null)
         {
             foreach (var effect in config.SeeInfoForBelowData[itemName])
@@ -668,9 +680,9 @@ namespace FishingMinigames
                 if (LocalizedContentManager.CurrentLanguageCode == 0 && Minigames.metricSizes != config.ConvertToMetric)
                 {
                     Minigames.metricSizes = config.ConvertToMetric;
-                    Helper.Content.InvalidateCache("Strings/StringsFromCSFiles");
+                    Helper.GameContent.InvalidateCache("Strings/StringsFromCSFiles");
                 }
-                Helper.Content.InvalidateCache("Data/ObjectInformation");
+                Helper.GameContent.InvalidateCache("Data/ObjectInformation");
             }
         }
     }

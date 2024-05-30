@@ -54,7 +54,6 @@ namespace ContentPatcher.Framework.Patches
         /// <summary>Construct an instance.</summary>
         /// <param name="indexPath">The path of indexes from the root <c>content.json</c> to this patch; see <see cref="IPatch.IndexPath"/>.</param>
         /// <param name="path">The path to the patch from the root content file.</param>
-        /// <param name="assetName">The normalized asset name to intercept.</param>
         /// <param name="conditions">The conditions which determine whether this patch should be applied.</param>
         /// <param name="fromFile">The normalized asset key from which to load entries (if applicable), including tokens.</param>
         /// <param name="updateRate">When the patch should be updated.</param>
@@ -63,12 +62,13 @@ namespace ContentPatcher.Framework.Patches
         /// <param name="parseAssetName">Parse an asset name.</param>
         /// <param name="monitor">Encapsulates monitoring and logging.</param>
         /// <param name="patchLoader">Handles loading and unloading patches for content packs.</param>
-        public IncludePatch(int[] indexPath, LogPathBuilder path, IManagedTokenString? assetName, IEnumerable<Condition> conditions, IManagedTokenString fromFile, UpdateRate updateRate, RawContentPack contentPack, IPatch? parentPatch, Func<string, IAssetName> parseAssetName, IMonitor monitor, PatchLoader patchLoader)
+        public IncludePatch(int[] indexPath, LogPathBuilder path, IEnumerable<Condition> conditions, IManagedTokenString fromFile, UpdateRate updateRate, RawContentPack contentPack, IPatch? parentPatch, Func<string, IAssetName> parseAssetName, IMonitor monitor, PatchLoader patchLoader)
             : base(
                 indexPath: indexPath,
                 path: path,
                 type: PatchType.Include,
-                assetName: assetName,
+                assetName: null,
+                assetLocale: null,
                 priority: (int)AssetEditPriority.Default,
                 updateRate: updateRate,
                 conditions: conditions,

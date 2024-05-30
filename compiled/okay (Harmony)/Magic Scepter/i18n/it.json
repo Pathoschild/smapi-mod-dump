@@ -1,12 +1,26 @@
 {
   "dialog.title": "Scegli una posizion:",
-  "dialog.location.farm": "La fattoria",
-  "dialog.location.beach": "La spiaggia",
-  "dialog.location.mountain": "Le montagne",
-  "dialog.location.desert": "Il deserto",
-  "dialog.location.island": "Isola Zenzero",
-  "dialog.location.islandFarm": "Fattoria dell'isola",
-  "dialog.location.miniObelisk": "Mini-obelisco",
-  "dialog.location.miniObeliskNumber": "Mini-obelisco #{{number}}",
-  "dialog.cancel": "Annulla"
+  
+  "common.save": "Salva",
+  "common.cancel": "Annulla",
+  
+  "configuration-menu.title": "Configurazione",
+  
+  "settings-menu.title": "Impostazioni",
+  
+  "configuration-menu.button-hover.rename": "Cambia nome",
+  "configuration-menu.button-hover.hidden": "Nascosto",
+  "configuration-menu.button-hover.visible": "configuration-menu.button-hover.visible",
+  "configuration-menu.button-hover.move-up": "Su",
+  "configuration-menu.button-hover.move-down": "Giù",
+  
+  "rename-menu.reset-to-default": "Ripristinare il nome predefinito",
+  
+  "teleport-scroll.farm": "La fattoria",
+  "teleport-scroll.beach": "La spiaggia",
+  "teleport-scroll.mountain": "Le montagne",
+  "teleport-scroll.desert": "Il deserto",
+  "teleport-scroll.island": "Isola Zenzero",
+  "teleport-scroll.island-farm": "Fattoria dell'isola",
+  "teleport-scroll.mini-obelisk": "Mini-obelisco"
 }

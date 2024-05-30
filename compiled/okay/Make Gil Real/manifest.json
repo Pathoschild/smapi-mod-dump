@@ -1,7 +1,7 @@
 {
    "Name": "Make Gil Real SMAPI",
    "Author": "WerewolfMaster",
-   "Version": "1.0.2", // fixed locally
+   "Version": "1.1.0", // fixed locally
    "Description": "",
    "UniqueID": "Wolf.GilSMAPI",
    "EntryDll":"MakeGilReal.dll",

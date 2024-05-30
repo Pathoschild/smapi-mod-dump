@@ -19,7 +19,7 @@ namespace DwarvishMattock
 	public class ResourceClumpPatches
 	{
 		public static DynamicMethod performToolActionOriginal = null;
-		public static bool performToolAction_Prefix(ref ResourceClump __instance, Tool t, int damage, Vector2 tileLocation, GameLocation location, ref bool __result)
+		public static bool performToolAction_Prefix(ref ResourceClump __instance, Tool t, int damage, Vector2 tileLocation, ref bool __result)
 		{
 			// Gotta have the original method available for mattock stand-ins.
 			if (performToolActionOriginal == null)
@@ -37,9 +37,9 @@ namespace DwarvishMattock
 					case 602: // Log
 					{
 						// Treat the mattock as an axe for stumps.
-						Axe standinAxe = mattock.asAxe();
+						Axe standinAxe = mattock.AsAxe();
 						mattock.struckFeatures.Add(__instance);
-						__result = (bool) performToolActionOriginal.Invoke(__instance, new object[] { __instance, standinAxe, damage, tileLocation, location });
+						__result = (bool) performToolActionOriginal.Invoke(__instance, new object[] { __instance, standinAxe, damage, tileLocation });
 						return false;
 					}
 					case 622: // Iridium meteorite
@@ -50,10 +50,9 @@ namespace DwarvishMattock
 					case 758: // Icy Boulder 2
 					{
 						// Treat the mattock as a pickaxe for boulders.
-						Pickaxe standinPickaxe = mattock.asPickaxe();
+						Pickaxe standinPickaxe = mattock.AsPickaxe();
 						mattock.struckFeatures.Add(__instance);
-						//standinPickaxe.DoFunction(location, (int)(__instance.currentTileLocation.X * 64), (int)(__instance.currentTileLocation.Y * 64), 1, Game1.player);
-						__result = (bool) performToolActionOriginal.Invoke(__instance, new object[] { __instance, standinPickaxe, damage, tileLocation, location });
+						__result = (bool) performToolActionOriginal.Invoke(__instance, new object[] { __instance, standinPickaxe, damage, tileLocation });
 						return false;
 					}
 				}

@@ -7,7 +7,8 @@ for queries and analysis.**
 ----
 
 Stardew-Multiplayer-Server-Mod (Formerly funny-snek's Always-On-Server-for-Multiplayer)
-Nexus Mods page: https://www.nexusmods.com/stardewvalley/mods/20659/
+Nexus Mods page: 
+https://www.nexusmods.com/stardewvalley/mods/20659/
 This is a fork of the original Always-On-Server-for-Multiplayer mod for Stardew Valley, created by the awesome funny-snek.
 
 Why the Fork?

@@ -1,0 +1,17 @@
+{
+  "Name": "Split Screen Regions",
+  "Author": "Espy",
+  "Version": "1.0.2",
+  "Description": "Control the size of each screen.",
+  "UniqueID": "Espy.SplitScreenRegions",
+  "EntryDll": "SplitScreenRegions.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:23669" ],
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.GenericModConfigMenu",
+      "MinimumVersion": "1.12.0",
+      "IsRequired": true
+    }
+  ]
+}

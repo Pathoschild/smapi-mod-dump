@@ -32,7 +32,7 @@ namespace ProducerFrameworkMod.Api
 
         public List<Dictionary<string, object>> GetRecipes(string producerName)
         {
-            var key = Game1.bigCraftableData.FirstOrDefault(b => b.Value.Name.Equals(producerName)).Key;
+            var key = Game1.bigCraftableData.FirstOrDefault(b => producerName.Equals(b.Value.Name)).Key;
             var producerRules = key != null
                 ? ProducerController.GetProducerRules(ItemRegistry.type_bigCraftable + key)
                 : null;
@@ -155,7 +155,7 @@ namespace ProducerFrameworkMod.Api
 
         public List<ProducerRule> GetProducerRules(string producerName)
         {
-            var key = Game1.bigCraftableData.FirstOrDefault(b => b.Value.Name.Equals(producerName)).Key;
+            var key = Game1.bigCraftableData.FirstOrDefault(b => producerName.Equals(b.Value.Name)).Key;
             return key != null ? ProducerController.GetProducerRules(ItemRegistry.type_bigCraftable + key) : null;
         }
 

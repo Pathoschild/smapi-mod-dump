@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="2" height="1" tilewidth="16" tileheight="16" infinite="0" nextlayerid="42" nextobjectid="364">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="2" height="1" tilewidth="16" tileheight="16" infinite="0" nextlayerid="42" nextobjectid="364">
  <properties>
   <property name="AmbientLight" value="160 90 90"/>
   <property name="IndoorWater" value="t"/>
@@ -11,38 +11,7 @@
  <tileset firstgid="1" name="p" tilewidth="16" tileheight="16" tilecount="32" columns="4">
   <image source="paths" width="64" height="128"/>
  </tileset>
- <tileset firstgid="33" name="st" tilewidth="16" tileheight="16" tilecount="168" columns="8">
-  <image source="SewerTiles" width="128" height="336"/>
-  <tile id="56">
-   <properties>
-    <property name="Water" value="T"/>
-   </properties>
-  </tile>
-  <tile id="57">
-   <animation>
-    <frame tileid="57" duration="250"/>
-    <frame tileid="58" duration="250"/>
-    <frame tileid="59" duration="250"/>
-    <frame tileid="60" duration="250"/>
-   </animation>
-  </tile>
-  <tile id="64">
-   <properties>
-    <property name="Water" value="T"/>
-   </properties>
-  </tile>
-  <tile id="69">
-   <properties>
-    <property name="Water" value="T"/>
-   </properties>
-  </tile>
-  <tile id="70">
-   <properties>
-    <property name="Water" value="T"/>
-   </properties>
-  </tile>
- </tileset>
- <tileset firstgid="201" name="z_custom_sewertiles_aimon111" tilewidth="16" tileheight="16" tilecount="1892" columns="44">
+ <tileset firstgid="33" name="z_custom_sewertiles_aimon111" tilewidth="16" tileheight="16" tilecount="1892" columns="44">
   <image source="z_custom_sewertiles_aimon111.png" width="704" height="688"/>
   <tile id="123">
    <animation>
@@ -374,7 +343,7 @@
    </animation>
   </tile>
  </tileset>
- <tileset firstgid="2093" name="z_custom_sewertileswater_aimon111" tilewidth="16" tileheight="16" tilecount="195" columns="15">
+ <tileset firstgid="1925" name="z_custom_sewertileswater_aimon111" tilewidth="16" tileheight="16" tilecount="195" columns="15">
   <image source="z_custom_sewertileswater_aimon111.png" width="240" height="208"/>
   <tile id="6">
    <animation>
@@ -541,12 +510,12 @@
  </tileset>
  <layer id="22" name="Back" width="2" height="1">
   <data encoding="csv">
-609,609
+441,441
 </data>
  </layer>
  <layer id="17" name="Back1" width="2" height="1">
   <data encoding="csv">
-0,729
+0,561
 </data>
  </layer>
  <layer id="29" name="Back2" width="2" height="1">
@@ -556,12 +525,12 @@
  </layer>
  <layer id="15" name="Back3" width="2" height="1">
   <data encoding="csv">
-337,338
+169,170
 </data>
  </layer>
  <layer id="21" name="Back4" width="2" height="1">
   <data encoding="csv">
-1388,1636
+1220,1468
 </data>
  </layer>
  <layer id="16" name="Back5" width="2" height="1">
@@ -576,7 +545,7 @@
  </layer>
  <layer id="20" name="Buildings" width="2" height="1">
   <data encoding="csv">
-1598,1599
+1430,1431
 </data>
  </layer>
  <layer id="23" name="Buildings1" width="2" height="1">
@@ -591,7 +560,7 @@
  </layer>
  <layer id="19" name="Buildings3" width="2" height="1">
   <data encoding="csv">
-0,323
+0,155
 </data>
  </layer>
  <layer id="35" name="Buildings4" width="2" height="1">

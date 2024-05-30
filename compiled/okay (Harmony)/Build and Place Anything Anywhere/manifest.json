@@ -1,11 +1,12 @@
 {
   "Name": "Anything Anywhere",
   "Author": "Espy",
-  "Version": "1.6.9",
+  "Version": "1.7.8",
   "Description": "Build and place anything anywhere.",
   "UniqueID": "Espy.AnythingAnywhere",
   "EntryDll": "AnythingAnywhere.dll",
   "MinimumApiVersion": "4.0.0",
+  "MinimumGameVersion": "1.6.8",
   "UpdateKeys": [ "Nexus:21233" ],
   "Dependencies": [
     {
@@ -15,6 +16,10 @@
     },
     {
       "UniqueID": "furyx639.CustomBush",
+      "IsRequired": false
+    },
+    {
+      "UniqueID": "mouahrara.FlipBuildings",
       "IsRequired": false
     }
   ]

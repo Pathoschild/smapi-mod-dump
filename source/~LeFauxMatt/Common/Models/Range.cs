@@ -8,7 +8,11 @@
 **
 *************************************************/
 
+#if IS_FAUXCORE
+namespace StardewMods.FauxCore.Common.Models;
+#else
 namespace StardewMods.Common.Models;
+#endif
 
 /// <summary>Represents a range of values.</summary>
 /// <typeparam name="T">The value type for the range.</typeparam>

@@ -19,13 +19,13 @@ using FlipBuildings.Utilities;
 
 namespace FlipBuildings.Patches.AT
 {
-	internal class BuildingPatch
+	internal class BuildingPatchPatch
 	{
 		internal static void Apply(Harmony harmony)
 		{
 			harmony.Patch(
-				original: AccessTools.Method(CompatibilityUtility.BuildingPatchType, "DrawPrefix"),
-				transpiler: new HarmonyMethod(typeof(BuildingPatch), nameof(DrawPrefixTranspiler))
+				original: AccessTools.Method(CompatibilityUtility.ATBuildingPatchType, "DrawPrefix"),
+				transpiler: new HarmonyMethod(typeof(BuildingPatchPatch), nameof(DrawPrefixTranspiler))
 			);
 		}
 
@@ -34,7 +34,6 @@ namespace FlipBuildings.Patches.AT
 			PatchUtility.CodeReplacement[] codeReplacements = new PatchUtility.CodeReplacement[]
 			{
 				new(
-					instanceType: typeof(Building),
 					referenceInstruction: new(OpCodes.Callvirt, typeof(SpriteBatch).GetMethod(nameof(SpriteBatch.Draw), new Type[] { typeof(Texture2D), typeof(Vector2), typeof(Rectangle?), typeof(Color), typeof(float), typeof(Vector2), typeof(float), typeof(SpriteEffects), typeof(float) })),
 					offset: 15,
 					targetInstruction: new(OpCodes.Ldc_I4_0),
@@ -44,7 +43,7 @@ namespace FlipBuildings.Patches.AT
 					}
 				)
 			};
-			return PatchUtility.ReplaceInstructionsByOffsets(instructions, iLGenerator, codeReplacements, CompatibilityUtility.BuildingPatchType, "DrawPrefix");
+			return PatchUtility.ReplaceInstructionsByOffsets(instructions, iLGenerator, codeReplacements, CompatibilityUtility.ATBuildingPatchType, "DrawPrefix");
 		}
 	}
 }

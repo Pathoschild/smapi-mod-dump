@@ -130,7 +130,7 @@
             "enabled" : true,
             "isTrellis" : false,
             "isFlower" : true
-        },
+        },        
         {
             "cropName" : "Rose",
             "seedID" : "QL_RoseSeeds",

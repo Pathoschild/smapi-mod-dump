@@ -1,0 +1,17 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/jasisco5/UncannyValleyMod
+**
+*************************************************/
+
+Cane's Modder's Resource: https://docs.google.com/spreadsheets/d/1CpDrw23peQiq-C7F2FjYOMePaYe0Rc9BwQsj3h6sjyo/edit#gid=239695361
+Stardew Valley Wiki - NPC Information: https://stardewvalleywiki.com/Modding:NPC_data
+Stardew Valley Wiki - Event Data: https://stardewvalleywiki.com/Modding:Event_data
+Stardew Valley Wiki - Dialogue: https://stardewvalleywiki.com/Modding:Dialogue
+
+Stardew Valley Official Discord: https://stardewvalleywiki.com/Modding:Community#Discord
+MissCoriel's Discord ID: MissCoriel#7989

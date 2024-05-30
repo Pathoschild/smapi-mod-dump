@@ -39,16 +39,23 @@ namespace FarmTypeManager.Monsters
         public SerpentFTM(Vector2 position, string name)
             : base(position, name)
         {
-            
+
         }
 
         //this override forces any instance of GameLocation to call drawAboveAllLayers, fixing a bug where flying monsters are invisible on some maps
+        //NOTE: this may no longer be necessary in SDV 1.6.4+, but I'm leaving it in for now
         public override void drawAboveAlwaysFrontLayer(SpriteBatch b)
         {
             base.drawAboveAlwaysFrontLayer(b); //call the base version of this, if one exists
+            drawAboveAllLayers(b); //call the extra draw method used by flying monsters
+        }
+
+        //this override fixes the draw order of Royal Serpent body segments; this is normally done by Mineshaft's draw logic, and without it, the circular "joint" segments draw above other parts
+        public override void drawAboveAllLayers(SpriteBatch b)
+        {
             b.End();
             b.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp);
-            base.drawAboveAllLayers(b); //call the extra draw method used by flying monsters
+            base.drawAboveAllLayers(b);
             b.End();
             b.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp);
         }

@@ -9,6 +9,7 @@
 
     // generic values
     "generic.unknown": "unknown", // TODO
+    "generic.list-separator": ", ", // text between listed values (like ", " in "A, B, C")
 
     // generic field values
     "generic.percent": "{{percent}}%",
@@ -98,31 +99,19 @@
     "data.item.box.description": "Törd szét, hogy különböző tárgyakhoz juss.",
 
     // location names
-    "location.backwoods": "hátsó erdő",
-    "location.beach": "tengerpart",
     "location.beach.east-pier": "tengerpart (keleti móló)",
     "location.bugLand": "mutáns rovar odú",
-    "location.busStop": "buszmegálló",
-    "location.desert": "sivatag",
     "location.desert.topPond": "desert (north pond)", // TODO
-    "location.farm": "farm",
     "location.farmCave": "farmbarlang",
     "location.farmHouse": "parasztház",
-    "location.forest": "erdő",
     "location.forest.island-tip": "erdei folyó (nagy sziget déli csücske)",
     "location.forest.lake": "erdei tó",
     "location.forest.river": "erdei folyó",
-    "location.mountain": "hegy",
-    "location.railroad": "vasút",
-    "location.sewer": "szennyvízcsatorna",
     "location.submarine": "Éjszakai Piac tengeralattjáró",
-    "location.town": "város",
     "location.town.northmost-bridge": "város (legészakibb híd)",
-    "location.tunnel": "buszalagút",
     "location.undergroundMine": "bányák",
     "location.undergroundMine.level": "bánya {{level}}. szintje",
     "location.witchSwamp": "boszorkány mocsár",
-    "location.woods": "titkos erdő",
 
     "location.caldera": "Ginger Island caldera", // TODO
     "location.islandEast": "Ginger Island east", // TODO
@@ -134,7 +123,31 @@
     "location.islandWest.freshwater": "Ginger Island west (pond)", // TODO
     "location.islandWest.ocean": "Ginger Island west (ocean)", // TODO
 
+    "location.fish-area": "{{locationName}} ({{areaName}})",
     "location.unknown-fish-area": "{{locationName}} (Horgászhely: {{id}})",
+
+
+    /*********
+    ** Conditions & context tags
+    *********/
+    // TODO
+    "condition-or-context-tag.negate": "not {{value}}",
+
+    "condition.item-type.input": "input item",
+    "condition.item-type.target": "target item",
+
+    "condition.item-context-tag": "{{item}} has context tag {{tags}}",
+    "condition.item-context-tags": "{{item}} has context tags {{tags}}",
+    "condition.item-context-tag.value": "'{{tag}}'", // the format of each context tag in the list (each context tag isn't translated)
+
+    "condition.item-edibility.edible": "{{item}} is edible",
+    "condition.item-edibility.min": "{{item}} has edibility of {{min}} or more",
+    "condition.item-edibility.range": "{{item}} has edibility of {{min}} to {{max}}",
+
+    "context-tag.bone": "any bone",
+    "context-tag.egg": "any egg",
+    "context-tag.large-egg": "any large egg",
+    "context-tag.preserved-item": "preserved {{name}}",
 
 
     /*********
@@ -316,9 +329,13 @@
     "item.needed-for.gourmet-chef": "ínyenc szakács teljesítmény (készíts még: {{recipes}})",
     "item.needed-for.craft-master": "kézműves mester teljesítmény (készíts még: {{recipes}})",
     "item.needed-for.quests": "current quests ({{quests}})", // TODO
+    "item.unknown-recipes": "{{count}} unknown recipes", // TODO
     "item.sells-to.shipping-box": "szállítmányos láda",
     "item.recipes-for-ingredient.entry": "{{name}} (szükséges: {{count}})",
     "item.recipes-for-machine.multiple-items": "{{name}} x{{count}}",
+    "item.recipes-for-machine.same-as-input": "[same as input]", // e.g. crystalarium produces same item that was put in // TODO
+    "item.recipes-for-machine.conditions": "[conditions: {{conditions}}]", // TODO
+    "item.recipes-for-machine.too-complex": "Some machine rules are too dynamic to display.", // TODO
     "item.number-owned.summary": "ennyit birtokolsz ebből: {{count}}",
     "item.number-crafted.summary": "ennyit készítettél ebből: {{count}}",
 
@@ -542,7 +559,7 @@
     // values
     // TODO
     "puzzle.solution.solved": "Puzzle solved!",
-    "puzzle.solution.hidden": "Puzzle solutions are hidden in progression mode.",
+    "puzzle.solution.hidden": "Puzzle solutions are hidden per your settings.",
 
 
     /*********
@@ -654,10 +671,21 @@
     // main options
     // TODO
     "config.title.main-options": "Main options",
-    "config.progression-mode.name": "Progression mode",
-    "config.progression-mode.desc": "Whether to hide some content (e.g. gift tastes and puzzle solutions) until you've discovered it in-game.",
     "config.force-full-screen.name": "Force full screen",
     "config.force-full-screen.desc": "Whether the menu should always be full-screen, instead of centered in the window. This is mainly useful when viewing data mining fields.",
+
+    // progression mode
+    // TODO
+    "config.title.progression": "Progression mode",
+
+    "config.progression.show-unknown-gift-tastes.name": "Show unknown gift tastes",
+    "config.progression.show-unknown-gift-tastes.desc": "Whether to show gift tastes you haven't learned about in-game yet (e.g. from dialogue text or experimenting).",
+
+    "config.progression.show-unknown-recipes.name": "Show unknown recipes",
+    "config.progression.show-unknown-recipes.desc": "Whether to show recipes you haven't learned in-game yet.",
+
+    "config.progression.show-puzzle-solutions.name": "Show puzzle solutions",
+    "config.progression.show-puzzle-solutions.desc": "Whether to show puzzle solutions.",
 
     // gift tastes
     // TODO
@@ -678,6 +706,18 @@
 
     "config.highlight-unrevealed-gift-tastes.name": "Highlight unrevealed gift tastes",
     "config.highlight-unrevealed-gift-tastes.desc": "Whether to highlight item gift tastes which haven't been revealed in the NPC profile. When enabled, unrevealed gift tastes will be bold.",
+
+    // collapse fields
+    // TODO
+    "config.title.collapse-fields": "Collapse large fields",
+
+    "config.collapse-fields.enabled.name": "Enabled",
+    "config.collapse-fields.enabled.desc": "Whether to collapse large fields, so the lookup menu will replace the list with a clickable 'show X values' link to expand it.",
+
+    "config.collapse-fields.building-recipes.name": "Building lookup: recipes",
+    "config.collapse-fields.item-recipes.name": "Item lookup: recipes",
+    "config.collapse-fields.npc-gift-tastes.name": "NPC lookup: gift tastes",
+    "config.collapse-fields.any.desc": "If the field contains this many values, the lookup menu will replace the list with a clickable 'show X values' link to expand it.",
 
     // advanced options
     // TODO

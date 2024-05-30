@@ -31,8 +31,6 @@ namespace NermNermNerm.Junimatic
 
         public const string SetJunimoColorEventCommand = "junimatic.setJunimoColor";
 
-        // public Harmony Harmony = null!;
-
         public UnlockPortal UnlockPortalQuest = new UnlockPortal();
         public UnlockCropMachines CropMachineHelperQuest = new UnlockCropMachines();
         public UnlockMiner UnlockMiner = new UnlockMiner();
@@ -43,13 +41,13 @@ namespace NermNermNerm.Junimatic
         private readonly WorkFinder workFinder = new WorkFinder();
         public PetFindsThings PetFindsThings = new PetFindsThings();
 
-        public ModEntry()
-        {
-        }
+        public static ModEntry Instance = null!;
+
+        public ModEntry() { }
 
         public override void Entry(IModHelper helper)
         {
-            // this.Harmony = new Harmony(this.ModManifest.UniqueID);
+            Instance = this;
 
             this.CropMachineHelperQuest.Entry(this);
             this.UnlockPortalQuest.Entry(this);

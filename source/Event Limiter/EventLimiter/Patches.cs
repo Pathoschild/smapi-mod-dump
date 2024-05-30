@@ -33,7 +33,7 @@ namespace EventLimiter
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.startEvent)),
-                postfix: new HarmonyMethod(typeof(Patches), nameof(Patches.startEvent_postfix)));
+                prefix: new HarmonyMethod(typeof(Patches), nameof(Patches.startEvent_prefix)));
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(Event), nameof(Event.exitEvent)),
@@ -42,14 +42,14 @@ namespace EventLimiter
             monitor.Log("Initialised harmony patches...");
         }
 
-        public static void startEvent_postfix(GameLocation __instance, Event evt)
+        public static bool startEvent_prefix(GameLocation __instance, Event evt)
         {
             try
             {
                 if (evt.isWedding || evt.isFestival || ModEntry.StoryProgressionEvents.Contains(evt.id) == true)
                 {
                     monitor.Log("Current event is important and unskippable!");
-                    return;
+                    return true;
                 }
 
                 else
@@ -58,14 +58,14 @@ namespace EventLimiter
                     if (NormalisedEventids != null && NormalisedEventids.Contains(evt.id) == true)
                     {
                         monitor.Log("Made exception for event with id " + evt.id);
-                        return;
+                        return true;
                     }
 
                     // Check for mod added exceptions, skip the rest of the method if so
                     if (internalexceptions != null && internalexceptions.Contains(evt.id) == true)
                     {
                         monitor.Log("Made mod added exception for event with id " + evt.id);
-                        return;
+                        return true;
                     }
 
                     // Check if day limit is reached, skip event if so
@@ -76,7 +76,7 @@ namespace EventLimiter
                         Game1.displayHUD = true;
                         Game1.player.CanMove = true;
                         __instance.currentEvent = null;
-                        return;
+                        return false;
                     }
 
                     // Check if row limit is reached, skip event if so
@@ -87,14 +87,16 @@ namespace EventLimiter
                         Game1.displayHUD = true;
                         Game1.player.CanMove = true;
                         __instance.currentEvent = null;
-                        return;
+                        return false;
                     }
                 }
+                return true;
 
             }
             catch (Exception ex)
             {
-                monitor.Log($"Failed in {nameof(startEvent_postfix)}:\n{ex}", LogLevel.Error);
+                monitor.Log($"Failed in {nameof(startEvent_prefix)}:\n{ex}", LogLevel.Error);
+                return true;
             }
         }
 

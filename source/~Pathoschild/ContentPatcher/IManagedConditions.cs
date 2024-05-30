@@ -40,7 +40,7 @@ namespace ContentPatcher
         ** Methods
         *********/
         /// <summary>Update the conditions based on Content Patcher's current context for every active screen. It's safe to call this as often as you want, but it has no effect if the Content Patcher context hasn't changed since you last called it.</summary>
-        /// <returns>Returns the screens for which <see cref="IsMatch"/> changed value. To check if the current screen changed, you can check <c>UpdateContext()</c></returns>
+        /// <returns>Returns the screens for which <see cref="IsMatch"/> changed value.</returns>
         IEnumerable<int> UpdateContext();
 
         /// <summary>If <see cref="IsMatch"/> is false, analyze the conditions/context and get a human-readable reason phrase explaining why the conditions don't match the context. For example: <c>conditions don't match: season</c>. If the conditions do match, this returns <c>null</c>.</summary>

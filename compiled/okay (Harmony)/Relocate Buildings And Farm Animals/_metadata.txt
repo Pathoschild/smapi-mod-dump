@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/20606
+IDs: mouahrara.RelocateBuildingsAndFarmAnimals, mouahrara.RelocateFarmAnimals
+update keys: Nexus:20606, GitHub:mouahrara/RelocateFarmAnimals

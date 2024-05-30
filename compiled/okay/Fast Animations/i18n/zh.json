@@ -24,6 +24,9 @@
     "config.harvest.name": "采集",
     "config.harvest.tooltip": "采集作物或觅食的速度。默认{{defaultValue}}x。",
 
+    "config.hold-up-item.name": "举起物品",
+    "config.hold-up-item.tooltip": "举起物品的速度。默认{{defaultValue}}x.",
+
     "config.horse-flute.name": "马笛",
     "config.horse-flute.tooltip": "演奏马笛的速度。默认{{defaultValue}}x。",
 
@@ -33,6 +36,9 @@
     "config.mount.name": "上下马",
     "config.mount.tooltip": "上/下马的速度，这里的马包括魔改后的马，比如拖拉机。默认{{defaultValue}}x。",
 
+    "config.read-book.name": "读书",
+    "config.read-book.tooltip": "读书的速度。默认{{defaultValue}}x.",
+
     "config.shear.name": "剪毛",
     "config.shear.tooltip": "使用剪刀的速度。默认{{defaultValue}}x。",
 
@@ -41,6 +47,9 @@
 
     "config.tool.name": "工具",
     "config.tool.tooltip": "使用工具（除去武器和鱼竿）的速度，比如斧、喷壶、镰刀等。默认{{defaultValue}}x，建议{{suggestedValue}}x。",
+
+    "config.use-totem.name": "图腾",
+    "config.use-totem.tooltip": "使用图腾的速度。默认{{defaultValue}}x.",
 
     "config.weapon.name": "武器",
     "config.weapon.tooltip": "使用武器的速度。默认{{defaultValue}}x，建议{{suggestedValue}}x。",
@@ -53,14 +62,29 @@
     "config.break-geodes.name": "敲晶球",
     "config.break-geodes.tooltip": "铁匠破开晶球的速度。默认{{defaultValue}}x。",
 
-    "config.casino-slots.name": "赌场老虎机",
-    "config.casino-slots.tooltip": "赌场老虎机的转速。默认{{defaultValue}}x。",
-
     "config.bus.name": "公交车",
     "config.bus.tooltip": "往返沙漠公交车的车速。默认{{defaultValue}}x。",
 
+    "config.casino-slots.name": "赌场老虎机",
+    "config.casino-slots.tooltip": "赌场老虎机的转速。默认{{defaultValue}}x。",
+
+    "config.fishing-treasure.name": "钓鱼宝箱",
+    "config.fishing-treasure.tooltip": "钓鱼宝箱打开的速度。默认{{defaultValue}}x.",
+
+    "config.forge.name": "锻造",
+    "config.forge.tooltip": "锻造的速度。默认{{defaultValue}}x.",
+
+    "config.open-chest.name": "宝箱打开",
+    "config.open-chest.tooltip": "宝箱打开的速度。默认{{defaultValue}}x.",
+
+    "config.prize-ticket-machine.name": "兑奖机",
+    "config.prize-ticket-machine.tooltip": "兑奖机兑奖的速度。默认{{defaultValue}}x.",
+
     "config.tree-fall.name": "树倒下",
     "config.tree-fall.tooltip": "树被砍倒的速度。默认{{defaultValue}}x，建议{{suggestedValue}}x。",
+
+    "config.wheel-spin.name": "转轮盘",
+    "config.wheel-spin.tooltip": "轮盘旋转的速度。默认{{defaultValue}}x.",
 
     /****
     ** 'UI Animation Speeds' section

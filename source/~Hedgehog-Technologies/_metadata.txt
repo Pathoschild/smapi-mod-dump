@@ -7,9 +7,9 @@ mods:
    AutoShaker
 
 latest commit:
-   commit bdada09c5352aa3e17ee31071b13bd2131f205b2
+   commit 73a9ffeac075751a9d1464833339360b38fc9342
    Author: Jag <jag3dagster@gmail.com>
-   Date:   Thu Apr 25 22:22:19 2024 -0700
+   Date:   Fri May 24 11:11:15 2024 -0700
    
-       feat(contentpacks): Add Stranded Fish content pack
+       refactor(autoforager): Swap to DataLoader
    

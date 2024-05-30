@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/poohnhi/PoohCore
+   Git: https://github.com/poohnhi/PoohCore.git
+
+mods:
+   PoohCore
+
+latest commit:
+   commit a69a57e6f660609819f5079030600329f12f3a0f
+   Author: Pooh <poohnhi@gmail.com>
+   Date:   Tue May 7 23:28:01 2024 +0700
+   
+       backup current progress 3
+   

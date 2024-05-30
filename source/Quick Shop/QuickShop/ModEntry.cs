@@ -18,7 +18,7 @@ namespace QuickShop;
 
 public class ModEntry : Mod
 {
-    private Config _config;
+    public Config Config;
     private static ModEntry _instance;
 
     public ModEntry()
@@ -28,17 +28,17 @@ public class ModEntry : Mod
 
     public override void Entry(IModHelper helper)
     {
-        _config = helper.ReadConfig<Config>();
-        helper.Events.Input.ButtonPressed += OnButtonPress;
+        Config = helper.ReadConfig<Config>();
+        helper.Events.Input.ButtonsChanged += ButtonsChanged;
     }
 
-    private void OnButtonPress(object? sender, ButtonPressedEventArgs e)
+    private void ButtonsChanged(object? sender, ButtonsChangedEventArgs e)
     {
         if (!Context.IsWorldReady)
             return;
         if (!Context.IsPlayerFree)
             return;
-        if (e.Button != _config.OpenQuickShop)
+        if (!Config.OpenQuickShop.JustPressed())
             return;
         Game1.activeClickableMenu = new QuickShopScreen();
     }
@@ -46,5 +46,25 @@ public class ModEntry : Mod
     public static ModEntry GetInstance()
     {
         return _instance;
+    }
+
+    public string GetButtonTranslation(string key)
+    {
+        return _instance.Helper.Translation.Get("quickShop.button." + key);
+    }
+    
+    public string GetLabelTranslation(string key)
+    {
+        return _instance.Helper.Translation.Get("quickShop.label." + key);
+    }
+    
+    public string GetSettingTranslation(string key)
+    {
+        return _instance.Helper.Translation.Get("quickShop.screen.setting." + key);
+    }
+
+    public string GetTranslation(string key)
+    {
+        return _instance.Helper.Translation.Get(key);
     }
 }

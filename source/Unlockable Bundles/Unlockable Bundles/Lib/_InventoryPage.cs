@@ -34,7 +34,7 @@ namespace Unlockable_Bundles.Lib
         private const int LastInventorySlotId = 11;
         public static void Initialize()
         {
-            BundleOverviewIcon = Helper.ModContent.Load<Texture2D>("assets/BundleOverviewIcon.png");
+            BundleOverviewIcon = Helper.GameContent.Load<Texture2D>("UnlockableBundles/UI/BundleOverviewIcon");
 
             var harmony = new Harmony(ModManifest.UniqueID);
 
@@ -79,7 +79,7 @@ namespace Unlockable_Bundles.Lib
             } else
                 __instance.organizeButton.upNeighborID = OverviewButtonId;
 
-            BundleOverviewButton = new ClickableTextureComponent("", new Rectangle(pos.X, pos.Y, 64, 64), "", "Bundle Overview", BundleOverviewIcon, new Rectangle(0, 0, 60, 55), 1f) {
+            BundleOverviewButton = new ClickableTextureComponent("", new Rectangle(pos.X, pos.Y, 64, 64), "", "Bundle Overview", BundleOverviewIcon, new Rectangle(0, 0, 61, 56), 1f) {
                 myID = OverviewButtonId,
                 leftNeighborID = leftNeighborID,
                 downNeighborID = downNeighborID

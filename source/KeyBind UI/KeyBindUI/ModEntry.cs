@@ -25,13 +25,13 @@ public class ModEntry : Mod
         _instance = this;
     }
 
-    private readonly Button _keyBindUi = new Button("KeyBindUI", "", 20, 0, 200, 80);
+    private readonly Button _keyBindUi = new("KeyBindUI", "", 20, 0, 200, 80);
 
     public override void Entry(IModHelper helper)
     {
         helper.Events.Display.Rendered += (sender, args) =>
         {
-            if (Game1.activeClickableMenu is GameMenu gameMenu && gameMenu.currentTab == GameMenu.numberOfTabs)
+            if (Game1.activeClickableMenu is GameMenu)
             {
                 _keyBindUi.Render(args.SpriteBatch);
             }
@@ -41,7 +41,7 @@ public class ModEntry : Mod
         {
             if (args.Button != SButton.MouseLeft || !_keyBindUi.Hovered) return;
             _keyBindUi.Hovered = false;
-            Game1.activeClickableMenu = new KeyBindGui();
+            Game1.activeClickableMenu = new KeyBindScreen();
             Game1.playSound("drumkit6");
         };
     }

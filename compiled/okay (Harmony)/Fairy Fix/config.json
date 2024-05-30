@@ -1,0 +1,6 @@
+{
+  "SelectMode": "ConnectedSameCrop",
+  "ReviveDeadCrops": true,
+  "ResetOnSeasonChange": true,
+  "ToggleButton": "U"
+}

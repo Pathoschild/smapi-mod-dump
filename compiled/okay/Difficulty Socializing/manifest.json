@@ -1,0 +1,16 @@
+{
+    "Name": "DifficultySocializing",
+    "Author": "PokeBenji",
+    "Version": "1.0.5",
+    "Description": "Adjusts friendship points gained from talking and gifting, and toggles friendship decay.",
+    "UniqueID": "PokeBenji.DifficultySocializing",
+    "EntryDll": "DifficultySocializing.dll",
+    "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:24389" ],
+    "Dependencies": [
+        {
+            "UniqueID": "spacechase0.GenericModConfigMenu",
+            "IsRequired": true
+        }
+    ]
+}

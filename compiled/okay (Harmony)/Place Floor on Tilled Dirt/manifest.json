@@ -1,0 +1,10 @@
+{
+  "Name": "Place Floor on Tilled Dirt",
+  "Author": "temisthem",
+  "Version": "1.0.0",
+  "Description": "I put a floor on the tilled dirt.",
+  "UniqueID": "tem696969696969.PlaceFloorOnTilledDirt",
+  "EntryDll": "PlaceFloorOnTilledDirt.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:23493" ]
+}

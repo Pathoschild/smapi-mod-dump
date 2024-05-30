@@ -18,6 +18,7 @@ using StardewValley.Quests;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace ScheduleViewer
 {
@@ -56,7 +57,7 @@ namespace ScheduleViewer
 
         public readonly List<ClickableTextureComponent> questIcons = new();
 
-        private readonly Texture2D emptySprite = ModEntry.ModHelper.ModContent.Load<Texture2D>("assets/Icons.png");
+        private readonly Texture2D icons = ModEntry.ModHelper.ModContent.Load<Texture2D>("assets/Icons.png");
 
         public Friendship emptyFriendship = new();
 
@@ -85,17 +86,21 @@ namespace ScheduleViewer
             int itemIndex = 0;
             int lastQuestIndex = -1;
             Rectangle spriteBounds = new(base.xPositionOnScreen + IClickableMenu.borderWidth + 4, base.yPositionOnScreen + IClickableMenu.borderWidth + spriteSize / 2, 260, spriteSize);
+            Regex nameRegex = new($"-{ModEntry.ModHelper.ModRegistry.ModID}-\\d");
             foreach (var item in filteredSchedules)
             {
                 // if not host then need to get sprite info
                 if (item.Value.NPC == null)
                 {
-                    NPC npc = Game1.getCharacterFromName(item.Key);
+                    // clear out extra count details from name (see Schedule.cs:241)
+                    NPC npc = Game1.getCharacterFromName(nameRegex.Replace(item.Key, ""));
                     item.Value.NPC = npc;
                 }
+                // update CanAccess variable
+                Schedule.UpdateScheduleEntriesCanAccess(item.Value);
 
                 this.schedules.Add(item.Value);
-                this.sprites.Add(new ClickableTextureComponent($"{item.Key}-sprite", spriteBounds.Clone(), null, "", item.Value.NPC?.Sprite.Texture ?? emptySprite, item.Value.NPC?.getMugShotSourceRect() ?? new Rectangle(0, 0, 16, 24), 4f));
+                this.sprites.Add(new ClickableTextureComponent($"{item.Key}-sprite", spriteBounds.Clone(), null, "", item.Value.NPC?.Sprite.Texture ?? icons, item.Value.NPC?.getMugShotSourceRect() ?? new Rectangle(0, 0, 16, 24), 4f));
                 ClickableTextureComponent characterSlot = new(new Rectangle(base.xPositionOnScreen + IClickableMenu.borderWidth, 0, base.width - IClickableMenu.borderWidth * 2, rowHeight), null, new Rectangle(0, 0, 0, 0), 4f)
                 {
                     myID = itemIndex,
@@ -282,7 +287,7 @@ namespace ScheduleViewer
             {
                 if (bounds.Contains(x, y))
                 {
-                    this.hoverText = text; 
+                    this.hoverText = text;
                     break;
                 }
             }
@@ -493,7 +498,7 @@ namespace ScheduleViewer
             int y = sprite.bounds.Y - 4;
             int slot = i - this.slotPosition;
 
-            if (isOnSchedule)
+            if (isOnSchedule && entries != null)
             {
                 float yOffset = 0;
                 int activeEntryIndex = 0;
@@ -513,8 +518,9 @@ namespace ScheduleViewer
                 foreach (var line in lines)
                 {
                     string entryString = line.Value?.ToString();
+                    int stringWidth = string.IsNullOrEmpty(entryString) ? 0 : (int)Game1.smallFont.MeasureString(entryString).X + 2;
                     string key = $"{slot}-{line.Key - line1Index}";
-                    this.entryHoverText[key] = string.IsNullOrEmpty(entryString) ? null : Tuple.Create(new Rectangle(x, y + (int)yOffset, (int)Game1.smallFont.MeasureString(entryString).X + 2, (int)lineHeight), line.Value.HoverText);
+                    this.entryHoverText[key] = string.IsNullOrEmpty(entryString) ? null : Tuple.Create(new Rectangle(x, y + (int)yOffset, stringWidth, (int)lineHeight), line.Value.HoverText);
 
                     if (line.Value != null)
                     {
@@ -525,6 +531,11 @@ namespace ScheduleViewer
                         else
                         {
                             b.DrawString(Game1.smallFont, entryString, new Vector2(x, y + yOffset), Game1.textColor);
+                        }
+                        // draw inaccesible icon
+                        if (!line.Value.CanAccess)
+                        {
+                            b.Draw(Game1.mouseCursors, new Vector2(x + stringWidth + 4, y + yOffset + 5), new Rectangle(218, 428, 7, 6), Color.White, 0f, Vector2.Zero, 3f, SpriteEffects.None, 1f);
                         }
                         yOffset += lineHeight;
                     }

@@ -8,7 +8,11 @@
 **
 *************************************************/
 
+using ItemExtensions.Models.Items;
 using StardewModdingAPI;
+using StardewValley.Internal;
+using StardewValley;
+using xTile.Dimensions;
 
 namespace ItemExtensions.Additions;
 
@@ -22,6 +26,17 @@ public static class Sorter
     
     private static void Log(string msg, LogLevel lv = Level) => ModEntry.Mon.Log(msg, lv);
     
+    internal static int GetMaxFeatures(int level)
+    {
+        if (level % 20 == 0)
+            return 0;
+
+        if (level == 77377)
+            return 15;
+
+        var remainder = level % 30;
+        return remainder;
+    }
     /// <summary>
     /// Grabs all ores that match a random double. (E.g, all with a chance bigger than 0.x, starting from smallest)
     /// </summary>
@@ -98,5 +113,34 @@ public static class Sorter
         }
 
         return result;
+    }
+
+    internal static bool GetItem(ExtraSpawn data, ItemQueryContext context, out Item item)
+    {
+        item = null;
+        
+        try
+        {
+            if (data.Chance < Game1.random.NextDouble())
+                return false;
+
+            if (string.IsNullOrWhiteSpace(data.Condition) && GameStateQuery.CheckConditions(data.Condition, context.Location, context.Player) == false)
+                return false;
+
+            var solvedQuery = ItemQueryResolver.TryResolve(data.ItemId, context, data.Filter, data.PerItemCondition, avoidRepeat: data.AvoidRepeat);
+
+            var chosenItem = solvedQuery.FirstOrDefault()?.Item;
+
+            if (string.IsNullOrWhiteSpace(chosenItem.QualifiedItemId))
+                return false;
+
+            item = ItemRegistry.Create(chosenItem.QualifiedItemId, chosenItem.Stack, data.Quality);
+            return true;
+        }
+        catch(Exception ex)
+        {
+            Log($"Exception while sorting item query: {ex}.", LogLevel.Warn);
+            return false;
+        }
     }
 }

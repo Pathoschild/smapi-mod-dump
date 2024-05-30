@@ -9,6 +9,7 @@
 
     // generic values
     "generic.unknown": "알 수 없음",
+    "generic.list-separator": ", ", // text between listed values (like ", " in "A, B, C")
 
     // generic field values 기본적 필드 값들
     "generic.percent": "{{percent}}%",
@@ -18,20 +19,20 @@
     "generic.range": "{{min}} ~ {{max}}",
     "generic.yes": "예",
     "generic.no": "아니오",
-    "generic.seconds": "{{count}} 초",
-    "generic.minutes": "{{count}} 분",
-    "generic.hours": "{{count}} 시간",
-    "generic.days": "{{count}} 일",
+    "generic.seconds": "{{count}}초",
+    "generic.minutes": "{{count}}분",
+    "generic.hours": "{{count}}시간",
+    "generic.days": "{{count}}일",
     "generic.in-x-days": "{{count}}일 남음",
     "generic.x-days-ago": "{{count}}일 전",
     "generic.price": "{{price}}g",
     "generic.price-for-quality": "{{price}}g ({{quality}})",
-    "generic.price-for-stack": "{{count}}개를 묶음 판매 시 {{price}}G",
-    "generic.show-x-results": "show {{count}} results", // TODO
+    "generic.price-for-stack": "{{count}}개를 묶음 판매 시 {{price}}g",
+    "generic.show-x-results": "결과 {{count}}개 보기",
 
     // types 유형
     "type.building": "건물",
-    "type.bush": "덤블",
+    "type.bush": "덤불",
     "type.fruit-tree": "과일 나무",
     "type.map-tile": "맵 타일",
     "type.monster": "몬스터",
@@ -48,7 +49,7 @@
 
     // NPC friendship 우정관계
     "friendship-status.friendly": "친근함",
-    "friendship-status.dating": "연애중",
+    "friendship-status.dating": "연애 중",
     "friendship-status.engaged": "약혼함",
     "friendship-status.married": "결혼함",
     "friendship-status.divorced": "이혼함",
@@ -60,7 +61,7 @@
     *********/
     // Community Center bundle areas
     "bundle-area.pantry": "식료품 저장고",
-    "bundle-area.crafts-room": "제작공방",
+    "bundle-area.crafts-room": "제작 공방",
     "bundle-area.fish-tank": "수족관",
     "bundle-area.boiler-room": "보일러실",
     "bundle-area.vault": "금고",
@@ -68,11 +69,11 @@
     "bundle-area.abandoned-joja-mart": "버려진 조자 마트",
 
     // shop names
-    "shop.adventure-guild": "모험가 길드",
+    "shop.adventure-guild": "모험가의 길드",
     "shop.clint": "클린트의 대장간",
     "shop.marnie": "마니의 목장",
     "shop.pierre": "피에르 잡화점",
-    "shop.robin": "로빈 목공소",
+    "shop.robin": "로빈의 목공소",
     "shop.volcano": "화산 상점",
     "shop.willy": "윌리의 낚시용품점",
 
@@ -92,39 +93,25 @@
 
     // override item text
     "data.item.egg-incubator.description": "알을 병아리나 새끼 오리로 부화시킨다.",
-
-    // mine containers
     "data.item.barrel.name": "나무통",
     "data.item.barrel.description": "부수면 잡동사니들을 얻을 수 있다.",
     "data.item.box.name": "상자",
     "data.item.box.description": "부수면 잡다한 물품들을 얻을 수 있다.",
 
     // location names
-    "location.backwoods": "오솔길",
-    "location.beach": "해변",
     "location.beach.east-pier": "오른쪽 해변",
     "location.bugLand": "버그랜드",
-    "location.busStop": "버스 정류장",
-    "location.desert": "사막",
     "location.desert.topPond": "사막 (북쪽 연못)",
-    "location.farm": "농장",
     "location.farmCave": "동굴",
     "location.farmHouse": "농장주 집",
-    "location.forest": "숲",
     "location.forest.island-tip": "섬 (큰 섬의 남쪽 끝)",
     "location.forest.lake": "숲 호수",
     "location.forest.river": "숲 강",
-    "location.mountain": "산",
-    "location.railroad": "철길",
-    "location.sewer": "하수도",
     "location.submarine": "야시장 잠수함",
-    "location.town": "마을",
     "location.town.northmost-bridge": "마을 (최북단의 다리)",
-    "location.tunnel": "버스 터널",
     "location.undergroundMine": "광산",
-    "location.undergroundMine.level": "광산 레벨 {{level}}",
+    "location.undergroundMine.level": "광산 {{level}}층",
     "location.witchSwamp": "마녀의 늪",
-    "location.woods": "비밀 숲",
 
     "location.caldera": "진저섬 칼데라",
     "location.islandEast": "진저섬 동쪽",
@@ -136,7 +123,31 @@
     "location.islandWest.freshwater": "진저섬 서쪽 (연못)",
     "location.islandWest.ocean": "진저섬 서쪽 (바다)",
 
+    "location.fish-area": "{{locationName}} ({{areaName}})",
     "location.unknown-fish-area": "{{locationName}} (낚시 장소 {{id}})",
+
+
+    /*********
+    ** Conditions & context tags
+    *********/
+    // TODO
+    "condition-or-context-tag.negate": "{{value}} 없음",
+
+    "condition.item-type.input": "input item",
+    "condition.item-type.target": "target item",
+
+    "condition.item-context-tag": "{{item}} has context tag {{tags}}",
+    "condition.item-context-tags": "{{item}} has context tags {{tags}}",
+    "condition.item-context-tag.value": "'{{tag}}'", // the format of each context tag in the list (each context tag isn't translated)
+
+    "condition.item-edibility.edible": "{{item}} is edible",
+    "condition.item-edibility.min": "{{item}} has edibility of {{min}} or more",
+    "condition.item-edibility.range": "{{item}} has edibility of {{min}} to {{max}}",
+
+    "context-tag.bone": "뼈 (아무거나)",
+    "context-tag.egg": "알 (아무거나)",
+    "context-tag.large-egg": "큰 알 (아무거나)",
+    "context-tag.preserved-item": "preserved {{name}}", // TODO
 
 
     /*********
@@ -153,7 +164,7 @@
 
     // values
     "animal.complaints.hungry": "어제 먹이를 먹지 못함.",
-    "animal.complaints.left-out": "어젯밤 바깥에서 자야했음.",
+    "animal.complaints.left-out": "어젯밤 바깥에서 자야 했음.",
     "animal.complaints.new-home": "새로운 집에 적응 중.",
     "animal.complaints.no-heater": "겨울에 난방기가 없음.",
     "animal.complaints.not-petted": "오늘 쓰다듬 받지 못함.",
@@ -165,7 +176,7 @@
     *********/
     // labels
     "building.animals": "동물",
-    "building.construction": "건축중",
+    "building.construction": "건물",
     "building.feed-trough": "여물통",
     "building.horse": "말",
     "building.horse-location": "말의 위치",
@@ -183,7 +194,7 @@
     "building.horse-location.summary": "{{location}} ({{x}}, {{y}})",
     "building.junimo-harvesting-enabled": "수확 활성화 됨",
     "building.owner.none": "소유인 없음.",
-    "building.output-processing": "처리중",
+    "building.output-processing": "처리 중",
     "building.output-ready": "생산물 준비 완료",
     "building.slimes.summary": "최대 {{max}}마리까지의 슬라임 중 {{count}}마리 수용 중.",
     "building.stored-hay.summary": "이 위치에 있는 건초 {{maxHayInLocation}}개 중 {{hayCount}}개(이 건물의 최대 용량: {{maxHayInBuilding}})",
@@ -208,10 +219,10 @@
     "building.fish-pond.quests": "퀘스트",
 
     // values
-    "building.fish-pond.population.empty": "시작하기 위해 물고기를 추가해야 한다.",
+    "building.fish-pond.population.empty": "시작하기 위해 물고기를 추가해야 합니다.",
     "building.fish-pond.population.next-spawn": "새로운 물고기 생성 -  {{relativeDate}}",
     "building.fish-pond.drops.preface": "{{chance}}% 매일 우연히 일치된 첫 품목을 생산 :",
-    "building.fish-pond.drops.min-fish": "연못에 {{count}}마리 물고기가 있을때:",
+    "building.fish-pond.drops.min-fish": "연못에 {{count}}마리 물고기가 있을 때:",
     "building.fish-pond.quests.done": "{{count}}마리",
     "building.fish-pond.quests.incomplete-one": "{{count}}마리: {{itemName}} 필요",
     "building.fish-pond.quests.incomplete-random": "{{count}}마리 물고기:  {{itemList}} 중 랜덤 1개 필요 ",
@@ -222,9 +233,9 @@
     ** Bush lookups
     *********/
     // labels
-    "bush.name.berry": "베리 덤블",
-    "bush.name.plain": "일반 덤블",
-    "bush.name.tea": "차 덤블",
+    "bush.name.berry": "베리 덤불",
+    "bush.name.plain": "일반 덤불",
+    "bush.name.tea": "차 덤불",
     "bush.description.berry": "새먼베리와 블랙베리가 자라는 덤불.",
     "bush.description.plain": "아무것도 자라지 않는 일반 덤불.",
     "bush.description.Tea": "찻잎이 자라는 덤불.",
@@ -278,7 +289,7 @@
     "crop.summary.harvest-once": "{{daysToFirstHarvest}}일 후에 수확 가능",
     "crop.summary.harvest-multi": "{{daysToFirstHarvest}}일 후에 수확 가능, 그 후 매 {{daysToNextHarvests}}일마다 주기적 수확 가능.",
     "crop.summary.seasons": "{{seasons}}에 자람",
-    "crop.summary.sells-for": "판매가격: {{price}}",
+    "crop.summary.sells-for": "판매 가격: {{price}}",
     "crop.harvest.too-late": "작물을 수확하기엔 너무 늦은 계절이다 (다음 수확까지 {{date}}일 걸림)",
 
 
@@ -306,11 +317,11 @@
 
     // values
     "item.custom-item.summary": "{{modName}} 추가됨",
-    "item.contents.placed": "{{name}}이/가 들어감",
-    "item.contents.ready": "{{name}}이/가 준비됨",
-    "item.contents.partial": "{{name}}이/가 준비되기까지 {{time}} 남음.",
-    "item.undiscovered-gift-taste": "{{count}} 만나지 않은 사람들",
-    "item.undiscovered-gift-taste-appended": ", 그리고 {{count}} 만나 본 사람들",
+    "item.contents.placed": "{{name}} 들어감",
+    "item.contents.ready": "{{name}} 준비됨",
+    "item.contents.partial": "{{name}} 준비되기까지 {{time}} 남음.",
+    "item.undiscovered-gift-taste": "공개되지 않은 사람 {{count}}명",
+    "item.undiscovered-gift-taste-appended": ", 그리고 공개되지 않은 사람 {{count}}명",
     "item.needed-for.community-center": "마을 회관 ({{bundles}})",
     "item.needed-for.full-shipment": "도전과제 '완전 판매' (1개 출하)",
     "item.needed-for.polyculture": "도전과제 '복합 재배' ({{count}}개 더 출하)",
@@ -318,10 +329,14 @@
     "item.needed-for.gourmet-chef": "도전과제 '미식가 요리사' ({{recipes}}을/를 요리하세요)",
     "item.needed-for.craft-master": "도전과제 '제작의 달인' ({{recipes}}을/를 제작하세요)",
     "item.needed-for.quests": "현재 퀘스트 ({{quests}})",
+    "item.unknown-recipes": "알 수 없는 레시피 {{count}}개",
     "item.sells-to.shipping-box": "출하 상자",
     "item.recipes-for-ingredient.entry": "{{name}} ({{count}}개 필요)",
     "item.recipes-for-machine.multiple-items": "{{name}} x{{count}}",
-    "item.number-owned.summary": "당신은 이것들을 {{count}}개 보유중.",
+    "item.recipes-for-machine.same-as-input": "[넣는 아이템과 동일]", // e.g. crystalarium produces same item that was put in
+    "item.recipes-for-machine.conditions": "[조건: {{conditions}}]",
+    "item.recipes-for-machine.too-complex": "일부 기계 규칙은 너무 동적이어서 표시할 수 없습니다.",
+    "item.number-owned.summary": "당신은 이것들을 {{count}}개 보유 중.",
     "item.number-crafted.summary": "당신은 이것들을 {{count}}개 제작했음.",
 
 
@@ -355,7 +370,7 @@
     "item.fence-health": "내구도",
 
     // values
-    "item.fence-health.gold-clock": "금시계로 인하여 내구도가 감소하지 않음",
+    "item.fence-health.gold-clock": "황금 시계로 인하여 내구도가 감소하지 않음",
     "item.fence-health.summary": "{{percent}}% (대략 {{count}}일 남음)",
 
 
@@ -376,7 +391,7 @@
     "item.fish-spawn-rules.season-list": "계절: {{seasons}}",
     "item.fish-spawn-rules.time": "시간: {{times}}",
     "item.fish-spawn-rules.weather-sunny": "날씨: 맑은 날",
-    "item.fish-spawn-rules.weather-rainy": "날씨: 비오는 날",
+    "item.fish-spawn-rules.weather-rainy": "날씨: 비 오는 날",
 
 
     /*********
@@ -394,11 +409,11 @@
 
     // values
     "item.melee-weapon.critical-damage.label": "일반 데미지의 {{multiplier}}배(플레이어 보너스 적용 전)",
-    "item.melee-weapon.defense.label": "{{amount}} 장착중",
+    "item.melee-weapon.defense.label": "{{amount}} 장착 중",
     "item.melee-weapon.knockback.label": "{{amount}} (일반 거리의 {{multiplier}}배)",
     "item.melee-weapon.reach.label": "{{amount}} 픽셀",
     "item.melee-weapon.speed.shown-vs-actual": "표시: {{shownSpeed}}{{lineBreak}}실제: {{actualSpeed}}",
-    "item.melee-weapon.speed.summary": "{{speed}} (스윙 프레임당{{milliseconds}} 밀리초, 플레이어 속도 보너스 적용 전)",
+    "item.melee-weapon.speed.summary": "{{speed}} (스윙 프레임당 {{milliseconds}}밀리초, 플레이어 속도 보너스 적용 전)",
 
 
     /*********
@@ -416,7 +431,7 @@
     "item.movie-snack-preference.love": "{{name}} 사랑함",
     "item.movie-snack-preference.like": "{{name}} 좋아함",
     "item.movie-snack-preference.dislike": "{{name}} 싫어함",
-    "item.movie-ticket.movie-this-week.none": "이번 주 상영영화 없음",
+    "item.movie-ticket.movie-this-week.none": "이번 주 상영하는 영화 없음",
 
 
     /*********
@@ -434,14 +449,14 @@
     "monster.invincible": "무적",
     "monster.health": "체력",
     "monster.drops": "드랍 물품",
-    "monster.experience": "XP(경험치)",
+    "monster.experience": "경험치",
     "monster.defense": "방어력",
     "monster.attack": "공격력",
-    "monster.adventure-guild": "모험가 길드",
+    "monster.adventure-guild": "모험가의 길드",
 
     // values
-    "monster.drops.nothing": "개털(아무것도 안 줌)",
-    "monster.adventure-guild.eradication-goal": "몬스터 박멸 목표: {{name}} (목표 {{requiredCount}} 중 {{count}} 처치)",
+    "monster.drops.nothing": "아무것도 안 줌",
+    "monster.adventure-guild.eradication-goal": "몬스터 박멸 목표: {{name}} (목표 {{requiredCount}}마리 중 {{count}}마리 처치)",
 
 
     /*********
@@ -453,7 +468,7 @@
     "npc.friendship": "호감도",
     "npc.talked-today": "오늘 대화함",
     "npc.gifted-today": "오늘 선물을 줌",
-    "npc.gifted-this-week": "이번 주 선물 횟수를 모두 사용함",
+    "npc.gifted-this-week": "이번 주 선물 횟수",
     "npc.kissed-today": "오늘 키스 했음",
     "npc.hugged-today": "오늘 포옹 했음",
     "npc.loves-gifts": "사랑하는 선물",
@@ -463,13 +478,13 @@
     "npc.hates-gifts": "혐오하는 선물",
 
     // values
-    "npc.can-romance.married": "당신은 이미 결혼했다! <", // < turns into a heart
+    "npc.can-romance.married": "당신은 이미 결혼했다!", // < turns into a heart (Korean does not support emoji)
     "npc.can-romance.housemate": "당신의 룸메이트!",
     "npc.friendship.not-met": "당신은 아직 이 NPC를 만나지 못했다.",
-    "npc.friendship.need-bouquet": "다음 호감도 진행을 위해서 꽃다발 필요.",
+    "npc.friendship.need-bouquet": "다음 호감도 진행을 위해서 부케 필요.",
     "npc.friendship.need-points": "호감도 UP까지 {{count}}점",
-    "npc.undiscovered-gift-taste": "{{count}} 미공개 품목",
-    "npc.unowned-gift-taste": "{{count}} 소유하지 않은 품목",
+    "npc.undiscovered-gift-taste": "공개되지 않은 품목 {{count}}개",
+    "npc.unowned-gift-taste": "소유하지 않은 품목 {{count}}개",
 
 
     /*********
@@ -501,7 +516,7 @@
     "pet.last-petted.days-ago": "{{days}}일 전에",
     "pet.last-petted.never": "아님",
     "pet.water-bowl.empty": "비어있음",
-    "pet.water-bowl.filled": "가득참 (+6 애정도)",
+    "pet.water-bowl.filled": "가득 참 (+6 애정도)",
 
 
     /*********
@@ -540,7 +555,7 @@
 
     // values
     "puzzle.solution.solved": "퍼즐 해결!",
-    "puzzle.solution.hidden": "진행 모드에 퍼즐 정답이 숨겨져 있습니다.",
+    "puzzle.solution.hidden": "퍼즐 정답은 설정에 따라 숨겨져 있습니다.",
 
 
     /*********
@@ -626,7 +641,7 @@
     "tree.stage.done": "다 자람",
     "tree.stage.partial": "{{stageName}}, {{max}}단계 중 ({{step}}단계)",
     "tree.next-growth.winter": "겨울에 온실 밖에서 성장 불가.",
-    "tree.next-growth.adjacent-trees": "다른 나무들과 너무 가까와 성장 불가.",
+    "tree.next-growth.adjacent-trees": "다른 나무들과 너무 가까워 성장 불가.",
     "tree.next-growth.chance": "내일 {{chance}}%의 확률로 다음으로 성장: {{stage}}",
     "tree.seed.not-ready": "준비되지 않음",
     "tree.seed.probability-daily": "매일 {{itemName}}이 나올 가능성이 {{chance}}%입니다.",
@@ -646,10 +661,21 @@
     *********/
     // main options
     "config.title.main-options": "메인 옵션",
-    "config.progression-mode.name": "진행 모드",
-    "config.progression-mode.desc": "게임 내에서 발견할 때까지 일부 콘텐츠(예: 선물 취향 및 퍼즐 솔루션)를 숨길지 여부.",
     "config.force-full-screen.name": "전체 화면 강제 표시",
     "config.force-full-screen.desc": "메뉴가 창 중앙이 아닌 항상 전체 화면이어야 하는지 여부. 이 기능은 주로 데이터 마이닝 필드를 볼 때 유용합니다.",
+
+    // progression mode
+    // TODO
+    "config.title.progression": "진행 모드",
+
+    "config.progression.show-unknown-gift-tastes.name": "Show unknown gift tastes",
+    "config.progression.show-unknown-gift-tastes.desc": "Whether to show gift tastes you haven't learned about in-game yet (e.g. from dialogue text or experimenting).",
+
+    "config.progression.show-unknown-recipes.name": "Show unknown recipes",
+    "config.progression.show-unknown-recipes.desc": "Whether to show recipes you haven't learned in-game yet.",
+
+    "config.progression.show-puzzle-solutions.name": "Show puzzle solutions",
+    "config.progression.show-puzzle-solutions.desc": "Whether to show puzzle solutions.",
 
     // gift tastes
     "config.title.gift-tastes": "선물 취향",
@@ -670,6 +696,17 @@
     "config.highlight-unrevealed-gift-tastes.name": "미공개 선물 취향 강조",
     "config.highlight-unrevealed-gift-tastes.desc": "NPC 프로필에 표시되지 않은 항목 선물 취향을 강조 표시할지 여부. 활성화하면 공개되지 않은 선물 취향이 굵게 표시됩니다.",
 
+    // collapse fields
+    "config.title.collapse-fields": "많은 정보 접기",
+
+    "config.collapse-fields.enabled.name": "활성화",
+    "config.collapse-fields.enabled.desc": "많은 정보들을 접어 조회하려는 목록에서 열 수 있는 '결과 X개 보기' 링크로 대체할지 여부.",
+
+    "config.collapse-fields.building-recipes.name": "건물 조회: 레시피",
+    "config.collapse-fields.item-recipes.name": "아이템 조회: 레시피",
+    "config.collapse-fields.npc-gift-tastes.name": "NPC 조회: 선물 취향",
+    "config.collapse-fields.any.desc": "조회하는 표에 많은 정보가 있는 경우 목록에서 열 수 있는 '결과 X개 보기' 링크로 대체합니다.",
+
     // advanced options
     "config.title.advanced-options": "고급 옵션",
     "config.tile-lookups.name": "타일 조회",
@@ -682,7 +719,7 @@
     "config.scroll-amount.desc": "각 위/아래 스크롤에서 콘텐츠를 이동할 픽셀 수.",
 
     // controls section
-    "config.title.controls": "단축키 설정",
+    "config.title.controls": "단축 키 설정",
     "config.hide-on-key-up.name": "키를 올릴 때 숨기기",
     "config.hide-on-key-up.desc": "조회 키를 놓을 때 조회 UI를 숨길지 여부",
     "config.toggle-lookup.name": "조회 전환",

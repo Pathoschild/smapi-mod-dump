@@ -1,0 +1,25 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/jasisco5/UncannyValleyMod
+**
+*************************************************/
+
+/********************************************************************************************************************************
+*																																*
+*										Schedule Dialogue																		*
+*		This is needed for schedules if you wish them to say something unique.													*
+*		Remember to always start from 000 as it will NOT work properly otherwise.												*
+*		The data below is a partial paste of Hiroshi's Schedule Dialogue.														*
+*																																*
+*********************************************************************************************************************************/
+
+{
+	"spring.000": "Ahhhh!The sun feels great on my skin... I wish I could lay here forever!$7",
+	"spring.001": "Saloons, bars, clubs, even taverns are a great place to get to know everyone.$1#$b#Super-Models tend to turn their nose up to the common rabble.$2#$b#I think a common person carries amazing secrets with them.#$b#A smart guy would diversify their experiences.^A smart lady like yourself would do best diversifying their experiences.#$b#That's why you're out here.. isn't it, @?$1",
+	"spring.002": "I'm just waiting for my limo...",
+}
+//This covers only the "spring" schedule of Hiroshi.

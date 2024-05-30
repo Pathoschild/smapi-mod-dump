@@ -1,0 +1,33 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/jasisco5/UncannyValleyMod
+**
+*************************************************/
+
+{
+  "$schema": "https://smapi.io/schemas/manifest.json",
+  "Name": "UncannyValleyMod",
+  "Author": "UncannyValley",
+  "Version": "0.5.0-beta",
+  "Description": "Horror mod for Stardew Valley",
+  "UniqueID": "UncannyValley.UncannyValleyMod",
+  "EntryDll": "UncannyValleyMod.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:20519@Mod" ],
+  "Dependencies": [
+    {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "MinimumVersion": "1.30.0",
+      "IsRequired": true
+    },
+    {
+      "UniqueID": "spacechase0.SpaceCore",
+      "MinimumVersion": "1.21.0",
+      "IsRequired": true
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+﻿{
+  "Config.PlaceBedsAnywhere.Name": "Placer des lits n’importe où.",
+  "Config.PlaceBedsAnywhere.Description": "Si activé, vous pouvez placer des lits dans n’importe quel endroit.",
+  "Config.PlaceMiniFridgesAnywhere.Name": "Placer des mini-frigos n’importe où.",
+  "Config.PlaceMiniFridgesAnywhere.Description": "Si activé, vous pouvez placer des mini-frigos dans n’importe quel endroit.",
+  "Config.PassOutSafelyEverywhere.Name": "S’évanouir n’importe où sans danger",
+  "Config.PassOutSafelyEverywhere.Description": "Si activé, vous ne perdrez pas d’argent si vous restez éveillé trop longtemps (02:00). NOTE : ça ne change rien à ce qui se passe si vous n’avez plus de vie."
+}

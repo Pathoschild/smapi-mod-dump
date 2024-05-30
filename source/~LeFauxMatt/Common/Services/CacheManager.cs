@@ -8,28 +8,36 @@
 **
 *************************************************/
 
+#if IS_FAUXCORE
+namespace StardewMods.FauxCore.Common.Services;
+
+using StardewModdingAPI.Events;
+using StardewMods.FauxCore.Common.Interfaces;
+using StardewMods.FauxCore.Common.Models.Cache;
+
+#else
 namespace StardewMods.Common.Services;
 
 using StardewModdingAPI.Events;
 using StardewMods.Common.Interfaces;
-using StardewMods.Common.Models;
+using StardewMods.Common.Models.Cache;
+#endif
 
 /// <summary>Service for managing cache tables.</summary>
 internal sealed class CacheManager
 {
-    private readonly List<CacheTable> cacheTables = [];
+    private readonly List<BaseCacheTable> cacheTables = [];
 
     private int lastTicks;
 
     /// <summary>Initializes a new instance of the <see cref="CacheManager" /> class.</summary>
-    /// <param name="eventSubscriber">The event subscriber used for subscribing to events.</param>
-    public CacheManager(IEventSubscriber eventSubscriber) =>
-        eventSubscriber.Subscribe<DayEndingEventArgs>(this.OnDayEnding);
+    /// <param name="eventManager">The event subscriber used for subscribing to events.</param>
+    public CacheManager(IEventManager eventManager) => eventManager.Subscribe<DayEndingEventArgs>(this.OnDayEnding);
 
     /// <summary>Retrieves a cache table of type T.</summary>
     /// <typeparam name="T">The type of objects stored in the cache table.</typeparam>
     /// <returns>The cache table of type T.</returns>
-    public ICacheTable<T> GetCacheTable<T>()
+    public CacheTable<T> GetCacheTable<T>()
     {
         var cacheTable = new CacheTable<T>();
         this.cacheTables.Add(cacheTable);

@@ -14,6 +14,7 @@ using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Extensions;
 using StardewValley.TerrainFeatures;
+using System.Reflection.Emit;
 using System.Threading;
 
 namespace SafeLightningUpdated {
@@ -32,80 +33,142 @@ namespace SafeLightningUpdated {
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(Utility), nameof(Utility.performLightningUpdate)),
-                prefix: new HarmonyMethod(typeof(ModEntry), nameof(Utility_PerformLightningUpdate_Prefix))
+                transpiler: new HarmonyMethod(typeof(ModEntry), nameof(UtilityPerformLightningUpdate_Transpiler))
             );
         }
 
-        static bool Utility_PerformLightningUpdate_Prefix(ref int time_of_day) {
-            if (!Config.ModEnabled) return true;
+        static bool GetStrikeStatus() {
+            bool allow = Config.ModEnabled ? Config.DisableStrikes : false;
+            return allow;
+        }
 
-            try {
-                Random random = Utility.CreateRandom(Game1.uniqueIDForThisGame, Game1.stats.DaysPlayed, time_of_day);
-                if (random.NextDouble() < 0.125 + Game1.player.team.AverageDailyLuck() + Game1.player.team.AverageLuckLevel() / 100.0) {
-                    Farm.LightningStrikeEvent lightningEvent = new Farm.LightningStrikeEvent();
-                    lightningEvent.bigFlash = true;
-                    Farm farm = Game1.getFarm();
-                    List<Vector2> lightningRods = new List<Vector2>();
-                    foreach (KeyValuePair<Vector2, StardewValley.Object> v2 in farm.objects.Pairs) {
-                        if (v2.Value.QualifiedItemId == "(BC)9") {
-                            lightningRods.Add(v2.Key);
-                        }
-                    }
-                    if (lightningRods.Count > 0) {
-                        for (int i = 0; i < 2; i++) {
-                            Vector2 v = random.ChooseFrom(lightningRods);
-                            if (farm.objects[v].heldObject.Value == null) {
-                                farm.objects[v].heldObject.Value = ItemRegistry.Create<StardewValley.Object>("(O)787");
-                                farm.objects[v].MinutesUntilReady = Utility.CalculateMinutesUntilMorning(Game1.timeOfDay);
-                                farm.objects[v].shakeTimer = 1000;
-                                lightningEvent.createBolt = true;
-                                lightningEvent.boltPosition = v * 64f + new Vector2(32f, 0f);
-                                if (!Config.DisableStrikes) farm.lightningStrikeEvent.Fire(lightningEvent);
-                                break;
-                            }
-                        }
-                    }
-                    if (random.NextDouble() < 0.25 - Game1.player.team.AverageDailyLuck() - Game1.player.team.AverageLuckLevel() / 100.0) {
-                        try {
-                            if (!Config.DisableStrikes) {
-                                if (Utility.TryGetRandom(farm.terrainFeatures, out var tile, out var feature)) {
-                                    if (feature is FruitTree fruitTree) {
-                                        lightningEvent.createBolt = true;
-                                        lightningEvent.boltPosition = tile * 64f + new Vector2(32f, -128f);
-                                    } else {
-                                        Crop crop = (feature as HoeDirt)?.crop;
-                                        bool num = crop != null && !crop.dead.Value;
-                                        if (feature.performToolAction(null, 0, tile)) {
-                                            lightningEvent.createBolt = true;
-                                            lightningEvent.boltPosition = tile * 64f + new Vector2(32f, -128f);
-                                        }
-                                        if (num && crop.dead.Value) {
-                                            lightningEvent.createBolt = true;
-                                            lightningEvent.boltPosition = tile * 64f + new Vector2(32f, 0f);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        catch (Exception) {
-                        }
-                    }
-                    if (!Config.DisableStrikes) farm.lightningStrikeEvent.Fire(lightningEvent);
-                } else if (random.NextDouble() < 0.1) {
-                    if (!Config.DisableStrikes) {
-                        Farm.LightningStrikeEvent lightningEvent2 = new Farm.LightningStrikeEvent();
-                        lightningEvent2.smallFlash = true;
-                        Farm farm = Game1.getFarm();
-                        farm.lightningStrikeEvent.Fire(lightningEvent2);
-                    }
-                    return false;
-                }
-                return false;
-            }
-            catch (Exception ex) {
-                StaticMonitor.Log($"Failed in {nameof(Utility_PerformLightningUpdate_Prefix)}:\n{ex}", LogLevel.Error);
-                return true;
-            }
+        static bool GetModStatus() {
+            return Config.ModEnabled;
+        }
+
+        static IEnumerable<CodeInstruction> UtilityPerformLightningUpdate_Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
+            var strikeStatusMethod = AccessTools.Method(typeof(ModEntry), nameof(GetStrikeStatus));
+            var modStatusMethod = AccessTools.Method(typeof (ModEntry), nameof(GetModStatus));
+
+            var matcher = new CodeMatcher(instructions, generator);
+
+            matcher.MatchStartForward(
+                new CodeMatch(OpCodes.Ldloc_1),
+                new CodeMatch(OpCodes.Ldfld),
+                new CodeMatch(OpCodes.Ldloc_S),
+                new CodeMatch(OpCodes.Callvirt),
+                new CodeMatch(OpCodes.Ldfld),
+                new CodeMatch(OpCodes.Ldstr, "(O)787")
+            ).ThrowIfNotMatch("Couldn't find match for lightning rod loop start");
+
+            matcher.MatchStartForward(new CodeMatch(OpCodes.Ret)
+            ).ThrowIfNotMatch("Couldn't find match for lightning rod loop return");
+
+            matcher.CreateLabel(out Label rodReturnLabel);
+
+            matcher.MatchStartBackwards(new CodeMatch(OpCodes.Ldloc_1)
+            ).ThrowIfNotMatch("Couldn't find match for lightning rod strike event fire");
+
+            matcher.InsertAndAdvance(
+                new CodeInstruction(OpCodes.Call, strikeStatusMethod),
+                new CodeInstruction(OpCodes.Brtrue, rodReturnLabel)
+            );
+
+            matcher.MatchStartForward(
+                new CodeMatch(OpCodes.Ldloc_S),
+                new CodeMatch(OpCodes.Ldloc_S),
+                new CodeMatch(OpCodes.Ldc_I4_1),
+                new CodeMatch(OpCodes.Callvirt),
+                new CodeMatch(OpCodes.Ldloc_2)
+            ).ThrowIfNotMatch("Couldn't find match for skip fruit tree struck countdown location");
+
+            matcher.CreateLabel(out Label skipStruckLabel);
+
+            matcher.MatchStartBackwards(
+                new CodeMatch(OpCodes.Ldloc_S),
+                new CodeMatch(OpCodes.Ldfld),
+                new CodeMatch(OpCodes.Ldc_I4_4),
+                new CodeMatch(OpCodes.Callvirt)
+            ).ThrowIfNotMatch("Couldn't find match for fruit tree struck countdown");
+
+            matcher.InsertAndAdvance(
+                new CodeInstruction(OpCodes.Call, modStatusMethod),
+                new CodeInstruction(OpCodes.Brtrue, skipStruckLabel)
+            );
+
+            matcher.MatchEndForward(
+                new CodeMatch(OpCodes.Ldloc_S),
+                new CodeMatch(OpCodes.Ldnull),
+                new CodeMatch(OpCodes.Ldc_I4_S),
+                new CodeMatch(OpCodes.Ldloc_S)
+            ).ThrowIfNotMatch("Couldn't find match for after terrain damage location");
+
+            matcher.CreateLabel(out Label afterDamageLabel);
+
+            matcher.MatchStartBackwards(new CodeMatch(OpCodes.Ldc_I4_S)
+            ).ThrowIfNotMatch("Couldn't find match for terrain damage amount");
+
+            matcher.InsertAndAdvance(
+                new CodeMatch(OpCodes.Ldc_I4_0),
+                new CodeInstruction(OpCodes.Call, modStatusMethod),
+                new CodeInstruction(OpCodes.Brtrue, afterDamageLabel),
+                new CodeMatch(OpCodes.Pop)
+            );
+
+            matcher.MatchEndForward(
+                new CodeMatch(OpCodes.Ldloc_S),
+                new CodeMatch(OpCodes.Callvirt),
+                new CodeMatch(OpCodes.Pop),
+                new CodeMatch(OpCodes.Ldloc_2)
+            ).ThrowIfNotMatch("Couldn't find match for remove terrain feature skip location");
+
+            matcher.CreateLabel(out Label terrainSkipLabel);
+
+            matcher.MatchStartBackwards(new CodeMatch(OpCodes.Ldloc_1)
+            ).ThrowIfNotMatch("Couldn't find match for remove terrain feature");
+
+            matcher.InsertAndAdvance(
+                new CodeInstruction(OpCodes.Call, modStatusMethod),
+                new CodeInstruction(OpCodes.Brtrue, terrainSkipLabel)
+            );
+
+            matcher.MatchEndForward(
+                new CodeMatch(OpCodes.Ldloc_1),
+                new CodeMatch(OpCodes.Ldfld),
+                new CodeMatch(OpCodes.Ldloc_2),
+                new CodeMatch(OpCodes.Callvirt),
+                new CodeMatch(OpCodes.Ret)
+            ).ThrowIfNotMatch("Couldn't find match for skip terrain feature strike event fire location");
+
+            matcher.CreateLabel(out Label featureReturnLabel);
+
+            matcher.MatchStartBackwards(new CodeMatch(OpCodes.Ldloc_1)
+            ).ThrowIfNotMatch("Couldn't find match for terrain feature strike event start");
+
+            matcher.InsertAndAdvance(
+                new CodeInstruction(OpCodes.Call, strikeStatusMethod).MoveLabelsFrom(matcher.Instruction),
+                new CodeInstruction(OpCodes.Brtrue, featureReturnLabel)
+            );
+
+            matcher.MatchEndForward(
+                new CodeMatch(OpCodes.Ldloc_1),
+                new CodeMatch(OpCodes.Ldfld),
+                new CodeMatch(OpCodes.Ldloc_S),
+                new CodeMatch(OpCodes.Callvirt),
+                new CodeMatch(OpCodes.Ret)
+            ).ThrowIfNotMatch("Couldn't find match for skip small flash strike event location");
+
+            matcher.CreateLabel(out Label smallReturnLabel);
+
+            matcher.MatchStartBackwards(new CodeMatch(OpCodes.Ldloc_1)
+            ).ThrowIfNotMatch("Couldn't find match for small flash strike event");
+
+            matcher.InsertAndAdvance(
+                new CodeInstruction(OpCodes.Call, strikeStatusMethod),
+                new CodeInstruction(OpCodes.Brtrue, smallReturnLabel)
+            );
+
+            return matcher.InstructionEnumeration();
         }
 
         private void OnGameLaunched(object? sender, StardewModdingAPI.Events.GameLaunchedEventArgs e) {

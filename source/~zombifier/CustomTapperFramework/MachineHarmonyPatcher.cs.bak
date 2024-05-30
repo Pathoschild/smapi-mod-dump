@@ -1,0 +1,84 @@
+using System;
+using StardewValley;
+using StardewValley.Internal;
+using StardewValley.TerrainFeatures;
+using HarmonyLib;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using StardewModdingAPI;
+using System.Collections.Generic;
+using StardewValley.GameData.Machines;
+
+namespace CustomTapperFramework;
+
+using SObject = StardewValley.Object;
+
+// Contains logic for the machine API
+public class MachineHarmonyPatcher {
+  static string DoNotUseBaseGameRulesKey = $"{ModEntry.UniqueID}.DoNotUseBaseGameRules";
+
+  static string TerrainRestrictionKey = $"{ModEntry.UniqueID}.TerrainRestriction";
+  static string TerrainIdRestrictionKey = $"{ModEntry.UniqueID}.TerrainIdRestriction";
+  static string ProduceConditionKey = $"{ModEntry.UniqueID}.ProduceCondition";
+
+  public static void ApplyPatches(Harmony harmony) {
+    harmony.Patch(
+        original: AccessTools.Method(
+            typeof(StardewValley.MachineDataUtility),
+            nameof(StardewValley.MachineDataUtility.GetOutputData),
+            new Type[] { typeof(List<MachineItemOutput>), typeof(bool), typeof(Item),
+                         typeof(Farmer), typeof(GameLocation) }),
+        prefix: new HarmonyMethod(typeof(MachineHarmonyPatcher),
+          nameof(MachineHarmonyPatcher.MachineDataUtility_GetOutputData_Prefix)));
+
+    harmony.Patch(
+        original: AccessTools.Method(typeof(SObject),
+          nameof(SObject.canBePlacedHere)),
+        postfix: new HarmonyMethod(typeof(MachineHarmonyPatcher),
+          nameof(MachineHarmonyPatcher.SObject_canBePlacedHere_Postfix)));
+
+    harmony.Patch(
+        original: AccessTools.Method(typeof(Tree),
+          nameof(Tree.UpdateTapperProduct)),
+        prefix: new HarmonyMethod(typeof(MachineHarmonyPatcher),
+          nameof(MachineHarmonyPatcher.Tree_UpdateTapperProduct_Prefix)));
+  }
+
+	static void SObject_canBePlacedHere_Postfix(SObject __instance, ref bool __result, GameLocation l, Vector2 tile, CollisionMask collisionMask = CollisionMask.All, bool showError = false) {
+    var machineData = __instance.GetMachineData();
+    if (!__instance.IsTapper() || machineData == null) return;
+    if (Utils.GetFeatureAt(l, tile, out var feature, out var centerPos) && !l.objects.ContainsKey(centerPos)) {
+      if (feature is Tree && !machineData.CustomFields.ContainsKey(DoNotUseBaseGameRulesKey)) {
+        return;
+      }
+      (string terrainString, string terrainId) = GetTerrainFeatureStrings(feature, false);
+      if (terrainString == null) return;
+      foreach (var outputRule in machineData.OutputRules) {
+        foreach (var outputItem in outputRule.OutputItem) {
+          WOLOLO
+        }
+      }
+    }
+  }
+
+  static bool Tree_UpdateTapperProduct_Prefix(Tree __instance, SObject tapper, SObject previousOutput, bool onlyPerformRemovals) {
+    var machineData = tapper.GetMachineData();
+    if (machineData != null && machineData.CustomFields.ContainsKey(DoNotUseBaseGameRulesKey)) {
+      return false;
+    }
+    return true;
+  }
+
+  // Returns the ID strings for this feature to match against the custom data fields.
+  // Used for checking eligibility.
+  static (string, string) GetTerrainFeatureStrings(TerrainFeature feature, bool allowStumps = false) {
+    return feature switch {
+        Tree tree => tree.growthStage.Value >= 5 && (allowStumps || !tree.stump.Value) ?
+          ("Tree", tree.treeType.Value) : (null, null),
+        FruitTree fruitTree => fruitTree.growthStage.Value >= 4 && (allowStumps || !fruitTree.stump.Value) ?
+          ("FruitTree", fruitTree.treeId.Value) : (null, null),
+        GiantCrop giantCrop => ("GiantCrop", giantCrop.Id),
+        _ => (null, null),
+    };
+  }
+}

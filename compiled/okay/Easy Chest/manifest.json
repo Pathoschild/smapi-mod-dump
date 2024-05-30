@@ -1,7 +1,7 @@
 ﻿{
   "Name": "EasyChest",
   "Author": "season",
-  "Version": "0.0.3",
+  "Version": "0.0.4",
   "Description": "Easy Chest. press key 'R',scroll MouseWheel. press (LeftControl + LeftShift + R) use Workbench.",
   "UniqueID": "season.EasyChest",
   "EntryDll": "EasyChest.dll",

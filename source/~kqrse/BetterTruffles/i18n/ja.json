@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/kqrse/StardewValleyMods
+**
+*************************************************/
+
+{
+  "enabled": "有効化",
+  "pigs-dig-in-grass": "牧草がある場所でもトリュフを探す",
+  "show-bubbles": "吹き出しを表示",
+  "render-on-top": "吹き出しを優先表示",
+  "bubble-y-offset": "吹き出しのY位置",
+  "bubble-x-offset": "吹き出しのX位置",
+  "opacity": "不透明度",
+  "bubble-size": "吹き出しサイズ"
+}

@@ -6,9 +6,9 @@ mods:
    Unlockable Areas
 
 latest commit:
-   commit 6a0253983b6276fef1b9649e9dce2c677e1d7b4a
+   commit 5ae9e22f7dedd7ae62f8d0c984cc6629cb2f7b8a
    Author: DeLiXx <fake122344@gmail.com>
-   Date:   Thu Apr 11 16:55:12 2024 +0200
+   Date:   Sun May 26 15:05:07 2024 +0200
    
-       updated to 3.0.9
+       Fixed overview icon inconsistency in multiplayer
    

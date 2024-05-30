@@ -229,10 +229,15 @@ namespace ResourceStorage
                     }
 
                     Object obj = ItemRegistry.Create<Object>(resourceList[i].QualifiedItemId, stack);
-                    if (Game1.player.addItemToInventoryBool(obj))
+                    obj.HasBeenInInventory = true;
+
+                    // The amount that was not added to the player's inventory
+                    int amountLeft = Game1.player.addItemToInventory(obj)?.Stack ?? 0;
+
+                    if (amountLeft < stack)
                     {
                         Game1.playSound("Ship");
-                        ModEntry.ModifyResourceLevel(Game1.player, obj.QualifiedItemId, -stack);
+                        ModEntry.ModifyResourceLevel(Game1.player, obj.QualifiedItemId, -(stack - amountLeft), auto: false);
                         RepopulateComponentList();
                     }
                     else

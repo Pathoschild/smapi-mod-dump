@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using EnaiumToolKit.Framework.Extensions;
 using EnaiumToolKit.Framework.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -26,7 +27,7 @@ public class TextField : Component
         set => _textBox.Text = value;
     }
 
-    public TextField(string title, string description, int x, int y, int width, int height) : base(title,
+    public TextField(string? title, string description, int x, int y, int width, int height) : base(title,
         description, x, y, width, height)
     {
         _textBox = new TextBox(Game1.content.Load<Texture2D>("LooseSprites\\textBox"), null, Game1.dialogueFont,
@@ -38,21 +39,22 @@ public class TextField : Component
 
     public override void Render(SpriteBatch b)
     {
-        Hovered = Render2DUtils.IsHovered(Game1.getMouseX(), Game1.getMouseY(), X, Y, Width, Height);
+        Hovered = Bounds.Contains(Game1.getMouseX(), Game1.getMouseY());
 
-        Render2DUtils.DrawBound(b, X - 5, Y - 5, Width + 20, Height + 25, Color.White);
-
-        if (!Hovered)
-        {
-            _textBox.Selected = false;
-        }
+        b.DrawWindowTexture(X, Y, Width, Height);
 
         _textBox.Draw(b);
     }
 
     public override void MouseLeftClicked(int x, int y)
     {
-        _textBox.Selected = !_textBox.Selected;
+        _textBox.Selected = true;
         base.MouseLeftClicked(x, y);
+    }
+
+    public override void LostFocus(int x, int y)
+    {
+        _textBox.Selected = false;
+        base.LostFocus(x, y);
     }
 }

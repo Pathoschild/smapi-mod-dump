@@ -13,6 +13,8 @@
   "Config.General.Enabled.Name": "有効",
   "Config.General.Enabled.Description": "無効にすると、MOD本とその効果は利用できなくなる。",
   
+  "Config.General.Price.Description": "本を他の手段で購入せず、直接店で購入した場合の価格。整数値のみ。",
+  
   // BOOK SETTINGS //
   "Config.Books.Luck.Title": "ビギナーズラック",
   "Config.Books.LuckBonus.Name": "幸運ボーナス",
@@ -39,6 +41,14 @@
   "Config.Books.QiNotebook.Title": "ミスターQiのノート",
   "Config.Books.QiNotebookBonus.Name": "Qiジェムのドロップボーナス値。",
   "Config.Books.QiNotebookBonus.Description": "モンスターを倒した時にドロップするQiジェムのドロップボーナス値。",
+  
+  "Config.Books.PetGifts.Title": "ぺっとのきもち",
+  
+  "Config.Books.CheatCodes.Title": "ジュニモカートの秘密コード",
+  "Config.Books.CheatCodesRequirement.Name": "秘密コードの購入条件",
+  "Config.Books.CheatCodesRequirement.Description": "ジュニモカートで秘密コードの購入に必要なゲームオーバー数。",
+  "Config.Books.CheatCodesBonus.Name": "ライフ数",
+  "Config.Books.CheatCodesBonus.Description": "ジュニモカートを始めるときのライフ数。",
   
   // DEBUG SETTINGS //
   "Config.Debug.EnableDebugBook.Name": "デバッグブックの有効化",

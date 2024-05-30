@@ -11,7 +11,7 @@
 {
     "Name": "[CP] Skill Prestige",
     "Author": "CinderGarde",
-    "Version": "1.2.6",
+    "Version": "1.3.2",
     "Description": "SkillPrestige Content Patcher",
     "UniqueID": "CinderGarde.SkillPrestige.CP",
     "ContentPackFor": {

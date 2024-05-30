@@ -1,4 +1,5 @@
 {
   "ModEnabled": true,
-  "InstantConstruction": false
+  "InstantConstruction": false,
+  "KeepSmallSizeOnSave": true
 }

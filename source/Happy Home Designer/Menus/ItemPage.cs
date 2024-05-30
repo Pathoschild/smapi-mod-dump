@@ -43,9 +43,11 @@ namespace HappyHomeDesigner.Menus
 			Panel.Items = entries;
 		}
 
+		/// <inheritdoc/>
 		public override int Count() 
 			=> entries.Count;
 
+		/// <inheritdoc/>
 		public override ClickableTextureComponent GetTab() 
 			=> new(new(0, 0, 64, 64), Catalog.MenuTexture, new(64, 48, 16, 16), 4f);
 

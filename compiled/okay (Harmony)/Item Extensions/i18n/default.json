@@ -1,4 +1,23 @@
 {
   "ItemHover_Requirements_Extra": "{0} {1}",
-  "CantBreak": "Your {0} isn't strong enough to break this."
+  "CantBreak": "Your {0} isn't strong enough to break this.",
+  "config.Description":"This toggles the mod's functionality. Make sure to reset the game after applying settings.",
+  "config.MixedSeeds.name":"Mixed seeds",
+  "config.Panning.name":"Panning",
+  "config.MenuActions.name":"Menu actions",
+  "config.QualityChanges.name":"Quality customization",
+  "config.ShopTrades.name":"Shop trades",
+  "config.EatingAnimations.name":"Eating animations",
+  "config.TrainDrops.name":"Train",
+  "config.FishPond.name":"Fish pond",
+  "config.TerrainFeatures.name":"Terrain features",
+  "config.Treasure.name":"Fishing treasure",
+  "config.Ores.name":"Ores",
+  "config.Volcano.name":"in volcano",
+  "config.Mountain.name":"in mountain",
+  "config.Ores.tooltip": "Must be enabled to allow the rest of ore settings.",
+  "config.Drops.title":"Drop-related",
+  "config.Resources.title":"Resources",
+  "config.VanillaExt.title":"Vanilla extension",
+  "config.Customization.title":"Customization"
 }

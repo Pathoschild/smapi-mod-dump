@@ -1,0 +1,13 @@
+{
+    "Name": "Friends Forever",
+    "Author": "Isaac S.",
+    "Version": "1.2.10",
+    "Description": "Makes it so friendship levels never decay!",
+    "UniqueID": "Kriana.FriendsForever",
+    "EntryDll": "FriendsForever.dll",
+    "UpdateKeys": [
+        "Nexus:20702"
+    ],
+    "MinimumApiVersion": "2.10.2",
+    "Dependencies": []
+}

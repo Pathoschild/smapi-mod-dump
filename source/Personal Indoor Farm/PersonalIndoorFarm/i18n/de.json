@@ -15,8 +15,10 @@
 	"DoorAttic.Name": "Weltentor - Dachboden",
 	"DoorLoft.Name": "Weltentor - Loft",
 	"DoorCellar.Name": "Weltentor - Keller",
+	"DoorSpa.Name": "Weltentor - Spa",
 	"Door.Empty": "Es befindet sich nichts hinter dieser Tür.",
 	"Door.Offline": "Du solltest hier nicht rumlungern während dein Freund abwesend ist!",
+	"Door.Locked": "Dieses Zimmer ist abgeschlossen",
 	"Painting.Name": "Gemälde der Jahreszeiten",
 	"Synchronizer.Name": "Raum und Zeit Verschmelzer",
 	"Synchronizer.Description": "Synchronisiert den Tag und die Jahreszeit deines persönlichen Zimmers mit der von Pelikan Stadt",
@@ -27,4 +29,6 @@
 	"VoidSeal.Buff.Name": "Innere Leere",
 	"VoidSeal.Buff.Description": "Ich fühle mich so... leer",
 	"NoContentPacks": "Du hast die Tür, aber dir fehlt ein Content Pack für das Zimmer.",
+	"Key.Name": "Leerenschlüssel",
+	"Key.Description": "Schließt und öffnet persönliche Zimmer",
 }

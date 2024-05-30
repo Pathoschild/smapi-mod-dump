@@ -35,7 +35,8 @@ This mod allows players and modders to customize features from Stardew Valley's 
     
 * [Content Packs](#content-packs)
 * [SMAPI Mod Support](#smapi-mod-support)
-	 * [Adding Custom Monster Classes](#adding-custom-monster-classes)
+    * [API Feature](#api-features)
+    * [Adding Custom Monster Classes](#adding-custom-monster-classes)
 
 ## Installation
 1. **Install the latest version of [SMAPI](https://smapi.io/).**
@@ -66,8 +67,12 @@ See the Stardew Valley Wiki's [Modding:Translations](https://stardewvalleywiki.c
 Language | File | Contributor(s)
 ---------|------|------------
 English | [default.json](https://github.com/Esca-MMC/FarmTypeManager/blob/master/FarmTypeManager/i18n/default.json) | [Esca-MMC](https://github.com/Esca-MMC)
+Brazilian Portuguese | [pt-BR.json](https://github.com/Esca-MMC/FarmTypeManager/blob/master/FarmTypeManager/i18n/pt-BR.json) | [roanrobersson](https://github.com/roanrobersson)
 Dutch | [nl.json](https://github.com/Esca-MMC/FarmTypeManager/blob/master/FarmTypeManager/i18n/nl.json) | [UnrealThingTriesCode](https://github.com/UnrealThingTriesCode)
+French | [fr.json](https://github.com/Esca-MMC/FarmTypeManager/blob/master/FarmTypeManager/i18n/fr.json) | [Fsecho7](https://next.nexusmods.com/profile/Fsecho7)
+German | [de.json](https://github.com/Esca-MMC/FarmTypeManager/blob/master/FarmTypeManager/i18n/de.json) | [777PamPam777](https://next.nexusmods.com/profile/777PamPam777)
 Turkish | [tr.json](https://github.com/Esca-MMC/FarmTypeManager/blob/master/FarmTypeManager/i18n/tr.json) | [Rupurudu](https://github.com/Rupurudu)
+Ukrainian | [uk.json](https://github.com/Esca-MMC/FarmTypeManager/blob/master/FarmTypeManager/i18n/uk.json) | [burunduk](https://github.com/burunduk)
 
 ## Examples
 Below are a few examples of changes you can make to your character's configuration file, spawning various things on your farm or the other in-game maps.
@@ -415,7 +420,16 @@ To create a content pack for Farm Type Manager:
 
 ## SMAPI Mod Support
 
-### Adding custom monster classes
+### API Features
+
+Farm Type Manager provides an API for other SMAPI mods. To access it in your C# mod:
+
+1. Copy the [IFtmApi.cs](https://github.com/Esca-MMC/FarmTypeManager/blob/master/FarmTypeManager/API/IFtmApi.cs) file into your mod.
+2. After all mods are loaded, e.g. during a GameLaunched event, use SMAPI's Helper to get an API instance: `var api = Helper.ModRegistry.GetApi<FarmTypeManager.IFtmApi>("Esca.FarmTypeManager");`
+
+Feel free to request additional features, but note that there are currently no plans for on-demand spawning through the API.
+
+### Adding Custom Monster Classes
 
 The MonsterName setting in Farm Type Manager's monster spawn settings can use custom monster classes created by other mods. This process requires some knowledge of C# and SMAPI; you may also need to decompile and explore Stardew Valley's monster code.
 

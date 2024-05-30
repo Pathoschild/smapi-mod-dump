@@ -37,7 +37,7 @@ namespace SpaceCore.Patches
         public override void Apply(Harmony harmony, IMonitor monitor)
         {
             harmony.Patch(
-                original: this.RequireMethod<GameLocation>(nameof(GameLocation.performAction), new Type[] { typeof( string[] ), typeof( Farmer ), typeof( Location ) }),
+                original: this.RequireMethod<GameLocation>(nameof(GameLocation.performAction), new Type[] { typeof(string[]), typeof(Farmer), typeof(Location) }),
                 transpiler: this.GetHarmonyMethod(nameof(Transpile_PerformAction), after: "DaLion.ImmersiveProfessions")
             );
 
@@ -87,7 +87,8 @@ namespace SpaceCore.Patches
                     // TODO: use non-relative reference to label location
                     codes[i + 15].labels.Add(canRespec);
                     isPatched = true;
-                } else
+                }
+                else
                 {
                     ret.Add(codes[i]);
                 }
@@ -169,24 +170,26 @@ namespace SpaceCore.Patches
                 }
 
                 Game1.player.Money = Math.Max(0, Game1.player.Money - 10000);
-                foreach (Skills.Skill.Profession profession in skill.Professions)
+
+                Game1.player.Money = Math.Max(0, Game1.player.Money - 10000);
+                for (int i = 0; i < skill.Professions.Count; i++)
                 {
-                    profession.UndoImmediateProfessionPerk();
-                    GameLocation.RemoveProfession(profession.GetVanillaId());
-                    Game1.drawObjectDialogue(Game1.content.LoadString("Strings\\Locations:Sewer_DogStatueFinished"));
-                    int level = Skills.GetSkillLevel(Game1.player, skill.Id);
-                    if (level >= 5)
-                    {
-                        Skills.NewLevels.Add(new KeyValuePair<string, int>(skill.Id, 5));
-                    }
-                    if (level >= 10)
-                    {
-                        Skills.NewLevels.Add(new KeyValuePair<string, int>(skill.Id, 10));
-                    }
-                    DelayedAction.playSoundAfterDelay("dog_bark", 300);
-                    DelayedAction.playSoundAfterDelay("dog_bark", 900);
-                    return;
+                    skill.Professions[i].UndoImmediateProfessionPerk();
+                    Game1.player.professions.Remove(skill.Professions[i].GetVanillaId());
                 }
+                Game1.drawObjectDialogue(Game1.content.LoadString("Strings\\Locations:Sewer_DogStatueFinished"));
+                int level = Skills.GetSkillLevel(Game1.player, skill.Id);
+                if (level >= 5)
+                {
+                    Skills.NewLevels.Add(new KeyValuePair<string, int>(skill.Id, 5));
+                }
+                if (level >= 10)
+                {
+                    Skills.NewLevels.Add(new KeyValuePair<string, int>(skill.Id, 10));
+                }
+                DelayedAction.playSoundAfterDelay("dog_bark", 300);
+                DelayedAction.playSoundAfterDelay("dog_bark", 900);
+                return;
             }
         }
 

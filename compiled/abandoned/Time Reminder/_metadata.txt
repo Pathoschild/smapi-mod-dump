@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/1000
+IDs: KoihimeNakamura.TimeReminder
+update keys: Nexus:1000, GitHub:Sakorona/SDVMods

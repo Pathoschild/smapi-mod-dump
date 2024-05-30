@@ -1,0 +1,1409 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ProfitCalculator</name>
+    </assembly>
+    <members>
+        <member name="T:GenericModConfigMenu.IGenericModConfigMenuApi">
+            <summary>The API which lets other mods add a config ui through Generic Mod Config Menu.</summary>
+        </member>
+        <member name="M:GenericModConfigMenu.IGenericModConfigMenuApi.Register(StardewModdingAPI.IManifest,System.Action,System.Action,System.Boolean)">
+            <summary>Register a mod whose config can be edited through the ui.</summary>
+            <param name="mod">The mod's manifest.</param>
+            <param name="reset">Reset the mod's config to its default values.</param>
+            <param name="save">Save the mod's current config to the <c>config.json</c> file.</param>
+            <param name="titleScreenOnly">Whether the options can only be edited from the title screen.</param>
+            <remarks>Each mod can only be registered once, unless it's deleted via Unregister before calling this again.</remarks>
+        </member>
+        <member name="M:GenericModConfigMenu.IGenericModConfigMenuApi.AddTextOption(StardewModdingAPI.IManifest,System.Func{System.String},System.Action{System.String},System.Func{System.String},System.Func{System.String},System.String[],System.Func{System.String,System.String},System.String)">
+            <summary>Add a string option at the current position in the form.</summary>
+            <param name="mod">The mod's manifest.</param>
+            <param name="getValue">Get the current value from the mod config.</param>
+            <param name="setValue">Set a new value in the mod config.</param>
+            <param name="name">The label text to show in the form.</param>
+            <param name="tooltip">The tooltip text shown when the cursor hovers on the field, or <c>null</c> to disable the tooltip.</param>
+            <param name="allowedValues">The values that can be selected, or <c>null</c> to allow any.</param>
+            <param name="formatAllowedValue">Get the display text to show for a value from <paramref name="allowedValues"/>, or <c>null</c> to show the values as-is.</param>
+            <param name="fieldId">The unique field ID for use with OnFieldChanged, or <c>null</c> to auto-generate a randomized ID.</param>
+        </member>
+        <member name="M:GenericModConfigMenu.IGenericModConfigMenuApi.AddKeybind(StardewModdingAPI.IManifest,System.Func{StardewModdingAPI.SButton},System.Action{StardewModdingAPI.SButton},System.Func{System.String},System.Func{System.String},System.String)">
+            <summary>Add a key binding at the current position in the form.</summary>
+            <param name="mod">The mod's manifest.</param>
+            <param name="getValue">Get the current value from the mod config.</param>
+            <param name="setValue">Set a new value in the mod config.</param>
+            <param name="name">The label text to show in the form.</param>
+            <param name="tooltip">The tooltip text shown when the cursor hovers on the field, or <c>null</c> to disable the tooltip.</param>
+            <param name="fieldId">The unique field ID for use with OnFieldChanged, or <c>null</c> to auto-generate a randomized ID.</param>
+        </member>
+        <member name="M:GenericModConfigMenu.IGenericModConfigMenuApi.AddNumberOption(StardewModdingAPI.IManifest,System.Func{System.Int32},System.Action{System.Int32},System.Func{System.String},System.Func{System.String},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Func{System.Int32,System.String},System.String)">
+            <summary>Add an integer option at the current position in the form.</summary>
+            <param name="mod">The mod's manifest.</param>
+            <param name="getValue">Get the current value from the mod config.</param>
+            <param name="setValue">Set a new value in the mod config.</param>
+            <param name="name">The label text to show in the form.</param>
+            <param name="tooltip">The tooltip text shown when the cursor hovers on the field, or <c>null</c> to disable the tooltip.</param>
+            <param name="min">The minimum allowed value, or <c>null</c> to allow any.</param>
+            <param name="max">The maximum allowed value, or <c>null</c> to allow any.</param>
+            <param name="interval">The interval of values that can be selected.</param>
+            <param name="formatValue">Get the display text to show for a value, or <c>null</c> to show the number as-is.</param>
+            <param name="fieldId">The unique field ID for use with OnFieldChanged, or <c>null</c> to auto-generate a randomized ID.</param>
+        </member>
+        <member name="T:ProfitCalculator.main.Cache`1">
+            <summary>
+            The cache class. This class is used to store data that is used by multiple classes. Cache can be invalidated and rebuilt.
+            </summary>
+        </member>
+        <member name="M:ProfitCalculator.main.Cache`1.#ctor(System.Func{`0})">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="M:ProfitCalculator.main.Cache`1.GetCache">
+            <summary>
+            Gets the cache. If the cache is invalid, it will be rebuilt.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ProfitCalculator.main.Cache`1.InvalidateCache">
+            <summary>
+            Invalidates the cache. The cache will be rebuilt the next time it is accessed.
+            </summary>
+        </member>
+        <member name="M:ProfitCalculator.main.Cache`1.RebuildCache">
+            <summary>
+            Rebuilds the cache.
+            </summary>
+        </member>
+        <member name="M:ProfitCalculator.main.Cache`1.IsCacheValid">
+            <summary>
+            Checks if the cache is valid.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ProfitCalculator.main.Cache`1.SetBuildCache(System.Func{`0})">
+            <summary>
+            Sets the build cache function.
+            </summary>
+            <param name="buildCache"></param>
+        </member>
+        <member name="M:ProfitCalculator.main.Cache`1.ClearCache">
+            <summary>
+            Clears the cache and invalidates it.
+            </summary>
+        </member>
+        <member name="T:ProfitCalculator.main.Calculator">
+            <summary>
+            Class used to calculate the profits for crops. Contains all the settings for the calculator and the functions used to calculate the profits. Also contains the list of crops and the crop parsers. <see cref="M:ProfitCalculator.main.Calculator.TotalCropProfit(ProfitCalculator.main.CropDataExpanded)"/> and <see cref="M:ProfitCalculator.main.Calculator.TotalCropProfitPerDay(ProfitCalculator.main.CropDataExpanded)"/>, <see cref="M:ProfitCalculator.main.Calculator.TotalFertilizerCost(ProfitCalculator.main.CropDataExpanded)"/>, <see cref="M:ProfitCalculator.main.Calculator.TotalFertilzerCostPerDay(ProfitCalculator.main.CropDataExpanded)"/>, <see cref="M:ProfitCalculator.main.Calculator.TotalSeedsCost(ProfitCalculator.main.CropDataExpanded)"/>, <see cref="M:ProfitCalculator.main.Calculator.TotalSeedsCostPerDay(ProfitCalculator.main.CropDataExpanded)"/> are the main functions used to calculate the profits. <see cref="M:ProfitCalculator.main.Calculator.RetrieveCropsAsOrderderList"/> and <see cref="M:ProfitCalculator.main.Calculator.RetrieveCropInfos"/> are the main functions used to retrieve the list of crops and crop infos.
+            </summary>
+        </member>
+        <member name="F:ProfitCalculator.main.Calculator.crops">
+            <summary>
+            List of all crops in the game
+            </summary>
+        </member>
+        <member name="P:ProfitCalculator.main.Calculator.Day">
+            <summary>
+            Day of the season
+            </summary>
+        </member>
+        <member name="P:ProfitCalculator.main.Calculator.MaxDay">
+            <summary>
+            Max days of a season
+            </summary>
+        </member>
+        <member name="P:ProfitCalculator.main.Calculator.MinDay">
+            <summary>
+            Min days of a season
+            </summary>
+        </member>
+        <member name="P:ProfitCalculator.main.Calculator.Season">
+            <summary>
+            UtilsSeason of the year selected
+            </summary>
+        </member>
+        <member name="P:ProfitCalculator.main.Calculator.ProduceType">
+            <summary>
+            Type of produce selected
+            TODO: Implement this.
+            </summary>
+        </member>
+        <member name="P:ProfitCalculator.main.Calculator.FertilizerQuality">
+            <summary>
+            Type of fertilizer selected
+            </summary>
+        </member>
+        <member name="P:ProfitCalculator.main.Calculator.PayForSeeds">
+            <summary>
+            Whether or not the player pays for seeds
+            </summary>
+        </member>
+        <member name="P:ProfitCalculator.main.Calculator.PayForFertilizer">
+            <summary>
+            Whether or not the player pays for fertilizer
+            </summary>
+        </member>
+        <member name="P:ProfitCalculator.main.Calculator.MaxMoney">
+            <summary>
+            Max money the player is willing to spend on seeds or fertilizer
+            </summary>
+        </member>
+        <member name="P:ProfitCalculator.main.Calculator.UseBaseStats">
+            <summary>
+            Whether or not to use base stats for the player or the current stats
+            </summary>
+        </member>
+        <member name="P:ProfitCalculator.main.Calculator.CrossSeason">
+            <summary>
+            Whether or not to calculate crops that are not available for the current season. If false, then crops that are not available for the current season will not be calculated. Not used.
+            </summary>
+        </member>
+        <member name="P:ProfitCalculator.main.Calculator.FarmingLevel">
+            <summary>
+            Current farming level of the player or 0 if using base stats, used for calculating crop quality chances
+            </summary>
+        </member>
+        <member name="M:ProfitCalculator.main.Calculator.#ctor">
+            <summary>
+            Constructor for the calculator, initializes the list of crops and crop parsers. Instantiates the calculator with default values.
+            </summary>
+        </member>
+        <member name="M:ProfitCalculator.main.Calculator.SetSettings(System.UInt32,System.UInt32,System.UInt32,ProfitCalculator.Utils.UtilsSeason,ProfitCalculator.Utils.ProduceType,ProfitCalculator.Utils.FertilizerQuality,System.Boolean,System.Boolean,System.UInt32,System.Boolean,System.Boolean)">
+            <summary>
+            Sets the settings for the calculator to use when calculating profits.
+            </summary>
+            <param name="day"><see cref="P:ProfitCalculator.main.Calculator.Day"/></param>
+            <param name="maxDay"><see cref="P:ProfitCalculator.main.Calculator.MaxDay"/></param>
+            <param name="minDay"><see cref="P:ProfitCalculator.main.Calculator.MinDay"/></param>
+            <param name="season"><see cref="P:ProfitCalculator.main.Calculator.Season"/></param>
+            <param name="produceType"><see cref="P:ProfitCalculator.main.Calculator.ProduceType"/></param>
+            <param name="fertilizerQuality"> <see cref="P:ProfitCalculator.main.Calculator.FertilizerQuality"/></param>
+            <param name="payForSeeds"> <see cref="P:ProfitCalculator.main.Calculator.PayForSeeds"/></param>
+            <param name="payForFertilizer"> <see cref="P:ProfitCalculator.main.Calculator.PayForFertilizer"/></param>
+            <param name="maxMoney"> <see cref="P:ProfitCalculator.main.Calculator.MaxMoney"/></param>
+            <param name="useBaseStats"> <see cref="P:ProfitCalculator.main.Calculator.UseBaseStats"/></param>
+            <param name="crossSeason"> <see cref="P:ProfitCalculator.main.Calculator.CrossSeason"/></param>
+        </member>
+        <member name="M:ProfitCalculator.main.Calculator.ClearCrops">
+            <summary>
+            Clears the list of crops.
+            </summary>
+        </member>
+        <member name="M:ProfitCalculator.main.Calculator.RetrieveCropsAsOrderderList">
+            <summary>
+            Retrieves the list of crops as an ordered list by profit.
+            </summary>
+            <returns> List of crops ordered by profit </returns>
+        </member>
+        <member name="M:ProfitCalculator.main.Calculator.RetrieveCropInfos">
+            <summary>
+            Retrieves the list of <see cref="T:ProfitCalculator.main.CropInfo"/> as an ordered list by profit.
+            </summary>
+            <returns> List of <see cref="T:ProfitCalculator.main.CropInfo"/> ordered by profit </returns>
+        </member>
+        <member name="M:ProfitCalculator.main.Calculator.RetrieveCropInfo(ProfitCalculator.main.CropDataExpanded)">
+            <summary>
+            Retrieves the <see cref="T:ProfitCalculator.main.CropInfo"/> for a specific crop. Uses information obtained by calling internal functions to calculate the values and build the object.
+            </summary>
+            <param name="crop"> CropDataExpanded to retrieve <see cref="T:ProfitCalculator.main.CropInfo"/> for </param>
+            <returns> <see cref="T:ProfitCalculator.main.CropInfo"/> for the crop </returns>
+        </member>
+        <member name="M:ProfitCalculator.main.Calculator.AddCrop(System.String,ProfitCalculator.main.CropDataExpanded)">
+            <summary>
+            Adds a crop to the list of crops.
+            </summary>
+            <param name="id"> Id of the crop </param>
+            <param name="crop"> CropDataExpanded to add </param>
+        </member>
+        <member name="M:ProfitCalculator.main.Calculator.TotalCropProfit(ProfitCalculator.main.CropDataExpanded)">
+            <summary>
+            Calculates the total profit for a crop. See <see cref="M:ProfitCalculator.main.Calculator.GetAverageValueForCropAfterModifiers"/>, <see cref="M:ProfitCalculator.main.CropDataExpanded.AverageExtraCropsFromRandomness"/>, <see cref="M:ProfitCalculator.main.CropDataExpanded.TotalHarvestsWithRemainingDays(ProfitCalculator.Utils.UtilsSeason,ProfitCalculator.Utils.FertilizerQuality,System.Int32)"/> for more information.
+            </summary>
+            <param name="crop"> CropDataExpanded to calculate profit for </param>
+            <returns> Total profit for the crop </returns>
+        </member>
+        <member name="M:ProfitCalculator.main.Calculator.TotalCropProfitPerDay(ProfitCalculator.main.CropDataExpanded)">
+            <summary>
+            Calculates the total profit per day for a crop. See <see cref="M:ProfitCalculator.main.Calculator.TotalCropProfit(ProfitCalculator.main.CropDataExpanded)"/> for more information. Simply devides the total profit by the total available days for the crop.
+            </summary>
+            <param name="crop"> CropDataExpanded to calculate profit per day for </param>
+            <returns> Total profit per day for the crop </returns>
+        </member>
+        <member name="M:ProfitCalculator.main.Calculator.TotalFertilizerNeeded(ProfitCalculator.main.CropDataExpanded)">
+            <summary>
+            Total fertilizer needed for a crop. If planted in greenhouse or if the crop only grows in one season, then only 1 fertilizer is needed. Otherwise, the total number of days the crop is available is divided by 28 and rounded up to get the total number of fertilizer needed.
+            </summary>
+            <param name="crop"> CropDataExpanded to calculate fertilizer needed for </param>
+            <returns> Total fertilizer needed for the crop </returns>
+        </member>
+        <member name="M:ProfitCalculator.main.Calculator.TotalFertilizerCost(ProfitCalculator.main.CropDataExpanded)">
+            <summary>
+            Total fertilizer cost for a crop. See <see cref="M:ProfitCalculator.main.Calculator.TotalFertilizerNeeded(ProfitCalculator.main.CropDataExpanded)"/> and <see cref="M:ProfitCalculator.Utils.FertilizerPrices(ProfitCalculator.Utils.FertilizerQuality)"/> for more information.
+            </summary>
+            <param name="crop"> CropDataExpanded to calculate fertilizer cost for </param>
+            <returns> Total fertilizer cost for the crop </returns>
+        </member>
+        <member name="M:ProfitCalculator.main.Calculator.TotalFertilzerCostPerDay(ProfitCalculator.main.CropDataExpanded)">
+            <summary>
+            Total fertilizer cost per day for a crop. See <see cref="M:ProfitCalculator.main.Calculator.TotalFertilizerCost(ProfitCalculator.main.CropDataExpanded)"/> for more information. Simply devides the total fertilizer cost by the total available days for the crop.
+            </summary>
+            <param name="crop"> CropDataExpanded to calculate fertilizer cost per day for </param>
+            <returns> Total fertilizer cost per day for the crop </returns>
+        </member>
+        <member name="M:ProfitCalculator.main.Calculator.TotalSeedsNeeded(ProfitCalculator.main.CropDataExpanded)">
+            <summary>
+            Total seeds needed for a crop. If the crop regrows, then only 1 seed is needed. Otherwise, the total number of harvests is calculated and multiplied by the number of seeds needed per harvest.
+            </summary>
+            <param name="crop"> CropDataExpanded to calculate seeds needed for </param>
+            <returns> Total seeds needed for the crop </returns>
+        </member>
+        <member name="M:ProfitCalculator.main.Calculator.TotalSeedsCost(ProfitCalculator.main.CropDataExpanded)">
+            <summary>
+            Total seeds cost for a crop. See <see cref="M:ProfitCalculator.main.Calculator.TotalSeedsNeeded(ProfitCalculator.main.CropDataExpanded)"/> and <see cref="!:CropDataExpanded.GetSeedPrice"/> for more information.
+            </summary>
+            <param name="crop"> CropDataExpanded to calculate seeds cost for </param>
+            <returns> Total seeds cost for the crop </returns>
+        </member>
+        <member name="M:ProfitCalculator.main.Calculator.TotalSeedsCostPerDay(ProfitCalculator.main.CropDataExpanded)">
+            <summary>
+            Total seeds cost per day for a crop. See <see cref="M:ProfitCalculator.main.Calculator.TotalSeedsCost(ProfitCalculator.main.CropDataExpanded)"/> for more information. Simply devides the total seeds cost by the total available days for the crop.
+            </summary>
+            <param name="crop"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ProfitCalculator.main.Calculator.PrintCropChanceTablesForAllFarmingLevels">
+            <summary>
+            Prints the crop chance tables for all farming levels. Used for debugging.
+            </summary>
+        </member>
+        <member name="M:ProfitCalculator.main.Calculator.PrintCropChanceTablesForAllFarmingLevelsAndFertilizerType">
+            <summary>
+            Prints the crop chance tables for all farming levels and fertilizer types. Used for debugging.
+            </summary>
+        </member>
+        <member name="M:ProfitCalculator.main.Calculator.GetAverageValueMultiplierForCrop">
+            <summary>
+            Prints the average crop value modifier for current farming level and fertilizer type. Used for debugging. Uses <see cref="M:ProfitCalculator.main.Calculator.GetCropGoldQualityChance"/>, <see cref="M:ProfitCalculator.main.Calculator.GetCropSilverQualityChance"/>, <see cref="M:ProfitCalculator.main.Calculator.GetCropIridiumQualityChance"/>, <see cref="M:ProfitCalculator.main.Calculator.GetCropBaseQualityChance"/>. <see cref="M:ProfitCalculator.main.Calculator.GetCropBaseQualityChance"/> and <see cref="P:ProfitCalculator.main.Calculator.PriceMultipliers"/> to calculate the average value modifier for the crop.
+            </summary>
+            <returns> Average crop value modifier for current farming level and fertilizer type </returns>
+        </member>
+        <member name="M:ProfitCalculator.main.Calculator.GetAverageValueForCropAfterModifiers">
+            <summary>
+            Calculates the average crop value modifier applying relevant skill modifiers. See <see cref="M:ProfitCalculator.main.Calculator.GetAverageValueMultiplierForCrop"/> for more information.
+            </summary>
+            <returns> Average crop value modifier applying relevant skill modifiers </returns>
+        </member>
+        <member name="M:ProfitCalculator.main.Calculator.GetCropBaseGoldQualityChance(System.Double)">
+            <summary>
+            Calculates the base chance for gold quality. See <see cref="M:StardewValley.Crop.harvest(System.Int32,System.Int32,StardewValley.TerrainFeatures.HoeDirt,StardewValley.Characters.JunimoHarvester,System.Boolean)"/> for more information.
+            </summary>
+            <param name="limit"> Limit for the chance</param>
+            <returns> Base chance for gold quality </returns>
+        </member>
+        <member name="M:ProfitCalculator.main.Calculator.GetCropBaseQualityChance">
+            <summary>
+            Calculates the chance for normal quality. See <see cref="M:StardewValley.Crop.harvest(System.Int32,System.Int32,StardewValley.TerrainFeatures.HoeDirt,StardewValley.Characters.JunimoHarvester,System.Boolean)"/> for more information.
+            </summary>
+            <returns> Chance for normal quality </returns>
+        </member>
+        <member name="M:ProfitCalculator.main.Calculator.GetCropSilverQualityChance">
+            <summary>
+            Calculates the chance for silver quality. See <see cref="M:StardewValley.Crop.harvest(System.Int32,System.Int32,StardewValley.TerrainFeatures.HoeDirt,StardewValley.Characters.JunimoHarvester,System.Boolean)"/> for more information.
+            </summary>
+            <returns> Chance for silver quality </returns>
+        </member>
+        <member name="M:ProfitCalculator.main.Calculator.GetCropGoldQualityChance">
+            <summary>
+            Calculates the chance for gold quality. See <see cref="M:StardewValley.Crop.harvest(System.Int32,System.Int32,StardewValley.TerrainFeatures.HoeDirt,StardewValley.Characters.JunimoHarvester,System.Boolean)"/> for more information.
+            </summary>
+            <returns> Chance for gold quality </returns>
+        </member>
+        <member name="M:ProfitCalculator.main.Calculator.GetCropIridiumQualityChance">
+            <summary>
+            Calculates the chance for iridium quality. See <see cref="M:StardewValley.Crop.harvest(System.Int32,System.Int32,StardewValley.TerrainFeatures.HoeDirt,StardewValley.Characters.JunimoHarvester,System.Boolean)"/> for more information.
+            </summary>
+            <returns> Chance for iridium quality </returns>
+        </member>
+        <member name="T:ProfitCalculator.main.CropBuilder">
+            <summary>
+            Parses the vanilla crops from the game files. Also parses crops from the ManualCrops.json file.
+            </summary>
+        </member>
+        <member name="M:ProfitCalculator.main.CropBuilder.BuildCrops">
+            <inheritdoc/>
+            <summary>
+            Builds a dictionary of crops from the game files. Accesses the crops from the game files (@"Data\Crops) and parses them into a dictionary.
+            </summary>
+            <returns> A dictionary of crops. </returns>
+        </member>
+        <member name="M:ProfitCalculator.main.CropBuilder.BuildCrop(StardewValley.GameData.Crops.CropData,System.String)">
+             <summary>
+             Builds a crop from the given data. The data is split by the '/' character. The data is then parsed into a crop. The crop is then returned.  Thanks to Klhoe Leclair for this code.
+            
+             </summary>
+             <param name="cropData"> The data of the crop. </param>
+             <param name="id"> The id of the crop. </param>
+             <returns> The crop that was built. </returns>
+        </member>
+        <member name="T:ProfitCalculator.main.CropDataExpanded">
+            <summary>
+            Class <c>CropDataExpanded</c> models a crop from the game storing all relevant information about it.
+            </summary>
+        </member>
+        <member name="F:ProfitCalculator.main.CropDataExpanded.CropData">
+            <value>Property <c>CropData</c> represents the crop data of the crop.</value>
+        </member>
+        <member name="F:ProfitCalculator.main.CropDataExpanded.Seed">
+            <value>Property <c>Seed</c> represents the Seed of the crop.</value>
+        </member>
+        <member name="F:ProfitCalculator.main.CropDataExpanded.Item">
+            <value> Property <c>Item></c> represents the harvested item</value>
+        </member>
+        <member name="F:ProfitCalculator.main.CropDataExpanded.AffectByQuality">
+            <value>Property <c>affectByQuality</c> represents whether the crop is affected by fertilizer quality or not. Some crops like Tea aren't affected by this. </value>
+        </member>
+        <member name="F:ProfitCalculator.main.CropDataExpanded.AffectByFertilizer">
+            <value>Property <c>affectByFertilizer</c> represents whether the crop is affected by fertilizer or not.</value>
+        </member>
+        <member name="P:ProfitCalculator.main.CropDataExpanded.SeedPrice">
+            <value>Property <c>Price</c> represents the price of the crop. Without Shop Modifiers </value>
+        </member>
+        <member name="M:ProfitCalculator.main.CropDataExpanded.#ctor(StardewValley.GameData.Crops.CropData,StardewValley.Item,StardewValley.Item,System.Boolean,System.Boolean)">
+            <summary>
+            Constructor for <c>CropDataExpanded</c> class. It's used to create a new instance of the class.
+            </summary>
+            <param name="_cropData">Crop's full Data</param>
+            <param name="_item" >Harvested Item</param>
+            <param name="_seed" >Seed Item</param>
+            <param name="_affectedByFertilizer" >Whether the crop is affected by fertilizer or not</param>
+            <param name="_affectedByQuality" >Whether the crop is affected by fertilizer quality or not</param>
+        </member>
+        <member name="P:ProfitCalculator.main.CropDataExpanded.Price">
+            <value>Property <c>Price</c> represents the price of the crop. With Shop Modifiers </value>
+        </member>
+        <member name="P:ProfitCalculator.main.CropDataExpanded.Days">
+            <value>Property <c>Days</c> represents the crop's total days to grow excluding <see cref="P:ProfitCalculator.main.CropDataExpanded.RegrowDays"/>.</value>
+        </member>
+        <member name="P:ProfitCalculator.main.CropDataExpanded.RegrowDays">
+            <value>Property <c>RegrowDays</c> represents the crop's regrow time.</value>
+        </member>
+        <member name="P:ProfitCalculator.main.CropDataExpanded.MinHarvests">
+            <value>Property <c>MinHarvests</c> represents the crop's minimum drops.</value>
+        </member>
+        <member name="P:ProfitCalculator.main.CropDataExpanded.MaxHarvests">
+            <value>Property <c>MaxHarvests</c> represents the crop's maximum drops.</value>
+        </member>
+        <member name="P:ProfitCalculator.main.CropDataExpanded.MaxHarvestIncreasePerFarmingLevel">
+            <value>Property <c>MaxHarvestIncreasePerFarmingLevel</c> represents the crop's maximum drops increase per farming level.</value>
+        </member>
+        <member name="P:ProfitCalculator.main.CropDataExpanded.ChanceForExtraCrops">
+            <value>Property <c>ChanceForExtraCrops</c> represents the crop's chance for extra crops.</value>
+        </member>
+        <member name="P:ProfitCalculator.main.CropDataExpanded.DisplayName">
+            <value>Property <c>DisplayName</c> represents the crop's name.</value>
+        </member>
+        <member name="P:ProfitCalculator.main.CropDataExpanded.Sprite">
+            <value>Property <c>Sprite</c> represents the crop's sprite. It's unused as of now.</value>
+        </member>
+        <member name="M:ProfitCalculator.main.CropDataExpanded.Equals(System.Object)">
+            <summary>
+            Returns whether two crops are equal or not. Two crops are equal if they have the same ID.
+            </summary>
+            <returns> Whether two crops are equal or not.</returns>
+        </member>
+        <member name="M:ProfitCalculator.main.CropDataExpanded.ToString">
+            <summary>
+            Returns a string representation of the crop.
+            </summary>
+            <returns> String representation of the crop.</returns>
+        </member>
+        <member name="M:ProfitCalculator.main.CropDataExpanded.GetHashCode">
+            <summary>
+            Returns the hash code of the crop.
+            </summary>
+            <returns> Hash code of the crop. <c>int</c></returns>
+        </member>
+        <member name="M:ProfitCalculator.main.CropDataExpanded.GetAverageGrowthSpeedValueForCrop(ProfitCalculator.Utils.FertilizerQuality)">
+            <summary>
+            Calculates the average growth speed value for the crop.
+            It's calculated by adding fertilizer modifiers to 1.0f and finally adding 0.25f if the crop is a paddy crop and 0.1f if the player has the agriculturist profession.
+            </summary>
+            <param name="fertilizerQuality"> Quality of the used Fertilizer</param>
+            <returns> Average growth speed value for the crop. <c>float</c></returns>
+        </member>
+        <member name="M:ProfitCalculator.main.CropDataExpanded.IsAvailableForCurrentSeason(ProfitCalculator.Utils.UtilsSeason)">
+            <summary>
+            Checks whether the crop is available for the current season.
+            </summary>
+            <param name="currentSeason"></param>
+            <returns> Whether the crop is available for the current season or not.</returns>
+        </member>
+        <member name="M:ProfitCalculator.main.CropDataExpanded.TotalAvailableDays(ProfitCalculator.Utils.UtilsSeason,System.Int32)">
+            <summary>
+            Returns the total available days for planting and harvesting the crop. Depends on which seasons the crop can grow.
+            </summary>
+            <param name="currentSeason">Current season of type UtilsSeason <see cref="T:ProfitCalculator.Utils.UtilsSeason"/></param>
+            <param name="day">Current day as int, can be from 0 to 1</param>
+            <returns> Total available days for planting and harvesting the crop. <c>int</c></returns>
+        </member>
+        <member name="M:ProfitCalculator.main.CropDataExpanded.TotalAvailableDaysInCurrentSeason(System.Int32)">
+            <summary>
+            Returns the total available days for planting and harvesting the crop for the current season. Depends on which seasons the crop can grow.
+            </summary>
+            <param name="day">Current day as int, can be from 0 to 1</param>
+            <returns>Total available days for planting and harvesting the crop in current season. <c>int</c></returns>
+        </member>
+        <member name="M:ProfitCalculator.main.CropDataExpanded.TotalHarvestsWithRemainingDays(ProfitCalculator.Utils.UtilsSeason,ProfitCalculator.Utils.FertilizerQuality,System.Int32)">
+            <summary>
+            Returns the total harvests for the crop for the available time. Depends on which seasons the crop can grow, the current day , and the fertilizer quality.
+            </summary>
+            <param name="currentSeason"> Current season of type UtilsSeason <see cref="T:ProfitCalculator.Utils.UtilsSeason"/></param>
+            <param name="fertilizerQuality"> Quality of the used Fertilizer of type FertilizerQuality <see cref="T:ProfitCalculator.Utils.FertilizerQuality"/></param>
+            <param name="day"> Current day as int, can be from 0 to 1</param>
+            <returns> Total number of harvests for the crop for the available time. <c>int</c></returns>
+        </member>
+        <member name="M:ProfitCalculator.main.CropDataExpanded.ExtraCropsFromFarmingLevel">
+            <summary>
+            How many extra crops can be harvested from the crop. Depends on farming level and extra per level defined. Currently Unused
+            </summary>
+            <returns> Number of extra crops that can be harvested from the crop. <c>int</c></returns>
+        </member>
+        <member name="M:ProfitCalculator.main.CropDataExpanded.AverageExtraCropsFromRandomness">
+            <summary>
+            Meant to calculate the average extra crops from luck if any. Currently Unused
+            </summary>
+            <returns> Average extra crops from luck. <c>double</c></returns>
+        </member>
+        <member name="T:ProfitCalculator.main.CropInfo">
+            <summary>
+            Contains information about a crop and its profit.
+            </summary>
+        </member>
+        <member name="F:ProfitCalculator.main.CropInfo.Crop">
+            <summary> The crop. </summary>
+        </member>
+        <member name="F:ProfitCalculator.main.CropInfo.TotalProfit">
+            <summary> The total profit. </summary>
+        </member>
+        <member name="F:ProfitCalculator.main.CropInfo.ProfitPerDay">
+            <summary> The profit per day. </summary>
+        </member>
+        <member name="F:ProfitCalculator.main.CropInfo.TotalSeedLoss">
+            <summary> The total seed loss. </summary>
+        </member>
+        <member name="F:ProfitCalculator.main.CropInfo.SeedLossPerDay">
+            <summary> The seed loss per day. </summary>
+        </member>
+        <member name="F:ProfitCalculator.main.CropInfo.TotalFertilizerLoss">
+            <summary> The total fertilizer loss. </summary>
+        </member>
+        <member name="F:ProfitCalculator.main.CropInfo.FertilizerLossPerDay">
+            <summary> The fertilizer loss per day. </summary>
+        </member>
+        <member name="F:ProfitCalculator.main.CropInfo.ProduceType">
+            <summary> The produce type. </summary>
+        </member>
+        <member name="F:ProfitCalculator.main.CropInfo.Duration">
+            <summary> The duration. </summary>
+        </member>
+        <member name="F:ProfitCalculator.main.CropInfo.TotalHarvests">
+            <summary> The total harvests. </summary>
+        </member>
+        <member name="F:ProfitCalculator.main.CropInfo.GrowthTime">
+            <summary> The growth time. </summary>
+        </member>
+        <member name="F:ProfitCalculator.main.CropInfo.RegrowthTime">
+            <summary> The regrowth time. </summary>
+        </member>
+        <member name="F:ProfitCalculator.main.CropInfo.ProductCount">
+            <summary> The product count. </summary>
+        </member>
+        <member name="F:ProfitCalculator.main.CropInfo.ChanceOfExtraProduct">
+            <summary> The chance of extra product. </summary>
+        </member>
+        <member name="F:ProfitCalculator.main.CropInfo.ChanceOfNormalQuality">
+            <summary> The chance of normal quality. </summary>
+        </member>
+        <member name="F:ProfitCalculator.main.CropInfo.ChanceOfSilverQuality">
+            <summary> The chance of silver quality. </summary>
+        </member>
+        <member name="F:ProfitCalculator.main.CropInfo.ChanceOfGoldQuality">
+            <summary> The chance of gold quality. </summary>
+        </member>
+        <member name="F:ProfitCalculator.main.CropInfo.ChanceOfIridiumQuality">
+            <summary> The chance of iridium quality. </summary>
+        </member>
+        <member name="M:ProfitCalculator.main.CropInfo.#ctor(ProfitCalculator.main.CropDataExpanded,System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,ProfitCalculator.Utils.ProduceType,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Double,System.Double,System.Double,System.Double,System.Double)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ProfitCalculator.main.CropInfo"/> class.
+            </summary>
+            <param name="crop"> The crop. </param>
+            <param name="totalProfit"> The total profit. Calculated from <c>totalProfit = totalProfit - (totalSeedLoss + totalFertilizerLoss)</c> </param>
+            <param name="profitPerDay"> The profit per day. </param>
+            <param name="totalSeedLoss"> The total seed loss. </param>
+            <param name="seedLossPerDay"> The seed loss per day. </param>
+            <param name="totalFertilizerLoss"> The total fertilizer loss. </param>
+            <param name="fertilizerLossPerDay"> The fertilizer loss per day. </param>
+            <param name="produceType"> The produce type. </param>
+            <param name="duration"> The duration. </param>
+            <param name="totalHarvests"> The total harvests. </param>
+            <param name="growthTime"> The growth time. </param>
+            <param name="regrowthTime"> The regrowth time. </param>
+            <param name="productCount"> The product count. </param>
+            <param name="chanceOfExtraProduct"> The chance of extra product. </param>
+            <param name="chanceOfNormalQuality"> The chance of normal quality. </param>
+            <param name="chanceOfSilverQuality"> The chance of silver quality. </param>
+            <param name="chanceOfGoldQuality"> The chance of gold quality. </param>
+            <param name="chanceOfIridiumQuality"> The chance of iridium quality. </param>
+        </member>
+        <member name="M:ProfitCalculator.main.CropInfo.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:ProfitCalculator.main.CropInfo"/> in json format.
+            </summary>
+            <returns> A <see cref="T:System.String"/> that represents the current <see cref="T:ProfitCalculator.main.CropInfo"/> in json format. </returns>
+        </member>
+        <member name="M:ProfitCalculator.main.CropInfo.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:ProfitCalculator.main.CropInfo"/> is equal to the current <see cref="T:ProfitCalculator.main.CropInfo"/>.
+            </summary>
+            <param name="obj"></param>
+            <returns> <c>true</c> if the specified <see cref="T:ProfitCalculator.main.CropInfo"/> is equal to the current <see cref="T:ProfitCalculator.main.CropInfo"/>; otherwise, <c>false</c>. </returns>
+        </member>
+        <member name="M:ProfitCalculator.main.CropInfo.GetHashCode">
+            <summary>
+            Returns the hash code for this <see cref="T:ProfitCalculator.main.CropInfo"/>.
+            </summary>
+            <returns> A 32-bit signed integer hash code. </returns>
+        </member>
+        <member name="T:ProfitCalculator.menus.ProfitCalculatorMainMenu">
+            <summary>
+            The main menu for the profit calculator. This menu is opened by pressing the "F8" key by default. It is used to set the settings for the profit calculator. It is also used to open the results menu. This menu is the parent menu for the <see cref="T:ProfitCalculator.menus.ProfitCalculatorResultsList"/> menu.
+            </summary>
+        </member>
+        <member name="P:ProfitCalculator.menus.ProfitCalculatorMainMenu.Day">
+            <summary> The day for planting. </summary>
+        </member>
+        <member name="P:ProfitCalculator.menus.ProfitCalculatorMainMenu.MaxDay">
+            <summary> The ammount of days a season can have. </summary>
+        </member>
+        <member name="P:ProfitCalculator.menus.ProfitCalculatorMainMenu.MinDay">
+            <summary> The minimum day a season can have. </summary>
+        </member>
+        <member name="P:ProfitCalculator.menus.ProfitCalculatorMainMenu.Season">
+            <summary> The season for planting. </summary>
+        </member>
+        <member name="M:ProfitCalculator.menus.ProfitCalculatorMainMenu.SetSeason(System.String)">
+            <summary>
+            Sets the season for planting.
+            </summary>
+            <param name="season"> The season to set. String, case insensetive</param>
+        </member>
+        <member name="P:ProfitCalculator.menus.ProfitCalculatorMainMenu.ProduceType">
+            <summary> The type of produce to calculate with, for now only raw works. </summary>
+        </member>
+        <member name="P:ProfitCalculator.menus.ProfitCalculatorMainMenu.FertilizerQuality">
+            <summary> The quality of fertilizer to use. </summary>
+        </member>
+        <member name="P:ProfitCalculator.menus.ProfitCalculatorMainMenu.PayForSeeds">
+            <summary>
+            Whether the play wants to check which plants he can purchase with available cash.
+            </summary>
+        </member>
+        <member name="P:ProfitCalculator.menus.ProfitCalculatorMainMenu.PayForFertilizer">
+            <summary> Whether the play wants to check which plants he can purchase with available cash. </summary>
+        </member>
+        <member name="P:ProfitCalculator.menus.ProfitCalculatorMainMenu.MaxMoney">
+            <summary> The maximum ammount of money the player wants to spend in seeds. </summary>
+        </member>
+        <member name="P:ProfitCalculator.menus.ProfitCalculatorMainMenu.UseBaseStats">
+            <summary> Whether the player wants to use base stats or not. </summary>
+        </member>
+        <member name="P:ProfitCalculator.menus.ProfitCalculatorMainMenu.IsProfitCalculatorOpen">
+            <summary> Whether the profit calculator is open or not.  </summary>
+        </member>
+        <member name="M:ProfitCalculator.menus.ProfitCalculatorMainMenu.#ctor">
+            <summary>
+            Constructor for the ProfitCalculatorMainMenu class.
+            </summary>
+        </member>
+        <member name="M:ProfitCalculator.menus.ProfitCalculatorMainMenu.draw(Microsoft.Xna.Framework.Graphics.SpriteBatch)">
+            <summary>
+            Draws the menu. This method is called by the game. Options are drawn in SpriteSortMode.FrontToBack, Actions and Labels are drawn in SpriteSortMode.Deferred. This is done to prevent the options from being drawn over the actions and labels. Including dropdowns.
+            </summary>
+            <param name="b"> The spritebatch to draw with. </param>
+        </member>
+        <member name="M:ProfitCalculator.menus.ProfitCalculatorMainMenu.receiveKeyPress(Microsoft.Xna.Framework.Input.Keys)">
+            <summary>
+            Handles key presses received by the menu.
+            </summary>
+            <param name="key"> The key that was pressed. </param>
+        </member>
+        <member name="M:ProfitCalculator.menus.ProfitCalculatorMainMenu.performHoverAction(System.Int32,System.Int32)">
+            <summary>
+            Handles mouse hovers received by the menu.
+            </summary>
+            <param name="x"> The x position of the mouse. </param>
+            <param name="y"> The y position of the mouse. </param>
+        </member>
+        <member name="M:ProfitCalculator.menus.ProfitCalculatorMainMenu.receiveLeftClick(System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Handles mouse clicks received by the menu.
+            </summary>
+            <param name="x"> The x position of the mouse. </param>
+            <param name="y"> The y position of the mouse. </param>
+            <param name="playSound"> Whether to play a sound when the click is received. </param>
+        </member>
+        <member name="M:ProfitCalculator.menus.ProfitCalculatorMainMenu.UpdateMenu">
+            <summary>
+            Updates the menu. Refreshes the positions of the buttons and options.
+            </summary>
+        </member>
+        <member name="M:ProfitCalculator.menus.ProfitCalculatorMainMenu.update(Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            Propagates an update call to the menu and all of its children.
+            </summary>
+            <param name="time"></param>
+        </member>
+        <member name="M:ProfitCalculator.menus.ProfitCalculatorMainMenu.GetAppropriateMenuPosition">
+            <summary>
+            Gets the appropriate position for the menu to be in.
+            </summary>
+            <returns> The appropriate position for the menu to be in, in Vector2 format </returns>
+        </member>
+        <member name="M:ProfitCalculator.menus.ProfitCalculatorMainMenu.gameWindowSizeChanged(Microsoft.Xna.Framework.Rectangle,Microsoft.Xna.Framework.Rectangle)">
+            <summary>The method called when the game window changes size.</summary>
+            <param name="oldBounds">The former viewport.</param>
+            <param name="newBounds">The new viewport.</param>
+        </member>
+        <member name="T:ProfitCalculator.menus.ProfitCalculatorResultsList">
+            <summary>
+            A menu that displays the results of the profit calculator.
+            </summary>
+        </member>
+        <member name="P:ProfitCalculator.menus.ProfitCalculatorResultsList.IsResultsListOpen">
+            <summary> Tracks whether the menu is open or not. </summary>
+        </member>
+        <member name="M:ProfitCalculator.menus.ProfitCalculatorResultsList.#ctor(System.Collections.Generic.List{ProfitCalculator.main.CropInfo})">
+            <summary>
+            Creates a new instance of the ProfitCalculatorResultsList class.
+            </summary>
+            <param name="_cropInfos"> The list of crop infos to display in the menu. </param>
+        </member>
+        <member name="M:ProfitCalculator.menus.ProfitCalculatorResultsList.draw(Microsoft.Xna.Framework.Graphics.SpriteBatch)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ProfitCalculator.menus.ProfitCalculatorResultsList.receiveScrollWheelAction(System.Int32)">
+            <summary>
+            Handles mouse scroll wheel actions received by the menu. Goes up or down a page depending on the direction of the scroll.
+            </summary>
+            <param name="direction"> The direction of the scroll. 1 for down and -1 for up </param>
+        </member>
+        <member name="M:ProfitCalculator.menus.ProfitCalculatorResultsList.receiveKeyPress(Microsoft.Xna.Framework.Input.Keys)">
+            <summary>
+            Handles key presses received by the menu.
+            </summary>
+            <param name="key"> The key that was pressed. </param>
+        </member>
+        <member name="M:ProfitCalculator.menus.ProfitCalculatorResultsList.performHoverAction(System.Int32,System.Int32)">
+            <summary>
+            Handles mouse hovers received by the menu.
+            </summary>
+            <param name="x"> The x position of the mouse. </param>
+            <param name="y"> The y position of the mouse. </param>
+        </member>
+        <member name="M:ProfitCalculator.menus.ProfitCalculatorResultsList.SetScrollFromY(System.Int32)">
+            <summary>
+            Handles scroll bar movement received by the menu according to the mouse y position.
+            </summary>
+            <param name="y"> The y position of the mouse. </param>
+        </member>
+        <member name="M:ProfitCalculator.menus.ProfitCalculatorResultsList.leftClickHeld(System.Int32,System.Int32)">
+            <summary>
+            Handles mouse clicks held received by the menu.
+            </summary>
+            <param name="x"> The x position of the mouse. </param>
+            <param name="y"> The y position of the mouse. </param>
+        </member>
+        <member name="M:ProfitCalculator.menus.ProfitCalculatorResultsList.releaseLeftClick(System.Int32,System.Int32)">
+            <summary>
+            Handles mouse clicks released received by the menu.
+            </summary>
+            <param name="x"> The x position of the mouse. </param>
+            <param name="y"> The y position of the mouse. </param>
+        </member>
+        <member name="M:ProfitCalculator.menus.ProfitCalculatorResultsList.receiveLeftClick(System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Handles mouse clicks received by the menu.
+            </summary>
+            <param name="x"> The x position of the mouse. </param>
+            <param name="y"> The y position of the mouse. </param>
+            <param name="playSound"> Whether to play a sound when the click is received. </param>
+        </member>
+        <member name="M:ProfitCalculator.menus.ProfitCalculatorResultsList.ArrowPressed(System.Int32)">
+            <summary>
+            Handles arrow key presses received by the menu. Causing the menu to scroll up or down.
+            </summary>
+            <param name="direction"> The direction of the arrow key press. 1 for down and -1 for up </param>
+        </member>
+        <member name="M:ProfitCalculator.menus.ProfitCalculatorResultsList.update(Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            Updates the menu. Refreshes the positions of the buttons and options.
+            </summary>
+        </member>
+        <member name="M:ProfitCalculator.menus.ProfitCalculatorResultsList.GetAppropriateMenuPosition">
+            <summary>
+            Gets the appropriate position for the menu to be in.
+            </summary>
+            <returns> The appropriate position for the menu to be in, in Vector2 format </returns>
+        </member>
+        <member name="M:ProfitCalculator.menus.ProfitCalculatorResultsList.gameWindowSizeChanged(Microsoft.Xna.Framework.Rectangle,Microsoft.Xna.Framework.Rectangle)">
+            <summary>The method called when the game window changes size.</summary>
+            <param name="oldBounds">The former viewport.</param>
+            <param name="newBounds">The new viewport.</param>
+        </member>
+        <member name="T:ProfitCalculator.ModConfig">
+            <summary>
+            The mod config.
+            </summary>
+        </member>
+        <member name="P:ProfitCalculator.ModConfig.HotKey">
+            <summary> The hotkey to open the calculator. </summary>
+        </member>
+        <member name="P:ProfitCalculator.ModConfig.ToolTipDelay">
+            <summary> The delay in frames before the tooltip is shown. </summary>
+        </member>
+        <member name="M:ProfitCalculator.ModConfig.#ctor">
+            <summary>
+             Creates a new mod config with default values.
+            </summary>
+        </member>
+        <member name="T:ProfitCalculator.ModEntry">
+            <summary>The mod entry point.</summary>
+        </member>
+        <member name="P:ProfitCalculator.ModEntry.Calculator">
+            <summary>The mod's calculator functions.</summary>
+        </member>
+        <member name="M:ProfitCalculator.ModEntry.Entry(StardewModdingAPI.IModHelper)">
+            <summary>The mod entry point, called after the mod is first loaded.</summary>
+            <param name="helper">Provides simplified APIs for writing mods.</param>
+        </member>
+        <member name="M:ProfitCalculator.ModEntry.OnButtonPressed(System.Object,StardewModdingAPI.Events.ButtonPressedEventArgs)">
+            <summary>Raised after the player presses a button on the keyboard, controller, or mouse.</summary>
+            <param name="sender">The event sender.</param>
+            <param name="e">The event data.</param>
+        </member>
+        <member name="M:ProfitCalculator.ModEntry.AddCrop(System.String,ProfitCalculator.main.CropDataExpanded)">
+            <summary>
+            Adds a crop to the Profit Calculator.
+            </summary>
+            <param name="id"> The id of the crop. Must be unique.</param>
+            <param name="crop"> The crop to add. <see cref="T:ProfitCalculator.main.CropDataExpanded"/> </param>
+        </member>
+        <member name="T:ProfitCalculator.ui.BaseOption">
+            <summary>
+             Base class for all options in the options menu. This might be usefull for other mods. Might clean this up later and make it a seperate mod or framework.
+            </summary>
+        </member>
+        <member name="P:ProfitCalculator.ui.BaseOption.ClickedSound">
+            <summary> The sound to play when the option is clicked, or <c>null</c> to play no sound. </summary>
+        </member>
+        <member name="F:ProfitCalculator.ui.BaseOption.Clicked">
+            <summary> Whether the option was clicked by the cursor. </summary>
+        </member>
+        <member name="P:ProfitCalculator.ui.BaseOption.HoveredSound">
+            <summary> The sound to play when the cursor hovers on the option, or <c>null</c> to play no sound. </summary>
+        </member>
+        <member name="P:ProfitCalculator.ui.BaseOption.Hover">
+            <summary> Whether the option is currently hovered by the cursor. </summary>
+        </member>
+        <member name="P:ProfitCalculator.ui.BaseOption.ClickGestured">
+            <summary>
+            If the option was clicked by a left click
+            </summary>
+        </member>
+        <member name="M:ProfitCalculator.ui.BaseOption.SetClickableComponent(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Sets the clickable component for this option
+            </summary>
+            <param name="position"> The position of the clickable component in Vector2 format</param>
+            <param name="Size"> The size of the clickable component in Vector2 format</param>
+        </member>
+        <member name="P:ProfitCalculator.ui.BaseOption.ClickableComponent">
+            <summary>
+            Sets the clickable component for this option. Sets Position Vector2 to the position of the clickable component
+            </summary>
+        </member>
+        <member name="P:ProfitCalculator.ui.BaseOption.Tooltip">
+            <summary>The tooltip text shown when the cursor hovers on the field, or <c>null</c> to disable the tooltip.</summary>
+        </member>
+        <member name="P:ProfitCalculator.ui.BaseOption.Name">
+            <summary>The DisplayName to show in the form.</summary>
+        </member>
+        <member name="P:ProfitCalculator.ui.BaseOption.Label">
+            <summary>The Label to show in the form.</summary>
+        </member>
+        <member name="P:ProfitCalculator.ui.BaseOption.Position">
+            <summary> The position of the clickable component in Vector2 format for easy access</summary>
+        </member>
+        <member name="M:ProfitCalculator.ui.BaseOption.#ctor(System.Int32,System.Int32,System.Int32,System.Int32,System.Func{System.String},System.Func{System.String},System.Func{System.String})">
+            <summary>
+            Creates a new BaseOption
+            </summary>
+            <param name="x"> The x position of the clickable component</param>
+            <param name="y"> The y position of the clickable component</param>
+            <param name="w"> The width of the clickable component</param>
+            <param name="h"> The height of the clickable component</param>
+            <param name="name"> The name of the clickable component</param>
+            <param name="label"> The label of the clickable component</param>
+            <param name="tooltip"> The tooltip of the clickable component</param>
+        </member>
+        <member name="M:ProfitCalculator.ui.BaseOption.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch)">
+            <summary>
+            Draws the option to the screen. Abstract so it can be overriden by subclasses
+            </summary>
+            <param name="b"> The SpriteBatch to draw to</param>
+        </member>
+        <member name="M:ProfitCalculator.ui.BaseOption.BeforeReceiveLeftClick(System.Int32,System.Int32)">
+            <summary>
+            Behaviour before executing the left click action itself. Abstract so it can be overriden by subclasses
+            </summary>
+            <param name="x"> The x position of the mouse</param>
+            <param name="y"> The y position of the mouse</param>
+        </member>
+        <member name="M:ProfitCalculator.ui.BaseOption.ReceiveLeftClick(System.Int32,System.Int32,System.Action)">
+            <summary>
+            Behaviour for the left click action. Implemented here so it can be used by subclasses.
+            </summary>
+            <param name="x"> The x position of the mouse</param>
+            <param name="y"> The y position of the mouse</param>
+            <param name="stopSpread"> The action to stop the spread of the left click to Children or sibling components</param>
+        </member>
+        <member name="M:ProfitCalculator.ui.BaseOption.ExecuteClick">
+            <summary>
+            Execution og left click action. Implemented here so it can be used by subclasses.
+            </summary>
+        </member>
+        <member name="M:ProfitCalculator.ui.BaseOption.Update">
+            <summary>
+            Update event for the option. Abstract so it can be overriden by subclasses
+            </summary>
+        </member>
+        <member name="M:ProfitCalculator.ui.BaseOption.PerformHoverAction(System.Int32,System.Int32)">
+            <summary>
+            Called when the option the there's an hover action. Implemented here so it can be used by subclasses.
+            </summary>
+            <param name="x"> The x position of the mouse</param>
+            <param name="y"> The y position of the mouse</param>
+        </member>
+        <member name="T:ProfitCalculator.ui.CheckboxOption">
+            <summary>
+            Draws a checkbox option in the options menu setting true or false to a value
+            </summary>
+        </member>
+        <member name="P:ProfitCalculator.ui.CheckboxOption.Texture">
+            <summary> The mouse texture to draw for the checkbox. </summary>
+        </member>
+        <member name="P:ProfitCalculator.ui.CheckboxOption.CheckedTextureRect">
+            <summary> The rectangle of the texture to draw for the checkbox when it is checked. </summary>
+        </member>
+        <member name="P:ProfitCalculator.ui.CheckboxOption.UncheckedTextureRect">
+            <summary> The rectangle of the texture to draw for the checkbox when it is unchecked. </summary>
+        </member>
+        <member name="F:ProfitCalculator.ui.CheckboxOption.ValueGetter">
+            <summary> Gets the current value of the option. </summary>
+        </member>
+        <member name="F:ProfitCalculator.ui.CheckboxOption.ValueSetter">
+            <summary> Sets the current value of the option. </summary>
+        </member>
+        <member name="P:ProfitCalculator.ui.CheckboxOption.ClickedSound">
+            <inheritdoc />
+        </member>
+        <member name="M:ProfitCalculator.ui.CheckboxOption.#ctor(System.Int32,System.Int32,System.Func{System.String},System.Func{System.String},System.Func{System.Boolean},System.Action{System.Boolean})">
+            <summary>
+             Constructor for the CheckboxOption class.
+            </summary>
+            <param name="x"> The x position of the option. </param>
+            <param name="y"> The y position of the option. </param>
+            <param name="name"> The name of the option. </param>
+            <param name="label"> The label of the option. </param>
+            <param name="valueGetter"> The value getter of the option. Type Func. This should return the current value for the option </param>
+            <param name="valueSetter"> The value setter of the option. Type Action. This should be the action executed when the checkbox is clicked. I.e. set a variable to false or true. </param>
+        </member>
+        <member name="M:ProfitCalculator.ui.CheckboxOption.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch)">
+            <summary>
+            Draws the checkbox option
+            </summary>
+        </member>
+        <member name="M:ProfitCalculator.ui.CheckboxOption.ExecuteClick">
+            <summary>
+            Executes the click action for the checkbox option
+            </summary>
+        </member>
+        <member name="M:ProfitCalculator.ui.CheckboxOption.BeforeReceiveLeftClick(System.Int32,System.Int32)">
+            <summary>
+            Behaviour before executing the left click action itself.
+            </summary>
+            <param name="x"> The x position of the mouse</param>
+            <param name="y"> The y position of the mouse</param>
+        </member>
+        <member name="M:ProfitCalculator.ui.CheckboxOption.Update">
+            <summary>
+            Update event for the option.
+            </summary>
+        </member>
+        <member name="T:ProfitCalculator.ui.CropBox">
+            <summary>
+            A box that displays a crop and its information
+            </summary>
+        </member>
+        <member name="F:ProfitCalculator.ui.CropBox.cropInfo">
+            <summary> The crop info to display. <see cref="T:ProfitCalculator.main.CropInfo"/> </summary>
+        </member>
+        <member name="F:ProfitCalculator.ui.CropBox.cropHoverBox">
+            <summary> The hover box to display when the mouse is over the box. <see cref="T:ProfitCalculator.ui.CropHoverBox"/> </summary>
+        </member>
+        <member name="M:ProfitCalculator.ui.CropBox.#ctor(System.Int32,System.Int32,System.Int32,System.Int32,ProfitCalculator.main.CropInfo)">
+            <summary>
+            Creates a new CropBox
+            </summary>
+            <param name="x"> The x position of the box</param>
+            <param name="y"> The y position of the box</param>
+            <param name="w"> The width of the box</param>
+            <param name="h"> The height of the box</param>
+            <param name="crop"> The cropInfo to display. <see cref="T:ProfitCalculator.main.CropInfo"/> </param>
+        </member>
+        <member name="M:ProfitCalculator.ui.CropBox.BeforeReceiveLeftClick(System.Int32,System.Int32)">
+            <summary>
+            Called when the left mouse button is pressed. Executes before the action of the button is performed
+            </summary>
+            <param name="x"> The x position of the mouse</param>
+            <param name="y"> The y position of the mouse</param>
+        </member>
+        <member name="M:ProfitCalculator.ui.CropBox.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ProfitCalculator.ui.CropBox.Update">
+            <summary>
+            The update event.
+            </summary>
+        </member>
+        <member name="M:ProfitCalculator.ui.CropBox.PerformHoverAction(System.Int32,System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="T:ProfitCalculator.ui.CropHoverBox">
+            <summary>
+              Hover details for each crop in the profit calculator.
+            </summary>
+        </member>
+        <member name="M:ProfitCalculator.ui.CropHoverBox.#ctor(ProfitCalculator.main.CropInfo)">
+            <summary>
+            Creates a new CropHoverBox.
+            </summary>
+            <param name="cropInfo"></param>
+        </member>
+        <member name="M:ProfitCalculator.ui.CropHoverBox.Dispose">
+            <inheritdoc/>
+        </member>
+        <member name="M:ProfitCalculator.ui.CropHoverBox.Dispose(System.Boolean)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ProfitCalculator.ui.CropHoverBox.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ProfitCalculator.ui.CropHoverBox.Reset">
+            <inheritdoc/>
+        </member>
+        <member name="M:ProfitCalculator.ui.CropHoverBox.Update">
+            <inheritdoc/>
+        </member>
+        <member name="M:ProfitCalculator.ui.CropHoverBox.GameWindowSizeChanged">
+            <inheritdoc/>
+        </member>
+        <member name="M:ProfitCalculator.ui.CropHoverBox.Open(System.Boolean)">
+            <summary>
+             Opens or closes the hover box.
+            </summary>
+            <param name="open"> Whether to open or close the box.</param>
+        </member>
+        <member name="T:ProfitCalculator.ui.DropdownOption">
+            <summary>
+            Dropdown option for the options menu.
+            </summary>
+        </member>
+        <member name="P:ProfitCalculator.ui.DropdownOption.RequestWidth">
+            <summary> The width of the dropdown box. </summary>
+        </member>
+        <member name="P:ProfitCalculator.ui.DropdownOption.MaxValuesAtOnce">
+            <summary> The maximum number of values to display at once. </summary>
+        </member>
+        <member name="P:ProfitCalculator.ui.DropdownOption.Texture">
+            <summary> The texture to draw. </summary>
+        </member>
+        <member name="P:ProfitCalculator.ui.DropdownOption.BackgroundTextureRect">
+            <summary> The texture rectangle to draw for the background. </summary>
+        </member>
+        <member name="P:ProfitCalculator.ui.DropdownOption.ButtonTextureRect">
+            <summary> The texture rectangle to draw for the button. </summary>
+        </member>
+        <member name="P:ProfitCalculator.ui.DropdownOption.Value">
+            <summary> The value of the option. Defines a get and set behaviour </summary>
+        </member>
+        <member name="P:ProfitCalculator.ui.DropdownOption.DropDownBoxWidth">
+            <summary> The width of the dropdown box. </summary>
+        </member>
+        <member name="P:ProfitCalculator.ui.DropdownOption.DropDownBoxHeight">
+            <summary> The height of the dropdown box. </summary>
+        </member>
+        <member name="P:ProfitCalculator.ui.DropdownOption.Label">
+            <summary> The name of the option. </summary>
+        </member>
+        <member name="P:ProfitCalculator.ui.DropdownOption.ActiveChoice">
+            <summary> The current active choice. </summary>
+        </member>
+        <member name="P:ProfitCalculator.ui.DropdownOption.ActivePosition">
+            <summary> The current active position. </summary>
+        </member>
+        <member name="P:ProfitCalculator.ui.DropdownOption.Choices">
+            <summary> The available choices. </summary>
+        </member>
+        <member name="P:ProfitCalculator.ui.DropdownOption.Labels">
+            <summary> The labels for the options. </summary>
+        </member>
+        <member name="F:ProfitCalculator.ui.DropdownOption.ValueSetter">
+            <summary> The value setter. Type Action </summary>
+        </member>
+        <member name="F:ProfitCalculator.ui.DropdownOption.Dropped">
+            <summary> Determines whether the dropdown is dropped. </summary>
+        </member>
+        <member name="F:ProfitCalculator.ui.DropdownOption.ActiveDropdown">
+            <summary> The current active dropdown. </summary>
+        </member>
+        <member name="P:ProfitCalculator.ui.DropdownOption.ClickedSound">
+            <summary> The sound to play when the option is clicked. </summary>
+        </member>
+        <member name="M:ProfitCalculator.ui.DropdownOption.#ctor(System.Int32,System.Int32,System.Func{System.String},System.Func{System.String},System.Func{System.String[]},System.Func{System.String[]},System.Func{System.String},System.Action{System.String})">
+            <summary>
+            Creates a new DropdownOption
+            </summary>
+            <param name="x"> The x position of the clickable component</param>
+            <param name="y"> The y position of the clickable component</param>
+            <param name="name"> The name of the clickable component</param>
+            <param name="label"> The label of the clickable component</param>
+            <param name="choices"> The choices of the dropdown</param>
+            <param name="labels"> The labels of the dropdown</param>
+            <param name="valueGetter"> The value getter</param>
+            <param name="valueSetter"> The value setter</param>
+        </member>
+        <member name="M:ProfitCalculator.ui.DropdownOption.Update">
+            <summary>
+            The Update behaviour of the option
+            </summary>
+        </member>
+        <member name="M:ProfitCalculator.ui.DropdownOption.ReceiveScrollWheelAction(System.Int32)">
+            <summary>
+            Reacts to the scroll wheel action. By showing the next or previous options if the dropdown is dropped and there are more options to show
+            </summary>
+            <param name="direction"></param>
+        </member>
+        <member name="M:ProfitCalculator.ui.DropdownOption.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ProfitCalculator.ui.DropdownOption.BeforeReceiveLeftClick(System.Int32,System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ProfitCalculator.ui.DropdownOption.ReceiveLeftClick(System.Int32,System.Int32,System.Action)">
+            <summary>
+            Behaviour when the left click is received. If the dropdown is not dropped then open it. If it is dropped then close it. If dropdown was open and the click was meant to close it then close it it stops the spread of the click to other options so as to not get any overlap with other options (i.e. clicking on one option and opening another or selecting an option and opening another)
+            </summary>
+            <param name="x"> The x position of the mouse</param>
+            <param name="y"> The y position of the mouse</param>
+            <param name="stopSpread"> The action to stop the spread of the click</param>
+        </member>
+        <member name="T:ProfitCalculator.ui.IDrawable">
+            <summary>
+            An object that can be drawn to the screen. With update and reset methods.
+            </summary>
+        </member>
+        <member name="M:ProfitCalculator.ui.IDrawable.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch)">
+            <summary>
+            Draws the object.
+            </summary>
+            <param name="b"> The spritebatch to draw to. </param>
+        </member>
+        <member name="M:ProfitCalculator.ui.IDrawable.Update">
+            <summary>
+            Updates the state of the object.
+            </summary>
+        </member>
+        <member name="M:ProfitCalculator.ui.IDrawable.Reset">
+            <summary>
+            Resets the state of the object to its default state.
+            </summary>
+        </member>
+        <member name="M:ProfitCalculator.ui.IDrawable.GameWindowSizeChanged">
+            <summary>
+            Called when the game window size changes.
+            </summary>
+        </member>
+        <member name="T:ProfitCalculator.ui.TextOption">
+            <summary>
+            Base class for all writing based options in the options menu.
+            </summary>
+        </member>
+        <member name="F:ProfitCalculator.ui.TextOption.ValueGetter">
+            <summary> The Function to retrieve the current value. </summary>
+        </member>
+        <member name="F:ProfitCalculator.ui.TextOption.ValueSetter">
+            <summary> The Function to set the current value. </summary>
+        </member>
+        <member name="P:ProfitCalculator.ui.TextOption.Selected">
+            <summary>
+            Whether the option is currently selected.
+            </summary>
+        </member>
+        <member name="M:ProfitCalculator.ui.TextOption.#ctor(System.Int32,System.Int32,System.Func{System.String},System.Func{System.String},System.Func{System.String},System.Action{System.String})">
+            <summary>
+            Creates a new text option.
+            </summary>
+            <param name="x"> The x position of the option. </param>
+            <param name="y"> The y position of the option. </param>
+            <param name="name"> The name of the option. </param>
+            <param name="label"> The label of the option. </param>
+            <param name="valueGetter"> The function to get the value of the option. </param>
+            <param name="valueSetter"> The function to set the value of the option. </param>
+        </member>
+        <member name="M:ProfitCalculator.ui.TextOption.SetTexture(Microsoft.Xna.Framework.Graphics.Texture2D)">
+            <summary>
+            Sets the texture of the option. Updates width and height of the clickable component.
+            </summary>
+            <param name="tex"> The texture to set. </param>
+        </member>
+        <member name="M:ProfitCalculator.ui.TextOption.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ProfitCalculator.ui.TextOption.RecieveTextInput(System.Char)">
+            <summary>
+            Recieves text input from the keyboard and adds it to the string. Calls <see cref="M:ProfitCalculator.ui.TextOption.ReceiveInput(System.String)"/>.
+            </summary>
+            <param name="inputChar"> The character to add. </param>
+        </member>
+        <member name="M:ProfitCalculator.ui.TextOption.RecieveTextInput(System.String)">
+            <summary>
+            Recieves text input from the keyboard and adds it to the string. Calls <see cref="M:ProfitCalculator.ui.TextOption.ReceiveInput(System.String)"/>.
+            </summary>
+            <param name="text"> The text to add. </param>
+        </member>
+        <member name="M:ProfitCalculator.ui.TextOption.RecieveCommandInput(System.Char)">
+            <summary>
+            Recieves command input from the keyboard and removes the last character if it is backspace.
+            </summary>
+            <param name="command"> The command to recieve. </param>
+        </member>
+        <member name="M:ProfitCalculator.ui.TextOption.RecieveSpecialInput(Microsoft.Xna.Framework.Input.Keys)">
+            <summary>
+            Recieves special input from the keyboard.
+            </summary>
+            <param name="key"> The key to recieve. </param>
+        </member>
+        <member name="M:ProfitCalculator.ui.TextOption.ReceiveInput(System.String)">
+            <summary>
+            Recieves text input from the keyboard and adds it to the string. Updates the value on the option.
+            </summary>
+            <param name="str"> The string to add. </param>
+        </member>
+        <member name="M:ProfitCalculator.ui.TextOption.BeforeReceiveLeftClick(System.Int32,System.Int32)">
+            <summary>
+            Called before the left mouse button click action. Deselects the option if the click is not on the option.
+            </summary>
+            <param name="x"></param>
+            <param name="y"></param>
+        </member>
+        <member name="M:ProfitCalculator.ui.TextOption.ExecuteClick">
+            <summary>
+            Called when the left mouse button is clicked. Selects the option.
+            </summary>
+        </member>
+        <member name="M:ProfitCalculator.ui.TextOption.Update">
+            <summary>
+            Called when the option is updated.
+            </summary>
+        </member>
+        <member name="T:ProfitCalculator.ui.UIntOption">
+            <summary>
+            Option for uints in the options menu. Extends TextOption to allow for easy input of uints.
+            </summary>
+        </member>
+        <member name="F:ProfitCalculator.ui.UIntOption.Max">
+            <summary> The maximum value of the uintbox. </summary>
+        </member>
+        <member name="F:ProfitCalculator.ui.UIntOption.Min">
+            <summary> The minimum value of the uintbox. </summary>
+        </member>
+        <member name="F:ProfitCalculator.ui.UIntOption.EnableClamping">
+            <summary> Whether the uintbox should clamp the value to the min and max. </summary>
+        </member>
+        <member name="P:ProfitCalculator.ui.UIntOption.IsValid">
+            <summary> Whether the option is Valid. </summary>
+        </member>
+        <member name="M:ProfitCalculator.ui.UIntOption.#ctor(System.Int32,System.Int32,System.Func{System.String},System.Func{System.String},System.Func{System.UInt32},System.Func{System.UInt32},System.Func{System.UInt32},System.Action{System.String},System.Boolean)">
+            <summary>
+            Creates a new uint option.
+            </summary>
+            <param name="x"> The x position of the option. </param>
+            <param name="y"> The y position of the option. </param>
+            <param name="name"> The name of the option. </param>
+            <param name="label"> The label of the option. </param>
+            <param name="valueGetter"> The function to get the value of the option. </param>
+            <param name="max"> The function to get the maximum value of the option. </param>
+            <param name="min"> The function to get the minimum value of the option. </param>
+            <param name="valueSetter"> The function to set the value of the option. </param>
+            <param name="enableClamping"> Whether the uintbox should clamp the value to the min and max. </param>
+        </member>
+        <member name="M:ProfitCalculator.ui.UIntOption.ReceiveInput(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:ProfitCalculator.ui.UIntOption.RecieveCommandInput(System.Char)">
+            <inheritdoc />
+        </member>
+        <member name="M:ProfitCalculator.ui.UIntOption.RecieveSpecialInput(Microsoft.Xna.Framework.Input.Keys)">
+            <inheritdoc />
+        </member>
+        <member name="M:ProfitCalculator.ui.UIntOption.BeforeReceiveLeftClick(System.Int32,System.Int32)">
+            <inheritdoc />
+        </member>
+        <member name="T:ProfitCalculator.Utils">
+            <summary>
+            Provides a set of tools to be used by multiple classes of the mod.
+            </summary>
+        </member>
+        <member name="P:ProfitCalculator.Utils.Helper">
+            <summary>
+            The mod's helper. Declared here to prevend the need to pass it to every class that needs it.
+            </summary>
+        </member>
+        <member name="P:ProfitCalculator.Utils.Monitor">
+            <summary>
+            The mod's monitor. Declared here to prevend the need to pass it to every class that needs it.
+            </summary>
+        </member>
+        <member name="M:ProfitCalculator.Utils.Initialize(StardewModdingAPI.IModHelper,StardewModdingAPI.IMonitor)">
+            <summary>
+            Sets the mod's helper, monitor, and APIs static variables. This method should be called by the mod's entry point.
+            </summary>
+            <param name="_helper"> The mod's helper.</param>
+            <param name="_monitor"> The mod's monitor.</param>
+        </member>
+        <member name="M:ProfitCalculator.Utils.GetSeasonDays(ProfitCalculator.Utils.UtilsSeason)">
+            <summary>
+            Gets the days of a season. Unused.
+            </summary>
+            <param name="season"> The season to get the days of.</param>
+            <returns> The number of days in the season.</returns>
+        </member>
+        <member name="T:ProfitCalculator.Utils.UtilsSeason">
+            <summary>
+            UtilsSeason enum.
+            </summary>
+        </member>
+        <member name="F:ProfitCalculator.Utils.UtilsSeason.Spring">
+            <summary> Spring season. </summary>
+        </member>
+        <member name="F:ProfitCalculator.Utils.UtilsSeason.Summer">
+            <summary> Summer season. </summary>
+        </member>
+        <member name="F:ProfitCalculator.Utils.UtilsSeason.Fall">
+            <summary> Fall season. </summary>
+        </member>
+        <member name="F:ProfitCalculator.Utils.UtilsSeason.Winter">
+            <summary> Winter season. </summary>
+        </member>
+        <member name="F:ProfitCalculator.Utils.UtilsSeason.Greenhouse">
+            <summary> Greenhouse season. </summary>
+        </member>
+        <member name="T:ProfitCalculator.Utils.ProduceType">
+            <summary>
+            Produce type enum.
+            </summary>
+        </member>
+        <member name="F:ProfitCalculator.Utils.ProduceType.Raw">
+            <summary> Crops. </summary>
+        </member>
+        <member name="F:ProfitCalculator.Utils.ProduceType.Keg">
+            <summary> Artisan goods. </summary>
+        </member>
+        <member name="F:ProfitCalculator.Utils.ProduceType.Cask">
+            <summary> Artisan goods. </summary>
+        </member>
+        <member name="T:ProfitCalculator.Utils.FertilizerQuality">
+            <summary>
+            Fertilizer quality enum.
+            </summary>
+        </member>
+        <member name="F:ProfitCalculator.Utils.FertilizerQuality.None">
+            <summary> No fertilizer. </summary>
+        </member>
+        <member name="F:ProfitCalculator.Utils.FertilizerQuality.Basic">
+            <summary> Basic fertilizer. </summary>
+        </member>
+        <member name="F:ProfitCalculator.Utils.FertilizerQuality.Quality">
+            <summary> Quality fertilizer. </summary>
+        </member>
+        <member name="F:ProfitCalculator.Utils.FertilizerQuality.Deluxe">
+            <summary> Deluxe fertilizer. </summary>
+        </member>
+        <member name="F:ProfitCalculator.Utils.FertilizerQuality.SpeedGro">
+            <summary> Speed-Gro fertilizer. </summary>
+        </member>
+        <member name="F:ProfitCalculator.Utils.FertilizerQuality.DeluxeSpeedGro">
+            <summary> Deluxe Speed-Gro fertilizer. </summary>
+        </member>
+        <member name="F:ProfitCalculator.Utils.FertilizerQuality.HyperSpeedGro">
+            <summary> Hyper Speed-Gro fertilizer. </summary>
+        </member>
+        <member name="M:ProfitCalculator.Utils.GetTranslatedSeason(ProfitCalculator.Utils.UtilsSeason)">
+            <summary>
+            Get translated season name.
+            </summary>
+            <param name="season"> The season to get the translated name of.</param>
+            <returns> The translated name of the season.</returns>
+        </member>
+        <member name="M:ProfitCalculator.Utils.GetTranslatedProduceType(ProfitCalculator.Utils.ProduceType)">
+            <summary>
+            Get translated produce type name.
+            </summary>
+            <param name="produceType"> The produce type to get the translated name of.</param>
+            <returns> The translated name of the produce type.</returns>
+        </member>
+        <member name="M:ProfitCalculator.Utils.GetTranslatedFertilizerQuality(ProfitCalculator.Utils.FertilizerQuality)">
+            <summary>
+            Get translated fertilizer quality name.
+            </summary>
+            <param name="fertilizerQuality"> The fertilizer quality to get the translated name of.</param>
+            <returns> The translated name of the fertilizer quality.</returns>
+        </member>
+        <member name="M:ProfitCalculator.Utils.GetAllTranslatedSeasons">
+            <summary>
+            Get translated season name. All seasons.
+            </summary>
+            <returns> Array of all translated season names.</returns>
+        </member>
+        <member name="M:ProfitCalculator.Utils.GetAllTranslatedProduceTypes">
+            <summary>
+            Get all translated produce type names.
+            </summary>
+            <returns> Array of all translated produce type names.</returns>
+        </member>
+        <member name="M:ProfitCalculator.Utils.GetAllTranslatedFertilizerQualities">
+            <summary>
+            Get all translated fertilizer quality names.
+            </summary>
+            <returns> Array of all translated fertilizer quality names.</returns>
+        </member>
+        <member name="M:ProfitCalculator.Utils.FertilizerPrices(ProfitCalculator.Utils.FertilizerQuality)">
+            <summary>
+            Get prices of each fertilizer quality.
+            </summary>
+            <param name="fq"> The fertilizer quality to get the price of.</param>
+            <returns> The price of the fertilizer quality.</returns>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,16 @@
+urls:
+   web: https://github.com/weizinai/StardewValleyMods
+   Git: https://github.com/weizinai/StardewValleyMods.git
+
+mods:
+   Fast Control Input
+   Friendship Decay Modify
+   Lazy Mod
+
+latest commit:
+   commit ab2d829584c49651ce6d1c15e19dc1edf27abfb5
+   Author: weizinai <1776061683@qq.com>
+   Date:   Sun May 26 11:17:05 2024 +0800
+   
+       è‡ªå®šä¹‰ä»»åŠ¡
+   
