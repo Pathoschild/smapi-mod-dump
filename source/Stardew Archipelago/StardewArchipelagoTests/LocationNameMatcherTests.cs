@@ -23,7 +23,7 @@ namespace StardewArchipelagoTests
             _locationNameMatcher = new LocationNameMatcher();
         }
 
-        [TestCase("Snail", new[]{"Shipsanity: Snail", "Fishsanity: Snail"}, new[] { "Escargot", "Nail" }, TestName = "Snail")]
+        [TestCase("Snail", new[] { "Shipsanity: Snail", "Fishsanity: Snail" }, new[] { "Escargot", "Nail" }, TestName = "Snail")]
         [TestCase("Stone", new[] { "Shipsanity: Stone" }, new[] { "Shipsanity: Wood", "Explore Stonehenge" }, TestName = "Stone")]
         [TestCase("Wood", new[] { "Shipsanity: Wood" }, new[] { "Shipsanity: Hardwood", "Craft Wooden Display" }, TestName = "Wood")]
         [TestCase("Juice", new[] { "Shipsanity: Juice" }, new string[0], TestName = "Juice")]
@@ -48,7 +48,8 @@ namespace StardewArchipelagoTests
 
         [TestCase("Snail", new[] { "Open Professor Snail Cave" }, TestName = "Professor Snail Cave")]
         [TestCase("Stone", new[] { "Shipsanity: Swirl Stone", "Smashing Stone" }, TestName = "Swirl Stone")]
-        [TestCase("Hardwood", new[] { "Shipsanity: Hardwood Display: Amphibian Fossil", "Shipsanity: Wooden Display: Dinosaur Egg", "Craft Hardwood Preservation Chamber", "Craft Hardwood Display", "Shipsanity: Hardwood Fence" }, TestName = "Hardwood Displays")]
+        [TestCase("Hardwood", new[] { "Shipsanity: Hardwood Display: Amphibian Fossil" }, TestName = "Hardwood Displays")]
+        [TestCase("Anchor", new[] { "Repair Boat Anchor" }, TestName = "Boat Anchor")]
         public void GetAllLocationsContainingWordFalsePositivesTest(string itemName, string[] locationsNotMatching)
         {
             // Arrange
@@ -60,7 +61,7 @@ namespace StardewArchipelagoTests
             matches.Should().NotBeNull();
             matches.Should().BeEmpty();
         }
-        
+
         [TestCase("Juice", new[] { "Pam Needs Juice" }, TestName = "Pam Juice")]
         [TestCase("Tomato", new[] { "Shipsanity: Tomato Seeds" }, TestName = "Tomato Seeds")]
         [TestCase("Wizard", new[] { "Meet The Wizard" }, TestName = "Meet the Wizard")]

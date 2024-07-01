@@ -11,7 +11,7 @@ for queries and analysis.**
 
 Another mod that changes the visual cue for when crops haven't been watered yet. 
 If you experience issues, let me know by submitting a bug report or reaching on Discord (@chiccen). You are also free to contribute to the [Github](https://github.com/chiccenFL/StardewValleyMods/WaterYourCrops/).  
-If making a bug report on Nexus, please use the ["Bugs"](https://www.nexusmods.com/stardewvalley/mods/1/?tab=bugs) tab and ***not*** "Posts" unless it is a suggestion, a mod conflict, or a very very minor bug.  
+If making a bug report on Nexus, please use the ["Bugs"](https://www.nexusmods.com/stardewvalley/mods/24710/?tab=bugs) tab and ***not*** "Posts" unless it is a suggestion, a mod conflict, or a very very minor bug.  
 
 ## Translating Water Your Crops
 <!--
@@ -32,7 +32,7 @@ Message @chiccen on Discord for details on how you would like to be credited!
 &nbsp;     | Water Your Crops
 :--------- | :----------------
 Chinese    | [❑](./i18n)
-French     | [❑](./i18n)
+French     | [✓](./i18n)
 German     | [❑](./i18n)
 Hungarian  | [❑](./i18n)
 Italian    | [❑](./i18n)

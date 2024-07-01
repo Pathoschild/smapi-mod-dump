@@ -9,6 +9,8 @@
 *************************************************/
 
 using StardewModdingAPI;
+using NermNermNerm.Stardew.LocalizeFromSource;
+using System;
 
 namespace NermNermNerm.Junimatic
 {
@@ -34,32 +36,35 @@ namespace NermNermNerm.Junimatic
 
     public static class SimpleLogExtensions
     {
+        [ArgumentIsCultureInvariant]
         /// <summary>
         ///   Reports a failure that has been recovered from without throwing an exception, but still indicates a
         ///   problem with the mod severe enough to block its functionality.
         /// </summary>
-        public static void LogError(this ISimpleLog _this, string message) => _this.WriteToLog(message, LogLevel.Error, isOnceOnly: false);
+        public static void LogError(this ISimpleLog _this, FormattableString message) => _this.WriteToLog(message.ToString(), LogLevel.Error, isOnceOnly: false);
 
         /// <summary>
         ///   Reports a failure that has been recovered from without throwing an exception, but still indicates a
         ///   problem with the mod severe enough to block its functionality.  Use this if the problem might happen so frequently
         ///   that it'd clog up the log.
         /// </summary>
-        public static void LogErrorOnce(this ISimpleLog _this, string message) => _this.WriteToLog(message, LogLevel.Error, isOnceOnly: true);
+        [ArgumentIsCultureInvariant]
+        public static void LogErrorOnce(this ISimpleLog _this, FormattableString message) => _this.WriteToLog(message.ToString(), LogLevel.Error, isOnceOnly: true);
 
         /// <summary>
         ///   Info that might suggest there's a problem with the mod that the user might be able to work around.
         ///   Mainly it would be when the presence of this issue might explain a more serious fault later.
         /// </summary>
-        public static void LogWarning(this ISimpleLog _this, string message) => _this.WriteToLog(message, LogLevel.Warn, isOnceOnly: false);
+        [ArgumentIsCultureInvariant]
+        public static void LogWarning(this ISimpleLog _this, FormattableString message) => _this.WriteToLog(message.ToString(), LogLevel.Warn, isOnceOnly: false);
 
         /// <summary>
         ///   Info that might suggest there's a problem with the mod that the user might be able to work around.
         ///   Mainly it would be when the presence of this issue might explain a more serious fault later.
         ///   Use this if the problem might happen so frequently that it'd clog up the log.
         /// </summary>
-        public static void LogWarningOnce(this ISimpleLog _this, string message) => _this.WriteToLog(message, LogLevel.Warn, isOnceOnly: true);
-
+        [ArgumentIsCultureInvariant]
+        public static void LogWarningOnce(this ISimpleLog _this, FormattableString message) => _this.WriteToLog(message.ToString(), LogLevel.Warn, isOnceOnly: true);
 
         /// <summary>
         ///   Output that might be useful to the user who's just stumped by something.  E.g. record the location of hidden objects.
@@ -67,18 +72,22 @@ namespace NermNermNerm.Junimatic
         /// <remarks>
         ///   So if the user claims it's just not there at all, they can be told to refer to this part of the log and go see if it isn't there.
         /// </remarks>
-        public static void LogInfo(this ISimpleLog _this, string message) => _this.WriteToLog(message, LogLevel.Info, isOnceOnly: false);
+        [ArgumentIsCultureInvariant]
+        public static void LogInfo(this ISimpleLog _this, FormattableString message) => _this.WriteToLog(message.ToString(), LogLevel.Info, isOnceOnly: false);
 
         /// <summary>
         ///   Output that might be useful to the user who's just stumped by something.  E.g. record the location of hidden objects.
         ///   Use this if the codepath that calls this might be called often but the information would only be interesting once.
         /// </summary>
-        public static void LogInfoOnce(this ISimpleLog _this, string message) => _this.WriteToLog(message, LogLevel.Info, isOnceOnly: true);
-
+        [ArgumentIsCultureInvariant]
+        public static void LogInfoOnce(this ISimpleLog _this, FormattableString message) => _this.WriteToLog(message.ToString(), LogLevel.Info, isOnceOnly: true);
 
         /// <summary>Output to aid in debugging.  Not visible in the regular log.</summary>
-        public static void LogTrace(this ISimpleLog _this, string message) => _this.WriteToLog(message, LogLevel.Trace, isOnceOnly: false);
+        [ArgumentIsCultureInvariant]
+        public static void LogTrace(this ISimpleLog _this, FormattableString message) => _this.WriteToLog(message.ToString(), LogLevel.Trace, isOnceOnly: false);
+
         /// <summary>Output to aid in debugging.  Not visible in the regular log.</summary>
-        public static void LogTraceOnce(this ISimpleLog _this, string message) => _this.WriteToLog(message, LogLevel.Trace, isOnceOnly: true);
+        [ArgumentIsCultureInvariant]
+        public static void LogTraceOnce(this ISimpleLog _this, FormattableString message) => _this.WriteToLog(message.ToString(), LogLevel.Trace, isOnceOnly: true);
     }
 }

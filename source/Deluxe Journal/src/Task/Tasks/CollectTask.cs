@@ -8,7 +8,6 @@
 **
 *************************************************/
 
-using StardewModdingAPI;
 using StardewValley;
 using DeluxeJournal.Events;
 
@@ -26,14 +25,14 @@ namespace DeluxeJournal.Task.Tasks
             [TaskParameter(TaskParameterNames.Count, TaskParameterTag.Count, Constraints = Constraint.GE1)]
             public int Count { get; set; } = 1;
 
-            [TaskParameter(TaskParameterNames.Quality, TaskParameterTag.Quality, Parent = TaskParameterNames.Item, Constraints = Constraint.GE0)]
+            [TaskParameter(TaskParameterNames.Quality, TaskParameterTag.Quality, Parent = TaskParameterNames.Item, InputType = TaskParameterInputType.DropDown, Constraints = Constraint.GE0)]
             public int Quality { get; set; } = 0;
 
             public override SmartIconFlags EnabledSmartIcons => SmartIconFlags.Item;
 
             public override bool EnableSmartIconCount => true;
 
-            public override void Initialize(ITask task, ITranslationHelper translation)
+            protected override void InitializeInternal(ITask task)
             {
                 if (task is CollectTask collectTask)
                 {
@@ -43,7 +42,7 @@ namespace DeluxeJournal.Task.Tasks
                 }
             }
 
-            public override ITask? Create(string name)
+            protected override ITask? CreateInternal(string name)
             {
                 return ItemIds != null && ItemIds.Count > 0 ? new CollectTask(name, ItemIds, Count, Quality) : null;
             }

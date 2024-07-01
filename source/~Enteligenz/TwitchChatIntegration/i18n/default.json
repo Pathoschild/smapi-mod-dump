@@ -1,0 +1,49 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Enteligenz/StardewMods
+**
+*************************************************/
+
+{
+	"config.twitch.connection.title": "Twitch Connection Info",
+	"config.twitch.connection.info": "NOTE: Connection information changes are applied upon each game load",
+
+
+	"config.twitch.connection.username": "Chat Username",
+	"config.twitch.connection.username.tooltip": "The name of the Twitch account you want to use as login",
+
+	"config.twitch.connection.targetchannel": "Target Channel",
+	"config.twitch.connection.targetchannel.tooltip": "The name of the Twitch channel you want to read the chat of",
+
+	"config.twitch.connection.pagelink": "Click to set chat password (OAuth Token)",
+	"config.twitch.connection.pagelink.tooltip": "DO NOT CLICK THIS ON STREAM",
+
+	"config.twitch.behavior.title": "Behavior Options",
+	"config.twitch.behavior.info": "This area can be changed at any time without a restart.",
+
+	"config.twitch.behavior.ignorecommands": "Ignore Common Chat Commands",
+	"config.twitch.behavior.ignorecommands.tooltip": "This will make any message that's prefixed with a ! to not appear",
+
+	"config.twitch.behavior.systemmessages": "Show System Messages",
+	"config.twitch.behavior.systemmessages.tooltip": "This shows messages such as subscriptions/resubs/raids in the chat",
+
+	"config.twitch.behavior.filteredusers": "User Accounts to Filter",
+	"config.twitch.behavior.filteredusers.tooltip": "Comma separated list of account names to ignore from the chat",
+
+	"config.twitch.password.title": "Twitch OAuth Password",
+	"config.twitch.password.info": "NOTE: this must be the full chat token including the oauth: prefix",
+
+	"config.twitch.password.password": "Chat Password",
+	"config.twitch.password.password.tooltip": "This is the account password for the twitch account set as the username",
+
+	"twitch.status.boilerplate": "Twitch Chat Mod",
+	"twitch.status.badconfig": "Twitch Connection Information is not valid! Will fail to connect!",
+	"twitch.status.error.exception": "Encountered an error, most likely caused by invalid Twitch login credentials.",
+	"twitch.status.error.reconnect": "Twitch has requested us to reconnect, please go back to the main menu when possible",
+	"twitch.status.connecting": "Connecting to Twitch chat...",
+	"twitch.status.connected": "Connected!"
+}

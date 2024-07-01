@@ -11,7 +11,7 @@
 {
   "Name": "Mobile Phone Continued",
   "Author": "JoXW, aedenthorn",
-  "Version": "4.0.3",
+  "Version": "4.1.2",
   "Description": "Gives you a mobile phone.",
   "UniqueID": "JoXW.MobilePhone",
   "EntryDll": "MobilePhone.dll",

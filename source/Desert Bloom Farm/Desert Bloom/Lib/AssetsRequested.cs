@@ -120,8 +120,8 @@ namespace Desert_Bloom.Lib
                 EditMap = "NONE",
             });
 
-            if (!API.UnlockableBundlesHandler.unlocked("DLX.Desert_Bloom.Oasis_1"))
-                return;
+            //if (!API.UnlockableBundlesHandler.unlocked("DLX.Desert_Bloom.Oasis_1"))
+            //    return;
 
             list.Add(new UnlockableModel() {
                 ID = "DLX.Desert_Bloom.Oasis_2",
@@ -142,10 +142,11 @@ namespace Desert_Bloom.Lib
                     { "774", 5 }, //Wild Bait
                 },
                 EditMap = "NONE",
+                SpecialPlacementRequirements = new() { new() { Type = PlacementRequirementType.BundleCompletion, BundleKey = "DLX.Desert_Bloom.Oasis_1" } }
             });
 
-            if (!API.UnlockableBundlesHandler.unlocked("DLX.Desert_Bloom.Oasis_2"))
-                return;
+            //if (!API.UnlockableBundlesHandler.unlocked("DLX.Desert_Bloom.Oasis_2"))
+            //    return;
 
             list.Add(new UnlockableModel() {
                 ID = "DLX.Desert_Bloom.Oasis_3",
@@ -165,6 +166,7 @@ namespace Desert_Bloom.Lib
                     { "682, 901", 1 }  //Mutant Carp / Radioactive Carp
                 },
                 EditMap = "NONE",
+                SpecialPlacementRequirements = new() { new() { Type = PlacementRequirementType.BundleCompletion, BundleKey = "DLX.Desert_Bloom.Oasis_2" } }
             });
         }
 
@@ -191,8 +193,8 @@ namespace Desert_Bloom.Lib
                 EditMapMode = PatchMapMode.ReplaceByLayer
             });
 
-            if (!API.UnlockableBundlesHandler.unlocked("DLX.Desert_Bloom.Mill_Tier1"))
-                return;
+            //if (!API.UnlockableBundlesHandler.unlocked("DLX.Desert_Bloom.Mill_Tier1"))
+            //    return;
 
             list.Add(new UnlockableModel() {
                 ID = "DLX.Desert_Bloom.Mill_Tier2",
@@ -212,11 +214,12 @@ namespace Desert_Bloom.Lib
                 },
                 EditMap = "DLX.Desert_Bloom.Mill_2",
                 EditMapPosition = new Vector2(31, 11),
-                EditMapMode = PatchMapMode.ReplaceByLayer
+                EditMapMode = PatchMapMode.ReplaceByLayer,
+                SpecialPlacementRequirements = new() { new() { Type = PlacementRequirementType.BundleCompletion, BundleKey = "DLX.Desert_Bloom.Mill_Tier1" } }
             });
 
-            if (!API.UnlockableBundlesHandler.unlocked("DLX.Desert_Bloom.Mill_Tier2"))
-                return;
+            //if (!API.UnlockableBundlesHandler.unlocked("DLX.Desert_Bloom.Mill_Tier2"))
+            //    return;
 
             list.Add(new UnlockableModel() {
                 ID = "DLX.Desert_Bloom.Mill_Tier3",
@@ -235,11 +238,12 @@ namespace Desert_Bloom.Lib
                 },
                 EditMap = "DLX.Desert_Bloom.Mill_3",
                 EditMapPosition = new Vector2(24, 7),
-                EditMapMode = PatchMapMode.ReplaceByLayer
+                EditMapMode = PatchMapMode.ReplaceByLayer,
+                SpecialPlacementRequirements = new() { new() { Type = PlacementRequirementType.BundleCompletion, BundleKey = "DLX.Desert_Bloom.Mill_Tier2" } }
             });
 
-            if (!API.UnlockableBundlesHandler.unlocked("DLX.Desert_Bloom.Mill_Tier3"))
-                return;
+            //if (!API.UnlockableBundlesHandler.unlocked("DLX.Desert_Bloom.Mill_Tier3"))
+            //    return;
 
             list.Add(new UnlockableModel() {
                 ID = "DLX.Desert_Bloom.Mill_Tier4",
@@ -259,11 +263,12 @@ namespace Desert_Bloom.Lib
                 },
                 EditMap = "DLX.Desert_Bloom.Mill_4",
                 EditMapPosition = new Vector2(86, 42),
-                EditMapMode = PatchMapMode.ReplaceByLayer
+                EditMapMode = PatchMapMode.ReplaceByLayer,
+                SpecialPlacementRequirements = new() { new() { Type = PlacementRequirementType.BundleCompletion, BundleKey = "DLX.Desert_Bloom.Mill_Tier3" } }
             });
 
-            if (!API.UnlockableBundlesHandler.unlocked("DLX.Desert_Bloom.Mill_Tier4"))
-                return;
+            //if (!API.UnlockableBundlesHandler.unlocked("DLX.Desert_Bloom.Mill_Tier4"))
+            //    return;
 
             list.Add(new UnlockableModel() {
                 ID = "DLX.Desert_Bloom.Mill_Tier5",
@@ -286,6 +291,7 @@ namespace Desert_Bloom.Lib
                     { "805", 99 } //Tree Fertilizer
                 },
                 EditMap = "NONE",
+                SpecialPlacementRequirements = new() { new() { Type = PlacementRequirementType.BundleCompletion, BundleKey = "DLX.Desert_Bloom.Mill_Tier4" } }
             });
         }
 
@@ -314,8 +320,8 @@ namespace Desert_Bloom.Lib
                 EditMapMode = PatchMapMode.ReplaceByLayer
             });
 
-            if (!API.UnlockableBundlesHandler.unlocked("DLX.Desert_Bloom.Mining_Area_1"))
-                return;
+            //if (!API.UnlockableBundlesHandler.unlocked("DLX.Desert_Bloom.Mining_Area_1"))
+            //    return;
 
             list.Add(new UnlockableModel() {
                 ID = "DLX.Desert_Bloom.Mining_Area_2",
@@ -336,10 +342,11 @@ namespace Desert_Bloom.Lib
                     { "227", 1 }, //Sashimi
                 },
                 EditMap = "NONE",
+                SpecialPlacementRequirements = new() { new() { Type = PlacementRequirementType.BundleCompletion, BundleKey = "DLX.Desert_Bloom.Mining_Area_1" } }
             });
 
-            if (!API.UnlockableBundlesHandler.unlocked("DLX.Desert_Bloom.Mining_Area_2"))
-                return;
+            //if (!API.UnlockableBundlesHandler.unlocked("DLX.Desert_Bloom.Mining_Area_2"))
+            //    return;
 
             list.Add(new UnlockableModel() {
                 ID = "DLX.Desert_Bloom.Mining_Area_3",
@@ -356,6 +363,7 @@ namespace Desert_Bloom.Lib
                     { "88", 30 }, //Cocnut
                 },
                 EditMap = "NONE",
+                SpecialPlacementRequirements = new() { new() { Type = PlacementRequirementType.BundleCompletion, BundleKey = "DLX.Desert_Bloom.Mining_Area_2" } }
             });
         }
 

@@ -19,6 +19,7 @@ using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace ScheduleViewer
 {
@@ -116,6 +117,12 @@ namespace ScheduleViewer
         /// <inheritdoc cref="IGameLoopEvents.GameLaunched"/>
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {
+            // check if SVE is installed and prompt SVE Add-on
+            if (Helper.ModRegistry.IsLoaded("FlashShifter.SVECode") && !Helper.ModRegistry.IsLoaded("BinaryLip.SVEAddOn"))
+            {
+                Console.Log("It looks like you have Stardew Valley Expanded installed. There is an add-on available for Schedule Viewer that enhances schedule details for SVE NPCs and locations. See the optional files section of NexusMods or CurseForge for the download!", LogLevel.Alert);
+            }
+
             static ModConfig.SortType parseSortType(string value)
             {
                 _ = Enum.TryParse(value, out ModConfig.SortType sortType);
@@ -185,6 +192,14 @@ namespace ScheduleViewer
                     tooltip: () => this.Helper.Translation.Get("config.option.only_show_socializable_npcs.description"),
                     getValue: () => Config.OnlyShowSocializableNPCs,
                     setValue: value => Config.OnlyShowSocializableNPCs = value
+                );
+                Regex separators = new(",\\s?");
+                configMenuApi.AddTextOption(
+                    ModManifest,
+                    name: () => this.Helper.Translation.Get("config.option.ignored_npcs.name"),
+                    tooltip: () => this.Helper.Translation.Get("config.option.ignored_npcs.description"),
+                    getValue: () => String.Join(", ", Config.IgnoredNPCs),
+                    setValue: value => Config.IgnoredNPCs = string.IsNullOrEmpty(value) ? Array.Empty<string>() : separators.Split(value)
                 );
             }
 
@@ -288,7 +303,7 @@ namespace ScheduleViewer
         private void OnNpcListChanged(object sender, NpcListChangedEventArgs e)
         {
             // update current location for NPCs
-            if (Game1.IsMasterGame && Schedule.HasSchedules())
+            if (Game1.IsMasterGame && (Schedule.HasSchedules() || this.Helper.Multiplayer.GetConnectedPlayers().Any()))
             {
                 string[] npcsToUpdate = Schedule.GetSchedules()
                     .Where(schedule => e.Added.Any(npc => npc.Name.Equals(schedule.Key))) // find npcs that moved locations

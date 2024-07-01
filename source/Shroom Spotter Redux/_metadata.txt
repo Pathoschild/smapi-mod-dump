@@ -6,9 +6,9 @@ mods:
    Shroom Spotter Redux
 
 latest commit:
-   commit a8fb9dc38aafb22bd1117bffcdcc6b36754d8b78
+   commit 8ca3066d8d68d65201cc09aaa57b22cacceb0929
    Author: Ishan Jalan <ishan1337@gmail.com>
-   Date:   Fri Jun 4 02:44:52 2021 +0530
+   Date:   Sun Jun 2 15:05:37 2024 +0530
    
-       Cleaning up Shroom Spotter
+       1.6 Update
    

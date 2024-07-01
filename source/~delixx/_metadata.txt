@@ -7,9 +7,9 @@ mods:
    Easy Farm Switcher
 
 latest commit:
-   commit 56f571bbc81f616d27002e93370d3a215049ff59
+   commit 545172881e04355bfa4aaf18438e438b1f57e215
    Author: DeLiXx <fake122344@gmail.com>
-   Date:   Thu May 9 00:13:14 2024 +0200
+   Date:   Sat Jun 8 17:06:56 2024 +0200
    
-       updated to 2.1.2
+       Improved support for different asset life time on non english locales
    

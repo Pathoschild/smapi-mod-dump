@@ -6,9 +6,9 @@ mods:
    Portraiture Plus
 
 latest commit:
-   commit 22a1dd35f511fba46afb15320e8b559ba617b52d
+   commit 6767ad7b9dd1bb2371d770d94b0dfb4a9e0730e8
    Author: Arbor <BlueGrayx@qq.com>
-   Date:   Wed May 29 00:11:47 2024 +0800
+   Date:   Sat Jun 8 14:34:18 2024 +0800
    
-       finally
+       fix
    

@@ -1,0 +1,7 @@
+{
+  "FarmIsSafe": true,
+  "AllIsSafe": false,
+  "WakeInBed": false,
+  "StaminaDivisor": 2,
+  "AdditionalSafeLocations": []
+}

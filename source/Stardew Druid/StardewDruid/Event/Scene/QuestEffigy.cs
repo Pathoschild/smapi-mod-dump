@@ -10,6 +10,7 @@
 
 using Microsoft.VisualBasic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using StardewDruid.Cast;
 using StardewDruid.Cast.Mists;
@@ -22,10 +23,12 @@ using StardewValley;
 using StardewValley.GameData;
 using StardewValley.Locations;
 using StardewValley.Monsters;
+using StardewValley.TerrainFeatures;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
+using System.Timers;
 using static System.Net.Mime.MediaTypeNames;
 
 
@@ -53,14 +56,14 @@ namespace StardewDruid.Event.Scene
 
             mainEvent = true;
 
-            expireIn = 600;
+            activeLimit = 600;
 
         }
 
         public override void EventActivate()
         {
 
-            if (!Mod.instance.characters.ContainsKey(CharacterData.characters.Effigy))
+            if (!Mod.instance.characters.ContainsKey(CharacterHandle.characters.Effigy))
             {
 
                 return;
@@ -79,17 +82,17 @@ namespace StardewDruid.Event.Scene
 
             atollVector = new Vector2(92, 7);
 
-            mistVector = new Vector2(18, 15);
+            mistVector = new Vector2(25, 15);
 
             narrators = new()
             {
-                [0] = new("The Effigy", Microsoft.Xna.Framework.Color.Green),
-                [1] = new("The Jellyking", Microsoft.Xna.Framework.Color.OrangeRed),
-                [2] = new("First Farmer", Microsoft.Xna.Framework.Color.DarkGreen),
-                [3] = new("Lady Beyond", Microsoft.Xna.Framework.Color.Blue),
+                [0] = "The Effigy",
+                [1] = "The Jellyking",
+                [2] = "First Farmer",
+                [3] = "Lady Beyond",
             }; ;
 
-            companions[0] = Mod.instance.characters[CharacterData.characters.Effigy] as StardewDruid.Character.Effigy;
+            companions[0] = Mod.instance.characters[CharacterHandle.characters.Effigy] as StardewDruid.Character.Effigy;
 
             voices[0] = companions[0];
 
@@ -99,7 +102,7 @@ namespace StardewDruid.Event.Scene
 
         }
 
-        public override void EventAbort()
+        public override bool AttemptReset()
         {
 
             companions[0].SwitchToMode(Character.Character.mode.random, Game1.player);
@@ -114,24 +117,43 @@ namespace StardewDruid.Event.Scene
 
                 companions.Remove(2);
                 companions.Remove(3);
+            }
+
+            Mod.instance.CastMessage("Event aborted, try again tomorrow", 3, true);
+
+            return false;
+
+        }
+
+        public override void RemoveMonsters()
+        {
+
+            if (blobking != null)
+            {
+
+                blobking.currentLocation.characters.Remove(blobking);
+
+                blobking.currentLocation = null;
+
+                blobking = null;
 
             }
 
-            base.EventAbort();
+            base.RemoveMonsters();
 
         }
 
         public override void EventInterval()
         {
 
-            if (Game1.activeClickableMenu != null)
+            /*if (Game1.activeClickableMenu != null)
             {
 
-                expireTime++;
+                activeLimit += 1;
 
                 return;
 
-            }
+            }*/
 
             activeCounter++;
 
@@ -146,23 +168,11 @@ namespace StardewDruid.Event.Scene
 
                     companions[0].SwitchToMode(Character.Character.mode.scene, Game1.player);
 
+                    CharacterMover.Warp(location, companions[0], beachWarp * 64);
+
                     companions[0].netDirection.Set(3);
 
                     companions[0].eventName = eventId;
-
-                    if (companions[0].currentLocation.Name != Mod.instance.rite.castLocation.Name)
-                    {
-                        companions[0].currentLocation.characters.Remove(companions[0]);
-
-                        companions[0].currentLocation = Mod.instance.rite.castLocation;
-                        
-                        companions[0].currentLocation.characters.Add(companions[0]);
-                    
-                    }
-
-                    companions[0].Position = beachWarp*64;
-
-                    Mod.instance.iconData.AnimateQuickWarp(Mod.instance.rite.castLocation, companions[0].Position - new Vector2(0.0f, 32f));
 
                     DialogueCue(0, "A great day for the beach");
 
@@ -180,7 +190,7 @@ namespace StardewDruid.Event.Scene
 
                 case 4:
 
-                    Mod.instance.CastMessage("Talk to the Effigy when '...' appears");
+                    Mod.instance.CastDisplay("Talk to the Effigy when the green speech icon appears");
 
                     break;
 
@@ -188,11 +198,8 @@ namespace StardewDruid.Event.Scene
 
                     DialogueLoad(0, 1);
 
-                    DialogueCue(0, "..."); break;
+                    break;
 
-                case 9: DialogueCue(0, "..."); break;
-                case 12: DialogueCue(0, "..."); break;
-                case 15: DialogueCue(0, "..."); break;
                 case 18: activeCounter = 100; break;
 
 
@@ -335,14 +342,14 @@ namespace StardewDruid.Event.Scene
                             companions[0].Position - new Vector2(256, 128) + new Vector2(Mod.instance.randomIndex.Next(16) * 32, Mod.instance.randomIndex.Next(8) * 32),
                             new StardewValley.Object("147", 1)
                         )
-                        { pocket = true }.register();
+                        { pocket = false }.register();
 
                         new ThrowHandle(
                             origin - (vectors28[i] * 64),
                             companions[0].Position - new Vector2(256, 128) + new Vector2(Mod.instance.randomIndex.Next(16) * 32, Mod.instance.randomIndex.Next(8) * 32),
                             new StardewValley.Object("147", 1)
                         )
-                        { pocket = true }.register();
+                        { pocket = false }.register();
 
                     }
 
@@ -352,14 +359,8 @@ namespace StardewDruid.Event.Scene
 
                     DialogueLoad(0, 2);
 
-                    DialogueCue(0, "...");
-
                     break;
 
-                case 144: DialogueCue(0, "..."); break;
-                case 147: DialogueCue(0, "..."); break;
-                case 150: DialogueCue(0, "..."); break;
-                case 153: DialogueCue(0, "..."); break;
                 case 156: activeCounter = 200; break;
 
 
@@ -407,7 +408,8 @@ namespace StardewDruid.Event.Scene
 
                     Mod.instance.iconData.CursorIndicator(location, cursor57, IconData.cursors.mists, new());
 
-                    Mod.instance.iconData.AnimateBolt(location, cursor57);
+                    //Mod.instance.iconData.AnimateBolt(location, cursor57);
+                    Mod.instance.spellRegister.Add(new(cursor57 - new Vector2(0, 64), 128, IconData.impacts.puff, new()) { type = SpellHandle.spells.bolt });
 
                     break;
 
@@ -437,7 +439,8 @@ namespace StardewDruid.Event.Scene
 
                     Mod.instance.iconData.CursorIndicator(location, cursor60, IconData.cursors.mists, new());
 
-                    Mod.instance.iconData.AnimateBolt(location, campFire * 64);
+                    //Mod.instance.iconData.AnimateBolt(location, campFire * 64);
+                    Mod.instance.spellRegister.Add(new(campFire * 64 - new Vector2(0,64), 128, IconData.impacts.puff, new()) { type = SpellHandle.spells.bolt });
 
                     break;
 
@@ -471,7 +474,8 @@ namespace StardewDruid.Event.Scene
 
                     Mod.instance.iconData.CursorIndicator(location, cursor64, IconData.cursors.mists, new());
 
-                    Mod.instance.iconData.AnimateBolt(location, cursor64);
+                    //Mod.instance.iconData.AnimateBolt(location, cursor64);
+                    Mod.instance.spellRegister.Add(new(cursor64 - new Vector2(0, 64), 128, IconData.impacts.puff, new()) { type = SpellHandle.spells.bolt });
 
                     break;
 
@@ -511,17 +515,12 @@ namespace StardewDruid.Event.Scene
 
                     DialogueLoad(0, 3);
 
-                    DialogueCue(0, "...");
-
                     Game1.playSound("fireball");
 
                     Mod.instance.iconData.ImpactIndicator(location, (campFire - new Vector2(6, 0)) * 64, IconData.impacts.impact, 4f, new());
 
                     break;
 
-                case 219: DialogueCue(0, "..."); break;
-                case 222: DialogueCue(0, "..."); break;
-                case 225: DialogueCue(0, "..."); break;
                 case 228: activeCounter = 250; break;
 
                 // ------------------------------------------
@@ -583,9 +582,7 @@ namespace StardewDruid.Event.Scene
 
                     blobking.netPosturing.Set(true);
 
-                    blobking.netDirection.Set(2);
-
-                    blobking.netAlternative.Set(3);
+                    blobking.LookAtFarmer();
 
                     location.characters.Add(blobking);
 
@@ -631,8 +628,6 @@ namespace StardewDruid.Event.Scene
                     DialogueCue(1, "!");
 
                     blobking.netPosturing.Set(false);
-
-                    blobking.DamageToFarmer = 1;
 
                     blobking.Health = 9999;
 
@@ -688,9 +683,9 @@ namespace StardewDruid.Event.Scene
 
                     meteor.type = SpellHandle.spells.orbital;
 
-                    meteor.projectile = 4;
+                    meteor.missile = IconData.missiles.meteor;
 
-                    meteor.scheme = IconData.schemes.stars;
+                    meteor.projectile = 4;
 
                     Mod.instance.spellRegister.Add(meteor);
 
@@ -708,8 +703,6 @@ namespace StardewDruid.Event.Scene
 
                     DialogueLoad(0, 4);
 
-                    DialogueCue(0, "...");
-
                     companions[0].netDirection.Set(2);
 
                     location.characters.Remove(blobking);
@@ -722,10 +715,6 @@ namespace StardewDruid.Event.Scene
 
                     break;
 
-
-                case 364: DialogueCue(0, "..."); break;
-                case 367: DialogueCue(0, "..."); break;
-                case 370: DialogueCue(0, "..."); break;
                 case 373: activeCounter = 400; break;
 
                 // ------------------------------------------
@@ -742,15 +731,15 @@ namespace StardewDruid.Event.Scene
 
                 case 402:
 
-                    DialogueCue(0, "I need a space to reflect");
+                    DialogueCue(0, "I feel drawn to the atoll");
 
                     break;
 
                 case 421:
 
-                    Game1.warpFarmer(LocationData.druid_atoll_name, 5, 10, 1);
+                    Game1.warpFarmer(LocationData.druid_atoll_name, 14, 10, 1);
 
-                    Game1.xLocationAfterWarp = 5;
+                    Game1.xLocationAfterWarp = 14;
 
                     Game1.yLocationAfterWarp = 10;
 
@@ -760,13 +749,7 @@ namespace StardewDruid.Event.Scene
 
                     (Mod.instance.locations[LocationData.druid_atoll_name] as Atoll).ambientDarkness = true;
 
-                    companions[0].currentLocation.characters.Remove(companions[0]);
-
-                    companions[0].currentLocation = Mod.instance.locations[LocationData.druid_atoll_name];
-
-                    companions[0].currentLocation.characters.Add(companions[0]);
-
-                    companions[0].Position = new Vector2(6,11) * 64;
+                    CharacterMover.Warp(Mod.instance.locations[LocationData.druid_atoll_name], companions[0], new Vector2(16, 11) * 64, false);
 
                     break;
 
@@ -826,22 +809,43 @@ namespace StardewDruid.Event.Scene
 
                     wispNew.AddWisps(7, 120);
 
+                    wispNew.origin.X -= 768;
+
+                    wispNew.AddWisps(2, 120);
+
+                    wispNew.AddWisps(4, 120);
+
+                    wispNew.AddWisps(6, 120);
+
+                    wispNew.AddWisps(7, 120);
+
+                    wispNew.origin.X += 1532;
+
+                    wispNew.AddWisps(2, 120);
+
+                    wispNew.AddWisps(4, 120);
+
+                    wispNew.AddWisps(6, 120);
+
+                    wispNew.AddWisps(7, 120);
+
                     break;
 
-                case 455: DialogueCue(0, "We are not alone on this lonely atoll"); break;
+                case 455: DialogueCue(0, "We are not alone it seems"); break;
 
-                case 458:
+                case 458: DialogueCue(0, "Hmmm... why there are so many?"); break;
+
+                case 461:
 
                     DialogueLoad(0, 5);
 
-                    DialogueCue(0, "...");
-
                     break;
 
-                case 461: DialogueCue(0, "..."); break;
-                case 464: DialogueCue(0, "..."); break;
-                case 467: DialogueCue(0, "..."); break;
-                case 470: activeCounter = 500; break;
+                case 473:
+
+                    activeCounter = 500; 
+                    
+                    break;
 
                 // ------------------------------------------
                 // 6 First Farmer / Lady Beyond
@@ -877,17 +881,19 @@ namespace StardewDruid.Event.Scene
 
                 case 506:
 
-                    Vector2 mistCorner = mistVector * 64 - new Vector2(72*4,72*5);
+                    Vector2 mistCorner = mistVector * 64 - new Vector2(72*3,72*5);
 
-                    List<int> corners = new() { 0, 6,};
+                    List<int> cornersX = new() { 0, 6,};
+
+                    List<int> cornersY = new() { 0, 4, };
 
                     for (int i = 0; i < 7; i++)
                     {
 
-                        for (int j = 0; j < 7; j++)
+                        for (int j = 0; j < 5; j++)
                         {
 
-                            if (corners.Contains(i) && corners.Contains(j))
+                            if (cornersX.Contains(i) && cornersY.Contains(j))
                             {
                                 continue;
                             }
@@ -900,7 +906,7 @@ namespace StardewDruid.Event.Scene
                                 sourceRectStartingPos = new Vector2(88, 1779),
                                 texture = Game1.mouseCursors,
                                 motion = new Vector2(-0.0004f + Mod.instance.randomIndex.Next(5) * 0.0002f, -0.0004f + Mod.instance.randomIndex.Next(5) * 0.0002f),
-                                scale = 4f,
+                                scale = 5f,
                                 layerDepth = 991f,
                                 timeBasedMotion = true,
                                 alpha = 0.5f,
@@ -913,7 +919,16 @@ namespace StardewDruid.Event.Scene
 
                     }
 
-                    companions[2] = new Cuchulan(CharacterData.characters.Cuchulan);
+                    TemporaryAnimatedSprite cloudAnimation = Mod.instance.iconData.ImpactIndicator(
+                        
+                        location, 
+                        (mistVector + new Vector2(1,-3)) * 64, 
+                        IconData.impacts.spiral, 
+                        9f, 
+                        new() { interval = 125f, loops = 13*5, flip = true, alpha = 0.1f, layer = mistCorner.Y / 10000 }
+                     );
+
+                    companions[2] = new Cuchulan(CharacterHandle.characters.Cuchulan);
 
                     voices[2] = companions[2];
 
@@ -948,7 +963,7 @@ namespace StardewDruid.Event.Scene
                     };
                     location.temporarySprites.Add(farmerSprite);*/
 
-                    companions[3] = new Morrigan(CharacterData.characters.Morrigan);
+                    companions[3] = new Morrigan(CharacterHandle.characters.Morrigan);
 
                     voices[3] = companions[3];
 
@@ -1063,15 +1078,10 @@ namespace StardewDruid.Event.Scene
                     break;
                 case 570:
 
-                    DialogueCue(0, "...");
-
                     DialogueLoad(0, 6);
 
                     break;
 
-                case 573: DialogueCue(0, "..."); break;
-                case 576: DialogueCue(0, "..."); break;
-                case 579: DialogueCue(0, "..."); break;
                 case 582: activeCounter = 600; break;
 
                 // ------------------------------------------
@@ -1114,7 +1124,7 @@ namespace StardewDruid.Event.Scene
 
                     companions[0].SwitchToMode(Character.Character.mode.random, Game1.player);
 
-                    expireEarly = true;
+                    eventComplete = true;
 
                     //(Mod.instance.locations[LocationData.druid_atoll_name] as Atoll).ambientDarkness = false;
 
@@ -1369,7 +1379,7 @@ namespace StardewDruid.Event.Scene
                             "After a time, I began to hear her voice in the storms, and mist would blanket the valley at odd times. " +
                             "It became a mark of her presence, a sign of her enduring affection for the sacred places. " +
                             "The circle weakened in her absence. The First Farmer's attention shifted to other matters, and he began to neglect his duty. " +
-                            "He become obsessed with fanciful ideas, and a desire for something beyond his grasp. Then he left.");
+                            "He became obsessed with fanciful ideas, and a desire for something beyond his grasp. Then he left.");
 
                     break;
 

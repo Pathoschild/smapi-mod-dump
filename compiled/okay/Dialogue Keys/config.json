@@ -2,6 +2,7 @@
   "ShowNumbers": true,
   "NumberPrefix": "[",
   "NumberSuffix": "] ",
+  "EnableArrowKeys": true,
   "PrimaryKey1": "D1",
   "PrimaryKey2": "D2",
   "PrimaryKey3": "D3",

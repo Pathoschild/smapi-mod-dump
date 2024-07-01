@@ -80,11 +80,11 @@ public abstract class BaseExpPatcher : GenericPatcher
     /// <param name="totalExp"></param>
     /// <param name="level"></param>
     /// <returns></returns>
-    protected static int GetActorExp(int totalExp, int level, string skill_id)
+    protected static int GetActorExp(Farmer actor, int totalExp, int level, string skill_id)
     {
         // calculate actor exp gain, with rounding
-        int actor_exp = (int)Math.Round(totalExp * ModEntry.GetActorExpPercentage(level, skill_id));
-        int total_shared_exp = (int)Math.Round(totalExp * ModEntry.GetSharedExpPercentage(level, skill_id));
+        int actor_exp = (int)Math.Round(totalExp * ModEntry.GetActorExpPercentage(actor, level, skill_id));
+        int total_shared_exp = (int)Math.Round(totalExp * ModEntry.GetSharedExpPercentage(actor, level, skill_id));
         int rounding_loss = totalExp - (actor_exp + total_shared_exp);
         return actor_exp + rounding_loss;
     }

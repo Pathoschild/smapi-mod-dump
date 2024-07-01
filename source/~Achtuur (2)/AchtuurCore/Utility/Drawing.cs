@@ -29,6 +29,7 @@ public static class Drawing
         return pixel;
     });
     public static Texture2D Pixel => Drawing.LazyPixel.Value;
+    public static Rectangle PixelSourceRect = new Rectangle(0, 0, 1, 1);
     /****
     ** Drawing 
     ****/
@@ -38,48 +39,101 @@ public static class Drawing
     /// <param name="y">The X-position at which to start the line.</param>
     /// <param name="size">The line dimensions.</param>
     /// <param name="color">The color to tint the sprite.</param>
-    public static void DrawLine(this SpriteBatch batch, float x, float y, in Vector2 size, in Color? color = null)
+    public static void DrawRect(this SpriteBatch batch, float x, float y, in Vector2 size, in Color? color = null)
     {
         batch.Draw(Drawing.Pixel, new Rectangle((int)x, (int)y, (int)size.X, (int)size.Y), color ?? Color.White);
     }
-    public static void DrawLine(this SpriteBatch batch, Vector2 pos, in Vector2 size, in Color? color = null)
+    public static void DrawRect(this SpriteBatch batch, in Vector2 pos, in Vector2 size, in Color? color = null)
     {
         batch.Draw(Drawing.Pixel, new Rectangle((int)pos.X, (int)pos.Y, (int)size.X, (int)size.Y), color ?? Color.White);
     }
 
-    public static void DrawTexture(this SpriteBatch batch, Texture2D texture, Vector2 pos, in Vector2 size, in Color? color = null, float? layerDepth = null)
+    public static void DrawLine(this SpriteBatch batch, in Vector2 start, in Vector2 end, in Color? color = null, int? thickness = null)
+    {
+        Vector2 dim = end - start;
+        Rectangle r = new Rectangle((int)start.X, (int)start.Y, (int)dim.Length(), thickness ?? 1);
+        float rot = (float)Math.Atan2(dim.Y, dim.X);
+        batch.Draw(Drawing.Pixel, r, PixelSourceRect, color ?? Color.White, rot, Vector2.Zero, SpriteEffects.None, 0);
+    }
+
+    /// <summary>
+    /// Draws a texture to screen using position and scale. The top left of the drawn texture is pos, the bottom right is pos + texture size * scale.
+    /// </summary>
+    /// <param name="batch"></param>
+    /// <param name="texture"></param>
+    /// <param name="pos"></param>
+    /// <param name="scale"></param>
+    /// <param name="color"></param>
+    /// <param name="layerDepth"></param>
+    public static void DrawTexture(this SpriteBatch batch, in Texture2D texture, in Vector2 pos, in Vector2? scale = null, in Color? color = null, float? layerDepth = null)
+    {
+        batch.Draw(texture, pos, null, color ?? Color.White, 0f, Vector2.Zero, scale ?? Vector2.One, SpriteEffects.None, 0f);
+    }
+
+    /// <summary>
+    /// Draws texture to screen using a position and size. Top left of the drawn texture is pos, bottom right is pos + size.
+    /// </summary>
+    /// <param name="batch"></param>
+    /// <param name="texture"></param>
+    /// <param name="pos"></param>
+    /// <param name="size"></param>
+    /// <param name="color"></param>
+    /// <param name="layerDepth"></param>
+    public static void DrawSizedTexture(this SpriteBatch batch, in Texture2D texture, in Vector2 pos, in Vector2 size, in Color? color = null, float? layerDepth = null)
     {
         batch.Draw(texture, new Rectangle((int)pos.X, (int)pos.Y, (int)size.X, (int)size.Y), null, color ?? Color.White, 0f, Vector2.Zero, SpriteEffects.None, layerDepth ?? 0f);
     }
 
-    public static void DrawBorder(this SpriteBatch batch, Vector2 pos, in Vector2 size, in Color? color = null, int bordersize = 2)
+    public static void DrawBorder(this SpriteBatch batch, in Rectangle rect, in Color? color = null, int bordersize = 2)
     {
-        // Top
-        batch.DrawLine(pos.X - bordersize, pos.Y - bordersize, new Vector2(size.X + bordersize, bordersize), color);
-
-        // Bottom
-        batch.DrawLine(pos.X - bordersize, pos.Y + size.Y - bordersize, new Vector2(size.X + bordersize, bordersize), color);
-
-        // Left
-        batch.DrawLine(pos.X - bordersize, pos.Y - bordersize, new Vector2(bordersize, size.Y + bordersize), color);
-
-        // Right
-        batch.DrawLine(pos.X + size.X, pos.Y - bordersize, new Vector2(bordersize, size.Y + bordersize), color);
+        DrawBorder(batch, new Vector2(rect.X, rect.Y), new Vector2(rect.Width, rect.Height), color, bordersize);
     }
 
-    public static void DrawBorderNoCorners(this SpriteBatch batch, Vector2 pos, in Vector2 size, in Color? color = null, int bordersize = 2)
+    public static void DrawBorder(this SpriteBatch batch, in Vector2 pos, in Vector2 size, in Color? color = null, int bordersize = 2)
     {
         // Top
-        batch.DrawLine(pos.X - bordersize + 1, pos.Y - bordersize, new Vector2(size.X + bordersize - 2, bordersize), color);
+        batch.DrawRect(pos.X - bordersize, pos.Y - bordersize, new Vector2(size.X + bordersize, bordersize), color);
 
         // Bottom
-        batch.DrawLine(pos.X - bordersize + 1, pos.Y + size.Y - bordersize, new Vector2(size.X + bordersize - 2, bordersize), color);
+        batch.DrawRect(pos.X - bordersize, pos.Y + size.Y - bordersize, new Vector2(size.X + bordersize, bordersize), color);
 
         // Left
-        batch.DrawLine(pos.X - bordersize, pos.Y - bordersize + 1, new Vector2(bordersize, size.Y + bordersize - 2), color);
+        batch.DrawRect(pos.X - bordersize, pos.Y - bordersize, new Vector2(bordersize, size.Y + bordersize), color);
 
         // Right
-        batch.DrawLine(pos.X + size.X, pos.Y - bordersize + 1, new Vector2(bordersize, size.Y + bordersize - 2), color);
+        batch.DrawRect(pos.X + size.X, pos.Y - bordersize, new Vector2(bordersize, size.Y + bordersize), color);
+    }
+
+    public static void DrawBorderNoCorners(this SpriteBatch batch, in Vector2 pos, in Vector2 size, in Color? color = null, int bordersize = 2)
+    {
+        // Top
+        batch.DrawRect(pos.X - bordersize + 1, pos.Y - bordersize, new Vector2(size.X + bordersize - 2, bordersize), color);
+
+        // Bottom
+        batch.DrawRect(pos.X - bordersize + 1, pos.Y + size.Y - bordersize, new Vector2(size.X + bordersize - 2, bordersize), color);
+
+        // Left
+        batch.DrawRect(pos.X - bordersize, pos.Y - bordersize + 1, new Vector2(bordersize, size.Y + bordersize - 2), color);
+
+        // Right
+        batch.DrawRect(pos.X + size.X, pos.Y - bordersize + 1, new Vector2(bordersize, size.Y + bordersize - 2), color);
+    }
+
+    public static void DrawLightSource(this SpriteBatch batch, LightSource lightSource)
+    {
+        Texture2D texture = lightSource.lightTexture;
+        int lightQuality = Game1.options.lightingQuality;
+
+        //spriteBatch.DrawTexture(texture, position, null);
+        batch.Draw(texture,
+            lightSource.position.Value,
+            new Rectangle?(texture.Bounds),
+            lightSource.color.Value,
+            0f,
+            new Vector2((float)(texture.Bounds.Width / 2), (float)(texture.Bounds.Height / 2)),
+            lightSource.radius.Value / (float)(lightQuality / 2),
+            SpriteEffects.None,
+            0.9f);
     }
 
     public static Vector2 GetPositionScreenCoords(Vector2 position)

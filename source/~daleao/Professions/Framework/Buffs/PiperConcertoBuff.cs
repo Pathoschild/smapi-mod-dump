@@ -17,8 +17,6 @@ using DaLion.Professions.Framework.Limits;
 using DaLion.Professions.Framework.VirtualProperties;
 using DaLion.Shared.Extensions.Stardew;
 using Microsoft.Xna.Framework;
-using StardewValley.Extensions;
-using StardewValley.Locations;
 using StardewValley.Monsters;
 
 #endregion using directives

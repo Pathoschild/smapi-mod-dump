@@ -1,0 +1,243 @@
+﻿{
+    /*********
+    ** Tractor
+    *********/
+    "buff.name": "Sức Mạnh Máy Cày",
+    "garage.name": "Nhà Xe Máy Cày",
+    "garage.description": "Một nhà xe để chứa máy cày của bạn. Bao gồm cả máy cày!",
+
+
+    /*********
+    ** Generic Mod Config Menu UI
+    *********/
+    /****
+    ** Section titles
+    ****/
+    "config.main-options": "Tùy chọn chính",
+    "config.audio": "Âm thanh",
+    "config.controls": "Điều khiển",
+    "config.axe": "Tính năng Rìu",
+    "config.hoe": "Tính năng Cuốc",
+    "config.pickaxe": "Tính năng Cuốc chim",
+    "config.scythe": "Tính năng Lưỡi hái",
+    "config.melee-blunt": "Tính năng Vũ khí cùn",
+    "config.melee-dagger": "Tính năng Dao găm",
+    "config.melee-sword": "Tính năng Kiếm",
+    "config.other-tools": "Công cụ khác",
+    "config.custom-tools": "Công cụ tùy chỉnh",
+
+
+    /****
+    ** Warnings
+    ****/
+    "config.questable-tractor-warning": "Bạn đã cài đặt Questable Tractor. Mod này hoạt động bằng cách ghi đè cài đặt của máy kéo, vì vậy nó có thể đặt lại các thay đổi bạn thực hiện ở đây.",
+
+
+    /****
+    ** Main options
+    ****/
+    "config.distance.name": "Khoảng cách",
+    "config.distance.tooltip": "Lượng ô chịu ảnh hưởng của máy cày ở mọi phương hướng (ngoại trừ ô trung tâm dưới máy cày). Mặc định {{defaultValue}}; một giá trị {{maxRecommendedValue}} bao phủ hầu hết màn hình hiển thị, và các giá trị cao hơn có thể ảnh hưởng xấu đến hiệu suất trò chơi.",
+
+    "config.speed.name": "Tốc độ Máy cày",
+    "config.speed.tooltip": "Chỉ số tốc độ khi lái máy cày. Mặc định {{defaultValue}}.",
+
+    "config.magnetic-radius.name": "Bán kính hút vật phẩm",
+    "config.magnetic-radius.tooltip": "Chỉ số hút vật phẩm (giá trị càng cao hút các vật phẩm từ xa hơn). Mặc định {{defaultValue}}.",
+
+    "config.build-price.name": "Giá xây dựng",
+    "config.build-price.tooltip": "Giá vàng để mua một nhà để máy cày. Mặc định {{defaultValue}}g.",
+
+    "config.require-build-materials.name": "Yêu cầu Vật liệu xây dựng",
+    "config.require-build-materials.tooltip": "Có cần cung cấp vật liệu để xây dựng nhà để máy cày, ngoài giá vàng hay không.",
+
+    "config.can-summon-without-garage.name": "Có thể gọi ra máy cày mà không cần Nhà để máy cày",
+    "config.can-summon-without-garage.tooltip": "Có thể gọi một máy cày tạm thời mà không cần xây dựng nhà để máy cày trước.",
+
+    "config.invincible-on-tractor.name": "Bất bại trên Máy cày",
+    "config.invincible-on-tractor.tooltip": "Có nên miễn nhiễm với sát thương từ bất kỳ nguồn nào khi lái máy cày hay không.",
+
+    "config.highlight-radius.name": "Hiển thi vùng ảnh hưởng (Debug)",
+    "config.highlight-radius.tooltip": "Có nên hiển thị vùng ảnh hưởng của máy cày khi lái nó, để giúp hình dung tùy chọn khoảng cách hay không.",
+
+
+    /****
+    ** Audio options
+    ****/
+    "config.tractor-sounds.name": "Hiệu ứng Âm thanh",
+    "config.tractor-sounds.tooltip": "Các hiệu ứng âm thanh nào được phát khi lái máy cày. Thay đổi có thể không có hiệu lực hoàn toàn cho đến khi bạn tải lại trò chơi. Mặc định {{defaultValue}}.",
+    "config.tractor-sounds.value.None": "không có âm thanh",
+    "config.tractor-sounds.value.Horse": "âm thanh ngựa",
+    "config.tractor-sounds.value.Tractor": "âm thanh máy cày",
+
+    "config.tractor-volume.name": "Âm lượng Hiệu ứng Âm thanh",
+    "config.tractor-volume.tooltip": "Mức âm lượng cho hiệu ứng âm thanh máy cày. Mặc định {{defaultValue}}%.",
+
+
+    /****
+    ** Keybind options
+    ****/
+    "config.summon-key.name": "Gọi ra Máy cày",
+    "config.summon-key.tooltip": "Dịch chuyển một máy cày có sẵn đến vị trí của bạn. Mặc định là phím backspace.",
+
+    "config.dismiss-key.name": "Thu hồi Máy cày",
+    "config.dismiss-key.tooltip": "Đưa máy cày bạn đang lái về nhà.",
+
+    "config.hold-to-activate-key.name": "Giữ để Kích hoạt",
+    "config.hold-to-activate-key.tooltip": "Nếu được chỉ định, máy cày sẽ chỉ hoạt động khi bạn giữ nút này. Nếu không có gì được chỉ định, máy cày sẽ tự động làm việc khi bạn đang lái nó.",
+
+
+    /****
+    ** Trees & bushes
+    ****/
+    "config.chop-fruit-trees-seeds.name": "Chặt Cây ăn quả (Hạt giống)",
+    "config.chop-fruit-trees-seeds.tooltip": "Có chặt bỏ hạt giống của cây ăn quả hay không.",
+
+    "config.chop-fruit-trees-saplings.name": "Chặt Cây ăn quả (Cây con)",
+    "config.chop-fruit-trees-saplings.tooltip": "Có chặt bỏ cây ăn quả chưa phát triển hoàn toàn hay không.",
+
+    "config.chop-fruit-trees-grown.name": "Chặt Cây ăn quả (Cây lớn)",
+    "config.chop-fruit-trees-grown.tooltip": "Có chặt bỏ cây ăn quả đã phát triển hoàn toàn hay không.",
+
+    "config.chop-trees-seeds.name": "Chặt Cây (Hạt giống)",
+    "config.chop-trees-seeds.tooltip": "Có chặt bỏ hạt giống của cây không phải cây ăn quả hay không.",
+
+    "config.chop-trees-saplings.name": "Chặt Cây (Cây con)",
+    "config.chop-trees-saplings.tooltip": "Có chặt bỏ cây không phải cây ăn quả chưa phát triển hoàn toàn hay không.",
+
+    "config.chop-trees-grown.name": "Chặt Cây (Cây lớn)",
+    "config.chop-trees-grown.tooltip": "Có chặt bỏ cây không phải cây ăn quả đã phát triển hoàn toàn hay không.",
+
+    "config.chop-trees-stumps.name": "Chặt Cây (Gốc cây)",
+    "config.chop-trees-stumps.tooltip": "Có chặt bỏ gốc cây không phải cây ăn quả hay không. (Điều này không ảnh hưởng đến gốc cây khổng lồ, được tính là mảnh vụn.)",
+
+    "config.chop-bushes.name": "Chặt Bụi cây",
+    "config.chop-bushes.tooltip": "Có chặt bỏ bụi cây có thể bị chặt hay không.",
+
+    "config.harvest-fruit-trees.name": "Thu hoạch Cây ăn quả",
+    "config.harvest-fruit-trees.tooltip": "Có thu hoạch cây ăn quả hay không.",
+
+    "config.harvest-tree-moss.name": "Thu hoạch Rêu cây",
+    "config.harvest-tree-moss.tooltip": "Có thu hoạch rêu từ cây hay không.",
+
+    "config.harvest-tree-seeds.name": "Thu hoạch Hạt giống cây",
+    "config.harvest-tree-seeds.tooltip": "Có thu hoạch hạt giống từ cây hay không.",
+
+
+    /****
+    ** Crops/forage/grass
+    ****/
+    "config.clear-dead-crops.name": "Dọn dẹp Cây trồng Chết",
+    "config.clear-dead-crops.tooltip": "Có phá hủy cây trồng chết hay không.",
+
+    "config.clear-live-crops.name": "Dọn dẹp Cây trồng Sống",
+    "config.clear-live-crops.tooltip": "Có phá hủy cây trồng sống hay không.",
+
+    "config.harvest-giant-crops.name": "Thu hoạch Cây trồng Khổng lồ",
+    "config.harvest-giant-crops.tooltip": "Có thu hoạch cây trồng khổng lồ hay không.",
+
+    "config.harvest-crops.name": "Thu hoạch Cây trồng",
+    "config.harvest-crops.tooltip": "Có thu hoạch cây trồng hay không.",
+
+    "config.harvest-flowers.name": "Thu hoạch Hoa",
+    "config.harvest-flowers.tooltip": "Có thu hoạch hoa hay không.",
+
+    "config.harvest-forage.name": "Thu hoạch Cây dại",
+    "config.harvest-forage.tooltip": "Có thu hoạch cây dại hay không.",
+
+    "config.harvest-blue-grass.name": "Thu hoạch Cỏ (Màu xanh)",
+    "config.harvest-blue-grass.tooltip": "Có cắt cỏ màu xanh hay không. Nếu bạn có không gian trống trong silo, điều này sẽ cho bạn cỏ khô như thường lệ.",
+
+    "config.harvest-non-blue-grass.name": "Thu hoạch Cỏ (Không màu xanh)",
+    "config.harvest-non-blue-grass.tooltip": "Có cắt cỏ không màu xanh hay không. Nếu bạn có không gian trống trong silo, điều này sẽ cho bạn cỏ khô như thường lệ.",
+
+
+    /****
+    ** Debris
+    ****/
+    "config.clear-debris.name": "Dọn dẹp vật cản",
+    "config.clear-debris.tooltip": "Có phá hủy các vật cản như cỏ dại, cành cây, gốc cây khổng lồ, và khúc gỗ hay không.",
+
+    "config.clear-weeds.name": "Dọn dẹp Cỏ dại",
+    "config.clear-weeds.tooltip": "Có phá hủy cỏ dại hay không.",
+
+
+    /****
+    ** Dirt
+    ****/
+    "config.till-dirt.name": "Cày Đất",
+    "config.till-dirt.tooltip": "Có cày đất trống hay không.",
+
+    "config.dig-artifact-spots.name": "Đào Địa điểm Cổ vật",
+    "config.dig-artifact-spots.tooltip": "Có đào địa điểm cổ vật hay không.",
+
+    "config.dig-seed-spots.name": "Đào Địa điểm Hạt giống",
+    "config.dig-seed-spots.tooltip": "Có đào địa điểm hạt giống hay không.",
+
+    "config.clear-tilled-dirt.name": "Dọn dẹp Đất đã cày",
+    "config.clear-tilled-dirt.tooltip": "Có dọn dẹp đất đã cày hay không.",
+
+
+    /****
+    ** Mining
+    ****/
+    "config.break-boulders-and-meteorites.name": "Phá Hủy Đá và Thiên thạch",
+    "config.break-boulders-and-meteorites.tooltip": "Có phá hủy đá và thiên thạch hay không.",
+
+    "config.harvest-mine-spawns.name": "Thu hoạch các vật phẩm trong Mỏ",
+    "config.harvest-mine-spawns.tooltip": "Có thu hoạch các vật phẩm mỏ như thạch anh và pha lê băng giá hay không.",
+
+
+    /****
+    ** Placed items
+    ****/
+    "config.break-flooring.name": "Phá Hủy Sàn nhà",
+    "config.break-flooring.tooltip": "Có phá hủy sàn nhà đã đặt hay không.",
+
+    "config.break-objects.name": "Phá Hủy Vật phẩm",
+    "config.break-objects.tooltip": "Có phá hủy vật phẩm đã đặt hay không.",
+
+    "config.break-mine-containers.name": "Phá Hủy Đồ chứa trong Mỏ",
+    "config.break-mine-containers.tooltip": "Có phá hủy các đồ chứa trong mỏ hay không.",
+
+    "config.harvest-machines.name": "Thu hoạch sản phẩm từ Máy móc",
+    "config.harvest-machines.tooltip": "Có thu hoạch sản phẩm từ máy móc hay không.",
+
+
+    /****
+    ** Melee
+    ****/
+    "config.attack-monsters.name": "Tấn công Quái vật",
+    "config.attack-monsters.tooltip": "Có tấn công quái vật hay không. (Cực kỳ mạnh vì tốc độ đánh máy cày quá cao.)",
+
+
+    /****
+    ** Other
+    ****/
+    "config.milk-pail.name": "Bật xô vắt sữa",
+    "config.milk-pail.tooltip": "Có thu thập sữa từ động vật trang trại bằng xô vắt sữa hay không.",
+
+    "config.shears.name": "Bật Kéo",
+    "config.shears.tooltip": "Có thu thập lông cừu từ động vật trang trại bằng kéo hay không.",
+
+    "config.watering-can.name": "Bật Bình tưới nước",
+    "config.watering-can.tooltip": "Có tưới nước cho các ô lân cận bằng bình tưới nước hay không. Điều này không tiêu thụ nước trong bình tưới nước.",
+
+    "config.fertilizer.name": "Bật Phân bón",
+    "config.fertilizer.tooltip": "Có bón phân cho cây trồng và đất đã cày hay không.",
+
+    "config.grass-starters.name": "Bật trồng Cỏ",
+    "config.grass-starters.tooltip": "Có trồng cỏ hay không.",
+
+    "config.seeds.name": "Bật Hạt giống",
+    "config.seeds.tooltip": "Có trồng hạt giống hay không.",
+
+    "config.seed-bags.name": "Bật Túi Hạt giống",
+    "config.seed-bags.tooltip": "Có trồng hạt giống từ mod Túi Hạt giống hay không.",
+
+    "config.slingshot.name": "Bật ná cao su",
+    "config.slingshot.tooltip": "Có bắn ná cao su theo hướng con trỏ. (Cực kỳ mạnh và sẽ tiêu thụ đạn rất nhiều vì tốc độ đánh máy cày rất cao.)",
+
+    "config.custom-tool-names.name": "Tên Công cụ Tùy chỉnh",
+    "config.custom-tool-names.tooltip": "Các vật phẩm/công cụ tùy chỉnh để kích hoạt khi lái máy kéo. Công cụ sẽ được sử dụng trên mỗi ô xung quanh, trong khi vật phẩm sẽ được đặt xuống. Nếu bạn chỉ định một cái gì đó đã được hỗ trợ (như rìu), điều này sẽ ghi đè tất cả các hạn chế về việc sử dụng. Bạn phải chỉ định tên nội bộ chính xác (không phải tên hiển thị đã dịch), như 'Rìu' hoặc 'Mega Bomb'. Phân tách nhiều giá trị bằng dấu phẩy."
+}

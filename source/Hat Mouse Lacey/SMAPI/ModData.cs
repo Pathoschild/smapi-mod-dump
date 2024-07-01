@@ -34,6 +34,13 @@ namespace ichortower_HatMouseLacey
         private static string lc = HML.CPId;
         private static Timer _hatTimer = null;
 
+        public static HashSet<string> HatsShown
+        {
+            get {
+                return _hatsShown;
+            }
+        }
+
         public static void ClearCache()
         {
             _hatsShown = null;
@@ -43,7 +50,7 @@ namespace ichortower_HatMouseLacey
         public static bool AddShownHat(string name)
         {
             Load();
-            var ret = _hatsShown.Add(name);
+            bool ret = _hatsShown.Add(name);
             if (ret) {
                 WriteHatData();
             }
@@ -53,7 +60,7 @@ namespace ichortower_HatMouseLacey
         public static bool RemoveShownHat(string name)
         {
             Load();
-            var ret = _hatsShown.Remove(name);
+            bool ret = _hatsShown.Remove(name);
             if (ret) {
                 WriteHatData();
             }
@@ -64,6 +71,23 @@ namespace ichortower_HatMouseLacey
         {
             Load();
             return _hatsShown.Contains(name);
+        }
+
+        public static bool HasShownAnyHat()
+        {
+            Load();
+            return _hatsShown.Count > 0;
+        }
+
+        public static bool ClearShownHats()
+        {
+            Load();
+            bool ret = _hatsShown.Count > 0;
+            _hatsShown.Clear();
+            if (ret) {
+                WriteHatData();
+            }
+            return ret;
         }
 
         private static void WriteHatData()

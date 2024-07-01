@@ -14,6 +14,8 @@ using StardewModdingAPI;
 using StardewValley;
 using StardewValley.TerrainFeatures;
 
+using static NermNermNerm.Stardew.LocalizeFromSource.SdvLocalize;
+
 namespace NermNermNerm.Junimatic
 {
     /// <summary>
@@ -44,7 +46,7 @@ namespace NermNermNerm.Junimatic
             Event.RegisterCommand(EventCustomCommandJunimosDisappear, this.JunimosDisappear);
         }
 
-        public bool IsUnlocked => Game1.MasterPlayer.eventsSeen.Contains(GiantCropCelebrationEventId);
+        public bool IsUnlocked => ModEntry.Config.EnableWithoutQuests || Game1.MasterPlayer.eventsSeen.Contains(GiantCropCelebrationEventId);
 
         private bool GiantCropIsGrowingOnFarm(GameLocation location, string eventId, string[] args)
             => location.resourceClumps.OfType<GiantCrop>().Any();
@@ -117,7 +119,7 @@ namespace NermNermNerm.Junimatic
                 e.Edit(editor =>
                 {
                     var d = editor.AsDictionary<string, string>().Data;
-                    d[$"{GiantCropCelebrationEventId}/H/sawEvent {UnlockPortal.JunimoPortalDiscoveryEvent}/{EventCustomConditionGiantCropIsGrowingOnFarm}"] = $@"playful/
+                    d[IF($"{GiantCropCelebrationEventId}/H/sawEvent {UnlockPortal.JunimoPortalDiscoveryEvent}/{EventCustomConditionGiantCropIsGrowingOnFarm}")] = SdvEvent($@"playful/
 -1000 -1000/
 farmer 8 24 0/
 skippable/
@@ -131,7 +133,7 @@ spriteText 4 ""One of us will come and help with your kegs, casks and preserves 
 spriteText 4 ""Thx!  Bai!!!""/
 pause 2000/
 end
-";
+");
                 });
             }
             else if (e.NameWithoutLocale.IsEquivalentTo("Characters/Dialogue/Caroline"))
@@ -139,7 +141,7 @@ end
                 e.Edit(editor =>
                 {
                     var data = editor.AsDictionary<string, string>().Data;
-                    data[ConversationKeyBigCrops] = "Did you ever see the giant crops your Granddad used to crow?  Crazy big pumpkins.#$b#Abby campaigned for me to buy one every year.  I think she wanted me to buy one so she could carve out a house for herself.$1";
+                    data[ConversationKeyBigCrops] = L("Did you ever see the giant crops your Granddad used to crow?  Crazy big pumpkins.#$b#Abby campaigned for me to buy one every year.  I think she wanted me to buy one so she could carve out a house for herself.$1");
                     ConversationKeys.EditAssets(e.NameWithoutLocale, editor.AsDictionary<string, string>().Data);
                 });
             }
@@ -148,7 +150,7 @@ end
                 e.Edit(editor =>
                 {
                     var data = editor.AsDictionary<string, string>().Data;
-                    data[ConversationKeyBigCrops] = "Has Abby been needling you about growing giant pumpkins?$4#$b#Don't do it, really, there's no money in it.  Quantity is good, sure, but the quality isn't.$2#$b#Your grandpa grew them in his declining years in particular.  He said 'my helpers like them'.  Not sure what he meant by that, but he really enjoyed them that made it worth it to him!$1";
+                    data[ConversationKeyBigCrops] = L("Has Abby been needling you about growing giant pumpkins?$4#$b#Don't do it, really, there's no money in it.  Quantity is good, sure, but the quality isn't.$2#$b#Your grandpa grew them in his declining years in particular.  He said 'my helpers like them'.  Not sure what he meant by that, but he really enjoyed them that made it worth it to him!$1");
                     ConversationKeys.EditAssets(e.NameWithoutLocale, editor.AsDictionary<string, string>().Data);
                 });
             }
@@ -157,7 +159,7 @@ end
                 e.Edit(editor =>
                 {
                     var data = editor.AsDictionary<string, string>().Data;
-                    data[ConversationKeyBigCrops] = "When you were a kid visiting the farm, did you ever see any of the giant cauliflowers that your grandpa grew?  I mean huge!  like way huge!$1#$b#I only got to see them once that I can recall when my Mom took me down there one afternoon.#$b#I climbed one like a tree and my Mom got all worried.#$b#Your grandad fished me down and told my mom not to worry because magical creatures would protect me.#$b#I don't know why, I guess it's because I was just a kid, but I felt really special for a long time after that day.";
+                    data[ConversationKeyBigCrops] = L("When you were a kid visiting the farm, did you ever see any of the giant cauliflowers that your grandpa grew?  I mean huge!  like way huge!$1#$b#I only got to see them once that I can recall when my Mom took me down there one afternoon.#$b#I climbed one like a tree and my Mom got all worried.#$b#Your grandad fished me down and told my mom not to worry because magical creatures would protect me.#$b#I don't know why, I guess it's because I was just a kid, but I felt really special for a long time after that day.");
                     ConversationKeys.EditAssets(e.NameWithoutLocale, editor.AsDictionary<string, string>().Data);
                 });
             }
@@ -166,7 +168,7 @@ end
                 e.Edit(editor =>
                 {
                     var data = editor.AsDictionary<string, string>().Data;
-                    data[ConversationKeyBigCrops] = "Your grandad used to grow these gigantic pumpkins.  I totally wanted to carve one of those things.$1#$b#But my mom wouldn't buy one and your grandad invented this cock&bull story about magical creatures.$5#$b#Didn't he know I was too old for stories like that?  Meh.  I guess I should cut him slack for being old and senile.$2#$b#So...  Do you want to hear about any more of my first-world problems?$2";
+                    data[ConversationKeyBigCrops] = L("Your grandad used to grow these gigantic pumpkins.  I totally wanted to carve one of those things.$1#$b#But my mom wouldn't buy one and your grandad invented this cock&bull story about magical creatures.$5#$b#Didn't he know I was too old for stories like that?  Meh.  I guess I should cut him slack for being old and senile.$2#$b#So...  Do you want to hear about any more of my first-world problems?$2");
                     ConversationKeys.EditAssets(e.NameWithoutLocale, editor.AsDictionary<string, string>().Data);
                 });
             }

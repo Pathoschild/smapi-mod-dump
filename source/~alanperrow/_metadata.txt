@@ -8,17 +8,11 @@ mods:
    Splitscreen Improved
 
 latest commit:
-   commit 55bb6c4db12baa5cf9a4ed55609b1359a9a14ce1
-   Author: Alan Perrow <65362286+alanperrow@users.noreply.github.com>
-   Date:   Tue May 28 21:43:31 2024 -0400
+   commit 035e5baddef9c396491acd5ed307a05a9dc856a9
+   Author: Z2549 <84760771+Z2549@users.noreply.github.com>
+   Date:   Fri May 31 08:39:11 2024 +0800
    
-       Faster Path Speed 1.3.1 (#24)
+       ConvenientInventory first Chinese support (#17)
        
-       * Check for the town "path" tile. Currently just setting a debug value.
-       
-       * Apply path speed boost when on town path tiles. Removed debug code.
-       
-       * GMCM support for IsTownPathSpeedBuff config option.
-       
-       * Updated readme.
+       ConvenientInventory first Chinese support
    

@@ -67,17 +67,17 @@ namespace ContentPatcher.Framework
         private readonly Dictionary<IPatch, IndexedPatchValues> IndexedPatchValues = new(new ObjectReferenceComparer<IPatch>());
 
         /// <summary>The new patches which haven't received a context update yet.</summary>
-        private readonly HashSet<IPatch> PendingPatches = new();
+        private readonly HashSet<IPatch> PendingPatches = [];
 
         /// <summary>Assets for which patches were removed, which should be reloaded on the next context update.</summary>
-        private readonly HashSet<IAssetName> AssetsWithRemovedPatches = new();
+        private readonly HashSet<IAssetName> AssetsWithRemovedPatches = [];
 
         /// <summary>The token changes queued for periodic update types.</summary>
         private readonly IDictionary<ContextUpdateType, MutableInvariantSet> QueuedTokenChanges = new Dictionary<ContextUpdateType, MutableInvariantSet>
         {
-            [ContextUpdateType.OnTimeChange] = new(),
-            [ContextUpdateType.OnLocationChange] = new(),
-            [ContextUpdateType.All] = new()
+            [ContextUpdateType.OnTimeChange] = [],
+            [ContextUpdateType.OnLocationChange] = [],
+            [ContextUpdateType.All] = []
         };
 
         /// <summary>A low-level content manager which is detached from SMAPI's content API, used to check whether an asset exists in the base game's content folder.</summary>
@@ -109,7 +109,7 @@ namespace ContentPatcher.Framework
         {
             LoadPatch[] loaders = !ignoreLoadPatches
                 ? this.GetCurrentLoaders(e).ToArray()
-                : Array.Empty<LoadPatch>();
+                : [];
 
             IPatch[] editors = this.GetCurrentEditors(e).ToArray();
 
@@ -120,7 +120,7 @@ namespace ContentPatcher.Framework
                     .GetMethod(nameof(this.ApplyPatchesToAsset), BindingFlags.Instance | BindingFlags.NonPublic)!
                     .MakeGenericMethod(e.DataType);
 
-                apply.Invoke(this, new object[] { e, loaders, editors });
+                apply.Invoke(this, [e, loaders, editors]);
             }
         }
 
@@ -180,7 +180,7 @@ namespace ContentPatcher.Framework
 
             // init for verbose logging
             List<PatchAuditChange>? verbosePatchesReloaded = verbose
-                ? new()
+                ? []
                 : null;
 
             // update patches
@@ -295,7 +295,7 @@ namespace ContentPatcher.Framework
                 {
                     var patch = entry.Patch;
 
-                    List<string> notes = new();
+                    List<string> notes = [];
 
                     if (entry.WillInvalidate)
                     {
@@ -393,7 +393,7 @@ namespace ContentPatcher.Framework
         {
             if (this.PatchesByCurrentTarget.TryGetValue(assetName, out SortedSet<IPatch>? patches))
                 return patches;
-            return Array.Empty<IPatch>();
+            return [];
         }
 
         /// <summary>Get all valid patches grouped by their current target value.</summary>
@@ -430,12 +430,9 @@ namespace ContentPatcher.Framework
                 .GetPatches(baseAssetName)
                 .Where(patch =>
                     patch.IsReady
-                    && (
-                        patch.PredatesTargetLocale
-                        || (patch.TargetLocale is not null
-                            ? string.Equals(patch.TargetLocale, assetName.LocaleCode, StringComparison.InvariantCultureIgnoreCase)
-                            : !skipLocalizedAssetByDefault
-                        )
+                    && (patch.TargetLocale is not null
+                        ? string.Equals(patch.TargetLocale, assetName.LocaleCode, StringComparison.InvariantCultureIgnoreCase)
+                        : !skipLocalizedAssetByDefault
                     )
                 )
                 .OfType<LoadPatch>();
@@ -447,7 +444,7 @@ namespace ContentPatcher.Framework
         {
             PatchType? patchType = this.GetEditType(request.DataType);
             if (patchType == null)
-                return Array.Empty<IPatch>();
+                return [];
 
             return this
                 .GetPatches(request.NameWithoutLocale)
@@ -455,8 +452,7 @@ namespace ContentPatcher.Framework
                     patch.Type == patchType
                     && patch.IsReady
                     && (
-                        patch.PredatesTargetLocale
-                        || patch.TargetLocale is null
+                        patch.TargetLocale is null
                         || string.Equals(patch.TargetLocale, request.Name.LocaleCode, StringComparison.InvariantCultureIgnoreCase)
                     )
                 );
@@ -494,7 +490,7 @@ namespace ContentPatcher.Framework
                 const int exclusivePriority = (int)AssetLoadPriority.Exclusive;
                 if (candidate.Priority is exclusivePriority && loader?.Priority == exclusivePriority)
                 {
-                    IPatch[] exclusiveLoaders = loaders.Where(p => p.Priority == exclusivePriority).ToArray();
+                    IPatch[] exclusiveLoaders = loaders.Where(p => p.Priority == exclusivePriority).ToArray<IPatch>();
                     string[] modNames = exclusiveLoaders.Select(p => p.ContentPack.Manifest.Name).Distinct().OrderByHuman().ToArray();
                     string[] patchNames = exclusiveLoaders.Select(p => p.Path.ToString()).OrderByHuman().ToArray();
                     switch (modNames.Length)
@@ -568,7 +564,7 @@ namespace ContentPatcher.Framework
                 // apply runtime migration
                 {
                     T? data = default;
-                    if (patch.Migrator.TryApplyLoadPatch<T>(patch, assetName, ref data, out string? error))
+                    if (patch.Migrator.TryApplyLoadPatch(patch, assetName, ref data, out string? error))
                     {
                         patch.IsApplied = true;
                         return data;
@@ -681,10 +677,10 @@ namespace ContentPatcher.Framework
         /// <param name="patches">The patches to group.</param>
         private List<List<IPatch>> SortAndGroupEditPatches(IEnumerable<IPatch> patches)
         {
-            List<List<IPatch>> groups = new();
+            List<List<IPatch>> groups = [];
 
             string? lastModId = null;
-            List<IPatch> group = new();
+            List<IPatch> group = [];
             foreach (IPatch patch in patches.OrderBy(p => p.Priority))
             {
                 string modId = patch.ContentPack.Manifest.UniqueID;
@@ -694,7 +690,7 @@ namespace ContentPatcher.Framework
                     if (group.Count > 0)
                     {
                         groups.Add(group);
-                        group = new();
+                        group = [];
                     }
                 }
 
@@ -789,7 +785,7 @@ namespace ContentPatcher.Framework
         /// <param name="modContext">The token context for the mod which owns the patch.</param>
         private IInvariantSet ResolveTokensUsed(IInvariantSet rawTokens, ModTokenContext modContext)
         {
-            MutableInvariantSet resolvedTokens = new();
+            MutableInvariantSet resolvedTokens = [];
 
             foreach (string rawToken in rawTokens)
             {
@@ -824,7 +820,7 @@ namespace ContentPatcher.Framework
             if (this.PatchesAffectedByToken.TryGetValue(tokenName, out HashSet<IPatch>? set))
                 return set;
 
-            set = new HashSet<IPatch>();
+            set = [];
             this.PatchesAffectedByToken[tokenName] = set;
             return set;
         }

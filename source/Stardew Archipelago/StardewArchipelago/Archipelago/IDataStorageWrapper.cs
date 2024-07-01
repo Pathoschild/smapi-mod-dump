@@ -14,7 +14,7 @@ using Archipelago.MultiClient.Net.Enums;
 
 namespace StardewArchipelago.Archipelago
 {
-    public interface IDataStorageWrapper<T> where T:struct
+    public interface IDataStorageWrapper<T> where T : struct
     {
 
         void Set(Scope scope, string key, T value);

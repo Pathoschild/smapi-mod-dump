@@ -29,5 +29,6 @@ namespace ScheduleViewer
         public SortType NPCSortOrder { get; set; } = SortType.AlphabeticalAscending;
         public bool OnlyShowMetNPCs { get; set; } = false;
         public bool OnlyShowSocializableNPCs { get; set; } = true;
+        public string[] IgnoredNPCs { get; set; } = new string[3] { "Dwarf", "Krobus", "Wizard" };
     }
 }

@@ -11,7 +11,7 @@
 using System;
 using Netcode;
 using StardewArchipelago.Archipelago;
-using StardewArchipelago.Items.Unlocks;
+using StardewArchipelago.Items.Unlocks.Vanilla;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;
@@ -45,7 +45,7 @@ namespace StardewArchipelago.GameModifications.CodeInjections
                     return false; // don't run original logic
                 }
 
-                TileSheet tileSheet = __instance.map.GetTileSheet("untitled tile sheet2");
+                var tileSheet = __instance.map.GetTileSheet("untitled tile sheet2");
                 __instance.map.GetLayer("Buildings").Tiles[16, 6] = new StaticTile(__instance.map.GetLayer("Buildings"), tileSheet, BlendMode.Alpha, 197);
                 __instance.map.GetLayer("Buildings").Tiles[16, 7] = new StaticTile(__instance.map.GetLayer("Buildings"), tileSheet, BlendMode.Alpha, 213);
                 __instance.map.GetLayer("Back").Tiles[16, 8] = new StaticTile(__instance.map.GetLayer("Back"), tileSheet, BlendMode.Alpha, 229);

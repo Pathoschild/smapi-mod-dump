@@ -16,7 +16,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 
-namespace CustomTapperFramework;
+namespace Selph.StardewMods.MachineTerrainFramework;
 
 using SObject = StardewValley.Object;
 

@@ -13,7 +13,7 @@ using StardewValley;
 using StardewValley.Inventories;
 using System.Collections.Generic;
 
-namespace ExtraMachineConfig; 
+namespace Selph.StardewMods.ExtraMachineConfig; 
 
 static class Utils {
   // Removes items with the specified ID from the inventory.

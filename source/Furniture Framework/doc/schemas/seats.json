@@ -40,7 +40,8 @@
 			"Depth": {
 				"$ref": "/Leroymilo/FurnitureFramework/main/doc/schemas/depth.json"
 			}
-		}
-	},
-	"required": [ "Position", "Player Direction" ]
+		},
+		"required": [ "Position", "Player Direction" ],
+		"additionalProperties": false
+	}
 }

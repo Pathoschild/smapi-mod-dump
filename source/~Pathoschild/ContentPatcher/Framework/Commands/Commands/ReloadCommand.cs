@@ -50,11 +50,12 @@ namespace ContentPatcher.Framework.Commands.Commands
         /// <inheritdoc />
         public override string GetDescription()
         {
-            return @"
+            return
+                """
                 patch reload
-                   Usage: patch reload ""<content pack ID>""
+                   Usage: patch reload "<content pack ID>"
                    Reloads the patches of the content.json of a content pack. Config schema changes and dynamic token changes are unsupported.
-            ";
+                """;
         }
 
         /// <inheritdoc />
@@ -92,7 +93,7 @@ namespace ContentPatcher.Framework.Commands.Commands
             patchLoader.LoadPatches(
                 contentPack: pack,
                 rawPatches: pack.Content.Changes,
-                rootIndexPath: new[] { pack.Index },
+                rootIndexPath: [pack.Index],
                 path: new LogPathBuilder(pack.Manifest.Name),
                 parentPatch: null
             );

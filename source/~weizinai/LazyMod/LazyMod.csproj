@@ -5,6 +5,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <EnableHarmony>true</EnableHarmony>
+        <RootNamespace>weizinai.StardewValleyMod.LazyMod</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -16,6 +17,14 @@
         <None Remove="LazyMod.csproj.DotSettings"/>
     </ItemGroup>
 
-    <Import Project="..\Common\Common.projitems" Label="Shared"/>
+    <ItemGroup>
+      <Folder Include="Docs\Screenshots\" />
+    </ItemGroup>
+
+    <Import Project="..\Common.Integration\Common.Integration.projitems" Label="Shared" />
+
+    <Import Project="..\Common.Log\Common.Log.projitems" Label="Shared" />
+
+    <Import Project="..\Common\Common.projitems" Label="Shared" />
 
 </Project>

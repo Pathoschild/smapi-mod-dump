@@ -43,6 +43,7 @@ namespace TransparencySettings
             //apply patches
             HarmonyPatch_BuildingTransparency.ApplyPatch(harmony, Helper, Monitor);
             HarmonyPatch_BushTransparency.ApplyPatch(harmony, Helper, Monitor);
+            HarmonyPatch_CropTransparency.ApplyPatch(harmony, Helper, Monitor);
             HarmonyPatch_FruitTreeTransparency.ApplyPatch(harmony, Helper, Monitor);
             HarmonyPatch_GrassTransparency.ApplyPatch(harmony, Helper, Monitor);
             HarmonyPatch_ObjectTransparency.ApplyPatch(harmony, Helper, Monitor);

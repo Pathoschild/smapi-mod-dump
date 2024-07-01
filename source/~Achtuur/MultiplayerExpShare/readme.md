@@ -27,6 +27,10 @@ This mod relies on the base game's exp and levelling system. Any mod that change
 ## Planne1d
 * Change config to use the host's options
 
+## 1.2.1
+* Works with mastery now
+* Updated particles from AchtuurCore
+* Changed fishing particle color to be more bright blue
 
 ## 1.2.0 
 * Updated to Stardew Valley 1.6.3

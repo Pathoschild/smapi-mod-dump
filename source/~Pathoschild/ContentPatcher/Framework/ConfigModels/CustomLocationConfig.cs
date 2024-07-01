@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-using System;
-
 namespace ContentPatcher.Framework.ConfigModels
 {
     /// <summary>A custom location to add to the game.</summary>
@@ -39,7 +37,7 @@ namespace ContentPatcher.Framework.ConfigModels
         {
             this.Name = name;
             this.FromMapFile = fromMapFile;
-            this.MigrateLegacyNames = migrateLegacyNames ?? Array.Empty<string>();
+            this.MigrateLegacyNames = migrateLegacyNames ?? [];
         }
     }
 }

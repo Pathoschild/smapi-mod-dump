@@ -13,7 +13,7 @@
   "CritPowerBonus_IfChosen__0___1___2___3_______________________________________": 0,
   "CritChanceBonus_IfChosen_0___1___2___3_______________________________________": 0,
   "AttackBonus_IfChosen_____0___1___2___3___4___5_______________________________": 0,
-  "SpeedBonus_IfChosen______0___1___2___3___4___5___6___7___8___________________": 0,
+  "SpeedBonus_IfChosen______0___1___2___3___4___5___6___7___8__9__10__11__12____": 0,
   "Forge___CinderShards_Cost_of_ToolAndCombat_Enchantments___20Default__________": 20,
   "Forge___CinderShards_Cost_Of_Using_Galaxy_Soul____________20Default__________": 20,
   "Forge___CinderShards_Cost_of_Innate_Enchantments__________10Default__________": 10,
@@ -21,5 +21,9 @@
   "Forge___CinderShards_Cost_Of_Changing_Weapon_Looks________10Default__________": 10,
   "Forge___CinderShards_Cost_Of_Using_Diamond________________10Default__________": 10,
   "Forge___CinderShards_Base_Cost_of_Forging_with_Gems_______10Default__________": 10,
-  "CinderShards_Cost_Increase_per_level_of_Forging_With_Gems__5Default__________": 5
+  "CinderShards_Cost_Increase_per_level_of_Forging_With_Gems__5Default__________": 5,
+  "CinderShards_CombinedRing_Refund_Amount_Percentage_________0_5_Default_______": 0.5,
+  "CinderShards_Weapon_Appearance_Refund_Amount_Percentage____0_5_Default_______": 0.5,
+  "CinderShards_Weapon_Using_Gem_Refund_Amount_Percentage_____0_5_Default_______": 0.5,
+  "CinderShards_Weapon_Using_Diamond_Refund_Amount_Percentage_0_5_Default_______": 0.5
 }

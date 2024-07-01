@@ -1,0 +1,11 @@
+{
+	// Translation provided by: fs_echo7
+	"errors": "StardewHack {{version}} a détecté les erreurs suivantes :",
+	"footer": "Veuillez consulter votre console ou le journal des erreurs pour des instructions supplémentaires.",
+	"fatal": "Stardew Valley ne peut pas être lancé tant que ces erreurs ne sont pas corrigées.",
+	"outdated-harmony": "SMAPI utilise une version obsolète de Harmony.",
+	"initialization-error": "Échec de l'initialisation du mod.",
+	"failed-patch": "Impossible d'appliquer certains/tous les correctifs.",
+	"outdated-version": "StardewHack ne prend pas en charge cette version.",
+	"corrupted": "Les fichiers d'installation du mod ont été corrompus."
+}

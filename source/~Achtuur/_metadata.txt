@@ -7,9 +7,11 @@ mods:
    Travelling Skill
 
 latest commit:
-   commit 1592ad9cfbf915b9873ffc7ba9a54b535320b0be
-   Author: Achtuur <arthurdegroot88@gmail.com>
-   Date:   Sat Apr 20 14:30:12 2024 +0200
+   commit 3648770bbc04bf9923c7aa75c3eb9b4436ce6fdb
+   Author: Arthur de Groot <68847937+Achtuur@users.noreply.github.com>
+   Date:   Mon Jun 17 10:51:21 2024 +0200
    
-       Fishcatalogue wip 2
+       Merge pull request #4 from Achtuur/update-hoverlabels
+       
+       update fruit trees, support achtuurcore 1.3.0
    

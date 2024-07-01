@@ -15,7 +15,6 @@ namespace DaLion.Core.Framework.Patchers;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using DaLion.Core.Framework.Events;
 using DaLion.Shared.Extensions.Reflection;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
@@ -103,16 +102,6 @@ internal sealed class MonsterTakeDamagePatcher : HarmonyPatcher
 
         damage *= 2;
         __instance.Defrost();
-    }
-
-    /// <summary>Reset seconds out of combat.</summary>
-    [HarmonyPostfix]
-    private static void MonsterTakeDamagePostfix(Farmer who)
-    {
-        if (who.IsLocalPlayer)
-        {
-            EventManager.Enable<OutOfCombatOneSecondUpdateTickedEvent>();
-        }
     }
 
     #endregion harmony patches

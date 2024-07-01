@@ -1,0 +1,19 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/tadfoster/StardewValleyMods
+**
+*************************************************/
+
+{
+  "Message_FinalDay": "This is your final day! The game will exit after saving tomorrow morning.",
+  "Message_ShutDown": "Day limit reached! Closing the game...",
+  "GMCM_Option_DaysPlayed": "Days played",
+  "GMCM_Option_DaysRemaining": "Days remaining",
+  "GMCM_Option_ModEnabled_Name": "Day Limit Enabled",
+  "GMCM_Option_DayLimitCount_Name": "Day Limit",
+  "GMCM_Option_ExitToTitle_Name": "Exit to Title"
+}

@@ -37,7 +37,7 @@ namespace Pathoschild.Stardew.TractorMod.Framework
         private const string GarageBuildingId = "Pathoschild.TractorMod_Stable";
 
         /// <summary>The actions to perform when the current session is saved.</summary>
-        private static readonly List<Action> OnSaved = new();
+        private static readonly List<Action> OnSaved = [];
 
 
         /*********

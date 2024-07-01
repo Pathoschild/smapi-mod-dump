@@ -8,6 +8,7 @@
   "BushHarvest": true,
   "CollectableMachineHarvest": true,
   "ProcessingMachineHarvest": true,
+  "AllMachineHarvest": true,
   "DigUpArtifactSpot": true,
   "WateringCrop": true,
   "StirGarbageCan": true,
@@ -26,7 +27,7 @@
     "Charcoal Kiln",
     "Crab Pot"
   ],
-  "AllMachineAutoInput": false,
+  "AllMachineAutoInput": true,
   "SprinklerAutoInput": true,
   "AutoInputKeyAssist": "LeftShift"
 }

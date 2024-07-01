@@ -10,8 +10,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json;
 using StardewModdingAPI;
+using StardewValley;
+using StardewValley.GameData;
 
 namespace StardewArchipelago.Archipelago
 {
@@ -42,6 +45,8 @@ namespace StardewArchipelago.Archipelago
         private const string CRAFTSANITY_KEY = "craftsanity";
         private const string FRIENDSANITY_KEY = "friendsanity";
         private const string FRIENDSANITY_HEART_SIZE_KEY = "friendsanity_heart_size";
+        private const string BOOKSANITY_KEY = "booksanity";
+        private const string WALNUTSANITY_KEY = "walnutsanity";
         private const string EXCLUDE_GINGER_ISLAND_KEY = "exclude_ginger_island";
         private const string TRAP_ITEMS_KEY = "trap_items";
         private const string MULTI_SLEEP_ENABLED_KEY = "multiple_day_sleep_enabled";
@@ -62,7 +67,7 @@ namespace StardewArchipelago.Archipelago
         // private const string RANDOMIZE_NPC_APPEARANCES_DAILY_KEY = "randomize_appearances_daily";
         private const string MULTIWORLD_VERSION_KEY = "client_version";
         private const string MOD_LIST_KEY = "mods";
-        
+
         private Dictionary<string, object> _slotDataFields;
         private IMonitor _console;
 
@@ -94,6 +99,8 @@ namespace StardewArchipelago.Archipelago
         public Craftsanity Craftsanity { get; private set; }
         public Friendsanity Friendsanity { get; private set; }
         public int FriendsanityHeartSize { get; private set; }
+        public Booksanity Booksanity { get; private set; }
+        public Walnutsanity Walnutsanity { get; private set; }
         public bool ExcludeGingerIsland { get; private set; }
         public TrapItemsDifficulty TrapItemsDifficulty { get; set; }
         public bool EnableMultiSleep { get; private set; }
@@ -119,7 +126,8 @@ namespace StardewArchipelago.Archipelago
             _console = console;
 
             Goal = GetSlotSetting(GOAL_KEY, Goal.CommunityCenter);
-            FarmType = GetSlotSetting(FARM_TYPE_KEY, FarmType.Standard);
+            var farmType = GetSlotSetting(FARM_TYPE_KEY, SupportedFarmType.Standard);
+            FarmType = new FarmType(farmType);
             StartingMoney = GetSlotSetting(STARTING_MONEY_KEY, 500);
             ProfitMargin = GetSlotSetting(PROFIT_MARGIN_KEY, 100) / 100.0;
             BundlesData = GetSlotSetting(MODIFIED_BUNDLES_KEY, "");
@@ -133,7 +141,7 @@ namespace StardewArchipelago.Archipelago
             BuildingProgression = GetSlotSetting(BUILDING_PROGRESSION_KEY, BuildingProgression.Progressive);
             FestivalLocations = GetSlotSetting(FESTIVAL_OBJECTIVES_KEY, FestivalLocations.Easy);
             ArcadeMachineLocations = GetSlotSetting(ARCADE_MACHINES_KEY, ArcadeLocations.FullShuffling);
-            SpecialOrderLocations = GetSlotSetting(SPECIAL_ORDERS_KEY, SpecialOrderLocations.BoardOnly);
+            SpecialOrderLocations = GetSlotSetting(SPECIAL_ORDERS_KEY, SpecialOrderLocations.Board);
             QuestLocations = new QuestLocations(GetSlotSetting(QUEST_LOCATIONS_KEY, 0));
             Fishsanity = GetSlotSetting(FISHSANITY_KEY, Fishsanity.None);
             Museumsanity = GetSlotSetting(MUSEUMSANITY_KEY, Museumsanity.None);
@@ -144,6 +152,8 @@ namespace StardewArchipelago.Archipelago
             Craftsanity = GetSlotSetting(CRAFTSANITY_KEY, Craftsanity.None);
             Friendsanity = GetSlotSetting(FRIENDSANITY_KEY, Friendsanity.None);
             FriendsanityHeartSize = GetSlotSetting(FRIENDSANITY_HEART_SIZE_KEY, 4);
+            Booksanity = GetSlotSetting(BOOKSANITY_KEY, Booksanity.None);
+            Walnutsanity = GetSlotWalnutsanitySetting();
             ExcludeGingerIsland = GetSlotSetting(EXCLUDE_GINGER_ISLAND_KEY, true);
             TrapItemsDifficulty = GetSlotSetting(TRAP_ITEMS_KEY, TrapItemsDifficulty.Medium);
             EnableMultiSleep = GetSlotSetting(MULTI_SLEEP_ENABLED_KEY, true);
@@ -167,9 +177,42 @@ namespace StardewArchipelago.Archipelago
             Mods = new ModsManager(_console, mods);
         }
 
+        private Walnutsanity GetSlotWalnutsanitySetting()
+        {
+            var walnutsanityValues = Walnutsanity.None;
+            var walnutsanityJson = GetSlotSetting(WALNUTSANITY_KEY, "");
+            if (string.IsNullOrWhiteSpace(walnutsanityJson))
+            {
+                return walnutsanityValues;
+            }
+            var walnutsanityItems = JsonConvert.DeserializeObject<List<string>>(walnutsanityJson);
+            if (walnutsanityItems == null)
+            {
+                return walnutsanityValues;
+            }
+
+            walnutsanityItems = walnutsanityItems.Select(x => x.Replace(" ", "")).ToList();
+            foreach (var walnutsanityValue in Enum.GetValues<Walnutsanity>())
+            {
+                if (walnutsanityItems.Contains(walnutsanityValue.ToString()))
+                {
+                    walnutsanityValues |= walnutsanityValue;
+                }
+            }
+            return walnutsanityValues;
+        }
+
         private T GetSlotSetting<T>(string key, T defaultValue) where T : struct, Enum, IConvertible
         {
-            return _slotDataFields.ContainsKey(key) ? Enum.Parse<T>(_slotDataFields[key].ToString(), true) : GetSlotDefaultValue(key, defaultValue);
+            if (_slotDataFields.ContainsKey(key))
+            {
+                if (Enum.TryParse<T>(_slotDataFields[key].ToString(), true, out var parsedValue))
+                {
+                    return parsedValue;
+                }
+            }
+
+            return GetSlotDefaultValue(key, defaultValue);
         }
 
         private string GetSlotSetting(string key, string defaultValue)
@@ -270,8 +313,7 @@ namespace StardewArchipelago.Archipelago
         Allsanity = 24,
         Perfection = 25,
     }
-
-    public enum FarmType
+    public enum SupportedFarmType
     {
         Standard = 0,
         Riverland = 1,
@@ -280,6 +322,52 @@ namespace StardewArchipelago.Archipelago
         Wilderness = 4,
         FourCorners = 5,
         Beach = 6,
+        Meadowlands = 7,
+    }
+
+    public class FarmType
+    {
+        private SupportedFarmType _supportedFarmType;
+
+        internal FarmType(SupportedFarmType supportedFarmType)
+        {
+            _supportedFarmType = supportedFarmType;
+        }
+
+        public SupportedFarmType GetFarmType()
+        {
+            return _supportedFarmType;
+        }
+
+        public int GetWhichFarm()
+        {
+            return (int)_supportedFarmType;
+        }
+
+        public ModFarmType GetWhichModFarm()
+        {
+            switch (_supportedFarmType)
+            {
+                case SupportedFarmType.Meadowlands:
+                    var modFarmTypeList = DataLoader.AdditionalFarms(Game1.content);
+                    return modFarmTypeList.First(x => x.Id.Contains(_supportedFarmType.ToString(), StringComparison.InvariantCultureIgnoreCase));
+                case SupportedFarmType.Standard:
+                case SupportedFarmType.Riverland:
+                case SupportedFarmType.Forest:
+                case SupportedFarmType.HillTop:
+                case SupportedFarmType.Wilderness:
+                case SupportedFarmType.FourCorners:
+                case SupportedFarmType.Beach:
+                    return null;
+                default:
+                    throw new ArgumentOutOfRangeException($"Unrecognized SupportedFarmType Type: {_supportedFarmType}");
+            }
+        }
+
+        public bool GetSpawnMonstersAtNight()
+        {
+            return _supportedFarmType == SupportedFarmType.Wilderness;
+        }
     }
 
     public enum EntranceRandomization
@@ -287,9 +375,10 @@ namespace StardewArchipelago.Archipelago
         Disabled = 0,
         PelicanTown = 1,
         NonProgression = 2,
-        Buildings = 3,
-        Everything = 4,
-        Chaos = 5,
+        BuildingsWithoutHouse = 3,
+        Buildings = 4,
+        Everything = 10,
+        Chaos = 12,
     }
 
     public enum SeasonRandomization
@@ -333,6 +422,7 @@ namespace StardewArchipelago.Archipelago
     {
         Vanilla = 0,
         Progressive = 1,
+        ProgressiveWithMasteries = 2,
     }
 
     [Flags]
@@ -358,11 +448,14 @@ namespace StardewArchipelago.Archipelago
         FullShuffling = 3,
     }
 
+    [Flags]
     public enum SpecialOrderLocations
     {
-        Disabled = 0,
-        BoardOnly = 1,
-        BoardAndQi = 2,
+        Vanilla = 0b0000, // 0
+        Board = 0b0001, // 1
+        Qi = 0b0010, // 2
+        Short = 0b0100, // 4
+        VeryShort = 0b1000, // 8
     }
 
     public class QuestLocations
@@ -451,6 +544,25 @@ namespace StardewArchipelago.Archipelago
         StartingNpcs = 3,
         All = 4,
         AllWithMarriage = 5,
+    }
+
+    public enum Booksanity
+    {
+        None = 0,
+        Power = 1,
+        PowerSkill = 2,
+        All = 3,
+    }
+
+    [Flags]
+    public enum Walnutsanity
+    {
+        None = 0b0000,
+        Puzzles = 0b0001,
+        Bushes = 0b0010,
+        DigSpots = 0b0100,
+        Repeatables = 0b1000,
+        All = Puzzles | Bushes | DigSpots | Repeatables,
     }
 
     public enum TrapItemsDifficulty

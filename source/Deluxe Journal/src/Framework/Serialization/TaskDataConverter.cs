@@ -47,7 +47,18 @@ namespace DeluxeJournal.Framework.Serialization
                 }
                 else if (migrator != null)
                 {
-                    migrator.Migrate_1_0(taskObject, taskType, out task);
+                    try
+                    {
+                        migrator.Migrate_1_0(taskObject, taskType, out task);
+                    }
+                    catch (JsonReaderException ex)
+                    {
+                        if (DeluxeJournalMod.Instance?.Monitor is IMonitor monitor)
+                        {
+                            monitor.Log($"Exception caught during task migration! Type-specific data may be lost.", LogLevel.Warn);
+                            monitor.Log($"\t{ex.Message}", LogLevel.Warn);
+                        }
+                    }
                 }
 
                 if (task != null || (task = taskObject.ToObject(typeof(BasicTask)) as ITask) != null)

@@ -39,7 +39,7 @@ public class ModEntry : Mod
         this.Config = this.Helper.ReadConfig<ModConfig>();
         this.wateringExpTotal.Value = 0f;
 
-        AchtuurCore.Events.EventPublisher.FinishedWateringSoil += OnFinishedWateringSoil;
+        AchtuurCore.FarmingEvents.FinishedWateringSoil += OnFinishedWateringSoil;
 
         helper.Events.GameLoop.GameLaunched += this.OnGameLaunch;
     }

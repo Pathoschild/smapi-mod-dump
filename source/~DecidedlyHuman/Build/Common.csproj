@@ -1,4 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
+    <Import Project="..\Build\Latest.targets" />
+
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
         <IgnoreModFilePatterns>\.aseprite$</IgnoreModFilePatterns>
@@ -9,6 +11,13 @@
         <EntryDll>$(AssemblyName)</EntryDll>
         <EnableModZip Condition="'$(Configuration)' == 'Debug' ">False</EnableModZip>
         <LangVersion>12</LangVersion>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(OS)' != 'Windows_NT'">
+        <!-- enable game debugging -->
+        <StartAction>Program</StartAction>
+        <StartProgram>$(GamePath)\StardewModdingAPI</StartProgram>
+        <StartWorkingDirectory>$(GamePath)</StartWorkingDirectory>
     </PropertyGroup>
 
     <ItemGroup>

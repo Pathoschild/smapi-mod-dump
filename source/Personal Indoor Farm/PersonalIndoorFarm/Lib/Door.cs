@@ -32,28 +32,6 @@ namespace PersonalIndoorFarm.Lib
         public const string QualifiedItemId = "(F)" + ItemId;
 
         public const string LastDoorLocationKey = "DLX.PIF_LastDoorLocation";
-
-        public const string SoundDoor = "";
-        public const string SoundSilent = "Silent_";
-        public const string SoundWoodStep = "WoodStep_";
-
-        public static readonly List<string> VanillaDoors = new() {
-            "DecorativeJojaDoor",
-            "DecorativeWizardDoor",
-            "DecorativeJunimoDoor",
-            "DecorativeRetroDoor",
-            "DecorativeDoor1",
-            "DecorativeDoor2",
-            "DecorativeDoor3",
-            "DecorativeDoor4",
-            "DecorativeDoor5",
-            "DecorativeDoor6"
-        };
-
-        public static readonly List<string> VMVDoors = new() {
-            "Lumisteria.MtVapius_FurnitureDeluxeSet_Door01",
-            "Lumisteria.MtVapius_FurnitureDarkDeluxeSet_Door01"
-        };
         public static void Initialize()
         {
             //Working around a Harmony Bug where PlacementPlus also Prefixed Furniture.checkForAction, but this for some reason removed my patch from the result
@@ -62,7 +40,9 @@ namespace PersonalIndoorFarm.Lib
 
         private static void DayStarted(object sender, StardewModdingAPI.Events.DayStartedEventArgs e)
         {
+            Helper.Events.GameLoop.DayStarted -= DayStarted;
             var harmony = new Harmony(ModManifest.UniqueID);
+
             harmony.Patch(
                 original: AccessTools.DeclaredMethod(typeof(Furniture), nameof(Furniture.checkForAction), new[] { typeof(Farmer), typeof(bool) }),
                 prefix: new HarmonyMethod(typeof(Door).GetMethod(nameof(checkForAction_Prefix)), priority: Priority.First)
@@ -71,8 +51,6 @@ namespace PersonalIndoorFarm.Lib
                 original: AccessTools.DeclaredMethod(typeof(Furniture), nameof(Furniture.draw), new[] { typeof(SpriteBatch), typeof(int), typeof(int), typeof(float) }),
                 postfix: new HarmonyMethod(typeof(Door).GetMethod(nameof(draw_Postfix)))
             );
-
-            Helper.Events.GameLoop.DayStarted -= DayStarted;
         }
 
         public static Warp getWarpToLast(Farmer who)
@@ -90,11 +68,11 @@ namespace PersonalIndoorFarm.Lib
         public static bool checkForAction_Prefix(Furniture __instance, ref bool __result)
         {
             try {
-                if (!isDimensionDoor(__instance.ItemId, out string doorId))
+                if (!isDimensionDoor(__instance.ItemId, out var model))
                     return true;
 
                 __result = true;
-                checkWarp(doorId);
+                checkWarp(model, __instance);
                 return false;
             } catch (Exception err) {
                 Monitor.LogOnce("Error at Door.checkForAction_Prefix:\n" + err.Message, LogLevel.Error);
@@ -102,45 +80,86 @@ namespace PersonalIndoorFarm.Lib
             }
         }
 
-        public static bool isDimensionDoor(string itemId, out string doorId)
+        public static bool isDimensionDoor(string itemId, out DoorAssetModel model)
         {
-            if (itemId.StartsWith(ItemId)) {
-                doorId = itemId.Substring(ItemId.Length + 1);
-                return true;
-
-            } else if (Config.UseVanillaDoors && VanillaDoors.Contains(itemId)) {
-                doorId = "Vanilla." + itemId;
-                return true;
-
-            } else if (Config.UseVMVDoors && VMVDoors.Contains(itemId)) {
-                doorId = itemId;
+            var asset = Helper.GameContent.Load<Dictionary<string, DoorAssetModel>>(AssetRequested.DoorsAsset);
+            if (asset.TryGetValue(itemId, out model)) {
+                model.DoorId = String.IsNullOrEmpty(model.DoorId) ? itemId : model.DoorId;
                 return true;
             }
 
-            doorId = null;
+            model = null;
             return false;
         }
 
-        public static void checkWarp(string doorId)
+        public static Farmer getOwner(Furniture door)
         {
-            if (Game1.currentLocation is not FarmHouse fh || !fh.HasOwner) {
+            var rule = Enum.Parse<DoorOwnerEnum>(
+            Game1.currentLocation is FarmHouse ? Config.OwnerFarmhouse : Config.OwnerOutside,
+            true);
+
+            if (rule == DoorOwnerEnum.None)
+                return null;
+
+            else if (rule == DoorOwnerEnum.Host)
+                return Game1.MasterPlayer;
+
+            else if (rule == DoorOwnerEnum.CurrentPlayer)
+                return Game1.player;
+
+            else if (rule == DoorOwnerEnum.Owner)
+                return Game1.currentLocation is FarmHouse fh && fh.HasOwner ? Game1.getFarmerMaybeOffline(fh.OwnerId) : null;
+
+            else if (rule == DoorOwnerEnum.PlacedBy && door is not null)
+                return Game1.getFarmerMaybeOffline(door.owner.Value);
+
+            return null;
+        }
+
+        public static Farmer checkOwner(Furniture door, string doorId, string pidKey)
+        {
+            Farmer owner = getOwner(door);
+
+            if (owner is null) {
                 Game1.showRedMessage(Helper.Translation.Get("Door.Empty"));
-                return;
+                return null;
             }
 
-            var owner = Game1.getFarmerMaybeOffline(fh.OwnerId);
-            if (fh.IsOwnedByCurrentPlayer && Game1.player.CurrentItem?.QualifiedItemId == Key.QualifiedItemId) {
-                Key.useOnDoor(owner, doorId);
-                return;
+            var isOwner = owner.UniqueMultiplayerID == Game1.player.UniqueMultiplayerID;
+            if (isOwner && Game1.player.CurrentItem?.QualifiedItemId == Key.QualifiedItemId) {
+                Key.useOnDoor(Game1.player, doorId);
+                return null;
             }
 
-            if (!fh.IsOwnedByCurrentPlayer && Key.isDoorLocked(owner, doorId)) {
+            var lockStatus = Key.getDoorLocked(owner, doorId);
+            if (!isOwner && lockStatus == DoorLockEnum.Locked) {
                 Game1.showRedMessage(Helper.Translation.Get("Door.Locked"));
-                return;
+                return null;
             }
 
-            if (!fh.IsOwnedByCurrentPlayer && !Game1.getOnlineFarmers().Contains(owner)) {
+            if (!isOwner && lockStatus == DoorLockEnum.LockedWhenOffline && !Game1.getOnlineFarmers().Any(e => e.UniqueMultiplayerID == owner.UniqueMultiplayerID)) {
                 Game1.showRedMessage(Helper.Translation.Get("Door.Offline"));
+                return null;
+            }
+
+            if (!isOwner && !owner.modData.ContainsKey(pidKey)) {
+                Game1.showRedMessage(Helper.Translation.Get("Door.Empty"));
+                return null;
+            }
+
+            return owner;
+        }
+
+        public static void checkWarp(DoorAssetModel doorModel, Furniture door)
+        {
+            var pidKey = PersonalFarm.generateFarmerPIDKey(doorModel.DoorId);
+            var owner = checkOwner(door, doorModel.DoorId, pidKey);
+
+            if (owner is null)
+                return;
+
+            if (Game1.currentLocation.NameOrUniqueName.StartsWith(PersonalFarm.BaseLocationKey)) {
+                Game1.showRedMessage(Helper.Translation.Get("Door.Empty"));
                 return;
             }
 
@@ -151,12 +170,7 @@ namespace PersonalIndoorFarm.Lib
                 return;
             }
 
-            if (!owner.modData.TryGetValue(PersonalFarm.generateFarmerPIDKey(doorId), out var pid)) {
-                if (!fh.IsOwnedByCurrentPlayer) {
-                    Game1.showRedMessage(Helper.Translation.Get("Door.Empty"));
-                    return;
-                }
-
+            if (!owner.modData.TryGetValue(pidKey, out var pid)) {
                 var farmSelection = new SelectionMenu();
                 farmSelection.exitFunction = () => {
                     if (!farmSelection.Confirmed)
@@ -164,9 +178,9 @@ namespace PersonalIndoorFarm.Lib
 
                     var pid = farmSelection.ConfirmedModel.Key;
 
-                    owner.modData.Add(PersonalFarm.generateFarmerPIDKey(doorId), pid);
-                    var location = PersonalFarm.createLocation(pid, Game1.player, doorId);
-                    Helper.Multiplayer.SendMessage(new ShareLocationModel(pid, doorId, Game1.player.UniqueMultiplayerID), "shareLocation", new[] { ModManifest.UniqueID });
+                    owner.modData.Add(pidKey, pid);
+                    var location = PersonalFarm.createLocation(pid, Game1.player, doorModel.DoorId);
+                    Helper.Multiplayer.SendMessage(new ShareLocationModel(pid, doorModel.DoorId, Game1.player.UniqueMultiplayerID), "shareLocation", new[] { ModManifest.UniqueID });
                     PersonalFarm.setInitialDayAndSeason(location);
                 };
                 Game1.activeClickableMenu = farmSelection;
@@ -182,23 +196,27 @@ namespace PersonalIndoorFarm.Lib
                 return;
             }
 
-            playDoorSound(doorId);
+            playDoorSound(doorModel);
 
-            var target = PersonalFarm.getArrivalTile(Game1.getFarmerMaybeOffline(fh.OwnerId), model);
-            Game1.player.warpFarmer(new Warp(0, 0, PersonalFarm.generateLocationKey(pid, fh.OwnerId, doorId), target.X, target.Y, false));
-            var location = Game1.getLocationFromName(PersonalFarm.generateLocationKey(pid, fh.OwnerId, doorId)); //For debugging :)
+            var target = PersonalFarm.getArrivalTile(Game1.getFarmerMaybeOffline(owner.UniqueMultiplayerID), model);
+            Game1.player.warpFarmer(new Warp(0, 0, PersonalFarm.generateLocationKey(pid, owner.UniqueMultiplayerID, doorModel.DoorId), target.X, target.Y, false));
+            var location = Game1.getLocationFromName(PersonalFarm.generateLocationKey(pid, owner.UniqueMultiplayerID, doorModel.DoorId)); //For debugging :)
         }
 
-        private static void playDoorSound(string doorId)
+        private static void playDoorSound(DoorAssetModel doorModel)
         {
-            if (doorId.StartsWith(SoundSilent))
+            if (doorModel.Sound == DoorSoundEnum.Silent)
                 return;
-            else if (doorId.StartsWith(SoundWoodStep)) {
+
+            else if (doorModel.Sound == DoorSoundEnum.Door)
+                Game1.currentLocation.playSound("doorOpen", Game1.player.Tile);
+
+            else if (doorModel.Sound == DoorSoundEnum.WoodStep) {
                 Game1.currentLocation.playSound("woodyStep", Game1.player.Tile);
                 DelayedAction.playSoundAfterDelay("woodyStep", 300, Game1.currentLocation, Game1.player.Tile);
                 DelayedAction.playSoundAfterDelay("woodyStep", 600);
-            } else
-                Game1.currentLocation.playSound("doorOpen", Game1.player.Tile);
+
+            }
         }
 
         public static List<string> getDoorIds(Farmer who)
@@ -218,11 +236,18 @@ namespace PersonalIndoorFarm.Lib
 
         public static void draw_Postfix(Furniture __instance, SpriteBatch spriteBatch, int x, int y, float alpha = 1f)
         {
-            if (!isDimensionDoor(__instance.ItemId, out string doorId))
+            if (Game1.player.CurrentItem?.QualifiedItemId != Key.QualifiedItemId)
                 return;
 
-            if (Game1.currentLocation is FarmHouse fh && Game1.player.CurrentItem?.QualifiedItemId == Key.QualifiedItemId)
-                Key.drawOverlay(spriteBatch, __instance, doorId, Game1.getFarmerMaybeOffline(fh.OwnerId));
+            if (!isDimensionDoor(__instance.ItemId, out var doorModel))
+                return;
+
+            var owner = getOwner(__instance);
+
+            if (owner is null || owner.UniqueMultiplayerID != Game1.player.UniqueMultiplayerID)
+                return;
+
+            Key.drawOverlay(spriteBatch, __instance, doorModel.DoorId, owner);
         }
     }
 }

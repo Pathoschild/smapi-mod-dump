@@ -6,9 +6,9 @@ mods:
    Stardew Archipelago
 
 latest commit:
-   commit e8360182f0d52a7d28983ccfd0ad55c9c201177d
+   commit 543f9eade489ff7ae57341015b4fe08c46a39b73
    Author: Alex Gilbert <alexgilbert@yahoo.com>
-   Date:   Thu Apr 25 18:16:17 2024 -0400
+   Date:   Thu Jun 6 08:08:08 2024 -0400
    
-       Merge branch '5.x.x' of https://github.com/agilbert1412/StardewArchipelago into 5.x.x
+       Merge branch '6.x.x'
    

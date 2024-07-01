@@ -83,7 +83,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Fields.Models
                 .Select(item => item.DisplayText)
                 .OrderBy(item => item);
 
-            return string.Join(", ", inputNames.Concat(new[] { output.DisplayText, name }));
+            return string.Join(", ", inputNames.Concat([output.DisplayText, name]));
         }
     }
 }

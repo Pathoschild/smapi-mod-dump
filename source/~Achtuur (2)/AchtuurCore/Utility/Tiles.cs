@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using AchtuurCore.Framework;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using System;
@@ -183,12 +184,12 @@ public static class Tiles
     }
 
     /// <summary>
-    /// <para>Get visible tiles, taken from Pathoschild's Tilehelper.GetVisibleTiles</para>
+    /// <para>Get visible number of tiles, taken from Pathoschild's Tilehelper.GetVisibleTiles</para>
     /// 
     /// <see href="https://github.com/Pathoschild/StardewMods/blob/stable/Common/TileHelper.cs#L95"/>
     /// </summary>
     /// <returns></returns>
-    public static Rectangle GetVisibleArea(int expand = 0)
+    public static Rectangle GetVisibleTileArea(int expand = 0)
     {
         return new Rectangle(
             x: (Game1.viewport.X / Game1.tileSize) - expand,
@@ -198,9 +199,54 @@ public static class Tiles
         );
     }
 
+    /// <summary>
+    /// Returns visible area of screen in pixels
+    /// </summary>
+    /// <param name="expand"></param>
+    /// <returns></returns>
+    public static Rectangle GetVisibleArea(int expand = 0)
+    {
+        Rectangle r = GetVisibleTileArea(expand);
+        return new Rectangle(r.X * Game1.tileSize, r.Y * Game1.tileSize, r.Width * Game1.tileSize, r.Height * Game1.tileSize);
+    }
+
+    /// <summary>
+    /// Returns the largest possible circle that fits in the visible area of the screen. Units are in pixels.
+    /// </summary>
+    /// <param name="expand"></param>
+    /// <param name="fit_width">If true, the circle radius will be equal to the screen width. If false, then the radius is the screen height.</param>
+    /// <returns></returns>
+    public static Circle GetVisibleAreaCircle(int expand = 0, bool fit_width = false)
+    {
+        Rectangle rect = GetVisibleArea(expand);
+        Vector2 c = new Vector2(
+            rect.X + rect.Width / 2f,
+            rect.Y + rect.Height / 2f
+        );
+        float r;
+        if (fit_width)
+            r = rect.Width / 2f;
+        else
+            r = rect.Height / 2f;
+
+        return new Circle(c, r);
+    }
+
+    public static Ellipse GetVisibleAreaEllipse(int expand = 0)
+    {
+        Rectangle rect = GetVisibleArea(expand);
+        Vector2 c = new Vector2(
+            rect.X + rect.Width / 2f,
+            rect.Y + rect.Height / 2f
+        );
+        float rx = rect.Width / 2f;
+        float ry = rect.Height / 2f;
+        return new Ellipse(c, rx, ry);
+    }
+
     public static IEnumerable<Vector2> GetVisibleTiles(int expand = 0)
     {
-        return Tiles.GetVisibleArea(expand).GetTiles();
+        return Tiles.GetVisibleTileArea(expand).GetTiles();
     }
 
 

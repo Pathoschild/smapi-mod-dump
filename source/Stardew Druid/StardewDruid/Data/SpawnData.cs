@@ -10,17 +10,172 @@
 
 using GenericModConfigMenu;
 using StardewDruid.Cast;
+using StardewDruid.Location;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.TerrainFeatures;
+using StardewValley.Tools;
 using System;
 using System.Collections.Generic;
+using xTile.Dimensions;
+using static StardewDruid.Cast.Rite;
 
 namespace StardewDruid.Data
 {
     static class SpawnData
     {
+
+        public enum drops
+        {
+            none,
+            bat,
+            shadow,
+            slime,
+            phantom,
+            seafarer,
+            dragon,
+
+        }
+
+        public static void MonsterDrops(StardewValley.Monsters.Monster monster, drops drop)
+        {
+
+            switch (drop)
+            {
+
+                case drops.bat:
+
+                    monster.objectsToDrop.Clear();
+
+                    monster.objectsToDrop.Add("767");
+
+                    if (Game1.random.Next(3) == 0)
+                    {
+                        monster.objectsToDrop.Add("767");
+                    }
+                    else if (Game1.random.Next(4) == 0 && Mod.instance.PowerLevel >= 3)
+                    {
+                        monster.objectsToDrop.Add("767");
+                    }
+                    else if (Game1.random.Next(5) == 0 && Mod.instance.PowerLevel >= 5)
+                    {
+                        List<string> batElixers = new()
+                        {
+                            "772","773","879",
+                        };
+
+                        monster.objectsToDrop.Add(batElixers[Game1.random.Next(batElixers.Count)]);
+
+                    }
+
+                    break;
+
+                case drops.shadow:
+
+                    monster.objectsToDrop.Clear();
+
+                    monster.objectsToDrop.Add("769");
+
+                    if (Game1.random.Next(3) == 0)
+                    {
+                        monster.objectsToDrop.Add("768");
+                    }
+                    else if (Game1.random.Next(4) == 0 && Mod.instance.PowerLevel >= 3)
+                    {
+                        List<string> shadowGems = new()
+                        {
+                            "62","66","68","70",
+                        };
+
+                        monster.objectsToDrop.Add(shadowGems[Game1.random.Next(shadowGems.Count)]);
+
+                    }
+                    else if (Game1.random.Next(5) == 0 && Mod.instance.PowerLevel >= 5)
+                    {
+                        List<string> shadowGems = new()
+                        {
+                            "60","64","72",
+                        };
+
+                        monster.objectsToDrop.Add(shadowGems[Game1.random.Next(shadowGems.Count)]);
+                    }
+
+                    break;
+
+                case drops.slime:
+
+
+                    monster.objectsToDrop.Add("766");
+
+                    if (Game1.random.Next(3) == 0)
+                    {
+                        monster.objectsToDrop.Add("766");
+                    }
+                    else if (Game1.random.Next(4) == 0 && Mod.instance.PowerLevel >= 3)
+                    {
+                        monster.objectsToDrop.Add("766");
+
+                    }
+                    else if (Game1.random.Next(5) == 0 && Mod.instance.PowerLevel >= 5)
+                    {
+                        List<string> slimeSyrups = new()
+                        {
+                            "724","725","726","247","184","419",
+                        };
+
+                        monster.objectsToDrop.Add(slimeSyrups[Game1.random.Next(slimeSyrups.Count)]);
+                    }
+
+                    break;
+
+                case drops.phantom:
+
+                    monster.objectsToDrop.Clear();
+
+                    if (Game1.random.Next(3) == 0)
+                    {
+                        monster.objectsToDrop.Add("378");
+                    }
+                    else if (Game1.random.Next(4) == 0 && Mod.instance.PowerLevel >= 3)
+                    {
+                        monster.objectsToDrop.Add("380");
+                    }
+                    else if (Game1.random.Next(5) == 0 && Mod.instance.PowerLevel >= 4)
+                    {
+                        monster.objectsToDrop.Add("384");
+                    }
+                    else if (Game1.random.Next(6) == 0 && Mod.instance.PowerLevel >= 5)
+                    {
+                        monster.objectsToDrop.Add("386"); // iridium
+                    }
+
+                    break;
+
+                case drops.seafarer:
+
+                    monster.objectsToDrop.Clear();
+
+                    switch (Game1.random.Next(4))
+                    {
+                        case 0: monster.objectsToDrop.Add("797"); break;
+
+                        case 1: monster.objectsToDrop.Add("166"); break;
+
+                        case 2: monster.objectsToDrop.Add("265"); break;
+
+                        case 3: monster.objectsToDrop.Add("275"); break;
+
+                    }
+
+                    break;
+
+            }
+
+            return;
+
+        }
+
         public static Dictionary<int, Rite.rites> WeaponAttunement(bool reserved = false)
         {
 
@@ -34,7 +189,7 @@ namespace StardewDruid.Data
 
             weapons[15] = Rite.rites.weald;
             weapons[14] = Rite.rites.mists;
-            weapons[9] = Rite.rites.stars;
+            weapons[3] = Rite.rites.stars;
             weapons[53] = Rite.rites.fates;
             weapons[57] = Rite.rites.ether;
 
@@ -501,6 +656,16 @@ namespace StardewDruid.Data
 
                     break;
 
+                case "winter":
+
+                    objectIndexes = new()
+                    {
+                        [0] = 421, // crocus
+                        [1] = 421, // crocus
+                    };
+
+                    break;
+
                 default: //"fall":
 
                     objectIndexes = new()
@@ -639,7 +804,7 @@ namespace StardewDruid.Data
                 {
 
                     indexes.Add("150"); // red snapper
-                    indexes.Add("SeaJelly"); // red snapper
+                    indexes.Add("SeaJelly");
 
                 }
 
@@ -654,7 +819,7 @@ namespace StardewDruid.Data
                 {
 
                     indexes.Add("132"); // bream
-                    indexes.Add("RiverJelly"); // red snapper
+                    indexes.Add("RiverJelly");
                 }
 
                 switch (Game1.currentSeason)
@@ -663,10 +828,10 @@ namespace StardewDruid.Data
                     case "spring":
 
                         indexes.Add("137"); // smallmouth bass
-                        indexes.Add("142"); // sunfish
+                        indexes.Add("145"); // sunfish
                         break;
                     case "summer":
-                        indexes.Add("142"); // sunfish
+                        indexes.Add("145"); // sunfish
                         indexes.Add("138"); // rainbow trout
                         break;
 
@@ -689,11 +854,11 @@ namespace StardewDruid.Data
                 {
 
                     indexes.Add("132"); // bream
-                    indexes.Add("CaveJelly"); // red snapper
+                    indexes.Add("CaveJelly");
 
                 }
 
-                indexes.Add("145"); // carp
+                indexes.Add("142"); // carp
 
             }
 
@@ -703,7 +868,7 @@ namespace StardewDruid.Data
 
         }
 
-        public static int RandomHighFish(GameLocation location, bool enableRare)
+        public static string RandomHighFish(GameLocation location, bool enableRare)
         {
 
             Dictionary<int, int> objectIndexes;
@@ -818,7 +983,40 @@ namespace StardewDruid.Data
 
             int randomFish = objectIndexes[Game1.random.Next(objectIndexes.Count)];
 
-            return randomFish;
+            return randomFish.ToString();
+
+        }
+
+        public static string RandomJunkItem(GameLocation location)
+        {
+
+            Dictionary<int, int> objectIndexes = new ()
+            {
+
+                [0] = 275, //"Artifact Trove/0/-300/Basic/Artifact Trove/A blacksmith can open this for you. These troves often contain ancient relics and curiosities./100 101 103 104 105 106 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125 166 373 797//",
+                [1] = 167, //"Joja Cola/25/5/Fish -20/Joja Cola/The flagship product of Joja corporation./drink/0 0 0 0 0 0 0 0 0 0 0/0",
+                [2] = 167, //"Joja Cola/25/5/Fish -20/Joja Cola/The flagship product of Joja corporation./drink/0 0 0 0 0 0 0 0 0 0 0/0",
+                [3] = 397, // urchin
+                [4] = 394, //"Rainbow Shell/300/-300/Basic -23/Rainbow Shell/It's a very beautiful shell.///",
+                [5] = 393, //"Coral/80/-300/Basic -23/Coral/A colony of tiny creatures that clump together to form beautiful structures.///",
+            };
+        
+            if (location is Caldera)
+            {
+
+                objectIndexes = new Dictionary<int, int>()
+                {
+                    [0] = 848, // cinder shard,
+                    [1] = 848, // cinder shard,
+                    [2] = 167, //"Joja Cola/25/5/Fish -20/Joja Cola/The flagship product of Joja corporation./drink/0 0 0 0 0 0 0 0 0 0 0/0",
+                    [3] = 167, //"Joja Cola/25/5/Fish -20/Joja Cola/The flagship product of Joja corporation./drink/0 0 0 0 0 0 0 0 0 0 0/0",
+                };
+
+            }
+
+            int randomFish = objectIndexes[Game1.random.Next(objectIndexes.Count)];
+
+            return randomFish.ToString();
 
         }
 
@@ -942,7 +1140,7 @@ namespace StardewDruid.Data
             Dictionary<int, int> objectIndexes = new()
             {
                 [0] = 257, // 257 morel
-                [1] = 281, // 281 chanterelle
+                [1] = 404, // 404 mushroom
                 [2] = 404, // 404 mushroom
                 [3] = seasonal,
                 [4] = seasonal,
@@ -959,178 +1157,98 @@ namespace StardewDruid.Data
 
         }
 
-        public static int RandomTreasure(GameLocation location, bool rareTreasure = false)
+        public static StardewValley.Object RandomTreasure(GameLocation location, bool rareTreasure = false)
         {
 
-            Dictionary<int, int> objectIndexes;
+            int options = 3;
 
-            if (location is Beach || location is Farm && Game1.whichFarm == 6)
+            if (rareTreasure) { options++; }
+
+            switch (Mod.instance.randomIndex.Next(options))
             {
+                default:
+                case 0:
 
-                objectIndexes = new Dictionary<int, int>()
-                {
-                    [0] = 797, //"Pearl/2500/-300/Basic/Pearl/A rare treasure from the sea.///",
-                    [1] = 275, //"Artifact Trove/0/-300/Basic/Artifact Trove/A blacksmith can open this for you. These troves often contain ancient relics and curiosities./100 101 103 104 105 106 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125 166 373 797//",
-                    [2] = 166, //"Treasure Chest/5000/-300/Basic/Treasure Chest/Wow, it's loaded with treasure! This is sure to fetch a good price./Day Night^Spring Summer Fall Winter//",
-                    [3] = 128, // puff ball
-                    [4] = 167, //"Joja Cola/25/5/Fish -20/Joja Cola/The flagship product of Joja corporation./drink/0 0 0 0 0 0 0 0 0 0 0/0",
-                    [5] = 392, // nautilus shell
-                    [6] = 152, // seaweed
-                    [7] = 152, // seaweed
-                    [8] = 397, // urchin
-                    [9] = 718, // cockle
-                    [10] = 715, // lobster
-                    [11] = 720, // shrimp
-                    [12] = 719, // mussel
-                    [13] = 393, //"Coral/80/-300/Basic -23/Coral/A colony of tiny creatures that clump together to form beautiful structures.///",
-                    [14] = 394, //"Rainbow Shell/300/-300/Basic -23/Rainbow Shell/It's a very beautiful shell.///",
-                    [15] = 131, // sardine
-                    [16] = 147, // herring
-                    [17] = 129, // anchovy
-                    [18] = 701, // tilapia
-                    [19] = 150, // red snapper
-                    [20] = 148, // eel
-                    [21] = 149, // squid
-                    [22] = 151, // octopus
-                    [23] = 155, // super cucumber
-                    [24] = 167, //"Joja Cola/25/5/Fish -20/Joja Cola/The flagship product of Joja corporation./drink/0 0 0 0 0 0 0 0 0 0 0/0",
-                    [25] = 167, //"Joja Cola/25/5/Fish -20/Joja Cola/The flagship product of Joja corporation./drink/0 0 0 0 0 0 0 0 0 0 0/0",
-                };
+                    string low =  RandomLowFish(location);
+
+                    return new StardewValley.Object(low, 1, quality: 4);
+                
+                case 1:
+
+                    string junk = RandomJunkItem(location);
+
+                    return new StardewValley.Object(junk, Mod.instance.randomIndex.Next(3));
+
+                case 2:
+
+                    string pool = RandomPoolFish(location);
+
+                    return new StardewValley.Object(pool, Mod.instance.randomIndex.Next(2));
+
+                case 3:
+
+                    string fish = RandomHighFish(location,true);
+
+                    return new StardewValley.Object(fish, 1, quality: 4);
 
             }
-            else if (location is Caldera)
-            {
-
-                objectIndexes = new Dictionary<int, int>()
-                {
-                    [0] = 848, // cinder shard,
-                    [1] = 848, // cinder shard,
-                    [2] = 162, // lava eel
-                    [3] = 162, // lava eel
-                    [4] = 167, //"Joja Cola/25/5/Fish -20/Joja Cola/The flagship product of Joja corporation./drink/0 0 0 0 0 0 0 0 0 0 0/0",
-                    [5] = 167, //"Joja Cola/25/5/Fish -20/Joja Cola/The flagship product of Joja corporation./drink/0 0 0 0 0 0 0 0 0 0 0/0",
-                    [6] = 167, //"Joja Cola/25/5/Fish -20/Joja Cola/The flagship product of Joja corporation./drink/0 0 0 0 0 0 0 0 0 0 0/0",
-                };
-
-            }
-            else if (location is IslandLocation)
-            {
-
-                objectIndexes = new Dictionary<int, int>()
-                {
-
-                    [0] = 797, //"Pearl/2500/-300/Basic/Pearl/A rare treasure from the sea.///",
-                    [1] = 275, //"Artifact Trove/0/-300/Basic/Artifact Trove/A blacksmith can open this for you. These troves often contain ancient relics and curiosities./100 101 103 104 105 106 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125 166 373 797//",
-                    [2] = 166, //"Treasure Chest/5000/-300/Basic/Treasure Chest/Wow, it's loaded with treasure! This is sure to fetch a good price./Day Night^Spring Summer Fall Winter//",
-                    [3] = 150, // red snapper = 852
-                    [4] = 167, //"Joja Cola/25/5/Fish -20/Joja Cola/The flagship product of Joja corporation./drink/0 0 0 0 0 0 0 0 0 0 0/0",
-                    [5] = 392, // nautilus shell
-                    [6] = 152, // seaweed
-                    [7] = 152, // seaweed
-                    [8] = 397, // urchin
-                    [9] = 718, // cockle
-                    [10] = 715, // lobster
-                    [11] = 720, // shrimp
-                    [12] = 719, // mussel
-                    [13] = 393, //"Coral/80/-300/Basic -23/Coral/A colony of tiny creatures that clump together to form beautiful structures.///",
-                    [14] = 394, //"Rainbow Shell/300/-300/Basic -23/Rainbow Shell/It's a very beautiful shell.///",
-                    [15] = 838, // blue discuss
-                    [16] = 837, // lionfish
-                    [17] = 267, // flounder
-                    [18] = 701, // tilapia
-                    [19] = 838, // blue discuss
-                    [20] = 837, // lionfish
-                    [21] = 267, // flounder
-                    [22] = 167, //"Joja Cola/25/5/Fish -20/Joja Cola/The flagship product of Joja corporation./drink/0 0 0 0 0 0 0 0 0 0 0/0",
-                    [23] = 167, //"Joja Cola/25/5/Fish -20/Joja Cola/The flagship product of Joja corporation./drink/0 0 0 0 0 0 0 0 0 0 0/0",
-                };
-
-            }
-
-            else
-            {
-
-                objectIndexes = new Dictionary<int, int>()
-                {
-
-                    [0] = 797, //"Pearl/2500/-300/Basic/Pearl/A rare treasure from the sea.///",
-                    [1] = 275, //"Artifact Trove/0/-300/Basic/Artifact Trove/A blacksmith can open this for you. These troves often contain ancient relics and curiosities./100 101 103 104 105 106 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125 166 373 797//",
-                    [2] = 166, //"Treasure Chest/5000/-300/Basic/Treasure Chest/Wow, it's loaded with treasure! This is sure to fetch a good price./Day Night^Spring Summer Fall Winter//",
-                    [3] = 158, // stone fish
-                    [4] = 167, //"Joja Cola/25/5/Fish -20/Joja Cola/The flagship product of Joja corporation./drink/0 0 0 0 0 0 0 0 0 0 0/0",
-                    [5] = 145, // carp
-                    [6] = 137, // smallmouth bass
-                    [7] = 142,  // sunfish
-                    [8] = 141, // perch
-                    [9] = 132,  // bream
-                    [10] = 153, // algae
-                    [11] = 153, // algae
-                    [12] = 721, // snail 721
-                    [13] = 716, // crayfish 716
-                    [14] = 722, // periwinkle 722
-                    [15] = 717, // crab 717
-                    [16] = 517, //"Glow Ring/200/-300/Ring/Glow Ring/Emits a constant light.///",
-                    [17] = 519, //"Magnet Ring/200/-300/Ring/Magnet Ring/Increases your radius for collecting items.///",
-                    [18] = 143, // cat fish
-                    [19] = 698, // sturgeon
-                    [20] = 140, // walleye
-                    [21] = 699, // tiger trout
-                    [22] = 167, //"Joja Cola/25/5/Fish -20/Joja Cola/The flagship product of Joja corporation./drink/0 0 0 0 0 0 0 0 0 0 0/0",
-                    [23] = 167, //"Joja Cola/25/5/Fish -20/Joja Cola/The flagship product of Joja corporation./drink/0 0 0 0 0 0 0 0 0 0 0/0",
-                };
-
-            }
-
-            int bottom = rareTreasure ? 0 : 4;
-
-            int probability = new Random().Next(bottom, objectIndexes.Count);
-
-            int objectIndex = objectIndexes[probability];
-
-            return objectIndex;
 
         }
 
-        public static int HighTreasure(string terrain)
+        public static StardewValley.Item CrateTreasure(GameLocation location, Microsoft.Xna.Framework.Vector2 vector)
         {
 
-            Dictionary<int, int> objectIndexes;
-
-            switch (terrain)
+            if(location is Vault)
             {
 
+                switch (vector.Y)
+                {
+                    default:
+                    case 1:
 
-                case "water":
+                        return new MeleeWeapon("9");
 
-                    objectIndexes = new Dictionary<int, int>()
-                    {
+                    case 2:
 
-                        [0] = 797, //"Pearl/2500/-300/Basic/Pearl/A rare treasure from the sea.///",
+                        return new StardewValley.Object("336", 5);
 
-                        [1] = 852, //"Dragon Tooth/500/-300/Basic/Dragon Tooth/These are rumored to be the teeth of ancient serpents. The enamel is made of pure iridium!///",
-                    };
+                    case 3:
 
-                    break;
+                        return new StardewValley.Object("74", 1);
 
-                default:
-
-                    objectIndexes = new Dictionary<int, int>()
-                    {
-
-                        [0] = 166, //"Treasure Chest/5000/-300/Basic/Treasure Chest/Wow, it's loaded with treasure! This is sure to fetch a good price./Day Night^Spring Summer Fall Winter//",
-
-                        [1] = 852, //"Dragon Tooth/500/-300/Basic/Dragon Tooth/These are rumored to be the teeth of ancient serpents. The enamel is made of pure iridium!///",
-                    };
-
-                    break;
+                }
 
             }
 
-            int probability = new Random().Next(objectIndexes.Count);
+            switch (Mod.instance.randomIndex.Next(6))
+            {
+                
+                default:
+                case 0:
 
-            int objectIndex = objectIndexes[probability];
+                    return new StardewValley.Object("166", 1); //"Treasure Chest/5000/-300/Basic/Treasure Chest/Wow, it's loaded with treasure! This is sure to fetch a good price./Day Night^Spring Summer Fall Winter//",
 
-            return objectIndex;
+                case 1:
+
+                    return new StardewValley.Object("336", 5); // Gold bars
+
+                case 2:
+
+                    return new StardewValley.Object("74", 1); // Prismatic Shard
+
+                case 3:
+
+                    return new StardewValley.Object("797", 1); //"Pearl/2500/-300/Basic/Pearl/A rare treasure from the sea.///",
+
+                case 4:
+
+                    return new StardewValley.Object("852", 2); //"Dragon Tooth/500/-300/Basic/Dragon Tooth/These are rumored to be the teeth of ancient serpents. The enamel is made of pure iridium!///",
+
+                case 5:
+
+                    return new StardewValley.Object("275", 3); //"Artifact Trove/0/-300/Basic/Artifact Trove/A blacksmith can open this for you. These troves often contain ancient relics and curiosities./100 101 103 104 105 106 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125 166 373 797//",
+
+            }
 
         }
 
@@ -1258,191 +1376,181 @@ namespace StardewDruid.Data
 
         }
 
-        public static Dictionary<string, bool> SpawnTemplate()
+    }
+
+    public class SpawnIndex
+    {
+        public bool anywhere;
+        public string locale;
+
+        public bool cast;
+        public bool weeds;
+        public bool forage;
+        public bool flower;
+        public bool grass;
+        public bool trees;
+        public bool fishes;
+        public bool fishspot;
+        public bool seed;
+        public bool crate;
+
+        public SpawnIndex()
         {
-
-            Dictionary<string, bool> spawnTemplate = new()
-            {
-
-                ["weeds"] = false,
-                ["forage"] = false,
-                ["flower"] = false,
-                ["grass"] = false,
-                ["trees"] = false,
-                ["fishup"] = false,
-                ["wildspawn"] = false,
-                ["fishspot"] = false,
-                ["cropseed"] = false,
-                ["whisk"] = false,
-                ["gravity"] = false,
-                ["teahouse"] = false,
-                ["crate"] = false,
-
-            };
-
-            return spawnTemplate;
-
-        }
-
-        public static Dictionary<string, bool> AnywhereTemplate(GameLocation playerLocation)
-        {
-
-            Dictionary<string, bool> spawnTemplate = new()
-            {
-
-                ["weeds"] = true,
-                ["forage"] = true,
-                ["flower"] = true,
-                ["grass"] = true,
-                ["trees"] = true,
-                ["fishup"] = true,
-                ["wildspawn"] = true,
-                ["fishspot"] = true,
-                ["cropseed"] = true,
-                ["artifact"] = true,
-                ["whisk"] = true,
-                ["gravity"] = true,
-                ["teahouse"] = false,
-                ["crate"] = false,
-
-            };
-
-            if (playerLocation.Map.Layers[0].LayerWidth * playerLocation.Map.Layers[0].LayerHeight > 2000)
-            {
-
-                spawnTemplate["crate"] = true;
-
-            }
-
-            if (playerLocation is Shed || playerLocation is Farm)
-            {
-
-                spawnTemplate["teahouse"] = true;
-
-            }
-
-            if (playerLocation is Beach || playerLocation is IslandSouth || playerLocation is IslandSouthEast || playerLocation is IslandSouthEastCave)
-            {
-
-                spawnTemplate["tree"] = false;
-
-            }
-
-            return spawnTemplate;
-
-        }
-
-        public static Dictionary<string, bool> SpawnIndex(GameLocation playerLocation)
-        {
-
-            Dictionary<string, bool> spawnIndex;
 
             if (Mod.instance.Config.castAnywhere)
             {
 
-                return AnywhereTemplate(playerLocation);
+                SpawnAnywhere();
 
             }
 
-            spawnIndex = SpawnTemplate();
+        }
 
-            if (playerLocation is Farm || playerLocation.Name == "Custom_Garden")
+        public void SpawnAnywhere()
+        {
+
+            anywhere = true;
+
+            cast = true;
+
+            weeds = true;
+
+            forage = true;
+
+            flower = true;
+
+            grass = true;
+
+            trees = true;
+
+            fishes = true;
+
+            fishspot = true;
+
+            seed = true;
+
+            if (Game1.player.currentLocation.Map.Layers[0].LayerWidth * Game1.player.currentLocation.Map.Layers[0].LayerHeight > 2000)
             {
 
-                spawnIndex["weeds"] = true;
-                spawnIndex["forage"] = true;
-                spawnIndex["flower"] = true;
-                spawnIndex["grass"] = true;
-                spawnIndex["trees"] = true;
-                spawnIndex["fishup"] = true;
-                spawnIndex["wildspawn"] = true;
-                spawnIndex["cropseed"] = true;
-                spawnIndex["whisk"] = true;
-                spawnIndex["gravity"] = true;
+                crate = true;
 
             }
-            else if (playerLocation.isGreenhouse.Value)
+
+            if (Game1.player.currentLocation is Beach || Game1.player.currentLocation is IslandSouth || Game1.player.currentLocation is IslandSouthEast || Game1.player.currentLocation is IslandSouthEastCave)
             {
 
-                spawnIndex["cropseed"] = true;
-                spawnIndex["teahouse"] = true;
+                trees = false;
 
             }
-            else if (playerLocation is IslandWest || playerLocation is IslandNorth)
-            {
-                spawnIndex["fishup"] = true;
-                spawnIndex["fishspot"] = true;
-                spawnIndex["wildspawn"] = true;
-                spawnIndex["cropseed"] = true;
-                spawnIndex["trees"] = true;
-                spawnIndex["weeds"] = true;
-                spawnIndex["artifact"] = true;
-                spawnIndex["whisk"] = true;
-                spawnIndex["gravity"] = true;
 
-                if (playerLocation is IslandWest)
+        }
+
+
+        public SpawnIndex(GameLocation location)
+        {
+
+            if (Mod.instance.Config.castAnywhere)
+            {
+                
+                SpawnAnywhere();
+
+                return;
+
+            }
+
+            cast = true;
+
+            locale = location.Name;
+
+            if (location is Farm || location.Name == "Custom_Garden")
+            {
+
+                weeds = true;
+                forage = true;
+                flower = true;
+                grass = true;
+                trees = true;
+                fishes = true;
+                seed = true;
+
+            }
+            else if (location.isGreenhouse.Value || location is Shed || location is AnimalHouse)
+            {
+
+                seed = true;
+
+            }
+            else if (location is IslandWest || location is IslandNorth)
+            {
+                fishes = true;
+                fishspot = true;
+                seed = true;
+                trees = true;
+                weeds = true;
+
+                if (location is IslandWest)
                 {
 
-                    spawnIndex["crate"] = true;
+                    crate = true;
 
                 }
 
             }
-            else if (playerLocation is Forest || playerLocation is Mountain || playerLocation is Desert || playerLocation is BusStop || playerLocation is BugLand)
+            else if (location is Forest || location is Mountain || location is Desert || location is BusStop || location is BugLand)
             {
-                spawnIndex["weeds"] = true;
-                spawnIndex["forage"] = true;
-                spawnIndex["flower"] = true;
-                spawnIndex["grass"] = true;
-                spawnIndex["trees"] = true;
-                spawnIndex["fishup"] = true;
-                spawnIndex["wildspawn"] = true;
-                spawnIndex["fishspot"] = true;
-                spawnIndex["artifact"] = true;
-                spawnIndex["whisk"] = true;
+                weeds = true;
+                forage = true;
+                flower = true;
+                grass = true;
+                trees = true;
+                fishes = true;
+                fishspot = true;
 
-                if (playerLocation.Map.Layers[0].LayerWidth * playerLocation.Map.Layers[0].LayerHeight > 2000)
+
+                if (location.Map.Layers[0].LayerWidth * location.Map.Layers[0].LayerHeight > 2000)
                 {
 
-                    spawnIndex["crate"] = true;
+                    crate = true;
 
                 }
 
             }
-            else if (playerLocation.Name.Contains("Backwoods") || playerLocation is Railroad)
+            else if (location.Name.Contains("Backwoods") || location is Railroad)
             {
 
-                spawnIndex["forage"] = true;
-                spawnIndex["flower"] = true;
-                spawnIndex["grass"] = true;
-                spawnIndex["trees"] = true;
-                spawnIndex["wildspawn"] = true;
-                spawnIndex["artifact"] = true;
-                spawnIndex["whisk"] = true;
-                spawnIndex["weeds"] = true;
+                forage = true;
+                flower = true;
+                grass = true;
+                trees = true;
+                weeds = true;
 
             }
-            else if (playerLocation is Woods || playerLocation is IslandEast || playerLocation is IslandShrine || playerLocation is StardewDruid.Location.Grove)
+            else if (location is Woods || location is IslandEast || location is IslandShrine || location is StardewDruid.Location.Grove)
             {
 
-                spawnIndex["forage"] = true;
-                spawnIndex["flower"] = true;
-                spawnIndex["grass"] = true;
-                spawnIndex["wildspawn"] = true;
-                spawnIndex["fishspot"] = true;
-                spawnIndex["weeds"] = true;
+                forage = true;
+                flower = true;
+                grass = true;
+                fishspot = true;
+                weeds = true;
 
             }
-            else if (playerLocation is MineShaft || playerLocation is VolcanoDungeon || playerLocation is Location.Crypt) //|| playerLocation.Name.Contains("Mine"))
+            else if (
+                location is MineShaft ||
+                location is VolcanoDungeon ||
+                location is StardewDruid.Location.Chapel ||
+                location is StardewDruid.Location.Vault ||
+                location is StardewDruid.Location.Court
+                ) //|| location.Name.Contains("Mine"))
             {
 
-                if (playerLocation.Name.Contains("20") || playerLocation.Name.Contains("60") || playerLocation.Name.Contains("100"))
+                if (location.Name.Contains("20") || location.Name.Contains("60") || location.Name.Contains("100"))
                 {
-                    spawnIndex["fishspot"] = true;
+                    fishspot = true;
 
                 }
 
-                if (playerLocation is MineShaft mineShaft)
+                if (location is MineShaft mineShaft)
                 {
                     List<int> mineLevels = new() { 3, 7 };
 
@@ -1455,94 +1563,101 @@ namespace StardewDruid.Data
                     else if (mineLevels.Contains(mineShaft.mineLevel % 10))
                     {
 
-                        spawnIndex["crate"] = true;
+                        crate = true;
 
                     }
 
                 }
 
-                spawnIndex["weeds"] = true;
+                weeds = true;
 
             }
-            else if (playerLocation is Beach || playerLocation is IslandSouth || playerLocation is IslandSouthEast || playerLocation is IslandSouthEastCave || playerLocation is StardewDruid.Location.Atoll)
+            else if (location is Beach || location is IslandSouth || location is IslandSouthEast || location is IslandSouthEastCave || location is StardewDruid.Location.Atoll)
             {
 
-                spawnIndex["wildspawn"] = true;
-                spawnIndex["fishup"] = true;
-                spawnIndex["fishspot"] = true;
-                spawnIndex["artifact"] = true;
-                spawnIndex["whisk"] = true;
-                spawnIndex["weeds"] = true;
+                fishes = true;
+                fishspot = true;
+                weeds = true;
 
-                if (playerLocation is Beach || playerLocation is IslandSouth || playerLocation is IslandSouthEast)
+                if (location is Beach || location is IslandSouth || location is IslandSouthEast)
                 {
 
-                    spawnIndex["crate"] = true;
+                    crate = true;
 
                 }
 
             }
-            else if (playerLocation is Town)
+            else if (location is Town)
             {
-                spawnIndex["weeds"] = true;
-                spawnIndex["forage"] = true;
-                spawnIndex["flower"] = true;
-                spawnIndex["fishup"] = true;
-                spawnIndex["fishspot"] = true;
-                spawnIndex["artifact"] = true;
-                spawnIndex["whisk"] = true;
+                weeds = true;
+                forage = true;
+                flower = true;
+                fishes = true;
+                fishspot = true;
 
             }
-            else if (playerLocation.Name.Contains("DeepWoods"))
+            else if (location.Name.Contains("DeepWoods"))
             {
 
-                spawnIndex["wildspawn"] = true;
-                spawnIndex["fishspot"] = true;
+                fishspot = true;
 
-                if (playerLocation.Map.Layers[0].LayerWidth * playerLocation.Map.Layers[0].LayerHeight > 2000)
+                if (location.Map.Layers[0].LayerWidth * location.Map.Layers[0].LayerHeight > 2000)
                 {
 
-                    spawnIndex["crate"] = true;
+                    crate = true;
 
                 }
 
             }
-            else if (playerLocation is AnimalHouse)
+            else if (location is Caldera || location is Sewer)
             {
 
-                spawnIndex["hay"] = true;
+                fishspot = true;
 
             }
-            else if (playerLocation is Caldera || playerLocation is Sewer)
+            else if (location.Name.Contains("Saloon"))
             {
 
-                spawnIndex["fishspot"] = true;
-
-            }
-            else if (playerLocation is Shed)
-            {
-
-                spawnIndex["teahouse"] = true;
-
-            }
-            else if(playerLocation.Name.Contains("Saloon"))
-            {
-
-                spawnIndex["crate"] = true;
+                crate = true;
 
             }
             else
             {
-                
-                return new();
+
+                cast = false;
 
             }
 
-            return spawnIndex;
+            if (Mod.instance.Config.disableGrass)
+            {
+
+                grass = false;
+
+            }
+
+            if (Mod.instance.Config.disableTrees)
+            {
+
+                trees = false;
+
+            }
+
+            if (Mod.instance.Config.disableFish)
+            {
+
+                fishes = false;
+
+            }
+
+            if (Mod.instance.Config.disableSeeds)
+            {
+
+                seed = false;
+
+            }
 
         }
 
     }
-
 
 }

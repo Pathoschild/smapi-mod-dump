@@ -171,6 +171,14 @@ namespace ScheduleViewer
             }
         }
 
+        /// <summary>
+        /// Filter Options for NPC Schedules
+        /// </summary>
+        /// <param name="IgnoredNPCs">Filter out any NPC's with a matching displayName in this list.</param>
+        /// <param name="OnlyShowSocializableNPCs">Filter out NPCs the player can't socialize with (ex: Gunther or Sandy before the bus is repaired)</param>
+        /// <param name="OnlyShowMetNPCs">Filter out NPCs the player hasn't talked to before.</param>
+        public record ScheduleFilterOptions(string[] IgnoredNPCs = null, bool OnlyShowSocializableNPCs = false, bool OnlyShowMetNPCs = false);
+
         internal static void SendSchedules() =>
             ModEntry.ModHelper.Multiplayer.SendMessage((Game1.Date.TotalDays + 1, GetSchedules()), ModEntry.ModMessageSchedule);
 
@@ -184,7 +192,7 @@ namespace ScheduleViewer
         public static void ClearSchedules()
         {
             ModEntry.Console.Log("Clearing any previously generated schedules.", LogLevel.Debug);
-            Date = null; 
+            Date = null;
             NpcsWithSchedule = null;
         }
 
@@ -205,6 +213,11 @@ namespace ScheduleViewer
 
         public static bool HasSchedules() => Game1.Date == Date && NpcsWithSchedule != null;
 
+        public static string GetNameFromScheduleKey(string scheduleKey)
+        {
+            int suffixPos = scheduleKey.IndexOf($"-{ModEntry.ModHelper.ModRegistry.ModID}-");
+            return suffixPos != -1 ? scheduleKey.Remove(suffixPos) : scheduleKey;
+        }
 
         /// <summary>
         /// Get, parse, and filter NPCs with a schedule. 
@@ -212,11 +225,11 @@ namespace ScheduleViewer
         /// <param name="onlyShowSocializableNPCs">Filter out NPCs the player can't socialize with (ex: Gunther or Sandy before the bus is repaired)</param>
         /// <param name="onlyShowMetNPCs">Filter out NPCs the player hasn't talked to before.</param>
         /// <returns></returns>
-        public static IEnumerable<KeyValuePair<string, NPCSchedule>> GetSchedules(bool onlyShowSocializableNPCs = false, bool onlyShowMetNPCs = false)
+        public static IEnumerable<KeyValuePair<string, NPCSchedule>> GetSchedules(ScheduleFilterOptions filterOptions = null)
         {
             if (HasSchedules())
             {
-                return FilterNPCSchedules(onlyShowSocializableNPCs, onlyShowMetNPCs);
+                return FilterNPCSchedules(filterOptions);
             }
             ModEntry.Console.Log($"Calculating the NPCs' schedule for {Game1.Date}.", LogLevel.Debug);
             NpcsWithSchedule = new();
@@ -269,17 +282,25 @@ namespace ScheduleViewer
             });
 
             Date = Game1.Date;
-            return FilterNPCSchedules(onlyShowSocializableNPCs, onlyShowMetNPCs);
+            return FilterNPCSchedules(filterOptions);
         }
 
-        private static IEnumerable<KeyValuePair<string, NPCSchedule>> FilterNPCSchedules(bool onlyShowSocializableNPCs = false, bool onlyShowMetNPCs = false) =>
-            onlyShowSocializableNPCs || onlyShowMetNPCs ?
-                NpcsWithSchedule.Where(s =>
+        private static IEnumerable<KeyValuePair<string, NPCSchedule>> FilterNPCSchedules(ScheduleFilterOptions filters = null)
+        {
+            if (filters == null) return NpcsWithSchedule.AsEnumerable();
+
+            IEnumerable<Func<string, bool>> nameFilters = filters.IgnoredNPCs.Select<string, Func<string, bool>>(name => name.StartsWith('^') ? x => x.StartsWith(name[1..]) : x => x.Equals(name));
+            return NpcsWithSchedule.Where(s =>
+            {
+                string internalName = GetNameFromScheduleKey(s.Key);
+                if (nameFilters.Any(func => func(s.Value.DisplayName)))
                 {
-                    bool hasMet = Game1.player.friendshipData.ContainsKey(s.Key);
-                    return (s.Value.CanSocialize || !onlyShowSocializableNPCs) && (hasMet || !onlyShowMetNPCs);
-                }) :
-                NpcsWithSchedule.AsEnumerable();
+                    return false;
+                }
+                bool hasMet = Game1.player.friendshipData.ContainsKey(internalName);
+                return (s.Value.CanSocialize || !filters.OnlyShowSocializableNPCs) && (hasMet || !filters.OnlyShowMetNPCs);
+            });
+        }
 
         /// <summary>
         /// Try and get an override for a location name.

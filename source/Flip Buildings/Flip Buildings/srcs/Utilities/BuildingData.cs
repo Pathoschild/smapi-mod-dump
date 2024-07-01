@@ -139,7 +139,16 @@ namespace FlipBuildings.Utilities
 				}
 				if (buildingData.CollisionMap is not null)
 				{
-					buildingData.CollisionMap = "\nXXXXXXXXX\nXXXXXXXXX\nXXXXXXXXX\nXOOOOOOOX\nXXOOOXXXXX\n";
+					string[] array = buildingData.CollisionMap.Trim().Split('\n', StringSplitOptions.TrimEntries);
+
+					if (array[^1].Length > 9)
+					{
+						string collisionTiles = array[^1][^9..];
+						string additionalCollisionTiles = array[^1][..^9];
+
+						array[^1] = collisionTiles + new string(additionalCollisionTiles.Reverse().ToArray());
+						buildingData.CollisionMap = string.Join('\n', array);
+					}
 				}
 				if (buildingData.AdditionalPlacementTiles is not null)
 				{

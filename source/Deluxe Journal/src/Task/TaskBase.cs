@@ -12,6 +12,7 @@ using StardewValley;
 using StardewValley.GameData.Tools;
 using DeluxeJournal.Events;
 using DeluxeJournal.Framework;
+using DeluxeJournal.Framework.Events;
 using DeluxeJournal.Util;
 
 using static DeluxeJournal.Task.ITask;
@@ -26,13 +27,14 @@ namespace DeluxeJournal.Task
         private bool _active;
         private bool _complete;
         private bool _viewed;
+        private int _count;
         private int _index;
 
         public string ID => _id;
 
         public string Name { get; set; }
 
-        public long OwnerUMID { get; set; }
+        public long OwnerUniqueMultiplayerID { get; set; }
 
         public Period RenewPeriod { get; set; }
 
@@ -40,11 +42,30 @@ namespace DeluxeJournal.Task
 
         public int RenewCustomInterval { get; set; }
 
-        public virtual int Count { get; set; }
+        public virtual int Count
+        {
+            get => _count;
+
+            set
+            {
+                if (_count != value)
+                {
+                    int oldCount = _count;
+                    _count = value;
+                    NotifyStatusChanged(Active, Complete, oldCount);
+                }
+            }
+        }
 
         public virtual int MaxCount { get; set; }
 
         public virtual int BasePrice { get; set; }
+
+        public virtual int ColorIndex { get; set; }
+
+        public virtual int Group { get; set; }
+
+        public virtual int GroupColorIndex { get; set; }
 
         public virtual bool Active
         {
@@ -52,13 +73,19 @@ namespace DeluxeJournal.Task
 
             set
             {
-                _active = value;
-
-                if (!value && RenewPeriod == Period.Custom)
+                if (_active != value)
                 {
-                    WorldDate renewDate = WorldDate.Now();
-                    renewDate.TotalDays += RenewCustomInterval;
-                    RenewDate = renewDate;
+                    bool oldActive = _active;
+                    _active = value;
+
+                    if (!value && RenewPeriod == Period.Custom)
+                    {
+                        WorldDate renewDate = WorldDate.Now();
+                        renewDate.TotalDays += RenewCustomInterval;
+                        RenewDate = renewDate;
+                    }
+
+                    NotifyStatusChanged(oldActive, Complete, Count);
                 }
             }
         }
@@ -69,15 +96,24 @@ namespace DeluxeJournal.Task
 
             set
             {
-                _complete = value;
-                _viewed = !value;
-
-                if (!value && Count >= MaxCount)
+                if (_complete != value)
                 {
-                    Count = 0;
+                    bool oldComplete = _complete;
+                    int count = Count;
+                    _complete = value;
+                    _viewed = !value;
+
+                    if (!value && count >= MaxCount)
+                    {
+                        Count = 0;
+                    }
+
+                    NotifyStatusChanged(Active, oldComplete, count);
                 }
             }
         }
+
+        public virtual bool IsHeader => false;
 
         protected TaskBase(string id) : this(id, string.Empty)
         {
@@ -92,13 +128,12 @@ namespace DeluxeJournal.Task
             _index = 0;
 
             Name = name;
-            OwnerUMID = Game1.player?.UniqueMultiplayerID ?? 0;
+            OwnerUniqueMultiplayerID = Game1.player?.UniqueMultiplayerID ?? 0;
             RenewPeriod = Period.Never;
             RenewDate = new WorldDate(1, Season.Spring, 1);
             RenewCustomInterval = 1;
-            Count = 0;
             MaxCount = 1;
-            BasePrice = 0;
+            GroupColorIndex = -1;
         }
 
         /// <summary>Helper method to get the buy/sale price of an item.</summary>
@@ -154,7 +189,7 @@ namespace DeluxeJournal.Task
                 Complete = true;
                 Game1.playSound("jingle1");
 
-                if (DeluxeJournalMod.Instance?.Config is Config config && config.EnableVisualTaskCompleteIndicator)
+                if (DeluxeJournalMod.Config is Config config && config.EnableVisualTaskCompleteIndicator)
                 {
                     Game1.dayTimeMoneyBox.PingQuestLog();
                 }
@@ -176,6 +211,15 @@ namespace DeluxeJournal.Task
                 {
                     MarkAsCompleted();
                 }
+            }
+        }
+
+        /// <summary>Notify event subscribers that the status of this task has changed.</summary>
+        protected void NotifyStatusChanged(bool oldActive, bool oldComplete, int oldCount)
+        {
+            if (DeluxeJournalMod.EventManager is EventManager events)
+            {
+                events.TaskStatusChanged.Raise(this, new(this, oldActive, oldComplete, oldCount, Active, Complete, Count));
             }
         }
 
@@ -233,12 +277,12 @@ namespace DeluxeJournal.Task
 
         public bool IsTaskOwner(Farmer farmer)
         {
-            return OwnerUMID == farmer.UniqueMultiplayerID;
+            return OwnerUniqueMultiplayerID == farmer.UniqueMultiplayerID;
         }
 
         public bool IsTaskOwner(long umid)
         {
-            return OwnerUMID == umid;
+            return OwnerUniqueMultiplayerID == umid;
         }
 
         public virtual void EventSubscribe(ITaskEvents events)
@@ -258,6 +302,10 @@ namespace DeluxeJournal.Task
             if (other == null)
             {
                 return 1;
+            }
+            else if (Group != other.Group)
+            {
+                return Group - other.Group;
             }
             else if (Active && other.Active)
             {

@@ -13,12 +13,17 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewArchipelago.Archipelago;
-using StardewArchipelago.Items.Unlocks;
+using StardewArchipelago.Constants.Vanilla;
+using StardewArchipelago.Items.Unlocks.Vanilla;
+using StardewArchipelago.Stardew.Ids.Vanilla;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.GameData;
 using StardewValley.Locations;
 using StardewValley.Tools;
 using xTile.Dimensions;
+using Object = StardewValley.Object;
+using Rectangle = xTile.Dimensions.Rectangle;
 
 namespace StardewArchipelago.Locations.CodeInjections.Vanilla
 {
@@ -28,6 +33,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
         public const string BEACH_BRIDGE_AP_LOCATION = "Beach Bridge Repair";
         public const string GALAXY_SWORD_SHRINE_AP_LOCATION = "Galaxy Sword Shrine";
         public const string RUSTY_SWORD_AP_LOCATION = "The Mines Entrance Cutscene";
+        public const string POT_OF_GOLD_AP_LOCATION = "Pot Of Gold";
 
         private static IMonitor _monitor;
         private static IModHelper _helper;
@@ -42,7 +48,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             _locationChecker = locationChecker;
         }
 
-        public static bool CheckAction_OldMasterCanolli_Prefix(Woods __instance, Location tileLocation, xTile.Dimensions.Rectangle viewport, Farmer who, ref bool __result)
+        public static bool CheckAction_OldMasterCanolli_Prefix(Woods __instance, Location tileLocation, Rectangle viewport, Farmer who, ref bool __result)
         {
             try
             {
@@ -79,7 +85,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                     return true; // run original logic
                 }
 
-                Game1.player.removeItemsFromInventory(388, 300);
+                Game1.player.Items.ReduceId("388", 300);
                 _locationChecker.AddCheckedLocation(BEACH_BRIDGE_AP_LOCATION);
                 __result = true;
                 return false; // don't run original logic
@@ -91,7 +97,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             }
         }
 
-        public static bool CheckAction_BeachBridge_Prefix(Beach __instance, Location tileLocation, xTile.Dimensions.Rectangle viewport, Farmer who, ref bool __result)
+        public static bool CheckAction_BeachBridge_Prefix(Beach __instance, Location tileLocation, Rectangle viewport, Farmer who, ref bool __result)
         {
             try
             {
@@ -106,7 +112,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                     return false; // don't run original logic
                 }
 
-                if (who.hasItemInInventory(388, 300))
+                if (who.Items.ContainsId("388", 300))
                 {
                     __instance.createQuestionDialogue(
                         Game1.content.LoadString("Strings\\Locations:Beach_FixBridge_Question"),
@@ -137,7 +143,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                     return false; // don't run original logic
                 }
 
-                if (_archipelago.HasReceivedItem(VanillaUnlockManager.BEACH_BRIDGE_AP_NAME))
+                if (_archipelago.HasReceivedItem(VanillaUnlockManager.BEACH_BRIDGE))
                 {
                     return true;
                 }
@@ -193,17 +199,18 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             }
         }
 
-        public static bool PerformTouchAction_GalaxySwordShrine_Prefix(GameLocation __instance, string fullActionString, Vector2 playerStandingPosition)
+        // public virtual void performTouchAction(string[] action, Vector2 playerStandingPosition)
+        public static bool PerformTouchAction_GalaxySwordShrine_Prefix(GameLocation __instance, string[] action, Vector2 playerStandingPosition)
         {
             try
             {
-                var actionFirstWord = fullActionString.Split(' ')[0];
+                var actionFirstWord = action[0];
                 if (Game1.eventUp || actionFirstWord != "legendarySword" || _locationChecker.IsLocationChecked(GALAXY_SWORD_SHRINE_AP_LOCATION))
                 {
                     return actionFirstWord != "legendarySword"; // run original logic only if it's something other than the shrine
                 }
 
-                if (Game1.player.ActiveObject != null && Utility.IsNormalObjectAtParentSheetIndex(Game1.player.ActiveObject, 74))
+                if (Game1.player.ActiveObject?.QualifiedItemId == QualifiedItemIds.PRISMATIC_SHARD)
                 {
                     Game1.player.Halt();
                     Game1.player.faceDirection(2);
@@ -212,12 +219,12 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
 
                     Game1.pauseThenDoFunction(7000, CheckGalaxySwordApLocation);
 
-                    Game1.changeMusicTrack("none", music_context: Game1.MusicContext.Event);
+                    Game1.changeMusicTrack("none", music_context: MusicContext.Event);
                     __instance.playSound("crit");
                     Game1.screenGlowOnce(new Color(30, 0, 150), true, 0.01f, 0.999f);
                     DelayedAction.playSoundAfterDelay("stardrop", 1500);
                     Game1.screenOverlayTempSprites.AddRange(Utility.sparkleWithinArea(new Microsoft.Xna.Framework.Rectangle(0, 0, Game1.viewport.Width, Game1.viewport.Height), 500, Color.White, 10, 2000));
-                    Game1.afterDialogues += () => Game1.stopMusicTrack(Game1.MusicContext.Event);
+                    Game1.afterDialogues += () => Game1.stopMusicTrack(MusicContext.Event);
                     return false; // don't run original logic
                 }
 
@@ -233,9 +240,8 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
 
         private static void CheckGalaxySwordApLocation()
         {
-
             Game1.flashAlpha = 1f;
-            Game1.player.holdUpItemThenMessage(new MeleeWeapon(4));
+            Game1.player.holdUpItemThenMessage(new MeleeWeapon("4"));
             Game1.player.reduceActiveItemByOne();
             _locationChecker.AddCheckedLocation(GALAXY_SWORD_SHRINE_AP_LOCATION);
 
@@ -250,7 +256,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
         {
             try
             {
-                if (__instance.id != 100162)
+                if (__instance.id != EventIds.RUSTY_SWORD_EVENT_ID)
                 {
                     return true; // run original logic
                 }
@@ -287,7 +293,6 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                 Game1.player.Position = new Vector2(-9999f, -99999f);
                 __instance.endBehaviors(new string[1] { "end" }, Game1.currentLocation);
                 return false; // don't run original logic
-
             }
             catch (Exception ex)
             {
@@ -296,29 +301,56 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             }
         }
 
-        public static bool AwardFestivalPrize_RustySword_Prefix(Event __instance, GameLocation location, GameTime time, string[] split)
+        // public static void AwardFestivalPrize(Event @event, string[] args, EventContext context)
+        public static bool AwardFestivalPrize_RustySword_Prefix(Event @event, string[] args, EventContext context)
         {
             try
             {
-                var festivalWinnersField = _helper.Reflection.GetField<HashSet<long>>(__instance, "festivalWinners");
-                if (__instance.id != 100162 ||
-                    festivalWinnersField.GetValue().Contains(Game1.player.UniqueMultiplayerID) || split.Length <= 1 ||
-                    split[1].ToLower() != "sword")
+                if (@event.id != EventIds.RUSTY_SWORD_EVENT_ID)
                 {
                     return true; // run original logic
                 }
 
                 if (Game1.activeClickableMenu == null)
-                    __instance.CurrentCommand++;
-                __instance.CurrentCommand++;
+                    @event.CurrentCommand++;
+                @event.CurrentCommand++;
 
                 _locationChecker.AddCheckedLocation(RUSTY_SWORD_AP_LOCATION);
                 return false; // don't run original logic
-
             }
             catch (Exception ex)
             {
                 _monitor.Log($"Failed in {nameof(AwardFestivalPrize_RustySword_Prefix)}:\n{ex}", LogLevel.Error);
+                return true; // run original logic
+            }
+        }
+
+        // public virtual bool checkForAction(Farmer who, bool justCheckingForActivity = false)
+        public static bool CheckForAction_PotOfGold_Prefix(Object __instance, Farmer who, bool justCheckingForActivity, ref bool __result)
+        {
+            try
+            {
+                if (__instance.isTemporarilyInvisible || justCheckingForActivity || __instance.QualifiedItemId != QualifiedItemIds.POT_OF_GOLD)
+                {
+                    return true; // run original logic
+                }
+
+                if (_locationChecker.IsLocationMissing(POT_OF_GOLD_AP_LOCATION))
+                {
+                    Game1.playSound("hammer");
+                    Game1.playSound("moneyDial");
+                    __instance.Location.removeObject(__instance.TileLocation, false);
+                    Utility.addDirtPuffs(__instance.Location, (int)__instance.TileLocation.X, (int)__instance.TileLocation.Y, 1, 1, 3);
+                    Utility.addStarsAndSpirals(__instance.Location, (int)__instance.TileLocation.X, (int)__instance.TileLocation.Y, 1, 1, 100, 30, Color.White);
+                    _locationChecker.AddCheckedLocation(POT_OF_GOLD_AP_LOCATION);
+                    return false; // don't run original logic
+                }
+
+                return true; // run original logic
+            }
+            catch (Exception ex)
+            {
+                _monitor.Log($"Failed in {nameof(CheckForAction_PotOfGold_Prefix)}:\n{ex}", LogLevel.Error);
                 return true; // run original logic
             }
         }

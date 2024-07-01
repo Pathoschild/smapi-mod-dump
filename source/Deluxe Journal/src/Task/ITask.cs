@@ -48,9 +48,9 @@ namespace DeluxeJournal.Task
         [JsonProperty(Order = -2)]
         bool Complete { get; set; }
 
-        /// <summary>UMID of the player that owns this task.</summary>
+        /// <summary>Unique Multiplayer ID of the player that owns this task.</summary>
         [JsonIgnore]
-        long OwnerUMID { get; set; }
+        long OwnerUniqueMultiplayerID { get; set; }
 
         /// <summary>Renew period. Tasks will be renewed at the end of the period.</summary>
         /// <remarks>Note: Tasks marked as completed are removed at the end of the day if set to <see cref="Period.Never"/>.</remarks>
@@ -72,6 +72,31 @@ namespace DeluxeJournal.Task
 
         /// <summary>Starting price value.</summary>
         int BasePrice { get; set; }
+
+        /// <summary>
+        /// Index of the preferred <see cref="ColorSchema"/> used to display this task. May be overridden
+        /// by the <see cref="GroupColorIndex"/> if set to the default schema at index <c>0</c>.
+        /// </summary>
+        int ColorIndex { get; set; }
+
+        /// <summary>Task group ID value.</summary>
+        [JsonIgnore]
+        int Group { get; set; }
+
+        /// <summary>
+        /// Index of the <see cref="ColorSchema"/> used to display this task group. Overrides
+        /// default color unless set to a value less than zero.
+        /// </summary>
+        [JsonIgnore]
+        int GroupColorIndex { get; set; }
+
+        /// <summary>Index of the <see cref="ColorSchema"/> used to display this task.</summary>
+        [JsonIgnore]
+        int DisplayColorIndex => ColorIndex > 0 || GroupColorIndex < 0 ? ColorIndex : GroupColorIndex;
+
+        /// <summary>Whether this is a header task type.</summary>
+        [JsonIgnore]
+        bool IsHeader { get; }
 
         /// <summary>Create a copy of this task.</summary>
         /// <remarks>Ensure any mutable data is deep copied.</remarks>

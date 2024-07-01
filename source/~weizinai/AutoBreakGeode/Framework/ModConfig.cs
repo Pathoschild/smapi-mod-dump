@@ -11,7 +11,7 @@
 using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
 
-namespace AutoBreakGeode.Framework;
+namespace weizinai.StardewValleyMod.AutoBreakGeode.Framework;
 
 internal class ModConfig
 {

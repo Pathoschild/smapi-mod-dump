@@ -59,6 +59,7 @@
     "config.machines.fruit-tree": "Tree (Fruit Tree)",
     "config.machines.trash-can": "Trash Can",
     "config.machines.wild-tree": "Tree (Wild Tree)",
+    "config.machines.feed-hopper": "ที่ใส่อาหารสัตว์และไซโล",
 
     // special settings for individual machines
     // TODO

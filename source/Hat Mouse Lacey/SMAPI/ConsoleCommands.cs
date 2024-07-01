@@ -40,10 +40,11 @@ namespace ichortower_HatMouseLacey
 
         public static Dictionary<string, Action<string, string[]>> Commands = new(){
             {"help", Help},
-            {"map_repair", MapRepair},
             {"mousify_child", MousifyChild},
+            {"map_repair", MapRepair},
             {"change_clothes", ChangeClothes},
             {"hat_string", HatString},
+            {"hats_shown", HatsShown},
         };
 
         public static Dictionary<string, string[]> HelpTexts = new(){
@@ -51,15 +52,15 @@ namespace ichortower_HatMouseLacey
                 $"Usage: {HML.CommandWord} help [command]",
                 "Prints help text for one or all commands.",
             }},
-            {"map_repair", new string[]{
-                $"Usage: {HML.CommandWord} map_repair",
-                "Repairs the map near Lacey's house.",
-                "This is called automatically when needed. You shouldn't need to run it.",
-            }},
             {"mousify_child", new string[]{
                 $"Usage: {HML.CommandWord} mousify_child <name> <variant>",
                 "Sets or unsets mouse child status on one of your children.",
                 "'variant' should be -1 (human), 0 (grey), or 1 (brown).",
+            }},
+            {"map_repair", new string[]{
+                $"Usage: {HML.CommandWord} map_repair",
+                "Repairs the map near Lacey's house.",
+                "This is called automatically when needed. You shouldn't need to run it.",
             }},
             {"change_clothes", new string[]{
                 $"Usage: {HML.CommandWord} change_clothes",
@@ -69,6 +70,11 @@ namespace ichortower_HatMouseLacey
             {"hat_string", new string[]{
                 $"Usage: {HML.CommandWord} hat_string",
                 "Prints your current hat string.",
+                "This is for debug and development. You shouldn't use it.",
+            }},
+            {"hats_shown", new string[]{
+                $"Usage: {HML.CommandWord} hats_shown",
+                "Prints the list of hats that you have received Lacey's comments on.",
                 "This is for debug and development. You shouldn't use it.",
             }},
         };
@@ -227,6 +233,13 @@ namespace ichortower_HatMouseLacey
         public static void HatString(string command, string[] args)
         {
             Log.Info($"'{LCHatString.GetCurrentHatString(Game1.player)}'");
+        }
+
+        public static void HatsShown(string command, string[] args)
+        {
+            string serial = "[]";
+            Game1.player.modData.TryGetValue($"{HML.CPId}/HatsShown", out serial);
+            Log.Info(serial);
         }
 
     }

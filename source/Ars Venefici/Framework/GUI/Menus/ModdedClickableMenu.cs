@@ -52,5 +52,21 @@ namespace ArsVenefici.Framework.GUI.Menus
 
         /// <summary>Regenerate the UI.</summary>
         protected abstract void SetUpPositions();
+
+        /// <summary>
+        /// Changes Scale When A Component Is Hovered.
+        /// </summary>
+        /// <param name="component">Current Component</param>
+        /// <param name="x">X Position Of The Mouse</param>
+        /// <param name="y">Y Position Of The Mouse</param>
+        /// <param name="min">The Minimum Scale</param>
+        /// <param name="max">The Maximum Scale</param>
+        public void ChangeHoverActionScale(ClickableTextureComponent component, int x, int y, float min, float max)
+        {
+            if (component.containsPoint(x, y))
+                component.scale = Math.Min(component.scale + min, component.baseScale + max);
+            else
+                component.scale = Math.Max(component.scale - min, component.baseScale);
+        }
     }
 }

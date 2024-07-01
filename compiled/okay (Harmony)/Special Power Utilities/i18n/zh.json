@@ -1,0 +1,20 @@
+{
+  "Config.EnableCategories.Name": "启用能力类别",
+  "Config.EnableCategories.Description": "默认启用。如果禁用，“特殊物品和能力”选项卡将变回原版，你将不会看到类别。无论是否禁用，任何其他使用“特殊能力工具箱”的mod始终生效。",
+
+  "Config.ParseModNames.Name": "解析Mod名称",
+  "Config.ParseModNames.Description": "默认启用。如果模组没有专门为“特殊能力工具箱”添加支持，是否尝试从能力ID中解析模组名称。如果禁用，没有“特殊能力工具箱”支持的能力将被放入的“杂项”类别中。",
+
+  "Config.EnableMiscCategory.Name": "启用“杂项”类别",
+  "Config.EnableMiscCategory.Description": "默认启用。是否启用杂项。“杂项”类别用于没有特定类别的能力。如果禁用，没有特定类别的能力将与原版的能力放在一起。",
+
+  "Config.UseVanillaMenu.Name": "使用原版目录",
+  "Config.UseVanillaMenu.Description": "默认禁用。是否使用默认菜单来显示“特殊物品与能力”选项卡。如果启用，则不会使用“特殊能力工具箱”的自定义菜单。你将不会看到类别，并且任何由模组作者标记为不可用的能力都不会在你的界面上显示。无论是否禁用，任何其他使用“特殊能力工具箱”的mod始终生效。",
+
+  "Config.StripelessBooks.Name": "删除条纹",
+  "Config.StripelessBooks.Description": "默认启用。播放看书动画时，是否要删除书中的两条条纹。",
+
+  "HoverText.StardewValley": "Stardew Valley",
+  "HoverText.Misc": "杂项",
+  "HoverText.Unavailable": "不可用"
+}

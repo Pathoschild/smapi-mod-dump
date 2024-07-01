@@ -1,0 +1,7 @@
+{
+    // Translation provided by: fs_echo7
+    DestroyRingChestsCommand: "Supprime tous les coffres utilisés pour stocker des bagues. Tout objet contenu à l'intérieur sera laché à vos pieds.",
+    OpenForgeCommand: "Ouvre le menu forge",
+    RingsName: "Rings", RingsTooltip: "Combien d'emplacements de bagues sont disponibles", 
+    BonusTrinketName: "Bonus trinket", BonusTrinketTooltip: "Si vous obtenez deux emplacements de trinket pour le prix d'un",
+}

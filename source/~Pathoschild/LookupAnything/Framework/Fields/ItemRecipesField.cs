@@ -17,6 +17,7 @@ using Pathoschild.Stardew.Common;
 using Pathoschild.Stardew.LookupAnything.Framework.Fields.Models;
 using Pathoschild.Stardew.LookupAnything.Framework.Models;
 using StardewValley;
+using StardewValley.ItemTypeDefinitions;
 using SObject = StardewValley.Object;
 
 namespace Pathoschild.Stardew.LookupAnything.Framework.Fields
@@ -233,7 +234,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Fields
                             name: recipe.Key,
                             type: recipe.DisplayType,
                             isKnown: recipe.IsKnown(),
-                            inputs: Array.Empty<RecipeItemEntry>(),
+                            inputs: [],
                             output: this.CreateItemEntry(
                                 name: I18n.Item_RecipesForMachine_TooComplex(),
                                 item: outputItem,
@@ -241,7 +242,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Fields
                                 hasInputAndOutput: false
                             ),
                             conditions: recipe.Conditions.Length > 0
-                                ? I18n.List(recipe.Conditions.Select(HumanReadableConditionParser.Parse))
+                                ? I18n.List(recipe.Conditions.Select(HumanReadableConditionParser.Format))
                                 : null
                         );
                     }
@@ -290,7 +291,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Fields
                         inputs: inputs.ToArray(),
                         output: output,
                         conditions: recipe.Conditions.Length > 0
-                            ? I18n.List(recipe.Conditions.Select(HumanReadableConditionParser.Parse))
+                            ? I18n.List(recipe.Conditions.Select(HumanReadableConditionParser.Format))
                             : null
                     );
                 })
@@ -404,34 +405,45 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Fields
         /// <returns>The equivalent item entry model, or <c>null</c> for a category with no matching items.</returns>
         private RecipeItemEntry? TryCreateItemEntry(RecipeIngredientModel ingredient)
         {
+            // special cases
+            switch (ingredient.InputId)
+            {
+                case "-777":
+                    return this.CreateItemEntry(
+                        name: I18n.Item_WildSeeds(),
+                        minCount: ingredient.Count,
+                        maxCount: ingredient.Count
+                    );
+            }
+
             // from category
             if (int.TryParse(ingredient.InputId, out int category) && category < 0)
             {
                 Item? input = this.GameHelper.GetObjectsByCategory(category).FirstOrDefault();
-                if (input == null)
-                    return null;
-
-                string displayName;
-                switch (input.Category)
+                if (input != null)
                 {
-                    case SObject.EggCategory:
-                        displayName = Game1.content.LoadString("Strings\\StringsFromCSFiles:CraftingRecipe.cs.572"); // Egg (Any)
-                        break;
+                    string displayName;
+                    switch (input.Category)
+                    {
+                        case SObject.EggCategory:
+                            displayName = Game1.content.LoadString("Strings\\StringsFromCSFiles:CraftingRecipe.cs.572"); // Egg (Any)
+                            break;
 
-                    case SObject.MilkCategory:
-                        displayName = Game1.content.LoadString("Strings\\StringsFromCSFiles:CraftingRecipe.cs.573"); // Milk (Any)
-                        break;
+                        case SObject.MilkCategory:
+                            displayName = Game1.content.LoadString("Strings\\StringsFromCSFiles:CraftingRecipe.cs.573"); // Milk (Any)
+                            break;
 
-                    default:
-                        displayName = input.getCategoryName();
-                        break;
+                        default:
+                            displayName = input.getCategoryName();
+                            break;
+                    }
+
+                    return this.CreateItemEntry(
+                        name: displayName,
+                        minCount: ingredient.Count,
+                        maxCount: ingredient.Count
+                    );
                 }
-
-                return this.CreateItemEntry(
-                    name: displayName,
-                    minCount: ingredient.Count,
-                    maxCount: ingredient.Count
-                );
             }
 
             // from item
@@ -451,7 +463,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Fields
                 {
                     string name = input.DisplayName ?? input.ItemId;
                     if (ingredient.InputContextTags.Length > 0) // if the item has both item ID and context tags, show tags to disambiguate
-                        name += $" ({I18n.List(ingredient.InputContextTags.Select(HumanReadableContextTagParser.Parse))})";
+                        name += $" ({I18n.List(ingredient.InputContextTags.Select(HumanReadableContextTagParser.Format))})";
 
                     return this.CreateItemEntry(
                         name: name,
@@ -466,14 +478,33 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Fields
             if (ingredient.InputContextTags.Length > 0)
             {
                 return this.CreateItemEntry(
-                    name: I18n.List(ingredient.InputContextTags.Select(HumanReadableContextTagParser.Parse)),
+                    name: I18n.List(ingredient.InputContextTags.Select(HumanReadableContextTagParser.Format)),
                     minCount: ingredient.Count,
                     maxCount: ingredient.Count
                 );
             }
 
-            // invalid?
-            return null;
+            // unsupported type, show placeholder with error sprite
+            {
+                ObjectDataDefinition objectTypeDef = ItemRegistry.GetObjectTypeDefinition();
+
+                string? displayName = ingredient.InputId;
+                if (ingredient.InputContextTags.Length > 0)
+                {
+                    displayName = !string.IsNullOrWhiteSpace(displayName)
+                        ? I18n.List([displayName, .. ingredient.InputContextTags])
+                        : I18n.List(ingredient.InputContextTags);
+                }
+                displayName ??= "???";
+
+                return this.CreateItemEntry(
+                    name: displayName,
+                    sprite: new SpriteInfo(
+                        objectTypeDef.GetErrorTexture(),
+                        objectTypeDef.GetErrorSourceRect()
+                    )
+                );
+            }
         }
 
         /// <summary>Create a recipe item model.</summary>

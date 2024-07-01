@@ -1,3 +1,0 @@
-page URL: https://github.com/daleao/modular-overhaul
-IDs: DaLion.Overhaul
-update keys: GitHub:daleao/modular-overhaul

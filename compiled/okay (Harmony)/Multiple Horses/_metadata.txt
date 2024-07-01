@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/25620
+IDs: CF.MultipleHorses
+update keys: Nexus:25620

@@ -9,9 +9,14 @@
 *************************************************/
 
 using HarmonyLib;
+using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.GameData.Fences;
+using StardewValley.TerrainFeatures;
+using System.Reflection;
+using System.Reflection.Emit;
+using System.Runtime.CompilerServices;
 
 namespace NoFenceDecayRedux
 {
@@ -27,16 +32,13 @@ namespace NoFenceDecayRedux
     [HarmonyPatch(typeof(Fence), nameof(Fence.minutesElapsed))]
     public static class NoFenceDecay
     {
-        private static bool Prefix(Fence __instance, ref bool __result)
-        {
-            return false;
-        }
         private static void Postfix(Fence __instance, ref bool __result)
         {
-            if (__instance.health.Value < __instance.maxHealth.Value && Game1.IsMasterGame)
+            if (Game1.IsMasterGame)
             {
-                FenceData data = __instance.GetData();
-                __instance.ResetHealth(data.RepairHealthAdjustmentMaximum);
+                __instance.health.Value = __instance.maxHealth.Value;
+                if (__instance.isGate.Value)
+                    __instance.health.Value = __instance.maxHealth.Value * 2f;
                 __result = false;
             }
         }

@@ -18,10 +18,18 @@
     {
       "Name": "Custom_MT_Island_House",
       "FromMapFile": "assets/Custom_MT_Island_House.tmx"
+    },
+    {
+      "Name": "Custom_MT_Island_House_Floor",
+      "FromMapFile": "assets/Custom_MT_Island_House_Floor.tmx"
+    },
+    {
+      "Name": "Custom_MT_Island_House_Garden",
+      "FromMapFile": "assets/Custom_MT_Island_House_Garden.tmx"
     }
   ],
   "Changes": [
-{
+    {
       "Action": "EditData",
       "Target": "Data/BigCraftables",
       "Entries": {
@@ -72,8 +80,8 @@
       "MapTiles": [
         {
           "Position": {
-            "X": 11,
-            "Y": 21
+            "X": 33,
+            "Y": 22
           },
           "Layer": "Buildings",
           "SetProperties": {
@@ -82,28 +90,34 @@
         },
         {
           "Position": {
-            "X": 12,
-            "Y": 21
+            "X": 32,
+            "Y": 22
           },
           "Layer": "Buildings",
           "SetProperties": {
             "Action": "kitchen"
           }
-        },
-{
+        }
+      ]
+    },
+    {
+      "Action": "EditMap",
+      "Target": "Maps/Custom_MT_Island_House_Floor",
+      "MapTiles": [
+        {
           "Position": {
-            "X": 32,
-            "Y": 23
+            "X": 7,
+            "Y": 4
           },
           "Layer": "Back",
           "SetProperties": {
             "TouchAction": "Sleep"
           }
         },
-{
+        {
           "Position": {
-            "X": 32,
-            "Y": 23
+            "X": 7,
+            "Y": 4
           },
           "Layer": "Back",
           "SetProperties": {
@@ -114,78 +128,115 @@
     },
     {
       "Action": "EditMap",
+      "Target": "Maps/Custom_MT_Island_House_Garden",
+      "MapTiles": [
+        {
+          "Position": {
+            "X": 34,
+            "Y": 26
+          },
+          "Layer": "Buildings",
+          "SetProperties": {
+            "Action": "Warp 23 8 Custom_MT_Island_House_Floor"
+          }
+        }
+      ]
+    },
+    {
+      "Action": "EditMap",
       "Target": "Maps/Custom_MT_Island",
       "MapTiles": [
         {
           "Position": {
-            "X": 50,
-            "Y": 26
-          },
-          "Layer": "Buildings",
-          "SetProperties": {
-            "Action": "Warp 66 22 Beach"
-          }
-        },
-        {
-          "Position": {
-            "X": 51,
-            "Y": 26
-          },
-          "Layer": "Buildings",
-          "SetProperties": {
-            "Action": "Warp 66 22 Beach"
-          }
-        },
-        {
-          "Position": {
-            "X": 52,
-            "Y": 26
-          },
-          "Layer": "Buildings",
-          "SetProperties": {
-            "Action": "Warp 66 22 Beach"
-          }
-        },
-        {
-          "Position": {
-            "X": 50,
-            "Y": 27
-          },
-          "Layer": "Buildings",
-          "SetProperties": {
-            "Action": "Warp 66 22 Beach"
-          }
-        },
-        {
-          "Position": {
-            "X": 51,
-            "Y": 27
-          },
-          "Layer": "Buildings",
-          "SetProperties": {
-            "Action": "Warp 66 22 Beach"
-          }
-        },
-        {
-          "Position": {
-            "X": 52,
-            "Y": 27
-          },
-          "Layer": "Buildings",
-          "SetProperties": {
-            "Action": "Warp 66 22 Beach"
-          }
-        },
-        {
-          "Position": {
-            "X": 73,
-            "Y": 16
+            "X": 45,
+            "Y": 19
           },
           "Layer": "Back",
           "SetProperties": {
-            "TouchAction": "Warp Custom_MT_Island_House 8 32"
+            "NPCBarrier": "T",
+            "NoPath": "T"
           }
         },
+        {
+          "Position": {
+            "X": 50,
+            "Y": 26
+          },
+          "Layer": "Buildings",
+          "SetProperties": {
+            "Action": "Warp 66 22 Beach"
+          }
+        },
+        {
+          "Position": {
+            "X": 51,
+            "Y": 26
+          },
+          "Layer": "Buildings",
+          "SetProperties": {
+            "Action": "Warp 66 22 Beach"
+          }
+        },
+        {
+          "Position": {
+            "X": 52,
+            "Y": 26
+          },
+          "Layer": "Buildings",
+          "SetProperties": {
+            "Action": "Warp 66 22 Beach"
+          }
+        },
+        {
+          "Position": {
+            "X": 50,
+            "Y": 27
+          },
+          "Layer": "Buildings",
+          "SetProperties": {
+            "Action": "Warp 66 22 Beach"
+          }
+        },
+        {
+          "Position": {
+            "X": 51,
+            "Y": 27
+          },
+          "Layer": "Buildings",
+          "SetProperties": {
+            "Action": "Warp 66 22 Beach"
+          }
+        },
+        {
+          "Position": {
+            "X": 52,
+            "Y": 27
+          },
+          "Layer": "Buildings",
+          "SetProperties": {
+            "Action": "Warp 66 22 Beach"
+          }
+        },
+        //{
+        //  "Position": {
+        //    "X": 73,
+        //    "Y": 16
+        //  },
+        //  "Layer": "Back",
+        //  "SetProperties": {
+        //    "TouchAction": "Warp Custom_MT_Island_House 8 32"
+        //  }
+        //},
+        //{
+        //  "Position": {
+        //    "X": 74,
+        //    "Y": 16
+        //  },
+        //  "Layer": "Back",
+        //  "SetProperties": {
+        //    "TouchAction": "Warp Custom_MT_Island_House 9 32"
+        //  }
+        //},
         {
           "Position": {
             "X": 21,
@@ -193,7 +244,7 @@
           },
           "Layer": "Buildings",
           "SetProperties": {
-            "Action": "MineSign TEST"
+            "Action": "MineSign Right here, the enchanting fire from Paradise Island brazier draws travelers from afar!"
           }
         },
         {
@@ -205,12 +256,92 @@
           "SetProperties": {
             "Action": "MineSign Right here, the enchanting fire from Paradise Island brazier draws travelers from afar!"
           }
+        },
+        {
+          "Position": {
+            "X": 13,
+            "Y": 51
+          },
+          "Layer": "Buildings",
+          "SetProperties": {
+            "Action": "MineSign No Fishing"
+          }
+        },
+        {
+          "Position": {
+            "X": 13,
+            "Y": 53
+          },
+          "Layer": "Buildings",
+          "SetProperties": {
+            "Action": "MineSign No Fishing"
+          }
+        },
+        {
+          "Position": {
+            "X": 70,
+            "Y": 16
+          },
+          "Layer": "Buildings",
+          "SetProperties": {
+            "Action": "MineSign {{d5a1lamdtd.MarketTown/IslandSign}}"
+          }
+        },
+        {
+          "Position": {
+            "X": 71,
+            "Y": 16
+          },
+          "Layer": "Buildings",
+          "SetProperties": {
+            "Action": "MineSign {{d5a1lamdtd.MarketTown/IslandSign}}"
+          }
+        },
+        {
+          "Position": {
+            "X": 72,
+            "Y": 16
+          },
+          "Layer": "Buildings",
+          "SetProperties": {
+            "Action": "MineSign {{d5a1lamdtd.MarketTown/IslandSign}}"
+          }
+        },
+        {
+          "Position": {
+            "X": 70,
+            "Y": 17
+          },
+          "Layer": "Buildings",
+          "SetProperties": {
+            "Action": "MineSign {{d5a1lamdtd.MarketTown/IslandSign}}"
+          }
+        },
+        {
+          "Position": {
+            "X": 71,
+            "Y": 17
+          },
+          "Layer": "Buildings",
+          "SetProperties": {
+            "Action": "MineSign {{d5a1lamdtd.MarketTown/IslandSign}}"
+          }
+        },
+        {
+          "Position": {
+            "X": 72,
+            "Y": 17
+          },
+          "Layer": "Buildings",
+          "SetProperties": {
+            "Action": "MineSign {{d5a1lamdtd.MarketTown/IslandSign}}"
+          }
         }
       ]
     },
     {
       "Action": "EditMap",
-      "Target": "Maps/Beach",
+      "Target": "Maps/Beach-NightMarket",
       "FromFile": "Assets/Custom_MT_BeachBoat.tmx",
       "ToArea": {
         "X": 64,
@@ -223,6 +354,111 @@
     {
       "Action": "EditMap",
       "Target": "Maps/Beach",
+      "FromFile": "Assets/Custom_MT_BeachBoat.tmx",
+      "ToArea": {
+        "X": 64,
+        "Y": 17,
+        "Width": 5,
+        "Height": 5
+      },
+      "PatchMode": "Overlay"
+    }, 
+    {
+      "Action": "EditMap",
+      "Target": "Maps/Custom_MT_Island_House",
+      "FromFile": "Assets/Custom_MT_Island_House_Rain.tmx",
+      "PatchMode": "Overlay",
+      "When": {
+        "Weather": "Rain, Storm, GreenRain"
+      }
+    }, 
+    {
+      "Action": "EditMap",
+      "Target": "Maps/Custom_MT_Island_House",
+      "FromFile": "Assets/Custom_MT_Island_HouseEdit.tmx",
+      "PatchMode": "Overlay",
+      "When": {
+        "HasReadLetter": "MT.IslandBedroom"
+      }
+    },
+    {
+      "Action": "EditMap",
+      "Target": "Maps/Custom_MT_Island_House",
+      "FromFile": "Assets/Custom_MT_Island_House_Rain.tmx",
+      "PatchMode": "Overlay",
+      "When": {
+        "Weather": "Rain, Storm, GreenRain"
+      }
+    },
+    {
+      "Action": "EditMap",
+      "Target": "Maps/Beach",
+      "MapTiles": [
+        {
+          "Position": {
+            "X": 64,
+            "Y": 20
+          },
+          "Layer": "Buildings",
+          "SetProperties": {
+            "Action": "Warp 53 28 Custom_MT_Island"
+          }
+        },
+        {
+          "Position": {
+            "X": 65,
+            "Y": 20
+          },
+          "Layer": "Buildings",
+          "SetProperties": {
+            "Action": "Warp 53 28 Custom_MT_Island"
+          }
+        },
+        {
+          "Position": {
+            "X": 66,
+            "Y": 20
+          },
+          "Layer": "Buildings",
+          "SetProperties": {
+            "Action": "Warp 53 28 Custom_MT_Island"
+          }
+        },
+        {
+          "Position": {
+            "X": 64,
+            "Y": 21
+          },
+          "Layer": "Buildings",
+          "SetProperties": {
+            "Action": "Warp 53 28 Custom_MT_Island"
+          }
+        },
+        {
+          "Position": {
+            "X": 65,
+            "Y": 21
+          },
+          "Layer": "Buildings",
+          "SetProperties": {
+            "Action": "Warp 53 28 Custom_MT_Island"
+          }
+        },
+        {
+          "Position": {
+            "X": 66,
+            "Y": 21
+          },
+          "Layer": "Buildings",
+          "SetProperties": {
+            "Action": "Warp 53 28 Custom_MT_Island"
+          }
+        }
+      ]
+    },
+    {
+      "Action": "EditMap",
+      "Target": "Maps/Beach-NightMarket",
       "MapTiles": [
         {
           "Position": {
@@ -293,6 +529,13 @@
         "Custom_MT_Island_House": {
           "CreateOnLoad": {
             "MapPath": "Maps/Custom_MT_Island_House",
+            "Type": "StardewValley.Locations.DecoratableLocation",
+            "AlwaysActive": false
+          }
+        },
+        "Custom_MT_Island_House_Floor": {
+          "CreateOnLoad": {
+            "MapPath": "Maps/Custom_MT_Island_House_Floor",
             "Type": "StardewValley.Locations.DecoratableLocation",
             "AlwaysActive": false
           }
@@ -1328,6 +1571,48 @@
               "QualityModifiers": null,
               "QualityModifierMode": "Stack",
               "PerItemCondition": null
+            }, 
+            {
+              "Chance": 0.8,
+              "Season": null,
+              "Condition": "LOCATION_SEASON Here spring summer fall",
+              "Id": "(O)393",
+              "ItemId": "(O)393",
+              "RandomItemId": null,
+              "MaxItems": null,
+              "MinStack": -1,
+              "MaxStack": -1,
+              "Quality": -1,
+              "ObjectInternalName": null,
+              "ObjectDisplayName": null,
+              "ToolUpgradeLevel": -1,
+              "IsRecipe": false,
+              "StackModifiers": null,
+              "StackModifierMode": "Stack",
+              "QualityModifiers": null,
+              "QualityModifierMode": "Stack",
+              "PerItemCondition": null
+            },
+            {
+              "Chance": 0.2,
+              "Season": null,
+              "Condition": "LOCATION_SEASON Here spring summer fall",
+              "Id": "(O)397",
+              "ItemId": "(O)397",
+              "RandomItemId": null,
+              "MaxItems": null,
+              "MinStack": -1,
+              "MaxStack": -1,
+              "Quality": -1,
+              "ObjectInternalName": null,
+              "ObjectDisplayName": null,
+              "ToolUpgradeLevel": -1,
+              "IsRecipe": false,
+              "StackModifiers": null,
+              "StackModifierMode": "Stack",
+              "QualityModifiers": null,
+              "QualityModifierMode": "Stack",
+              "PerItemCondition": null
             },
             {
               "Chance": 0.4,
@@ -1435,6 +1720,152 @@
               "PerItemCondition": null
             }
           ]
+        }
+      }
+    },
+    {
+      "Action": "EditData",
+      "Target": "Data/LocationContexts",
+      "Entries": {
+        "d5a1lamdtd.MarketTown.Custom_MT_Location_Context": {
+          "SeasonOverride": null,
+          "DefaultMusic": "IslandMusic",
+          "DefaultMusicCondition": null,
+          "DefaultMusicDelayOneScreen": true,
+          "Music": [
+            {
+              "Id": "spring1",
+              "Track": "spring1",
+              "Condition": "SEASON Spring"
+            },
+            {
+              "Id": "spring2",
+              "Track": "spring2",
+              "Condition": "SEASON Spring"
+            },
+            {
+              "Id": "spring3",
+              "Track": "spring3",
+              "Condition": "SEASON Spring"
+            },
+            {
+              "Id": "summer1",
+              "Track": "summer1",
+              "Condition": "SEASON Summer"
+            },
+            {
+              "Id": "summer2",
+              "Track": "summer2",
+              "Condition": "SEASON Summer"
+            },
+            {
+              "Id": "summer3",
+              "Track": "summer3",
+              "Condition": "SEASON Summer"
+            },
+            {
+              "Id": "fall1",
+              "Track": "fall1",
+              "Condition": "SEASON Fall"
+            },
+            {
+              "Id": "fall2",
+              "Track": "fall2",
+              "Condition": "SEASON Fall"
+            },
+            {
+              "Id": "fall3",
+              "Track": "fall3",
+              "Condition": "SEASON Fall"
+            },
+            {
+              "Id": "winter1",
+              "Track": "winter1",
+              "Condition": "SEASON Winter"
+            },
+            {
+              "Id": "winter2",
+              "Track": "winter2",
+              "Condition": "SEASON Winter"
+            },
+            {
+              "Id": "winter3",
+              "Track": "winter3",
+              "Condition": "SEASON Winter"
+            }
+          ],
+          "DayAmbience": null,
+          "NightAmbience": null,
+          "PlayRandomAmbientSounds": true,
+          "AllowRainTotem": true,
+          "RainTotemAffectsContext": null,
+          "WeatherConditions": [
+            {
+              "Id": "GreenRain",
+              "Condition": "IS_GREEN_RAIN_DAY",
+              "Weather": "GreenRain"
+            },
+            {
+              "Id": "SummerStorm",
+              "Condition": "SEASON summer, SYNCED_SUMMER_RAIN_RANDOM, RANDOM .65",
+              "Weather": "Storm"
+            },
+            {
+              "Id": "SummerStorm2",
+              "Condition": "SEASON summer, SYNCED_SUMMER_RAIN_RANDOM, RANDOM .15",
+              "Weather": "Storm"
+            },
+            {
+              "Id": "FallStorm",
+              "Condition": "SEASON spring fall, SYNCED_RANDOM day location_weather .12, RANDOM .15",
+              "Weather": "Storm"
+            },
+            {
+              "Id": "WinterSnow",
+              "Condition": "SEASON winter, SYNCED_RANDOM day location_weather 0.25",
+              "Weather": "Rain"
+            },
+            {
+              "Id": "SummerRain",
+              "Condition": "SEASON summer, SYNCED_SUMMER_RAIN_RANDOM",
+              "Weather": "Rain"
+            },
+            {
+              "Id": "FallRain",
+              "Condition": "SEASON spring fall, SYNCED_RANDOM day location_weather 0.15",
+              "Weather": "Rain"
+            },
+            {
+              "Id": "SpringWind",
+              "Condition": "DAYS_PLAYED 3, SEASON spring, RANDOM .6",
+              "Weather": "Wind"
+            },
+            {
+              "Id": "FallWind",
+              "Condition": "DAYS_PLAYED 3, SEASON fall, RANDOM .85",
+              "Weather": "Wind"
+            },
+            {
+              "Id": "Default",
+              "Condition": null,
+              "Weather": "Sun"
+            }
+          ],
+          "CopyWeatherFromLocation": null,
+          "ReviveLocations": [
+            {
+              "Id": "Default",
+              "Condition": null,
+              "Location": "Custom_MT_Island",
+              "Position": {
+                "X": 53,
+                "Y": 27
+              }
+            }
+          ],
+          "MaxPassOutCost": 3000,
+          "PassOutLocations": null,
+          "CustomFields": null
         }
       }
     }

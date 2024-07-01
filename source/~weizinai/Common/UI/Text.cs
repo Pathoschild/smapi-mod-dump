@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 
-namespace Common.UI;
+namespace weizinai.StardewValleyMod.Common.UI;
 
 public sealed class Text : Element
 {
@@ -26,24 +26,24 @@ public sealed class Text : Element
     {
         this.font = font ?? Game1.dialogueFont;
         this.text = text;
-        LocalPosition = localPosition;
+        this.LocalPosition = localPosition;
         this.color = color ?? Game1.textColor;
         this.scale = scale;
     }
 
-    public override int Width => (int)GetTextSize().X;
-    public override int Height => (int)GetTextSize().Y;
+    public override int Width => (int)this.GetTextSize().X;
+    public override int Height => (int)this.GetTextSize().Y;
 
     public override void Draw(SpriteBatch spriteBatch)
     {
-        if (IsHidden()) return;
+        if (this.IsHidden()) return;
 
 
-        spriteBatch.DrawString(font, text, Position, color, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+        spriteBatch.DrawString(this.font, this.text, this.Position, this.color, 0f, Vector2.Zero, this.scale, SpriteEffects.None, 0f);
     }
 
     private Vector2 GetTextSize()
     {
-        return font.MeasureString(text) * scale;
+        return this.font.MeasureString(this.text) * this.scale;
     }
 }

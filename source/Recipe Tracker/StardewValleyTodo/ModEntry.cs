@@ -22,6 +22,7 @@ using StardewValley.SpecialOrders;
 using StardewValleyTodo.Config;
 using StardewValleyTodo.Controllers;
 using StardewValleyTodo.Game;
+using StardewValleyTodo.Helpers;
 using StardewValleyTodo.Tracker;
 
 namespace StardewValleyTodo {
@@ -51,6 +52,8 @@ namespace StardewValleyTodo {
 
             helper.Events.Player.InventoryChanged += Player_InventoryChanged;
             helper.Events.GameLoop.OneSecondUpdateTicked += GameLoop_OneSecondUpdateTicked;
+
+            GlobalMonitor.Instance = Monitor;
         }
 
         private void Shutdown() {
@@ -91,13 +94,19 @@ namespace StardewValleyTodo {
             try {
                 _inventory = new Inventory(Game1.player.Items);
                 _inventoryTracker = new InventoryTracker();
-                _junimoBundles = new JunimoBundles();
 
                 _craftingMenuController = new CraftingMenuController(_inventoryTracker);
                 _carpenterMenuController = new CarpenterMenuController(_inventoryTracker);
-                _junimoBundleController = new JunimoBundleController(_inventoryTracker, _junimoBundles);
                 _betterCraftingMenuController = new BetterCraftingMenuController(_inventoryTracker);
                 _questLogController = new QuestLogController(_inventoryTracker);
+
+                try {
+                    _junimoBundles = new JunimoBundles();
+                    _junimoBundleController = new JunimoBundleController(_inventoryTracker, _junimoBundles);
+                } catch (Exception exception) {
+                    GlobalMonitor.Instance.Log("Can't load Junimo Bundles", LogLevel.Error);
+                    GlobalMonitor.Instance.Log(exception.ToString(), LogLevel.Error);
+                }
 
                 Game1.player.questLog.OnElementChanged += QuestLogOnOnElementChanged;
                 Game1.player.team.specialOrders.OnElementChanged += SpecialOrdersOnOnElementChanged;

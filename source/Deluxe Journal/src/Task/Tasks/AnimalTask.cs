@@ -8,10 +8,8 @@
 **
 *************************************************/
 
-using StardewModdingAPI;
 using StardewValley;
 using DeluxeJournal.Events;
-using DeluxeJournal.Framework.Task;
 
 using static DeluxeJournal.Task.TaskParameterAttribute;
 
@@ -31,7 +29,7 @@ namespace DeluxeJournal.Task.Tasks
 
             public override bool EnableSmartIconCount => true;
 
-            public override void Initialize(ITask task, ITranslationHelper translation)
+            protected override void InitializeInternal(ITask task)
             {
                 if (task is AnimalTask animalTask)
                 {
@@ -40,7 +38,7 @@ namespace DeluxeJournal.Task.Tasks
                 }
             }
 
-            public override ITask? Create(string name)
+            protected override ITask? CreateInternal(string name)
             {
                 return FarmAnimalTypes != null && FarmAnimalTypes.Count > 0
                     ? new AnimalTask(name, FarmAnimalTypes, Count)

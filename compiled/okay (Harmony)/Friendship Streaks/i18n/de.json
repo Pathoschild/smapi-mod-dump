@@ -1,0 +1,9 @@
+{
+  //Config
+  "Config.Enable_Bonus": "Bonus Aktivieren",
+  "Config.Enable_Bonus_Description": "De- oder aktiviert den Freundschaftspunkten-Multiplikator in Abhängigkeit der Höhe der Strähne",
+
+  //Main
+  "Multiplier": "Multiplikator",
+  "Max": "Max"
+}

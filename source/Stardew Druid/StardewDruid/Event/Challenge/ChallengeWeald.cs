@@ -22,6 +22,11 @@ using xTile.Dimensions;
 using xTile.Layers;
 using xTile.Tiles;
 using System;
+using StardewDruid.Dialogue;
+using System.Xml.Linq;
+using StardewValley.Monsters;
+using static StardewDruid.Data.IconData;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace StardewDruid.Event.Challenge
 {
@@ -40,6 +45,8 @@ namespace StardewDruid.Event.Challenge
 
         public ChallengeWeald()
         {
+
+            activeLimit = 65;
 
             mainEvent = true;
 
@@ -150,11 +157,11 @@ namespace StardewDruid.Event.Challenge
 
             monsterHandle.spawnWater = true;
 
-            expireTime = Game1.currentGameTime.TotalGameTime.TotalSeconds + 65;
-
             eventProximity = 640;
 
-            Mod.instance.CastMessage("Remain on the rite circle to increase trash collection", 2);
+            EventBar("The Polluted Aquifer", 0);
+
+            Mod.instance.CastDisplay("Remain on the rite circle to increase trash collection", 2);
 
             SetTrack("tribal");
 
@@ -302,20 +309,6 @@ namespace StardewDruid.Event.Challenge
 
             }
 
-            if (activeCounter == 30)
-            {
-
-                Mod.instance.CastMessage($"Cleanup is at the halfway point", 2);
-
-            }
-
-            if (activeCounter == 50)
-            {
-
-                Mod.instance.CastMessage($"Cleanup is almost complete", 2);
-
-            }
-
             if (activeCounter == 20)
             {
 
@@ -362,8 +355,16 @@ namespace StardewDruid.Event.Challenge
 
                         bossMonster.netPosturing.Set(false);
 
-                        bossMonster.focusedOnFarmers = true; 
-                        
+                        bossMonster.focusedOnFarmers = true;
+
+                        EventDisplay bar = Mod.instance.CastDisplay(narrators[0], narrators[0]);
+
+                        bar.boss = bossMonster;
+
+                        bar.type = EventDisplay.displayTypes.bar;
+
+                        bar.colour = Microsoft.Xna.Framework.Color.Red;
+
                         break;
 
                     case 56:
@@ -381,6 +382,12 @@ namespace StardewDruid.Event.Challenge
                         rockSpell.scheme = IconData.schemes.rock;
 
                         rockSpell.sound = SpellHandle.sounds.explosion;
+
+                        rockSpell.missile = missiles.rockfall;
+
+                        rockSpell.terrain = 3;
+
+                        rockSpell.added = new() { SpellHandle.effects.stone, };
 
                         Mod.instance.spellRegister.Add(rockSpell);
 
@@ -404,30 +411,10 @@ namespace StardewDruid.Event.Challenge
 
             if(activeCounter == 60)
             {
-                expireEarly = true;
 
-                int friendship = trashCollected * 15;
-
-                Mod.instance.CastMessage($"Collected {trashCollected} pieces of trash, gained " + friendship + " friendship with mountain residents", 2);
-
-                VillagerData.CommunityFriendship("mountain", friendship);
-
-                Mod.instance.questHandle.CompleteQuest(eventId);
-
-                ThrowRelic();
+                eventComplete = true;
 
             }
-
-        }
-
-        public void ThrowRelic()
-        {
-
-            ThrowHandle throwRelic = new(Game1.player, relicPosition, IconData.relics.minister_mitre);
-
-            throwRelic.register();
-
-            Mod.instance.relicsData.ReliquaryUpdate(IconData.relics.minister_mitre.ToString());
 
         }
 
@@ -499,6 +486,26 @@ namespace StardewDruid.Event.Challenge
 
         }
 
+        public override void EventCompleted()
+        {
+
+            int friendship = 100;
+            
+            friendship += trashCollected * 8;
+
+            Mod.instance.CastDisplay($"Collected {trashCollected} pieces of trash, gained " + friendship + " friendship with mountain residents", 2);
+
+            VillagerData.CommunityFriendship("mountain", friendship);
+
+            ThrowHandle throwRelic = new(Game1.player, relicPosition, IconData.relics.runestones_spring);
+
+            throwRelic.register();
+
+            Mod.instance.relicsData.ReliquaryUpdate(IconData.relics.runestones_spring.ToString());
+
+            Mod.instance.questHandle.CompleteQuest(eventId);
+
+        }
 
     }
 

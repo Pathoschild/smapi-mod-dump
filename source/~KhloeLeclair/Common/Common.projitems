@@ -24,6 +24,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\TypeExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)GlobalUsing.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Inventory\BuildingProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MultipleEventedInventoryExclusiveRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ReflectionHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)serialization\AbstractConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Serialization\Converters\DiscriminatingConverter.cs" />

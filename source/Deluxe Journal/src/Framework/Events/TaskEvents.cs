@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Buildings;
@@ -117,7 +118,7 @@ namespace DeluxeJournal.Framework.Events
 
         private void OnBuildingListChanged(object? sender, BuildingListChangedEventArgs e)
         {
-            if (DeluxeJournalMod.IsMainScreen)
+            if (Context.IsMainPlayer)
             {
                 foreach (Building building in e.Added)
                 {

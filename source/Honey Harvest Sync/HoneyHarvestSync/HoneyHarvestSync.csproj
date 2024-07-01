@@ -1,8 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Version>2.0.1</Version>
+    <Version>3.0.0</Version>
     <Description>Ready-for-harvest bee houses show the flower that will flavor its honey or the artisan honey you'll receive.</Description>
     <UniqueId>voltaek.HoneyHarvestSync</UniqueId>
     <UpdateKeys>Nexus:20493</UpdateKeys>
   </PropertyGroup>
+  <!--
+    NOTE - If a Nuget package update tries to put a 'PackageReference' line for any of the ones in the 'Directory.Build.props' file,
+    then remove it and change the version number over in that file to match the new version number.
+  -->
 </Project>

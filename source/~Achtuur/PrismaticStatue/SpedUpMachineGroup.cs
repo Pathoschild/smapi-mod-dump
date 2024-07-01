@@ -104,7 +104,7 @@ internal class SpedUpMachineGroup
 
         foreach (GenericSpedUpMachineWrapper machine in this.Machines)
         {
-            machine.OnNStautesChange(new_n_statues);
+            machine.OnNStatuesChange(new_n_statues);
         }
 
         this.n_statues = new_n_statues;

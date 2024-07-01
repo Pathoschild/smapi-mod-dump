@@ -279,6 +279,13 @@ namespace FarmTypeManager
                     if (settings["InstantKillImmunity"] is bool instantKillImmunity && instantKillImmunity == true) //if this setting is true
                         monster.modData[Utility.ModDataKeys.InstantKillImmunity] = "true"; //flag this in the monster's mod data
                 }
+
+                //set stun immunity
+                if (settings.ContainsKey("StunImmunity"))
+                {
+                    if (settings["StunImmunity"] is bool stunImmunity && stunImmunity == true) //if this setting is true
+                        monster.modData[Utility.ModDataKeys.StunImmunity] = "true"; //flag this in the monster's mod data
+                }
             }
         }
     }

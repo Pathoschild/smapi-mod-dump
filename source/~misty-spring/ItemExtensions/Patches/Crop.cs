@@ -9,7 +9,6 @@
 *************************************************/
 
 using System.Text;
-using HarmonyLib;
 using ItemExtensions.Additions;
 using ItemExtensions.Models.Contained;
 using StardewModdingAPI;
@@ -19,7 +18,7 @@ using StardewValley.Locations;
 
 namespace ItemExtensions.Patches;
 
-internal class CropPatches
+internal static class CropPatches
 {
 #if DEBUG
     private const LogLevel Level = LogLevel.Debug;
@@ -28,68 +27,70 @@ internal class CropPatches
 #endif
 
     internal static string Cached { get; set; }
+    internal static bool Chosen { get; set; }
     
     private static void Log(string msg, LogLevel lv = Level) => ModEntry.Mon.Log(msg, lv);
 
     internal static bool HasCropsAnytime { get; set; }
-    internal static void Apply(Harmony harmony)
+    
+    public static string ResolveSeedId(string itemId, GameLocation location)
     {
-        Log($"Applying Harmony patch \"{nameof(CropPatches)}\": prefixing SDV constructor \"Crop(string, int, int, GameLocation)\".");
-        
-        harmony.Patch(
-            original: AccessTools.Constructor(typeof(Crop), new[] {typeof(string), typeof(int), typeof(int), typeof(GameLocation)}),
-            prefix: new HarmonyMethod(typeof(CropPatches), nameof(Pre_Constructor))
-        );
-    }
+#if DEBUG
+        Log($"Checking {itemId} data", LogLevel.Warn);
+#endif
+        if (string.IsNullOrWhiteSpace(itemId))
+            return itemId;
 
-    internal static void Pre_Constructor (Crop __instance, ref string seedId, int tileX, int tileY, GameLocation location)
-    {
-        if (string.IsNullOrWhiteSpace(seedId))
-            return;
-
-        if (string.IsNullOrWhiteSpace(Cached) == false)
+        if (Chosen)
         {
-            seedId = Cached;
-            return;
+#if DEBUG
+            Log("Returning cached seed...");
+#endif
+            return Cached;
         }
         
-        Log($"Checking seed {seedId}...");
+        Log($"Checking seed {itemId}...");
         
         try
         {
             //if there's mod data
-            if (ModEntry.Seeds.TryGetValue(seedId, out var mixedSeeds))
+            if (ModEntry.Seeds.TryGetValue(itemId, out var mixedSeeds))
             {
                 //get seed and return
-                var chosen = GetFromFramework(seedId, mixedSeeds, location);
+                var chosen = GetFromFramework(itemId, mixedSeeds, location);
                 Log($"Choosing seed {chosen}");
                 Cached = chosen;
-                seedId = chosen;
-                return;
+                Chosen = true;
+                return chosen;
             }
 
 #if DEBUG
-            Log($"No data in ModSeeds for {seedId}, checking object's custom fields");
+            Log($"No data in ModSeeds for {itemId}, checking object's custom fields");
 #endif
-            if (Game1.objectData.TryGetValue(seedId, out var objectData) == false || objectData.CustomFields is null)
-                return;
+            if (Game1.objectData.TryGetValue(itemId, out var objectData) == false || objectData.CustomFields is null)
+                return itemId;
             
             if (objectData.CustomFields.Any() == false || objectData.CustomFields.TryGetValue(ModKeys.MixedSeeds, out var seeds) == false)
             {
                 Log("Found no mixed seeds in custom fields. Using original seed");
-                return;
+                return itemId;
             }
 
-            var fromField = RandomFromCustomFields(seedId, seeds, location);
+            var fromField = RandomFromCustomFields(itemId, seeds, location);
 
             Log($"Choosing seed {fromField}");
             Cached = fromField;
-            seedId = fromField;
+            Chosen = true;
+
+            return fromField;
         }
         catch (Exception e)
         {
             Log($"Error: {e}", LogLevel.Error);
         }
+
+        Chosen = false;
+        return itemId;
     }
 
     private static string GetFromFramework(string seedId, List<MixedSeedData> mixedSeeds, GameLocation location)
@@ -282,6 +283,9 @@ internal class CropPatches
         if (Game1.objectData.TryGetValue(itemId, out var objData) == false)
             return 0;
 
+        if (Game1.cropData.TryGetValue(itemId, out _) == false)
+            return 0;
+
         var fields = objData.CustomFields;
         
         // if empty, return "once"
@@ -289,7 +293,7 @@ internal class CropPatches
             return 1;
         
         // if there's any custom fields
-        if (fields is not null && fields.Any())
+        if (fields.Any())
         {
             // if it has specific count
             if (fields.TryGetValue(ModKeys.AddMainSeed, out var timesToAdd))

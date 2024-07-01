@@ -28,7 +28,7 @@ for queries and analysis.**
 | `de` \| Deutsch   | [✔️](LetsMoveIt/i18n/de.json)      |
 | `en` \| Englich   | [✔️](LetsMoveIt/i18n/default.json) |
 | `es` \| Español   | [❌](LetsMoveIt/i18n)              |
-| `fr` \| Français  | [❌](LetsMoveIt/i18n)              |
+| `fr` \| Français  | [✔️](LetsMoveIt/i18n/fr.json)      |
 | `hu` \| Magyar    | [❌](LetsMoveIt/i18n)              |
 | `it` \| Italiano  | [❌](LetsMoveIt/i18n)              |
 | `ja` \| 日本語     | [❌](LetsMoveIt/i18n)              |

@@ -24,11 +24,15 @@ namespace Pathoschild.Stardew.CropsAnytimeAnywhere.Framework
         /// <summary>A lookup cache of configurations by location key.</summary>
         private readonly Dictionary<string, PerLocationConfig?> ConfigCache = new();
 
-        /// <summary>The underlying mod configuration.</summary>
-        private readonly ModConfig Config;
-
         /// <summary>Whether there's only one location config defined and it's for the <c>*</c> key.</summary>
-        private readonly bool OnlyHasGlobal;
+        private bool OnlyHasGlobal;
+
+
+        /*********
+        ** Accessors
+        *********/
+        /// <summary>The underlying mod configuration.</summary>
+        public ModConfig Config { get; private set; }
 
 
         /*********
@@ -38,8 +42,17 @@ namespace Pathoschild.Stardew.CropsAnytimeAnywhere.Framework
         /// <param name="config">The underlying mod configuration.</param>
         public LocationConfigManager(ModConfig config)
         {
+            this.UpdateConfig(config);
+        }
+
+        /// <summary>Update the data when the config changes.</summary>
+        /// <param name="config">The new config to apply.</param>
+        [MemberNotNull(nameof(Config))]
+        public void UpdateConfig(ModConfig config)
+        {
             this.Config = config;
             this.OnlyHasGlobal = config.Locations.Count == 1 && config.Locations.Keys.Single() == "*";
+            this.ConfigCache.Clear();
         }
 
         /// <summary>Whether any of the locations override tile tillability.</summary>

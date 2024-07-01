@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/itsbenter/ResourcefulFriends
+   Git: https://github.com/itsbenter/ResourcefulFriends.git
+
+mods:
+   Resourceful Friends
+
+latest commit:
+   commit 11b5c5ba1307af5b8ea7b6c96752ac60ce7c9146
+   Author: ItsBenter <benjevon@gmail.com>
+   Date:   Fri May 24 23:25:32 2024 +0900
+   
+       Merge branch 'main' of https://github.com/itsbenter/ResourcefulFriends
+   

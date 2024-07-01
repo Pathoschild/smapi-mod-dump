@@ -6,9 +6,10 @@ mods:
    Train Info
 
 latest commit:
-   commit 18598f57b0b268acf66a7f6f4f0bef9f3c8e97e8
+   commit d7e89d8dfc23d19c24c187f1dca8761ad2b52da0
    Author: BinaryLip <dev@philliploveland.dev>
-   Date:   Sat Apr 6 00:04:36 2024 -0400
+   Date:   Wed Jun 12 18:29:53 2024 -0400
    
-       Added Nexus update key
+       Added German translation. (Thanks Th3Tob1!)
+       Added French translation. (Thanks Caranud!)
    

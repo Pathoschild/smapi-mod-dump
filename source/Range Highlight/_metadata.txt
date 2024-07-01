@@ -6,27 +6,13 @@ mods:
    Range Highlight
 
 latest commit:
-   commit 34712afe9c4faec297a0f3fc303684527fa31869
+   commit 69ee3a9da45206b2a80c855961fe97c8a6d3cfbb
    Author: Jamie Taylor <Jamie.Taylor@pobox.com>
-   Date:   Sat May 18 23:12:29 2024 -0400
+   Date:   Sat Jun 8 12:54:01 2024 -0400
    
-       v4.2.0: new options: coalesing overlaps, sprinkler range, hide on motion
+       update bomb stuff for 1.6, update .zh translation, release 4.2.1
        
-       * Added "Sprinkler Mod Compatibility" option.  The default ("more
-         compatible") changes the way that sprinkler ranges are calculated so
-         that it is likely that it will automatically be correct even if mods
-         have changed the shape of sprinkler ranges (on either the existing
-         sprinkler objects or new ones added by the mod).  This is a more
-         expensive calculation, so there is an option to revert to the old
-         behavior ("faster").
-       
-       * Added the "show overlaps" option (defaulting to true).  If this is
-         disabled then overlapping range tiles of the same color will be
-         converted into just one highlight tile of that color.  This is a
-         relatively expensive operation; disabling this option may result in
-         decreased performance and lag.
-       
-       * Added an option to hide the held item's highlight at the mouse location
-         if the player has moved more recently than the mouse has moved.
-         (Defaults to true)
+       SDV 1.6 fixes the holes in the megabomb range and changes the "terrain
+       feature" (e.g., flooring, crops) damage to be the middle radius rather
+       than the outer radius.
    

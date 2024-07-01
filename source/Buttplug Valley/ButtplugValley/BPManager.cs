@@ -11,8 +11,10 @@
 using Buttplug.Client;
 using Buttplug.Client.Connectors.WebsocketConnector;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
@@ -25,6 +27,11 @@ namespace ButtplugValley
         private ModEntry _modEntry;
         private string _intifaceIP;
         private IMonitor monitor;
+        public ModConfig config;
+        
+        private Queue<Task> vibrationQueue = new Queue<Task>();
+                private SemaphoreSlim semaphore = new SemaphoreSlim(1, 1);
+
 
         public async Task ScanForDevices()
         {
@@ -75,6 +82,7 @@ namespace ButtplugValley
                 monitor.Log("Buttplug not connected, skipping", LogLevel.Debug);
                 return;
             }
+            vibrationQueue.Clear();
             monitor.Log("Disconnecting Buttplug Client", LogLevel.Info);
             // Disconnect from the buttplug.io server
             await client.DisconnectAsync();
@@ -135,6 +143,13 @@ namespace ButtplugValley
         //Short Vibration pulse. Intensity from 1-100
         public async Task VibrateDevicePulse(float level)
         {
+            if (vibrationQueue.Count >= config.QueueLength)
+            {
+                monitor.Log("Vibration queue is full, skipping", LogLevel.Debug);
+                
+                // return;
+            }
+            
             await VibrateDevicePulse(level, 400);
         }
 
@@ -146,11 +161,46 @@ namespace ButtplugValley
                 return;
             }
             
+            // Check if the queue has reached its limit.
+            if (vibrationQueue.Count >= config.QueueLength)
+            {
+                monitor.Log("Vibration queue is full, skipping", LogLevel.Trace);
+                return;
+            }
+
             float intensity = MathHelper.Clamp(level, 0f, 100f);
             monitor.Log($"VibrateDevicePulse {intensity}", LogLevel.Trace);
+
+            // Create a new task that performs the vibration and add it to the queue
+            vibrationQueue.Enqueue(VibrateDeviceWithDuration(intensity, duration));
+
+            // If the semaphore is not already locked, start a new task that processes the queue
+            if (semaphore.CurrentCount > 0)
+            {
+                _ = Task.Run(async () =>
+                {
+                    await semaphore.WaitAsync();
+                    
+                    while (vibrationQueue.Count > 0)
+                    {
+                        var task = vibrationQueue.Dequeue();
+                        await task;
+                        
+                        if (vibrationQueue.Count == 0)
+                        {
+                            await VibrateDevice(0);
+                        }
+                    }
+
+                    semaphore.Release();
+                });
+            }
+        }
+
+        private async Task VibrateDeviceWithDuration(float intensity, int duration)
+        {
             await VibrateDevice(intensity);
             await Task.Delay(duration);
-            await VibrateDevice(0);
         }
 
         public async Task StopDevices()
@@ -158,7 +208,7 @@ namespace ButtplugValley
             // Once Buttplug C# v3.0.1 is out, just use this line.
             // 
             // await client.StopAllDevicesAsync();
-
+            vibrationQueue.Clear();
             await VibrateDevice(0);
         }
     }

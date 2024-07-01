@@ -45,6 +45,8 @@
 
   "Note.ShakeWalnutBushes": "Essas nozes devem ser conteúdo de fim de jogo e difíceis de encontrar. Ativar essa opção banaliza esse conteúdo até certo ponto.",
 
+  "Option.ElevateDebugLogs.Name": "Elevate Debug Logs", // TODO
+  "Option.ElevateDebugLogs.Tooltip": "Whether or not debug logging should be elevated to the SMAPI console", // TODO
   "Option.FruitsReadyToShake.Name": "Frutas Mínimas Prontas para Agitar",
   "Option.FruitsReadyToShake.Tooltip": "Quantidade mínima de frutas que uma árvore frutífera deve ter pronta antes que o AutoForager agite a árvore.",
   "Option.IgnoreMushroomLogTrees.Name": "Skip Moss-Covered Trees near{{whitespace}}Mushroom Logs?", // TODO
@@ -83,9 +85,11 @@
   "Reward.TappedTree": "Tree Byproducts", // TODO
   "Reward.TeaLeaves": "Folhas de Chá",
 
+  "Section.Advanced.Text": "Advanced", // TODO
   "Section.Bushes.Text": "Alterrâncias de Bush",
   "Section.FruitTrees.Text": "Alternâncias de árvores frutíferas",
   "Section.General.Text": "Opções Gerais",
+  "Section.TogglePages.Text": "Categorized Toggles", // TODO
   "Section.WildTree.Text": "Alternâncias de Árvore Selvagem",
 
   "State.Activated": "ATIVADO",

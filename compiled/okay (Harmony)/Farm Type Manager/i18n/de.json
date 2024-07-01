@@ -1,0 +1,12 @@
+{
+  "Config.EnableConsoleCommands.Name": "Konsolenbefehle aktivieren",
+  "Config.EnableConsoleCommands.Desc": "Aktiviert die Konsolenbefehle von FTM.\nDies wird erst wirksam, wenn Stardew Valley neu gestartet wird.",
+  "Config.EnableContentPacks.Name": "Inhaltspakete aktivieren",
+  "Config.EnableContentPacks.Desc": "Aktiviert alle FTM-Inhaltspakete.\nWenn dies deaktiviert ist, werden nur die Dateien in FarmTypeManager/data verwendet.",
+  "Config.EnableTraceLogMessages.Name": "Trace-Log-Meldungen aktivieren",
+  "Config.EnableTraceLogMessages.Desc": "Aktiviert FTMs [TRACE]-Meldungen in den SMAPI-Protokolldateien.\nWenn dies deaktiviert ist, sind die Protokolldateien kleiner, bieten aber weniger Informationen über FTM.",
+  "Config.EnableEPUDebugMessages.Name": "EPU-Debugmeldungen aktivieren",
+  "Config.EnableEPUDebugMessages.Desc": "Aktiviert Debug-Meldungen des Expanded Preconditions Utility (EPU). \nDies kann beim Erstellen von Mods mit Vorbedingungen hilfreich sein.",
+  "Config.MonsterLimitPerLocation.Name": "Monsterlimit pro Standort",
+  "Config.MonsterLimitPerLocation.Desc": "Die maximale Anzahl an Monstern, die FTM gleichzeitig auf einer Karte zulässt.\nDie Verwendung einer niedrigeren Zahl kann die Bildrate des Spiels verbessern. 50 ist ein allgemeiner Vorschlag.\nGeben Sie NULL ein, um eine unbegrenzte Anzahl an Monstern zuzulassen."
+}

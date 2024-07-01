@@ -54,16 +54,21 @@ namespace Unlockable_Bundles.Lib
         {
             foreach (var loc in Game1.locations)
                 foreach (var building in loc.buildings.Where(el => el.isUnderConstruction() && el.indoors.Value is not null))
-                    if(!ShopPlacement.ModifiedLocations.Contains(building.indoors.Value))
+                    if (!ShopPlacement.ModifiedLocations.Contains(building.indoors.Value))
                         ShopPlacement.ModifiedLocations.Add(building.indoors.Value);
 
 
-            foreach (var loc in ShopPlacement.ModifiedLocations)
+            foreach (var modifiedLocation in ShopPlacement.ModifiedLocations) {
+                var loc = Game1.getLocationFromName(modifiedLocation.NameOrUniqueName, modifiedLocation.isStructure.Value);
+
+                if (loc is null)
+                    continue;
+
                 foreach (ShopObject obj in loc.Objects.Values.Where(el => el is ShopObject)) {
                     Monitor.Log($"Removing Bundle for '{obj.Unlockable.ID}' at '{loc.NameOrUniqueName}':'{obj.TileLocation}'", DebugLogLevel);
                     loc.removeObject(obj.TileLocation, false);
                 }
-                    
+            }
 
         }
     }

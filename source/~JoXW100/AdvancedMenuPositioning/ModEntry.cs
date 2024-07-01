@@ -11,11 +11,9 @@
 using Force.DeepCloner;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
-using StardewValley.Objects;
 using System;
 using System.Reflection;
 using System.Collections.Generic;
@@ -81,7 +79,10 @@ namespace AdvancedMenuPositioning
         private void Display_RenderedWorld(object sender, StardewModdingAPI.Events.RenderedWorldEventArgs e)
         {
             if (!Context.IsWorldReady)
+            {
                 return;
+            }
+
             if (detachedMenus.Any())
             {
                 var back = Game1.options.showMenuBackground;
@@ -89,8 +90,7 @@ namespace AdvancedMenuPositioning
                 foreach (var m in detachedMenus)
                 {
                     var f = AccessTools.Field(m.GetType(), "drawBG");
-                    if (f != null)
-                        f.SetValue(m, false);
+                    f?.SetValue(m, false);
                     m.draw(e.SpriteBatch);
                 }
                 Game1.options.showMenuBackground = back;
@@ -100,7 +100,10 @@ namespace AdvancedMenuPositioning
         private void Input_ButtonPressed(object sender, StardewModdingAPI.Events.ButtonPressedEventArgs e)
         {
             if (!Context.IsWorldReady || !Config.EnableMod)
+            {
                 return;
+            }
+
             if (Game1.activeClickableMenu != null && isKeybindPressed(Config.DetachKeys.Keybinds[0].Buttons) && new Rectangle(Game1.activeClickableMenu.xPositionOnScreen, Game1.activeClickableMenu.yPositionOnScreen, Game1.activeClickableMenu.width, Game1.activeClickableMenu.height).Contains(Game1.getMouseX(), Game1.getMouseY()))
             {
                 detachedMenus.Add(Game1.activeClickableMenu);
@@ -112,7 +115,10 @@ namespace AdvancedMenuPositioning
             else if(detachedMenus.Count > 0)
             {
                 if (isKeybindPressed(Config.MoveKeys.Keybinds[0].Buttons))
+                {
                     return;
+                }
+
                 if (isKeybindPressed(Config.CloseKeys.Keybinds[0].Buttons))
                 {
                     for (int i = detachedMenus.Count - 1; i >= 0; i--)
@@ -271,7 +277,10 @@ namespace AdvancedMenuPositioning
         private void GameLoop_UpdateTicking_MoveMenus(object sender, StardewModdingAPI.Events.UpdateTickingEventArgs e)
         {
             if (!Context.IsWorldReady || !Config.EnableMod)
+            {
                 return;
+            }
+
             if(isKeybindPressed(Config.MoveKeys.Keybinds[0].Buttons))
             {
                 if(Game1.activeClickableMenu != null)
@@ -291,7 +300,10 @@ namespace AdvancedMenuPositioning
                 for (int i = Game1.onScreenMenus.Count - 1; i >= 0; i--)
                 {
                     if (Game1.onScreenMenus[i] is null)
+                    {
                         continue;
+                    }
+
                     if (currentlyDragging == Game1.onScreenMenus[i] || currentlyDragging is null && Game1.onScreenMenus[i].isWithinBounds(Game1.getMouseX(), Game1.getMouseY()))
                     {
                         currentlyDragging = Game1.onScreenMenus[i];
@@ -306,7 +318,10 @@ namespace AdvancedMenuPositioning
                 for (int i = detachedMenus.Count - 1; i >= 0; i--)
                 {
                     if (detachedMenus[i] is null)
+                    {
                         continue;
+                    }
+
                     if (currentlyDragging == detachedMenus[i] || currentlyDragging is null && detachedMenus[i].isWithinBounds(Game1.getMouseX(), Game1.getMouseY()))
                     {
                         currentlyDragging = detachedMenus[i];

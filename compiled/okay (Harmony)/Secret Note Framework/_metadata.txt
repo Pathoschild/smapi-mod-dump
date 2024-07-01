@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/25055
+IDs: ichortower.SecretNoteFramework
+update keys: Nexus:25055, GitHub:ichortower/SecretNoteFramework

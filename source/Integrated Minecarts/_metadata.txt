@@ -6,9 +6,9 @@ mods:
    Integrated Minecarts
 
 latest commit:
-   commit 5edba422fa0bc44ea0f3f223edf1d7cbd09384c3
+   commit 58bf50d594cc41ee8619a8852e307729443e4c37
    Author: Jibb <103417406+Jibblestein@users.noreply.github.com>
-   Date:   Wed May 29 11:23:20 2024 +0800
+   Date:   Sun Jun 30 23:41:17 2024 +0800
    
-       v4.3.1
+       Delete Integrated Minecarts/[CP] Integrated Minecarts/i18n/br.json
    

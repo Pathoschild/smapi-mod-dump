@@ -20,6 +20,7 @@ using StardewValley.Inventories;
 using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
+using Common.Integrations;
 using Object = StardewValley.Object;
 
 namespace ResourceStorage
@@ -27,7 +28,6 @@ namespace ResourceStorage
     /// <summary>The mod entry point.</summary>
     public partial class ModEntry : Mod
     {
-
         public static IMonitor SMonitor;
         public static IModHelper SHelper;
         public static ModConfig Config;
@@ -35,6 +35,8 @@ namespace ResourceStorage
         public static ModEntry context;
         public static string dictKey = "aedenthorn.ResourceStorage/dictionary"; // Not updating to FlyingTNT.ResourceStorage for backwards compatibility
         public static Dictionary<long, Dictionary<string, long>> resourceDict = new();
+
+        public const string sharedDictionaryKey = "FlyingTNT.ResourceStorage/sharedDictionary";
 
         public static PerScreen<GameMenu> gameMenu = new PerScreen<GameMenu>();
         public static PerScreen<ClickableTextureComponent> resourceButton = new PerScreen<ClickableTextureComponent>();
@@ -56,6 +58,8 @@ namespace ResourceStorage
             Helper.Events.GameLoop.ReturnedToTitle += GameLoop_ReturnedToTitle;
             Helper.Events.GameLoop.SaveLoaded += GameLoop_SaveLoaded;
             Helper.Events.GameLoop.Saving += GameLoop_Saving;
+
+            SharedResourceManager.Initialize(Monitor, helper, Config, ModManifest);
 
             harmony = new Harmony(ModManifest.UniqueID);
 
@@ -105,13 +109,6 @@ namespace ResourceStorage
             harmony.Patch(
                 original: AccessTools.Method(typeof(Farmer), nameof(Farmer.couldInventoryAcceptThisItem), new Type[] { typeof(string), typeof(int), typeof(int) }),
                 postfix: new HarmonyMethod(typeof(ModEntry), nameof(Farmer_couldInventoryAcceptThisItem2_Postfix))
-            );
-            #endregion
-
-            #region OBJECT_PATCHES
-            harmony.Patch(
-                original: AccessTools.Method(typeof(Object), nameof(Object.ConsumeInventoryItem), new Type[] { typeof(Farmer), typeof(Item), typeof(int) }),
-                prefix: new HarmonyMethod(typeof(ModEntry), nameof(Object_ConsumeInventoryItem_Prefix))
             );
             #endregion
 
@@ -232,7 +229,15 @@ namespace ResourceStorage
                     getValue: () => Config.ShowMessage,
                     setValue: value => Config.ShowMessage = value
                 );
-                
+
+                configMenu.AddBoolOption(
+                    mod: ModManifest,
+                    name: () => SHelper.Translation.Get("GMCM_UseSharedResources_Name"),
+                    getValue: () => SharedResourceManager.UseSharedResources.Value,
+                    setValue: value => SharedResourceManager.ChangeShouldUseShared(value)
+                );
+
+                // KEYBINDS
                 configMenu.AddKeybind(
                     mod: ModManifest,
                     name: () => SHelper.Translation.Get("GMCM_Option_ResourcesKey_Name"),
@@ -267,7 +272,6 @@ namespace ResourceStorage
                     setValue: value => Config.ModKey2Amount = value
                 );
 
-
                 configMenu.AddKeybind(
                     mod: ModManifest,
                     name: () => SHelper.Translation.Get("GMCM_Option_ModKey3_Name"),
@@ -281,6 +285,7 @@ namespace ResourceStorage
                     setValue: value => Config.ModKey3Amount = value
                 );
 
+                // ICON POSITIONS
                 configMenu.AddNumberOption(
                     mod: ModManifest,
                     name: () => SHelper.Translation.Get("GMCM_Option_IconOffsetX_Name"),
@@ -295,6 +300,33 @@ namespace ResourceStorage
                     setValue: value => Config.IconOffsetY = value
                 );
 
+                configMenu.AddNumberOption(
+                    mod: ModManifest,
+                    name: () => SHelper.Translation.Get("GMCM_Option_SearchBarOffsetX_Name"),
+                    getValue: () => Config.SearchBarOffsetX,
+                    setValue: value => Config.SearchBarOffsetX = value
+                );
+
+                configMenu.AddNumberOption(
+                    mod: ModManifest,
+                    name: () => SHelper.Translation.Get("GMCM_Option_SearchBarOffsetY_Name"),
+                    getValue: () => Config.SearchBarOffsetY,
+                    setValue: value => Config.SearchBarOffsetY = value
+                );
+
+                configMenu.AddNumberOption(
+                    mod: ModManifest,
+                    name: () => SHelper.Translation.Get("GMCM_Option_SortButtonOffsetX_Name"),
+                    getValue: () => Config.SortButtonOffsetX,
+                    setValue: value => Config.SortButtonOffsetX = value
+                );
+
+                configMenu.AddNumberOption(
+                    mod: ModManifest,
+                    name: () => SHelper.Translation.Get("GMCM_Option_SortButtonOffsetY_Name"),
+                    getValue: () => Config.SortButtonOffsetY,
+                    setValue: value => Config.SortButtonOffsetY = value
+                );
             }
         }
     }

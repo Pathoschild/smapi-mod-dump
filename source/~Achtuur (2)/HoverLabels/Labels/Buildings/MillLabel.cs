@@ -9,7 +9,7 @@
 *************************************************/
 
 using AchtuurCore.Extensions;
-using HoverLabels.Drawing;
+using AchtuurCore.Framework.Borders;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Buildings;
@@ -82,7 +82,7 @@ internal class MillLabel : BuildingLabel
     
         foreach (Item item in orderedItems)
         {
-            ItemLabelText itemlabel = new(item);
+            ItemLabel itemlabel = new(item);
             AppendLabelToBorder(itemlabel);
         }
     }

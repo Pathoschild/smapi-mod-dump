@@ -30,10 +30,10 @@ namespace Pathoschild.Stardew.Automate.Framework.Machines
         private BuildingData Data;
 
         /// <summary>The output chest IDs.</summary>
-        private readonly HashSet<string> OutputChests = new();
+        private readonly HashSet<string> OutputChests = [];
 
         /// <summary>The input chest IDs.</summary>
-        private readonly HashSet<string> InputChests = new();
+        private readonly HashSet<string> InputChests = [];
 
 
         /*********

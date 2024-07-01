@@ -8,11 +8,13 @@
 **
 *************************************************/
 
+using StardewModdingAPI.Utilities;
+
 namespace DeluxeJournal.Framework
 {
     internal class Config
     {
-        /// <summary>Enable to push renewed tasks to the top of the task list instead of the bottom.</summary>
+        /// <summary>Enable to push renewed tasks to the top of the task group instead of the bottom.</summary>
         public bool PushRenewedTasksToTheTop { get; set; } = false;
 
         /// <summary>Enable to have the "Smart Add" button be the default when creating a task (if applicable).</summary>
@@ -29,5 +31,25 @@ namespace DeluxeJournal.Framework
 
         /// <summary>Toggle between "Net Wealth" and "Total Amount to Pay/Gain" display modes.</summary>
         public bool MoneyViewNetWealth { get; set; } = false;
+
+        /// <summary>Keybind for toggling the visibility of overlays.</summary>
+        public KeybindList ToggleOverlaysKeybind { get; set; } = KeybindList.Parse("O");
+
+        /// <summary>Overlay background color hex code (alpha normalized RGB values for blending).</summary>
+        public string OverlayBackgroundColor { get; set; } = "00000040";
+
+        /// <summary>The name of the color schema file to load from "assets/data/colors/". Uses the default loading rules if empty.</summary>
+        public string TargetColorSchemaFile { get; set; } = string.Empty;
+
+        /// <summary>Save data to the mod configuration file.</summary>
+        public void Save()
+        {
+            if (DeluxeJournalMod.Instance is not DeluxeJournalMod mod)
+            {
+                throw new InvalidOperationException("Attempted to save config before mod entry.");
+            }
+
+            mod.Helper.WriteConfig(this);
+        }
     }
 }

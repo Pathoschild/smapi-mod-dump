@@ -152,7 +152,7 @@
     "config.harvest-giant-crops.tooltip": "S'il faut détruire les cultures géantes",
 
     "config.harvest-crops.name": "Récolte des cultures",
-    "config.Harvest Crops.tooltip": "S'il faut récolter les cultures.",
+    "config.harvest-crops.tooltip": "S'il faut récolter les cultures.",
 
     "config.harvest-flowers.name": "Récolte des fleurs",
     "config.harvest-flowers.tooltip": "S'il faut récolter les fleurs.",
@@ -223,8 +223,8 @@
     /****
     ** Melee
     ****/
-    "config.Attack-monsters.name": "Attaquer les monstres",
-    "config.Attack-monsters.tooltip": "Si vous voulez attaquer les monstres. (Ceci est surpuissant en raison de la vitesse de l'outil tracteur).",
+    "config.attack-monsters.name": "Attaquer les monstres",
+    "config.attack-monsters.tooltip": "Si vous voulez attaquer les monstres. (Ceci est surpuissant en raison de la vitesse de l'outil tracteur).",
 
 
     /****

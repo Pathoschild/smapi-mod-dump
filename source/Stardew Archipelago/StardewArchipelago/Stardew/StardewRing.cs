@@ -17,8 +17,8 @@ namespace StardewArchipelago.Stardew
 {
     public class StardewRing : StardewObject
     {
-        public StardewRing(int id, string name, int sellPrice, int edibility, string type, string category, string displayName, string description, string misc1 = "", string misc2 = "", string buffDuration = "")
-        : base(id, name, sellPrice, edibility, type, category, displayName, description, misc1, misc2, buffDuration)
+        public StardewRing(string id, string name, int sellPrice, int edibility, string type, int category, string displayName, string description, string misc1 = "", string misc2 = "", string buffDuration = "")
+            : base(id, name, sellPrice, edibility, type, category, displayName, description, misc1, misc2, buffDuration)
         {
         }
 

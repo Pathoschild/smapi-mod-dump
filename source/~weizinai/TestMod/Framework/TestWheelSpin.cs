@@ -11,7 +11,7 @@
 using StardewValley;
 using StardewValley.Extensions;
 
-namespace TestMod.Framework;
+namespace weizinai.StardewValleyMod.TestMod.Framework;
 
 public class TestWheelSpin
 {
@@ -29,47 +29,47 @@ public class TestWheelSpin
     public TestWheelSpin(int total)
     {
         this.total = total;
-        arrowRotationDeceleration = -0.0006283185307179586;
+        this.arrowRotationDeceleration = -0.0006283185307179586;
     }
 
     public void Update()
     {
-        for (int i = 0; i < total; i++)
+        for (int i = 0; i < this.total; i++)
         {
-            arrowRotation = 0;
-            arrowRotationVelocity = Math.PI / 16.0;
-            arrowRotationVelocity += Game1.random.Next(0, 15) * Math.PI / 256.0;
+            this.arrowRotation = 0;
+            this.arrowRotationVelocity = Math.PI / 16.0;
+            this.arrowRotationVelocity += Game1.random.Next(0, 15) * Math.PI / 256.0;
             if (Game1.random.NextBool())
             {
-                arrowRotationVelocity += Math.PI / 64.0;
+                this.arrowRotationVelocity += Math.PI / 64.0;
             }
 
-            while (arrowRotationVelocity > 0)
+            while (this.arrowRotationVelocity > 0)
             {
-                double oldVelocity = arrowRotationVelocity;
-                arrowRotationVelocity += arrowRotationDeceleration;
-                if (arrowRotationVelocity <= Math.PI / 80.0 && oldVelocity > Math.PI / 80.0)
+                double oldVelocity = this.arrowRotationVelocity;
+                this.arrowRotationVelocity += this.arrowRotationDeceleration;
+                if (this.arrowRotationVelocity <= Math.PI / 80.0 && oldVelocity > Math.PI / 80.0)
                 {
                     bool colorChoiceGreen = true;
-                    if (arrowRotation > Math.PI / 2.0 && arrowRotation <= 4.319689898685965 && Game1.random.NextDouble() < Game1.player.LuckLevel / 15f)
+                    if (this.arrowRotation > Math.PI / 2.0 && this.arrowRotation <= 4.319689898685965 && Game1.random.NextDouble() < Game1.player.LuckLevel / 15f)
                     {
                         if (colorChoiceGreen)
                         {
-                            arrowRotationVelocity = Math.PI / 48.0;
+                            this.arrowRotationVelocity = Math.PI / 48.0;
                         }
                     }
-                    else if ((arrowRotation + Math.PI) % (Math.PI * 2.0) <= 4.319689898685965 && !colorChoiceGreen && Game1.random.NextDouble() < Game1.player.LuckLevel / 20f)
+                    else if ((this.arrowRotation + Math.PI) % (Math.PI * 2.0) <= 4.319689898685965 && !colorChoiceGreen && Game1.random.NextDouble() < Game1.player.LuckLevel / 20f)
                     {
-                        arrowRotationVelocity = Math.PI / 48.0;
+                        this.arrowRotationVelocity = Math.PI / 48.0;
                     }
                 }
 
-                if (arrowRotationVelocity <= 0.0)
+                if (this.arrowRotationVelocity <= 0.0)
                 {
-                    arrowRotationVelocity = 0.0;
+                    this.arrowRotationVelocity = 0.0;
                     bool colorChoiceGreen2 = true;
                     bool won = false;
-                    if (arrowRotation > Math.PI / 2.0 && arrowRotation <= 4.71238898038469)
+                    if (this.arrowRotation > Math.PI / 2.0 && this.arrowRotation <= 4.71238898038469)
                     {
                         if (!colorChoiceGreen2)
                         {
@@ -83,12 +83,12 @@ public class TestWheelSpin
 
                     if (won)
                     {
-                        count++;
+                        this.count++;
                     }
                 }
 
-                arrowRotation += arrowRotationVelocity;
-                arrowRotation %= Math.PI * 2.0;
+                this.arrowRotation += this.arrowRotationVelocity;
+                this.arrowRotation %= Math.PI * 2.0;
             }
         }
     }

@@ -29,5 +29,8 @@
 
   "RetentionChance1": 0.33,
   "RetentionChance2": 0.66,
-  "RetentionChance3": 1
+  "RetentionChance3": 1,
+
+  "EnableReplacingFertilizerInTheField": true,
+  "EnableMultiActionOnButtonPressed": true
 }

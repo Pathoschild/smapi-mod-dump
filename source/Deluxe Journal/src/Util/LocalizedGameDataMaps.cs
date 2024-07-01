@@ -24,42 +24,31 @@ using DeluxeJournal.Task;
 namespace DeluxeJournal.Util
 {
     /// <summary>Provides a collection of <see cref="LocalizedGameDataMap{T}"/> objects.</summary>
-    public sealed class LocalizedGameDataMaps
+    public sealed class LocalizedGameDataMaps(ITranslationHelper translation, TaskParserSettings settings, IMonitor? monitor = null)
     {
         /// <inheritdoc cref="LocalizedItemMap"/>
-        public LocalizedGameDataMap LocalizedItems { get; }
+        public LocalizedGameDataMap LocalizedItems { get; } = new LocalizedItemMap(translation, settings, monitor);
 
         /// <inheritdoc cref="LocalizedNpcMap"/>
-        public LocalizedGameDataMap LocalizedNpcs { get; }
+        public LocalizedGameDataMap LocalizedNpcs { get; } = new LocalizedNpcMap(translation, settings, monitor);
 
         /// <inheritdoc cref="LocalizedBuildingMap"/>
-        public LocalizedGameDataMap LocalizedBuildings { get; }
+        public LocalizedGameDataMap LocalizedBuildings { get; } = new LocalizedBuildingMap(translation, settings, monitor);
 
         /// <inheritdoc cref="LocalizedFarmAnimalMap"/>
-        public LocalizedGameDataMap LocalizedFarmAnimals { get; }
+        public LocalizedGameDataMap LocalizedFarmAnimals { get; } = new LocalizedFarmAnimalMap(translation, settings, monitor);
 
-        public LocalizedGameDataMaps(ITranslationHelper translation) : this(translation, new())
+        public LocalizedGameDataMaps(ITranslationHelper translation, IMonitor? monitor = null)
+            : this(translation, new(), monitor)
         {
-        }
-
-        public LocalizedGameDataMaps(ITranslationHelper translation, TaskParserSettings settings, IMonitor? monitor = null)
-        {
-            LocalizedItems = new LocalizedItemMap(translation, settings, monitor);
-            LocalizedNpcs = new LocalizedNpcMap(translation, settings, monitor);
-            LocalizedBuildings = new LocalizedBuildingMap(translation, settings, monitor);
-            LocalizedFarmAnimals = new LocalizedFarmAnimalMap(translation, settings, monitor);
         }
 
         /// <summary>Maps localized item names to qualified item ID's.</summary>
-        private class LocalizedItemMap : LocalizedGameDataMap
+        private class LocalizedItemMap(ITranslationHelper translation, TaskParserSettings settings, IMonitor? monitor)
+            : LocalizedGameDataMap("alias.items.", translation, settings, monitor)
         {
-            private static readonly HashSet<string> IgnoredItemIds = new() { "73", "858", "892", "922", "923", "924", "925", "927", "929", "930", "DriedFruit", "DriedMushrooms", "SmokedFish" };
-            private static readonly HashSet<string> IgnoredItemTypes = new() { "Litter", "Quest", "asdf", "interactive" };
-
-            public LocalizedItemMap(ITranslationHelper translation, TaskParserSettings settings, IMonitor? monitor)
-                : base("alias.items.", translation, settings, monitor)
-            {
-            }
+            private static readonly HashSet<string> IgnoredItemIds = ["30", "73", "858", "892", "922", "923", "924", "925", "927", "929", "930", "DriedFruit", "DriedMushrooms", "SmokedFish"];
+            private static readonly HashSet<string> IgnoredItemTypes = ["Litter", "Quest", "asdf", "interactive"];
 
             protected override void PopulateDataMap()
             {
@@ -74,7 +63,7 @@ namespace DeluxeJournal.Util
 
                     foreach (KeyValuePair<string, ObjectData> pair in Game1.objectData)
                     {
-                        if (!IgnoredItemIds.Contains(pair.Key) && !IgnoredItemTypes.Contains(pair.Value.Type))
+                        if (!IgnoredItemIds.Contains(pair.Key) && pair.Value != null && !IgnoredItemTypes.Contains(pair.Value.Type))
                         {
                             if (!Settings.SetItemCategoryObject && Settings.SetItemCategoryCraftable
                                 && !CraftingRecipe.craftingRecipes.ContainsKey(pair.Value.Name))
@@ -82,12 +71,14 @@ namespace DeluxeJournal.Util
                                 continue;
                             }
 
-                            string parsedName = TokenParser.ParseText(pair.Value.DisplayName);
-                            string itemId = ItemRegistry.type_object + pair.Key;
+                            if (TokenParser.ParseText(pair.Value.DisplayName) is string parsedName)
+                            {
+                                string itemId = ItemRegistry.type_object + pair.Key;
 
-                            AddPlural(parsedName, itemId);
-                            AddFlavored(parsedName, pair.Key, pair.Value, roeFishNames);
-                            AddConvenienceAlternates(itemId, pair.Value);
+                                AddPlural(parsedName, itemId);
+                                AddFlavored(parsedName, pair.Key, pair.Value, roeFishNames);
+                                AddConvenienceAlternates(itemId, pair.Value);
+                            }
                         }
                     }
                 }
@@ -96,7 +87,7 @@ namespace DeluxeJournal.Util
                 {
                     foreach (KeyValuePair<string, BigCraftableData> pair in Game1.bigCraftableData)
                     {
-                        AddPlural(TokenParser.ParseText(pair.Value.DisplayName), ItemRegistry.type_bigCraftable + pair.Key);
+                        AddPlural(TokenParser.ParseText(pair.Value?.DisplayName), ItemRegistry.type_bigCraftable + pair.Key);
                     }
                 }
 
@@ -105,18 +96,20 @@ namespace DeluxeJournal.Util
                     foreach (string toolId in Game1.toolData.Keys)
                     {
                         string toolQid = ItemRegistry.type_tool + toolId;
-                        ParsedItemData itemData = ItemRegistry.GetData(toolQid);
 
-                        if (itemData.RawData is ToolData toolData
-                            && toolData.ApplyUpgradeLevelToDisplayName
-                            && toolData.UpgradeLevel > 0
-                            && ItemRegistry.Create(toolQid) is Tool tool)
+                        if (ItemRegistry.GetData(toolQid) is ParsedItemData itemData)
                         {
-                            Add(tool.DisplayName.ToLower(), toolQid);
-                        }
-                        else
-                        {
-                            Add(itemData.DisplayName.ToLower(), toolQid);
+                            if (itemData.RawData is ToolData toolData
+                                && toolData.ApplyUpgradeLevelToDisplayName
+                                && toolData.UpgradeLevel > 0
+                                && ItemRegistry.Create(toolQid) is Tool tool)
+                            {
+                                Add(tool.DisplayName.ToLower(), toolQid);
+                            }
+                            else
+                            {
+                                Add(itemData.DisplayName.ToLower(), toolQid);
+                            }
                         }
                     }
 
@@ -128,7 +121,7 @@ namespace DeluxeJournal.Util
                 {
                     foreach (KeyValuePair<string, WeaponData> pair in Game1.weaponData)
                     {
-                        Add(TokenParser.ParseText(pair.Value.DisplayName), ItemRegistry.type_weapon + pair.Key);
+                        Add(TokenParser.ParseText(pair.Value?.DisplayName), ItemRegistry.type_weapon + pair.Key);
                     }
 
                     foreach (KeyValuePair<string, string> pair in DataLoader.Boots(Game1.content))
@@ -252,18 +245,14 @@ namespace DeluxeJournal.Util
         }
 
         /// <summary>Maps localized character names to their internal names.</summary>
-        private class LocalizedNpcMap : LocalizedGameDataMap
+        private class LocalizedNpcMap(ITranslationHelper translation, TaskParserSettings settings, IMonitor? monitor)
+            : LocalizedGameDataMap("alias.npcs.", translation, settings, monitor)
         {
-            public LocalizedNpcMap(ITranslationHelper translation, TaskParserSettings settings, IMonitor? monitor)
-                : base("alias.npcs.", translation, settings, monitor)
-            {
-            }
-
             protected override void PopulateDataMap()
             {
                 foreach (KeyValuePair<string, CharacterData> pair in Game1.characterData)
                 {
-                    if (pair.Value.CanReceiveGifts && Game1.NPCGiftTastes.ContainsKey(pair.Key))
+                    if (pair.Value?.CanReceiveGifts == true && Game1.NPCGiftTastes.ContainsKey(pair.Key))
                     {
                         Add(TokenParser.ParseText(pair.Value.DisplayName) ?? pair.Key, pair.Key);
                     }
@@ -272,14 +261,10 @@ namespace DeluxeJournal.Util
         }
 
         /// <summary>Maps localized building names to their internal names.</summary>
-        private class LocalizedBuildingMap : LocalizedGameDataMap
+        private class LocalizedBuildingMap(ITranslationHelper translation, TaskParserSettings settings, IMonitor? monitor)
+            : LocalizedGameDataMap("alias.buildings.", translation, settings, monitor)
         {
-            private static readonly HashSet<string> IgnoredBuildingNames = new() { "Greenhouse" };
-
-            public LocalizedBuildingMap(ITranslationHelper translation, TaskParserSettings settings, IMonitor? monitor)
-                : base("alias.buildings.", translation, settings, monitor)
-            {
-            }
+            private static readonly HashSet<string> IgnoredBuildingNames = ["Greenhouse"];
 
             protected override void PopulateDataMap()
             {
@@ -287,25 +272,21 @@ namespace DeluxeJournal.Util
                 {
                     if (!IgnoredBuildingNames.Contains(pair.Key))
                     {
-                        AddPlural(TokenParser.ParseText(pair.Value.Name) ?? pair.Key, pair.Key);
+                        AddPlural(TokenParser.ParseText(pair.Value?.Name) ?? pair.Key, pair.Key);
                     }
                 }
             }
         }
 
         /// <summary>Maps localized farm animal shop names to their internal names, including alterative variants.</summary>
-        private class LocalizedFarmAnimalMap : LocalizedGameDataMap
+        private class LocalizedFarmAnimalMap(ITranslationHelper translation, TaskParserSettings settings, IMonitor? monitor)
+            : LocalizedGameDataMap("alias.animalshop.", translation, settings, monitor)
         {
-            public LocalizedFarmAnimalMap(ITranslationHelper translation, TaskParserSettings settings, IMonitor? monitor)
-                : base("alias.animalshop.", translation, settings, monitor)
-            {
-            }
-
             protected override void PopulateDataMap()
             {
                 foreach (KeyValuePair<string, FarmAnimalData> pair in Game1.farmAnimalData)
                 {
-                    if (pair.Value.ShopDisplayName is string shopDisplayName)
+                    if (pair.Value?.ShopDisplayName is string shopDisplayName)
                     {
                         string localizedKey = TokenParser.ParseText(shopDisplayName) ?? pair.Key;
 

@@ -1,0 +1,10 @@
+{
+  "Name": "Bigger Craftables for 1.6",
+  "Author": "mfdsam",
+  "Version": "1.1.6",
+  "Description": "A mod that adds bigger craftables to Stardew Valley.",
+  "UniqueID": "YourName.BiggerCraftables",
+  "EntryDll": "BiggerCraftables.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": []
+}

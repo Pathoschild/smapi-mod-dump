@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/25002
+IDs: TianXiaobai.BetterTheater
+update keys: Nexus:25002

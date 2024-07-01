@@ -19,11 +19,11 @@ mods:
    Water Retaining Field
 
 latest commit:
-   commit 2cab899c9534c364d6c22da330205107944db8d2
+   commit 65a3ff37cc5fa090d43c7d45d9fe9b98e0963a83
    Author: Digus <32422267+Digus@users.noreply.github.com>
-   Date:   Wed May 29 03:21:53 2024 -0300
+   Date:   Tue Jun 11 18:11:18 2024 -0300
    
-       Merge pull request #304 from Digus/develop
+       Merge pull request #306 from Digus/develop
        
-       Animal Husbandry Mod 2.6.12
+       Animal Husbandry Mod 2.6.13
    

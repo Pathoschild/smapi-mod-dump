@@ -17,20 +17,19 @@ namespace StardewArchipelago.Stardew
 {
     public abstract class StardewRecipe
     {
-
         public string ItemName { get; protected set; }
-        public Dictionary<int, int> Ingredients { get; private set; }
-        public int ItemId { get; private set; }
-        public int ItemAmount { get; private set; }
+        public Dictionary<string, int> Ingredients { get; private set; }
+        public string YieldItemId { get; private set; }
+        public int YieldItemAmount { get; private set; }
         public string UnlockConditions { get; private set; }
         public string DisplayName { get; private set; }
 
-        protected StardewRecipe(string itemName, Dictionary<int, int> ingredients, int itemId, int itemAmount, string unlockConditions, string displayName)
+        protected StardewRecipe(string itemName, Dictionary<string, int> ingredients, string yieldItemId, int yieldItemAmount, string unlockConditions, string displayName)
         {
             ItemName = itemName;
             Ingredients = ingredients;
-            ItemId = itemId;
-            ItemAmount = itemAmount;
+            YieldItemId = yieldItemId;
+            YieldItemAmount = yieldItemAmount;
             UnlockConditions = unlockConditions;
             DisplayName = displayName;
         }

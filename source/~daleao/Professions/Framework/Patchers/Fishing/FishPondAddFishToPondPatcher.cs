@@ -13,7 +13,6 @@ namespace DaLion.Professions.Framework.Patchers.Fishing;
 #region using directives
 
 using System.IO;
-using DaLion.Shared.Attributes;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
 using StardewValley.Buildings;
@@ -40,7 +39,7 @@ internal sealed class FishPondAddFishToPondPatcher : HarmonyPatcher
     {
         try
         {
-            if (string.IsNullOrEmpty(__instance.fishType.Value) || fish.ItemId == __instance.fishType.Value || !Lookups.LegendaryFishes.Contains(fish.QualifiedItemId))
+            if (fish.ItemId == __instance.fishType.Value || !Lookups.FamilyPairs.ContainsKey(fish.QualifiedItemId))
             {
                 return;
             }

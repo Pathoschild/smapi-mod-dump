@@ -76,7 +76,7 @@ Using the `ContextTags` field can save typing if there are lots of items that sh
 
 ## Registering Alt Milks and Flours
 
-To make an item a possible input for the Plant Milk recipe, assign it the context tag "BarleyZP.BzpAllergies_PlantMilkIngredient". Similarly, to register a modded flour item as flour for use in recipes that require "any flour", give it the tag "BarleyZP.BzpAllergies_FlourIngredient".
+To make an item a possible input for the Plant Milk recipe, assign it the context tag "BarleyZP.BzpAllergies_PlantMilkIngredient". Similarly, to register a modded flour item as flour for use in recipes that require "any flour", give it the tag "flour_item".
 
 ## Giving Milled Items Allergens
 

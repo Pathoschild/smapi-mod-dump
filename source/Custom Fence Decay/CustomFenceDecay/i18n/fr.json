@@ -1,0 +1,27 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/JeanSebGwak/CustomFenceDecay
+**
+*************************************************/
+
+{
+  // Options
+  "IdenticalValue.Name": "Même délabrement pour tout ?",
+  "IdenticalValue.Tooltip": "Si coché, toutes les barrières auront la même vitesse de délabrement.",
+  "FenceDecaySpeedInPercent.Name": "Vitesse de délabrement des barrières",
+  "FenceDecaySpeedInPercent.Tooltip": "Vitesse de délabrement pour toutes les barrières en pourcentage. Par exemple: 50 => Vitesse de délabrement par défaut divisée par 2.",
+  "WoodFenceDecaySpeedInPercent.Name": "Vitesse de délabrement des barrières en bois",
+  "WoodFenceDecaySpeedInPercent.Tooltip": "Vitesse de délabrement pour toutes les barrières en BOIS en pourcentage. Par exemple: 50 => Vitesse de délabrement par défaut divisée par 2.",
+  "StoneFenceDecaySpeedInPercent.Name": "Vitesse de délabrement des barrières en pierre",
+  "StoneFenceDecaySpeedInPercent.Tooltip": "Vitesse de délabrement pour toutes les barrières en PIERRE en pourcentage. Par exemple: 50 => Vitesse de délabrement par défaut divisée par 2.",
+  "IronFenceDecaySpeedInPercent.Name": "Vitesse de délabrement des barrières en fer",
+  "IronFenceDecaySpeedInPercent.Tooltip": "Vitesse de délabrement pour toutes les barrières en FER en pourcentage. Par exemple: 50 => Vitesse de délabrement par défaut divisée par 2.",
+  "HardwoodFenceDecaySpeedInPercent.Name": "Vitesse de délabrement des barrières en bois dur",
+  "HardwoodFenceDecaySpeedInPercent.Tooltip": "Vitesse de délabrement pour toutes les barrières en BOIS DUR en pourcentage. Par exemple: 50 => Vitesse de délabrement par défaut divisée par 2.",
+  "IndependentValueSection.Text": "Personnalisation par types de barrières",
+  "IndependentValueParagraph.Text": "Les valeurs qui suivent seront utilisées uniquement si 'même délabrement' est non coché."
+}

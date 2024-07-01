@@ -1,7 +1,7 @@
 {
   "Name": "Item Bags",
   "Author": "SlayerDharok",
-  "Version": "3.0.6",
+  "Version": "3.0.7",
   "Description": "Adds bag items which can store multiple items in a single inventory space",
   "UniqueID": "SlayerDharok.Item_Bags",
   "EntryDll": "ItemBags.dll",
@@ -16,6 +16,10 @@
       "UniqueID": "spacechase0.SpaceCore",
       "IsRequired": true,
       "MinimumVersion": "1.18.1"
+    },
+    {
+      "UniqueID": "leclair.bettercrafting",
+      "IsRequired": false
     },
     {
       "UniqueID": "Entoarox.EntoaroxFramework",

@@ -84,9 +84,11 @@ namespace Pathoschild.Stardew.Automate.Framework.Machines.Objects
         public override bool SetInput(IStorage input)
         {
             // get bait
-            if (input.TryGetIngredient(p => p.Sample.TypeDefinitionId == ItemRegistry.type_object && p.Sample.Category == SObject.baitCategory, 1, out IConsumable? bait))
+            if (input.TryGetIngredient(p => p.Sample is { TypeDefinitionId: ItemRegistry.type_object, Category: SObject.baitCategory }, 1, out IConsumable? bait))
             {
-                this.Machine.owner.Value = Game1.player.UniqueMultiplayerID;
+                if (!Game1.netWorldState.Value.farmhandData.ContainsKey(this.Machine.owner.Value))
+                    this.Machine.owner.Value = Game1.player.UniqueMultiplayerID; // default owner to main player if not owned by a farmhand
+
                 this.Machine.bait.Value = (SObject)bait.Take()!;
                 this.Machine.lidFlapping = true;
                 this.Machine.lidFlapTimer = CrabPot.lidFlapTimerInterval;

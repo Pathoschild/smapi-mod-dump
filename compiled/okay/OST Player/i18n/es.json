@@ -1,0 +1,17 @@
+{
+	"config.enabled":"Mod activado",
+	"config.enabled.tooltip": "Activar el mod.",
+	"config.toggleKey": "Tecla asignada",
+	"config.togglekey.tooltip": "Tecla para abrir el menú de OSTPlayer.",
+	"config.progressivemode": "Modo progresivo",
+	"config.progressivemode.tooltip": "Cargar solo las canciones ya reproducidas.",
+	"config.skipkey": "Tecla de skip",
+	"config.skipkey.tooltip": "Tecla para pasar a la siguiente canción.",
+	"config.randomskip": "Skip aleatorio",
+	"config.randomskip.tooltip": "Pasa a una canción aleatoria al terminar la canción actual o al presionar la tecla de skip.",
+	"config.stopkey": "Tecla de stop",
+	"config.stopkey.tooltip": "Tecla para detener OSTPlayer.",
+
+	"ost.playing": "Reproduciendo:",
+	"ost.stopped": "OSTPlayer detenido."
+}

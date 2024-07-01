@@ -113,7 +113,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Models
             this.DisplayType = displayType;
             this.Ingredients = ingredients.ToArray();
             this.MachineId = machineId;
-            this.ExceptIngredients = exceptIngredients?.ToArray() ?? Array.Empty<RecipeIngredientModel>();
+            this.ExceptIngredients = exceptIngredients?.ToArray() ?? [];
             this.Item = item;
             this.IsKnown = isKnown;
             this.OutputQualifiedItemId = outputQualifiedItemId;
@@ -121,7 +121,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Models
             this.MaxOutput = maxOutput!.Value;
             this.OutputChance = outputChance is > 0 and < 100 ? outputChance.Value : 100;
             this.Quality = quality;
-            this.Conditions = conditions ?? Array.Empty<string>();
+            this.Conditions = conditions ?? [];
         }
 
         /// <summary>Construct an instance.</summary>
@@ -184,8 +184,12 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Models
         /// <param name="recipe">The crafting recipe.</param>
         public static RecipeIngredientModel[] ParseIngredients(CraftingRecipe recipe)
         {
+            RecipeType type = recipe.isCookingRecipe
+                ? RecipeType.Cooking
+                : RecipeType.Crafting;
+
             return recipe.recipeList
-                .Select(p => new RecipeIngredientModel(p.Key, p.Value))
+                .Select(p => new RecipeIngredientModel(type, p.Key, p.Value))
                 .ToArray();
         }
 
@@ -196,11 +200,11 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Models
             if (building?.BuildMaterials?.Count > 0)
             {
                 return building.BuildMaterials
-                    .Select(ingredient => new RecipeIngredientModel(ingredient.ItemId, ingredient.Amount))
+                    .Select(ingredient => new RecipeIngredientModel(RecipeType.BuildingBlueprint, ingredient.ItemId, ingredient.Amount))
                     .ToArray();
             }
             else
-                return Array.Empty<RecipeIngredientModel>();
+                return [];
         }
 
         /// <summary>Get whether this recipe is for the given building.</summary>

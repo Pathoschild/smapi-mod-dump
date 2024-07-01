@@ -25,14 +25,16 @@ using StardewValley.Objects;
 using System.Runtime.Intrinsics.X86;
 using StardewValley.GameData.Locations;
 using Microsoft.Xna.Framework.Graphics;
-using StardewDruid.Data;
 using StardewValley.TerrainFeatures;
 using System.Threading;
 using System.Xml.Serialization;
+using StardewDruid.Character;
+using StardewDruid.Data;
+using xTile.Dimensions;
 
 namespace StardewDruid.Location
 {
-    
+
     public class Grove : GameLocation
     {
 
@@ -42,7 +44,9 @@ namespace StardewDruid.Location
 
         public List<Location.LocationTile> locationTiles = new();
 
-        public Dictionary<Vector2, CharacterData.characters> dialogueTiles = new();
+        public List<Location.LocationTile> herbalTiles = new();
+
+        public Dictionary<Vector2, CharacterHandle.characters> dialogueTiles = new();
 
         public Grove() { }
 
@@ -59,25 +63,20 @@ namespace StardewDruid.Location
             foreach (LocationTile tile in locationTiles)
             {
 
-                if (Utility.isOnScreen(tile.position, 64))
-                {
+                tile.Draw(b);
 
-                    Microsoft.Xna.Framework.Vector2 position = new(tile.position.X - (float)Game1.viewport.X, tile.position.Y - (float)Game1.viewport.Y);
+            }
 
-                    b.Draw(Mod.instance.iconData.sheetTextures[tile.tilesheet], position, tile.rectangle, Microsoft.Xna.Framework.Color.White, 0f, Vector2.Zero, 4, SpriteEffects.None, tile.layer);
+            foreach (LocationTile tile in herbalTiles)
+            {
 
-                    if (tile.shadow)
-                    {
-                        
-                        b.Draw(Mod.instance.iconData.sheetTextures[tile.tilesheet], position + new Vector2(4,8), tile.rectangle, Microsoft.Xna.Framework.Color.Black *0.35f, 0f, Vector2.Zero, 4, SpriteEffects.None, tile.layer - 0.001f);
-
-                    }
-
-                }
+                tile.Draw(b);
 
             }
 
         }
+
+        
 
         public override void OnMapLoad(xTile.Map map)
         {
@@ -522,48 +521,36 @@ namespace StardewDruid.Location
             locationTiles = new()
             {
                 // rock 1
-                new(18,9,0,2,1),
-                new(19,9,1,2,1),
-                new(18,10,0,3,0,true),
-                new(19,10,1,3,0,true),
+                new(18,9,0,2,2),
+                new(19,9,1,2,2),
+                new(18,10,0,3,1,true),
+                new(19,10,1,3,1,true),
 
                 // rock 2
-                new(20,7,2,0,2),
-                new(21,7,3,0,2),
-                new(20,8,2,1,1),
-                new(21,8,3,1,1),
-                new(20,9,2,2,0,true),
-                new(21,9,3,2,0,true),
+                new(20,7,2,0,3),
+                new(21,7,3,0,3),
+                new(20,8,2,1,2),
+                new(21,8,3,1,2),
+                new(20,9,2,2,1,true),
+                new(21,9,3,2,1,true),
 
                 // rock 3
-
-                new(23,8,5,1,2),
-                new(23,9,5,2,1),
-                new(23,10,5,3,0,true),
+                new(23,8,5,1,3),
+                new(23,9,5,2,2),
+                new(23,10,5,3,1,true),
 
                 // summoning
-                
-                new(15,13,6,0,1),
-                new(15,14,6,1,0,true),
-
-                new(26,14,7,1,0,true),
-
-                new(17,18,6,2,1),
-                new(17,19,6,3,0,true),
-
-                new(24,18,7,2,1),
-                new(24,19,7,3,0,true),
-
-                // herbalism
-
-                new(20,23,10,2,1),
-                new(21,23,11,2,1),
-                new(22,23,12,2,1),
-                new(20,24,10,3,0,true),
-                new(21,24,11,3,0,true),
-                new(22,24,12,3,0,true),
+                new(15,13,6,0,2),
+                new(15,14,6,1,1,true),
+                new(26,14,7,1,1,true),
+                new(17,18,6,2,2),
+                new(17,19,6,3,1,true),
+                new(24,18,7,2,2),
+                new(24,19,7,3,1,true),
 
             };
+
+            HerbalTiles();
 
             buildings.Tiles[18, 10] = new StaticTile(buildings, outdoor, BlendMode.Alpha, back.Tiles[18, 10].TileIndex);
 
@@ -631,6 +618,43 @@ namespace StardewDruid.Location
 
         }
 
+        public void HerbalTiles(bool bowl = false)
+        {
+            
+            if (bowl)
+            {
+                herbalTiles = new()
+                {
+
+                    // herbalism
+                    new(20,23,8,2,1),
+                    new(21,23,9,2,1),
+                    new(22,23,10,2,1),
+                    new(20,24,8,3,0,true),
+                    new(21,24,9,3,0,true),
+                    new(22,24,10,3,0,true),
+
+                };
+
+                return;
+
+            }
+
+            herbalTiles = new()
+            {
+
+                // herbalism
+                new(20,23,8,2,1),
+                new(21,23,9,2,1),
+                new(22,23,10,2,1),
+                new(20,24,8,3,0,true),
+                new(21,24,9,3,0,true),
+                new(22,24,10,3,0,true),
+
+            };
+
+        }
+
         public override bool CanItemBePlacedHere(Vector2 tile, bool itemIsPassable = false, CollisionMask collisionMask = CollisionMask.All, CollisionMask ignorePassables = ~CollisionMask.Objects, bool useFarmerTile = false, bool ignorePassablesExactly = false)
         {
 
@@ -643,7 +667,7 @@ namespace StardewDruid.Location
 
             Vector2 actionTile = new(xTile, yTile);
 
-            if (dialogueTiles.ContainsKey(actionTile))
+            if (dialogueTiles.ContainsKey(actionTile) && Mod.instance.activeEvent.Count == 0)
             {
 
                 return true;
@@ -662,7 +686,7 @@ namespace StardewDruid.Location
             if (dialogueTiles.ContainsKey(actionTile))
             {
 
-                CharacterData.characters characterType = dialogueTiles[actionTile];
+                CharacterHandle.characters characterType = dialogueTiles[actionTile];
 
                 if (!Mod.instance.dialogue.ContainsKey(characterType))
                 {
@@ -686,15 +710,15 @@ namespace StardewDruid.Location
 
             if (dialogueTiles.Count > 0) { return; }
 
-            dialogueTiles.Add(new(18, 10), CharacterData.characters.energies);
+            dialogueTiles.Add(new(18, 10), CharacterHandle.characters.energies);
 
-            dialogueTiles.Add(new(19, 10), CharacterData.characters.energies);
+            dialogueTiles.Add(new(19, 10), CharacterHandle.characters.energies);
 
-            dialogueTiles.Add(new(20, 9), CharacterData.characters.energies);
+            dialogueTiles.Add(new(20, 9), CharacterHandle.characters.energies);
 
-            dialogueTiles.Add(new(21, 9), CharacterData.characters.energies);
+            dialogueTiles.Add(new(21, 9), CharacterHandle.characters.energies);
 
-            dialogueTiles.Add(new(21, 23), CharacterData.characters.herbalism);
+            dialogueTiles.Add(new(21, 23), CharacterHandle.characters.herbalism);
 
         }
 
@@ -750,7 +774,7 @@ namespace StardewDruid.Location
 
                     farmEntry = farmExit + new Vector2(0, 2);
 
-                    Warp change = new((int)farmExit.X, (int)farmExit.Y, LocationData.druid_grove_name, 36, 20, false);
+                    Warp change = new((int)farmExit.X, (int)farmExit.Y, LocationData.druid_grove_name, 39, 20, false);
 
                     farmLocation.warps[w] = change;
 
@@ -764,7 +788,7 @@ namespace StardewDruid.Location
 
                             Vector2 caveExit = new Vector2(caveWarp.X, caveWarp.Y);
 
-                            Warp caveChange = new((int)caveExit.X, (int)caveExit.Y, LocationData.druid_grove_name, 36, 10, false);
+                            Warp caveChange = new((int)caveExit.X, (int)caveExit.Y, LocationData.druid_grove_name, 39, 10, false);
 
                             caveLocation.warps[c] = caveChange;
 
@@ -780,21 +804,21 @@ namespace StardewDruid.Location
             // --------------------------------------
             // Grove warps
 
-            warpSets.Add(new WarpTile(38, 8, caveName, (int)caveEntry.X, (int)caveEntry.Y));
-
-            warpSets.Add(new WarpTile(37, 23, farmName, (int)farmEntry.X, (int)farmEntry.Y));
+            warpSets.Add(new WarpTile(39, 8, caveName, (int)caveEntry.X, (int)caveEntry.Y));
 
             warpSets.Add(new WarpTile(38, 23, farmName, (int)farmEntry.X, (int)farmEntry.Y));
 
             warpSets.Add(new WarpTile(39, 23, farmName, (int)farmEntry.X, (int)farmEntry.Y));
 
-            warps.Add(new Warp(38, 8, caveName, (int)caveEntry.X, (int)caveEntry.Y, flipFarmer: false));
+            warpSets.Add(new WarpTile(40, 23, farmName, (int)farmEntry.X, (int)farmEntry.Y));
 
-            warps.Add(new Warp(37, 23, farmName, (int)farmEntry.X, (int)farmEntry.Y, flipFarmer: false));
+            warps.Add(new Warp(39, 8, caveName, (int)caveEntry.X, (int)caveEntry.Y, flipFarmer: false));
 
             warps.Add(new Warp(38, 23, farmName, (int)farmEntry.X, (int)farmEntry.Y, flipFarmer: false));
 
             warps.Add(new Warp(39, 23, farmName, (int)farmEntry.X, (int)farmEntry.Y, flipFarmer: false));
+
+            warps.Add(new Warp(40, 23, farmName, (int)farmEntry.X, (int)farmEntry.Y, flipFarmer: false));
 
         }
 

@@ -141,9 +141,9 @@ namespace Pathoschild.Stardew.DataLayers.Layers.Crops
             if (dirt is not null && !this.IsDeadCrop(dirt))
             {
                 if (this.Mods.MultiFertilizer.IsLoaded)
-                    applied = new HashSet<string>(this.Mods.MultiFertilizer.GetAppliedFertilizers(dirt));
+                    applied = [..this.Mods.MultiFertilizer.GetAppliedFertilizers(dirt)];
                 else if (CommonHelper.IsItemId(dirt.fertilizer.Value, allowZero: false))
-                    applied = new HashSet<string> { dirt.fertilizer.Value };
+                    applied = [dirt.fertilizer.Value];
             }
 
             // get fertilizer info

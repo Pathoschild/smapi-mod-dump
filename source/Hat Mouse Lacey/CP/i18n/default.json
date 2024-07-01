@@ -134,6 +134,8 @@
 	"dialogue.winter_17.nightmarket0": "Ahh... the perfect pick-me-up on a cold night.$h",
 	"dialogue.winter_17.nightmarket1": "It's a lovely ambience here, isn't it?#$e#But I feel bad for Willy. It must be hard to sleep with all this hubbub.",
 	"dialogue.fall_16.fair.shopdialogue": "Take a look! Anything strike your fancy?",
+	"dialogue.fall_16.fair.shopdialogue.spouse": "Sorry, poke, no special favors here at the fair! You'll have to earn the tokens like everybody else.",
+	"dialogue.spouseroom.shopdialogue": "Thanks for shopping, poke. I appreciate the extra pocket money.",
 
 	// marriage-dialogue.json
 	"marriage.patio_HatMouseLacey": "Hey, poke! Just getting some fresh air to help me focus on my stitching.#$e#The light's better out here, too.$h",
@@ -209,6 +211,7 @@
 	"marriage.winter_HatMouseLacey": "Every winter I get the urge to dig a burrow.#$b#Don't worry, I'm not going to do it! Our house is cozy.$h",
 	"marriage.funLeave_HatMouseLacey": "I'm off for my errands today. I have a few things to get in town, and I'll go tend to the hat shop.#$b#See you later!",
 	"marriage.funReturn_HatMouseLacey": "Phew! I had a productive day.#$b#How was yours? I hope it wasn't too hard without me around.",
+	"marriage.HatRegistryNew": "Oh, by the way...#$b#I set up the hat registry in my room, so you can check on it there.#$b#That should be more convenient than going all the way out to the cabin!$h",
 
 	// festivals.json
 	// note y1 is year 1, while 1 is years 4, 7, etc.
@@ -309,7 +312,7 @@
 	"hatreactions.SV.GnomesCap": "You look ready for a big, new adventure!#$b... Do you have any adventures left to look forward to?",
 	"hatreactions.SV.EyePatch": "I prefer a real hat, honestly. But these round out my costume inventory pretty well.",
 	"hatreactions.SV.SantaHat": "Well ho, ho, ho, don't you look festive?$h#$b#Got any gifts to deliver?",
-	"hatreactions.SV.Tiara": "I'm just a tailor, not a metalworker, so I actually don't make these. I had Clint help me out.#$b#Didn't he do a good job?",
+	"hatreactions.SV.Tiara": "I'm just a milliner, not a metalworker, so I actually don't make these. I had Clint help me out.#$b#Didn't he do a good job?",
 	"hatreactions.SV.HardHat": "Practical, but not very fashionable.#$b#Although it doesn't look half bad on you.$h",
 	"hatreactions.SV.Souwester": "You look ready for a monsoon! Or maybe just some rainy-day fishing.#$b#Where are your wellies?$h",
 	"hatreactions.SV.Daisy": "Now there's a fresh, confident look. I like it!$h^A flower in a girl's hair is a really charming look, I think.",
@@ -375,8 +378,48 @@
 	"hatreactions.SV.TigerHat": "Oh, this one is cute, too! I like the whiskers.$h#$b#... Is that tuna I smell? Or maybe it's salmon...",
 	"hatreactions.SV.???": "I get the feeling you had to work very hard to earn this hat.#$b#I don't know why, but that's the face of a dedicated person.",
 	"hatreactions.SV.WarriorHelmet": "Going for a Viking sort of look, eh? I dig the horns.",
-	"hatreactions.JA.DeerAntlerFall": "Whoa! Now those are serious business!$u#$b#All you need is the skull over your face and you'll look just like a real druid.",
+	"hatreactions.SV.AbigailsBow": "Oh, this is a cute bow! It's simple and understated, which I appreciate.#$b#Thanks for the turnaround. There are some angles where I can't even tell you're wearing it.",
+	"hatreactions.SV.TricornHat": "I haven't seen one of these in a while. You must be on your way to a reenactment!#$b#... Only teasing. I would have expected this to look silly, but it's not bad at all.",
+	"hatreactions.SV.JojaCap": "... Well, I can't say I like it: it's cheap and mass-produced. Where's the pride in craftsmanship?",
+	"hatreactions.SV.LaurelWreathCrown": "This makes you look a bit like an ancient poet.#$b#Don't get me wrong, it's a fine look! But maybe you should have a robe and a lyre or something to go with it.$h",
+	"hatreactions.SV.GilsHat": "You look a bit like an old-timey prospector in this. You'd fit right in panning for gold in the river.$h",
+	"hatreactions.SV.BlueBow": "This is a very pretty blue. It's pleasant to look at, and it's definitely big enough.",
+	"hatreactions.SV.DarkVelvetBow": "Oh, I love it! There's something special about dark velvet, isn't there?#$b#Something... I don't know, mysterious!",
+	"hatreactions.SV.MummyMask": "*shudder* Spooky costumes just aren't for me.$7#$b#... Still, at least this one looks well-made.",
+	"hatreactions.SV.BucketHat": "This is a solid, no-nonsense hat that's good at its job. I like that about it, but I would have chosen a different color.",
+	"hatreactions.SV.SquidHat": "Oh, from the squid fishing festival! Was it a prize?#$b#It looks a little goofy, but that's the goal, isn't it?$h",
+	"hatreactions.SV.SportsCap": "This one looks like it could be a collector's item. That is one throwback of a logo!",
+	"hatreactions.SV.RedFez": "... Where have I seen this before? I know I've seen it.#$b#...#$b#Ooh, this is going to bother me. Don't tell me!$a#$b#... Anyway, it's a fun look. I like the tassel.",
+	"hatreactions.SV.RaccoonHat": "No, ${sir^ma'am^sorry}$, I don't care for a fur hat. It's a bit macabre for me, you see.$7",
+	// no lines for steel/gold/iridium pans
+	"hatreactions.SV.MysteryHat": "Where did you get this one? You look like a comic book villain.#$b#Watch out everyone, it's the Puzzler!$h",
+	"hatreactions.SV.DarkBallcap": "Hmm... I don't have much to say about it. It's a plain black cap.#$b#Although, looking closer, it fits you perfectly. Did you hire a style consultant?",
+	"hatreactions.SV.LeprechaunHat": "A bit ostentatious, don't you think?#$b#... But I do rather like a green hat.$h",
+	"hatreactions.SV.JunimoHat": "Isn't this one cute? It's a forest spirit!$h#$b#I haven't seen one myself, but I've read about them and seen some artists' interpretations.#$b#I think it turned out well!$h",
+	"hatreactions.SV.PaperHat": "These hats always make me think of paper sailboats. That's why I made them water-resistant!$h#$b#Have you been sailing lately?",
+	"hatreactions.SV.PageboyCap": "Another classic, time-honored style. I think simplicity is a strength for a hat like this.#$b#And I must say, you look rather smart.",
+	"hatreactions.SV.JesterHat": "... Well, what do you know? You look like a fool!$h#$b#*ahem* What I mean is, thank you for your patronage, esteemed ${sir^madam^customer}$. Please stop by the shop again!",
+	"hatreactions.SV.BlueRibbon": "Thanks for buying this one! I'm partial to it.#$b#I like blue, and I like a hair ribbon, so I figured they would make a good combination.#$b#... I was right.$l",
+	"hatreactions.SV.GovernorsHat": "Oh, you liked his hat, too? I saw it at the Luau and I just had to make a replica!#$b#... It looks good on you. You don't look very imperious, but I think that's for the best.",
+	"hatreactions.SV.WhiteBow": "For this one, I wanted to find out if a hair bow can be too big.#$b#It doesn't look like it! You wear it very well.$h",
+	"hatreactions.SV.SpaceHelmet": "Did I make the warning label prominent enough? I don't want anyone thinking it's real protective gear.",
+	"hatreactions.SV.InfinityCrown": "You wouldn't believe how much the materials cost for this one.#$b#... Well, maybe you would. You saw how much I had to charge for it!$h",
+
 	"hatreactions.FS.PC.Hats/Hat/FlamboyantHat": "Peacock feathers, huh? That really makes a statement. And I love the base color you chose!",
+
+	// this key is omitted on purpose (skip displaying text)
+	//"hatreactions.registry.Inspect": "",
+	"hatreactions.registry.InspectDisabled": "It looks like a ledger. It's labeled 'Hat Registry'.",
+	"hatreactions.registry.InspectSpouse": "There's a note taped by your name in the registry: '{{message}}'",
+	"hatreactions.registry.SpouseNote1": "Hiyo, poke! Lots of good memories in here! <",
+	"hatreactions.registry.SpouseNote2": "Hey there~ < Just a reminder that I love you.",
+	"hatreactions.registry.SpouseNote3": "Hi, cutie! See you soon!",
+	"hatreactions.registry.SpouseNote4": "Have you talked to your wife today? <",
+	"hatreactions.registry.SpouseNote5": "Thanks for playing my hat game. It means a lot.",
+	"hatreactions.registry.SpouseNote6": "I hope you're having a good day, poke!",
+	"hatreactions.registry.SpouseNote7": "You're cute with or without a hat, you know. <",
+	"hatreactions.registry.SpouseNote8": "I appreciate all your hard work. You're doing great!",
+	"hatreactions.registry.InspectSpouseDisabled": "It's Lacey's hat registry. Somehow, there's no entry for you in it.",
 
 	"gifttastes.Love": "Aah! My favorite! What a perfect gift!",
 	"gifttastes.Like": "Ooh, thank you! This is very nice.",
@@ -386,13 +429,13 @@
 
 	"mapstrings.MouseHouse.drawers": "That's not a good idea.",
 	"mapstrings.MouseHouse.hatstuff": "It's packed with fabrics, threads, and tools.",
-	// unused "mapstrings.MouseHouse.photo": "",
 	"mapstrings.MouseHouse.stepladder": "Lacey's stepladder. It's well-worn from use.",
 	"mapstrings.MouseHouse.stool": "A low stool. The legs look to have been sawn short.",
 	"mapstrings.MouseSpouse.drawers": "It's Lacey's dresser. She keeps her clothes in it.",
-	// unused "mapstrings.MouseSpouse.photo": "",
 	"mapstrings.MouseSpouse.stool": "It's Lacey's low stool. Best to leave it for her to sit in.",
 	"mapstrings.Forest.frontdoor": "Looks like this used to be the front door.",
+
+	"strings.furniture.LaceyPortrait": "Lacey Portrait",
 
 	"hodgepodge.rainy": "To be honest, I really like rain. I like to hear it on the roof.#$b#But, I don't like being caught in it. Wet mouse smell.",
 	"engagement.dialogue.0": "I'm so happy, poke! My heart is racing. Maybe I'm still dreaming?...$h",
@@ -419,6 +462,7 @@
 	"mail.LaceyGift": "Hiyo, poke!^Here's a gift from me, from my hat supplies. Sorry it's not a finished hat! Those you have to buy.^^-Lacey %item object 428 1 771 15 393 1 397 1 444 1%%[#]A Gift From Lacey",
 	"mail.LaceyHouseCall": "Hey cutie,^^I'd like to see you. Can you come over to my cabin tonight at 8:00?^^-Lacey[#]Lacey's Note",
 	"mail.LaceyApologySummons": "Dear @,^^If you're ready to apologize, come to the fountain in the town park at noon. I'll meet you there.^^-Lacey%item quest {{quest}}%%[#]Lacey's Summons",
+	"mail.HatRegistryNotice": "Hi again!^^Thanks for showing me your style in a hat. I'd love to see more!^I'll keep track of which ones you've shown me in my hat registry. You can come to my cabin anytime to take a look.^^See you soon!^-Lacey[#]Lacey's Hat Registry",
 	"characters.Phone_Ring_HatMouse": "It's a prerecorded message: # Hiyo, poke! Come to Lacey's cabin for all your hat needs! Our prices are always reasonable! *click*",
 	"characters.MovieInvite_Spouse_HatMouseLacey": "Oh, a movie! Yes, that should be fun!$h#$b#It's nice to go on a date once in a while, isn't it?$h#$e#You go ahead. I'll catch up to you there.",
 	"movies.zuzucity.before": "Ooh, I'm excited about this. This movie is an all-timer! Have you seen it before?$h",
@@ -616,6 +660,18 @@
 	"events.apology.4.yes": "Now, I've got some things to do.#$b#See you soon, okay?$h",
 	"events.apology.3.no": "All right. Maybe that's for the best.#$b#But I appreciate you coming out to apologize. Thank you.",
 	"events.apology.4.no": "Oh, and I'll see you around, of course.#$b#We are still friends, after all, aren't we?$h",
+
+	// secret-notes.json
+	"secretnotes.forgottendiary.name": "Forgotten Diary",
+	"secretnotes.forgottendiary.description": "It looks like someone's diary. Most of the pages are missing... what could be left inside?",
+	"secretnotes.1.title": "Forgotten Diary #1",
+	"secretnotes.1": "She's a dream, isn't she? What a job she lined up for us this time! The heist of the century!^^After we pull this off, we'll be set for a long time... maybe for life. We'll be the most notorious thieves this side of the Gem Sea! And then...^^Then I'll ask her to marry me. Oh, how romantic I am!",
+	"secretnotes.2.title": "Forgotten Diary #2",
+	"secretnotes.2": "Can you believe him? We've been partners and on-and-off lovers for practically our whole career, and he thought a little curse would drive us apart. Not a chance! I think he's even more lovable, now that he's learned some humility.^^He blames himself, you know. Says it's his fault we were caught (it is, but don't tell him I told you that). But I think he's coming to terms with it and starting to move on.^^Now if only I could get him to stop using my old name... we've got new identities now. This is our chance to make a fresh start.",
+	"secretnotes.3.title": "Forgotten Diary #3",
+	"secretnotes.3": "As expected, our daughter is a mouse, just like us. She's an easy kid... I hope she stays that way when our next one arrives.^^I can't believe I'm a dad now. I'm finally starting to feel like the new person she said I'd be. I've even got a new hobby: fishing!^^What a turn of fate, eh? A dashing gentleman thief in one life, and a humble fisherman in the next! But, at least I was lucky enough to get a second chance.",
+	"secretnotes.4.title": "Forgotten Diary #4",
+	"secretnotes.4": "The girls are growing up so fast! Lacey takes after her father. He's so sweet with them: maybe he really is a changed man. It's hard to remember how cocksure he used to be.^^I do worry about our daughters. We may be the only mice like us in the world, and we haven't told them so, or why. One of these years, we'll have to come clean. And I hope they can be happy, wherever they end up, without sinking into loneliness.",
 
 	// misc. CTs
 	"dialogue.Andy.CT_MarriedTheMouse": "... So I guess you went and married that mouse, huh? Well, I ain't gonna judge ya.#$b#...$2#$b#Matter of fact, I figure I owe you an apology. Ya know, for what I said about her before.#$e#... But I still ain't buyin' any hats! This one's perfect as it is.$1#$b#You tell her that, okay? And, uh...#$b#You can tell her I'm sorry, too.",

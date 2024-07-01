@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using StardewArchipelago.Archipelago;
+using StardewArchipelago.Constants.Locations;
 using StardewModdingAPI;
 using StardewValley.Menus;
 
@@ -71,7 +72,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                 var skillRecipesAtLevel = skillRecipes[i];
                 foreach (var skillRecipe in skillRecipesAtLevel)
                 {
-                    _locationChecker.AddCheckedLocation($"{skillRecipe}{RecipePurchaseInjections.CHEFSANITY_LOCATION_SUFFIX}");
+                    _locationChecker.AddCheckedLocation($"{skillRecipe}{Suffix.CHEFSANITY}");
                 }
             }
         }
@@ -81,7 +82,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             // There are no skill crafting recipe learning checks yet
         }
 
-        // public LevelUpMenu(string skillName, int level)
+        // public SkillLevelUpMenu(string skillName, int level)
         public static void SkillLevelUpMenuConstructor_SendModdedSkillRecipeChecks_Postfix(IClickableMenu __instance, string skillName, int level)
         {
             try
@@ -140,15 +141,15 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             {
                 Skill.Luck, new Dictionary<int, string[]>()
                 {
-                    { 8, new[] { "Lucky Lunch" } }
+                    { 8, new[] { "Lucky Lunch" } },
                 }
-            }
+            },
         };
 
         /*private static readonly Dictionary<Skill, Dictionary<int, string[]>> _craftingRecipesBySkill = new()
         {
             {
-                Skill.Excavation, new Dictionary<int, string[]>()
+                Skill.Archaeology, new Dictionary<int, string[]>()
                 {
                     { 1, new[] { "Glass Bazier", "Glass Path", "Glass Fence" } },
                     { 2, new[] { "Preservation Chamber", "Wooden Display" } },

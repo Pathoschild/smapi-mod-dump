@@ -1,0 +1,335 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/itsbenter/ResourcefulFriends
+**
+*************************************************/
+
+{
+    "$schema": "https://smapi.io/schemas/content-patcher.json",
+    "Changes": [
+        {
+            "LogName": "Wild Horseradish",
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "TargetField": [
+                "16",
+                "ContextTags"
+            ],
+            "Entries": {
+                "#-1": "itsbenter_petalkin_spring_common",
+            }
+        },
+        {
+            "LogName": "Daffodil",
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "TargetField": [
+                "18",
+                "ContextTags"
+            ],
+            "Entries": {
+                "#-1": "itsbenter_petalkin_spring_common",
+            }
+        },
+        {
+            "LogName": "Leek",
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "TargetField": [
+                "20",
+                "ContextTags"
+            ],
+            "Entries": {
+                "#-1": "itsbenter_petalkin_spring_common",
+            }
+        },
+        {
+            "LogName": "Dandelion",
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "TargetField": [
+                "22",
+                "ContextTags"
+            ],
+            "Entries": {
+                "#-1": "itsbenter_petalkin_spring_common",
+            }
+        },
+        {
+            "LogName": "Spring Onion",
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "TargetField": [
+                "399",
+                "ContextTags"
+            ],
+            "Entries": {
+                "#-1": "itsbenter_petalkin_spring_common",
+            }
+        },
+        {
+            "LogName": "Common Mushroom",
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "TargetField": [
+                "404",
+                "ContextTags"
+            ],
+            "Entries": {
+                "#-1": "itsbenter_petalkin_spring_uncommon",
+                "#-2": "itsbenter_petalkin_summer_uncommon",
+                "#-3": "itsbenter_petalkin_fall_common",
+            }
+        },
+        {
+            "LogName": "Morel",
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "TargetField": [
+                "247",
+                "ContextTags"
+            ],
+            "Entries": {
+                "#-1": "itsbenter_petalkin_spring_uncommon",
+            }
+        },
+        {
+            "LogName": "Salmonberry",
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "TargetField": [
+                "247",
+                "ContextTags"
+            ],
+            "Entries": {
+                "#-1": "itsbenter_petalkin_spring_common",
+            },
+            "When": {
+                "Season": "spring",
+                "Day": "15, 16, 17, 18"
+            }
+        },
+        {
+            "LogName": "Grape",
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "TargetField": [
+                "398",
+                "ContextTags"
+            ],
+            "Entries": {
+                "#-1": "itsbenter_petalkin_summer_common",
+            },
+        },
+        {
+            "LogName": "Sweet Pea",
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "TargetField": [
+                "402",
+                "ContextTags"
+            ],
+            "Entries": {
+                "#-1": "itsbenter_petalkin_summer_common",
+            },
+        },
+        {
+            "LogName": "Spice Berry",
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "TargetField": [
+                "396",
+                "ContextTags"
+            ],
+            "Entries": {
+                "#-1": "itsbenter_petalkin_summer_common",
+            },
+        },
+        {
+            "LogName": "Red Mushroom",
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "TargetField": [
+                "420",
+                "ContextTags"
+            ],
+            "Entries": {
+                "#-1": "itsbenter_petalkin_summer_uncommon",
+                "#-2": "itsbenter_petalkin_fall_uncommon",
+            },
+        },
+        {
+            "LogName": "Fiddlehead Fern",
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "TargetField": [
+                "259",
+                "ContextTags"
+            ],
+            "Entries": {
+                "#-1": "itsbenter_petalkin_summer_uncommon",
+                "#-2": "itsbenter_petalkin_gingerisland_common"
+            },
+        },
+        {
+            "LogName": "Wild Plum",
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "TargetField": [
+                "406",
+                "ContextTags"
+            ],
+            "Entries": {
+                "#-1": "itsbenter_petalkin_fall_common",
+            },
+        },
+        {
+            "LogName": "Hazelnut",
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "TargetField": [
+                "408",
+                "ContextTags"
+            ],
+            "Entries": {
+                "#-1": "itsbenter_petalkin_fall_common",
+            },
+        },
+        {
+            "LogName": "Blackberry",
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "TargetField": [
+                "410",
+                "ContextTags"
+            ],
+            "Entries": {
+                "#-1": "itsbenter_petalkin_fall_common",
+            },
+        },
+        {
+            "LogName": "Chanterelle",
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "TargetField": [
+                "281",
+                "ContextTags"
+            ],
+            "Entries": {
+                "#-1": "itsbenter_petalkin_fall_uncommon",
+            },
+        },
+        {
+            "LogName": "Purple Mushroom",
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "TargetField": [
+                "422",
+                "ContextTags"
+            ],
+            "Entries": {
+                "#-1": "itsbenter_petalkin_fall_uncommon",
+            },
+        },
+        {
+            "LogName": "Crystal Fruit",
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "TargetField": [
+                "414",
+                "ContextTags"
+            ],
+            "Entries": {
+                "#-1": "itsbenter_petalkin_winter_common",
+            },
+        },
+        {
+            "LogName": "Snow Yam",
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "TargetField": [
+                "416",
+                "ContextTags"
+            ],
+            "Entries": {
+                "#-1": "itsbenter_petalkin_winter_uncommon",
+            },
+        },
+        {
+            "LogName": "Crocus",
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "TargetField": [
+                "418",
+                "ContextTags"
+            ],
+            "Entries": {
+                "#-1": "itsbenter_petalkin_winter_common",
+            },
+        },
+        {
+            "LogName": "Winter Root",
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "TargetField": [
+                "412",
+                "ContextTags"
+            ],
+            "Entries": {
+                "#-1": "itsbenter_petalkin_winter_uncommon",
+            },
+        },
+        {
+            "LogName": "Holly",
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "TargetField": [
+                "283",
+                "ContextTags"
+            ],
+            "Entries": {
+                "#-1": "itsbenter_petalkin_winter_common",
+            },
+        },
+        {
+            "LogName": "Ginger",
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "TargetField": [
+                "829",
+                "ContextTags"
+            ],
+            "Entries": {
+                "#-1": "itsbenter_petalkin_gingerisland_common",
+            },
+        },
+        {
+            "LogName": "Taro Tuber",
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "TargetField": [
+                "831",
+                "ContextTags"
+            ],
+            "Entries": {
+                "#-1": "itsbenter_petalkin_gingerisland_common",
+            },
+        },
+        {
+            "LogName": "Sweet Gem Berry",
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "TargetField": [
+                "417",
+                "ContextTags"
+            ],
+            "Entries": {
+                "#-1": "itsbenter_petalkin_fall_rare",
+            },
+        }
+    ]
+}

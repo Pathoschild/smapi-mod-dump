@@ -63,7 +63,7 @@ namespace StardewArchipelago.Archipelago.Gifting
         }
 
         /// <summary>
-        /// Sends a Gift Mail for the received gift item and the specified amount.
+        ///     Sends a Gift Mail for the received gift item and the specified amount.
         /// </summary>
         /// <param name="giftIds"></param>
         /// <param name="receivedGift"></param>

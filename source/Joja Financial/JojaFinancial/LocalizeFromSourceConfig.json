@@ -1,0 +1,33 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/NermNermNerm/JojaFinancial
+**
+*************************************************/
+
+{
+    "isStrict": true,
+    "invariantStringPatterns": [
+        // Identifiers for stuff within this mod -- commented out because we are ignoring all identifiers
+        // "^Junimatic\\.",
+
+        // dot and slash-separated identifiers
+        "^\\w+[\\./\\\\_:][\\w\\./\\\\_:]*\\w$",
+
+        // CamelCase or pascalCase identifiers - identified by all letters and digits with a lowercase letter right before an uppercase one.
+        "^\\w*[\\p{Ll}\\d][\\p{Lu}]\\w*$",
+
+        // Qualified item id's (O)blah.blah or (BC)Chest
+        "^\\([A-Z]+\\)[\\p{L}\\d\\.]+$",
+
+        "^JojaFinancial\\.Mail\\.$"
+    ],
+    "invariantMethods": [
+        "System.Text.RegularExpressions.Regex.ctor",
+        "StardewValley.Farmer.getFriendshipHeartLevelForNPC",
+        "StardewValley.Game1.playSound"
+    ]
+}

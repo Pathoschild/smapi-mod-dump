@@ -5,5 +5,10 @@
   "UseLargerFontForScheduleDetails": false,
   "NPCSortOrder": "AlphabeticalAscending",
   "OnlyShowMetNPCs": false,
-  "OnlyShowSocializableNPCs": true
+  "OnlyShowSocializableNPCs": true,
+  "IgnoredNPCs": [
+    "Dwarf",
+    "Krobus",
+    "Wizard"
+  ]
 }

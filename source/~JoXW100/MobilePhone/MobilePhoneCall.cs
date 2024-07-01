@@ -141,11 +141,13 @@ namespace MobilePhone
                 {
                     r.events.AddRange(cr.events);
                 }
-                var customNPCs = Helper.GameContent.Load<Dictionary<string, CustomNPCData>>(ModEntry.npcDictPath);
-                if(customNPCs.TryGetValue(npc.Name, out var customNPC))
+
+                var customNPCs = PhoneUtils.LoadNPCDict();
+                if (customNPCs.TryGetValue(npc.Name, out var customNPC))
                 {
                     r.events.AddRange(customNPC.reminisces);
                 }
+
                 Monitor.Log($"Total Reminisces: {r.events.Count}");
                 r.WeedOutUnseen();
                 Monitor.Log($"Seen Reminisces: {r.events.Count}");

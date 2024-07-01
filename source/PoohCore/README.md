@@ -20,6 +20,67 @@ All you have to do is specify your NPC's Size in disposition and add one line in
 }
 ```
 
+### Editing Vanilla/Existed NPCs
+
+For existed NPCs (such as NPCs from vanilla or other mods), you will need some extra steps. First, you will need to load their new bigger sprite in to replace the original sprite. Second, you need to edit their NPC data to make sure that the game know you want their size to be bigger. This code block is a simple example for editing an existed NPC (with comments explaining why you need it):
+```json
+{
+  "$schema": "https://smapi.io/schemas/content-patcher.json",
+  "Format": "2.1.0",
+  "Changes": [
+    {
+      "LogName": "Load new sprites to the game to replace the original",
+      "Action": "Load",
+      "Target": "Characters/Robin, Characters/Harvey",
+      "FromFile": "Assets/{{TargetPathOnly}}/{{TargetWithoutPath}}.png"
+      // This step load a bigger sprite into the game for Robin and Harvey. It uses Content Patcher's tokens to shorten the process for multiple characters, but you can make it simpler by just calling the file path in case that you only want to edit one character. In this code here, it will load the file path at Assets/Characters/Robin.png and Assets/Characters/Harvey.png inside your mod folder. 
+    },
+    {
+      "LogName": "Edit NPC size data",
+      "Action": "EditData",
+      "Target": "Data/Characters",
+      "Fields": {
+        "Robin": {
+          "Size": {"X": 32, "Y": 34}
+        },
+        "Harvey": {
+          "Size": {"X": 32, "Y": 34}
+        }
+      }
+      // This step will edit their Size data to match the new data you specified. Notice that I'm using "Fields" here - this is needed because we only want to replace the Size and not the other original data. If you use "Entries", ALL of the original data will be overrwritten and we don't want it to happen.
+    },
+    {
+      "LogName": "Add custom fields for Robin",
+      "Action": "EditData",
+      "Target": "Data/Characters",
+      "TargetField": [
+        "Robin",
+        "CustomFields"
+      ],
+      "Entries": {
+        "poohnhi.PoohCore/WideCharacter": "true",
+        "poohnhi.PoohCore/HighCharacter": "true"
+      }
+    },
+    // This step will add a new entry to their CustomFields. Notice that I'm using "TargetField" and "Entries" here. The reason for this is CustomFields can contains other mod's data and we should not touch it for better compatibility. If I use "Fields" like the Size patch above, it will replace their CustomFields and make it have only my own data. By using "TargetField" and "Entries", I won't replacing any existing data but instead add a new entry "poohnhi.PoohCore/WideCharacter": "true" to that NPC CustomFields. Do the same for other NPCs like Harvey if you want to change multiple NPCs data.
+    {
+      "LogName": "Add custom fields for Harvey",
+      "Action": "EditData",
+      "Target": "Data/Characters",
+      "TargetField": [
+        "Harvey",
+        "CustomFields"
+      ],
+      "Entries": {
+        "poohnhi.PoohCore/WideCharacter": "true"
+      }
+    }
+  ]
+}
+```
+
+You can test it by using `patch export Data/Characters` and check what happened with the NPC data to see if your patches are applied correctly. If the changes don't show up for their size and custom fields, make sure that your EditData patches are applied after the original (by using dependencies in your mod's manifest file or set up a Priority. You can check Content Patcher's documentation for better explaination.). 
+
 Notes:
 - You might need to modify some more vanilla fields such as Shadow, EmoteOffset, MugShotSourceRect,... to polish them.
 - See `CP.PoohCoreExample.zip` at [released file](https://github.com/poohnhi/PoohCore/releases) to download an example mod for NPCs that have bigger size. They have 16x48, 32x32 and 32x48 sprite as example, which you can meet from the bus stop.

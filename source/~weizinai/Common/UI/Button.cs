@@ -13,7 +13,7 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using StardewValley.Menus;
 
-namespace Common.UI;
+namespace weizinai.StardewValleyMod.Common.UI;
 
 public class Button : Element
 {
@@ -39,26 +39,26 @@ public class Button : Element
     {
         this.texture = texture;
         this.sourceRectangle = sourceRectangle;
-        TextureColor = textureColor;
+        this.TextureColor = textureColor;
         this.text = text;
         this.font = font;
         this.textColor = textColor;
-        LocalPosition = localPosition;
+        this.LocalPosition = localPosition;
         this.scale = scale;
     }
 
-    public override int Width => (int)GetTextSize().X + ContentPadding * 2;
-    public override int Height => (int)GetTextSize().Y + ContentPadding * 2;
+    public override int Width => (int)this.GetTextSize().X + this.ContentPadding * 2;
+    public override int Height => (int)this.GetTextSize().Y + this.ContentPadding * 2;
 
     public override void Draw(SpriteBatch spriteBatch)
     {
-        IClickableMenu.drawTextureBox(spriteBatch, texture, sourceRectangle, (int)Position.X, (int)Position.Y, Width, Height, TextureColor, 1f, false);
-        spriteBatch.DrawString(font, text, Position + new Vector2(ContentPadding, ContentPadding), textColor,
-            0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+        IClickableMenu.drawTextureBox(spriteBatch, this.texture, this.sourceRectangle, (int)this.Position.X, (int)this.Position.Y, this.Width, this.Height, this.TextureColor, 1f, false);
+        spriteBatch.DrawString(this.font, this.text, this.Position + new Vector2(this.ContentPadding, this.ContentPadding), this.textColor,
+            0f, Vector2.Zero, this.scale, SpriteEffects.None, 0f);
     }
 
     private Vector2 GetTextSize()
     {
-        return font.MeasureString(text) * scale;
+        return this.font.MeasureString(this.text) * this.scale;
     }
 }

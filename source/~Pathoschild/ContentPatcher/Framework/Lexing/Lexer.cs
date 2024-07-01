@@ -36,7 +36,7 @@ namespace ContentPatcher.Framework.Lexing
         private const char PositionalInputChar = ':';
 
         /// <summary>The four characters to split by for lexical splitting. For example, ':' is a <see cref="LexBitType.PositionalInputArgSeparator"/> pattern that splits a token name and its input arguments.</summary>
-        private static readonly char[] SplitPattern = new[] { Lexer.StartTokenChar, Lexer.EndTokenChar, Lexer.PositionalInputChar, Lexer.NamedInputChar };
+        private static readonly char[] SplitPattern = [Lexer.StartTokenChar, Lexer.EndTokenChar, Lexer.PositionalInputChar, Lexer.NamedInputChar];
 
         /// <summary>An immutable lexical bit for an empty string.</summary>
         private static readonly LexBit EmptyStringBit = new(LexBitType.Literal, string.Empty);
@@ -167,7 +167,7 @@ namespace ContentPatcher.Framework.Lexing
         public IEnumerable<string> SplitLexically(string? str, string delimiter = ",", bool ignoreEmpty = true, bool trim = true)
         {
             if (str == null)
-                return Enumerable.Empty<string>();
+                return [];
 
             static IEnumerable<string> RawSplit(Lexer lexer, string str, string delimiter)
             {

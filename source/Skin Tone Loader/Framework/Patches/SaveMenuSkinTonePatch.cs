@@ -56,8 +56,10 @@ namespace SkinToneLoader.Framework.Patches
         /// <param name="farmer">The Farmer Object</param>
         private static void SaveFileSlotSkinTonePostfix(SaveFileSlot __instance, LoadGameMenu menu, Farmer farmer)
         {
-            SkinToneConfigModel model = SkinToneConfigModelManager.ReadCharacterLayout(modEntryInstance, farmer);
-            LoadFarmersSkinToneForLoadMenu(farmer, model);
+            SkinToneConfigModel model = SkinToneConfigModelManager.ReadCharacterLayout(__instance, modEntryInstance, farmer);
+
+            if(model != null) 
+                LoadFarmersSkinToneForLoadMenu(farmer, model);
         }
 
         /// <summary>

@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Pathoschild.Stardew.Automate.Framework.Machines.Buildings;
 using Pathoschild.Stardew.Automate.Framework.Machines.Objects;
@@ -307,7 +308,7 @@ namespace Pathoschild.Stardew.Automate.Framework
                     continue; // invalid entry
 
                 string machineId = BaseMachine.GetDefaultMachineId(data.InternalName);
-                machineIds[machineId] = () => ItemRegistry.GetDataOrErrorItem(itemId).DisplayName;
+                machineIds[machineId] = () => this.GetMachineNameFromItemId(data.QualifiedItemId);
             }
 
             // Data/Buildings
@@ -325,10 +326,10 @@ namespace Pathoschild.Stardew.Automate.Framework
             machineIds[BaseMachine.GetDefaultMachineId<JunimoHutMachine>()] = () => GameI18n.GetBuildingName("Junimo Hut");
 
             // other object machines
-            machineIds[BaseMachine.GetDefaultMachineId<AutoGrabberMachine>()] = () => GameI18n.GetBigCraftableName("165");
-            machineIds[BaseMachine.GetDefaultMachineId<CrabPotMachine>()] = () => GameI18n.GetObjectName("710");
-            machineIds[BaseMachine.GetDefaultMachineId<FeedHopperMachine>()] = () => GameI18n.GetBigCraftableName("99");
-            machineIds[BaseMachine.GetDefaultMachineId<MiniShippingBinMachine>()] = () => GameI18n.GetBigCraftableName("248");
+            machineIds[BaseMachine.GetDefaultMachineId<AutoGrabberMachine>()] = () => this.GetMachineNameFromItemId("(BC)165");
+            machineIds[BaseMachine.GetDefaultMachineId<CrabPotMachine>()] = () => this.GetMachineNameFromItemId("(O)710");
+            machineIds[BaseMachine.GetDefaultMachineId<FeedHopperMachine>()] = () => this.GetMachineNameFromItemId("(BC)99");
+            machineIds[BaseMachine.GetDefaultMachineId<MiniShippingBinMachine>()] = () => this.GetMachineNameFromItemId("(BC)248");
 
             // other terrain feature machines
             machineIds[BaseMachine.GetDefaultMachineId<BushMachine>()] = I18n.Config_Machines_Bush;
@@ -349,7 +350,7 @@ namespace Pathoschild.Stardew.Automate.Framework
                     return GameI18n.GetBuildingName("Shipping Bin");
 
                 case "MiniShippingBin":
-                    return GameI18n.GetBigCraftableName("248");
+                    return this.GetMachineNameFromItemId("(BC)248");
 
                 default:
                     return ItemRegistry.GetData(key)?.DisplayName ?? key;
@@ -380,6 +381,16 @@ namespace Pathoschild.Stardew.Automate.Framework
                 this.GetCustomOverride(config, name)?.Enabled
                 ?? this.GetDefaultOverride(name)?.Enabled
                 ?? true;
+        }
+
+        /// <summary>Get the display name for a machine item.</summary>
+        /// <param name="itemId">The machine's item ID.</param>
+        private string GetMachineNameFromItemId(string itemId)
+        {
+            ParsedItemData data = ItemRegistry.GetDataOrErrorItem(itemId);
+            return I18n
+                .GetByKey($"config.machines.{data.InternalName.Replace(" ", "-")}")
+                .Default(data.DisplayName);
         }
 
         /// <summary>Get the current machine priority.</summary>

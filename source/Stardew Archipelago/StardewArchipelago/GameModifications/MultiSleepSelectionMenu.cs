@@ -12,7 +12,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using StardewValley.Menus;
-using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 namespace StardewArchipelago.GameModifications
 {
@@ -52,7 +51,7 @@ namespace StardewArchipelago.GameModifications
         {
             if (rightButton.containsPoint(x, y))
             {
-                int num = currentValue + 1;
+                var num = currentValue + 1;
                 if (num <= maxValue && (price == -1 || currentValue * price <= Game1.player.Money))
                 {
                     rightButton.scale = rightButton.baseScale;

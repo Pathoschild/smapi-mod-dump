@@ -95,7 +95,9 @@ effort or create something that isn't accepted because it strays from the mod's 
 
 ## Translating
 
-Until the mod's content fully stabilizes, it's going to be English-only.
+Create a copy of `Mods\i18n\default.json`, name it with the locale name for the language you
+are translating it to, test it in-game and send it to me either on discord, Nexus, or on GitHub
+via an Issue.  Please be sure to note exactly which version you translated!
 
 ## Compiling
 

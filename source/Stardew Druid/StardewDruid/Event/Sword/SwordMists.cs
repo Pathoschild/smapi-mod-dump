@@ -19,6 +19,7 @@ using StardewValley.Menus;
 using StardewValley.Minigames;
 using System;
 using System.Collections.Generic;
+using static StardewDruid.Data.IconData;
 
 namespace StardewDruid.Event.Sword
 {
@@ -72,26 +73,26 @@ namespace StardewDruid.Event.Sword
 
                     narrators = new()
                     {
-                        [0] = new("Murmurs on the waves", Microsoft.Xna.Framework.Color.LightBlue),
-                        [1] = new("Voice Beyond the Shore", Microsoft.Xna.Framework.Color.Cyan),
+                        [0] = "Murmurs on the waves",
+                        [1] = "Voice Beyond the Shore",
                     };
 
                     AddActor(0,origin + new Vector2(-64,256));
                     AddActor(1,origin + new Vector2(192, 320));
 
-                    DialogueCue(0, "see who comes before the Lady");
+                    DialogueCue(0, "See who comes before the Lady");
 
                     break;
 
                 case 4:
 
-                    DialogueCue(0, "the one who cleansed the spring");
+                    DialogueCue(0, "The one who cleansed the spring");
 
                     break;
 
                 case 7:
 
-                    DialogueCue(0, "the one who made the river sing again");
+                    DialogueCue(0, "The one who made the river sing again");
 
                     break;
 
@@ -111,7 +112,8 @@ namespace StardewDruid.Event.Sword
 
                     location.playSound("thunder_small");
 
-                    Mod.instance.iconData.AnimateBolt(location, origin + new Vector2(-128,-256));
+                   // Mod.instance.iconData.AnimateBolt(location, origin + new Vector2(-128,-256));
+                    Mod.instance.spellRegister.Add(new(origin + new Vector2(-128, -256), 128, IconData.impacts.puff, new()) { type = SpellHandle.spells.bolt });
 
                     DialogueSetups(null, 3);
 
@@ -123,7 +125,8 @@ namespace StardewDruid.Event.Sword
 
                     location.playSound("thunder_small");
 
-                    Mod.instance.iconData.AnimateBolt(location, origin + new Vector2(64, 320));
+                    //Mod.instance.iconData.AnimateBolt(location, origin + new Vector2(64, 320));
+                    Mod.instance.spellRegister.Add(new(origin + new Vector2(64, 320), 128, IconData.impacts.puff, new()) { type = SpellHandle.spells.bolt });
 
                     DialogueCue(1, "My blessing is yours");
 
@@ -149,8 +152,6 @@ namespace StardewDruid.Event.Sword
                 case 304:
 
                     eventComplete = true;
-
-                    expireEarly = true;
 
                     break;
 

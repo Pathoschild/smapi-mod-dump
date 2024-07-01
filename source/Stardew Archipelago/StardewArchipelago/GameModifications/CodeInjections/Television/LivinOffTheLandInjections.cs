@@ -45,7 +45,7 @@ namespace StardewArchipelago.GameModifications.CodeInjections.Television
 
                 _myActiveHints = _archipelago.GetMyActiveHints();
                 var validTips = ArchipelagoTips.Keys.Where(x => ArchipelagoTips[x]()).ToArray();
-                var seed = Game1.uniqueIDForThisGame + Game1.stats.DaysPlayed;//  + (ulong)(Game1.ticks % 100);
+                var seed = Game1.uniqueIDForThisGame + Game1.stats.DaysPlayed; //  + (ulong)(Game1.ticks % 100);
                 var random = new Random((int)seed);
                 var tipIndex = random.Next(validTips.Length);
                 var tip = validTips[tipIndex];
@@ -92,7 +92,7 @@ namespace StardewArchipelago.GameModifications.CodeInjections.Television
             { "Let's talk about crops. They don't all have the same value, but money is not everything, trust me. Even if you have access to more valuable crops, it's usually a good idea to plant a little bit of everything. You never know what you might find comes harvest day!", HasCropsanity },
             { "We all gotta make a living somehow. Some people opt to gather interesting stuff, and move from town to town to sell it. They can provide out of season seeds, crops and fish. I hear some even use metal detectors to find and sell minerals and artifacts. How crazy is that?", HasMuseumsanity },
             { "Being friendly is generally a good thing, but you don't want to be taken advantage of either. Don't bother being too much more friendly to someone who isn't reciprocating yet. Give them time, I'm sure you'll be best buddies in a jiffy!", HasFriendsanity },
-            { "Most bars have old-timey video games in available in them. These old games often contain cheat codes, but can only be used once you beat the game once. So you don't need to go back to do everything you missed, a simple command will do the trick!", HasArcadeMachinesShuffled },
+            { "Most bars have old-timey video games available in them. These old games often contain cheat codes, but can only be used once you beat the game once. So you don't need to go back to do everything you missed, a simple command will do the trick!", HasArcadeMachinesShuffled },
             { "Don't forget to never judge a book by its cover. Sometimes, even the most unassuming of doors can hide an extremely valuable interior. It's always worth a knock!", HasEntranceRandomizer },
             { "I heard a new show started airing recently. Tune in on Mondays and Fridays for... 'The Gateway Gazette'? I wonder what that's about...", HasNonChaosEntranceRandomizer },
             { "Life offers many doors, but some days, you might walk into one, and it's just a closet. Don't sweat it! Self care sometimes means going back to bed and calling it a day.", HasChaosEntranceRandomizer },
@@ -103,8 +103,8 @@ namespace StardewArchipelago.GameModifications.CodeInjections.Television
             { "I've heard a good story the other day. Apparently, there's a white-haired woman hiding in Cindersap forest. She only comes out at night, and it seems she's quite the troublemaker. But I'm sure that's just a myth to scare the kiddos into going to bed!", HasJuna },
             { "Brave adventurers are always talking about myths and legends. Rumor has it that, if you go deep into the woods, and you're lucky enough, you might encounter magical beings. The experience of petting a unicorn is unrivaled! But also, some people just dump their trash there. Try your luck!", HasDeepWoods },
             { "We got a letter from a folk all the way back in {2}. They recommend completing a... '{0}'?. I don't know what that is, but apparently, it's great! You should really get on that!", HasActiveHints },
-            { "...and that folks is how an ol' goblin changed my friend's life around.  Who knew a crayfish dish would be the thing to do it!  I say pay it forward.  Who knows, even goblins might teach ya a thing or two!", HasDistantLands},
-            { "Now here's an odd rumor from an ol' miss up in Grampleton.  Mystics capable of turning the weave so thoroughly you can even hear their whispers over the radio!  Might help in a pinch I say!", HasMagic},
+            { "...and that folks is how an ol' goblin changed my friend's life around.  Who knew a crayfish dish would be the thing to do it!  I say pay it forward.  Who knows, even goblins might teach ya a thing or two!", HasDistantLands },
+            { "Now here's an odd rumor from an ol' miss up in Grampleton.  Mystics capable of turning the weave so thoroughly you can even hear their whispers over the radio!  Might help in a pinch I say!", HasMagic },
         };
 
         private static bool Always()

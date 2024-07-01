@@ -1,7 +1,7 @@
 {
   "Name": "Snow Crab",
   "Author": "John Peters (you know, the farmer?)",
-  "Version": "1.2.0",
+  "Version": "1.3.0",
   "Description": "Adds snow crabs to frozen mine levels.",
   "UniqueID": "JohnPeters.SnowCrab",
   "EntryDll": "SnowCrab.dll",

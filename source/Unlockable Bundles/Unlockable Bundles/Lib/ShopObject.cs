@@ -117,13 +117,16 @@ namespace Unlockable_Bundles.Lib
 
             if (Unlockable.ShopTexture.Trim().ToLower() != "none") {
                 var texture = Helper.GameContent.Load<Texture2D>(Unlockable.ShopTexture);
-                ShopTexture = new AnimatedTexture(texture, Unlockable.ShopAnimation, Unlockable.ShopTextureWidth, Unlockable.ShopTextureWidth * 2);
+                ShopTexture = new AnimatedTexture(texture, Unlockable.ShopAnimation, Unlockable.ShopTextureWidth, Unlockable.ShopTextureHeight);
             }
 
             if (Unlockable.OverviewTexture is not null && Unlockable.OverviewTexture.Trim() != "") {
                 var texture = Helper.GameContent.Load<Texture2D>(Unlockable.OverviewTexture);
                 OverviewTexture = new AnimatedTexture(texture, Unlockable.OverviewAnimation, Unlockable.OverviewTextureWidth, Unlockable.OverviewTextureWidth * 2);
             }
+
+            if (Unlockable.ParrotTexture != "" && Unlockable.ShopType == ShopType.ParrotPerch)
+                SpeechBubble.ParrotPerch.texture = Helper.GameContent.Load<Texture2D>(Unlockable.ParrotTexture);
         }
 
         public override bool isPassable() => isTemporarilyInvisible;
@@ -148,7 +151,7 @@ namespace Unlockable_Bundles.Lib
 
             Mutex.RequestLock(delegate { openMenu(who); });
 
-            return false;
+            return true;
         }
 
         public void openMenu(Farmer who)
@@ -164,7 +167,7 @@ namespace Unlockable_Bundles.Lib
                     Game1.activeClickableMenu.exitFunction = delegate { Mutex.ReleaseLock(); };
                     break;
 
-                case ShopType.CCBundle or ShopType.AltCCBundle:
+                case ShopType.CCBundle:
                     Game1.activeClickableMenu = new BundleMenu(who, Unlockable, ShopType);
                     Game1.activeClickableMenu.exitFunction = delegate { Mutex.ReleaseLock(); };
                     break;
@@ -180,11 +183,13 @@ namespace Unlockable_Bundles.Lib
         {
             Vector2 position = Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64 + (float)(shakeTimer > 0 ? Game1.random.Next(-1, 2) : 0), y * 64 - 64));
 
+            position += Unlockable.ShopDrawOffset;
+
             if (!TexturesWereSet)
                 setTextures();
 
             if (ShopTexture is not null)
-                b.Draw(ShopTexture.Texture, position, ShopTexture.getOffsetRectangle(), Unlockable.ShopColor, 0f, new Vector2(), 64f / Unlockable.ShopTextureWidth, Flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, boundingBox.Bottom / 10000f);
+                b.Draw(ShopTexture.Texture, new Rectangle(position.ToPoint(), Unlockable.ShopDrawDimensions.ToPoint()), ShopTexture.getOffsetRectangle(), Unlockable.ShopColor, 0f, new Vector2(), Flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, boundingBox.Bottom / 10000f);
 
             if (SpeechBubble != null)
                 SpeechBubble.draw(b);
@@ -206,7 +211,7 @@ namespace Unlockable_Bundles.Lib
                 texture = OverviewTexture.Texture;
                 sourceRectangle = OverviewTexture.getOffsetRectangle();
                 OverviewTexture.update(Game1.currentGameTime);
-                scale *= 32 / Unlockable.OverviewTextureWidth;
+                scale *= 32f / Unlockable.OverviewTextureWidth;
                 color = Unlockable.OverviewColor;
 
             } else if (ShopType == ShopType.ParrotPerch) {
@@ -223,7 +228,7 @@ namespace Unlockable_Bundles.Lib
                 texture = ShopTexture.Texture;
                 sourceRectangle = ShopTexture.getOffsetRectangle();
                 ShopTexture.update(Game1.currentGameTime);
-                scale *= 32 / Unlockable.ShopTextureWidth;
+                scale *= 32f / Unlockable.ShopTextureWidth;
                 color = Unlockable.ShopColor;
             }
 

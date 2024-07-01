@@ -9,12 +9,11 @@
 *************************************************/
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using StardewArchipelago.Archipelago;
 using StardewArchipelago.Stardew;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.GameData.Characters;
 using Object = StardewValley.Object;
 
 namespace StardewArchipelago.Locations.Festival
@@ -47,13 +46,13 @@ namespace StardewArchipelago.Locations.Festival
                 }
 
                 var recipient = __instance.getActorByName(__instance.secretSantaRecipient.Name);
-                var taste = (GiftTaste) recipient.getGiftTasteForThisItem(gift);
+                var taste = (GiftTaste)recipient.getGiftTasteForThisItem(gift);
 
                 if (_archipelago.SlotData.FestivalLocations != FestivalLocations.Hard || taste == GiftTaste.Love)
                 {
                     _locationChecker.AddCheckedLocation(FestivalLocationNames.SECRET_SANTA);
                 }
-                
+
                 return true; // run original logic
             }
             catch (Exception ex)
@@ -63,62 +62,30 @@ namespace StardewArchipelago.Locations.Festival
             }
         }
 
-        // public static NPC getRandomTownNPC()
-        public static bool GetRandomTownNPC_ChooseActualRandom_Prefix(ref NPC __result)
+        // public static NPC GetRandomWinterStarParticipant(Func<string, bool> shouldIgnoreNpc = null)
+        public static bool GetRandomWinterStarParticipant_ChooseBasedOnMonthNotYear_Prefix(Func<string, bool> ignoreNpc, ref NPC __result)
         {
             try
             {
-                __result = GetRandomTownNpc(Game1.random);
+                var random = Utility.CreateRandom((int)(Game1.uniqueIDForThisGame / 2UL), (int)(Game1.stats.DaysPlayed / 28), (double)Game1.player.UniqueMultiplayerID);
+                __result = Utility.GetRandomNpc((name, data) => IsWinterStarParticipant(name, data, ignoreNpc), random);
+
                 return false; // don't run original logic
             }
             catch (Exception ex)
             {
-                _monitor.Log($"Failed in {nameof(GetRandomTownNPC_ChooseActualRandom_Prefix)}:\n{ex}", LogLevel.Error);
+                _monitor.Log($"Failed in {nameof(GetRandomWinterStarParticipant_ChooseBasedOnMonthNotYear_Prefix)}:\n{ex}", LogLevel.Error);
                 return true; // run original logic
             }
         }
 
-        // public static NPC getRandomTownNPC(Random r)
-        public static bool GetRandomTownNPC_ChooseSecretSantaTarget_Prefix(Random r, ref NPC __result)
+        private static bool IsWinterStarParticipant(string name, CharacterData data, Func<string, bool> shouldIgnoreNpc)
         {
-            try
+            if (shouldIgnoreNpc != null && shouldIgnoreNpc(name))
             {
-                if (_random == null || !ReferenceEquals(_lastProvidedRandom, r))
-                {
-                    var seed = (int)Game1.uniqueIDForThisGame + (int)(Game1.stats.DaysPlayed / 28);
-                    _random = new Random(seed);
-                    _lastProvidedRandom = r;
-                }
-
-                __result = GetRandomTownNpc(_random);
-                return false; // don't run original logic
+                return false;
             }
-            catch (Exception ex)
-            {
-                _monitor.Log($"Failed in {nameof(GetRandomTownNPC_ChooseSecretSantaTarget_Prefix)}:\n{ex}", LogLevel.Error);
-                return true; // run original logic
-            }
-        }
-
-        private static NPC GetRandomTownNpc(Random random)
-        {
-            var npcNames = Game1.content.Load<Dictionary<string, string>>("Data\\NPCDispositions").Keys.ToArray();
-            var illegalTargets = new[]
-            {
-                "Wizard", "Krobus", "Sandy", "Dwarf", "Marlon", "Leo",
-            };
-            
-            string chosenName;
-            NPC chosenNpc;
-            do
-            {
-                var index = random.Next(npcNames.Length);
-                chosenName = npcNames[index];
-                chosenNpc = Game1.getCharacterFromName(chosenName);
-
-            } while (illegalTargets.Contains(chosenName) || chosenNpc == null);
-
-            return chosenNpc;
+            return data.WinterStarParticipant == null ? data.HomeRegion == "Town" : GameStateQuery.CheckConditions(data.WinterStarParticipant);
         }
 
         // public bool chooseResponse(Response response)

@@ -60,7 +60,7 @@ namespace Pathoschild.Stardew.LookupAnything.Components
         private readonly SearchTextBox SearchTextbox;
 
         /// <summary>The current search results.</summary>
-        private IEnumerable<SearchResultComponent> SearchResults = Enumerable.Empty<SearchResultComponent>();
+        private IEnumerable<SearchResultComponent> SearchResults = [];
 
         /// <summary>The pixel area containing search results.</summary>
         private Rectangle SearchResultArea;
@@ -367,7 +367,7 @@ namespace Pathoschild.Stardew.LookupAnything.Components
             string[] words = (search ?? "").Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             if (!words.Any())
             {
-                this.SearchResults = Enumerable.Empty<SearchResultComponent>();
+                this.SearchResults = [];
                 return;
             }
 

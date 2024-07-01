@@ -9,13 +9,13 @@
 *************************************************/
 
 using StardewModdingAPI;
+using StardewValley;
 using System.Collections.Generic;
 
 namespace MarketTown
 {
     public class ModConfig
     {
-        public bool EnableMod { get; set; } = true;
         public bool EnablePrice { get; set; } = false;
         public bool EnableTip { get; set; } = false;
         public bool TipWhenNeaBy { get; set; } = true;
@@ -44,7 +44,6 @@ namespace MarketTown
         public float InviteComeTime { get; set; } = 1000;
         public float InviteLeaveTime { get; set; } = 2000;
         public bool EnableVisitInside { get; set; } = true;
-        public int DialogueTime { get; set; } = 1;
         public bool AllowRemoveNonFood { get; set; } = false;
 
         public bool DisableKidAsk { get; set; } = false;
@@ -55,8 +54,8 @@ namespace MarketTown
 
         public bool DoorEntry { get; set; } = true;
         public float ShedVisitChance { get; set;} = 0.2f;
-        public int MaxShedCapacity { get; set; } = 5;
-        public int TimeStay { get; set; } = 230;
+        public int MaxShedCapacity { get; set; } = 7;
+        public int TimeStay { get; set; } = 130;
         public int OpenHour { get; set; } = 800;
         public int CloseHour { get;set; } = 2200;
 
@@ -70,12 +69,14 @@ namespace MarketTown
         public SButton ModKey { get; set; } = SButton.LeftAlt;
         public int MaxNPCOrdersPerNight { get; set; } = 3;
         public float PriceMarkup { get; set; } = 3f;
-        public float OrderChance { get; set; } = 0.02f;
+        public float TableSit { get; set; } = 0.3f;
+        public float OrderChance { get; set; } = 0.03f;
         public float LovedDishChance { get; set; } = 0.8f;
         public List<string> RestaurantLocations { get; set; } = new List<string>()
         {
             "Shed",
-            "Big Shed"
+            "Big Shed",
+            "Custom_MT_Island_House"
         };
         public int NPCCheckTimer { get; set; } = 1;
         public float MuseumPriceMarkup { get; set; } = 1.0f;
@@ -83,5 +84,29 @@ namespace MarketTown
         public bool EasyLicense { get; set; } = false;
         public bool DisableTextChat { get; set; } = false;
 
+        public int ParadiseIslandNPC { get; set; } = 40;
+        public bool IslandProgress { get; set; } = true;
+        public float IslandWalkAround { get; set; } = 0.2f;
+        public bool IslandPlantBoost { get; set; } = true;
+        public float IslandPlantBoostChance { get; set; } = 0.2f;
+        public bool FestivalMon { get; set; } = false;
+        public bool FestivalTue { get; set; } = false;
+        public bool FestivalWed { get; set; } = false;
+        public bool FestivalThu { get; set; } = false;
+        public bool FestivalFri { get; set; } = false;
+        public bool FestivalSat { get; set; } = true;
+        public bool FestivalSun { get; set; } = false;
+
+        public bool AdvanceOutputItemId { get; set; } = false;
+        public bool AdvanceNpcFix { get; set; } = true;
+
+        public int FestivalTimeStart { get; set; } = 800;
+        public int FestivalTimeEnd { get; set; } = 1600;
+        public float FestivalMaxSellChance { get; set; } = 0.3f;
+
+        public float RestockChance { get; set; } = 0.66f;
+
+        public float VisitChanceIslandHouse { get; set; } = 0.2f;
+        public float VisitChanceIslandBuilding { get; set; } = 0.2f;
     }
 }

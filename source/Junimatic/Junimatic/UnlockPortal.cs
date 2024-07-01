@@ -20,6 +20,8 @@ using StardewValley.GameData.BigCraftables;
 using StardewValley.GameData.Objects;
 using StardewValley.TerrainFeatures;
 
+using static NermNermNerm.Stardew.LocalizeFromSource.SdvLocalize;
+
 namespace NermNermNerm.Junimatic
 {
     /// <summary>
@@ -68,7 +70,7 @@ namespace NermNermNerm.Junimatic
             {
                 if (!e.Player.IsMainPlayer)
                 {
-                    Game1.addHUDMessage(new HUDMessage("Give the strange little structure to the host player - only the host can advance this quest.  (Put it in a chest for them.)") { noIcon = true });
+                    Game1.addHUDMessage(new HUDMessage(L("Give the strange little structure to the host player - only the host can advance this quest.  (Put it in a chest for them.)")) { noIcon = true });
                 }
                 else if (!this.IsUnlocked && !e.Player.questLog.Any(q => q.id.Value == OldJunimoPortalQuest))
                 {
@@ -102,7 +104,7 @@ namespace NermNermNerm.Junimatic
                 e.Edit(editor =>
                 {
                     IDictionary<string, string> recipes = editor.AsDictionary<string, string>().Data;
-                    recipes[JunimoPortalRecipe] = $"{StardewValley.Object.woodID} 20 {"92" /* sap*/} 30 {-777 /*wild seeds any*/} 5/Field/{JunimoPortal}/true/None/";
+                    recipes[JunimoPortalRecipe] = IF($"{StardewValley.Object.woodID} 20 {"92" /* sap*/} 30 {-777 /*wild seeds any*/} 5/Field/{JunimoPortal}/true/None/");
                 });
             }
             else if (e.NameWithoutLocale.IsEquivalentTo("Data/Events/WizardHouse"))
@@ -117,7 +119,7 @@ namespace NermNermNerm.Junimatic
                 e.Edit(editor =>
                 {
                     IDictionary<string, string> data = editor.AsDictionary<string, string>().Data;
-                    data[OldJunimoPortalQuest] = "Basic/The Strange Little Structure/You found the remnants of what looks like a little building.  It smells like it has some Forest Magic in it./Bring the remnants of the strange little structure to the wizard./null/-1/0/-1/false";
+                    data[OldJunimoPortalQuest] = SdvQuest("Basic/The Strange Little Structure/You found the remnants of what looks like a little building.  It smells like it has some Forest Magic in it./Bring the remnants of the strange little structure to the wizard's tower./null/-1/0/-1/false");
                 });
             }
         }
@@ -130,8 +132,8 @@ namespace NermNermNerm.Junimatic
                 SpriteIndex = 0,
                 CanBePlacedIndoors = true,
                 CanBePlacedOutdoors = true,
-                Description = "A portal through which Junimos who want to help out on the farm can appear.  Place pathways next to these when placing them outdoors so the Junimos will know where to go.",
-                DisplayName = "Junimo Portal",
+                Description = L("A portal through which Junimos who want to help out on the farm can appear.  Place pathways next to these when placing them outdoors so the Junimos will know where to go."),
+                DisplayName = L("Junimo Portal"),
                 Texture = ModEntry.BigCraftablesSpritesPseudoPath,
             };
         }
@@ -141,14 +143,16 @@ namespace NermNermNerm.Junimatic
             ModEntry.AddQuestItem(
                 objects,
                 OldJunimoPortalQiid,
-                "a strange little structure", // TODO: 18n
-                "At first it looked like a woody weed, but a closer look makes it like a little structure, and it smells sorta like the Wizard's forest-magic potion.", // TODO: 18n
+                L("a strange little structure"),
+                L("At first it looked like a woody weed, but a closer look makes it like a little structure, and it smells sorta like the Wizard's forest-magic potion."),
                 0);
         }
 
         private void EditWizardHouseEvents(IDictionary<string, string> eventData)
         {
-            eventData[$"{JunimoPortalDiscoveryEvent}/H/i {OldJunimoPortalQiid}"] = $@"WizardSong/-1000 -1000/farmer 8 24 0 Wizard 10 15 2 Junimo -2000 -2000 2/
+            string commonPart1 = SdvEvent($@"WizardSong/
+-1000 -1000/
+farmer 8 24 0 Wizard 10 15 2 Junimo -2000 -2000 2/
 removeQuest {OldJunimoPortalQuest}/
 addConversationTopic {ConversationKeys.JunimosLastTripToMine} 200/
 addConversationTopic {UnlockCropMachines.ConversationKeyBigCrops} 200/
@@ -177,6 +181,9 @@ faceDirection farmer 1/
 pause 1000/
 faceDirection Wizard 3/
 speak Wizard ""Ah I see why you thought I should see this...#$b#I believe I recognize the magical traces, but let me consult my vast reference library to be certain...""/
+");
+
+            string stockPart2 = SdvEvent($@"
 move Wizard 0 -2 0/
 faceDirection Wizard 2/
 faceDirection farmer 0/
@@ -194,6 +201,40 @@ faceDirection Wizard 2/
 speak Wizard ""Yes.  I was right...#$b#As always.""/
 move Wizard 2 0 1/
 move Wizard 0 2 2/
+");
+            string svePart2 = SdvEvent($@"
+move Wizard 0 4 2
+faceDirection Wizard 0
+faceDirection farmer 2
+speak Wizard ""Come along then!""
+move Wizard 0 5 2 true
+move farmer 0 5 2 true
+fade
+viewport -1000 -1000
+waitForAllStationary
+
+changeLocation Custom_WizardBasement
+warp Wizard 12 13
+warp farmer 8 13
+faceDirection farmer 1
+faceDirection Wizard 3
+viewport 8 13
+fade unfade
+
+pause 500
+move Wizard 1 0 1
+faceDirection Wizard 0
+emote Wizard 40
+pause 1000
+move Wizard -3 0 3
+faceDirection Wizard 0
+emote Wizard 40
+pause 1000
+faceDirection Wizard 2
+speak Wizard ""Yes.  I was right...#$b#As always.""
+").Replace("\r", "").Replace("\n", "/");
+
+            string commonPart3 = SdvEvent($@"
 faceDirection Wizard 3/
 faceDirection farmer 1/
 speak Wizard ""This is a sort of a crude portal, made by your Grandfather to allow Junimos to easily travel between their world and ours.#$b#It's an easy thing to construct, even the greenest apprentice could do it.  Here, let me teach it to you.""/
@@ -210,12 +251,15 @@ speak Wizard ""Enticing a Junimo to *use* it, well, that's up to the Junimo...""
 globalFade/
 viewport -1000 -1000/
 message ""Usage: After completing quests to get junimo helpers, you can place Junimo Portals either in buildings or outside.  If outside, place walkways between the hut and any chests or machines you want the Junimo to automate.  If in a building, you can place walkways or just leave a clear path.""/
-end warpOut";
+end warpOut");
+
+            eventData[IF($"{JunimoPortalDiscoveryEvent}/H/i {OldJunimoPortalQiid}")]
+                = commonPart1 + (this.mod.IsRunningSve ? svePart2 : stockPart2) + commonPart3;
         }
 
         private void GameLoop_DayEnding(object? sender, DayEndingEventArgs e)
         {
-            if (Game1.isRaining // TODO: Consider + && it won't rain tomorrow
+            if (Game1.isRaining
                 && Game1.IsMasterGame
                 && Game1.Date.TotalDays >= 7
                 && !Game1.MasterPlayer.modData.ContainsKey(ModDataKey_PlacedOldPortal)
@@ -228,9 +272,18 @@ end warpOut";
 
         private void GameLoop_DayStarted(object? sender, DayStartedEventArgs e)
         {
-            if (Game1.MasterPlayer.modData.ContainsKey(ModDataKey_PlacedOldPortal) && !Game1.MasterPlayer.modData.ContainsKey(ModDataKey_AlertedPlayer) && !Game1.isRaining)
+            if (ModEntry.Config.EnableWithoutQuests
+                && Game1.player.IsMainPlayer
+                && !Game1.player.questLog.Any(q => q.id.Value == OldJunimoPortalQuest)
+                && !this.IsUnlocked)
             {
-                Game1.addHUDMessage(new HUDMessage("That was some storm!  I wonder if the rain washed the mud off of any of Grandpa's old stuff!") {  noIcon = true });
+                Game1.player.addItemToInventory(ItemRegistry.Create(OldJunimoPortalQiid));
+            }
+            else if (Game1.MasterPlayer.modData.ContainsKey(ModDataKey_PlacedOldPortal)
+                && !Game1.MasterPlayer.modData.ContainsKey(ModDataKey_AlertedPlayer)
+                && !Game1.isRaining)
+            {
+                Game1.addHUDMessage(new HUDMessage(L("That was some storm!  I wonder if the rain washed the mud off of any of Grandpa's old stuff!")) { noIcon = true });
                 Game1.MasterPlayer.modData[ModDataKey_AlertedPlayer] = Game1.Date.TotalDays.ToString();
             }
         }
@@ -261,7 +314,7 @@ end warpOut";
                 if (!visibleGrassPlots.Any())
                 {
                     // TODO: Try and find some clear ground or just pick a random spot.
-                    this.LogWarning("No weeds or grass on farm, can't place the old junimo portal");
+                    this.LogWarning($"No weeds or grass on farm, can't place the old junimo portal");
                     return;
                 }
 

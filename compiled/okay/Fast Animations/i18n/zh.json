@@ -68,6 +68,12 @@
     "config.casino-slots.name": "赌场老虎机",
     "config.casino-slots.tooltip": "赌场老虎机的转速。默认{{defaultValue}}x。",
 
+    "config.event.name": "事件",
+    "config.event.tooltip": "事件的速度。默认{{defaultValue}}x，建议{{suggestedValue}}x.",
+
+    "config.fade.name": "淡入淡出",
+    "config.fade.tooltip": "屏幕淡入淡出黑色的速度。默认{{defaultValue}}x.",
+
     "config.fishing-treasure.name": "钓鱼宝箱",
     "config.fishing-treasure.tooltip": "钓鱼宝箱打开的速度。默认{{defaultValue}}x.",
 
@@ -77,8 +83,14 @@
     "config.open-chest.name": "宝箱打开",
     "config.open-chest.tooltip": "宝箱打开的速度。默认{{defaultValue}}x.",
 
+    "config.parrot-express.name": "鹦鹉特快",
+    "config.parrot-express.tooltip": "鹦鹉特快的速度。默认{{defaultValue}}x.",
+
     "config.prize-ticket-machine.name": "兑奖机",
     "config.prize-ticket-machine.tooltip": "兑奖机兑奖的速度。默认{{defaultValue}}x.",
+
+    "config.tailor.name": "裁缝",
+    "config.tailor.tooltip": "裁缝的速度。默认{{defaultValue}}x.",
 
     "config.tree-fall.name": "树倒下",
     "config.tree-fall.tooltip": "树被砍倒的速度。默认{{defaultValue}}x，建议{{suggestedValue}}x。",
@@ -90,6 +102,12 @@
     ** 'UI Animation Speeds' section
     ****/
     "config.ui-speeds": "UI动画速度",
+
+    "config.dialogue-typing.name": "对话速度",
+    "config.dialogue-typing.tooltip": "对话的速度。默认{{defaultValue}}x",
+
+    "config.open-dialogue-box.name": "对话框打开",
+    "config.open-dialogue-box.tooltip": "对话框打开的速度。默认{{defaultValue}}x.",
 
     "config.title-menu.name": "标题菜单的转场效果",
     "config.title-menu.tooltip": "标题菜单的转场速度，即新建、加载存档时屏幕切换的速度。默认{{defaultValue}}x。",

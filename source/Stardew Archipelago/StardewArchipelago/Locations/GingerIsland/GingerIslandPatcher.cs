@@ -106,8 +106,8 @@ namespace StardewArchipelago.Locations.GingerIsland
         private void ReplaceFieldOfficeWithChecks()
         {
             _harmony.Patch(
-                original: AccessTools.Method(typeof(Event), nameof(Event.command_addCraftingRecipe)),
-                prefix: new HarmonyMethod(typeof(FieldOfficeInjections), nameof(FieldOfficeInjections.CommandAddCraftingRecipe_OstrichIncubator_Prefix))
+                original: AccessTools.Method(typeof(Event.DefaultCommands), nameof(Event.DefaultCommands.AddCraftingRecipe)),
+                prefix: new HarmonyMethod(typeof(FieldOfficeInjections), nameof(FieldOfficeInjections.AddCraftingRecipe_OstrichIncubator_Prefix))
             );
         }
 

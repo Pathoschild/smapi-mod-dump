@@ -30,6 +30,8 @@ namespace StardewDruid.Data
 
         public KeybindList herbalismButtons { get; set; }
 
+        public string modDifficulty { get; set; }
+
         public bool disableHands { get; set; }
 
         public bool autoProgress { get; set; }
@@ -39,10 +41,6 @@ namespace StardewDruid.Data
         public bool setOnce { get; set; }
 
         public bool maxDamage { get; set; }
-
-        public int adjustRewards { get; set; }
-
-        public string combatDifficulty { get; set; }
 
         public bool slotAttune { get; set; }
 
@@ -110,8 +108,7 @@ namespace StardewDruid.Data
             setMilestone = 0;
             setOnce = false;
             maxDamage = false;
-            adjustRewards = 100;
-            combatDifficulty = "medium";
+            modDifficulty = "medium";
             slotAttune = true;
             slotConsume = true;
             slotFreedom = false;

@@ -20,6 +20,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Skateboard", "Skateboard\Sk
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GarbageCanTweaks", "GarbageCanTweaks\GarbageCanTweaks.csproj", "{B51D4749-54D1-4C3A-83BC-9E5C5D1C9261}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoopTimeTweaks", "CoopTimeTweaks\CoopTimeTweaks.csproj", "{DC14A3D4-F988-4454-8980-B5BBF22A581A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -72,6 +74,14 @@ Global
 		{B51D4749-54D1-4C3A-83BC-9E5C5D1C9261}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B51D4749-54D1-4C3A-83BC-9E5C5D1C9261}.Release|x64.ActiveCfg = Release|Any CPU
 		{B51D4749-54D1-4C3A-83BC-9E5C5D1C9261}.Release|x64.Build.0 = Release|Any CPU
+		{DC14A3D4-F988-4454-8980-B5BBF22A581A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC14A3D4-F988-4454-8980-B5BBF22A581A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC14A3D4-F988-4454-8980-B5BBF22A581A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{DC14A3D4-F988-4454-8980-B5BBF22A581A}.Debug|x64.Build.0 = Debug|Any CPU
+		{DC14A3D4-F988-4454-8980-B5BBF22A581A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC14A3D4-F988-4454-8980-B5BBF22A581A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC14A3D4-F988-4454-8980-B5BBF22A581A}.Release|x64.ActiveCfg = Release|Any CPU
+		{DC14A3D4-F988-4454-8980-B5BBF22A581A}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

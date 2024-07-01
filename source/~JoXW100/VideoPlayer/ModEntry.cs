@@ -44,7 +44,9 @@ namespace VideoPlayerMod
             context = this;
             Config = Helper.ReadConfig<ModConfig>();
             if (!Config.EnableMod)
+            {
                 return;
+            }
 
             string path = Path.Combine(Helper.DirectoryPath, "assets");
             if (!Directory.Exists(path))
@@ -65,7 +67,6 @@ namespace VideoPlayerMod
 
             Helper.Events.GameLoop.GameLaunched += GameLoop_GameLaunched;
             Helper.Events.Input.ButtonPressed += Input_ButtonPressed;
-            Helper.Events.Display.Rendered += Display_Rendered;
         }
         public bool TryLoadFromWMV(string filePath, out Video video)
         {
@@ -109,6 +110,10 @@ namespace VideoPlayerMod
                     Texture2D appIcon = Helper.ModContent.Load<Texture2D>(Path.Combine("assets", "app_icon.png"));
                     bool success = api.AddApp(Helper.ModRegistry.ModID, Helper.Translation.Get("app-name"), OpenVideoPlayer, appIcon);
                     Monitor.Log($"loaded phone app successfully: {success}", LogLevel.Debug);
+                    if (success)
+                    {
+                        api.OnAfterRenderScreen += Display_Rendered;
+                    }
                 }
             }
         }
@@ -138,9 +143,10 @@ namespace VideoPlayerMod
                     Monitor.Log($"can't start, app already running", LogLevel.Debug);
                     return;
                 }
+
                 api.SetAppRunning(true);
                 api.SetRunningApp(Helper.ModRegistry.ModID);
-                Helper.Events.Display.Rendered += Display_Rendered;
+                api.OnAfterRenderScreen += Display_Rendered;
                 PlayTrack();
             }
         }
@@ -189,9 +195,13 @@ namespace VideoPlayerMod
                 else if (new Rectangle((int)screenPos.X,(int)screenPos.Y,(int)screenSize.X,(int)screenSize.Y).Contains(mousePos))
                 {
                     if (videoPlayer.State != MediaState.Playing)
+                    {
                         PlayTrack();
+                    }
                     else
+                    {
                         StopTrack();
+                    }
                 }
                 else
                 {
@@ -296,7 +306,7 @@ namespace VideoPlayerMod
                 if (!api.GetPhoneOpened() || api.GetRunningApp() != Helper.ModRegistry.ModID)
                 {
                     StopTrack(true);
-                    Helper.Events.Display.Rendered -= Display_Rendered;
+                    api.OnAfterRenderScreen -= Display_Rendered;
                     return;
                 }
                 e.SpriteBatch.Draw(backgroundTexture, new Rectangle((int)screenPos.X, (int)screenPos.Y, (int)screenSize.X, (int)screenSize.Y), Color.White);

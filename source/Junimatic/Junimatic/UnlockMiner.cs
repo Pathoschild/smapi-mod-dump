@@ -17,6 +17,8 @@ using StardewValley.GameData.Objects;
 using StardewValley.Locations;
 using StardewValley.Monsters;
 
+using static NermNermNerm.Stardew.LocalizeFromSource.SdvLocalize;
+
 namespace NermNermNerm.Junimatic
 {
     /// <summary>
@@ -41,7 +43,7 @@ namespace NermNermNerm.Junimatic
             this.mod.Helper.Events.Player.InventoryChanged += this.Player_InventoryChanged;
         }
 
-        public bool IsUnlocked => Game1.MasterPlayer.eventsSeen.Contains(MiningJunimoDreamEvent);
+        public bool IsUnlocked => ModEntry.Config.EnableWithoutQuests || Game1.MasterPlayer.eventsSeen.Contains(MiningJunimoDreamEvent);
 
         private void Player_InventoryChanged(object? sender, InventoryChangedEventArgs e)
         {
@@ -49,12 +51,12 @@ namespace NermNermNerm.Junimatic
             {
                 if (!e.Player.IsMainPlayer)
                 {
-                    Game1.addHUDMessage(new HUDMessage("Give the strange orb to the host player - only the host can advance this quest.  (Put it in a chest for them)") { noIcon = true });
+                    Game1.addHUDMessage(new HUDMessage(L("Give the strange orb to the host player - only the host can advance this quest.  (Put it in a chest for them)")) { noIcon = true });
                 }
                 else if (!this.IsUnlocked && !e.Player.questLog.Any(q => q.id.Value == JunimoChrysalisToWizardQuest))
                 {
                     e.Player.addQuest(JunimoChrysalisToWizardQuest);
-                    e.Player.modData[HasGottenJunimoChrysalisDrop] = "true";
+                    e.Player.modData[HasGottenJunimoChrysalisDrop] = true.ToString();
                 }
                 else
                 {
@@ -104,15 +106,15 @@ namespace NermNermNerm.Junimatic
             ModEntry.AddQuestItem(
                 objects,
                 JunimoChrysalisQiid,
-                "a strange faintly glowing orb", // TODO: 18n
-                "It looks vaguely magical. It's quite hard and smooth.", // TODO: 18n
+                L("a strange faintly glowing orb"),
+                L("It looks vaguely magical. It's quite hard and smooth."),
                 1);
         }
 
         private void EditFarmHouseEvents(IDictionary<string, string> eventData)
         {
-            eventData[$"{MiningJunimoDreamEvent}/H/sawEvent {ReturnJunimoOrbEvent}/time 600 620"]
-                = $@"grandpas_theme/
+            eventData[IF($"{MiningJunimoDreamEvent}/H/sawEvent {ReturnJunimoOrbEvent}/time 600 620")]
+                = SdvEvent($@"grandpas_theme/
 -2000 -1000/
 farmer 13 23 2/
 skippable/
@@ -123,12 +125,12 @@ viewport -1000 -1000 true/
 pause 8000/
 speak Grandpa ""My dear boy...^My beloved grand-daughter...#$b#I am sorry to come to you like this, but I had to thank you for rescuing my dear Junimo friend.#$b#He protected me at a time when my darkest enemy was my own failing mind.#$b#In better days, he helped me with my smelters and other mine-related machines.  He will help you too; he really enjoys watching the glow of the fires!#$b#I rest much easier now knowing that my friend is safe.  I am so proud of you...""/playmusic none/
 pause 1000/
-end bed";
+end bed");
         }
 
         private void EditWizardHouseEvents(IDictionary<string, string> eventData)
         {
-            eventData[$"{ReturnJunimoOrbEvent}/H/i {JunimoChrysalisQiid}"] = @$"WizardSong/
+            eventData[IF($"{ReturnJunimoOrbEvent}/H/i {JunimoChrysalisQiid}")] = SdvEvent(@$"WizardSong/
 -1000 -1000/
 farmer 8 24 0 Wizard 10 15 2 Junimo -2000 -2000 2/
 {ModEntry.SetJunimoColorEventCommand} OrangeRed/
@@ -204,12 +206,12 @@ faceDirection Wizard 2/
 speak Wizard ""That's it...#$b#Really...#$b#I think.""/
 move farmer 0 3 2 false/
 end warpOut/
-";
+");
         }
 
         private void EditQuests(IDictionary<string, string> data)
         {
-            data[JunimoChrysalisToWizardQuest] = "Basic/The Strange Orb/Investigate the strange glowing thing you found inside a big slime./Bring the faintly glowing orb to the wizard./null/-1/0/-1/false";
+            data[JunimoChrysalisToWizardQuest] = SdvQuest("Basic/The Strange Orb/Investigate the strange glowing thing you found inside a big slime./Bring the faintly glowing orb to the wizard's tower./null/-1/0/-1/false");
         }
 
         public void WriteToLog(string message, LogLevel level, bool isOnceOnly)

@@ -1,0 +1,16 @@
+urls:
+   web: https://github.com/emurphy42/WhatDoYouWant
+   Git: https://github.com/emurphy42/WhatDoYouWant.git
+
+mods:
+   What Do You Want
+
+latest commit:
+   commit a374adf08bfafa9d1f1faa3997948ef3bf941e46
+   Author: emurphy42 <emurphy42@gmail.com>
+   Date:   Thu Jun 20 23:18:04 2024 -0700
+   
+       Community Center, Museum: fix some item descriptions
+       Cooking, Crafting: identify how to learn recipes
+       Fishing: improve detection of seasons
+   

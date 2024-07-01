@@ -13,39 +13,46 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
-using StardewArchipelago.Constants;
+using StardewArchipelago.Constants.Vanilla;
+using StardewArchipelago.Stardew.Ids.Vanilla;
 using StardewValley;
+using StardewValley.GameData.BigCraftables;
+using StardewValley.GameData.Objects;
+using StardewValley.GameData.Weapons;
 using Object = StardewValley.Object;
 
 namespace StardewArchipelago.Stardew
 {
     public class StardewItemManager
     {
-        private Dictionary<int, StardewObject> _objectsById;
+        private Dictionary<string, StardewItem> _itemsByQualifiedId;
+        private Dictionary<string, StardewObject> _objectsById;
         private Dictionary<string, StardewObject> _objectsByName;
-        private Dictionary<int, BigCraftable> _bigCraftablesById;
+        private Dictionary<string, List<StardewObject>> _objectsByColor;
+        private Dictionary<string, List<StardewObject>> _objectsByType;
+        private Dictionary<string, BigCraftable> _bigCraftablesById;
         private Dictionary<string, BigCraftable> _bigCraftablesByName;
-        private Dictionary<int, StardewBoots> _bootsById;
+        private Dictionary<string, StardewBoots> _bootsById;
         private Dictionary<string, StardewBoots> _bootsByName;
-        private Dictionary<int, StardewFurniture> _furnitureById;
+        private Dictionary<string, StardewFurniture> _furnitureById;
         private Dictionary<string, StardewFurniture> _furnitureByName;
-        private Dictionary<int, StardewHat> _hatsById;
+        private Dictionary<string, StardewHat> _hatsById;
         private Dictionary<string, StardewHat> _hatsByName;
-        private Dictionary<int, StardewWeapon> _weaponsById;
+        private Dictionary<string, StardewWeapon> _weaponsById;
         private Dictionary<string, StardewWeapon> _weaponsByName;
         private Dictionary<string, StardewCookingRecipe> _cookingRecipesByName;
-        private Dictionary<string, StardewCraftingRecipe> _craftingRecipesByName;
+        private Dictionary<string, StardewCraftingRecipe> _craftingRecipesByName;        
 
-        private List<int> _priorityIds = new List<int>()
+        private List<string> _priorityIds = new()
         {
-            390,
+            "390",
         };
 
-        public Dictionary<int, string> ItemSuffixes = new Dictionary<int, string>()
+        public Dictionary<string, string> ItemSuffixes = new()
         {
-            {126, " (Green)"},
-            {180, " (Brown)"},
-            {182, " (Brown)"},
+            { "126", " (Green)" },
+            { "180", " (Brown)" },
+            { "182", " (Brown)" },
         };
 
         public StardewItemManager()
@@ -53,21 +60,19 @@ namespace StardewArchipelago.Stardew
             InitializeData();
         }
 
-        public List<StardewItem> GetAllItems()
+        public IEnumerable<StardewItem> GetAllItems()
         {
-            var allItems = new List<StardewItem>();
-            allItems.AddRange(_objectsByName.Values);
-            allItems.AddRange(_bigCraftablesByName.Values);
-            allItems.AddRange(_bootsByName.Values);
-            allItems.AddRange(_furnitureByName.Values);
-            allItems.AddRange(_hatsByName.Values);
-            allItems.AddRange(_weaponsByName.Values);
-            return allItems;
+            return _itemsByQualifiedId.Values;
         }
 
         public bool ItemExists(string itemName)
         {
-            return _objectsByName.ContainsKey(itemName) || 
+            if (string.IsNullOrWhiteSpace(itemName))
+            {
+                return false;
+            }
+
+            return _objectsByName.ContainsKey(itemName) ||
                    _bigCraftablesByName.ContainsKey(itemName) ||
                    _bootsByName.ContainsKey(itemName) ||
                    _furnitureByName.ContainsKey(itemName) ||
@@ -75,8 +80,13 @@ namespace StardewArchipelago.Stardew
                    _weaponsByName.ContainsKey(itemName);
         }
 
-        public bool ItemExists(int itemId)
+        public bool ItemExistsById(string itemId)
         {
+            if (string.IsNullOrWhiteSpace(itemId))
+            {
+                return false;
+            }
+
             return _objectsById.ContainsKey(itemId) ||
                    _bigCraftablesById.ContainsKey(itemId) ||
                    _bootsById.ContainsKey(itemId) ||
@@ -85,13 +95,38 @@ namespace StardewArchipelago.Stardew
                    _weaponsById.ContainsKey(itemId);
         }
 
-        public bool ObjectExists(int itemId)
+        public bool ItemExistsByQualifiedId(string itemId)
         {
+            if (string.IsNullOrWhiteSpace(itemId))
+            {
+                return false;
+            }
+
+            return _itemsByQualifiedId.ContainsKey(itemId);
+        }
+
+        public StardewItem GetItemByQualifiedId(string itemId)
+        {
+            return _itemsByQualifiedId.ContainsKey(itemId) ? _itemsByQualifiedId[itemId] : null;
+        }
+
+        public bool ObjectExistsById(string itemId)
+        {
+            if (string.IsNullOrWhiteSpace(itemId))
+            {
+                return false;
+            }
+
             return _objectsById.ContainsKey(itemId);
         }
 
         public bool ObjectExists(string itemName)
         {
+            if (string.IsNullOrWhiteSpace(itemName))
+            {
+                return false;
+            }
+
             if (_objectsByName.ContainsKey(itemName))
             {
                 return true;
@@ -135,7 +170,7 @@ namespace StardewArchipelago.Stardew
             throw new ArgumentException($"Item not found: {itemName}");
         }
 
-        public StardewObject GetObjectById(int itemId)
+        public StardewObject GetObjectById(string itemId)
         {
             if (_objectsById.ContainsKey(itemId))
             {
@@ -155,7 +190,31 @@ namespace StardewArchipelago.Stardew
             throw new ArgumentException($"Item not found: {itemName}");
         }
 
-        public BigCraftable GetBigCraftableById(int itemId)
+        public IEnumerable<StardewObject> GetObjectsWithPhrase(string phrase)
+        {
+            return _objectsByName.Where(x=> x.Key.Contains(phrase, StringComparison.OrdinalIgnoreCase)).Select(x => x.Value); // I do it all for the berry
+        }
+
+        public List<StardewObject> GetObjectsByColor(string color)
+        {
+            if (_objectsByColor.ContainsKey(color))
+            {
+                return _objectsByColor[color];
+            }
+
+            throw new ArgumentException($"Color not supported: {color}");
+        }
+
+        public List<StardewObject> GetObjectsByType(string type)
+        {
+            if (_objectsByType.ContainsKey(type))
+            {
+                return _objectsByType[type];
+            }
+            throw new ArgumentException($"Type not found: {type}");
+        }
+
+        public BigCraftable GetBigCraftableById(string itemId)
         {
             if (_bigCraftablesById.ContainsKey(itemId))
             {
@@ -165,7 +224,7 @@ namespace StardewArchipelago.Stardew
             throw new ArgumentException($"Item not found: {itemId}");
         }
 
-        public StardewBoots GetBootsById(int itemId)
+        public StardewBoots GetBootsById(string itemId)
         {
             if (_bootsById.ContainsKey(itemId))
             {
@@ -180,7 +239,7 @@ namespace StardewArchipelago.Stardew
             return _bootsByName.Values.ToArray();
         }
 
-        public StardewFurniture GetFurnitureById(int itemId)
+        public StardewFurniture GetFurnitureById(string itemId)
         {
             if (_furnitureById.ContainsKey(itemId))
             {
@@ -190,7 +249,7 @@ namespace StardewArchipelago.Stardew
             throw new ArgumentException($"Item not found: {itemId}");
         }
 
-        public StardewHat GetHatById(int itemId)
+        public StardewHat GetHatById(string itemId)
         {
             if (_hatsById.ContainsKey(itemId))
             {
@@ -200,7 +259,7 @@ namespace StardewArchipelago.Stardew
             throw new ArgumentException($"Item not found: {itemId}");
         }
 
-        public StardewWeapon GetWeaponById(int weaponId)
+        public StardewWeapon GetWeaponById(string weaponId)
         {
             if (_weaponsById.ContainsKey(weaponId))
             {
@@ -240,8 +299,14 @@ namespace StardewArchipelago.Stardew
             return _weaponsByName.Values.ToArray();
         }
 
+        public StardewRing[] GetAllRings()
+        {
+            return _objectsByName.Values.OfType<StardewRing>().ToArray();
+        }
+
         private void InitializeData()
         {
+            _itemsByQualifiedId = new Dictionary<string, StardewItem>();
             InitializeObjects();
             InitializeBigCraftables();
             InitializeBoots();
@@ -256,12 +321,14 @@ namespace StardewArchipelago.Stardew
 
         private void InitializeObjects()
         {
-            _objectsById = new Dictionary<int, StardewObject>();
+            _objectsById = new Dictionary<string, StardewObject>();
             _objectsByName = new Dictionary<string, StardewObject>();
-            var allObjectData = Game1.objectInformation;
-            foreach (var (id, objectInfo) in allObjectData)
+            _objectsByColor = new Dictionary<string, List<StardewObject>>();
+            _objectsByType = new Dictionary<string, List<StardewObject>>();
+            var allObjectData = DataLoader.Objects(Game1.content);
+            foreach (var (id, objectData) in allObjectData)
             {
-                var stardewItem = ParseStardewObjectData(id, objectInfo);
+                var stardewItem = ParseStardewObjectData(id, objectData);
 
                 if (_objectsById.ContainsKey(id))
                 {
@@ -279,7 +346,11 @@ namespace StardewArchipelago.Stardew
                     continue;
                 }
 
+                AddObjectByColor(objectData, stardewItem);
+                AddObjectByType(objectData, stardewItem);
+
                 _objectsById.Add(id, stardewItem);
+                _itemsByQualifiedId.Add(stardewItem.GetQualifiedId(), stardewItem);
                 AddItemAndAliasesToNamesDictionary(stardewItem);
             }
         }
@@ -288,7 +359,7 @@ namespace StardewArchipelago.Stardew
         {
             foreach (var aliasGroup in NameAliases.ItemNameAliasGroups)
             {
-                if (!aliasGroup.Contains(stardewItem.Name))
+                if (!aliasGroup.Contains(stardewItem.Name) && !aliasGroup.Contains(stardewItem.Id))
                 {
                     continue;
                 }
@@ -306,12 +377,12 @@ namespace StardewArchipelago.Stardew
 
         private void InitializeBigCraftables()
         {
-            _bigCraftablesById = new Dictionary<int, BigCraftable>();
+            _bigCraftablesById = new Dictionary<string, BigCraftable>();
             _bigCraftablesByName = new Dictionary<string, BigCraftable>();
-            var allBigCraftablesInformation = Game1.bigCraftablesInformation;
-            foreach (var (id, bigCraftableInfo) in allBigCraftablesInformation)
+            var allBigCraftablesData = DataLoader.BigCraftables(Game1.content);
+            foreach (var (id, bigCraftableData) in allBigCraftablesData)
             {
-                var bigCraftable = ParseStardewBigCraftableData(id, bigCraftableInfo);
+                var bigCraftable = ParseStardewBigCraftableData(id, bigCraftableData);
 
                 if (_bigCraftablesById.ContainsKey(id) || _bigCraftablesByName.ContainsKey(bigCraftable.Name))
                 {
@@ -320,14 +391,15 @@ namespace StardewArchipelago.Stardew
 
                 _bigCraftablesById.Add(id, bigCraftable);
                 _bigCraftablesByName.Add(bigCraftable.Name, bigCraftable);
+                _itemsByQualifiedId.Add(bigCraftable.GetQualifiedId(), bigCraftable);
             }
         }
 
         private void InitializeBoots()
         {
-            _bootsById = new Dictionary<int, StardewBoots>();
+            _bootsById = new Dictionary<string, StardewBoots>();
             _bootsByName = new Dictionary<string, StardewBoots>();
-            var allBootsInformation = (IDictionary<int, string>)Game1.content.Load<Dictionary<int, string>>("Data\\Boots");
+            var allBootsInformation = DataLoader.Boots(Game1.content);
             foreach (var (id, bootsInfo) in allBootsInformation)
             {
                 var boots = ParseStardewBootsData(id, bootsInfo);
@@ -339,14 +411,15 @@ namespace StardewArchipelago.Stardew
 
                 _bootsById.Add(id, boots);
                 _bootsByName.Add(boots.Name, boots);
+                _itemsByQualifiedId.Add(boots.GetQualifiedId(), boots);
             }
         }
 
         private void InitializeFurniture()
         {
-            _furnitureById = new Dictionary<int, StardewFurniture>();
+            _furnitureById = new Dictionary<string, StardewFurniture>();
             _furnitureByName = new Dictionary<string, StardewFurniture>();
-            var allFurnitureInformation = (IDictionary<int, string>)Game1.content.Load<Dictionary<int, string>>("Data\\Furniture");
+            var allFurnitureInformation = DataLoader.Furniture(Game1.content);
             foreach (var (id, furnitureInfo) in allFurnitureInformation)
             {
                 var furniture = ParseStardewFurnitureData(id, furnitureInfo);
@@ -358,7 +431,7 @@ namespace StardewArchipelago.Stardew
 
                 _furnitureById.Add(id, furniture);
                 _furnitureByName.Add(furniture.Name, furniture);
-                if (id % 2 == 0 && id >= 1838 && id <= 1854)
+                if (furniture.IsLupiniPainting)
                 {
                     _furnitureByName.Add($"Lupini: {furniture.Name}", furniture);
                     if (furniture.Name.StartsWith("'"))
@@ -366,14 +439,16 @@ namespace StardewArchipelago.Stardew
                         _furnitureByName.Add($"Lupini: {furniture.Name.Substring(1, furniture.Name.Length - 2)}", furniture);
                     }
                 }
+
+                _itemsByQualifiedId.Add(furniture.GetQualifiedId(), furniture);
             }
         }
 
         private void InitializeHats()
         {
-            _hatsById = new Dictionary<int, StardewHat>();
+            _hatsById = new Dictionary<string, StardewHat>();
             _hatsByName = new Dictionary<string, StardewHat>();
-            var allHatsInformation = (IDictionary<int, string>)Game1.content.Load<Dictionary<int, string>>("Data\\hats");
+            var allHatsInformation = DataLoader.Hats(Game1.content);
             foreach (var (id, hatInfo) in allHatsInformation)
             {
                 var hat = ParseStardewHatData(id, hatInfo);
@@ -385,17 +460,18 @@ namespace StardewArchipelago.Stardew
 
                 _hatsById.Add(id, hat);
                 _hatsByName.Add(hat.Name, hat);
+                _itemsByQualifiedId.Add(hat.GetQualifiedId(), hat);
             }
         }
 
         private void InitializeWeapons()
         {
-            _weaponsById = new Dictionary<int, StardewWeapon>();
+            _weaponsById = new Dictionary<string, StardewWeapon>();
             _weaponsByName = new Dictionary<string, StardewWeapon>();
-            var allWeaponsInformation = Game1.content.Load<Dictionary<int, string>>("Data\\weapons");
-            foreach (var (id, weaponsInfo) in allWeaponsInformation)
+            var allWeaponsInformation = DataLoader.Weapons(Game1.content);
+            foreach (var (id, weaponData) in allWeaponsInformation)
             {
-                var weapon = ParseStardewWeaponData(id, weaponsInfo);
+                var weapon = ParseStardewWeaponData(id, weaponData);
 
                 if (_weaponsById.ContainsKey(id) || _weaponsByName.ContainsKey(weapon.Name))
                 {
@@ -404,13 +480,14 @@ namespace StardewArchipelago.Stardew
 
                 _weaponsById.Add(id, weapon);
                 _weaponsByName.Add(weapon.Name, weapon);
+                _itemsByQualifiedId.Add(weapon.GetQualifiedId(), weapon);
             }
         }
 
         private void InitializeCookingRecipes()
         {
             _cookingRecipesByName = new Dictionary<string, StardewCookingRecipe>();
-            var allCookingInformation = Game1.content.Load<Dictionary<string, string>>("Data\\CookingRecipes");
+            var allCookingInformation = DataLoader.CookingRecipes(Game1.content);
             foreach (var (recipeName, recipeInfo) in allCookingInformation)
             {
                 var recipe = ParseStardewCookingRecipeData(recipeName, recipeInfo);
@@ -431,7 +508,7 @@ namespace StardewArchipelago.Stardew
         private void InitializeCraftingRecipes()
         {
             _craftingRecipesByName = new Dictionary<string, StardewCraftingRecipe>();
-            var allCraftingInformation = Game1.content.Load<Dictionary<string, string>>("Data\\CraftingRecipes");
+            var allCraftingInformation = DataLoader.CraftingRecipes(Game1.content);
             foreach (var (recipeName, recipeInfo) in allCraftingInformation)
             {
                 var recipe = ParseStardewCraftingRecipeData(recipeName, recipeInfo);
@@ -445,29 +522,74 @@ namespace StardewArchipelago.Stardew
             }
         }
 
-        private StardewObject ParseStardewObjectData(int id, string objectInfo)
+        private void AddObjectByColor(ObjectData objectData, StardewObject stardewObject)
         {
-            var fields = objectInfo.Split("/");
-            var name = fields[0];
-            var sellPrice = int.Parse(fields[1]);
-            var edibility = int.Parse(fields[2]);
-            var typeAndCategory = fields[3].Split(" ");
-            var objectType = typeAndCategory[0];
-            var category = typeAndCategory.Length > 1 ? typeAndCategory[1] : "";
-            var displayName = fields[4];
-            var description = fields[5];
+            if (objectData.ContextTags is null)
+            {
+                return; //Its an object with no tags attached, so wouldn't have a color.
+            }
+            var firstColor = objectData.ContextTags.FirstOrDefault(x => x.Contains("color_"));
+            if (firstColor is null)
+            {
+                return; // There was no color tag found; throw it out.
+            }
+            if (firstColor == "color_rainbow" || firstColor == "color_white")
+            {
+                InitializeOrAddColorObject("Blue", stardewObject);
+                InitializeOrAddColorObject("Grey", stardewObject);
+                InitializeOrAddColorObject("Red", stardewObject);
+                InitializeOrAddColorObject("Yellow", stardewObject);
+                InitializeOrAddColorObject("Orange", stardewObject);
+                InitializeOrAddColorObject("Purple", stardewObject);
+                return;
+            }
+            if (!Colors.ContextToGeneralColor.TryGetValue(firstColor, out var color))
+            {
+                return; // Not a relevant color
+            }
+            InitializeOrAddColorObject(color, stardewObject);
+
+        }
+
+        private void InitializeOrAddColorObject(string color, StardewObject stardewObject)
+        {
+            if (!_objectsByColor.ContainsKey(color))
+            {
+                _objectsByColor[color] = new List<StardewObject>();
+            }
+            _objectsByColor[color].Add(stardewObject);
+        }
+
+        private void AddObjectByType(ObjectData objectData, StardewObject stardewObject)
+        {
+            if (!_objectsByType.ContainsKey(objectData.Type))
+            {
+                _objectsByType[objectData.Type] = new List<StardewObject>();
+            }
+            _objectsByType[objectData.Type].Add(stardewObject);
+        }
+
+        private StardewObject ParseStardewObjectData(string id, ObjectData objectData)
+        {
+            var name = objectData.Name;
+            var sellPrice = objectData.Price;
+            var edibility = objectData.Edibility;
+            var type = objectData.Type;
+            var category = objectData.Category;
+            var displayName = objectData.DisplayName;
+            var description = objectData.Description;
 
             name = NormalizeName(id, name);
 
-            if (objectType == "Ring")
+            if (type == "Ring")
             {
-                return new StardewRing(id, name, sellPrice, edibility, objectType, category, displayName, description);
+                return new StardewRing(id, name, sellPrice, edibility, type, category, displayName, description);
             }
 
-            return new StardewObject(id, name, sellPrice, edibility, objectType, category, displayName, description);
+            return new StardewObject(id, name, sellPrice, edibility, type, category, displayName, description);
         }
 
-        public string NormalizeName(int id, string name)
+        public string NormalizeName(string id, string name)
         {
             if (ItemSuffixes.ContainsKey(id))
             {
@@ -477,26 +599,21 @@ namespace StardewArchipelago.Stardew
             return name;
         }
 
-        private static BigCraftable ParseStardewBigCraftableData(int id, string bigCraftableInfo)
+        private static BigCraftable ParseStardewBigCraftableData(string id, BigCraftableData bigCraftableData)
         {
-            var fields = bigCraftableInfo.Split("/");
-            var name = fields[0];
-            var sellPrice = int.Parse(fields[1]);
-            var edibility = int.Parse(fields[2]);
-            var typeAndCategory = fields[3].Split(" ");
-            var objectType = typeAndCategory[0];
-            var category = typeAndCategory.Length > 1 ? typeAndCategory[1] : "";
-            var description = fields[4];
-            var outdoors = bool.Parse(fields[5]);
-            var indoors = bool.Parse(fields[6]);
-            var fragility = int.Parse(fields[7]);
-            var displayName = fields.Last();
+            var name = bigCraftableData.Name;
+            var price = bigCraftableData.Price;
+            var description = bigCraftableData.Description;
+            var canBePlacedOutdoors = bigCraftableData.CanBePlacedOutdoors;
+            var canBePlacedIndoors = bigCraftableData.CanBePlacedIndoors;
+            var fragility = bigCraftableData.Fragility;
+            var displayName = bigCraftableData.DisplayName;
 
-            var bigCraftable = new BigCraftable(id, name, sellPrice, edibility, objectType, category, description, outdoors, indoors, fragility, displayName);
+            var bigCraftable = new BigCraftable(id, name, price, description, canBePlacedOutdoors, canBePlacedIndoors, fragility, displayName);
             return bigCraftable;
         }
 
-        private static StardewBoots ParseStardewBootsData(int id, string bootsInfo)
+        private static StardewBoots ParseStardewBootsData(string id, string bootsInfo)
         {
             var fields = bootsInfo.Split("/");
             var name = fields[0];
@@ -512,7 +629,7 @@ namespace StardewArchipelago.Stardew
             return bigCraftable;
         }
 
-        private static StardewFurniture ParseStardewFurnitureData(int id, string furnitureInfo)
+        private static StardewFurniture ParseStardewFurnitureData(string id, string furnitureInfo)
         {
             var fields = furnitureInfo.Split("/");
             var name = fields[0];
@@ -528,7 +645,7 @@ namespace StardewArchipelago.Stardew
             return furniture;
         }
 
-        private static StardewHat ParseStardewHatData(int id, string hatInfo)
+        private static StardewHat ParseStardewHatData(string id, string hatInfo)
         {
             var fields = hatInfo.Split("/");
             var name = fields[0];
@@ -541,34 +658,33 @@ namespace StardewArchipelago.Stardew
             return hat;
         }
 
-        private static StardewWeapon ParseStardewWeaponData(int id, string weaponInfo)
+        private static StardewWeapon ParseStardewWeaponData(string id, WeaponData weaponData)
         {
-            var fields = weaponInfo.Split("/");
-            var name = fields[0];
-            var description = fields[1];
-            var minDamage = int.Parse(fields[2]);
-            var maxDamage = int.Parse(fields[3]);
-            var knockBack = double.Parse(fields[4]);
-            var speed = double.Parse(fields[5]);
-            var addedPrecision = double.Parse(fields[6]);
-            var addedDefence = double.Parse(fields[7]);
-            var type = int.Parse(fields[8]);
-            var baseMineLevel = int.Parse(fields[9]);
-            var minMineLevel = int.Parse(fields[10]);
-            var addedAoe = double.Parse(fields[11]);
-            var criticalChance = double.Parse(fields[12]);
-            var criticalDamage = double.Parse(fields[13]);
-            var displayName = fields.Length > 14 ? fields[14] : name;
+            var name = weaponData.Name;
+            var description = weaponData.Description;
+            var minDamage = weaponData.MinDamage;
+            var maxDamage = weaponData.MaxDamage;
+            var knockBack = weaponData.Knockback;
+            var speed = weaponData.Speed;
+            var precision = weaponData.Precision;
+            var defence = weaponData.Defense;
+            var type = weaponData.Type;
+            var mineBaseLevel = weaponData.MineBaseLevel;
+            var mineMinLevel = weaponData.MineMinLevel;
+            var areaOfEffect = weaponData.AreaOfEffect;
+            var criticalChance = weaponData.CritChance;
+            var criticalDamage = weaponData.CritMultiplier;
+            var displayName = weaponData.DisplayName;
 
             if (type == 4)
             {
                 return new StardewSlingshot(id, name, description, minDamage, maxDamage, knockBack, speed,
-                    addedPrecision, addedDefence, type, baseMineLevel, minMineLevel, addedAoe, criticalChance,
-                    criticalDamage, displayName);
+                    precision, defence, type, mineBaseLevel, mineMinLevel, areaOfEffect, criticalChance,
+                    criticalDamage, displayName, id == WeaponIds.SLINGSHOT ? 500 : (id == WeaponIds.MASTER_SLINGSHOT ? 1000 : 2000));
             }
 
             var meleeWeapon = new StardewWeapon(id, name, description, minDamage, maxDamage, knockBack, speed,
-                addedPrecision, addedDefence, type, baseMineLevel, minMineLevel, addedAoe, criticalChance,
+                precision, defence, type, mineBaseLevel, mineMinLevel, areaOfEffect, criticalChance,
                 criticalDamage, displayName);
             return meleeWeapon;
         }
@@ -577,14 +693,14 @@ namespace StardewArchipelago.Stardew
         {
             var fields = recipeInfo.Split("/");
             var ingredientsField = fields[0].Split(" ");
-            var ingredients = new Dictionary<int, int>();
+            var ingredients = new Dictionary<string, int>();
             for (var i = 0; i < ingredientsField.Length - 1; i += 2)
             {
-                ingredients.Add(int.Parse(ingredientsField[i]), int.Parse(ingredientsField[i+1]));
+                ingredients.Add(ingredientsField[i], int.Parse(ingredientsField[i + 1]));
             }
             var unusedField = fields[1];
             var yieldField = fields[2].Split(" ");
-            var yieldItemId = int.Parse(yieldField[0]);
+            var yieldItemId = yieldField[0];
             var yieldAmount = yieldField.Length > 1 ? int.Parse(yieldField[1]) : 1;
             var unlockConditions = fields[3];
             var displayName = fields.Length > 4 ? fields[4] : recipeName;
@@ -597,14 +713,14 @@ namespace StardewArchipelago.Stardew
         {
             var fields = recipeInfo.Split("/");
             var ingredientsField = fields[0].Split(" ");
-            var ingredients = new Dictionary<int, int>();
+            var ingredients = new Dictionary<string, int>();
             for (var i = 0; i < ingredientsField.Length - 1; i += 2)
             {
-                ingredients.Add(int.Parse(ingredientsField[i]), int.Parse(ingredientsField[i + 1]));
+                ingredients.Add(ingredientsField[i], int.Parse(ingredientsField[i + 1]));
             }
             var unusedField = fields[1];
             var yieldField = fields[2].Split(" ");
-            var yieldItemId = int.Parse(yieldField[0]);
+            var yieldItemId = yieldField[0];
             var yieldAmount = yieldField.Length > 1 ? int.Parse(yieldField[1]) : 1;
             var bigCraftable = fields[3];
             var unlockConditions = fields[4];
@@ -614,7 +730,7 @@ namespace StardewArchipelago.Stardew
             return craftingRecipe;
         }
 
-        public void ExportAllItemsMatching(Func<Object, bool> condition, string filePath)
+        public void ExportAllItemsMatching(System.Func<Object, bool> condition, string filePath)
         {
             var objectsToExport = new List<string>();
 
@@ -629,7 +745,7 @@ namespace StardewArchipelago.Stardew
             File.WriteAllText(filePath, objectsAsJson);
         }
 
-        private IEnumerable<string> GetObjectsToExport<T>(Func<Object, bool> condition, Dictionary<string, T> objectsByName) where T : StardewItem
+        private IEnumerable<string> GetObjectsToExport<T>(System.Func<Object, bool> condition, Dictionary<string, T> objectsByName) where T : StardewItem
         {
             foreach (var (name, svItem) in objectsByName)
             {
@@ -643,7 +759,7 @@ namespace StardewArchipelago.Stardew
                 {
                     continue;
                 }
-                
+
                 yield return name;
             }
         }

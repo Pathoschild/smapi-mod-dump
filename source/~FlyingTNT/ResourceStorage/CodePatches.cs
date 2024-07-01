@@ -140,20 +140,11 @@ namespace ResourceStorage
                 __result = true;
         }
 
-        // Watch for inlining
-        public static bool Object_ConsumeInventoryItem_Prefix(Farmer who, Item drop_in, ref int amount)
-        {
-            if (!Config.ModEnabled || !Config.AutoUse)
-                return true;
-
-            amount += (int)ModifyResourceLevel(who, drop_in.QualifiedItemId, -amount, auto: true);
-            return amount > 0;
-        }
-
         public static void CraftingRecipe_ConsumeAdditionalIngredientsPrefix(ref List<KeyValuePair<string, int>> additionalRecipeItems)
         {
             if (!Config.ModEnabled || !Config.AutoUse)
                 return;
+
             for (int i = 0; i < additionalRecipeItems.Count; i++)
             {
                 additionalRecipeItems[i] = new KeyValuePair<string, int>(additionalRecipeItems[i].Key, additionalRecipeItems[i].Value - ConsumeItemsForCrafting(Game1.player, additionalRecipeItems[i].Key, additionalRecipeItems[i].Value));

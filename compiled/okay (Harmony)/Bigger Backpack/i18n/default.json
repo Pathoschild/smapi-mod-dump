@@ -1,4 +1,5 @@
 {
+    // Translation provided by: <leave your name or nexus/discord username here>
 	SetBackpackSizeCommand: "Set the size of the player's backpack. This must be a multiple of 12",
 	Purchase: "Purchase ({{cost}}g)",
 	BackpackUpgrade: "Backpack Upgrade -- 48 slots",

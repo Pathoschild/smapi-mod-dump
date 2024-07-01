@@ -1,0 +1,10 @@
+{
+  "Name": "Beatable Lucky Purple Shorts",
+  "Author": "Dragoon23",
+  "Version": "1.0.0",
+  "Description": "Beatable Lucky Purple Shorts.",
+  "UniqueID": "Dragoon23.BeatableLuckyShortsMonster",
+  "EntryDll": "BeatableLuckyShortsMonster.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:25095" ]
+}

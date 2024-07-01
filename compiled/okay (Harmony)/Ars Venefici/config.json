@@ -1,11 +1,12 @@
 {
-  "OpenSpellBookButton": "B",
-  "MoveCurrentSpellLable": "OemTilde",
   "Position": {
     "X": 10,
     "Y": 10
   },
+  "OpenSpellBookButton": "B",
+  "SpellToggle": "OemTilde",
   "NextSpellButton": "X",
   "PreviousSpellButton": "Z",
-  "CastSpellButton": "Q"
+  "CastSpellButton": "Q",
+  "OpenTutorialTextButton": "G"
 }

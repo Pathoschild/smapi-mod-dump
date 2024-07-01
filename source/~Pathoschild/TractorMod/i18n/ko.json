@@ -152,7 +152,7 @@
     "config.harvest-giant-crops.tooltip": "도끼로 거대 작물을 제거 할 수 있습니다.",
 
     "config.harvest-crops.name": "작물 수확",
-    "config.Harvest Crops.tooltip": "낫으로 작물을 수확 할 수 있습니다.",
+    "config.harvest-crops.tooltip": "낫으로 작물을 수확 할 수 있습니다.",
 
     "config.harvest-flowers.name": "꽃 수확",
     "config.harvest-flowers.tooltip": "낫으로 꽃을 수확 할 수 있습니다.",
@@ -223,8 +223,8 @@
     /****
     ** Melee
     ****/
-    "config.Attack-monsters.name": "공격 몬스터",
-    "config.Attack-monsters.tooltip": "몬스터를 공격 할 수 있습니다.\n(트랙터의 도구 속도로 인해 엄청난 힘을 발휘합니다.)",
+    "config.attack-monsters.name": "공격 몬스터",
+    "config.attack-monsters.tooltip": "몬스터를 공격 할 수 있습니다.\n(트랙터의 도구 속도로 인해 엄청난 힘을 발휘합니다.)",
 
 
     /****

@@ -1,7 +1,7 @@
 {
 	"Name": "Flip Buildings",
 	"Author": "mouahrara",
-	"Version": "2.0.1",
+	"Version": "2.0.2",
 	"Description": "Allows buildings to be flipped.",
 	"UniqueID": "mouahrara.FlipBuildings",
 	"EntryDll": "FlipBuildings.dll",

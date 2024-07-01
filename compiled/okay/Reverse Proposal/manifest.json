@@ -1,0 +1,10 @@
+﻿{
+  "Name": "ReverseProposal",
+  "Author": "GreenOnion24",
+  "Version": "2.0.1",
+  "Description": "<Reverse Proposal to date and marriage>",
+  "UniqueID": "GreenOnion24.ReverseProposal",
+  "EntryDll": "ReverseProposal2.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:8526" ]
+}

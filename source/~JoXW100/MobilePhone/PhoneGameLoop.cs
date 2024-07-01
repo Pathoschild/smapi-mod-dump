@@ -524,21 +524,6 @@ namespace MobilePhone
                     getValue: () => Config.PhoneIconOffsetY,
                     setValue: value => Config.PhoneIconOffsetY = value
                 );
-                
-
-                configMenu.AddNumberOption(
-                    mod: ModManifest,
-                    name: () => "Phone Icon Offset X",
-                    getValue: () => Config.PhoneIconOffsetX,
-                    setValue: value => Config.PhoneIconOffsetX = value
-                );
-
-                configMenu.AddNumberOption(
-                    mod: ModManifest,
-                    name: () => "Phone Icon Offset Y",
-                    getValue: () => Config.PhoneIconOffsetY,
-                    setValue: value => Config.PhoneIconOffsetY = value
-                );
 
 
                 configMenu.AddNumberOption(

@@ -48,6 +48,7 @@
     "config.machines.fruit-tree": "Albero (Albero da frutto)",
     "config.machines.trash-can": "Cestino dei rifiuti",
     "config.machines.wild-tree": "Albero (Albero selvatico)",
+    "config.machines.feed-hopper": "Tramoggia per il mangime e silo",
 
     // special settings for individual machines
     "config.machines.wild-tree.collect-moss.name": "Raccogli il muschio",

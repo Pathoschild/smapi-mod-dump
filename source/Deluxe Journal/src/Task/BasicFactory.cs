@@ -8,18 +8,16 @@
 **
 *************************************************/
 
-using StardewModdingAPI;
-
 namespace DeluxeJournal.Task
 {
     /// <summary>Generic factory for an <see cref="ITask"/> without state.</summary>
     public class BasicFactory<T> : TaskFactory where T : ITask, new()
     {
-        public override void Initialize(ITask task, ITranslationHelper translation)
+        protected override void InitializeInternal(ITask task)
         {
         }
 
-        public override ITask? Create(string name)
+        protected override ITask? CreateInternal(string name)
         {
             return new T() { Name = name };
         }

@@ -41,7 +41,9 @@ namespace BetterJunimos.Utils {
         internal static JunimoGreenhouse Greenhouse;
 
         public static List<GameLocation> GetAllFarms() {
-            return Game1.locations.Where(loc => loc.IsFarm && loc.IsOutdoors).ToList();
+            return Game1.locations
+                //.Where(loc => loc.IsFarm && loc.IsOutdoors)
+                .ToList();
         }
 
         public static int CurrentWorkingRadius {

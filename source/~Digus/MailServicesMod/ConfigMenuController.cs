@@ -24,78 +24,73 @@ namespace MailServicesMod
 
         internal static void CreateConfigMenu(IManifest manifest)
         {
+            if (GetApi() is not { } api) return;
+            api.Register(manifest, () => DataLoader.ModConfig = new ModConfig(), () => DataLoader.Helper.WriteConfig(DataLoader.ModConfig));
 
-            if (GetApi() is GenericModConfigMenuApi api)
-            {
-                ModConfig modConfig = DataLoader.ModConfig;
-                api.RegisterModConfig(manifest, () => DataLoader.ModConfig = new ModConfig(), () => DataLoader.Helper.WriteConfig(modConfig));
+            api.AddSectionTitle(manifest, () => "Enable Services:", () => "");
+            api.AddBoolOption(manifest, () => !DataLoader.ModConfig.DisableGiftService, (bool val) => DataLoader.ModConfig.DisableGiftService = !val, () => "Gift Service", () => "Let you send gifts to the villagers using the mailbox.");
+            api.AddBoolOption(manifest, () => !DataLoader.ModConfig.DisableQuestService, (bool val) => DataLoader.ModConfig.DisableQuestService = !val, () => "Quest Service", () => "Let you send items to complete quests using the mailbox.");
+            api.AddBoolOption(manifest, () => !DataLoader.ModConfig.DisableToolDeliveryService, (bool val) => DataLoader.ModConfig.DisableToolDeliveryService = !val, () => "Tool Delivery Service", () => "You will receive upgraded tools in the mailbox.");
+            api.AddBoolOption(manifest, () => !DataLoader.ModConfig.DisableToolShipmentService, (bool val) => DataLoader.ModConfig.DisableToolShipmentService = !val, () => "Tool Shipment Service", () => "Let you send tools to upgrade using the mailbox.");
 
-                api.RegisterLabel(manifest, "Enable Services:", "");
-                api.RegisterSimpleOption(manifest, "Gift Service", "Let you send gifts to the villagers using the mailbox.", () => !modConfig.DisableGiftService, (bool val) => modConfig.DisableGiftService = !val);
-                api.RegisterSimpleOption(manifest, "Quest Service", "Let you send items to complete quests using the mailbox.", () => !modConfig.DisableQuestService, (bool val) => modConfig.DisableQuestService = !val);
-                api.RegisterSimpleOption(manifest, "Tool Delivery Service", "You will receive upgraded tools in the mailbox.", () => !modConfig.DisableToolDeliveryService, (bool val) => modConfig.DisableToolDeliveryService = !val);
-                api.RegisterSimpleOption(manifest, "Tool Shipment Service", "Let you send tools to upgrade using the mailbox.", () => !modConfig.DisableToolShipmentService, (bool val) => modConfig.DisableToolShipmentService = !val);
+            api.AddSectionTitle(manifest, () => "Services Fees:", () => "Fee per use of service.");
+            api.AddNumberOption(manifest, () => DataLoader.ModConfig.GiftServiceFee, (int val) => DataLoader.ModConfig.GiftServiceFee = val, () => "Gift Shipment (G)", () => "How much gold you'll be charged for sending gifts.");
+            api.AddNumberOption(manifest, () => DataLoader.ModConfig.GiftServicePercentFee, (int val) => DataLoader.ModConfig.GiftServicePercentFee = val, () => "Gift Shipment (%)", () => "How much in gift value percentage you'll be charged for sending gifts.");
+            api.AddNumberOption(manifest, () => DataLoader.ModConfig.QuestServiceFee, (int val) => DataLoader.ModConfig.QuestServiceFee = val, () => "Quest Item Shipment (G)", () => "How much gold you'll be charged for sending quest items.");
+            api.AddNumberOption(manifest, () => DataLoader.ModConfig.ToolShipmentServiceFee, (int val) => DataLoader.ModConfig.ToolShipmentServiceFee = val, () => "Tool Shipment (G)", () => "How much extra gold you'll be charged for sending tools to upgrade.");
+            api.AddNumberOption(manifest, () => DataLoader.ModConfig.ToolShipmentServicePercentFee, (int val) => DataLoader.ModConfig.ToolShipmentServicePercentFee = val, () => "Tool Shipment (%)", () => "How much extra in tool upgrade cost percentage you'll be charged for sending tools to upgrade.");
 
-                api.RegisterLabel(manifest, "Services Fees:", "Fee per use of service.");
-                api.RegisterSimpleOption(manifest, "Gift Shipment (G)", "How much gold you'll be charged for sending gifts.", () => modConfig.GiftServiceFee, (int val) => modConfig.GiftServiceFee = val);
-                api.RegisterSimpleOption(manifest, "Gift Shipment (%)", "How much in gift value percentage you'll be charged for sending gifts.", () => modConfig.GiftServicePercentFee, (int val) => modConfig.GiftServicePercentFee = val);
-                api.RegisterSimpleOption(manifest, "Quest Item Shipment (G)", "How much gold you'll be charged for sending quest items.", () => modConfig.QuestServiceFee, (int val) => modConfig.QuestServiceFee = val);
-                api.RegisterSimpleOption(manifest, "Tool Shipment (G)", "How much extra gold you'll be charged for sending tools to upgrade.", () => modConfig.ToolShipmentServiceFee, (int val) => modConfig.ToolShipmentServiceFee = val);
-                api.RegisterSimpleOption(manifest, "Tool Shipment (%)", "How much extra in tool upgrade cost percentage you'll be charged for sending tools to upgrade.", () => modConfig.ToolShipmentServicePercentFee, (int val) => modConfig.ToolShipmentServicePercentFee = val);
-
-                api.RegisterLabel(manifest, "General:", "");
-                api.RegisterSimpleOption(manifest, "Show Dialog On Shipment", "Show the npc dialog as if you were delivering something in person. Works for gifts and quest completion.", () => modConfig.ShowDialogOnItemDelivery, (bool val) => modConfig.ShowDialogOnItemDelivery = val);
+            api.AddSectionTitle(manifest, () => "General:", () => "");
+            api.AddBoolOption(manifest, () => DataLoader.ModConfig.ShowDialogOnItemDelivery, (bool val) => DataLoader.ModConfig.ShowDialogOnItemDelivery = val, () => "Show Dialog On Shipment", () => "Show the npc dialog as if you were delivering something in person. Works for gifts and quest completion.");
                 
-                api.RegisterLabel(manifest, "Tool Upgrade Service:", "Properties related to the tool upgrade service.");
-                api.RegisterSimpleOption(manifest, "Ask to Upgrade Tool", "When placing the tool in the mailbox you will have to confirm if you want to upgrade it.", () => modConfig.EnableAskToUpgradeTool, (bool val) => modConfig.EnableAskToUpgradeTool = val);
+            api.AddSectionTitle(manifest, () => "Tool Upgrade Service:", () => "Properties related to the tool upgrade service.");
+            api.AddBoolOption(manifest, () => DataLoader.ModConfig.EnableAskToUpgradeTool, (bool val) => DataLoader.ModConfig.EnableAskToUpgradeTool = val, () => "Ask to Upgrade Tool", () => "When placing the tool in the mailbox you will have to confirm if you want to upgrade it.");
 
-                api.RegisterLabel(manifest, "Gift Service:", "Properties related to the gift service.");
-                api.RegisterSimpleOption(manifest, "Minimum Friendship Points", "Friendship points needed to send gifts to a NPC. 250 friendship points equal 1 heart level.", () => modConfig.MinimumFriendshipPointsToSendGift, (int val) => modConfig.MinimumFriendshipPointsToSendGift = val);
-                api.RegisterSimpleOption(manifest, "NPC Page Size", "Number of villagers shown per page on gift shipment.", () => modConfig.GiftChoicePageSize, (int val) => modConfig.GiftChoicePageSize = val);
-                api.RegisterSimpleOption(manifest, "Jealousy", "Make it possible for your spouse to be jealous of gifts sent by mail like of gifts given in person.", () => modConfig.EnableJealousyFromMailedGifts, (bool val) => modConfig.EnableJealousyFromMailedGifts = val);
-                api.RegisterSimpleOption(manifest, "Max Friendship", "Make it possible to send gifts to friends with maxed friendship.", () => modConfig.EnableGiftToNpcWithMaxFriendship, (bool val) => modConfig.EnableGiftToNpcWithMaxFriendship = val);
+            api.AddSectionTitle(manifest, () => "Gift Service:", () => "Properties related to the gift service.");
+            api.AddNumberOption(manifest, () => DataLoader.ModConfig.MinimumFriendshipPointsToSendGift, (int val) => DataLoader.ModConfig.MinimumFriendshipPointsToSendGift = val, () => "Minimum Friendship Points", () => "Friendship points needed to send gifts to a NPC. 250 friendship points equal 1 heart level.");
+            api.AddNumberOption(manifest, () => DataLoader.ModConfig.GiftChoicePageSize, (int val) => DataLoader.ModConfig.GiftChoicePageSize = val, () => "NPC Page Size", () => "Number of villagers shown per page on gift shipment.");
+            api.AddBoolOption(manifest, () => DataLoader.ModConfig.EnableJealousyFromMailedGifts, (bool val) => DataLoader.ModConfig.EnableJealousyFromMailedGifts = val, () => "Jealousy", () => "Make it possible for your spouse to be jealous of gifts sent by mail like of gifts given in person.");
+            api.AddBoolOption(manifest, () => DataLoader.ModConfig.EnableGiftToNpcWithMaxFriendship, (bool val) => DataLoader.ModConfig.EnableGiftToNpcWithMaxFriendship = val, () => "Max Friendship", () => "Make it possible to send gifts to friends with maxed friendship.");
 
-                string recoveryServiceDescription = "You'll receive the items you lost on passing out in the mailbox, according to the other config options.";
-                string recoverAllItemsDescription = "You'll receive all lost items you can pay for in the mailbox.";
-                string recoverForFreeDescription = "You won't have to pay for the recovered items.";
-                string clearLostItemsDescription = "If 'recover all items' isn't enabled, once a random item is recovered, the others are cleared and lost forever. If disabled, items won't be cleared and you'll receive an random item each day until all are recovered, or you chose an item with Marlon, or you pass out again.";
+            string recoveryServiceDescription = "You'll receive the items you lost on passing out in the mailbox, according to the other config options.";
+            string recoverAllItemsDescription = "You'll receive all lost items you can pay for in the mailbox.";
+            string recoverForFreeDescription = "You won't have to pay for the recovered items.";
+            string clearLostItemsDescription = "If 'recover all items' isn't enabled, once a random item is recovered, the others are cleared and lost forever. If disabled, items won't be cleared and you'll receive an random item each day until all are recovered, or you chose an item with Marlon, or you pass out again.";
 
-                api.RegisterLabel(manifest, "Recovery Service (Default):", "Properties related to the recovery of lost items. This properties are the ones used if you don't enable per framer configuration. They're also the ones that a farmer starts with.");
-                api.RegisterSimpleOption(manifest, "In Game Config Changes", "Let in game events change the farmer's recovery config. If per farmer config is disabled, the default properties will be changed.", () => !modConfig.DisableRecoveryConfigInGameChanges, (bool val) => modConfig.DisableRecoveryConfigInGameChanges = !val);
-                api.RegisterSimpleOption(manifest, "Recovery Service", recoveryServiceDescription, () => modConfig.EnableRecoveryService, (bool val) => modConfig.EnableRecoveryService = val);
-                api.RegisterSimpleOption(manifest, "Recover All Items", recoverAllItemsDescription, () => modConfig.RecoverAllItems, (bool val) => modConfig.RecoverAllItems = val);
-                api.RegisterSimpleOption(manifest, "Recover For Free", recoverForFreeDescription, () => modConfig.RecoverForFree, (bool val) => modConfig.RecoverForFree = val);
-                api.RegisterSimpleOption(manifest, "Clear Lost Items", clearLostItemsDescription, () => !modConfig.DisableClearLostItemsOnRandomRecovery, (bool val) => modConfig.DisableClearLostItemsOnRandomRecovery = !val);
-                api.RegisterSimpleOption(manifest, "Per Farmer Config", "Farmers recovery config will be tracked individually.", () => !modConfig.DisablePerPlayerConfig, (bool val) => modConfig.DisablePerPlayerConfig = !val);
+            api.AddSectionTitle(manifest, () => "Recovery Service (Default):", () => "Properties related to the recovery of lost items. This properties are the ones used if you don't enable per framer configuration. They're also the ones that a farmer starts with.");
+            api.AddBoolOption(manifest, () => !DataLoader.ModConfig.DisableRecoveryConfigInGameChanges, (bool val) => DataLoader.ModConfig.DisableRecoveryConfigInGameChanges = !val, () => "In Game Config Changes", () => "Let in game events change the farmer's recovery config. If per farmer config is disabled, the default properties will be changed.");
+            api.AddBoolOption(manifest, () => DataLoader.ModConfig.EnableRecoveryService, (bool val) => DataLoader.ModConfig.EnableRecoveryService = val, () => "Recovery Service", () => recoveryServiceDescription);
+            api.AddBoolOption(manifest, () => DataLoader.ModConfig.RecoverAllItems, (bool val) => DataLoader.ModConfig.RecoverAllItems = val, () => "Recover All Items", () => recoverAllItemsDescription);
+            api.AddBoolOption(manifest, () => DataLoader.ModConfig.RecoverForFree, (bool val) => DataLoader.ModConfig.RecoverForFree = val, () => "Recover For Free", () => recoverForFreeDescription);
+            api.AddBoolOption(manifest, () => !DataLoader.ModConfig.DisableClearLostItemsOnRandomRecovery, (bool val) => DataLoader.ModConfig.DisableClearLostItemsOnRandomRecovery = !val, () => "Clear Lost Items", () => clearLostItemsDescription);
+            api.AddBoolOption(manifest, () => !DataLoader.ModConfig.DisablePerPlayerConfig, (bool val) => DataLoader.ModConfig.DisablePerPlayerConfig = !val, () => "Per Farmer Config", () => "Farmers recovery config will be tracked individually.");
 
-                if (modConfig.PlayerRecoveryConfig.Count > 0)
+            if (DataLoader.ModConfig.PlayerRecoveryConfig.Count > 0)
+            {
+                api.AddSectionTitle(manifest, () => "Recovery Config - Farmers List:", () => "Once you open a save file or create a new game, the farmer config should be tracked here.");
+
+                foreach (KeyValuePair<long, PlayerRecoveryConfig> playerRecoveryConfig in DataLoader.ModConfig.PlayerRecoveryConfig)
                 {
-                    api.RegisterLabel(manifest, "Recovery Config - Farmers List:", "Once you open a save file or create a new game, the farmer config should be tracked here.");
+                    api.AddPageLink(manifest, playerRecoveryConfig.Key.ToString(), () => playerRecoveryConfig.Value.PlayerName, () => "");
+                }
 
-                    foreach (KeyValuePair<long, PlayerRecoveryConfig> playerRecoveryConfig in modConfig.PlayerRecoveryConfig)
-                    {
-                        api.RegisterPageLabel(manifest, playerRecoveryConfig.Value.PlayerName, "", playerRecoveryConfig.Key.ToString());
-                    }
-
-                    foreach (KeyValuePair<long, PlayerRecoveryConfig> playerRecoveryConfig in modConfig.PlayerRecoveryConfig)
-                    {
-                        PlayerRecoveryConfig recoveryConfig = playerRecoveryConfig.Value;
-                        api.StartNewPage(manifest, playerRecoveryConfig.Key.ToString());
-                        api.OverridePageDisplayName(manifest, playerRecoveryConfig.Key.ToString(), recoveryConfig.PlayerName);
-                        api.RegisterSimpleOption(manifest, "In Game Config Changes", "Let in game events change the farmer's recovery config.", () => !recoveryConfig.DisableRecoveryConfigInGameChanges, (bool val) => recoveryConfig.DisableRecoveryConfigInGameChanges = !val);
-                        api.RegisterSimpleOption(manifest, "Recovery Service", recoveryServiceDescription, () => recoveryConfig.EnableRecoveryService, (bool val) => modConfig.EnableRecoveryService = val);
-                        api.RegisterSimpleOption(manifest, "Recover All Items", recoverAllItemsDescription, () => recoveryConfig.RecoverAllItems, (bool val) => recoveryConfig.RecoverAllItems = val);
-                        api.RegisterSimpleOption(manifest, "Recover For Free", recoverForFreeDescription, () => recoveryConfig.RecoverForFree, (bool val) => recoveryConfig.RecoverForFree = val);
-                        api.RegisterSimpleOption(manifest, "Clear Lost Items", clearLostItemsDescription, () => !recoveryConfig.DisableClearLostItemsOnRandomRecovery, (bool val) => recoveryConfig.DisableClearLostItemsOnRandomRecovery = !val);
-                        api.RegisterPageLabel(manifest, "Return", "Back to the main page", "");
-                    }
+                foreach (KeyValuePair<long, PlayerRecoveryConfig> playerRecoveryConfig in DataLoader.ModConfig.PlayerRecoveryConfig)
+                {
+                    PlayerRecoveryConfig recoveryConfig = playerRecoveryConfig.Value;
+                    api.AddPage(manifest, playerRecoveryConfig.Key.ToString(), () => recoveryConfig.PlayerName);
+                    api.AddBoolOption(manifest, () => !recoveryConfig.DisableRecoveryConfigInGameChanges, (bool val) => recoveryConfig.DisableRecoveryConfigInGameChanges = !val, () => "In Game Config Changes", () => "Let in game events change the farmer's recovery config.");
+                    api.AddBoolOption(manifest, () => recoveryConfig.EnableRecoveryService, (bool val) => DataLoader.ModConfig.EnableRecoveryService = val, () => "Recovery Service", () => recoveryServiceDescription);
+                    api.AddBoolOption(manifest, () => recoveryConfig.RecoverAllItems, (bool val) => recoveryConfig.RecoverAllItems = val, () => "Recover All Items", () => recoverAllItemsDescription);
+                    api.AddBoolOption(manifest, () => recoveryConfig.RecoverForFree, (bool val) => recoveryConfig.RecoverForFree = val, () => "Recover For Free", () => recoverForFreeDescription);
+                    api.AddBoolOption(manifest, () => !recoveryConfig.DisableClearLostItemsOnRandomRecovery, (bool val) => recoveryConfig.DisableClearLostItemsOnRandomRecovery = !val, () => "Clear Lost Items", () => clearLostItemsDescription);
+                    api.AddPageLink(manifest, "Return", () => "Back to the main page", () => "");
                 }
             }
         }
 
         internal static void DeleteConfigMenu(IManifest manifest)
         {
-            GetApi()?.UnregisterModConfig(MailServicesModEntry.Manifest);
+            GetApi()?.Unregister(MailServicesModEntry.Manifest);
         }
 
         private static GenericModConfigMenuApi GetApi()

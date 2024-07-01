@@ -142,7 +142,7 @@
     "config.harvest-giant-crops.tooltip": "Az óriás termények betakarítása.",
 
     "config.harvest-crops.name": "Növények betakírítása",
-    "config.Harvest Crops.tooltip": "A növény termések betakarítása.",
+    "config.harvest-crops.tooltip": "A növény termések betakarítása.",
 
     "config.harvest-flowers.name": "Virágok szüretelése",
     "config.harvest-flowers.tooltip": "A virágok betakarítása.",
@@ -213,8 +213,8 @@
     /****
     ** Melee (Közelharc)
     ****/
-    "config.Attack-monsters.name": "Szörnyek támadása",
-    "config.Attack-monsters.tooltip": "A szörnyek megtámadása. (Ez a traktor szerszám sebessége miatt jelentősen túlterhelt.)",
+    "config.attack-monsters.name": "Szörnyek támadása",
+    "config.attack-monsters.tooltip": "A szörnyek megtámadása. (Ez a traktor szerszám sebessége miatt jelentősen túlterhelt.)",
 
 
     /****

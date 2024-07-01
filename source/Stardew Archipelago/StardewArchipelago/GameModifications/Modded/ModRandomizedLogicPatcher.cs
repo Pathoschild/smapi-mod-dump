@@ -8,7 +8,6 @@
 **
 *************************************************/
 
-
 using HarmonyLib;
 using StardewArchipelago.Archipelago;
 using StardewArchipelago.Constants.Modded;
@@ -25,42 +24,35 @@ namespace StardewArchipelago.GameModifications.Modded
         private readonly Harmony _harmony;
         private readonly ArchipelagoClient _archipelago;
         private readonly StardewItemManager _stardewItemManager;
+        private JunimoShopStockModifier _junimoShopStockModifier;
+        private IModHelper _modHelper;
 
-        public ModRandomizedLogicPatcher(IMonitor monitor, IModHelper modHelper, Harmony harmony, ArchipelagoClient archipelago, ShopStockGenerator shopStockGenerator, StardewItemManager stardewItemManager, JunimoShopGenerator junimoShopGenerator)
+        public ModRandomizedLogicPatcher(IMonitor monitor, IModHelper modHelper, Harmony harmony, ArchipelagoClient archipelago, SeedShopStockModifier seedShopStockModifier, StardewItemManager stardewItemManager)
         {
             _harmony = harmony;
             _archipelago = archipelago;
             _stardewItemManager = stardewItemManager;
-            JunimoShopInjections.Initialize(monitor, modHelper, archipelago, shopStockGenerator, _stardewItemManager, junimoShopGenerator);
-
-        }
-
-        public void PatchAllModGameLogic()
-        {
-            PatchJunimoShops();
-        }
-
-        private void PatchJunimoShops()
-        {
-            if (!_archipelago.SlotData.Mods.HasMod(ModNames.SVE))
+            _modHelper = modHelper;
+            if (_archipelago.SlotData.Mods.HasMod(ModNames.SVE))
             {
-                return;
+                _junimoShopStockModifier = new JunimoShopStockModifier(monitor, modHelper, archipelago, _stardewItemManager);
             }
+        }
 
-            _harmony.Patch(
-                original: AccessTools.Method(typeof(ShopMenu), nameof(ShopMenu.update)),
-                prefix: new HarmonyMethod(typeof(JunimoShopInjections), nameof(JunimoShopInjections.Update_JunimoWoodsAPShop_Prefix))
-            );
+        public void PatchAllGameLogic()
+        {
+            if (_archipelago.SlotData.Mods.HasMod(ModNames.SVE))
+            {
+                _modHelper.Events.Content.AssetRequested += _junimoShopStockModifier.OnShopStockRequested;
+            }
+        }
 
-            _harmony.Patch(
-                original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.answerDialogueAction)),
-                prefix: new HarmonyMethod(typeof(JunimoShopInjections), nameof(JunimoShopInjections.AnswerDialogueAction_Junimoshop_Prefix))
-            );
-
-            _harmony.Patch(
-                original: AccessTools.Method(typeof(Farmer), nameof(Farmer.resetFriendshipsForNewDay)),
-                postfix: new HarmonyMethod(typeof(JunimoShopInjections), nameof(JunimoShopInjections.ResetFriendshipsForNewDay_KissForeheads_Postfix))
-            );
+        public void CleanEvents()
+        {
+            if (_archipelago.SlotData.Mods.HasMod(ModNames.SVE))
+            {
+                _modHelper.Events.Content.AssetRequested -= _junimoShopStockModifier.OnShopStockRequested;
+            }
         }
     }
 }

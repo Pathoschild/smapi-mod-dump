@@ -9,26 +9,16 @@
 *************************************************/
 
 using System;
-using System.Text.RegularExpressions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Objects;
 using StardewValley.ItemTypeDefinitions;
-using StardewValley.Menus;
-using StardewValley.Inventories;
-using StardewValley.GameData.Machines;
-using StardewValley.GameData.BigCraftables;
-using StardewValley.TokenizableStrings;
 using HarmonyLib;
-using System.Collections.Generic;
 
-namespace ExtraMachineConfig; 
+namespace Selph.StardewMods.ExtraMachineConfig; 
 
-class SmokedItemHarmonyPatcher {
+sealed class SmokedItemHarmonyPatcher {
   internal static string SmokedItemTag = "smoked_item";
   internal static string DrawPreserveSpriteTag = "draw_preserve_sprite";
 

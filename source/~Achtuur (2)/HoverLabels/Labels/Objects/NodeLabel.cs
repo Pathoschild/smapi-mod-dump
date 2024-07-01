@@ -9,8 +9,8 @@
 *************************************************/
 
 using AchtuurCore.Extensions;
+using AchtuurCore.Framework.Borders;
 using AchtuurCore.Utility;
-using HoverLabels.Drawing;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Network;
@@ -130,12 +130,12 @@ internal class NodeLabel : ObjectLabel
     private void GenerateNodeLabel()
     {
         SObject nodeItem = GetNodeItem(hoverObject.ParentSheetIndex);
-        AddBorder(new TitleLabelText(I18n.LabelNodeName(nodeItem.DisplayName)));
+        AddBorder(new TitleLabel(I18n.LabelNodeName(nodeItem.DisplayName)));
     }
 
     private void GenerateMysticNodeLabel()
     {
-        AddBorder(new TitleLabelText(I18n.LabelNodeMysticName()));
+        AddBorder(new TitleLabel(I18n.LabelNodeMysticName()));
         AddBorder(I18n.LabelDropItems());
 
         SObject iridiumOre = ModEntry.GetObjectWithId(SObject.iridium);
@@ -150,7 +150,7 @@ internal class NodeLabel : ObjectLabel
 
     private void GenerateGemNodeLabel()
     {
-        AddBorder(new TitleLabelText(I18n.LabelNodeGemName()));
+        AddBorder(new TitleLabel(I18n.LabelNodeGemName()));
         AddBorder("Drops one of the following gems:");
 
         // Use array of SObjects since then the displayname can be used
@@ -174,7 +174,7 @@ internal class NodeLabel : ObjectLabel
 
     private void GenerateBoneNodeLabel()
     {
-        AddBorder(new TitleLabelText(I18n.LabelNodeBoneName()));
+        AddBorder(new TitleLabel(I18n.LabelNodeBoneName()));
     }
 
     private static NodeType? GetNodeType(int stoneIndex)

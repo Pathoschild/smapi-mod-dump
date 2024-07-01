@@ -28,7 +28,8 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             _locationChecker = locationChecker;
         }
 
-        public static bool PerformAction_GoldenScythe_Prefix(GameLocation __instance, string action, Farmer who, Location tileLocation, ref bool __result)
+        // public virtual bool performAction(string[] action, Farmer who, Location tileLocation)
+        public static bool PerformAction_GoldenScythe_Prefix(GameLocation __instance, string[] action, Farmer who, Location tileLocation, ref bool __result)
         {
             try
             {
@@ -37,8 +38,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                     return true; // run original logic
                 }
 
-                var actionParts = action.Split(' ');
-                var actionName = actionParts[0];
+                var actionName = action[0];
                 if (actionName == "GoldenScythe")
                 {
                     __result = true;

@@ -109,7 +109,7 @@ namespace ContentPatcher.Framework
         private IEnumerable<IAssetName> GetTextureNames(IGameContentHelper contentHelper)
         {
             // get all texture keys from the content helper (this is such a hack)
-            List<IAssetName> textureKeys = new();
+            List<IAssetName> textureKeys = [];
             contentHelper.InvalidateCache(asset =>
             {
                 IAssetName name = asset.Name;

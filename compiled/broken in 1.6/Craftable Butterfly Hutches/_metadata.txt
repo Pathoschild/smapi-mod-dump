@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6279
-IDs: aedenthorn.OutdoorButterflyHutch
-update keys: Nexus:6279, GitHub:aedenthorn/StardewValleyMods

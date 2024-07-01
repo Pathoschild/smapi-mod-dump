@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="5" height="5" tilewidth="16" tileheight="16" infinite="0" nextlayerid="21" nextobjectid="59">
+ <properties>
+  <property name="AllowGiantCrops" value="T"/>
+  <property name="CanBuildHere" value="T"/>
+  <property name="EnableGrassSpread" value="T"/>
+  <property name="Fall_Objects" value="T"/>
+  <property name="FarmFishLocationOverride" value="Mountain 0.5"/>
+  <property name="ForceAllowTreePlanting" value="T"/>
+  <property name="IsFarm" value="T"/>
+  <property name="LocationContext" value="Default"/>
+  <property name="LooserBuildRestrictions" value="T"/>
+  <property name="Outdoors" value="T"/>
+  <property name="Spring_Objects" value="T"/>
+  <property name="Summer_Objects" value="T"/>
+  <property name="Winter_Objects" value="T"/>
+ </properties>
+ <tileset firstgid="1" name="Festivals" tilewidth="16" tileheight="16" tilecount="1024" columns="32">
+  <image source="Festivals.png" width="512" height="512"/>
+ </tileset>
+ <tileset firstgid="1025" name="jv" tilewidth="16" tileheight="16" tilecount="3" columns="3">
+  <image source="jv.png" width="48" height="18"/>
+ </tileset>
+ <tileset firstgid="1028" name="Craftables" tilewidth="16" tileheight="16" tilecount="736" columns="8">
+  <image source="Craftables.png" width="128" height="1472"/>
+ </tileset>
+ <tileset firstgid="1764" name="furniture" tilewidth="16" tileheight="16" tilecount="2976" columns="32">
+  <image source="furniture.png" width="512" height="1488"/>
+ </tileset>
+ <layer id="1" name="Back" width="5" height="5">
+  <data encoding="csv">
+0,0,0,0,0,
+0,0,0,0,0,
+0,0,0,0,0,
+0,0,0,0,0,
+0,0,0,0,0
+</data>
+ </layer>
+ <layer id="19" name="Back5" width="5" height="5">
+  <data encoding="csv">
+0,0,0,0,0,
+3673,3674,3674,3674,3675,
+3705,3706,3706,3706,3707,
+3673,3674,3674,3674,3675,
+3705,3706,3706,3706,3707
+</data>
+ </layer>
+ <layer id="2" name="Buildings" width="5" height="5">
+  <data encoding="csv">
+0,0,0,0,0,
+0,286,287,288,1294,
+0,318,319,320,0,
+0,350,351,352,1105,
+0,0,0,0,0
+</data>
+ </layer>
+ <layer id="20" name="Buildings1" width="5" height="5">
+  <data encoding="csv">
+0,0,0,0,0,
+0,0,0,0,0,
+0,0,0,0,0,
+0,1025,1026,1027,0,
+0,0,0,0,0
+</data>
+ </layer>
+ <layer id="3" name="Front" width="5" height="5">
+  <data encoding="csv">
+0,254,255,256,0,
+0,0,0,0,0,
+0,0,0,0,0,
+0,0,0,0,0,
+0,0,0,0,0
+</data>
+ </layer>
+ <layer id="4" name="AlwaysFront" width="5" height="5">
+  <data encoding="csv">
+0,0,0,0,0,
+0,0,0,0,0,
+0,0,0,0,0,
+0,0,0,0,0,
+0,0,0,0,0
+</data>
+ </layer>
+ <layer id="5" name="Paths" width="5" height="5">
+  <data encoding="csv">
+0,0,0,0,0,
+0,0,0,0,0,
+0,0,0,0,0,
+0,0,0,0,0,
+0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup id="6" name="Back"/>
+ <objectgroup id="7" name="Buildings"/>
+ <objectgroup id="8" name="Front"/>
+ <objectgroup id="9" name="AlwaysFront"/>
+ <objectgroup id="10" name="Paths"/>
+</map>

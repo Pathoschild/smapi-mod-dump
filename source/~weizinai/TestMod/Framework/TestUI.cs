@@ -8,11 +8,11 @@
 **
 *************************************************/
 
-using Common.UI;
+using weizinai.StardewValleyMod.Common.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace TestMod.Framework;
+namespace weizinai.StardewValleyMod.TestMod.Framework;
 
 public class TestUI
 {
@@ -26,17 +26,17 @@ public class TestUI
             OnHover = (element, _) => (element as Button)!.TextureColor = Color.White * 0.5f,
             OffHover = element => (element as Button)!.TextureColor = Color.White
         };
-        ui.AddChild(text, button);
+        this.ui.AddChild(text, button);
     }
 
     public void Draw(SpriteBatch spriteBatch)
     {
-        ui.Draw(spriteBatch);
-        ui.PerformHoverAction(spriteBatch);
+        this.ui.Draw(spriteBatch);
+        this.ui.PerformHoverAction(spriteBatch);
     }
 
     public void Update()
     {
-        ui.Update();
+        this.ui.Update();
     }
 }

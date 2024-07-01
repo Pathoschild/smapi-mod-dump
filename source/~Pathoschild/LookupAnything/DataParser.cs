@@ -71,7 +71,7 @@ namespace Pathoschild.Stardew.LookupAnything
                         : valueParts.Last(); // number of fields varies, but display name is always last
 
                     // parse ingredients
-                    List<BundleIngredientModel> ingredients = new List<BundleIngredientModel>();
+                    List<BundleIngredientModel> ingredients = [];
                     string[] ingredientData = valueParts[2].Split(' ');
                     for (int i = 0; i < ingredientData.Length; i += 3)
                     {
@@ -174,7 +174,7 @@ namespace Pathoschild.Stardew.LookupAnything
                 if (metadata.IgnoreFishingLocations.Contains(locationId))
                     continue; // ignore event data
 
-                List<FishSpawnLocationData> curLocations = new List<FishSpawnLocationData>();
+                List<FishSpawnLocationData> curLocations = [];
                 foreach (SpawnFishData fish in data.Fish)
                 {
                     ParsedItemData? fishItem = ItemRegistry.GetData(fish.ItemId);
@@ -388,7 +388,7 @@ namespace Pathoschild.Stardew.LookupAnything
         /// <param name="extraMachineConfig">The Extra Machine Config mod's API.</param>
         public RecipeModel[] GetRecipes(Metadata metadata, IMonitor monitor, ExtraMachineConfigIntegration extraMachineConfig)
         {
-            List<RecipeModel> recipes = new List<RecipeModel>();
+            List<RecipeModel> recipes = [];
 
             // cooking/crafting recipes
             var craftingRecipes =
@@ -421,8 +421,8 @@ namespace Pathoschild.Stardew.LookupAnything
                     continue;
 
                 RecipeIngredientModel[] additionalConsumedItems =
-                    machineData.AdditionalConsumedItems?.Select(item => new RecipeIngredientModel(item.ItemId, item.RequiredCount)).ToArray()
-                    ?? Array.Empty<RecipeIngredientModel>();
+                    machineData.AdditionalConsumedItems?.Select(item => new RecipeIngredientModel(RecipeType.MachineInput, item.ItemId, item.RequiredCount)).ToArray()
+                    ?? [];
 
                 bool someRulesTooComplex = false;
 
@@ -451,20 +451,19 @@ namespace Pathoschild.Stardew.LookupAnything
                                 someRulesTooComplex = true;
 
                             // add ingredients
-                            List<RecipeIngredientModel> ingredients = new()
-                            {
-                                new RecipeIngredientModel(inputId, trigger.RequiredCount, inputContextTags)
-                            };
+                            List<RecipeIngredientModel> ingredients = [
+                                new RecipeIngredientModel(RecipeType.MachineInput, inputId, trigger.RequiredCount, inputContextTags)
+                            ];
                             ingredients.AddRange(additionalConsumedItems);
 
                             // if there are extra fuels added by the Extra Machine Config mod, add them here
                             if (extraMachineConfig.IsLoaded)
                             {
                                 foreach ((string extraItemId, int extraCount) in extraMachineConfig.ModApi.GetExtraRequirements(outputItem))
-                                    ingredients.Add(new RecipeIngredientModel(extraItemId, extraCount));
+                                    ingredients.Add(new RecipeIngredientModel(RecipeType.MachineInput, extraItemId, extraCount));
 
                                 foreach ((string extraContextTags, int extraCount) in extraMachineConfig.ModApi.GetExtraTagsRequirements(outputItem))
-                                    ingredients.Add(new RecipeIngredientModel(null, extraCount, extraContextTags.Split(",")));
+                                    ingredients.Add(new RecipeIngredientModel(RecipeType.MachineInput, null, extraCount, extraContextTags.Split(",")));
                             }
 
                             // add produced item
@@ -527,7 +526,7 @@ namespace Pathoschild.Stardew.LookupAnything
                             key: null,
                             type: RecipeType.MachineInput,
                             displayType: ItemRegistry.GetDataOrErrorItem(qualifiedMachineId).DisplayName,
-                            Array.Empty<RecipeIngredientModel>(),
+                            [],
                             item: _ => ItemRegistry.Create(DataParser.ComplexRecipeId),
                             isKnown: () => true,
                             machineId: qualifiedMachineId,
@@ -553,7 +552,7 @@ namespace Pathoschild.Stardew.LookupAnything
                     if (!this.TryGetMostSpecificIngredientIds(null, rule.RequiredTags, out string? ingredientId, out string[] ingredientContextTags))
                         continue;
 
-                    RecipeIngredientModel[] ingredients = new[] { new RecipeIngredientModel(ingredientId, rule.RequiredCount, ingredientContextTags) };
+                    RecipeIngredientModel[] ingredients = [new RecipeIngredientModel(RecipeType.BuildingInput, ingredientId, rule.RequiredCount, ingredientContextTags)];
 
                     foreach (GenericSpawnItemDataWithCondition? outputItem in rule.ProducedItems)
                     {
@@ -645,10 +644,6 @@ namespace Pathoschild.Stardew.LookupAnything
 
             // from location data
             {
-                string dataKey = id;
-                if (string.Equals(id, "Farm", StringComparison.OrdinalIgnoreCase))
-                    dataKey = "Farm_Standard";
-
                 string name = TokenParser.ParseText(data.DisplayName);
                 if (!string.IsNullOrWhiteSpace(name))
                     return name;
@@ -667,7 +662,7 @@ namespace Pathoschild.Stardew.LookupAnything
         private bool TryGetMostSpecificIngredientIds(string? fromItemId, List<string?>? fromContextTags, out string? itemId, out string[] contextTags)
         {
             // normalize values
-            contextTags = fromContextTags?.WhereNotNull().ToArray() ?? Array.Empty<string>();
+            contextTags = fromContextTags?.WhereNotNull().ToArray() ?? [];
             itemId = !string.IsNullOrWhiteSpace(fromItemId)
                 ? fromItemId
                 : null;
@@ -676,7 +671,7 @@ namespace Pathoschild.Stardew.LookupAnything
             if (itemId is null && contextTags.Length == 1 && MachineDataHelper.TryGetUniqueItemFromContextTag(contextTags[0], out ParsedItemData? dataFromTag))
             {
                 itemId = dataFromTag.QualifiedItemId;
-                contextTags = Array.Empty<string>();
+                contextTags = [];
             }
 
             return itemId != null || contextTags.Length > 0;

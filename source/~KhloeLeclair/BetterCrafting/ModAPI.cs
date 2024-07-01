@@ -438,7 +438,8 @@ public class ModAPI : IBetterCrafting {
 
 	/// <inheritdoc />
 	public void RegisterInventoryProvider(Type type, IInventoryProvider provider) {
-		Mod.RegisterInventoryProvider(type, provider);
+		var upgraded = Mod.UpgradeProviderProxy(Other.UniqueID, provider);
+		Mod.RegisterInventoryProvider(type, upgraded);
 	}
 
 	/// <inheritdoc />

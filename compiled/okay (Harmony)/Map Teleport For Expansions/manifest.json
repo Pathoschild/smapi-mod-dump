@@ -1,0 +1,10 @@
+﻿{
+  "Name": "StardewValleyMapTeleport",
+  "Author": "hlyvia",
+  "Version": "1.0.0",
+  "Description": "Teleport by clicking on the map",
+  "UniqueID": "hlyvia.StardewValleyMapTeleport",
+  "EntryDll": "MapTeleport.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": []
+}

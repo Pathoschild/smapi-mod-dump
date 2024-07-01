@@ -7,9 +7,9 @@ mods:
    AutoShaker
 
 latest commit:
-   commit 73a9ffeac075751a9d1464833339360b38fc9342
+   commit b9ed6b4241a12ca98c0fa454a2ca3be61064fdaa
    Author: Jag <jag3dagster@gmail.com>
-   Date:   Fri May 24 11:11:15 2024 -0700
+   Date:   Sun Jun 30 00:31:49 2024 -0700
    
-       refactor(autoforager): Swap to DataLoader
+       chore(autoforager): Bump version
    

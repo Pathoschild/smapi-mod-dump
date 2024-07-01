@@ -2,7 +2,7 @@
   "Name": "Stardew Valley Expanded Code",
   "Author": "FlashShifter, Esca, super-aardvark, and kittycatcasey",
   "Description": "Adds coded elements to the game",
-  "Version": "1.14.44",
+  "Version": "1.14.46",
   "UpdateKeys": [ "Nexus:???" ],
   "UniqueID": "FlashShifter.SVECode",
   "EntryDll": "StardewValleyExpanded.dll"

@@ -27,15 +27,24 @@ Note that the mod doesn't change store inventories, so you can only buy crop see
 usual seasons.
 
 ## Configure
-The mod creates a `config.json` file in its mod folder the first time you run it. You can open that
-file in a text editor to configure the mod.
+### In-game
+If you install [Generic Mod Config Menu][], you can click the cog button (⚙) on the title screen
+or the "mod options" button at the bottom of the in-game menu to configure the mod. Hover the
+cursor over a field for details.
+
+> ![](screenshots/generic-config-menu.png)
+
+### By editing `config.json`
+The in-game UI only lets you set options for all locations. If you want different settings per
+location, you can edit the `config.json` file in the mod's folder using a text editor like Notepad.
+The file is created the first time you run the game with the mod installed.
 
 You can change these settings per-location:
 
 setting                | default | what it affects
 :--------------------- | :------ | :------------------
 `GrowCrops`            | true    | Whether crops can grow here.
-`GrowCropsOutOfSeason` | true    | Whether out-of-season crops grow here too.
+`GrowCropsOutOfSeason` | true    | Whether out-of-season crops grow here too. This only applies if `GrowCrops` is true.
 `ForceTillable`        | dirt, grass | The tile types to make tillable beyond those that would normally be. The available types are `dirt`, `grass`, `stone`, and `other`.
 
 The location keys can be one of `*` (all locations), `Indoors`, `Outdoors`, or an internal location
@@ -70,3 +79,5 @@ multiplayer mode, it must be installed by the main player to work correctly.
 ## See also
 * [Release notes](release-notes.md)
 * [Nexus mod](https://www.nexusmods.com/stardewvalley/mods/3000)
+
+[Generic Mod Config Menu]: https://www.nexusmods.com/stardewvalley/mods/5098

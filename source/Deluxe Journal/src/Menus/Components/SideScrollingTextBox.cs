@@ -29,16 +29,14 @@ namespace DeluxeJournal.Menus.Components
 
         /// <summary><see cref="TextBox.Update"/> wrapper that opens the text entry window with looser restrictions.</summary>
         /// <remarks>
-        /// HACK: <see cref="Game1.lastCursorMotionWasMouse"/> gets set to <c>true</c> after closing the on-screen keyboard, for
-        /// whatever reason, preventing the user from opening another without first snapping to another component.
+        /// <see cref="Game1.lastCursorMotionWasMouse"/> gets set to <c>true</c> after closing the on-screen keyboard, for
+        /// whatever reason, preventing the user from opening another on-screen keyboard via <see cref="TextBox.Update"/> without
+        /// first snapping to another component.
         /// </remarks>
         public virtual void ForceUpdate()
         {
             Update();
 
-            // HACK: Game1.lastCursorMotionWasMouse gets set to true after closing the
-            // on-screen keyboard, for whatever reason, preventing the user from opening
-            // another without first snapping to another component.
             if (Game1.options.SnappyMenus && Game1.textEntry == null)
             {
                 Game1.showTextEntry(this);

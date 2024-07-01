@@ -10,7 +10,6 @@
 
 using System;
 using System.Diagnostics.CodeAnalysis;
-using Newtonsoft.Json.Linq;
 
 namespace ContentPatcher.Framework.Patches.EditData
 {

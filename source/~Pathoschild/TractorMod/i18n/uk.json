@@ -152,7 +152,7 @@
     "config.harvest-giant-crops.tooltip": "Збір врожаю культур гігантського розміру.",
 
     "config.harvest-crops.name": "Збирати врожай",
-    "config.Harvest Crops.tooltip": "Збір врожаю культури.",
+    "config.harvest-crops.tooltip": "Збір врожаю культури.",
 
     "config.harvest-flowers.name": "Збирати квіти",
     "config.harvest-flowers.tooltip": "Збір квіток.",
@@ -224,8 +224,8 @@
     /****
     ** Melee
     ****/
-    "config.Attack-monsters.name": "Атакувати монстрів",
-    "config.Attack-monsters.tooltip": "Атака монстрів. (Цей процес відбувається значно швидше через швидкість трактора.)",
+    "config.attack-monsters.name": "Атакувати монстрів",
+    "config.attack-monsters.tooltip": "Атака монстрів. (Цей процес відбувається значно швидше через швидкість трактора.)",
 
 
     /****

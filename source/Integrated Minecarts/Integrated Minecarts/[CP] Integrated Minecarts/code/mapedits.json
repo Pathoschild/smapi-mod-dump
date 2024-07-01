@@ -9,11 +9,13 @@
 *************************************************/
 
 {
+    "$schema": "https://smapi.io/schemas/content-patcher.json",
     "Changes": [
         //Map Edits
 
         //Mines SVE Fix Tile Properties
         {
+            "LogName": "Mines.SVE.TileProperties",
             "Action": "EditMap",
             "Target": "Maps/Mine",
             "MapTiles": [{
@@ -31,6 +33,7 @@
                 "HasMod |contains=FlashShifter.StardewValleyExpandedCP": "true"
             },
         }, {
+            "LogName": "Mines.SVE.TileProperties",
             "Action": "EditMap",
             "Target": "Maps/Mine",
             "MapTiles": [{
@@ -48,8 +51,9 @@
                 "HasMod |contains=FlashShifter.StardewValleyExpandedCP": "true"
             },
         },
-        //CommunityCenter
+        //Community Center
         {
+            "LogName": "jibb.minecarts.CommunityCenter.Edit",
             "Action": "EditMap",
             "Target": "Maps/Town",
             "FromFile": "assets/CartEntrance.tmx",
@@ -67,11 +71,12 @@
             },
             "PatchMode": "Overlay",
             "When": {
-                "EnableCommunityCenter": true,
+                "Enablejibb.minecarts.CommunityCenter": true,
             },
         },
-        //CommunityCenter Tile Properties
+        //jibb.minecarts.CommunityCenter Tile Properties
         {
+            "LogName": "jibb.minecarts.CommunityCenter.TileProperties",
             "Action": "EditMap",
             "Target": "Maps/Town",
             "MapTiles": [{
@@ -81,103 +86,108 @@
                     },
                     "Layer": "Buildings",
                     "SetProperties": {
-                        "Action": "MinecartTransport Default CommunityCenter",
+                        "Action": "MinecartTransport Default jibb.minecarts.CommunityCenter",
                     },
                 },
             ],
             "When": {
-                "EnableCommunityCenter": true,
+                "Enablejibb.minecarts.CommunityCenter": true,
             },
             "Priority": "Late",
         },
         //Desert Vanilla
         {
+            "LogName": "jibb.minecarts.Desert.Edit",
             "Action": "EditMap",
             "Target": "Maps/Desert",
-            "FromFile": "assets/Desert.tmx",
+            "FromFile": "assets/DesertEntrance.tmx",
             "FromArea": {
                 "X": 0,
                 "Y": 0,
-                "Width": 2,
-                "Height": 5
+                "Width": 3,
+                "Height": 4
             },
             "ToArea": {
-                "X": 36,
+                "X": 31,
                 "Y": 39,
-                "Width": 2,
-                "Height": 5
+                "Width": 3,
+                "Height": 4
             },
-            "PatchMode": "Replace",
+            "PatchMode": "Overlay",
             "When": {
-                "EnableDesert": true,
+                "Enablejibb.minecarts.Desert": true,
                 "HasMod |contains=FlashShifter.StardewValleyExpandedCP": "false",
             },
         },
         //Desert Vanilla Tile Properties
         {
+            "LogName": "jibb.minecarts.Desert.TileProperties",
             "Action": "EditMap",
             "Target": "Maps/Desert",
             "MapTiles": [{
                     "Position": {
-                        "X": "36",
+                        "X": "32",
                         "Y": "42"
                     },
                     "Layer": "Buildings",
                     "SetProperties": {
-                        "Action": "MinecartTransport Default Desert",
+                        "Action": "MinecartTransport Default jibb.minecarts.Desert",
                     },
                 },
             ],
             "When": {
-                "EnableDesert": true,
+                "Enablejibb.minecarts.Desert": true,
                 "HasMod |contains=FlashShifter.StardewValleyExpandedCP": "false",
             },
         },
         //Desert SVE
         {
+            "LogName": "jibb.minecarts.Desert.SVE.Edit",
             "Action": "EditMap",
             "Target": "Maps/Desert",
-            "FromFile": "assets/SVEDesert.tmx",
+            "FromFile": "assets/DesertEntrance.tmx",
             "FromArea": {
                 "X": 0,
                 "Y": 0,
-                "Width": 2,
-                "Height": 2
+                "Width": 3,
+                "Height": 4
             },
             "ToArea": {
-                "X": 36,
-                "Y": 42,
-                "Width": 2,
-                "Height": 2
+                "X": 29,
+                "Y": 41,
+                "Width": 3,
+                "Height": 4
             },
             "PatchMode": "Overlay",
             "When": {
-                "EnableDesert": true,
+                "Enablejibb.minecarts.Desert": true,
                 "HasMod |contains=FlashShifter.StardewValleyExpandedCP": "true",
             },
         },
         //Desert SVE Tile Properties
         {
+            "LogName": "jibb.minecarts.Desert.SVE.TileProperties",
             "Action": "EditMap",
             "Target": "Maps/Desert",
             "MapTiles": [{
                     "Position": {
-                        "X": "36",
-                        "Y": "43"
+                        "X": "30",
+                        "Y": "44"
                     },
                     "Layer": "Buildings",
                     "SetProperties": {
-                        "Action": "MinecartTransport Default Desert",
+                        "Action": "MinecartTransport Default jibb.minecarts.Desert",
                     },
                 },
             ],
             "When": {
-                "EnableDesert": true,
+                "Enablejibb.minecarts.Desert": true,
                 "HasMod |contains=FlashShifter.StardewValleyExpandedCP": "true",
             },
         },
         //Forest NW
         {
+            "LogName": "jibb.minecarts.ForestNW.Edit",
             "Action": "EditMap",
             "Target": "Maps/Forest",
             "FromFile": "assets/CartEntrance.tmx",
@@ -195,12 +205,13 @@
             },
             "PatchMode": "Overlay",
             "When": {
-                "EnableForestNW": true,
+                "Enablejibb.minecarts.ForestNW": true,
                 "HasMod |contains=DaisyNiko.SVR3": "false"
             },
         },
         //Forest NW Tile Properties
         {
+            "LogName": "jibb.minecarts.ForestNW.TileProperties",
             "Action": "EditMap",
             "Target": "Maps/Forest",
             "MapTiles": [{
@@ -210,18 +221,19 @@
                     },
                     "Layer": "Buildings",
                     "SetProperties": {
-                        "Action": "MinecartTransport Default ForestNW",
+                        "Action": "MinecartTransport Default jibb.minecarts.ForestNW",
                     },
                 },
             ],
             "When": {
-                "EnableForestNW": true,
+                "Enablejibb.minecarts.ForestNW": true,
                 "HasMod |contains=DaisyNiko.SVR3": "false"
             },
         },
 
         //Forest NW SVR3
         {
+            "LogName": "jibb.minecarts.ForestNW.SVR.Edit",
             "Action": "EditMap",
             "Target": "Maps/Forest",
             "FromFile": "assets/SVRForest.tmx",
@@ -238,12 +250,13 @@
                 "Height": 2
             },
             "When": {
-                "EnableForestNW": true,
+                "Enablejibb.minecarts.ForestNW": true,
                 "HasMod |contains=DaisyNiko.SVR3": "true"
             },
         },
         //Forest NW SVR3 Tile Properties
         {
+            "LogName": "jibb.minecarts.ForestNW.SVR.TileProperties",
             "Action": "EditMap",
             "Target": "Maps/Forest",
             "MapTiles": [{
@@ -253,12 +266,12 @@
                     },
                     "Layer": "Buildings",
                     "SetProperties": {
-                        "Action": "MinecartTransport Default ForestNW",
+                        "Action": "MinecartTransport Default jibb.minecarts.ForestNW",
                     },
                 },
             ],
             "When": {
-                "EnableForestNW": true,
+                "Enablejibb.minecarts.ForestNW": true,
                 "HasMod |contains=DaisyNiko.SVR3": "true"
             },
         },
@@ -281,7 +294,7 @@
             },
             "PatchMode": "Replace",
             "When": {
-                "EnableForestSE": true,
+                "Enablejibb.minecarts.ForestSE": true,
                 "HasMod |contains=DaisyNiko.SVR3,SYS.AB": "false"
             },
         },
@@ -296,12 +309,12 @@
                     },
                     "Layer": "Buildings",
                     "SetProperties": {
-                        "Action": "MinecartTransport Default ForestSE",
+                        "Action": "MinecartTransport Default jibb.minecarts.ForestSE",
                     },
                 },
             ],
             "When": {
-                "EnableForestSE": true,
+                "Enablejibb.minecarts.ForestSE": true,
                 "HasMod |contains=DaisyNiko.SVR3,SYS.AB": "false"
             },
         },
@@ -324,7 +337,7 @@
             },
             "PatchMode": "Replace",
             "When": {
-                "EnableForestSE": true,
+                "Enablejibb.minecarts.ForestSE": true,
                 "HasMod |contains=DaisyNiko.SVR3": "true"
             },
         },
@@ -339,58 +352,58 @@
                     },
                     "Layer": "Buildings",
                     "SetProperties": {
-                        "Action": "MinecartTransport Default ForestSE",
+                        "Action": "MinecartTransport Default jibb.minecarts.ForestSE",
                     },
                 },
             ],
             "When": {
-                "EnableForestSE": true,
+                "Enablejibb.minecarts.ForestSE": true,
                 "HasMod |contains=DaisyNiko.SVR3": "true"
             },
         },
-        //Forest SE Abandoned Bride
+        //Forest SE Abandoned Bride SVE
         {
             "Action": "EditMap",
             "Target": "Maps/Forest",
-            "FromFile": "assets/Cart.tmx",
+            "FromFile": "assets/CartEntranceNarrow.tmx",
             "FromArea": {
                 "X": 0,
                 "Y": 0,
                 "Width": 1,
-                "Height": 2
+                "Height": 3
             },
             "ToArea": {
-                "X": 102,
-                "Y": 72,
+                "X": 104,
+                "Y": 70,
                 "Width": 1,
-                "Height": 2
+                "Height": 3
             },
             "PatchMode": "Overlay",
             "When": {
-                "EnableForestSE": true,
-                "HasMod |contains=SYS.AB": "true"
+                "Enablejibb.minecarts.ForestSE": true,
+                "HasMod |contains=SYS.AB": "true",
             },
         },
-        //Forest SE Abandoned Bride Tile Properties
+        //Forest SE Abandoned Bride SVE Tile Properties
         {
             "Action": "EditMap",
             "Target": "Maps/Forest",
             "MapTiles": [{
                     "Position": {
-                        "X": "102",
-                        "Y": "73"
+                        "X": "104",
+                        "Y": "72"
                     },
                     "Layer": "Buildings",
                     "SetProperties": {
-                        "Action": "MinecartTransport Default ForestSE",
+                        "Action": "MinecartTransport Default jibb.minecarts.ForestSE",
                     },
                 },
             ],
             "When": {
-                "EnableForestSE": true,
-                "HasMod |contains=SYS.AB": "true"
+                "Enablejibb.minecarts.ForestSE": true,
+                "HasMod |contains=SYS.AB": "true",
             },
-        },		
+        },				
         //Ginger Island North Cave
         {
             "Action": "EditMap",
@@ -410,7 +423,7 @@
             },
             "PatchMode": "Overlay",
             "When": {
-                "EnableGingerIslandCave": true,
+                "Enablejibb.minecarts.IslandNorthCave": true,
             },
         },
         //Ginger Island North Cave Tile Properties
@@ -424,12 +437,12 @@
                     },
                     "Layer": "Buildings",
                     "SetProperties": {
-                        "Action": "MinecartTransport Default IslandNorthCave",
+                        "Action": "MinecartTransport Default jibb.minecarts.IslandNorthCave",
                     },
                 },
             ],
             "When": {
-                "EnableGingerIslandCave": true,
+                "Enablejibb.minecarts.IslandNorthCave": true,
             },
         },
         //Ginger Island Caldera
@@ -451,7 +464,7 @@
             },
             "PatchMode": "Overlay",
             "When": {
-                "EnableGingerIslandCaldera": true,
+                "Enablejibb.minecarts.Caldera": true,
             },
         },
         //Ginger Island Caldera Tile Properties
@@ -465,12 +478,12 @@
                     },
                     "Layer": "Buildings",
                     "SetProperties": {
-                        "Action": "MinecartTransport Default Caldera",
+                        "Action": "MinecartTransport Default jibb.minecarts.Caldera",
                     },
                 },
             ],
             "When": {
-                "EnableGingerIslandCaldera": true,
+                "Enablejibb.minecarts.Caldera": true,
             },
         },
         //Ginger Island Farm
@@ -492,7 +505,7 @@
             },
             "PatchMode": "Overlay",
             "When": {
-                "EnableGingerIslandFarm": true,
+                "Enablejibb.minecarts.IslandFarm": true,
             },
         },
         //Ginger Island Farm Tile Properties
@@ -506,12 +519,12 @@
                     },
                     "Layer": "Buildings",
                     "SetProperties": {
-                        "Action": "MinecartTransport Default IslandFarm",
+                        "Action": "MinecartTransport Default jibb.minecarts.IslandFarm",
                     },
                 },
             ],
             "When": {
-                "EnableGingerIslandFarm": true,
+                "Enablejibb.minecarts.IslandFarm": true,
             },
         },
         //Mountain SVE
@@ -533,7 +546,7 @@
             },
             "PatchMode": "Overlay",
             "When": {
-                "EnableMountain": true,
+                "Enablejibb.minecarts.Mountain": true,
                 "MoveMountainToAdventurersGuild": false,
                 "HasMod |contains=FlashShifter.StardewValleyExpandedCP": "true",
                 "HasMod |contains=Himetarts.ARV.CP": "false",
@@ -550,12 +563,12 @@
                     },
                     "Layer": "Buildings",
                     "SetProperties": {
-                        "Action": "MinecartTransport Default Mountain",
+                        "Action": "MinecartTransport Default jibb.minecarts.Mountain",
                     },
                 },
             ],
             "When": {
-                "EnableMountain": true,
+                "Enablejibb.minecarts.Mountain": true,
                 "MoveMountainToAdventurersGuild": false,
                 "HasMod |contains=FlashShifter.StardewValleyExpandedCP": "true",
                 "HasMod |contains=Himetarts.ARV.CP": "false",
@@ -580,7 +593,7 @@
             },
             "PatchMode": "Overlay",
             "When": {
-                "EnableMountain": true,
+                "Enablejibb.minecarts.Mountain": true,
                 "MoveMountainToAdventurersGuild": false,
                 "HasMod |contains=FlashShifter.StardewValleyExpandedCP": "true",
                 "HasMod |contains=Himetarts.ARV.CP": "true",
@@ -597,12 +610,12 @@
                     },
                     "Layer": "Buildings",
                     "SetProperties": {
-                        "Action": "MinecartTransport Default Mountain",
+                        "Action": "MinecartTransport Default jibb.minecarts.Mountain",
                     },
                 },
             ],
             "When": {
-                "EnableMountain": true,
+                "Enablejibb.minecarts.Mountain": true,
                 "MoveMountainToAdventurersGuild": false,
                 "HasMod |contains=FlashShifter.StardewValleyExpandedCP": "true",
                 "HasMod |contains=Himetarts.ARV.CP": "true",
@@ -627,7 +640,7 @@
             },
             "PatchMode": "Overlay",
             "When": {
-                "EnableMountain": true,
+                "Enablejibb.minecarts.Mountain": true,
                 "MoveMountainToAdventurersGuild": true,
                 "HasMod |contains=FlashShifter.StardewValleyExpandedCP": "true",
             },
@@ -643,13 +656,55 @@
                     },
                     "Layer": "Buildings",
                     "SetProperties": {
-                        "Action": "MinecartTransport Default Mountain",
+                        "Action": "MinecartTransport Default jibb.minecarts.Mountain",
                     },
                 },
             ],
             "When": {
-                "EnableMountain": true,
+                "Enablejibb.minecarts.Mountain": true,
                 "MoveMountainToAdventurersGuild": true,
+                "HasMod |contains=FlashShifter.StardewValleyExpandedCP": "true",
+            },
+        },
+        //SVE Aurora Vineyard
+        {
+            "Action": "EditMap",
+            "Target": "Maps/Custom_ForestWest",
+            "FromFile": "assets/CartEntrance.tmx",
+            "FromArea": {
+                "X": 0,
+                "Y": 0,
+                "Width": 3,
+                "Height": 3
+            },
+            "ToArea": {
+                "X": 46,
+                "Y": 10,
+                "Width": 3,
+                "Height": 3
+            },
+            "PatchMode": "Overlay",
+            "When": {
+                "HasMod |contains=FlashShifter.StardewValleyExpandedCP": "true",
+            },
+        },
+        //SVE Aurora Vineyard Tile Properties
+        {
+            "Action": "EditMap",
+            "Target": "Maps/Custom_ForestWest",
+            "MapTiles": [{
+                    "Position": {
+                        "X": "47",
+                        "Y": "12"
+                    },
+                    "Layer": "Buildings",
+                    "SetProperties": {
+                        "Action": "MinecartTransport Default jibb.minecarts.SVEAurora",
+                    },
+                },
+            ],
+            "When": {
+                "Enablejibb.minecarts.SVEAurora": true,
                 "HasMod |contains=FlashShifter.StardewValleyExpandedCP": "true",
             },
         },
@@ -691,7 +746,7 @@
             },
             "PatchMode": "Overlay",
             "When": {
-                "EnableRailroad": true,
+                "Enablejibb.minecarts.Railroad": true,
                 "HasMod |contains=Lumisteria.MtVapius": "false"
             },
         },
@@ -706,12 +761,12 @@
                     },
                     "Layer": "Buildings",
                     "SetProperties": {
-                        "Action": "MinecartTransport Default Railroad",
+                        "Action": "MinecartTransport Default jibb.minecarts.Railroad",
                     },
                 },
             ],
             "When": {
-                "EnableRailroad": true,
+                "Enablejibb.minecarts.Railroad": true,
                 "HasMod |contains=Lumisteria.MtVapius": "false"
             },
         },
@@ -726,12 +781,12 @@
                     },
                     "Layer": "Buildings",
                     "SetProperties": {
-                        "Action": "MinecartTransport Default Railroad",
+                        "Action": "MinecartTransport Default jibb.minecarts.Railroad",
                     },
                 },
             ],
             "When": {
-                "EnableRailroad": true,
+                "Enablejibb.minecarts.Railroad": true,
                 "HasMod |contains=Lumisteria.MtVapius": "true",
             },
         },
@@ -773,7 +828,7 @@
             },
             "PatchMode": "Overlay",
             "When": {
-                "EnableWoods": true,
+                "Enablejibb.minecarts.Woods": true,
                 "HasMod |contains=FlashShifter.StardewValleyExpandedCP": "false"
             },
         },
@@ -788,12 +843,12 @@
                     },
                     "Layer": "Buildings",
                     "SetProperties": {
-                        "Action": "MinecartTransport Default Woods",
+                        "Action": "MinecartTransport Default jibb.minecarts.Woods",
                     },
                 },
             ],
             "When": {
-                "EnableWoods": true,
+                "Enablejibb.minecarts.Woods": true,
                 "HasMod |contains=FlashShifter.StardewValleyExpandedCP": "false"
             },
         },
@@ -816,7 +871,7 @@
             },
             "PatchMode": "Replace",
             "When": {
-                "EnableWoods": true,
+                "Enablejibb.minecarts.Woods": true,
                 "HasMod |contains=FlashShifter.StardewValleyExpandedCP": "true"
             },
         },
@@ -831,12 +886,12 @@
                     },
                     "Layer": "Buildings",
                     "SetProperties": {
-                        "Action": "MinecartTransport Default Woods",
+                        "Action": "MinecartTransport Default jibb.minecarts.Woods",
                     },
                 },
             ],
             "When": {
-                "EnableWoods": true,
+                "Enablejibb.minecarts.Woods": true,
                 "HasMod |contains=FlashShifter.StardewValleyExpandedCP": "true"
             },
         },
@@ -851,12 +906,12 @@
                     },
                     "Layer": "Buildings",
                     "SetProperties": {
-                        "Action": "MinecartTransport Default RSVCableCar",
+                        "Action": "MinecartTransport Default jibb.minecarts.RSVCableCar",
                     },
                 },
             ],
             "When": {
-                "EnableRSVCableCar": true,
+                "Enablejibb.minecarts.RSVCableCar": true,
                 "HasFlag: anyPlayer |contains=RSV.FixedMinecart": "true",
                 "HasFlag": "ccBoilerRoom",
             },
@@ -873,12 +928,12 @@
                     },
                     "Layer": "Buildings",
                     "SetProperties": {
-                        "Action": "MinecartTransport Default RSVEast",
+                        "Action": "MinecartTransport Default jibb.minecarts.RSVEast",
                     },
                 },
             ],
             "When": {
-                "EnableRSVEast": true,
+                "Enablejibb.minecarts.RSVEast": true,
                 "HasFlag: anyPlayer |contains=RSV.FixedMinecart": "true",
                 "HasFlag": "ccBoilerRoom",
             },
@@ -895,12 +950,12 @@
                     },
                     "Layer": "Buildings",
                     "SetProperties": {
-                        "Action": "MinecartTransport Default RSVNorth",
+                        "Action": "MinecartTransport Default jibb.minecarts.RSVNorth",
                     },
                 },
             ],
             "When": {
-                "EnableRSVNorth": true,
+                "Enablejibb.minecarts.RSVNorth": true,
                 "HasFlag: anyPlayer |contains=RSV.FixedMinecart": "true",
                 "HasFlag": "ccBoilerRoom",
             },
@@ -917,12 +972,12 @@
                     },
                     "Layer": "Buildings",
                     "SetProperties": {
-                        "Action": "MinecartTransport Default RSVSouth",
+                        "Action": "MinecartTransport Default jibb.minecarts.RSVSouth",
                     },
                 },
             ],
             "When": {
-                "EnableRSVSouth": true,
+                "Enablejibb.minecarts.RSVSouth": true,
                 "HasFlag: anyPlayer |contains=RSV.FixedMinecart": "true",
                 "HasFlag": "ccBoilerRoom",
             },
@@ -939,12 +994,12 @@
                     },
                     "Layer": "Buildings",
                     "SetProperties": {
-                        "Action": "MinecartTransport Default RSVSummitEast",
+                        "Action": "MinecartTransport Default jibb.minecarts.RSVSummitEast",
                     },
                 },
             ],
             "When": {
-                "EnableRSVSummitEast": true,
+                "Enablejibb.minecarts.RSVSummitEast": true,
                 "HasFlag: anyPlayer |contains=RSV.FixedMinecart": "true",
                 "HasFlag": "ccBoilerRoom",
             },
@@ -960,12 +1015,12 @@
                     },
                     "Layer": "Buildings",
                     "SetProperties": {
-                        "Action": "MinecartTransport Default RSVSummitWest",
+                        "Action": "MinecartTransport Default jibb.minecarts.RSVSummitWest",
                     },
                 },
             ],
             "When": {
-                "EnableRSVSummitWest": true,
+                "Enablejibb.minecarts.RSVSummitWest": true,
                 "HasFlag: anyPlayer |contains=RSV.FixedMinecart": "true",
                 "HasFlag": "ccBoilerRoom",
             },
@@ -981,12 +1036,12 @@
                     },
                     "Layer": "Buildings",
                     "SetProperties": {
-                        "Action": "MinecartTransport Default EastScarp_Village",
+                        "Action": "MinecartTransport Default jibb.minecarts.EastScarp_Village",
                     },
                 },
             ],
             "When": {
-                "EnableEastScarp_Village": true,
+                "Enablejibb.minecarts.EastScarp_Village": true,
             },
         },
         //EastScarp_DeepMountains Tile Properties
@@ -1000,12 +1055,12 @@
                     },
                     "Layer": "Buildings",
                     "SetProperties": {
-                        "Action": "MinecartTransport Default EastScarp_DeepMountains",
+                        "Action": "MinecartTransport Default jibb.minecarts.EastScarp_DeepMountains",
                     },
                 },
             ],
             "When": {
-                "EnableEastScarp_DeepMountains": true,
+                "Enablejibb.minecarts.EastScarp_DeepMountains": true,
             },
         },
 
@@ -1020,12 +1075,12 @@
                     },
                     "Layer": "Buildings",
                     "SetProperties": {
-                        "Action": "MinecartTransport Default EastScarp_DeepDark",
+                        "Action": "MinecartTransport Default jibb.minecarts.EastScarp_DeepDark",
                     },
                 },
             ],
             "When": {
-                "EnableEastScarp_DeepDark": true,
+                "Enablejibb.minecarts.EastScarp_DeepDark": true,
             },
         }, {
             "Action": "EditMap",
@@ -1037,12 +1092,12 @@
                     },
                     "Layer": "Buildings",
                     "SetProperties": {
-                        "Action": "MinecartTransport Default EastScarp_DeepDark",
+                        "Action": "MinecartTransport Default jibb.minecarts.EastScarp_DeepDark",
                     },
                 },
             ],
             "When": {
-                "EnableEastScarp_DeepDark": true,
+                "Enablejibb.minecarts.EastScarp_DeepDark": true,
             },
         },
         //East Scarp Scarp Crossing Tile Properties
@@ -1110,7 +1165,7 @@
         //Moveable Farm
         {
             "Action": "EditMap",
-            "Target": "Maps/{{FarmMap}}",
+            "Target": "Maps/{{FarmMapAsset}}",
             "FromFile": "assets/{{FarmCartStyle}}.tmx",
             "FromArea": {
                 "X": 0,
@@ -1131,13 +1186,14 @@
                     },
                     "Layer": "Buildings",
                     "SetProperties": {
-                        "Action": "MinecartTransport Default IntegratedFarm",
+                        "Action": "MinecartTransport Default jibb.minecarts.Farm",
                     },
                 },
             ],
             "PatchMode": "Overlay",
+			"Priority": "Late",
             "When": {
-                "EnableIntegratedFarm": true,
+                "Enablejibb.minecarts.Farm": true,
             },
         },
         //Lunatyx's Legacy Farm Cave Standard Farm
@@ -1159,7 +1215,7 @@
             },
             "PatchMode": "Overlay",
             "When": {
-                "EnableFarmCave": true,
+                "Enablejibb.minecarts.LunatyxFarmCave": true,
                 "HasMod |contains=Lunatyx.LegacyFarmCave": "true",
                 "HasMod |contains=flashshifter.immersivefarm2remastered": "false",
                 "FarmType": "Standard",
@@ -1176,12 +1232,12 @@
                     },
                     "Layer": "Buildings",
                     "SetProperties": {
-                        "Action": "MinecartTransport Default FarmCave",
+                        "Action": "MinecartTransport Default jibb.minecarts.LunatyxFarmCave",
                     },
                 },
             ],
             "When": {
-                "EnableFarmCave": true,
+                "Enablejibb.minecarts.LunatyxFarmCave": true,
                 "HasMod |contains=Lunatyx.LegacyFarmCave": "true",
                 "HasMod |contains=flashshifter.immersivefarm2remastered": "false",
                 "FarmType": "Standard",
@@ -1197,12 +1253,12 @@
                     },
                     "Layer": "Buildings",
                     "SetProperties": {
-                        "Action": "MinecartTransport Default FarmCave",
+                        "Action": "MinecartTransport Default jibb.minecarts.LunatyxFarmCave",
                     },
                 },
             ],
             "When": {
-                "EnableFarmCave": true,
+                "Enablejibb.minecarts.LunatyxFarmCave": true,
                 "HasMod |contains=Lunatyx.LegacyFarmCave": "true",
                 "HasMod |contains=flashshifter.immersivefarm2remastered": "false",
                 "FarmType": "Standard",
@@ -1227,7 +1283,7 @@
             },
             "PatchMode": "Overlay",
             "When": {
-                "EnableFarmCave": true,
+                "Enablejibb.minecarts.LunatyxFarmCave": true,
                 "HasMod |contains=Lunatyx.LegacyFarmCave": "true",
                 "FarmType |contains=Beach, FourCorners, Forest, Hilltop, Riverland, Wilderness, MeadowLandsFarm": "true",
             },
@@ -1243,12 +1299,12 @@
                     },
                     "Layer": "Buildings",
                     "SetProperties": {
-                        "Action": "MinecartTransport Default FarmCave",
+                        "Action": "MinecartTransport Default jibb.minecarts.LunatyxFarmCave",
                     },
                 },
             ],
             "When": {
-                "EnableFarmCave": true,
+                "Enablejibb.minecarts.LunatyxFarmCave": true,
                 "HasMod |contains=Lunatyx.LegacyFarmCave": "true",
                 "FarmType |contains=Beach, FourCorners, Forest, Hilltop, Riverland, Wilderness, MeadowLandsFarm": "true",
             },
@@ -1263,12 +1319,12 @@
                     },
                     "Layer": "Buildings",
                     "SetProperties": {
-                        "Action": "MinecartTransport Default FarmCave",
+                        "Action": "MinecartTransport Default jibb.minecarts.LunatyxFarmCave",
                     },
                 },
             ],
             "When": {
-                "EnableFarmCave": true,
+                "Enablejibb.minecarts.LunatyxFarmCave": true,
                 "HasMod |contains=Lunatyx.LegacyFarmCave": "true",
                 "FarmType |contains=Beach, FourCorners, Forest, Hilltop, Riverland, Wilderness, MeadowLandsFarm": "true",
             },
@@ -1284,15 +1340,15 @@
                     },
                     "Layer": "Buildings",
                     "SetProperties": {
-                        "Action": "MinecartTransport Default IF2RFarmWest",
+                        "Action": "MinecartTransport Default jibb.minecarts.IF2RFarmWest",
                     },
                 },
             ],
             "When": {
-                "EnableIF2R": true,
+                "Enablejibb.minecarts.IF2R": true,
                 "HasFlag": "ccBoilerRoom",
                 "FarmType": "Standard",
-                "HasMod |contains=flashshifter.immersivefarm2remastered": "true"
+                "HasMod |contains=flashshifter.immersivefarm2remastered": "true",
             },
         },
         //IF2R Farm East Tile Properties
@@ -1306,12 +1362,12 @@
                     },
                     "Layer": "Buildings",
                     "SetProperties": {
-                        "Action": "MinecartTransport Default IF2RFarmEast",
+                        "Action": "MinecartTransport Default jibb.minecarts.IF2RFarmEast",
                     },
                 },
             ],
             "When": {
-                "EnableIF2R": true,
+                "Enablejibb.minecarts.IF2R": true,
                 "HasFlag": "ccBoilerRoom",
                 "FarmType": "Standard",
                 "HasMod |contains=flashshifter.immersivefarm2remastered": "true"
@@ -1328,12 +1384,12 @@
                     },
                     "Layer": "Buildings",
                     "SetProperties": {
-                        "Action": "MinecartTransport Default OasisGreenhouse",
+                        "Action": "MinecartTransport Default jibb.minecarts.OasisGreenhouse",
                     },
                 },
             ],
             "When": {
-                "EnableOasisGreenhouse": true,
+                "Enablejibb.minecarts.OasisGreenhouse": true,
                 "HasMod |contains=DaisyNiko.OasisGreenhouse": "true"
             },
         },
@@ -1347,12 +1403,12 @@
                     },
                     "Layer": "Buildings",
                     "SetProperties": {
-                        "Action": "MinecartTransport Default OasisGreenhouse",
+                        "Action": "MinecartTransport Default jibb.minecarts.OasisGreenhouse",
                     },
                 },
             ],
             "When": {
-                "EnableOasisGreenhouse": true,
+                "Enablejibb.minecarts.OasisGreenhouse": true,
                 "HasMod |contains=DaisyNiko.OasisGreenhouse": "true"
             },
         },
@@ -1372,7 +1428,7 @@
                 },
             ],
             "When": {
-                "EnableFarmCave": true,
+                "EnableGreenFarmCave": true,
                 "HasMod |contains=Kana.Grotta": "true",
             },
         }, 
@@ -1525,12 +1581,12 @@
                     },
                     "Layer": "Buildings",
                     "SetProperties": {
-                        "Action": "MinecartTransport Default WaffCave",
+                        "Action": "MinecartTransport Default jibb.minecarts.WaFFCave",
                     },
                 },
             ],
             "When": {
-                "EnableWaFFCave": true,
+                "Enablejibb.minecarts.WaFFCave": true,
                 "FarmType|contains=A_TK.FarmProjectForaging/WaFF, A_TK.FarmProjectForaging/WaFFLE": "true",
                 "HasMod |contains=A_TK.FarmProjectForaging, A_TK.FarmProjectForaging.LE": "true"
             },
@@ -1545,12 +1601,12 @@
                     },
                     "Layer": "Buildings",
                     "SetProperties": {
-                        "Action": "MinecartTransport Default WaffCave",
+                        "Action": "MinecartTransport Default jibb.minecarts.WaFFCave",
                     },
                 },
             ],
             "When": {
-                "EnableWaFFCave": true,
+                "Enablejibb.minecarts.WaFFCave": true,
                 "FarmType|contains=A_TK.FarmProjectForaging/WaFF, A_TK.FarmProjectForaging/WaFFLE": "true",
                 "HasMod |contains=A_TK.FarmProjectForaging, A_TK.FarmProjectForaging.LE": "true"
             },
@@ -1575,7 +1631,7 @@
             },
             "PatchMode": "Overlay",
             "When": {
-                "EnableGrampletonFields": true,
+                "Enablejibb.minecarts.GrampletonFieldsW": true,
                 "HasMod |contains=flashshifter.GrampletonFields": "true"
             },
         },
@@ -1590,12 +1646,12 @@
                     },
                     "Layer": "Buildings",
                     "SetProperties": {
-                        "Action": "MinecartTransport Default GrampletonFieldsW",
+                        "Action": "MinecartTransport Default jibb.minecarts.GrampletonFieldsW",
                     },
                 },
             ],
             "When": {
-                "EnableGrampletonFields": true,
+                "Enablejibb.minecarts.GrampletonFieldsW": true,
                 "HasMod |contains=flashshifter.GrampletonFields": "true"
             },
         },	
@@ -1603,22 +1659,22 @@
         {
             "Action": "EditMap",
             "Target": "Maps/Custom_GrampletonFields",
-            "FromFile": "assets/Cart.tmx",
+            "FromFile": "assets/CartEntranceNarrow.tmx",
             "FromArea": {
                 "X": 0,
                 "Y": 0,
                 "Width": 1,
-                "Height": 2
+                "Height": 3
             },
             "ToArea": {
                 "X": 160,
-                "Y": 42,
+                "Y": 41,
                 "Width": 1,
-                "Height": 2
+                "Height": 3
             },
             "PatchMode": "Overlay",
             "When": {
-                "EnableGrampletonFields": true,
+                "Enablejibb.minecarts.GrampletonFieldsE": true,
                 "HasMod |contains=flashshifter.GrampletonFields": "true"
             },
         },
@@ -1633,16 +1689,16 @@
                     },
                     "Layer": "Buildings",
                     "SetProperties": {
-                        "Action": "MinecartTransport Default GrampletonFieldsE",
+                        "Action": "MinecartTransport Default jibb.minecarts.GrampletonFieldsE",
                     },
                 },
             ],
             "When": {
-                "EnableGrampletonFields": true,
+                "Enablejibb.minecarts.GrampletonFieldsE": true,
                 "HasMod |contains=flashshifter.GrampletonFields": "true"
             },
         },
-        //Grampleton Fields East SVE
+        //Grampleton Fields South SVE
         {
             "Action": "EditMap",
             "Target": "Maps/Custom_GrampletonFields",
@@ -1661,7 +1717,7 @@
             },
             "PatchMode": "Overlay",
             "When": {
-                "EnableGrampletonFields": true,
+                "Enablejibb.minecarts.GrampletonFieldsS": true,
                 "HasMod |contains=flashshifter.GrampletonFields": "true"
             },
         },
@@ -1676,12 +1732,12 @@
                     },
                     "Layer": "Buildings",
                     "SetProperties": {
-                        "Action": "MinecartTransport Default GrampletonFieldsS",
+                        "Action": "MinecartTransport Default jibb.minecarts.GrampletonFieldsS",
                     },
                 },
             ],
             "When": {
-                "EnableGrampletonFields": true,
+                "Enablejibb.minecarts.GrampletonFieldsS": true,
                 "HasMod |contains=flashshifter.GrampletonFields": "true"
             },
         },
@@ -1724,5 +1780,201 @@
                 "HasMod |contains=Inkubus.ModestCave": "true",
             },
         },
+        //Walk To Desert Cave Tile Properties
+        {
+            "Action": "EditMap",
+            "Target": "Maps/Tarniyar.CP.WalkToDesert_Cave",
+            "MapTiles": [{
+                    "Position": {
+                        "X": "11",
+                        "Y": "11"
+                    },
+                    "Layer": "Buildings",
+                    "SetProperties": {
+                        "Action": "MinecartTransport Default jibb.minecarts.WTDCave",
+                    },
+                },
+            ],
+            "When": {
+                "Enablejibb.minecarts.WTDCave": true,
+                "HasMod |contains=Tarniyar.CP.WalkToDesert": "true",
+                "HasFlag": "ccBoilerRoom",
+            },
+        },
+        {
+            "Action": "EditMap",
+            "Target": "Maps/Tarniyar.CP.WalkToDesert_Cave",
+            "MapTiles": [{
+                    "Position": {
+                        "X": "12",
+                        "Y": "11"
+                    },
+                    "Layer": "Buildings",
+                    "SetProperties": {
+                        "Action": "MinecartTransport Default jibb.minecarts.WTDCave",
+                    },
+                },
+            ],
+            "When": {
+                "Enablejibb.minecarts.WTDCave": true,
+                "HasMod |contains=Tarniyar.CP.WalkToDesert": "true",
+                "HasFlag": "ccBoilerRoom",
+            },
+        },
+        //Fostoria
+        {
+            "Action": "EditMap",
+            "Target": "Maps/Fostoria.Stoffton_Fostoria",
+            "FromFile": "assets/CartEntranceNarrow.tmx",
+            "FromArea": {
+                "X": 0,
+                "Y": 0,
+                "Width": 1,
+                "Height": 3
+            },
+            "ToArea": {
+                "X": 62,
+                "Y": 7,
+                "Width": 1,
+                "Height": 3
+            },
+            "PatchMode": "Overlay",
+            "When": {
+                "Enablejibb.minecarts.Fostoria": true,
+                "HasMod |contains=Fostoria.Stoffton": "true"
+            },
+        },
+        //Fostoria Tile Properties
+        {
+            "Action": "EditMap",
+            "Target": "Maps/Fostoria.Stoffton_Fostoria",
+            "MapTiles": [{
+                    "Position": {
+                        "X": "62",
+                        "Y": "9"
+                    },
+                    "Layer": "Buildings",
+                    "SetProperties": {
+                        "Action": "MinecartTransport Default jibb.minecarts.Fostoria",
+                    },
+                },
+            ],
+            "When": {
+                "Enablejibb.minecarts.Fostoria": true,
+                "HasMod |contains=Fostoria.Stoffton": "true"
+            },
+        },
+        //Stoffton
+        {
+            "Action": "EditMap",
+            "Target": "Maps/Lizzie.Stoffton_Stoffton",
+            "FromFile": "assets/CartEntranceNarrow.tmx",
+            "FromArea": {
+                "X": 0,
+                "Y": 0,
+                "Width": 1,
+                "Height": 3
+            },
+            "ToArea": {
+                "X": 65,
+                "Y": 54,
+                "Width": 1,
+                "Height": 3
+            },
+            "PatchMode": "Overlay",
+            "When": {
+                "Enablejibb.minecarts.Stoffton": true,
+                "HasMod |contains=Lizzie.Stoffton": "true"
+            },
+        },
+        //Stoffton Tile Properties
+        {
+            "Action": "EditMap",
+            "Target": "Maps/Lizzie.Stoffton_Stoffton",
+            "MapTiles": [{
+                    "Position": {
+                        "X": "65",
+                        "Y": "56"
+                    },
+                    "Layer": "Buildings",
+                    "SetProperties": {
+                        "Action": "MinecartTransport Default jibb.minecarts.Stoffton",
+                    },
+                },
+            ],
+            "When": {
+                "Enablejibb.minecarts.Stoffton": true,
+                "HasMod |contains=Lizzie.Stoffton": "true"
+            },
+        },
+        //Aimon Small Hilltop Farm Quarry Tile Properties
+        {
+            "Action": "EditMap",
+            "Target": "Maps/Aimon.SmallHilltopFarm_Quarry",
+            "MapTiles": [{
+                    "Position": {
+                        "X": "6",
+                        "Y": "23"
+                    },
+                    "Layer": "Buildings",
+                    "SetProperties": {
+                        "Action": "MinecartTransport Default jibb.minecarts.AimonSmallHilltopFarm_Quarry",
+                    },
+                },{
+                    "Position": {
+                        "X": "5",
+                        "Y": "23"
+                    },
+                    "Layer": "Buildings",
+                    "SetProperties": {
+                        "Action": "MinecartTransport Default jibb.minecarts.AimonSmallHilltopFarm_Quarry",
+                    },
+                },
+            ],
+            "When": {
+                "HasMod |contains=Aimon.SmallHilltopFarm": "true"
+            },
+        },
+                //Lunatyx's Deserted Island Farm Cave Standard Farm Tile Properties
+                {
+                    "Action": "EditMap",
+                    "Target": "Maps/FarmCave",
+                    "MapTiles": [{
+                            "Position": {
+                                "X": "25",
+                                "Y": "5"
+                            },
+                            "Layer": "Buildings",
+                            "SetProperties": {
+                                "Action": "MinecartTransport Default jibb.minecarts.LunatyxFarmCave",
+                            },
+                        },
+                    ],
+                    "When": {
+                        "Enablejibb.minecarts.LunatyxFarmCave": true,
+                        "HasMod |contains=Lunatyx.DesertedIslandFarmCave": "true",
+                        "FarmType": "Beach",
+                    },
+                },
+                {
+                    "Action": "EditMap",
+                    "Target": "Maps/FarmCave",
+                    "MapTiles": [{
+                            "Position": {
+                                "X": "25",
+                                "Y": "6"
+                            },
+                            "Layer": "Buildings",
+                            "SetProperties": {
+                                "Action": "MinecartTransport Default jibb.minecarts.LunatyxFarmCave",
+                            },
+                        },
+                    ],
+                    "When": {
+                        "Enablejibb.minecarts.LunatyxFarmCave": true,
+                        "HasMod |contains=Lunatyx.DesertedIslandFarmCave": "true",
+                        "FarmType": "Beach",
+                    },
+                },
     ]
 }

@@ -174,7 +174,7 @@ namespace LogMenu
 
         private void SetPositions()
         {
-            // Menu dimensions (1000x600, + border width)
+            // Menu dimensions (1000x620, + border width)
             width = 1000 + borderWidth * 2;
             height = 620 + borderWidth * 2;
 

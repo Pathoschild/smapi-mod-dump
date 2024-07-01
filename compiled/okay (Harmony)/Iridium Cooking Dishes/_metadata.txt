@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/24732
+IDs: TianXiaobai.IridiumCookingDishes
+update keys: Nexus:24732

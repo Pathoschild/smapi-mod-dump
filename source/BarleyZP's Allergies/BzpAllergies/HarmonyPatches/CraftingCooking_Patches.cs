@@ -15,6 +15,7 @@ using StardewValley.Menus;
 using System.Reflection.Emit;
 using System.Reflection;
 using StardewModdingAPI;
+using static BZP_Allergies.InventoryUtils;
 
 namespace BZP_Allergies.HarmonyPatches
 {
@@ -146,24 +147,8 @@ namespace BZP_Allergies.HarmonyPatches
             Dictionary<string, Item> afterConsume = GetItemsInAllInventories(additionalMaterialsCopy);
 
             // subtract afterConsume amounts from beforeConsume to get the consumed materials
-            List<Item> usedItems = new();
-            foreach (var pair in beforeConsume)
-            {
-                
-                int numAfter = 0;
-                if (afterConsume.ContainsKey(pair.Key))
-                {
-                    numAfter = afterConsume[pair.Key].Stack;
-                }
-
-                if (pair.Value.Stack - numAfter > 0)
-                {
-                    // we used some of this item
-                    usedItems.Add(pair.Value.getOne());
-                }
-            }
-
-            
+            List<Item> usedItems = InventoryUsedItems(beforeConsume, afterConsume);
+                        
             // what allergens did we cook this with?
             crafted.modData[Constants.ModDataMadeWith] = "";
             foreach (Item item in usedItems)
@@ -194,55 +179,6 @@ namespace BZP_Allergies.HarmonyPatches
                     additionalMaterials[i].OverwriteWith(additionalMaterialsCopy[i]);
                 }
             }
-        }
-
-        private static Dictionary<string, Item> GetItemsInAllInventories(List<IInventory> additionalMaterials)
-        {
-            Dictionary<string, Item> result = new();
-            if (additionalMaterials == null) return result;
-
-            foreach (Item i in Game1.player.Items)
-            {
-                if (i == null) continue;
-                Item copy = i.getOne();
-                copy.Stack = i.Stack;
-                result[i.ItemId] = copy;
-            }
-
-            foreach (IInventory inv in additionalMaterials)
-            {
-                if (inv is null) continue;
-                foreach (Item i in inv)
-                {
-                    if (i == null) continue;
-                    Item copy = i.getOne();
-                    copy.Stack = i.Stack;
-                    result[i.ItemId] = copy;
-                }
-            }
-
-            return result;
-        }
-
-        private static Inventory CopyInventory(IInventory inventory)
-        {
-            Inventory result = new();
-
-            foreach (Item i in inventory)
-            {
-                if (i is null)
-                {
-                    result.Add(i);
-                    continue;
-                }
-
-                Item copy = i.getOne();
-                copy.Stack = i.Stack;
-                result.Add(copy);
-            }
-
-
-            return result;
         }
     }
 }

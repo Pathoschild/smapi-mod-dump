@@ -1,0 +1,21 @@
+{
+    // i18n for GMCM options. The rest are in content packs.
+    "config.DisableAll.name": "Disable randomize",
+    "section.AllowedSeasons": "Allowed Seasons",
+    "config.Spring": "Spring",
+    "config.Summer": "Summer",
+    "config.Fall": "Fall",
+    "config.Winter": "Winter",
+    "section.RandomizeOptions": "Randomize Options",
+    "config.AlwaysStartAt1st.name": "Always start at 1st",
+    "config.AlwaysStartAt1st.tooltip": "You will start always season's first day.\nNOTE: \"Avoid festival day\" will be ignored.",
+    "config.AvoidFestivalDay.name": "Avoid festival day",
+    "config.AvoidFestivalDay.tooltip" : "Make mod prevents the actual first day from being a festival day(not for passive festivals, such as Trout Derby)",
+    "config.AvoidPassiveFestivalDay.name": "Avoid passive festival day",
+    "config.AvoidPassiveFestivalDay.tooltip" : "Make mod prevents the actual first day from being a passive festival day(not for non-passive festivals)",
+    "config.UseWheatSeeds.name": "UseWheatSeeds",
+    "config.UseWheatSeeds.tooltip": "In Summer or Fall you will receive 18 Wheat Seeds instead of 15 Parsnip Seeds. Crop growth period is taken into account.",
+    "section.FixingOptions": "Fixing Options",
+    "config.TVRecipeWithSeasonContext.name": "TVRecipeWithSeasonContext",
+    "config.TVRecipeWithSeasonContext.tooltip": "The Queen of Sauces TV program with seasonal context. If disabled, Stir Fry will be broadcast first."
+}

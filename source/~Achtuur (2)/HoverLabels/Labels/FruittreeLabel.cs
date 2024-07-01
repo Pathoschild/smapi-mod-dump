@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using AchtuurCore.Framework.Borders;
 using HoverLabels.Framework;
 using Microsoft.Xna.Framework;
 using StardewValley;
@@ -43,8 +44,9 @@ internal class FruittreeLabel : BaseLabel
     }
     public override void GenerateLabel()
     {
-        string FruitName = ModEntry.GetObjectWithId(treeFruit.Fruit.First().ItemId).DisplayName;
-        AddBorder(I18n.LabelFruittreeName(FruitName));
+        SObject fruit = ModEntry.GetObjectWithId(treeFruit.Fruit.First().ItemId);
+        string FruitName = fruit.DisplayName;
+        AddBorder(new ItemLabel(fruit));
 
         // Not fully grown
         if (hoverTree.daysUntilMature.Value > 0)
@@ -53,10 +55,11 @@ internal class FruittreeLabel : BaseLabel
             AddBorder(I18n.LabelFruittreeGrow(days));
         }
         // Fully grown
-        else
+        else if (this.hoverTree.fruit.Count() > 0)
         {
             int fruitAmount = this.hoverTree.fruit.Count();
-            AddBorder(I18n.LabelFruittreeAmount(FruitName, fruitAmount));
+            ItemLabel itemLabel = new ItemLabel(fruit, I18n.LabelFruittreeAmount(fruitAmount));
+            AddBorder(itemLabel);
         }
     }
 }

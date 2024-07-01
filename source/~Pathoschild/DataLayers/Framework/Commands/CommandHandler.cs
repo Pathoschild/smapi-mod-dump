@@ -35,10 +35,9 @@ namespace Pathoschild.Stardew.DataLayers.Framework.Commands
         /// <param name="currentLayer">Get the current data layer, if any.</param>
         private static ICommand[] BuildCommands(IMonitor monitor, Func<ILayer?> currentLayer)
         {
-            return new ICommand[]
-            {
+            return [
                 new ExportCommand(monitor, currentLayer)
-            };
+            ];
         }
     }
 }

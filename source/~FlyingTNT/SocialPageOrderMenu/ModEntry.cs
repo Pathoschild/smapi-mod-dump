@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+using Common.Utilities;
+using Common.Integrations;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -31,23 +33,55 @@ namespace SocialPageOrderRedux
         public static ModConfig Config;
         public static IMonitor SMonitor;
         public static IModHelper SHelper;
-        public static readonly Rectangle buttonTextureSource = new Rectangle(162, 440, 16, 16); // Location of the organize button within LooseSprites/Cursors
+
+        /// <summary> Location of the organize button within LooseSprites/Cursors </summary>
+        public static readonly Rectangle buttonTextureSource = new Rectangle(162, 440, 16, 16);
+
+        /// <summary> The X offset of the sort button from the left of the game menu. </summary>
         private const int xOffset = -16;
+
+        /// <summary> The Y offset ot the dropdown from the bottom of the game menu. </summary>
         private const int dropdownYOffset = -28;
+
+        /// <summary> The unique id of the sort button Clickable Component. </summary>
         private const int buttonId = 231445356;
 
+        /// <summary> The dropdown object. </summary>
         public static readonly PerScreen<MyOptionsDropDown> dropDown = new();
+
+        /// <summary> The button object. </summary>
         public static readonly PerScreen<ClickableTextureComponent> button = new();
-        public static readonly PerScreen<bool> wasSorted = new PerScreen<bool>(() => false);
-        public static readonly PerScreen<int> currentSort = new PerScreen<int>(() => 0);
-        public static readonly PerScreen<int> lastSlotPosition = new PerScreen<int>(() => 0); // The position to return to when leaving a ProfileMenu
 
+        /// <summary> The position to return to when returning to the social page after clicking to a ProfileMenu (the npc at the top of the screen when you click on a character to open their page).  </summary>
+        public static readonly PerScreen<int> lastSlotPosition = new PerScreen<int>(() => 0);
+
+        /// <summary> The string that was in the filter field the last time it was checked. </summary>
         private static readonly PerScreen<string> lastFilterString = new PerScreen<string>(()=>"");
-        private static readonly PerScreen<TextBox> filterField = new();
-        private static readonly PerScreen<List<SocialPage.SocialEntry>> allEntries = new PerScreen<List<SocialPage.SocialEntry>>(() => new List<SocialPage.SocialEntry>());
 
+        /// <summary> The filter field (search bar) object. </summary>
+        private static readonly PerScreen<TextBox> filterField = new();
+
+        /// <summary> All of the entries in the social page, before we removed any when searching. Used to restore the page when we clear the search bar. </summary>
+        private static readonly PerScreen<List<SocialEntry>> allEntries = new PerScreen<List<SocialEntry>>(() => new List<SocialEntry>());
+
+        /// <summary> Whether the mod was enabled when the game was loaded. If it wasn't, we don't do anything because the patches weren't applied. </summary>
         private static bool WasModEnabled = false;
 
+        /// <summary>
+        /// The sort curently selected by Game1.player. It is stored in their mod data so that it is preserved between sessions, and for splitscreen support (it used to be stored in the config file,
+        /// but this would link the two screens' sorts together).
+        /// </summary>
+        public static int CurrentSort
+        {
+            get
+            {
+                return PerPlayerConfig.LoadConfigOption(Game1.player, "FlyingTNT.SocialPageOrderRedux.CurrentSort", defaultValue: 0);
+            }
+            set
+            {
+                PerPlayerConfig.SaveConfigOption(Game1.player, "FlyingTNT.SocialPageOrderRedux.CurrentSort", value);
+            }
+        }
 
         public override void Entry(IModHelper helper)
         {
@@ -59,7 +93,7 @@ namespace SocialPageOrderRedux
             SMonitor = Monitor;
             SHelper = Helper;
 
-            helper.Events.Input.ButtonPressed += Input_ButtonPressed;
+            helper.Events.Input.ButtonsChanged += Input_ButtonsChanged;
             helper.Events.Display.MenuChanged += Display_MenuChanged;
             helper.Events.GameLoop.ReturnedToTitle += GameLoop_ReturnedToTitle;
 
@@ -93,7 +127,11 @@ namespace SocialPageOrderRedux
             harmony.Patch(AccessTools.Method(typeof(IClickableMenu), nameof(IClickableMenu.populateClickableComponentList)),
                 postfix: new HarmonyMethod(typeof(ModEntry), nameof(IClickableMenu_populateClickableComponentList_Postfix))
             );
-            
+
+            harmony.Patch(AccessTools.Method(typeof(IClickableMenu), nameof(IClickableMenu.readyToClose)),
+                postfix: new HarmonyMethod(typeof(ModEntry), nameof(IClickableMenu_readyToClose_Postfix))
+            );
+
             harmony.Patch(AccessTools.Method(typeof(GameMenu), nameof(GameMenu.changeTab)),
                 postfix: new HarmonyMethod(typeof(ModEntry), nameof(GameMenu_changeTab_Postfix))
             );
@@ -121,14 +159,14 @@ namespace SocialPageOrderRedux
                 setValue: value => Config.EnableMod = value
             );
 
-            configMenu.AddKeybind(
+            configMenu.AddKeybindList(
                 mod: ModManifest,
                 name: () => "Prev Sort Key",
                 getValue: () => Config.prevButton,
                 setValue: value => Config.prevButton = value
             );
 
-            configMenu.AddKeybind(
+            configMenu.AddKeybindList(
                 mod: ModManifest,
                 name: () => "Next Sort Key",
                 getValue: () => Config.nextButton,
@@ -202,15 +240,15 @@ namespace SocialPageOrderRedux
             );
         }
 
-        private void Input_ButtonPressed(object sender, ButtonPressedEventArgs e)
+        private void Input_ButtonsChanged(object sender, ButtonsChangedEventArgs e)
         {
             if (!WasModEnabled || Game1.activeClickableMenu is not GameMenu || (Game1.activeClickableMenu as GameMenu).GetCurrentPage() is not SocialPage)
                 return;
-            if (e.Button == Config.prevButton)
+            if (Config.prevButton.JustPressed())
             {
                 DecrementSort();
             }
-            else if (e.Button == Config.nextButton)
+            else if (Config.nextButton.JustPressed())
             {
                 IncrementSort();
             }
@@ -220,32 +258,34 @@ namespace SocialPageOrderRedux
         {
             lastFilterString.Value += "dirty";// Force an update
 
-            if (Game1.activeClickableMenu is GameMenu menu)
+            if (Game1.activeClickableMenu is not GameMenu menu)
+                return;
+
+            if(Config.UseFilter && e.OldMenu is not ProfileMenu)
             {
-                if(Config.UseFilter && e.OldMenu is not ProfileMenu)
+                filterField.Value.Text = "";
+            }
+
+            if (menu.GetCurrentPage() is not SocialPage socialPage)
+                return;
+
+            // Resort the social page (it is reset when the menu is changed); if the previous menu was a ProfileMenu (the menu that pops up when you click on a npc in the social page), scroll the menu to that npc
+            ResortSocialList(slotToSelect: e.OldMenu is ProfileMenu pm ? pm.Current : null);
+
+            // Snap the cursor to the selected item if necessary
+            if (Game1.options.snappyMenus && Game1.options.gamepadControls)
+            {
+                if(socialPage.currentlySnappedComponent is not null)
                 {
-                    filterField.Value.Text = "";
+                    // For some reason, the snapping doesn't work correctly in local multiplayer. I have no idea why. With moveCursorInDirection(-1), the cursor is at least consistently *in* the correct box.
+                    if (Context.IsSplitScreen)
+                        socialPage.moveCursorInDirection(-1);
+                    else
+                        socialPage.snapCursorToCurrentSnappedComponent();
                 }
-
-                if(menu.GetCurrentPage() is SocialPage socialPage)
+                else
                 {
-                    ResortSocialList(slotToSelect: e.OldMenu is ProfileMenu pm ? pm.Current : null);
-
-                    if (Game1.options.snappyMenus && Game1.options.gamepadControls)
-                    {
-                        if(socialPage.currentlySnappedComponent is not null)
-                        {
-                            // For some reason, the snapping doesn't work correctly in local multiplayer. I have no idea why. With moveCursorInDirection(-1), the cursor is at least consistently *in* the correct box.
-                            if (Context.IsSplitScreen)
-                                socialPage.moveCursorInDirection(-1);
-                            else
-                                socialPage.snapCursorToCurrentSnappedComponent();
-                        }
-                        else
-                        {
-                            SMonitor.Log("Currently snapped component is null.");
-                        }
-                    }
+                    SMonitor.Log("Currently snapped component is null.");
                 }
             }
         }
@@ -267,6 +307,8 @@ namespace SocialPageOrderRedux
 
         public static void SocialPage_FindSocialCharacters_Postfix(List<SocialEntry> __result)
         {
+            // __result is the list of all of the entries
+
             allEntries.Value.Clear();
             allEntries.Value.AddRange(__result);
         }
@@ -277,6 +319,16 @@ namespace SocialPageOrderRedux
                 return;
 
             __instance.allClickableComponents.Add(button.Value);
+        }
+
+        public static void IClickableMenu_readyToClose_Postfix(IClickableMenu __instance, ref bool __result)
+        {
+            if (!Config.EnableMod || __instance is not SocialPage || filterField.Value is null)
+                return;
+
+            // If the filter is selected, make the result false. This is because some mods that add their own menus will overwrite the current one when their menu's key is pressed,
+            // but if the player has the filter selected, they didn't mean to open the other menu; they were just typing in the search bar.
+            __result &= !filterField.Value.Selected;
         }
 
         [HarmonyPatch(typeof(SocialPage), nameof(SocialPage.draw), new Type[] { typeof(SpriteBatch) })]
@@ -302,29 +354,36 @@ namespace SocialPageOrderRedux
                 if (!Config.EnableMod)
                     return;
 
-                if (Config.UseFilter)
+                try
                 {
-                    UpdateFilterPosition(page);
-                    filterField.Value.Draw(b);
-                }
-
-                if (Config.UseDropdown)
-                {
-                    dropDown.Value.draw(b, GetDropdownX(page), GetDropdownY(page));
-                    if (SHelper.Input.IsDown(SButton.MouseLeft) && AccessTools.FieldRefAccess<OptionsDropDown, bool>(dropDown.Value, "clicked") && dropDown.Value.dropDownBounds.Contains(Game1.getMouseX() - GetDropdownX(page), Game1.getMouseY() - GetDropdownY(page)))
+                    if (Config.UseFilter)
                     {
-                        dropDown.Value.selectedOption = (int)Math.Max(Math.Min((float)(Game1.getMouseY() - GetDropdownY(page) - dropDown.Value.dropDownBounds.Y) / (float)dropDown.Value.bounds.Height, (float)(dropDown.Value.dropDownOptions.Count - 1)), 0f);
+                        UpdateFilterPosition(page);
+                        filterField.Value.Draw(b);
+                    }
+
+                    if (Config.UseDropdown)
+                    {
+                        dropDown.Value.draw(b, GetDropdownX(page), GetDropdownY(page));
+                        if (SHelper.Input.IsDown(SButton.MouseLeft) && AccessTools.FieldRefAccess<OptionsDropDown, bool>(dropDown.Value, "clicked") && dropDown.Value.dropDownBounds.Contains(Game1.getMouseX() - GetDropdownX(page), Game1.getMouseY() - GetDropdownY(page)))
+                        {
+                            dropDown.Value.selectedOption = (int)Math.Max(Math.Min((float)(Game1.getMouseY() - GetDropdownY(page) - dropDown.Value.dropDownBounds.Y) / (float)dropDown.Value.bounds.Height, (float)(dropDown.Value.dropDownOptions.Count - 1)), 0f);
+                        }
+                    }
+
+                    if (Config.UseButton)
+                    {
+                        button.Value.bounds = GetButtonRectangle(page);
+                        button.Value.draw(b);
+                        if (button.Value.bounds.Contains(Game1.getMousePosition()))
+                        {
+                            (Game1.activeClickableMenu as GameMenu).hoverText = SHelper.Translation.Get($"sort-by") + SHelper.Translation.Get($"sort-{CurrentSort}");
+                        }
                     }
                 }
-
-                if(Config.UseButton)
+                catch(Exception ex)
                 {
-                    button.Value.bounds = GetButtonRectangle(page);
-                    button.Value.draw(b);
-                    if (button.Value.bounds.Contains(Game1.getMousePosition()))
-                    {
-                        (Game1.activeClickableMenu as GameMenu).hoverText = SHelper.Translation.Get($"sort-by") + SHelper.Translation.Get($"sort-{currentSort.Value}");
-                    }
+                    SMonitor.Log($"Failed in {nameof(DrawDropDown)}: {ex}", LogLevel.Error);
                 }
             }
         }
@@ -366,6 +425,7 @@ namespace SocialPageOrderRedux
             {
                 if (!Config.EnableMod || !Config.UseDropdown)
                     return true;
+
                 if (AccessTools.FieldRefAccess<OptionsDropDown, bool>(dropDown.Value, "clicked"))
                 {
                     if(dropDown.Value.dropDownBounds.Contains(Game1.getMouseX() - GetDropdownX(__instance), Game1.getMouseY() - GetDropdownY(__instance)))
@@ -380,8 +440,14 @@ namespace SocialPageOrderRedux
 
         public static bool SocialPage_recieveKeyPress_Prefix(IClickableMenu __instance, Keys key)
         {
-            if (!Config.EnableMod || !Config.UseFilter || filterField.Value is null || !filterField.Value.Selected || key == Keys.Escape || __instance is not SocialPage socialPage || Game1.options.gamepadControls)
+            if (!Config.EnableMod || __instance is not SocialPage socialPage || !Config.UseFilter || filterField.Value is null || !filterField.Value.Selected || Game1.options.gamepadControls)
                 return true;
+
+            if(key == Keys.Escape)
+            {
+                filterField.Value.Selected = false;
+                return true;
+            }
 
             socialPage.updateSlots();
             return false;
@@ -389,8 +455,14 @@ namespace SocialPageOrderRedux
 
         public static bool GameMenu_recieveKeyPress_Prefix(GameMenu __instance, Keys key)
         {
-            if (!Config.EnableMod || !Config.UseFilter || filterField.Value is null || !filterField.Value.Selected || key == Keys.Escape || __instance.GetCurrentPage() is not SocialPage socialPage || Game1.options.gamepadControls)
+            if (!Config.EnableMod || __instance.GetCurrentPage() is not SocialPage socialPage || !Config.UseFilter || filterField.Value is null || !filterField.Value.Selected || Game1.options.gamepadControls)
                 return true;
+
+            if (key == Keys.Escape)
+            {
+                filterField.Value.Selected = false;
+                return true;
+            }
 
             socialPage.updateSlots();
             return false;
@@ -451,7 +523,7 @@ namespace SocialPageOrderRedux
                 {
                     nameSprites.Add(new NameSpriteSlot(page.SocialEntries[i], sprites[i], page.characterSlots[i]));
                 }
-                switch (currentSort.Value)
+                switch (CurrentSort)
                 {
                     case 0: // friend asc
                         SMonitor.Log("sorting by friend asc");
@@ -675,6 +747,9 @@ namespace SocialPageOrderRedux
                 {
                     Text = ""
                 };
+
+                filterField.Value.OnEnterPressed += sender => sender.Selected = false;
+                filterField.Value.OnTabPressed += sender => sender.Selected = false;
             }
 
             if(dropDown.Value is null)
@@ -687,7 +762,7 @@ namespace SocialPageOrderRedux
                     dropDown.Value.dropDownOptions.Add(SHelper.Translation.Get($"sort-{i}"));
                 }
                 dropDown.Value.RecalculateBounds();
-                dropDown.Value.selectedOption = currentSort.Value;
+                dropDown.Value.selectedOption = CurrentSort;
             }
 
             if(button.Value is null)
@@ -702,24 +777,24 @@ namespace SocialPageOrderRedux
 
         public static void IncrementSort()
         {
-            currentSort.Value++;
-            currentSort.Value %= 4;
+            CurrentSort++;
+            CurrentSort %= 4;
             ResortSocialList();
             if(Config.UseDropdown)
             {
-                dropDown.Value.selectedOption = currentSort.Value;
+                dropDown.Value.selectedOption = CurrentSort;
             }
         }
 
         public static void DecrementSort()
         {
-            currentSort.Value--;
-            if (currentSort.Value < 0)
-                currentSort.Value = 3;
+            CurrentSort--;
+            if (CurrentSort < 0)
+                CurrentSort = 3;
             ResortSocialList();
             if (Config.UseDropdown)
             {
-                dropDown.Value.selectedOption = currentSort.Value;
+                dropDown.Value.selectedOption = CurrentSort;
             }
         }
     }

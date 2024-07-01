@@ -1,0 +1,17 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/bcmpinc/StardewHack
+**
+*************************************************/
+
+{
+    // Translation provided by: < discord name: airbench,  Nexus profile: https://next.nexusmods.com/profile/Airbench/about-me >
+    DestroyRingChestsCommand: "Oyuncuların yüzüklerini saklamak için kullanılan kalan yüzük sandıklarını kaldırır. İçindeki tüm eşyalar ayağınızın dibine düşecektir.",
+    OpenForgeCommand: "Demirci menüsünü açar.",
+    RingsName: "Yüzük", RingsTooltip: "Kullanılması istenen yüzük sayısı", 
+    BonusTrinketName: "Bonus ıvır zıvır", BonusTrinketTooltip: "Bir fiyatına iki ıvır zıvır yuvasına sahip olup olmadığınız.",
+}

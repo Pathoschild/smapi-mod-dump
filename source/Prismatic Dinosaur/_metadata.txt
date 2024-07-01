@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/Jolly-Alpaca/PrismaticDinosaur
+   Git: https://github.com/Jolly-Alpaca/PrismaticDinosaur.git
+
+mods:
+   Prismatic Dinosaur
+
+latest commit:
+   commit 84474845ef4cce48553d39e40e4ceab92e6e8f1e
+   Author: JollyLlama <mgadzala@outlook.com>
+   Date:   Sat Jun 22 14:20:42 2024 -0500
+   
+       Increment version number
+   

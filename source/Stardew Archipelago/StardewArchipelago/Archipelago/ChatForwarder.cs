@@ -22,6 +22,7 @@ using StardewArchipelago.Locations.CodeInjections.Vanilla;
 using StardewArchipelago.Locations.CodeInjections.Vanilla.Relationship;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Locations;
 using StardewValley.Menus;
 
 namespace StardewArchipelago.Archipelago
@@ -196,7 +197,7 @@ namespace StardewArchipelago.Archipelago
             {
                 return false;
             }
-            
+
 
             return TryHandleCommand(_lastCommand);
         }
@@ -452,6 +453,11 @@ namespace StardewArchipelago.Archipelago
                 return false;
             }
 
+            var farmhouse = (FarmHouse)(Game1.getLocationFromName("FarmHouse"));
+            Game1.player.lastSleepLocation.Value = farmhouse.NameOrUniqueName;
+            Game1.player.lastSleepPoint.Value = farmhouse.GetPlayerBedSpot();
+            Game1.player.mostRecentBed = farmhouse.GetPlayerBed().TileLocation;
+            Game1.player.currentLocation.locationContextId = "Default";
             Game1.player.startToPassOut();
             return true;
         }

@@ -29,6 +29,8 @@ internal class SeasonCondition : BaseCondition
 
     public override string Description()
     {
+        if (seasons.Count == 4)
+            return "Any";
         IEnumerable<string> time_strings = seasons.Select(season => SeasonToText(season));
         return string.Join("\n", time_strings);
     }

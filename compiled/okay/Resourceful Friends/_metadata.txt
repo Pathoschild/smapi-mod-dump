@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/23227
+IDs: ItsBenter.ResourcefulFriends.dll
+update keys: Nexus:23227, GitHub:itsbenter/ResourcefulFriends

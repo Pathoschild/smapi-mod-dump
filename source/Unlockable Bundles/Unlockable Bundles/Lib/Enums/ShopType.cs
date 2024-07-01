@@ -23,5 +23,6 @@ namespace Unlockable_Bundles.Lib.Enums
         ParrotPerch = 2,
         CCBundle = 3,
         AltCCBundle = 4,
+        CCMagicBook = 5,
     }
 }

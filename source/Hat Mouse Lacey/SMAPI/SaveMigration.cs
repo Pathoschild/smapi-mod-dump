@@ -10,8 +10,10 @@
 
 using Microsoft.Xna.Framework;
 using StardewValley;
+using StardewValley.Objects;
 using StardewValley.Quests;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ichortower_HatMouseLacey
 {
@@ -24,6 +26,7 @@ namespace ichortower_HatMouseLacey
         {
             MigrateCrueltyScore();
             MigrateHatsShown();
+            HatJubilee130();
             MigrateFriendshipData();
             MigrateSpouse();
             MigrateOldLacey();
@@ -69,6 +72,8 @@ namespace ichortower_HatMouseLacey
             {"HML_Lonely", $"{HML.MusicPrefix}InALonelyPlace"},
             {"HML_Confession", $"{HML.MusicPrefix}FromAMousesHeart"},
         };
+
+        public static string jubilee130 = $"{HML.CPId}/Jubilee130";
 
         public void MigrateCrueltyScore()
         {
@@ -125,6 +130,33 @@ namespace ichortower_HatMouseLacey
                 // this is just to cause LCModData to read the hat data
                 LCModData.HasShownHat("check");
             }
+        }
+
+        /*
+         * Grant a jubilee on previously-unsupported shown hats, so they can be
+         * shown again. This one is for 1.3.0, which added reactions for the
+         * 1.6 hats.
+         */
+        public void HatJubilee130()
+        {
+            if (Game1.player.modData.TryGetValue(jubilee130, out string have)) {
+                return;
+            }
+            Log.Trace($"Hat jubilee (1.3.0)! Forgetting all hats not previously supported.");
+            // the .ToArray() at the end forces this to evaluate immediately
+            // instead of being deferred, which we need since it relies on not
+            // having yet cleared the list of shown hats
+            var keepers = Enumerable.Range(0,94)
+                .Select((i) => {
+                    Hat h = (Hat)ItemRegistry.Create($"(H){i}");
+                    return LCHatString.GetItemHatString(h);
+                }).Where(s => LCModData.HasShownHat(s))
+                .ToArray();
+            LCModData.ClearShownHats();
+            foreach (var h in keepers) {
+                LCModData.AddShownHat(h);
+            }
+            Game1.player.modData[jubilee130] = "true";
         }
 
         public void MigrateFriendshipData()

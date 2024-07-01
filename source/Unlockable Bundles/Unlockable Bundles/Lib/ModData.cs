@@ -22,7 +22,7 @@ using Unlockable_Bundles.NetLib;
 using Newtonsoft.Json;
 using StardewModdingAPI;
 using static Unlockable_Bundles.ModEntry;
-
+using Unlockable_Bundles.Lib.WalletCurrency;
 
 namespace Unlockable_Bundles.Lib
 {
@@ -34,6 +34,14 @@ namespace Unlockable_Bundles.Lib
         public Dictionary<string, Dictionary<string, UnlockableSaveData>> UnlockableSaveData { get; set; } = new();
         //Dic<Location:x,y , List<Farmers>>
         public Dictionary<string, List<long>> FoundUniqueDigSpots { get; set; } = new();
+
+        //Bundle Keys of SpecialPlacementRequirements
+        public List<string> SPRTriggerActionKeys { get; set; } = new();
+        //Dic< CurrencyId, Dic< playerId, value >>
+        //if it's shared the main players will be used
+        //If no entry in the second dictionary exists I'll treat it as the player not having obtained this currency yet
+        public Dictionary<string, Dictionary<long, int>> WalletCurrencyData { get; set; } = new();
+        public Dictionary<string, Dictionary<long, long>> WalletCurrencyTotal { get; set; } = new();
 
         public static bool isUnlockablePurchased(string key, string location)
         {
@@ -229,6 +237,86 @@ namespace Unlockable_Bundles.Lib
             }
 
             Monitor.Log($"Migrated Price in bundle '{unlockable.ID}' from '{oldPriceKey}' to '{newPriceKey}':'{newPriceAmount}'");
+        }
+
+        private static void addWalletCurrencyTotal(string currencyId, long who, int value)
+        {
+            if (value <= 0)
+                return;
+
+            if (!Instance.WalletCurrencyTotal.TryGetValue(currencyId, out var data))
+                Instance.WalletCurrencyTotal.Add(currencyId, data = new());
+
+            if (!data.ContainsKey(who))
+                data.Add(who, 0);
+
+            data[who] += value;
+        }
+        public static int addWalletCurrency(string currencyId, long who, int value)
+        {
+            addWalletCurrencyTotal(currencyId, who, value);
+
+            if (!Instance.WalletCurrencyData.TryGetValue(currencyId, out var data))
+                Instance.WalletCurrencyData.Add(currencyId, data = new());
+
+            if (!data.ContainsKey(who))
+                data.Add(who, 0);
+
+            return data[who] = Math.Clamp(data[who] + value, 0, int.MaxValue);
+        }
+
+        public static int getWalletCurrency(string currencyId, long who)
+        {
+            if (!Instance.WalletCurrencyData.TryGetValue(currencyId, out var data))
+                return 0;
+
+            if (!data.ContainsKey(who))
+                return 0;
+
+            return data[who];
+        }
+
+        public static long getWalletCurrencyTotal(string currencyId, long who)
+        {
+            if (!Instance.WalletCurrencyTotal.TryGetValue(currencyId, out var data))
+                return 0;
+
+            if (!data.ContainsKey(who))
+                return 0;
+
+            return data[who];
+        }
+
+        public static long getCollectiveWalletCurrency(string currencyId)
+        {
+            if (!Instance.WalletCurrencyData.TryGetValue(currencyId, out var data))
+                return 0;
+
+            long value = 0;
+            foreach (var e in data)
+                value += e.Value;
+
+            return value;
+        }
+
+        public static long getCollectiveWalletCurrencyTotal(string currencyId)
+        {
+            if (!Instance.WalletCurrencyTotal.TryGetValue(currencyId, out var data))
+                return 0;
+
+            long value = 0;
+            foreach (var e in data)
+                value += e.Value;
+
+            return value;
+        }
+
+        public static bool walletCurrencyDiscovered(string currencyId, long who)
+        {
+            if (!Instance.WalletCurrencyData.TryGetValue(currencyId, out var data))
+                return false;
+
+            return data.ContainsKey(who);
         }
     }
 }

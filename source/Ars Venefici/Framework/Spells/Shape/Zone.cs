@@ -60,6 +60,32 @@ namespace ArsVenefici.Framework.Spells.Shape
             zoneEffect.SetIndex(index);
             zoneEffect.SetOwner(caster);
 
+            Vector2 tilePos = new Vector2(zoneEffect.GetPosition().X - radius, zoneEffect.GetPosition().Y - radius);
+            Vector2 absolutePos = Utils.TilePosToAbsolutePos(tilePos);
+
+            int boundingBoxRadius = 3;
+
+            switch ((int)radius)
+            {
+                case 1:
+                    boundingBoxRadius = 3;
+                    break;
+                case 2:
+                    boundingBoxRadius = 5;
+                    break;
+                case 3:
+                    boundingBoxRadius = 7;
+                    break;
+                default: 
+                    boundingBoxRadius = 3; 
+                    break;
+
+            }
+
+            boundingBoxRadius *= Game1.tileSize;
+
+            zoneEffect.SetBoundingBox(new Rectangle((int)(absolutePos.X), (int)(absolutePos.Y), boundingBoxRadius, boundingBoxRadius));
+
             modEntry.ActiveEffects.Add(zoneEffect);
 
             return new SpellCastResult(SpellCastResultType.SUCCESS);

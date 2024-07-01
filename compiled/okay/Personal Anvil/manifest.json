@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Personal Anvil",
+  "Author": "Strobe",
+  "Version": "2.0.0",
+  "Description": "Allows players to purchase an anvil from Clint to break geodes, troves and golden coconuts anytime, anywhere",
+  "UniqueID": "Strobe.PersonalAnvil",
+  "EntryDll": "PersonalAnvil.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": ["Nexus:5326"]
+}

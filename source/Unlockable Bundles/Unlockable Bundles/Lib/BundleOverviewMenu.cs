@@ -518,7 +518,7 @@ namespace Unlockable_Bundles.Lib
                 b.DrawString(Game1.smallFont, locationDisplay, new Vector2(le.bounds.X + le.bounds.Width - 14 - Game1.smallFont.MeasureString(locationDisplay).Length(), le.bounds.Y + 60), Color.Gray);
 
                 //Progress
-                var progressDisplay = $"{unlockable._alreadyPaid.Count()}/{(unlockable.ShopType is ShopType.CCBundle or ShopType.AltCCBundle ? unlockable.BundleSlots : unlockable._price.Count())}";
+                var progressDisplay = $"{unlockable._alreadyPaid.Count()}/{(unlockable.ShopType is ShopType.CCBundle ? unlockable.BundleSlots : unlockable._price.Count())}";
                 b.DrawString(Game1.smallFont, progressDisplay, new Vector2(le.bounds.X + le.bounds.Width - 14 - Game1.smallFont.MeasureString(progressDisplay).Length(), le.bounds.Y + 20), Color.Gray);
 
                 if (bundle == CurrentBundle)
@@ -556,7 +556,7 @@ namespace Unlockable_Bundles.Lib
             b.DrawString(Game1.dialogueFont, locationDisplay, new Vector2(xPositionOnScreen + 42, yPositionOnScreen + height - 186), Color.DarkSlateGray);
 
             //Progress
-            var progressDisplay = $"{u._alreadyPaid.Count()}/{(u.ShopType is ShopType.CCBundle or ShopType.AltCCBundle ? u.BundleSlots : u._price.Count())}";
+            var progressDisplay = $"{u._alreadyPaid.Count()}/{(u.ShopType is ShopType.CCBundle ? u.BundleSlots : u._price.Count())}";
             var progressPos = Game1.dialogueFont.MeasureString(locationDisplay).X < 699 - Game1.dialogueFont.MeasureString(progressDisplay).Length()
                     ? new Vector2(xPositionOnScreen + 700 - Game1.smallFont.MeasureString(progressDisplay).Length(), yPositionOnScreen + height - 186)
                     : new Vector2(xPositionOnScreen + 42, yPositionOnScreen + height - 220);

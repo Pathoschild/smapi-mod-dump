@@ -6,9 +6,9 @@ mods:
    Variable Seasons
 
 latest commit:
-   commit e7a51c3c13b8b9f57bfda2a618c0254581f25589
+   commit ab3f5a4f9cb5680e6eb152a4c139a30fd2f67fc7
    Author: Caleb Stein <caleb@calebstein.net>
-   Date:   Fri May 24 20:54:11 2024 -0700
+   Date:   Fri Jun 28 19:48:01 2024 -0700
    
-       more robust season handling
+       disable on multiplayer worlds when not host
    

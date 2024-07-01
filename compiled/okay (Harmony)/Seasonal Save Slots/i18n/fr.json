@@ -1,0 +1,6 @@
+{
+    "Config.ShowSeasonIcon.Title": "Montrer l’icône de saison",
+    "Config.ShowSeasonIcon.Tooltip": "Affiche ou non l’icône pour la saison en cours sur chaque emplacement de sauvegarde.",
+    "Config.ShowSeasonColoredLine.Title": "Montrer la ligne colorée de saison",
+    "Config.ShowSeasonColoredLine.Tooltip": "Affiche ou non une ligne colorée pour la saison en cours en haut de chaque emplacement de sauvegarde."
+}

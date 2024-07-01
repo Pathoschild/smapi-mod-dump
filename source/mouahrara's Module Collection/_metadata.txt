@@ -6,9 +6,9 @@ mods:
    mouahrara's Module Collection
 
 latest commit:
-   commit cc678b8e8a34aa8b250682427449933ceb186bd8
-   Author: mouahrara <mouahrara.noreply@protonmail.com>
-   Date:   Sun Apr 21 18:39:50 2024 +0200
+   commit ccbaa9309a69d6fc0e17310e82cfc78d4d18195c
+   Author: mouahrara <mouahrara@users.noreply.github.com>
+   Date:   Thu Jun 13 22:32:48 2024 +0200
    
-       mouahrara's Module Collection 2.0.2
+       Fix an issue that caused the game to crash in multiplayer as a guest, when leaving the farm view after zooming out
    

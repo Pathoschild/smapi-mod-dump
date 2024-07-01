@@ -6,5 +6,6 @@
   "ActionsEnabled": false,
   "TransformSound": "cowboy_explosion",
   "MoveSpeed": 10,
-  "StaminaUse": 0
+  "StaminaUse": 0,
+  "ZoomOutEnabled": true
 }

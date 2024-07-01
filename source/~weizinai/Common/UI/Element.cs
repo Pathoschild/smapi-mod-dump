@@ -13,7 +13,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using StardewValley;
 
-namespace Common.UI;
+namespace weizinai.StardewValleyMod.Common.UI;
 
 public abstract class Element
 {
@@ -28,46 +28,46 @@ public abstract class Element
 
     public Container? Parent;
     public Vector2 LocalPosition { get; set; }
-    protected Vector2 Position => LocalPosition + (Parent?.Position ?? Vector2.Zero);
+    protected Vector2 Position => this.LocalPosition + (this.Parent?.Position ?? Vector2.Zero);
     public abstract int Width { get; }
     public abstract int Height { get; }
-    private Rectangle Bounds => new((int)Position.X, (int)Position.Y, Width, Height);
-    private bool LeftClick => hover && leftClickGesture;
+    private Rectangle Bounds => new((int)this.Position.X, (int)this.Position.Y, this.Width, this.Height);
+    private bool LeftClick => this.hover && this.leftClickGesture;
 
     public virtual void Update()
     {
-        var isHidden = IsHidden();
+        var isHidden = this.IsHidden();
         if (isHidden)
         {
-            hover = false;
-            leftClickGesture = false;
+            this.hover = false;
+            this.leftClickGesture = false;
             return;
         }
 
         var mousePosition = Game1.getMousePosition();
-        hover = Bounds.Contains(mousePosition);
-        leftClickGesture = Game1.input.GetMouseState().LeftButton == ButtonState.Pressed && Game1.oldMouseState.LeftButton == ButtonState.Pressed;
+        this.hover = this.Bounds.Contains(mousePosition);
+        this.leftClickGesture = Game1.input.GetMouseState().LeftButton == ButtonState.Pressed && Game1.oldMouseState.LeftButton == ButtonState.Pressed;
     }
 
     public abstract void Draw(SpriteBatch spriteBatch);
 
     public virtual void PerformHoverAction(SpriteBatch spriteBatch)
     {
-        if (IsHidden()) return;
-        if (hover)
-            OnHover?.Invoke(this, spriteBatch);
+        if (this.IsHidden()) return;
+        if (this.hover)
+            this.OnHover?.Invoke(this, spriteBatch);
         else
-            OffHover?.Invoke(this);
+            this.OffHover?.Invoke(this);
     }
 
     public virtual void ReceiveLeftClick()
     {
-        if (IsHidden()) return;
-        if (LeftClick) OnLeftClick?.Invoke();
+        if (this.IsHidden()) return;
+        if (this.LeftClick) this.OnLeftClick?.Invoke();
     }
 
     public bool IsHidden()
     {
-        return CheckHidden is not null && CheckHidden.Invoke();
+        return this.CheckHidden is not null && this.CheckHidden.Invoke();
     }
 }

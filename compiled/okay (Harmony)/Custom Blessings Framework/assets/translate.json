@@ -1,0 +1,28 @@
+{
+  "default": {
+    "Immunity": "Immunity",
+    "Knockback": "Knockback",
+    "Weapon Speed": "Weapon Speed",
+    "Critical Chance": "Critical Chance",
+    "Critical Power": "Critical Power",
+    "Weapon Precision": "Weapon Precision",
+    "Max Health": "Max Health",
+    "Regen": "Regen",
+    "Lose": "Lose",
+    "PVs": "life points/s",
+    "Stamina": "stamina/s"
+  },
+  "fr-FR": {
+    "Immunity": "Immunité",
+    "Knockback": "Recul",
+    "Weapon Speed": "Vitesse attaque",
+    "Critical Chance": "Chance critique",
+    "Critical Power": "Puissance critique",
+    "Weapon Precision": "Précision arme",
+    "Max Health": "PV Max",
+    "Regen": "Récup",
+    "Lose": "Perd",
+    "PVs": "PV/s",
+    "Stamina": "énergie/s"
+  }
+}

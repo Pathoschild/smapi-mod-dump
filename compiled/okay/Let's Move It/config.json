@@ -1,6 +1,7 @@
 {
   "ModEnabled": true,
   "CopyMode": false,
+  "MultiSelect": false,
   "MoveCropWithoutTile": true,
   "MoveCropWithoutIndoorPot": false,
   "EnableMoveBuilding": true,
@@ -28,5 +29,7 @@
   "MoveKey": "MouseLeft",
   "OverwriteKey": "LeftControl",
   "CancelKey": "Escape",
-  "RemoveKey": "Delete"
+  "RemoveKey": "Delete",
+  "ToggleCopyModeKey": "None",
+  "ToggleMultiSelectKey": "None"
 }

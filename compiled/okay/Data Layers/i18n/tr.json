@@ -1,4 +1,7 @@
 ﻿{
+    /*********
+    ** Data Layers UI
+    *********/
     // accessible
     "accessible.name": "Erişilebilir",
     "accessible.clear": "Temizle",
@@ -68,5 +71,48 @@
     "tillable.tillable": "Sürülebilir",
     "tillable.tilled": "Sürülmüş",
     "tillable.occupied": "Dolu",
-    "tillable.not-tillable": "Sürülebilir Değil"
+    "tillable.not-tillable": "Sürülebilir Değil",
+
+
+    /*********
+    ** Generic Mod Config Menu UI
+    *********/
+    // section names
+    "config.section.main-options": "Ana seçenekler",
+    "config.section.main-controls": "Ana kontroller",
+    "config.section.layer": "'{{LayerName}}' katmanı", // {{LayerName}} is the layer name set above.
+
+    // main options
+    "config.show-grid.name": "Izgaraları göster",
+    "config.show-grid.desc": "Izgaraların gösterilip gösterilmeyeceğini belirtir",
+
+    "config.combine-borders.name": "Çakışan sınırları birleştir",
+    "config.combine-borders.desc": "İki adet aynı renkte grup çakışırsa kendi sınırları dışında çakışma alanını gösteren bir sınırın gösterilip gösterilmeyeceği.",
+
+    "config.color-scheme.name": "Renk şeması",
+    "config.color-schene.desc": "Tüm veri katmanlarındaki renkleri değiştiren, uygulanacak renk şeması.",
+    "config.color-schemes.default": "varsayılan renkler",
+
+    // main controls
+    "config.toggle-layer-key.name": "Veri katmanını gizle/göster",
+    "config.toggle-layer-key.desc": "Veri katmanını gizlemek veya göstermek için kullanılacak tuş.",
+
+    "config.prev-layer-key.name": "Önceki katman tuşu",
+    "config.prev-layer-key.desc": "Bir önceki veri katmanını gösterecek tuş.",
+
+    "config.next-layer-key.name": "Sonraki katman tuşu",
+    "config.next-layer-key.desc": "Bir sonraki veri katmanını gösterecek tuş.",
+
+    // data layers
+    "config.layer-enabled.name": "Etkin",
+    "config.layer-enabled.desc": "Katmanın oyun içinde erişilebilir olup olmayacağı.",
+
+    "config.layer-update-on-view-change.name": "Görüntü değiştiğinde güncelle",
+    "config.layer-update-on-view-change.desc": "'Saniye başına güncelleme' ayarından bağımsız olarak, dünyanın yeni bir kısmı görüntüye geldiğinde çizilen katman bilgilerinin güncellenip güncellenmeyeceği.",
+
+    "config.layer-updates-per-second.name": "Saniye başına güncelleme sayısı",
+    "config.layer-updates-per-second.desc": "Katmanların saniyede kaç kere güncelleneceği. Varsayılan değerden büyük değerler takılmalara sebep olabilir. Varsayılan değer: {{defaultValue}}.",
+
+    "config.layer-shortcut.name": "Kısayol tuşu",
+    "config.layer-shortcut.desc": "Kaplama açıkken bu katmanı seçen tuş."
 }

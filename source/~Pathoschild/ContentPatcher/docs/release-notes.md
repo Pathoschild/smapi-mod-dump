@@ -17,6 +17,25 @@ When releasing a format change, don't forget to update the smapi.io/json schema!
 
 
 -->
+## 2.3.0
+Released 29 June 2024 for SMAPI 4.0.7 or later. See the [release highlights](https://www.patreon.com/posts/107147109).
+
+* Added support for editing list-of-value fields.
+* The [`patch summary` console command](author-guide/troubleshooting.md#summary) can now filter by asset name(s) using a new `asset` argument.
+
+## 2.2.0
+Released 08 June 2024 for SMAPI 4.0.7 or later. See the [release highlights](https://www.patreon.com/posts/105792446).
+
+* Added new tokens:
+  * [`FarmMapAsset`](author-guide/tokens.md#FarmMapAsset) for the farm type's map [asset name](https://stardewvalleywiki.com/Modding:Common_data_field_types#Asset_name) without the `Maps/` prefix (like `Farm_Combat` for the wilderness farm).
+  * [`HasVisitedLocation`](author-guide/tokens.md#HasVisitedLocation) for the locations a player has visited before.
+* Re-enabled Content Patcher 2.1.0's locales change for all content packs.  
+  _This was temporarily disabled for older content packs in 2.1.1 so affected content packs could be updated._
+* Raised minimum versions to SMAPI 4.0.7 and Stardew Valley 1.6.4.  
+  _This avoids errors due to breaking changes in earlier 1.6 patches._
+* Internal refactoring.
+* Fixed the `HavingChild` and `Pregnant` tokens not accounting for the new `SpouseAdopts` field in `Data/Characters`.
+
 ## 2.1.2
 Released 23 May 2024 for SMAPI 4.0.0 or later.
 

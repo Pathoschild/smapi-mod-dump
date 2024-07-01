@@ -49,9 +49,8 @@ namespace ContentPatcher.Framework.Migrations.Internal
         ** Private methods
         *********/
         /// <summary>Load the vanilla data for an asset without mod edits applied.</summary>
-        /// <typeparam name="T">The asset data type.</typeparam>
         /// <param name="load">Load the asset from a content manager.</param>
-        public static T LoadVanillaData<T>(Func<LocalizedContentManager, T> load)
+        public static T LoadVanillaData(Func<LocalizedContentManager, T> load)
         {
             using var content = new LocalizedContentManager(Game1.content.ServiceProvider, Game1.content.RootDirectory);
             return load(content);

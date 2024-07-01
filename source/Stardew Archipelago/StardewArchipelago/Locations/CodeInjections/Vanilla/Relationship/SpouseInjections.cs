@@ -67,12 +67,11 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Relationship
                 }
 
                 _locationChecker.AddCheckedLocation(SPOUSE_STARDROP);
-                __instance.CurrentDialogue.Push(new Dialogue(Game1.content.LoadString(Game1.player.isRoommate(who.spouse) ? "Strings\\StringsFromCSFiles:Krobus_Stardrop" : "Strings\\StringsFromCSFiles:NPC.cs.4001"), __instance));
+                __instance.CurrentDialogue.Push(__instance.TryGetDialogue("SpouseStardrop") ?? new Dialogue(__instance, "Strings\\StringsFromCSFiles:NPC.cs.4001"));
                 __instance.shouldSayMarriageDialogue.Value = false;
                 __instance.currentMarriageDialogue.Clear();
                 who.mailReceived.Add("CF_Spouse");
                 return false; // don't run original logic
-
             }
             catch (Exception ex)
             {

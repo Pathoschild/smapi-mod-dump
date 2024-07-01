@@ -34,22 +34,22 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             _itemManager = itemManager;
         }
 
-        // public void cookedRecipe(int index)
-        public static void CookedRecipe_CheckCooksanityLocation_Postfix(Farmer __instance, int index)
+        // public void cookedRecipe(string yieldItemId)
+        public static void CookedRecipe_CheckCooksanityLocation_Postfix(Farmer __instance, string itemId)
         {
             try
             {
-                if (!_itemManager.ObjectExists(index))
+                if (!_itemManager.ObjectExistsById(itemId))
                 {
-                    _monitor.Log($"Unrecognized cooked recipe: {index}", LogLevel.Warn);
+                    _monitor.Log($"Unrecognized cooked recipe: {itemId}", LogLevel.Warn);
                     return;
                 }
 
-                var cookedItem = _itemManager.GetObjectById(index);
+                var cookedItem = _itemManager.GetObjectById(itemId);
                 var cookedItemName = cookedItem.Name;
-                if (_renamedItems.ContainsKey(index))
+                if (_renamedItems.ContainsKey(itemId))
                 {
-                    cookedItemName = _renamedItems[index];
+                    cookedItemName = _renamedItems[itemId];
                 }
                 var apLocation = $"{COOKING_LOCATION_PREFIX}{cookedItemName}";
                 if (_archipelago.GetLocationId(apLocation) > -1)
@@ -58,7 +58,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                     return;
                 }
 
-                _monitor.Log($"Unrecognized Cooksanity Location: {cookedItemName} [{index}]", LogLevel.Error);
+                _monitor.Log($"Unrecognized Cooksanity Location: {cookedItemName} [{itemId}]", LogLevel.Error);
                 return;
             }
             catch (Exception ex)
@@ -68,9 +68,9 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             }
         }
 
-        private static readonly Dictionary<int, string> _renamedItems = new()
+        private static readonly Dictionary<string, string> _renamedItems = new()
         {
-            { 223, "Cookies" },
+            { "223", "Cookies" },
         };
     }
 }

@@ -65,15 +65,15 @@ namespace LadderLocator
     class RadarNode
     {
         public static List<RadarNode> All { get; } = new List<RadarNode>() {
-            new RadarNode(Node.Topaz, 8, 80),
-            new RadarNode(Node.Amethyst, 10, 100),
-            new RadarNode(Node.Aquamarine, 14, 180),
-            new RadarNode(Node.Jade, 6, 200),
-            new RadarNode(Node.Emerald, 12, 250),
-            new RadarNode(Node.Ruby, 4, 250),
             new RadarNode(Node.Diamond, 2, 750),
+            new RadarNode(Node.Ruby, 4, 250),
+            new RadarNode(Node.Jade, 6, 200),
+            new RadarNode(Node.Amethyst, 8, 100),
+            new RadarNode(Node.Topaz, 10, 80),
+            new RadarNode(Node.Emerald, 12, 250),
+            new RadarNode(Node.Aquamarine, 14, 180),
             new RadarNode(Node.Gem, 44, 1000),
-            new RadarNode(Node.Mystic, 26, 1500),
+            new RadarNode(Node.Mystic, 46, 1500),
             // Give these an offset value to maintain grouping, hence -1000
             new RadarNode(Node.Geode, 75, 50 - 1000),
             new RadarNode(Node.FrozenGeode, 76, 100 - 1000),

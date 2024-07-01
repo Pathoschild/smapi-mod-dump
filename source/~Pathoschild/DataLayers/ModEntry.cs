@@ -38,11 +38,14 @@ namespace Pathoschild.Stardew.DataLayers
         /// <summary>The configured key bindings.</summary>
         private ModConfigKeys Keys => this.Config.Controls;
 
+        /// <summary>The color schemes available to apply.</summary>
+        private Dictionary<string, ColorScheme> ColorSchemes = null!; // loaded in Entry
+
         /// <summary>The display colors to use.</summary>
         private ColorScheme Colors = null!; // loaded in Entry
 
         /// <summary>The available data layers.</summary>
-        private ILayer[]? Layers;
+        private ILayer[] Layers = [];
 
         /// <summary>Maps key bindings to the layers they should activate.</summary>
         private readonly IDictionary<KeybindList, ILayer> ShortcutMap = new Dictionary<KeybindList, ILayer>();
@@ -68,7 +71,12 @@ namespace Pathoschild.Stardew.DataLayers
 
             // read config
             this.Config = helper.ReadConfig<ModConfig>();
+            this.ColorSchemes = this.LoadColorSchemes();
             this.Colors = this.LoadColorScheme();
+
+            // validate config
+            if (!this.Config.Layers.AnyLayersEnabled())
+                this.Monitor.Log("You have all layers disabled in the mod settings, so the mod won't do anything currently.", LogLevel.Warn);
 
             // init
             I18n.Init(helper.Translation);
@@ -96,6 +104,25 @@ namespace Pathoschild.Stardew.DataLayers
         {
             // init mod integrations
             this.Mods = new ModIntegrations(this.Monitor, this.Helper.ModRegistry, this.Helper.Reflection);
+
+            // add Generic Mod Config Menu integration
+            new GenericModConfigMenuIntegrationForDataLayers(
+                getConfig: () => this.Config,
+                reset: () =>
+                {
+                    this.Config = new ModConfig();
+                    this.ReapplyConfig();
+                },
+                saveAndApply: () =>
+                {
+                    this.Helper.WriteConfig(this.Config);
+                    this.ReapplyConfig();
+                },
+                modRegistry: this.Helper.ModRegistry,
+                monitor: this.Monitor,
+                manifest: this.ModManifest,
+                colorSchemes: this.ColorSchemes
+            ).Register();
         }
 
         /// <inheritdoc cref="IGameLoopEvents.SaveLoaded"/>
@@ -103,14 +130,8 @@ namespace Pathoschild.Stardew.DataLayers
         /// <param name="e">The event data.</param>
         private void OnSaveLoaded(object? sender, SaveLoadedEventArgs e)
         {
-            // init layers
             // need to do this after the save is loaded so translations use the selected language
-            this.Layers = this.GetLayers(this.Config, this.Mods!).ToArray();
-            foreach (ILayer layer in this.Layers)
-            {
-                if (layer.ShortcutKey.IsBound)
-                    this.ShortcutMap[layer.ShortcutKey] = layer;
-            }
+            this.ReapplyConfig();
         }
 
         /// <summary>Get the enabled data layers.</summary>
@@ -158,7 +179,7 @@ namespace Pathoschild.Stardew.DataLayers
         {
             this.CurrentOverlay.Value?.Dispose();
             this.CurrentOverlay.Value = null;
-            this.Layers = null;
+            this.Layers = [];
         }
 
         /// <inheritdoc cref="IInputEvents.ButtonsChanged"/>
@@ -166,7 +187,7 @@ namespace Pathoschild.Stardew.DataLayers
         /// <param name="e">The event data.</param>
         private void OnButtonsChanged(object? sender, ButtonsChangedEventArgs e)
         {
-            if (this.Layers == null)
+            if (this.Layers.Length == 0)
                 return;
 
             // perform bound action
@@ -229,6 +250,25 @@ namespace Pathoschild.Stardew.DataLayers
             }
         }
 
+        /// <summary>Reload the mod state to match the current config options.</summary>
+        private void ReapplyConfig()
+        {
+            // reset color scheme
+            this.Colors = this.LoadColorScheme();
+
+            // reset layers
+            if (this.Mods is not null) // skip if we haven't initialized yet
+            {
+                this.Layers = this.GetLayers(this.Config, this.Mods).ToArray();
+                this.ShortcutMap.Clear();
+                foreach (ILayer layer in this.Layers)
+                {
+                    if (layer.ShortcutKey.IsBound)
+                        this.ShortcutMap[layer.ShortcutKey] = layer;
+                }
+            }
+        }
+
         /// <summary>Toggle the overlay.</summary>
         private void ToggleLayers()
         {
@@ -239,7 +279,7 @@ namespace Pathoschild.Stardew.DataLayers
             }
             else
             {
-                this.CurrentOverlay.Value = new DataLayerOverlay(this.Helper.Events, this.Helper.Input, this.Helper.Reflection, this.Layers!, this.CanOverlayNow, this.Config.CombineOverlappingBorders, this.Config.ShowGrid);
+                this.CurrentOverlay.Value = new DataLayerOverlay(this.Helper.Events, this.Helper.Input, this.Helper.Reflection, this.Layers, this.CanOverlayNow, this.Config.CombineOverlappingBorders, this.Config.ShowGrid);
                 this.CurrentOverlay.Value.TrySetLayer(this.LastLayerId);
             }
         }
@@ -256,53 +296,59 @@ namespace Pathoschild.Stardew.DataLayers
                 || (this.Mods!.PelicanFiber.IsLoaded && this.Mods.PelicanFiber.IsBuildMenuOpen() && this.Helper.Reflection.GetField<bool>(Game1.activeClickableMenu, "onFarm").GetValue()); // on Pelican Fiber's build screen
         }
 
-        /// <summary>Load the color scheme to apply.</summary>
-        private ColorScheme LoadColorScheme()
-        {
-            Dictionary<string, Color> colors = new(StringComparer.OrdinalIgnoreCase);
-
-            foreach ((string name, string? rawColor) in this.LoadRawColorScheme())
-            {
-                Color? color = Utility.StringToColor(rawColor);
-
-                if (color is null)
-                {
-                    this.Monitor.Log($"Can't load color '{name}' from{(!ColorScheme.IsDefaultColorScheme(this.Config.ColorScheme) ? $" color scheme '{this.Config.ColorScheme}'" : "")} '{ColorScheme.AssetName}'. The value '{rawColor}' isn't a valid color format.", LogLevel.Warn);
-                    continue;
-                }
-
-                colors[name] = color.Value;
-            }
-
-            return new ColorScheme(this.Config.ColorScheme, colors, this.Monitor);
-        }
-
-        /// <summary>Load the raw color scheme to apply.</summary>
-        private Dictionary<string, string?> LoadRawColorScheme()
+        /// <summary>Load the color schemes that can be applied.</summary>
+        private Dictionary<string, ColorScheme> LoadColorSchemes()
         {
             // load raw data
-            var data = this.Helper.Data.ReadJsonFile<Dictionary<string, Dictionary<string, string?>>>(ColorScheme.AssetName);
-            data = data is not null
-                ? new(data, StringComparer.OrdinalIgnoreCase)
+            var rawData = this.Helper.Data.ReadJsonFile<Dictionary<string, Dictionary<string, string?>>>(ColorScheme.AssetName);
+            rawData = rawData is not null
+                ? new(rawData, StringComparer.OrdinalIgnoreCase)
                 : new(StringComparer.OrdinalIgnoreCase);
 
+            // load schemes
+            Dictionary<string, ColorScheme> colorSchemes = new(StringComparer.OrdinalIgnoreCase);
+            foreach ((string schemeId, Dictionary<string, string?> rawColors) in rawData)
+            {
+                Dictionary<string, Color> colors = new(StringComparer.OrdinalIgnoreCase);
+
+                foreach ((string name, string? rawColor) in rawColors)
+                {
+                    Color? color = Utility.StringToColor(rawColor);
+
+                    if (color is null)
+                    {
+                        this.Monitor.Log($"Can't load color '{name}' from{(!ColorScheme.IsDefaultColorScheme(this.Config.ColorScheme) ? $" color scheme '{this.Config.ColorScheme}'" : "")} '{ColorScheme.AssetName}'. The value '{rawColor}' isn't a valid color format.", LogLevel.Warn);
+                        continue;
+                    }
+
+                    colors[name] = color.Value;
+                }
+
+                colorSchemes[schemeId] = new ColorScheme(schemeId, colors, this.Monitor);
+            }
+            return colorSchemes;
+        }
+
+        /// <summary>Load the configured color scheme.</summary>
+        private ColorScheme LoadColorScheme()
+        {
             // get requested scheme
-            if (data.TryGetValue(this.Config.ColorScheme, out Dictionary<string, string?>? colorData))
-                return new(colorData, StringComparer.OrdinalIgnoreCase);
+            if (this.ColorSchemes.TryGetValue(this.Config.ColorScheme, out ColorScheme? scheme))
+                return scheme;
 
             // fallback to default scheme
-            if (!ColorScheme.IsDefaultColorScheme(this.Config.ColorScheme) && data.TryGetValue("Default", out colorData))
+            if (!ColorScheme.IsDefaultColorScheme(this.Config.ColorScheme) && this.ColorSchemes.TryGetValue("Default", out scheme))
             {
                 this.Monitor.Log($"Color scheme '{this.Config.ColorScheme}' not found in '{ColorScheme.AssetName}', reset to default.", LogLevel.Warn);
                 this.Config.ColorScheme = "Default";
                 this.Helper.WriteConfig(this.Config);
 
-                return new(colorData, StringComparer.OrdinalIgnoreCase);
+                return scheme;
             }
 
             // fallback to empty data
             this.Monitor.Log($"Color scheme '{this.Config.ColorScheme}' not found in '{ColorScheme.AssetName}'. The mod may be installed incorrectly.", LogLevel.Warn);
-            return new(StringComparer.OrdinalIgnoreCase);
+            return new ColorScheme("Default", new(), this.Monitor);
         }
     }
 }

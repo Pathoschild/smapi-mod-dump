@@ -1,0 +1,195 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/FlyingTNT/StardewValleyMods
+**
+*************************************************/
+
+{
+	"floors": 
+	[
+		{
+			"name": "EmptyHall",
+			"mapPath": "assets/EmptyHall.tmx",
+			"stairsStart":
+			{
+				"X": 3,
+				"Y": 22
+			},
+			"floors": 
+			[
+				{
+					"X":1,
+					"Y":3,
+					"Width":33,
+					"Height":20
+				}
+			],
+			"walls": 
+			[
+				{
+					"X":1,
+					"Y":1,
+					"Width":33,
+					"Height":3
+				}
+			]
+		},
+		{
+			"name": "ManyRooms",
+			"mapPath": "assets/ManyRooms.tmx",
+			"stairsStart":
+			{
+				"X": 2,
+				"Y": 22
+			},
+			"floors": 
+			[
+				{
+					"X":1,
+					"Y":3,
+					"Width":12,
+					"Height":6
+				},
+				{
+					"X":13,
+					"Y":5,
+					"Width":2,
+					"Height":2
+				},
+				{
+					"X":15,
+					"Y":3,
+					"Width":13,
+					"Height":6
+				},
+				{
+					"X":28,
+					"Y":5,
+					"Width":2,
+					"Height":3
+				},
+				{
+					"X":30,
+					"Y":3,
+					"Width":9,
+					"Height":6
+				},
+				{
+					"X":1,
+					"Y":12,
+					"Width":9,
+					"Height":11
+				},
+				{
+					"X":10,
+					"Y":12,
+					"Width":11,
+					"Height":8
+				},
+				{
+					"X":21,
+					"Y":17,
+					"Width":2,
+					"Height":2
+				},
+				{
+					"X":23,
+					"Y":12,
+					"Width":11,
+					"Height":11
+				},
+				{
+					"X":34,
+					"Y":12,
+					"Width":7,
+					"Height":7
+				},
+				{
+					"X":23,
+					"Y":26,
+					"Width":11,
+					"Height":8
+				}
+			],
+			"walls": 
+			[
+				{
+					"X":1,
+					"Y":1,
+					"Width":12,
+					"Height":3
+				},
+				{
+					"X":15,
+					"Y":1,
+					"Width":13,
+					"Height":3
+				},
+				{
+					"X":30,
+					"Y":1,
+					"Width":9,
+					"Height":3
+				},
+				{
+					"X":1,
+					"Y":10,
+					"Width":9,
+					"Height":3
+				},
+				{
+					"X":14,
+					"Y":10,
+					"Width":7,
+					"Height":3
+				},
+				{
+					"X":23,
+					"Y":10,
+					"Width":8,
+					"Height":3
+				},
+				{
+					"X":35,
+					"Y":10,
+					"Width":6,
+					"Height":3
+				},
+				{
+					"X":23,
+					"Y":24,
+					"Width":3,
+					"Height":3
+				},
+				{
+					"X":31,
+					"Y":24,
+					"Width":3,
+					"Height":3
+				},
+				{
+					"X": 13,
+					"Y": 3,
+					"Width": 2,
+					"Height": 2
+				},
+				{
+					"X": 28,
+					"Y": 3,
+					"Width": 2,
+					"Height": 2
+				},
+				{
+					"X": 21,
+					"Y": 15,
+					"Width": 2,
+					"Height": 2
+				}
+			]
+		}
+	]
+}

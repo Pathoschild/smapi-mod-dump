@@ -80,7 +80,7 @@
         {
           "Operation": "Append",
           "Target": ["Entries", "Set-Up_additionalCharacters_y2"],
-          "Value": "{{Lacey}} {{festival_spring24_setUp}}",
+          "Value": "{{Lacey}} {{festival_spring24_setUp_y2}}",
           "Delimiter": "/"
         },
         {
@@ -102,7 +102,7 @@
         {
           "Operation": "Append",
           "Target": ["Entries", "MainEvent_additionalCharacters_y2"],
-          "Value": "{{Lacey}} {{festival_spring24_mainEvent}}",
+          "Value": "{{Lacey}} {{festival_spring24_mainEvent_y2}}",
           "Delimiter": "/"
         }
       ]

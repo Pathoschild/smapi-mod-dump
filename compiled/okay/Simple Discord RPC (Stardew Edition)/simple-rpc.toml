@@ -1,0 +1,185 @@
+# General Mod Config
+[General]
+# The discord Application id to use for your Rich Presence
+ApplicationID = "1243169976542695454"
+# Enable/Disable the mod
+Enabled = true
+# Enable additional logging. WARNING: MAY CAUSE LOG SPAM!
+Debugging = false
+
+# The Game Loading event
+[GameLoading]
+# Enable/Disable the Game Loading event
+Enabled = true
+# The first line of text under the app name
+Description = "Stardew Valley is loading"
+# The second line of text under the app name
+State = "Game Starting..."
+# Discord Assets ID or Direct URL to display as the large image
+LargeImageKey = "stardew"
+# The text that gets displayed when the large image is hovered
+LargeImageText = "It's Stardew Valley, but modded!"
+# Discord Assets ID or Direct URL to display as the small image
+SmallImageKey = ""
+# The text that gets displayed when the large image is hovered
+SmallImageText = ""
+# List of Buttons to display on your RPC. Only 2 buttons can be used! DISCORD LIMIT!
+Buttons = [ ]
+
+# The Main Menu Event
+[MainMenu]
+# Enable/Disable the Main Menu Loading event
+Enabled = true
+# The first line of text under the app name
+Description = "{player.name} is currently lazy"
+# The second line of text under the app name
+State = "Chilling in the menu"
+# Discord Assets ID or Direct URL to display as the large image
+LargeImageKey = "stardew"
+# The text that gets displayed when the large image is hovered
+LargeImageText = "It's Stardew Valley, but modded!"
+# Discord Assets ID or Direct URL to display as the small image
+SmallImageKey = ""
+# The text that gets displayed when the large image is hovered
+SmallImageText = ""
+# List of Buttons to display on your RPC. Only 2 buttons can be used! DISCORD LIMIT!
+Buttons = [ ]
+
+# The Load Save Game Event
+[LoadGame]
+# Enable/Disable the Load Save Game event
+Enabled = true
+# The first line of text under the app name
+Description = "Choosing a game to load"
+# The second line of text under the app name
+State = "Browsing saved games"
+# Discord Assets ID or Direct URL to display as the large image
+LargeImageKey = "stardew"
+# The text that gets displayed when the large image is hovered
+LargeImageText = "It's Stardew Valley, but modded!"
+# Discord Assets ID or Direct URL to display as the small image
+SmallImageKey = ""
+# The text that gets displayed when the large image is hovered
+SmallImageText = ""
+# List of Buttons to display on your RPC. Only 2 buttons can be used! DISCORD LIMIT!
+Buttons = [ ]
+
+# The Start New Game Event
+[NewGame]
+# Enable/Disable the New Game event
+Enabled = true
+# The first line of text under the app name
+Description = "Getting ready to play"
+# The second line of text under the app name
+State = "Starting a new game..."
+# Discord Assets ID or Direct URL to display as the large image
+LargeImageKey = "stardew"
+# The text that gets displayed when the large image is hovered
+LargeImageText = "It's Stardew Valley, but modded!"
+# Discord Assets ID or Direct URL to display as the small image
+SmallImageKey = ""
+# The text that gets displayed when the large image is hovered
+SmallImageText = ""
+# List of Buttons to display on your RPC. Only 2 buttons can be used! DISCORD LIMIT!
+Buttons = [ ]
+
+# The Server Browser Event
+[ServerMenu]
+# Enable/Disable the Server Browser event
+Enabled = true
+# The first line of text under the app name
+Description = "Looking for friends..."
+# The second line of text under the app name
+State = "Browsing for servers"
+# Discord Assets ID or Direct URL to display as the large image
+LargeImageKey = "stardew"
+# The text that gets displayed when the large image is hovered
+LargeImageText = "It's Stardew Valley, but modded!"
+# Discord Assets ID or Direct URL to display as the small image
+SmallImageKey = ""
+# The text that gets displayed when the large image is hovered
+SmallImageText = ""
+# List of Buttons to display on your RPC. Only 2 buttons can be used! DISCORD LIMIT!
+Buttons = [ ]
+
+# The Join Game Event
+[JoiningGame]
+# Enable/Disable the Joining Game event
+Enabled = true
+# The first line of text under the app name
+Description = "{player.name} is joining a game"
+# The second line of text under the app name
+State = "Joining Game"
+# Discord Assets ID or Direct URL to display as the large image
+LargeImageKey = "stardew"
+# The text that gets displayed when the large image is hovered
+LargeImageText = "It's Stardew Valley, but modded!"
+# Discord Assets ID or Direct URL to display as the small image
+SmallImageKey = ""
+# The text that gets displayed when the large image is hovered
+SmallImageText = ""
+# List of Buttons to display on your RPC. Only 2 buttons can be used! DISCORD LIMIT!
+Buttons = [ ]
+
+# The Single Player Event
+[SinglePlayer]
+# Enable/Disable the Single Player event
+Enabled = true
+# The first line of text under the app name
+Description = "Surviving on the farm"
+# The second line of text under the app name
+State = "Playing Lonely Mode"
+# Discord Assets ID or Direct URL to display as the large image
+LargeImageKey = "stardew"
+# The text that gets displayed when the large image is hovered
+LargeImageText = "It's Stardew Valley, but modded!"
+# Discord Assets ID or Direct URL to display as the small image
+SmallImageKey = ""
+# The text that gets displayed when the large image is hovered
+SmallImageText = ""
+# List of Buttons to display on your RPC. Only 2 buttons can be used! DISCORD LIMIT!
+Buttons = [ ]
+
+# The Co-Op Event
+[CoOp]
+# Enable/Disable the Co-Op event
+Enabled = true
+# The first line of text under the app name
+Description = "Playing with Friends"
+# The second line of text under the app name
+State = "{server.type}"
+# Discord Assets ID or Direct URL to display as the large image
+LargeImageKey = "stardew"
+# The text that gets displayed when the large image is hovered
+LargeImageText = "It's Stardew Valley, but modded!"
+# Discord Assets ID or Direct URL to display as the small image
+SmallImageKey = ""
+# The text that gets displayed when the large image is hovered
+SmallImageText = ""
+# List of Buttons to display on your RPC. Only 2 buttons can be used! DISCORD LIMIT!
+Buttons = [ ]
+
+# Generic Fallback event for disabled events
+[Generic]
+# The first line of text under the app name
+Description = "Enjoying Stardew Valley"
+# The second line of text under the app name
+State = ""
+# Discord Assets ID or Direct URL to display as the large image
+LargeImageKey = "stardew"
+# The text that gets displayed when the large image is hovered
+LargeImageText = "It's Stardew Valley, but modded!"
+# Discord Assets ID or Direct URL to display as the small image
+SmallImageKey = ""
+# The text that gets displayed when the large image is hovered
+SmallImageText = ""
+# List of Buttons to display on your RPC. Only 2 buttons can be used! DISCORD LIMIT!
+Buttons = [ ]
+
+# Add your own Placeholders here
+[CustomPlaceholders]
+# Enable/Disable Custom Placeholders
+Enabled = false
+# List of Custom Placeholders. YOU CAN NOT REPLACE BUILT-IN PLACEHOLDERS!
+Variables = [ ]
+

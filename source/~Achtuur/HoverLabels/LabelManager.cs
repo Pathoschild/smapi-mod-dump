@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using HoverLabels.Drawing;
+using AchtuurCore.Framework.Borders;
 using HoverLabels.Framework;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Xna.Framework;

@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/JulianoSFA/WallpaperSwitcher
+   Git: https://github.com/JulianoSFA/WallpaperSwitcher.git
+
+mods:
+   Wallpaper Switcher
+
+latest commit:
+   commit db2e3289ea60564a26b3615779f8a32ecef06804
+   Author: Juliano Sartorelli <juliano.franco@datacake.com.br>
+   Date:   Fri Jun 7 17:14:13 2024 -0300
+   
+       Changing to version 1.0.1 and adding nexus hook
+   

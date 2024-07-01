@@ -33,7 +33,7 @@ internal sealed class PrintCommand(CommandHandler handler)
     public override string[] Triggers { get; } = ["print", "read", "show", "log", "list"];
 
     /// <inheritdoc />
-    public override string Documentation => "Print the specified information." + this.GetUsage();
+    public override string Documentation => "Print the specified information.";
 
     /// <inheritdoc />
     public override bool CallbackImpl(string trigger, string[] args)
@@ -300,7 +300,7 @@ internal sealed class PrintCommand(CommandHandler handler)
 
         var priceMultiplier = Game1.player.HasProfession(Profession.Angler)
             ? CurrentCulture(
-                $"{Math.Min((numMaxSizedCaught * 0.005f) + (numLegendaryCaught * 0.02f), Config.AnglerPriceBonusCeiling):0%}")
+                $"{Math.Min((numMaxSizedCaught * 0.01f) + (numLegendaryCaught * 0.05f), Config.AnglerPriceBonusCeiling):0%}")
             : "zero. You're not an Angler..";
         sb.Append(
             $"You've caught {Game1.player.fishCaught.Count()} out of {fishData.Count} fishes. Of those, {numMaxSizedCaught} are max-sized, and {numLegendaryCaught} are legendary. You're total Angler price bonus is {priceMultiplier}." +

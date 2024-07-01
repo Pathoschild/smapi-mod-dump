@@ -18,4 +18,13 @@
       </Reference>
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Update="PortraiturePlusFix.cs">
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      </Compile>
+      <Compile Update="PortraiturePlusMod.cs">
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      </Compile>
+    </ItemGroup>
+
 </Project>

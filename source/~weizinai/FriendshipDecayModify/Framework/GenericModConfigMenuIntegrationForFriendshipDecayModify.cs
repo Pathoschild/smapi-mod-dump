@@ -8,11 +8,11 @@
 **
 *************************************************/
 
-using Common.Integrations;
+using weizinai.StardewValleyMod.Common.Integration;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 
-namespace FriendshipDecayModify.Framework;
+namespace weizinai.StardewValleyMod.FriendshipDecayModify.Framework;
 
 internal class GenericModConfigMenuIntegrationForFriendshipDecayModify
 {
@@ -20,21 +20,20 @@ internal class GenericModConfigMenuIntegrationForFriendshipDecayModify
 
     public GenericModConfigMenuIntegrationForFriendshipDecayModify(IModHelper helper, IManifest manifest, Func<ModConfig> getConfig, Action reset, Action save)
     {
-        configMenu = new GenericModConfigMenuIntegration<ModConfig>(helper.ModRegistry, manifest, getConfig, reset, save);
-        helper.Events.Input.ButtonsChanged += OnButtonChanged;
+        this.configMenu = new GenericModConfigMenuIntegration<ModConfig>(helper.ModRegistry, manifest, getConfig, reset, save);
+        helper.Events.Input.ButtonsChanged += this.OnButtonChanged;
     }
 
     private void OnButtonChanged(object? sender, ButtonsChangedEventArgs e)
     {
-        if (configMenu.GetConfig().OpenConfigMenu.JustPressed() && Context.IsPlayerFree)
-            configMenu.OpenMenu();
+        if (this.configMenu.GetConfig().OpenConfigMenu.JustPressed() && Context.IsPlayerFree) this.configMenu.OpenMenu();
     }
 
     public void Register()
     {
-        if (!configMenu.IsLoaded) return;
+        if (!this.configMenu.IsLoaded) return;
 
-        configMenu
+        this.configMenu
             .Register()
             .AddKeybindList(
                 config => config.OpenConfigMenu,

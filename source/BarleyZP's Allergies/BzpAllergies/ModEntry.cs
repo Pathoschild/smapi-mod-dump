@@ -24,6 +24,7 @@ using StardewValley;
 
 using static BZP_Allergies.AllergenManager;
 using BZP_Allergies.HarmonyPatches.UI;
+using System.Transactions;
 
 namespace BZP_Allergies
 {
@@ -54,9 +55,6 @@ namespace BZP_Allergies
             ModHelper = modHelper;
             Translation = modHelper.Translation;
 
-            // allergen manager
-            AllergenManager.InitDefault();
-
             // events
             modHelper.Events.GameLoop.GameLaunched += OnGameLaunched;
             modHelper.Events.Content.AssetRequested += OnAssetRequested;
@@ -70,7 +68,6 @@ namespace BZP_Allergies
 
             // harmony patches
             Harmony = new(ModManifest.UniqueID);
-            Harmony.DEBUG = true;  // disable for publishing
 
             CraftingCooking_Patches.Patch(Harmony);
             FarmerEating_Patches.Patch(Harmony);
@@ -79,6 +76,7 @@ namespace BZP_Allergies
             SkillBook_Patches.Patch(Harmony);
             SpaceCoreCustomCraftingRecipe_Patches.Patch(Harmony);
             UI_Patches.Patch(Harmony);
+            Machine_Patches.Patch(Harmony);
 
             // console commands
             modHelper.ConsoleCommands.Add("bzpa_list_allergens", "Get a list of all possible allergens.", ListAllergens);
@@ -114,6 +112,7 @@ namespace BZP_Allergies
             }
             else if (e.NameWithoutLocale.IsEquivalentTo("BarleyZP.BzpAllergies/AllergyData"))
             {
+                AllergenManager.InitDefault();
                 e.LoadFrom(() => AllergenManager.ALLERGEN_DATA, AssetLoadPriority.Medium);
             }
         }

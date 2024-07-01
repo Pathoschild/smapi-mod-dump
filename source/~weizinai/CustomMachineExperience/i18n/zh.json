@@ -1,0 +1,17 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/weizinai/StardewValleyMods
+**
+*************************************************/
+
+{
+    "Config.FarmingSkill.Name": "耕种",
+    "Config.FishingSkill.Name": "钓鱼",
+    "Config.ForagingSkill.Name": "采集",
+    "Config.MiningSkill.Name": "采矿",
+    "Config.CombatSkill.Name": "战斗",
+}

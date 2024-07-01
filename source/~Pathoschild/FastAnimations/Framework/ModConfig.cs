@@ -70,6 +70,12 @@ namespace Pathoschild.Stardew.FastAnimations.Framework
         /// <summary>The speed multiplier for the casino slots minigame.</summary>
         public float CasinoSlotsSpeed { get; set; } = 8;
 
+        /// <summary>The speed multiplier for event cutscenes.</summary>
+        public float EventSpeed { get; set; } = 1;
+
+        /// <summary>The speed multiplier for the screen fade to black.</summary>
+        public float FadeSpeed { get; set; } = 4;
+
         /// <summary>The speed multiplier for opening a fishing treasure chest.</summary>
         public float FishingTreasureSpeed { get; set; } = 4;
 
@@ -79,11 +85,20 @@ namespace Pathoschild.Stardew.FastAnimations.Framework
         /// <summary>The speed multiplier for opening a chest.</summary>
         public float OpenChestSpeed { get; set; } = 4;
 
+        /// <summary>The speed multiplier for opening a dialogue box.</summary>
+        public float OpenDialogueBoxSpeed { get; set; } = 4;
+
         /// <summary>The speed multiplier when Pam's bus is driving to/from the desert.</summary>
         public float PamBusSpeed { get; set; } = 6;
 
+        /// <summary>The speed multiplier for the parrot express.</summary>
+        public float ParrotExpressSpeed { get; set; } = 4;
+
         /// <summary>The speed multiplier for Lewis' ticket prize machine.</summary>
         public float PrizeTicketMachineSpeed { get; set; } = 20;
+
+        /// <summary>The speed multiplier for tailoring.</summary>
+        public float TailorSpeed { get; set; } = 4;
 
         /// <summary>The speed multiplier for falling trees.</summary>
         public float TreeFallSpeed { get; set; } = 1;
@@ -94,6 +109,9 @@ namespace Pathoschild.Stardew.FastAnimations.Framework
         /****
         ** UI animations
         ****/
+        /// <summary>The speed multiplier for the dialogue typing animation.</summary>
+        public float DialogueTypeSpeed { get; set; } = 4;
+
         /// <summary>The speed multiplier for title menu transitions.</summary>
         public float TitleMenuTransitionSpeed { get; set; } = 10;
 

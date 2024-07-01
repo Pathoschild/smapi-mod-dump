@@ -1,0 +1,73 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/itsbenter/ResourcefulFriends
+**
+*************************************************/
+
+{
+    "$schema": "https://smapi.io/schemas/content-patcher.json",
+    "Changes": [
+        {
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "Entries": {
+                "ItsBenter.ResourcefulFriends.Jellomone": {
+                    "Name": "Jellomone",
+                    "DisplayName": "{{i18n:Jellomone_DisplayName}}",
+                    "Description": "{{i18n:Jellomone_Description}}",
+                    "Type": "Basic",
+                    "Category": -4,
+                    "Edibility": -300,
+                    "Price": "{{Jellomone_Price}}",
+                    "ContextTags": [
+                        "color_red",
+                        "not_giftable",
+                        "category_fish"
+                    ],
+                    "Texture": "Mods/ItsBenter.ResourcefulFriends/TileSheets/Objects",
+                    "SpriteIndex": 10,
+                    "ExcludeFromRandomSale": true,
+                    "ExcludeFromShippingCollection": true
+                },
+                "ItsBenter.ResourcefulFriends.CoalclawEgg": {
+                    "Name": "Coalclaw Egg",
+                    "DisplayName": "{{i18n:CoalclawEgg_DisplayName}}",
+                    "Description": "{{i18n:CoalclawEgg_Description}}",
+                    "Type": "Basic",
+                    "Category": -5,
+                    "Edibility": 15,
+                    "Price": 95,
+                    "ContextTags": [
+                        "color_grey",
+                        "egg_item"
+                    ],
+                    "Texture": "Mods/ItsBenter.ResourcefulFriends/TileSheets/Objects",
+                    "SpriteIndex": 12,
+                    "ExcludeFromRandomSale": false,
+                    "ExcludeFromShippingCollection": true
+                },
+                "ItsBenter.ResourcefulFriends.Puff": {
+                    "Name": "Puff",
+                    "DisplayName": "{{i18n:Puff_DisplayName}}",
+                    "Description": "{{i18n:Puff_Description}}",
+                    "Type": "Basic",
+                    "Category": -80,
+                    "Edibility": 15,
+                    "Price": 35,
+                    "ContextTags": [
+                        "color_yellow",
+                        "not_giftable",
+                    ],
+                    "Texture": "Mods/ItsBenter.ResourcefulFriends/TileSheets/Objects",
+                    "SpriteIndex": 12,
+                    "ExcludeFromRandomSale": true,
+                    "ExcludeFromShippingCollection": true
+                },
+            }
+        },
+    ]
+}

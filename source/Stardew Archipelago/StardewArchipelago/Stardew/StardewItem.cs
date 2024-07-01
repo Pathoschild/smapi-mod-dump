@@ -16,14 +16,15 @@ namespace StardewArchipelago.Stardew
 {
     public abstract class StardewItem
     {
-        public int Id { get; private set; }
+        public string Id { get; private set; }
         public string Name { get; protected set; }
         public int SellPrice { get; private set; }
         public string DisplayName { get; private set; }
         public string Description { get; private set; }
 
-        public StardewItem(int id, string name, int sellPrice, string displayName, string description)
+        public StardewItem(string id, string name, int sellPrice, string displayName, string description)
         {
+            // Debug.Assert(int.TryParse(id, out _));
             Id = id;
             Name = name;
             SellPrice = sellPrice;
@@ -33,8 +34,6 @@ namespace StardewArchipelago.Stardew
 
         public abstract Item PrepareForGivingToFarmer(int amount = 1);
 
-        public abstract Item PrepareForRecovery();
-
         public abstract void GiveToFarmer(Farmer farmer, int amount = 1);
 
         public abstract LetterAttachment GetAsLetter(ReceivedItem receivedItem, int amount = 1);
@@ -43,5 +42,7 @@ namespace StardewArchipelago.Stardew
         {
             return $"{Name} [{Id}]";
         }
+
+        public abstract string GetQualifiedId();
     }
 }

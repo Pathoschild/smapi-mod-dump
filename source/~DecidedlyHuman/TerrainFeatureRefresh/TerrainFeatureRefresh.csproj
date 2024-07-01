@@ -1,5 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
-    <Import Project="..\Build\SDV-1.6.targets" />
+    <Import Project="..\Build\Latest.targets" />
     <Import Project="..\Build\Common.csproj" />
     <Import Project="..\DecidedlyShared\DecidedlyShared.projitems" Label="Shared" />
 
@@ -9,10 +9,10 @@
         <MinimumApiVersion>3.15.0</MinimumApiVersion>
         <UpdateKeys>Nexus:00000</UpdateKeys>
         <Version>0.0.1-alpha</Version>
-    </PropertyGroup> 
+    </PropertyGroup>
 
     <PropertyGroup>
         <EnableHarmony>false</EnableHarmony>
-    </PropertyGroup> 
-    
+    </PropertyGroup>
+
 </Project>

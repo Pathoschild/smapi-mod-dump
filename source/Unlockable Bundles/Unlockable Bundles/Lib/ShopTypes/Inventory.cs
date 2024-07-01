@@ -18,7 +18,8 @@ using StardewModdingAPI;
 using StardewValley.Menus;
 using Unlockable_Bundles.Lib.AdvancedPricing;
 using static Unlockable_Bundles.ModEntry;
-
+using Unlockable_Bundles.Lib.WalletCurrency;
+using Unlockable_Bundles.NetLib;
 
 namespace Unlockable_Bundles.Lib.ShopTypes
 {
@@ -82,7 +83,11 @@ namespace Unlockable_Bundles.Lib.ShopTypes
             else if (item.QualifiedItemId == "(O)73")
                 return Game1.netWorldState.Value.GoldenWalnuts;
 
-            else {
+            else if (WalletCurrencyHandler.getCurrencyItemMatch(item.QualifiedItemId, out var match, out var currency, out var relevantPlayer)) {
+                var wallet = ModData.getWalletCurrency(currency.Id, relevantPlayer);
+                return wallet / match.Value;
+
+            } else {
                 var relevant = getRelevantInventory(who, item);
                 return relevant.Sum(el => el.Value.Stack);
             }
@@ -128,6 +133,9 @@ namespace Unlockable_Bundles.Lib.ShopTypes
                 return;
             } else if (item.QualifiedItemId == "(O)73") {
                 Game1.netWorldState.Value.GoldenWalnuts -= amount;
+                return;
+            } else if (WalletCurrencyHandler.getCurrencyItemMatch(item.QualifiedItemId, out var match, out var currency, out var relevantPlayer)) {
+                WalletCurrencyHandler.addWalletCurrency(currency, relevantPlayer, -(amount * match.Value), true, true);
                 return;
             }
 

@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/FlyingTNT/StardewValleyMods
+**
+*************************************************/
+
+{
+	"GMCM_EnableMod": "Enable Mod",
+	"GMCM_StairsX": "Farmhouse Stairs X Position",
+	"GMCM_StairsY": "Farmhouse Stairs Y Position",
+	"GMCM_Stairs_Description": "The distance of the stairs from the top left corner of the farmhouse. Requires save reload to take effect.",
+	"GMCM_CombineWithCellarStairs":  "Combine With Cellar Stairs",
+	"GMCM_FloorNames": "Floor Names",
+	"GMCM_FloorNames_Description": "The floors to use from bottom to top, case-insensitive. Requires game reload to take effect. The floors you have installed are: {{allOptions}}",
+	"GMCM_ActiveFloors": "The floors currently in use are: {{activeFloors}}. If anything is missing, be sure to check your spelling and reload the game."
+}

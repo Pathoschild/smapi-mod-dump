@@ -19,33 +19,33 @@
                 "hawkfalcon.BetterJunimos/JunimoHuts": "true"
             },
             "Entries": {
-                "22210001/H": "continue/64 15/farmer 64 15 2 Wizard 64 17 0/skippable/pause 1000/speak Wizard \"So it is true! I heard you convinced the Junimos to move in, but I had to see it for myself.$1#$b#Ahem. I am Rasmodius... I appear before you as the mighty Initial Configuration Wizard, tamer of the arcane.#$b#There are a few things you need to know about the Junimos.$0\"/speak Wizard \"$q -1 null#Shall I go on?$8#$r 22219010 0 2221_continue_y#Please, I appreciate your other-worldy wisdom.#$r 22219011 0 2221_continue_n#Another time perhaps. I have a lot of ducks to feed.#$r 22219012 0 2221_continue_fu#Cram it old man, I can figure this out myself.\"/fork 22219010 2221_continue_y/fork 22219011 2221_continue_n/fork 22219012 2221_continue_fu/end",
+                "22210001/H": "continue/64 15/farmer 64 15 2 Wizard 64 17 0/ignoreCollisions farmer/ignoreCollisions Wizard/skippable/pause 1000/speak Wizard \"{{i18n:22210001.01}}$1#$b#{{i18n:22210001.02}}#$b#{{i18n:22210001.03}}$0\"/speak Wizard \"$q -1 null#{{i18n:22210001.04}}$8#$r 22219010 0 2221_continue_y#{{i18n:22210001.05}}#$r 22219011 0 2221_continue_n#{{i18n:22210001.06}}#$r 22219012 0 2221_continue_fu#{{i18n:22210001.07}}\"/fork 22219010 2221_continue_y/fork 22219011 2221_continue_n/fork 22219012 2221_continue_fu/end",
                 "2221_continue_n": "skippable/emote Wizard 16/pause 500/playSound wand/end",
-                "2221_continue_fu": "skippable/playSound thunder/glow 255 0 0/emote Wizard 12/speak Wizard \"May your most vital orifices be clogged with dirt! To you I say, good day!$5\"/friendship Wizard -60/pause 500/playSound wand/end",
-                "2221_continue_y": "skippable/friendship Wizard 60/speak Wizard \"You only need to supply the items once, then the Junimos can perform that ability for ever.#$b#Or I suppose I could just summon all the items they'll ever need right now.\"/speak Wizard \"$q -1 null#What'll it be?$8#$r 22219020 0 2221_progression_y#I'm a mighty adventurer, I'll quest for anything the Junimos need.#$r 22219021 0 2221_progression_n#I'm just a humble farmer, please unlock all the abilities.\"/switchEvent 2221_wages",
-                "2221_wages": "skippable/speak Wizard \"Secondly, the Junimos need to be paid for their hard work. Each day you need to give them a fruit, flower, or forage item and they'll get to work.#$b#But there is another way. I could cast a spell to convince them to work for free...\"/speak Wizard \"$q -1 null#What wages will you pay?$8#$r 22219030 0 2221_fruit#Fruit#$r 22219031 0 2221_flowers#Flowers#$r 22219032 0 2221_forage#Forage#$r 22219033 0 2221_all#One of each#$r 22219034 0 2221_none#Do that spell thing so they work for free\"/switchEvent 2221_communicate",
-                "2221_communicate": "skippable/speak Wizard \"I should teach you how to communicate with the Junimos.#$b#There's a box outside the hut. Put in seeds, fertilizer, wages, and items they request. Take out the crops, and forage they harvest.#$b#There's also a note in the hut that tells you if they're working and what they need. Read it if you're confused about what they're doing.\"/switchEvent 2221_greenhouse",
-                "2221_greenhouse": "skippable/speak Wizard \"The Junimos can enter your greenhouse, if it's within walking distance of their hut. They will not travel farther than that.\"/switchEvent 2221_config",
-                "2221_config": "skippable/speak Wizard \"Finally, you can change the working arrangements at any time. It's very flexible.\"/speak Wizard \"$q -1 null#Shall I show you the things you can change?#$r 22219040 0 2221_config_y#Yes, show me all the options.#$r 22219041 0 2221_config_n#No, I can look at options later.\"/switchEvent 2221_end",
-                "2221_end": "skippable/speak Wizard \"I may return periodically to study the Junimos and learn more about their ways. Rest assured though, your feeble mortal eyes will be unable to see me.$0\"/pause 500/playSound wand/end"
+                "2221_continue_fu": "skippable/playSound thunder/glow 255 0 0/emote Wizard 12/speak Wizard \"{{i18n:2221_continue_fu}}$5\"/friendship Wizard -60/pause 500/playSound wand/end",
+                "2221_continue_y": "skippable/friendship Wizard 60/speak Wizard \"{{i18n:2221_continue_y.01}}#$b#{{i18n:2221_continue_y.02}}\"/speak Wizard \"$q -1 null#{{i18n:2221_continue_y.03}}$8#$r 22219020 0 2221_progression_y#{{i18n:2221_continue_y.04}}#$r 22219021 0 2221_progression_n#{{i18n:2221_continue_y.05}}\"/switchEvent 2221_wages",
+                "2221_wages": "skippable/speak Wizard \"{{i18n:2221_wages.01}}#$b#{{i18n:2221_wages.02}}\"/speak Wizard \"$q -1 null#{{i18n:2221_wages.03}}$8#$r 22219030 0 2221_fruit#Fruit#$r 22219031 0 2221_flowers#Flowers#$r 22219032 0 2221_forage#Forage#$r 22219033 0 2221_all#One of each#$r 22219034 0 2221_none#{{i18n:2221_wages.04}}\"/switchEvent 2221_communicate",
+                "2221_communicate": "skippable/speak Wizard \"{{i18n:2221_communicate.01}}#$b#{{i18n:2221_communicate.02}}#$b#{{i18n:2221_communicate.03}}\"/switchEvent 2221_greenhouse",
+                "2221_greenhouse": "skippable/speak Wizard \"{{i18n:2221_greenhouse}}\"/switchEvent 2221_config",
+                "2221_config": "skippable/speak Wizard \"{{i18n:2221_config.01}}\"/speak Wizard \"$q -1 null#{{i18n:2221_config.02}}#$r 22219040 0 2221_config_y#{{i18n:2221_config.03}}#$r 22219041 0 2221_config_n#{{i18n:2221_config.04}}\"/switchEvent 2221_end",
+                "2221_end": "skippable/speak Wizard \"{{i18n:2221_end}}$0\"/pause 500/playSound wand/end"
             }
         },
         {
             "Action": "EditData",
             "Target": "Characters/Dialogue/Wizard",
             "Entries": {
-                "2221_continue_y": "Very well. First, the Junimos have many abilities, animal vegetable and mineral. But they need items, which they will request from you, to perform each ability.",
-                "2221_continue_n": "Very well. Good day to you, @.",
-                "2221_continue_fu": "You're not so clever @, if you think it wise to make an enemy of me.$5",
-                "2221_progression_y": "An admirable choice! The Junimos' needs will take you on many adventures.",
-                "2221_progression_n": "I understand. You wield a hoe, not a sword.",
-                "2221_fruit": "A very suitable choice, @.",
-                "2221_flowers": "To brighten the Junimos' day. Very good.",
-                "2221_forage": "The bounty of the forest, how apt.",
-                "2221_all": "A fair and generous choice, @.",
-                "2221_none": "As you wish. It's not for me to decide what's fair.",
-                "2221_config_y": "Then I will leave you to look over it. Good day to you, @.",
-                "2221_config_n": "I have many other things to do anyway. Good day to you, @."
+                "2221_continue_y": "{{i18n:dialogue.2221_continue_y}}",
+                "2221_continue_n": "{{i18n:dialogue.2221_continue_n}}",
+                "2221_continue_fu": "{{i18n:dialogue.2221_continue_fu}}$5",
+                "2221_progression_y": "{{i18n:dialogue.2221_progression_y}}",
+                "2221_progression_n": "{{i18n:dialogue.2221_progression_n}}",
+                "2221_fruit": "{{i18n:dialogue.2221_fruit}}",
+                "2221_flowers": "{{i18n:dialogue.2221_flowers}}",
+                "2221_forage": "{{i18n:dialogue.2221_forage}}",
+                "2221_all": "{{i18n:dialogue.2221_all}}",
+                "2221_none": "{{i18n:dialogue.2221_none}}",
+                "2221_config_y": "{{i18n:dialogue.2221_config_y}}",
+                "2221_config_n": "{{i18n:dialogue.2221_config_n}}"
             }
         }
     ]

@@ -6,9 +6,9 @@ mods:
    No Fence Decay Redux
 
 latest commit:
-   commit 08f3086024a691e0d5a79e39ccf71af4699360c7
+   commit a909839d7ae765b830ab2a89197075a54037f299
    Author: EnderTedi <endertedi2@gmail.com>
-   Date:   Tue May 14 15:50:33 2024 +0200
+   Date:   Sun Jun 9 18:49:42 2024 +0200
    
-       Misc
+       Gate Hotfix
    

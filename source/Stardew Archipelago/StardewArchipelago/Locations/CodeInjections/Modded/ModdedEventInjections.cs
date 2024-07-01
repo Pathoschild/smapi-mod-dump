@@ -9,28 +9,30 @@
 *************************************************/
 
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using Microsoft.Xna.Framework;
-using StardewModdingAPI;
 using StardewArchipelago.Archipelago;
+using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Delegates;
 
 namespace StardewArchipelago.Locations.CodeInjections.Modded
 {
     public static class ModdedEventInjections
     {
-        private const int MUSHROOM_KEBAB_EVENT = 181091234;
-        private const int CRAYFISH_SOUP_EVENT = 181091246;
-        private const int PEMMICAN_EVENT = 181091247;
-        private const int VOID_MINT_TEA_ALECTO_EVENT = 181091261;
-        private const int VOID_MINT_TEA_WIZARD_EVENT = 181091262;
-        private const int SPECIAL_PUMPKIN_SOUP_EVENT = 44120020;
-        private const int GINGER_TINCTURE_ALECTO_EVENT = 181091237;
-        private const int GINGER_TINCTURE_WIZARD_EVENT = 1810912313;
+        private const string MUSHROOM_KEBAB_EVENT = "181091234";
+        private const string CRAYFISH_SOUP_EVENT = "181091246";
+        private const string PEMMICAN_EVENT = "181091247";
+        private const string VOID_MINT_TEA_ALECTO_EVENT = "181091261";
+        private const string VOID_MINT_TEA_WIZARD_EVENT = "181091262";
+        private const string SPECIAL_PUMPKIN_SOUP_EVENT = "44120020";
+        private const string GINGER_TINCTURE_ALECTO_EVENT = "181091237";
+        private const string GINGER_TINCTURE_WIZARD_EVENT = "1810912313";
         private static readonly string RECIPE_SUFFIX = " Recipe";
 
-        private static readonly Dictionary<int, string> eventCooking = new()
+        private static readonly Dictionary<string, string> eventCooking = new()
         {
             { MUSHROOM_KEBAB_EVENT, "Mushroom Kebab" },
             { CRAYFISH_SOUP_EVENT, "Crayfish Soup" },
@@ -39,14 +41,14 @@ namespace StardewArchipelago.Locations.CodeInjections.Modded
             { VOID_MINT_TEA_WIZARD_EVENT, "Void Mint Tea" },
             { SPECIAL_PUMPKIN_SOUP_EVENT, "Special Pumpkin Soup" },
         };
-        private static readonly Dictionary<int, string> eventCrafting = new()
+        private static readonly Dictionary<string, string> eventCrafting = new()
         {
             { GINGER_TINCTURE_ALECTO_EVENT, "Ginger Tincture" },
             { GINGER_TINCTURE_WIZARD_EVENT, "Ginger Tincture" },
         };
-        private static readonly List<int> questEventsWithRecipes = new()
+        private static readonly List<string> questEventsWithRecipes = new()
         {
-            CRAYFISH_SOUP_EVENT, SPECIAL_PUMPKIN_SOUP_EVENT, GINGER_TINCTURE_ALECTO_EVENT, GINGER_TINCTURE_WIZARD_EVENT
+            CRAYFISH_SOUP_EVENT, SPECIAL_PUMPKIN_SOUP_EVENT, GINGER_TINCTURE_ALECTO_EVENT, GINGER_TINCTURE_WIZARD_EVENT,
         };
 
         private static IMonitor _monitor;
@@ -62,57 +64,57 @@ namespace StardewArchipelago.Locations.CodeInjections.Modded
             _archipelago = archipelago;
             _locationChecker = locationChecker;
         }
-        
-        public static bool AddCookingRecipe_CheckForStrayRecipe_Prefix(Event __instance, GameLocation location, GameTime time, string[] split)
+
+        //public tryEventCommand(GameLocation location, GameTime time, string[] args)
+        public static bool TryEventCommand_CheckForStrayRecipe_Prefix(Event __instance, GameLocation location, GameTime time, string[] args)
         {
             try
             {
-                var isEventChefsanityLocation = _archipelago.SlotData.Chefsanity.HasFlag(Chefsanity.Friendship) && eventCooking.Keys.Contains(__instance.id);
-                var isRecipeFromQuest = _archipelago.SlotData.QuestLocations.StoryQuestsEnabled && questEventsWithRecipes.Contains(__instance.id);
-                if (!isRecipeFromQuest && !isEventChefsanityLocation)
+                string commandName = ArgUtility.Get(args, 0);
+                switch (commandName)
                 {
-                    return true;
+                    case "addCraftingRecipe":
+                    {
+                        CheckCraftsanityLocation(__instance.id);
+                        __instance.CurrentCommand++;
+                        return false; // don't run original logic
+                    }
+                    case "addCookingRecipe":
+                    {
+                        CheckChefsanityLocation(__instance.id);
+                        __instance.CurrentCommand++;
+                        return false; // don't run original logic
+                    }
                 }
-                if (!isRecipeFromQuest)
-                {
-                    _locationChecker.AddCheckedLocation($"{eventCooking[__instance.id]}{RECIPE_SUFFIX}");
-                }
-                __instance.CurrentCommand++;
-                return false; // don't run original logic
-
+                return true;
             }
             catch (Exception ex)
             {
-                _monitor.Log($"Failed in {nameof(AddCookingRecipe_CheckForStrayRecipe_Prefix)}:\n{ex}", LogLevel.Error);
+                _monitor.Log($"Failed in {nameof(TryEventCommand_CheckForStrayRecipe_Prefix)}:\n{ex}", LogLevel.Error);
                 return true; // run original logic
             }
         }
 
-        public static bool AddCraftingRecipe_CheckForStrayRecipe_Prefix(Event __instance, GameLocation location, GameTime time, string[] split)
+        public static void CheckChefsanityLocation(string id)
         {
-            try
+            var isEventChefsanityLocation = _archipelago.SlotData.Chefsanity.HasFlag(Chefsanity.Friendship) && eventCooking.Keys.Contains(id);
+            var isRecipeFromQuest = _archipelago.SlotData.QuestLocations.StoryQuestsEnabled && questEventsWithRecipes.Contains(id);
+            if (isRecipeFromQuest || !isEventChefsanityLocation)
             {
-                var isEventCraftsanityLocation = _archipelago.SlotData.Craftsanity.HasFlag(Craftsanity.All) && eventCrafting.Keys.Contains(__instance.id);
-                var isRecipeFromQuest = _archipelago.SlotData.QuestLocations.StoryQuestsEnabled && questEventsWithRecipes.Contains(__instance.id);
-
-                if (!isRecipeFromQuest && !isEventCraftsanityLocation)
-                {
-                    return true;
-                }
-
-                if (!isRecipeFromQuest)
-                {
-                    _locationChecker.AddCheckedLocation($"{eventCrafting[__instance.id]}{RECIPE_SUFFIX}");
-                }
-                __instance.CurrentCommand++;
-                return false; // don't run original logic
-
+                return;
             }
-            catch (Exception ex)
+             _locationChecker.AddCheckedLocation($"{eventCooking[id]}{RECIPE_SUFFIX}");
+        }
+
+        public static void CheckCraftsanityLocation(string id)
+        {
+            var isEventCraftsanityLocation = _archipelago.SlotData.Craftsanity == Craftsanity.All && eventCrafting.Keys.Contains(id);
+            var isRecipeFromQuest = _archipelago.SlotData.QuestLocations.StoryQuestsEnabled && questEventsWithRecipes.Contains(id);
+            if (isRecipeFromQuest || !isEventCraftsanityLocation)
             {
-                _monitor.Log($"Failed in {nameof(AddCraftingRecipe_CheckForStrayRecipe_Prefix)}:\n{ex}", LogLevel.Error);
-                return true; // run original logic
+                return;
             }
+            _locationChecker.AddCheckedLocation($"{eventCrafting[id]}{RECIPE_SUFFIX}");
         }
 
         public static bool SkipEvent_ReplaceRecipe_Prefix(Event __instance)
@@ -129,7 +131,6 @@ namespace StardewArchipelago.Locations.CodeInjections.Modded
                 var cookingEvent = cookingEvents.Contains(__instance.id);
                 SkipRecipeEventArchipelago(__instance, cookingEvent);
                 return false; // don't run original logic
-
             }
             catch (Exception ex)
             {
@@ -168,14 +169,11 @@ namespace StardewArchipelago.Locations.CodeInjections.Modded
 
             OnCheckRecipeLocation(__instance.id, cookingEvent);
 
-            __instance.endBehaviors(new string[1]
-            {
-                "end"
-            }, Game1.currentLocation);
+            __instance.endBehaviors();
         }
 
 
-        private static void OnCheckRecipeLocation(int eventID, bool cookingEvent)
+        private static void OnCheckRecipeLocation(string eventID, bool cookingEvent)
         {
             if (cookingEvent && _archipelago.SlotData.Chefsanity.HasFlag(Chefsanity.Friendship))
             {
@@ -188,10 +186,9 @@ namespace StardewArchipelago.Locations.CodeInjections.Modded
                 }
 
                 return;
-
             }
 
-            if (_archipelago.SlotData.Craftsanity.HasFlag(Craftsanity.All))
+            if (_archipelago.SlotData.Craftsanity == Craftsanity.All)
             {
                 var eventName = eventCrafting[eventID];
                 var recipeName = $"{eventName}{RECIPE_SUFFIX}";
@@ -200,7 +197,6 @@ namespace StardewArchipelago.Locations.CodeInjections.Modded
                 {
                     Game1.player.craftingRecipes.Remove(eventName);
                 }
-
             }
 
             return;
@@ -225,7 +221,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Modded
                 }
                 foreach(KeyValuePair<int, string> eventData in eventCrafting)
                 {
-                    if (__instance.id == eventData.Key && _archipelago.SlotData.Craftsanity.HasFlag(Craftsanity.All))
+                    if (__instance.id == eventData.Key && _archipelago.SlotData.Craftsanity == Craftsanity.All)
                     {
                         var recipeName = $"{eventData.Value}{RECIPE_SUFFIX}";
                         _locationChecker.AddCheckedLocation(recipeName);

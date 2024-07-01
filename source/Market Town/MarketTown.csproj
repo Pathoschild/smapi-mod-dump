@@ -14,31 +14,23 @@
 		<None Remove="pictures\**" />
 	</ItemGroup>
 	<ItemGroup>
+	  <Compile Remove="Data\ShopData.cs" />
+	</ItemGroup>
+	<ItemGroup>
 	  <None Remove=".gitattributes" />
 	  <None Remove=".gitignore" />
 	  <None Remove="LICENSE" />
 	</ItemGroup>
+	<ItemGroup>
+	  <None Include="ShopData.cs" />
+	</ItemGroup>
 
 	<ItemGroup>
-		<None Update="FrameworkClothes\assets\**\*">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
 		<None Update="Assets\**\*">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Update="[CP] MarketTown\[CP] Market License\**\*">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="[CP] MarketTown\[CP] CloneNPC_Vanilla\**\*">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="[CP] MarketTown\[CP] CloneNPC_SVE\**\*">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="[CP] MarketTown\[CP] CloneNPC_RSV\**\*">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="[CP] MarketTown\[CP] Market Map\**\*">
+		
+		<None Update="[CP] MarketTown\**\*">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Update="[] MarketTown\**\*">
@@ -55,10 +47,6 @@
 	<ItemGroup>
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
-		<Reference Include="SpaceCore">
-			<HintPath>D:\SteamLibrary\steamapps\common\Stardew Valley\Mods\SpaceCore\SpaceCore.dll</HintPath>
-			<Private>false</Private>
-		</Reference>
 	</ItemGroup>
 
 	<ItemGroup>

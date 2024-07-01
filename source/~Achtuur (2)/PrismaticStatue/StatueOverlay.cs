@@ -130,7 +130,7 @@ internal class StatueOverlay : AchtuurCore.Framework.Overlay
             color ??= Color.Black * 0.5f;
 
             // draw background
-            spriteBatch.DrawLine(screenX + tilegap, screenY + tilegap, new Vector2(tileSize - tilegap * 2, tileSize - tilegap * 2), color);
+            spriteBatch.DrawRect(screenX + tilegap, screenY + tilegap, new Vector2(tileSize - tilegap * 2, tileSize - tilegap * 2), color);
 
             if (group is not null)
                 DrawEdgeBorders(spriteBatch, group, tile, (Color)color * (1f / color_fac));
@@ -159,19 +159,19 @@ internal class StatueOverlay : AchtuurCore.Framework.Overlay
 
         // top
         if (!tiles.Contains(new Vector2(tile.X, tile.Y - 1)))
-            spriteBatch.DrawLine(screenX, screenY, new Vector2(tileSize, borderSize), color); // top
+            spriteBatch.DrawRect(screenX, screenY, new Vector2(tileSize, borderSize), color); // top
 
         // bottom
         if (!tiles.Contains(new Vector2(tile.X, tile.Y + 1)))
-            spriteBatch.DrawLine(screenX, screenY + tileSize, new Vector2(tileSize, borderSize), color); // bottom
+            spriteBatch.DrawRect(screenX, screenY + tileSize, new Vector2(tileSize, borderSize), color); // bottom
 
         // left
         if (!tiles.Contains(new Vector2(tile.X - 1, tile.Y)))
-            spriteBatch.DrawLine(screenX, screenY, new Vector2(borderSize, tileSize), color); // left
+            spriteBatch.DrawRect(screenX, screenY, new Vector2(borderSize, tileSize), color); // left
 
         // right
         if (!tiles.Contains(new Vector2(tile.X + 1, tile.Y)))
-            spriteBatch.DrawLine(screenX + tileSize, screenY, new Vector2(borderSize, tileSize), color); // right
+            spriteBatch.DrawRect(screenX + tileSize, screenY, new Vector2(borderSize, tileSize), color); // right
     }
 
     private Color GetSpeedupStatueColor()

@@ -1,0 +1,36 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Pathoschild/StardewMods
+**
+*************************************************/
+
+{
+    /*********
+    ** Generic Mod Config Menu UI
+    *********/
+    // warnings
+    "config.too-complex": "Ön konum ayarları geçerli, bu ayarlar Generic Mod Config Menu tarafından ayarlanmak için çok karmaşık. Bu modu direkt config.json dosyası ile düzenleyebilirsiniz, ya da mod ayarlarını varsayılana çekebilirsiniz.( 'Default' ve 'Save' butonlarına basarak, daha sonra oyunu tekrar başlatın).",
+
+    // options
+    "config.grow-crops.name": "Ekinler her yerde yetişebilir",
+    "config.grow-crops.desc": "Ekinlerin herhangi bir yerde yetişip yetişemeyeceği. Eğer bu seçenek kapalıysa, ekinler sadece uygun yerlerde yetişir.",
+
+    "config.grow-crops-out-of-season.name": "Ekinler her mevsim yetişebilir",
+    "config.grow-crops-out-of-season.desc": "Ekinlerin herhangi bir mevsimde yetişip yetişemeyeceği. Eğer bu seçenek kapalıysa, ekinler sadece uygun mevsimlerde yetişir. Bu seçenek sadece Ekinler her yerde yetişebilir seçeneği açıksa çalışır.",
+
+    "config.force-till-dirt.name": "Tüm topraklar çapalanabilir",
+    "config.force-till-dirt.desc": "Tüm toprakların normalde çapalanamasa bile çapalanıp çapalanamayacağını belirtir.",
+
+    "config.force-till-grass.name": "Tüm çimenler çapalanabilir",
+    "config.force-till-grass.desc": "Tüm çimenlerin normalde çapalanamasa bile çapalanıp çapalanamayacağını belirtir.",
+
+    "config.force-till-stone.name": "Tüm taşlar çapalanabilir",
+    "config.force-till-stone.desc": "Tüm taşların normalde çapalanamasa bile çapalanıp çapalanamayacağını belirtir.",
+
+    "config.force-till-other.name": "Diğer tüm bloklar çapalanabilir",
+    "config.force-till-other.desc": "Diğer tüm blokların normalde çapalanamasa bile çapalanıp çapalanamayacağını belirtir."
+}

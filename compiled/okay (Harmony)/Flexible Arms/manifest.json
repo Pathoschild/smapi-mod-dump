@@ -1,7 +1,7 @@
 ﻿{
    "Name": "Flexible Arms",
    "Author": "bcmpinc",
-   "Version": "7.2",
+   "Version": "7.3",
    "Description": "More freedom when aiming your tools with a mouse.",
    "UniqueID": "bcmpinc.FlexibleArms",
    "EntryDll": "FlexibleArms.dll",

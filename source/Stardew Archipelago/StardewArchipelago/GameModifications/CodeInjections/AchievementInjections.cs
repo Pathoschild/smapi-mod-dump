@@ -51,7 +51,6 @@ namespace StardewArchipelago.GameModifications.CodeInjections
                 }
 
                 return true; // run original logic
-
             }
             catch (Exception ex)
             {

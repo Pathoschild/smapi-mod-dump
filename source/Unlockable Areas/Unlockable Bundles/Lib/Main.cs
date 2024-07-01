@@ -26,6 +26,7 @@ namespace Unlockable_Bundles.Lib
             ShopTypes.Main.Initialize();
             AdvancedPricing.Main.Initialize();
             MapFeatures.Main.Initialize();
+            WalletCurrency.Main.Initialize();
 
             ConsoleCommands.Initialize();
             AssetRequested.Initialize();
@@ -39,6 +40,7 @@ namespace Unlockable_Bundles.Lib
             _InventoryPage.Initialize();
             _GameLocation.Initialize();
             BundleOverviewMenu.Initialize();
+            PlacementRequirement.Initialize();
             Multiplayer.Initialize();
         }
     }

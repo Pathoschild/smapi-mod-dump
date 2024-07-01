@@ -20,10 +20,13 @@ namespace Unlockable_Bundles {
         public int ScrollDelay { get; set; }
         public int ScrollCharacterLength { get; set; }
 
+        public bool DebugLogging { get; set; }
+
         public ModConfig()
         {
             ScrollDelay = 25;
             ScrollCharacterLength = 10;
+            DebugLogging = false;
         }
     }
 }

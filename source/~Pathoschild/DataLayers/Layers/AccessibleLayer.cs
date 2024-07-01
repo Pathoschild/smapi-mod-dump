@@ -44,10 +44,10 @@ namespace Pathoschild.Stardew.DataLayers.Layers
         /// <summary>The action tile property values which trigger a warp.</summary>
         /// <remarks>See remarks on <see cref="IsWarp"/>.</remarks>
         [SuppressMessage("ReSharper", "StringLiteralTypo", Justification = "These are game values.")]
-        private readonly HashSet<string> WarpActions = new() { "EnterSewer", "LockedDoorWarp", "Mine", "Theater_Entrance", "Warp", "WarpCommunityCenter", "WarpGreenhouse", "WarpMensLocker", "WarpWomensLocker", "WizardHatch" };
+        private readonly HashSet<string> WarpActions = ["EnterSewer", "LockedDoorWarp", "Mine", "Theater_Entrance", "Warp", "WarpCommunityCenter", "WarpGreenhouse", "WarpMensLocker", "WarpWomensLocker", "WizardHatch"];
 
         /// <summary>The touch action tile property values which trigger a warp.</summary>
-        private readonly HashSet<string> TouchWarpActions = new() { "Door", "MagicWarp", "Warp" };
+        private readonly HashSet<string> TouchWarpActions = ["Door", "MagicWarp", "Warp"];
 
 
         /*********
@@ -61,13 +61,12 @@ namespace Pathoschild.Stardew.DataLayers.Layers
         {
             const string layerId = "Accessible";
 
-            this.Legend = new[]
-            {
+            this.Legend = [
                 this.Clear = new LegendEntry(I18n.Keys.Accessible_Clear, colors.Get(layerId, "Clear", Color.Green)),
                 this.Occupied = new LegendEntry(I18n.Keys.Accessible_Occupied, I18n.Accessible_Occupied(), colors.Get(layerId, "Occupied", Color.Orange)),
                 this.Impassable = new LegendEntry(I18n.Keys.Accessible_Impassable, I18n.Accessible_Impassable(), colors.Get(layerId, "Impassable", Color.Red)),
                 this.Warp = new LegendEntry(I18n.Keys.Accessible_Warp, I18n.Accessible_Warp(), colors.Get(layerId, "Warp", Color.Blue))
-            };
+            ];
         }
 
         /// <summary>Get the updated data layer tiles.</summary>
@@ -80,11 +79,10 @@ namespace Pathoschild.Stardew.DataLayers.Layers
             TileData[] tiles = this.GetTiles(location, visibleTiles).ToArray();
             TileData[] passableTiles = tiles.Where(p => p.Type.Id == this.Clear.Id).ToArray();
 
-            return new[]
-            {
+            return [
                 new TileGroup(passableTiles, outerBorderColor: this.Clear.Color),
                 new TileGroup(tiles.Except(passableTiles))
-            };
+            ];
         }
 
 
@@ -97,7 +95,7 @@ namespace Pathoschild.Stardew.DataLayers.Layers
         private IEnumerable<TileData> GetTiles(GameLocation location, IEnumerable<Vector2> visibleTiles)
         {
             // get building warps
-            HashSet<Vector2> buildingDoors = new HashSet<Vector2>();
+            HashSet<Vector2> buildingDoors = [];
             foreach (Building building in location.buildings)
             {
                 if (!building.HasIndoors() || (building.humanDoor.X < 0 && building.humanDoor.Y < 0))

@@ -1,14 +1,16 @@
 urls:
-   web: https://github.com/thiagomasson/Sprinting
-   Git: https://github.com/thiagomasson/Sprinting.git
+   web: https://github.com/oliverpl/SprintingMod
+   Git: https://github.com/oliverpl/SprintingMod.git
 
 mods:
    Sprinting
 
 latest commit:
-   commit 077998ddb504c386d05a2fc0334a4fd2a0fdde48
-   Author: Thiago Augusto Masson <38814037+thiagomasson@users.noreply.github.com>
-   Date:   Thu Mar 21 21:54:02 2024 -0300
+   commit 462ffa2de128a7e849893f6d38083bd157b63aec
+   Author: oliverpl <patrick.l.oliver@gmail.com>
+   Date:   Sat May 16 18:01:59 2020 -0700
    
-       Fixed stamina draining during cutscenes.
+       Merge pull request #2 from TheTonttu/SMAPI-3.5.0
+       
+       SMAPI 3.5.0 support
    

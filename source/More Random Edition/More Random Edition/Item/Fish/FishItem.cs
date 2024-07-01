@@ -20,10 +20,18 @@ namespace Randomizer
 	/// </summary>
 	public class FishItem : Item
 	{
+		/// <summary>
+		/// TODO: remove this in the next major update
+		///   This is used to put the tooltip info in for the fish so we don't change the RNG by
+		///   populating the seasons/locations
+		/// </summary>
+		public bool IsNewMinesFish { get; set; }
+
 		public string OriginalName { get; set; }
 		public List<Seasons> AvailableSeasons { get; set; } = new List<Seasons>();
 		public List<Weather> Weathers { get; set; } = new List<Weather>();
 		public List<Locations> AvailableLocations { get; set; } = new List<Locations>();
+		public string MineFloorString { get; set; }
 		public Range Times { get; set; } = new Range(600, 2600); // That's anytime in the day
 		public Range ExcludedTimes { get; set; } = new Range(0, 0);
 
@@ -188,7 +196,18 @@ namespace Randomizer
 		/// <returns>A string in the following format: Lives in the [loc1], [loc2], and [loc3].</returns>
 		private string GetStringForLocations()
 		{
-			if (AvailableLocations.Count == 0) { return ""; }
+			// TODO: remove this in the next major update
+			if (IsNewMinesFish)
+			{
+				var minesLoc = $"{Globals.GetTranslation($"fish-undergroundmine-location")} {MineFloorString}";
+				return Globals.GetTranslation("fish-tooltip-locations", new { locations = minesLoc });
+			}
+
+			if (AvailableLocations.Count == 0) 
+			{ 
+				return ""; 
+			}
+
 			List<string> locationStrings = GetLocationStrings();
 			string locations = string.Join(", ", locationStrings);
 			return Globals.GetTranslation("fish-tooltip-locations", new { locations });
@@ -200,7 +219,16 @@ namespace Randomizer
 		/// <return />
 		private string GetStringForSeasons()
 		{
-			if (AvailableSeasons.Count == 0) { return ""; }
+			// TODO: remove this in the next major update
+			if (IsNewMinesFish)
+			{
+				return Globals.GetTranslation("fish-tooltip-seasons-all");
+			}
+
+			if (AvailableSeasons.Count == 0) 
+			{ 
+				return ""; 
+			}
 
 			if (IsSubmarineOnlyFish)
 			{
@@ -227,10 +255,15 @@ namespace Randomizer
 		/// <returns></returns>
 		private List<string> GetLocationStrings()
 		{
-			List<string> output = new List<string>();
+			List<string> output = new();
 			foreach (Locations location in AvailableLocations)
 			{
-				output.Add(Globals.GetTranslation($"fish-{location.ToString().ToLower()}-location"));
+				string translation = Globals.GetTranslation($"fish-{location.ToString().ToLower()}-location");
+				if (location == Locations.UndergroundMine)
+				{
+					translation += $" {ComputeMineFloorString(QualifiedId)}";
+				}
+				output.Add(translation);
 			}
 			return output;
 		}
@@ -381,6 +414,36 @@ namespace Randomizer
 		public static List<Item> GetLegendaries()
 		{
 			return ItemList.Items.Values.Where(x => x.IsFish && IsLegendary(x.Id)).ToList();
+		}
+
+		/// <summary>
+		/// Returns the matching floor for the given normal fish id
+		/// If it's not a normal mines fish, will return 20 and 60 (the normal ghostfish results)
+		/// </summary>
+		/// <returns></returns>
+		public static string ComputeMineFloorString(string fishId = null)
+		{
+			if (fishId == null)
+			{
+				return "20, 60";
+			}
+
+			if (fishId == ItemList.GetQualifiedId(ObjectIndexes.Stonefish))
+			{
+				return "20";
+			}
+
+			if (fishId == ItemList.GetQualifiedId(ObjectIndexes.IcePip))
+			{
+				return "60";
+			}
+
+			if (fishId == ItemList.GetQualifiedId(ObjectIndexes.LavaEel))
+			{
+				return "100";
+			}
+
+			return "20, 60";
 		}
 
         /// <summary>

@@ -52,12 +52,12 @@ namespace IntegratedMinecarts.Patches
             ModEntry mod = ModEntry.Instance;
             StackTrace stackTrace = new StackTrace();
             MethodBase callingmethod = stackTrace.GetFrame(2).GetMethod();
-            Monitor?.Log($"Method Calling ShowPagedResponse is: {callingmethod.Name}", LogLevel.Trace);
+ //           Monitor?.Log($"Method Calling ShowPagedResponse is: {callingmethod.Name}", LogLevel.Trace);
             try
             {
                 if (callingmethod.Name == "ShowMineCartMenu")
                 {
-                    itemsPerPage = mod.Config.DestinationsPerPage;
+                    itemsPerPage = mod.DestinationsPerPage;
                     Monitor?.Log($"Changed Items Per Page to {itemsPerPage}", LogLevel.Trace);
                 }
                 return true;

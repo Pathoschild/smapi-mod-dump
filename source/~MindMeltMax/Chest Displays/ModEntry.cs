@@ -69,9 +69,12 @@ namespace ChestDisplays
         private void GameLoop_SaveLoaded(object? sender, SaveLoadedEventArgs e)
         {
             foreach (var l in Game1.locations)
-                foreach (var o in l.Objects.Values)
-                    if (o is Chest c && c.modData.ContainsKey(Helper.ModRegistry.ModID))
-                        Utils.updateCache(c);
+            {
+                updateCacheForLocation(l);
+                foreach (var building in l.buildings)
+                    if (building.indoors.Value != null)
+                        updateCacheForLocation(building.indoors.Value);
+            }
 
             if (!Context.IsMainPlayer) 
                 return;
@@ -121,6 +124,13 @@ namespace ChestDisplays
                 if (OatT is Chest c)
                     Game1.activeClickableMenu = new ChangeDisplayMenu(c);
             }
+        }
+
+        private void updateCacheForLocation(GameLocation l)
+        {
+            foreach (var o in l.Objects.Values)
+                if (o is Chest c && c.modData.ContainsKey(Helper.ModRegistry.ModID))
+                    Utils.updateCache(c);
         }
     }
 }

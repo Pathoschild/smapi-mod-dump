@@ -15,6 +15,7 @@ using StardewValley.Buffs;
 using StardewValley.Tools;
 using StardewValley.TokenizableStrings;
 using StardewValley.Objects;
+using System.Text.RegularExpressions;
 
 namespace stardew_access.Utils;
 
@@ -74,7 +75,15 @@ internal static class InventoryUtils
         {
             if (!inventory[i].containsPoint(mouseX, mouseY)) continue;
 
-            if ((i + 1) > actualInventory.Count || actualInventory[i] == null)
+            if ((inventoryMenu.playerInventory || inventoryMenu.showGrayedOutSlots) && i >= actualInventory.Count)
+            {
+                // For locked slots
+                CheckAndSpeak(Translator.Instance.Translate("inventory_util-locked_slot"), i);
+                prevSlotIndex = i;
+                return i;
+            }
+
+            if (i >= actualInventory.Count || actualInventory[i] == null)
             {
                 // For empty slot
                 CheckAndSpeak(Translator.Instance.Translate("inventory_util-empty_slot"), i);
@@ -170,7 +179,43 @@ internal static class InventoryUtils
 
         return toReturn;
     }
-    internal static string GetPluralNameOfItem(Item item) => GetPluralNameOfItem(item.DisplayName, item.Stack);
+
+    /// <summary>
+    /// Returns the in-game name of the item or the custom name if defined.
+    /// </summary>
+    /// <param name="item">The item to get the name of.</param>
+    internal static string GetNameOfItem(Item item) => GetNameOfItem(item.DisplayName, item.QualifiedItemId);
+
+    /// <summary>
+    /// Returns the in-game name of the item or the custom name if defined.
+    /// </summary>
+    /// <param name="qualifiedItemId">The QualifiedItemId of the item to get the name of.</param>
+    internal static string GetNameOfItem(string qualifiedItemId) => GetNameOfItem(ItemRegistry.GetData(qualifiedItemId).DisplayName, qualifiedItemId);
+
+    /// <summary>
+    /// Returns the in-game name of the item or the custom name if defined.
+    /// </summary>
+    /// <param name="displayName">The in-game/default name of the item.</param>
+    /// <param name="qualifiedItemId">The qualifiedItemId of the item to be used for checking for custom name.</param>
+    internal static string GetNameOfItem(string displayName, string qualifiedItemId)
+    {
+        // Converts the item's id from (F)1818 to F_1818  (As brackets aren't supported in fluent matching)
+        // Ref: https://regex101.com/r/pppCfU/1
+        string strippedQualifiedItemId = Regex.Replace(qualifiedItemId, @"\(([A-Za-z0-9]+)\)([A-Za-z0-9]+)", @"$1_$2");
+        string specialName = Translator.Instance.Translate("inventory_util-special_items-name",
+                tokens: new { item_id = strippedQualifiedItemId });
+#if DEBUG
+        Log.Verbose($"Item: {displayName} [id={qualifiedItemId}] [stripped_id={strippedQualifiedItemId}] [special_name={specialName}]");
+#endif
+        if (specialName != "-9999")
+        {
+            displayName = specialName;
+        }
+
+        return displayName;
+    }
+
+    internal static string GetPluralNameOfItem(Item item) => GetPluralNameOfItem(GetNameOfItem(item), item.Stack);
 
     internal static string GetPluralNameOfItem(string itemName, int itemCount)
     {
@@ -215,6 +260,16 @@ internal static class InventoryUtils
         var enchantList = (item is MeleeWeapon) ? (item as MeleeWeapon)!.enchantments : (item as Tool)!.enchantments;
         foreach (var enchantment in enchantList)
         {
+            if (enchantment is StardewValley.Enchantments.GalaxySoulEnchantment galaxySoulEnchantment)
+            {
+                int percentageCompleted = (galaxySoulEnchantment.GetLevel() * 100) / galaxySoulEnchantment.GetMaximumLevel();
+                enchantNames.Add(Translator.Instance.Translate("inventory_util-enchantments-galaxy_soul", tokens: new
+                {
+                    progress_in_percentage = percentageCompleted
+                }));
+                continue;
+            }
+
             enchantNames.Add(enchantment.GetDisplayName());
         }
 

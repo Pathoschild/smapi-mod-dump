@@ -1,0 +1,550 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Leroymilo/FurnitureFramework
+**
+*************************************************/
+
+{
+	"$schema": "https://raw.githubusercontent.com/Leroymilo/FurnitureFramework/main/doc/schemas/content.json",
+
+	"Format": 2,
+
+	"Furniture": {
+		"{{ModID}}.chair_test": {
+
+			"Display Name": "Chair Test",
+
+			"Rotations": 4,
+			// "Rotations": ["Down", "Right", "Up", "Left"],
+			// keys used in all other directional values
+			"Collisions": {
+				"Width": 1,
+				"Height": 1
+			},
+
+			"Placement Restriction": 2,
+
+			"Source Image": "assets/seats/chair.png",
+			"Source Rect": {
+				"Down":		{"X": 0,  "Y": 0, "Width": 16, "Height": 32},
+				"Right":	{"X": 16, "Y": 0, "Width": 16, "Height": 32},
+				"Up":		{"X": 32, "Y": 0, "Width": 16, "Height": 32},
+				"Left":		{"X": 48, "Y": 0, "Width": 16, "Height": 32}
+				// must have all directions
+			},
+			"Layers": {
+				"Up": [
+					{
+						"Source Rect": {"X": 32, "Y": 32, "Width": 16, "Height": 32}
+						// in pixels
+					}
+				]
+			},
+
+			"Seats": [
+				// positions are from the top left of the Bounding Box (not the texture!)
+				{
+					"Position": {"X": 0, "Y": 0},		// in tiles, can be decimal to sit between 2 tiles
+					"Player Direction": {
+						"Up": 0,
+						"Right": 1,
+						"Down": 2,
+						"Left": 3
+					}	// structure is : {<furniture rotation> : <player direction>}
+					// player direction : Up->0, Right->1, Down->2, Left->3
+					// omitting a furniture rotation will remove this seat when the furniture is in this direction
+				}
+			],
+
+			"Shows in Shops": ["{{ModID}}.custom_catalogue"]
+		},
+
+		"{{ModID}}.bench_test": {
+
+			"Display Name": "Bench Test",
+
+			"Rotations": 4,
+			// "Rotations": ["Down", "Right", "Up", "Left"],
+			// keys used in all other directional values
+			"Collisions": {
+				"Down": 	{"Width": 2, "Height": 1},
+				"Right": 	{"Width": 1, "Height": 2},
+				"Up": 		{"Width": 2, "Height": 1},
+				"Left": 	{"Width": 1, "Height": 2}
+			},
+
+			"Placement Restriction": 2,
+
+			"Source Image": "assets/seats/bench.png",
+			"Source Rect": {
+				"Down":		{"X": 0,  "Y": 0, "Width": 32, "Height": 32},
+				"Right":	{"X": 32, "Y": 0, "Width": 16, "Height": 48},
+				"Up":		{"X": 48, "Y": 0, "Width": 32, "Height": 32},
+				"Left":		{"X": 80, "Y": 0, "Width": 16, "Height": 48}
+				// must have all directions
+			},
+
+			"Layers": {
+				"Up": [
+					{
+						"Source Rect": {"X": 48, "Y": 48, "Width": 32, "Height": 32}
+						// in pixels
+					}
+				]
+			},
+
+			"Seats": [
+				// positions are from the top left of the Bounding Box (not the texture!)
+				{
+					"Position": {"X": 0, "Y": 0},		// in tiles, can be decimal to sit between 2 tiles
+					"Player Direction": {
+						"Up": 0,
+						"Right": 1,
+						"Down": 2,
+						"Left": 3
+					}	// structure is : {<furniture rotation> : <player direction>}
+					// player direction : Up->0, Right->1, Down->2, Left->3
+				},
+				{
+					"Position": {"X": 1, "Y": 0},		// in tiles, can be decimal to sit between 2 tiles
+					"Player Direction": {
+						"Up": 0,
+						"Down": 2
+					}	// structure is : {<furniture rotation> : <player direction>}
+					// player direction : Up->0, Right->1, Down->2, Left->3
+				},
+				{
+					"Position": {"X": 0, "Y": 1},		// in tiles, can be decimal to sit between 2 tiles
+					"Player Direction": {
+						"Right": 1,
+						"Left": 3
+					}	// structure is : {<furniture rotation> : <player direction>}
+					// player direction : Up->0, Right->1, Down->2, Left->3
+				}
+			],
+
+			"Shows in Shops": ["{{ModID}}.custom_catalogue"]
+		},
+
+		"{{ModID}}.couch_test": {
+
+			"Display Name": "Couch Test",
+
+			"Rotations": 4,
+			// "Rotations": ["Down", "Right", "Up", "Left"],
+			// keys used in all other directional values
+			"Collisions": {
+				"Down": 	{"Width": 3, "Height": 1},
+				"Right": 	{"Width": 2, "Height": 2},
+				"Up": 		{"Width": 3, "Height": 1},
+				"Left": 	{"Width": 2, "Height": 2}
+			},
+
+			"Placement Restriction": 2,
+
+			"Source Image": "assets/seats/couch.png",
+			"Source Rect": {
+				"Down":		{"X": 0,	"Y": 0, "Width": 48, "Height": 32},
+				"Right":	{"X": 48,	"Y": 0, "Width": 32, "Height": 48},
+				"Up":		{"X": 80,	"Y": 0, "Width": 48, "Height": 32},
+				"Left":		{"X": 128,	"Y": 0, "Width": 32, "Height": 48}
+				// must have all directions
+			},
+
+			"Layers": {
+				"Right": [
+					{
+						"Source Rect": {"X": 48, "Y": 48, "Width": 32, "Height": 48},
+						"Depth": {"Tile": 1, "Sub": 1000}
+					}
+				],
+				"Up": [
+					{
+						"Source Rect": {"X": 80, "Y": 48, "Width": 48, "Height": 32},
+						"Depth": {"Tile": 0, "Sub": 1000}
+					}
+				],
+				"Left": [
+					{
+						"Source Rect": {"X": 128, "Y": 48, "Width": 32, "Height": 48},
+						"Depth": {"Tile": 1, "Sub": 1000}
+					}
+				]
+			},
+
+			"Seats": {
+				"Up": [
+					{
+						"Position": {"X": 0.5, "Y": 0},
+						"Player Direction": 0
+					},
+					{
+						"Position": {"X": 1.5, "Y": 0},
+						"Player Direction": 0
+					}
+				],
+				"Right": [
+					{
+						"Position": {"X": 1, "Y": 0},
+						"Player Direction": 1
+					},
+					{
+						"Position": {"X": 1, "Y": 1},
+						"Player Direction": 1
+					}
+				],
+				"Down": [
+					{
+						"Position": {"X": 0.5, "Y": 0},
+						"Player Direction": 2
+					},
+					{
+						"Position": {"X": 1.5, "Y": 0},
+						"Player Direction": 2
+					}
+				],
+				"Left": [
+					{
+						"Position": {"X": 0, "Y": 0},
+						"Player Direction": 3
+					},
+					{
+						"Position": {"X": 0, "Y": 1},
+						"Player Direction": 3
+					}
+				]
+			},
+
+			"Shows in Shops": ["{{ModID}}.custom_catalogue"]
+		},
+
+		"{{ModID}}.living_room": {
+
+			"Display Name": "Living Room",
+			"Description": "A complex Furniture to test Layers and Collision Maps.",
+
+			"Rotations": 4,
+			// "Rotations": ["Down", "Right", "Up", "Left"],
+			// keys used in all other directional values
+			"Collisions": {
+				"Down": 	{
+					"Width": 8, "Height": 3,
+					"Map": "..XXXX../XX....XX/...XX.XX"
+				},
+				"Right": 	{
+					"Width": 5, "Height": 5,
+					"Map": "..XXX/XX.../XX..X/XX..X/..XX."
+				},
+				"Up": 		{
+					"Width": 8, "Height": 3,
+					"Map": "XX.XX.../XX....XX/..XXXX.."
+				},
+				"Left": 	{
+					"Width": 5, "Height": 5,
+					"Map": ".XX../X..XX/X..XX/...XX/XXX.."
+				}
+			},
+
+			"Placement Restriction": 2,
+
+			"Source Image": "assets/seats/living_room.png",
+			"Source Rect": {
+				"Down":		{"X": 0, "Y": 0, "Width": 128, "Height": 64},
+				"Right":	{"X": 0, "Y": 128, "Width": 80, "Height": 96},
+				"Up":		{"X": 0, "Y": 64, "Width": 128, "Height": 64},
+				"Left":		{"X": 80, "Y": 128, "Width": 80, "Height": 96}
+				// must have all directions
+			},
+
+			"Layers": {
+				"Up": [
+					{
+						// Back of Long Couch, facing Up
+						"Source Rect": {"X": 80, "Y": 224, "Width": 64, "Height": 32},
+						"Draw Pos": {"X": 32, "Y": 32},
+						"Depth": {"Tile": 2, "Sub": 1000}
+					},
+					{
+						// Lower Arm of Couch facing Right
+						"Source Rect": {"X": 160, "Y": 128, "Width": 32, "Height": 48},
+						"Draw Pos": {"X": 0, "Y": 0},
+						"Depth": {"Tile": 1, "Sub": 1000}
+					},
+					{
+						// Lower Arm of Armchair facing Left
+						"Source Rect": {"X": 192, "Y": 64, "Width": 32, "Height": 32},
+						"Draw Pos": {"X": 96, "Y": 16},
+						"Depth": {"Tile": 1, "Sub": 1000}
+					},
+					{
+						// Upper Arm of Armchair facing Left
+						"Source Rect": {"X": 192, "Y": 96, "Width": 32, "Height": 32},
+						"Draw Pos": {"X": 96, "Y": 16},
+						"Depth": 1
+					}
+					// Upper Arm of Couch facing Right & Table are already drawn by the base sprite 
+				],
+				"Right": [
+					{
+						// Back of Armchair facing Up
+						"Source Rect": {"X": 0, "Y": 224, "Width": 32, "Height": 32},
+						"Draw Pos": {"X": 32, "Y": 64},
+						"Depth": {"Tile": 4, "Sub": 1000}
+					},
+					{
+						// Lower Arm of Long Couch facing Right
+						"Source Rect": {"X": 128, "Y": 0, "Width": 32, "Height": 64},
+						"Draw Pos": {"X": 0, "Y": 16},
+						"Depth": {"Tile": 3, "Sub": 1000}
+					},
+					{
+						// Table
+						"Source Rect": {"X": 176, "Y": 208, "Width": 16, "Height": 48},
+						"Draw Pos": {"X": 64, "Y": 32},
+						"Depth": 2
+					},
+					{
+						// Upper Arm of Long Couch facing Right
+						"Source Rect": {"X": 128, "Y": 64, "Width": 32, "Height": 64},
+						"Draw Pos": {"X": 0, "Y": 16},
+						"Depth": 1
+					}
+				],
+				"Down": [
+					{
+						// Lower Arm of Couch facing Left
+						"Source Rect": {"X": 192, "Y": 128, "Width": 32, "Height": 48},
+						"Draw Pos": {"X": 96, "Y": 16},
+						"Depth": {"Tile": 2, "Sub": 1000}
+					},
+					{
+						// Lower Arm of Armchair facing Right
+						"Source Rect": {"X": 192, "Y": 0, "Width": 32, "Height": 32},
+						"Draw Pos": {"X": 0, "Y": 16},
+						"Depth": {"Tile": 1, "Sub": 1000}
+					},
+					{
+						// Table
+						"Source Rect": {"X": 144, "Y": 224, "Width": 32, "Height": 32},
+						"Draw Pos": {"X": 48, "Y": 32},
+						"Depth": 2
+					},
+					{
+						// Upper Arm of Armchair facing Right
+						"Source Rect": {"X": 192, "Y": 32, "Width": 32, "Height": 32},
+						"Draw Pos": {"X": 0, "Y": 16},
+						"Depth": 1
+					},
+					{
+						// Upper Arm of Couch facing Left
+						"Source Rect": {"X": 192, "Y": 176, "Width": 32, "Height": 48},
+						"Draw Pos": {"X": 96, "Y": 16},
+						"Depth": 1
+					}
+				],
+				"Left": [
+					{
+						// Back of Couch facing Up
+						"Source Rect": {"X": 32, "Y": 224, "Width": 48, "Height": 32},
+						"Draw Pos": {"X": 0, "Y": 64},
+						"Depth": {"Tile": 4, "Sub": 1000}
+					},
+					{
+						// Lower Arm of Long Couch facing Left
+						"Source Rect": {"X": 160, "Y": 0, "Width": 32, "Height": 64},
+						"Draw Pos": {"X": 48, "Y": 16},
+						"Depth": {"Tile": 3, "Sub": 1000}
+					},
+					{
+						// Table
+						"Source Rect": {"X": 176, "Y": 208, "Width": 16, "Height": 48},
+						"Draw Pos": {"X": 0, "Y": 16},
+						"Depth": 1
+					},
+					{
+						// Upper Arm of Long Couch facing Left
+						"Source Rect": {"X": 160, "Y": 64, "Width": 32, "Height": 64},
+						"Draw Pos": {"X": 48, "Y": 16},
+						"Depth": 1
+					}
+				]
+			},
+		
+			"Seats": {
+				"Down": [
+					{
+						// Left seat of Long Couch
+						"Position": {"X": 2.5, "Y": 0},
+						"Player Direction": 2
+					},
+					{
+						// Center seat of Long Couch
+						"Position": {"X": 3.5, "Y": 0},
+						"Player Direction": 2
+					},
+					{
+						// Right seat of Long Couch
+						"Position": {"X": 4.5, "Y": 0},
+						"Player Direction": 2
+					},
+					{
+						// Seat of Armchair
+						"Position": {"X": 1, "Y": 1},
+						"Player Direction": 1
+					},
+					{
+						// Top seat of Couch
+						"Position": {"X": 6, "Y": 1},
+						"Player Direction": 3
+					},
+					{
+						// Bottom seat of Couch
+						"Position": {"X": 6, "Y": 2},
+						"Player Direction": 3
+					}
+				],
+				"Right": [
+					{
+						// Left seat of Couch
+						"Position": {"X": 2.5, "Y": 0},
+						"Player Direction": 2
+					},
+					{
+						// Right seat of Couch
+						"Position": {"X": 3.5, "Y": 0},
+						"Player Direction": 2
+					},
+					{
+						// Top seat of Long Couch
+						"Position": {"X": 1, "Y": 1},
+						"Player Direction": 1
+					},
+					{
+						// Center seat of Long Couch
+						"Position": {"X": 1, "Y": 2},
+						"Player Direction": 1
+					},
+					{
+						// Bottom seat of Long Couch
+						"Position": {"X": 1, "Y": 3},
+						"Player Direction": 1
+					},
+					{
+						// Seat of Armchair
+						"Position": {"X": 2.5, "Y": 4},
+						"Player Direction": 0
+					}
+				],
+				"Up": [
+					{
+						// Top seat of Couch
+						"Position": {"X": 1, "Y": 0},
+						"Player Direction": 1
+					},
+					{
+						// Bottom seat of Couch
+						"Position": {"X": 1, "Y": 1},
+						"Player Direction": 1
+					},
+					{
+						// Seat of Armchair
+						"Position": {"X": 6, "Y": 1},
+						"Player Direction": 3
+					},
+					{
+						// Left seat of Long Couch
+						"Position": {"X": 2.5, "Y": 2},
+						"Player Direction": 0
+					},
+					{
+						// Center seat of Long Couch
+						"Position": {"X": 3.5, "Y": 2},
+						"Player Direction": 0
+					},
+					{
+						// Right seat of Long Couch
+						"Position": {"X": 4.5, "Y": 2},
+						"Player Direction": 0
+					}
+				],
+				"Left": [
+					{
+						// Seat of Armchair
+						"Position": {"X": 1.5, "Y": 0},
+						"Player Direction": 2
+					},
+					{
+						// Top seat of Long Couch
+						"Position": {"X": 3, "Y": 1},
+						"Player Direction": 3
+					},
+					{
+						// Center seat of Long Couch
+						"Position": {"X": 3, "Y": 2},
+						"Player Direction": 3
+					},
+					{
+						// Bottom seat of Long Couch
+						"Position": {"X": 3, "Y": 3},
+						"Player Direction": 3
+					},
+					{
+						// Left seat of Couch
+						"Position": {"X": 0.5, "Y": 4},
+						"Player Direction": 0
+					},
+					{
+						// Right seat of Couch
+						"Position": {"X": 1.5, "Y": 4},
+						"Player Direction": 0
+					}
+				]
+			},
+
+			"Slots": {
+				"Down": [
+					{
+						"Area": {"X": 48, "Y": 43, "Width": 32, "Height": 13},
+						"Depth": 2,
+						"Max Size": {"X": 2, "Y": 1}
+					}
+				],
+				"Right": [
+					{
+						"Area": {"X": 64, "Y": 41, "Width": 16, "Height": 31},
+						"Depth": 2,
+						"Max Size": {"X": 1, "Y": 2}
+					}
+				],
+				"Up": [
+					{
+						"Area": {"X": 48, "Y": 11, "Width": 32, "Height": 13},
+						"Depth": 0,
+						"Max Size": {"X": 2, "Y": 1}
+					}
+				],
+				"Left": [
+					{
+						"Area": {"X": 0, "Y": 25, "Width": 16, "Height": 31},
+						"Depth": 1,
+						"Max Size": {"X": 1, "Y": 2}
+					}
+				]
+				// The Area rectangle is in pixels, and is relative to the sprite for each rotation.
+			},
+
+			"Shows in Shops": ["{{ModID}}.custom_catalogue"]
+		}
+	},
+
+	"Included": {
+		"Armchair": {
+			"Path": "assets/seats/armchairs/armchairs.json",
+			"Description": "Sittable Test Furniture"
+		}
+	}
+}

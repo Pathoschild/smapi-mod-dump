@@ -11,7 +11,7 @@
 {
     "Name": "Seasonal Save Slots",
     "Author": "Tyler Gibbs",
-    "Version": "1.1.0",
+    "Version": "1.1.1",
     "Description": "Your save slots will be colored based on the season.",
     "UniqueID": "tylergibbs2.SeasonalSaveSlots",
     "EntryDll": "SeasonalSaveSlots.dll",

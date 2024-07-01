@@ -1,0 +1,9 @@
+{
+  "WhatDoYouWantKeypress": "F2",
+  "ShippingSortOrder": "Category",
+  "CookingSortOrder": "KnownRecipesFirst",
+  "CraftingSortOrder": "KnownRecipesFirst",
+  "FishingSortOrder": "SeasonsSpringFirst",
+  "MuseumSortOrder": "Type",
+  "PolycultureSortOrder": "SeasonsSpringFirst"
+}

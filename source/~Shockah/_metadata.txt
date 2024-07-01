@@ -23,9 +23,9 @@ mods:
    XP Display
 
 latest commit:
-   commit beb919ab013d997f33e633dda367ab72e03f0b22
+   commit 20032db239d743f96f8ce9ed3092d5bbcee3147e
    Author: DeLiXx <fake122344@gmail.com>
-   Date:   Mon Apr 22 01:33:16 2024 +0200
+   Date:   Sun Jun 16 17:52:36 2024 +0200
    
-       Added support for SpaceCore Skill buffs
+       updated to 2.0.2
    

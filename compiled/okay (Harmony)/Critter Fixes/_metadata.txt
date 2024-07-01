@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/24667
+IDs: juminos.CritterFixes
+update keys: Nexus:24667

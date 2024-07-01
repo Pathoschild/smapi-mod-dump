@@ -103,5 +103,7 @@
   "Config.SpouseAlwaysGivingLetter": "Spouse always giving letter",
   "Config.MinHeartsRequired": "Minimum hearts required",
   "Config.ChancePerHeart": "Chance per heart (in %)",
-  "Config.ChancePerHeartDescription": "The chance of receiving a letter from an NPC. Each heart will increase the chance by x percent (e.g. 6 hearts, 10% for each heart = 60% chance to receive a letter from the NPC)"
+  "Config.ChancePerHeartDescription": "The chance of receiving a letter from an NPC. Each heart will increase the chance by x percent (e.g. 6 hearts, 10% for each heart = 60% chance to receive a letter from the NPC)",
+  "Config.MoneyLetterPulsating": "Fancy Money Letter",
+  "Config.MoneyLetterPulsatingDescription": "The color of the money amount of the money letter will pulsate in colors."
 }

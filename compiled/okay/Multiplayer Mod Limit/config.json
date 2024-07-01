@@ -1,0 +1,18 @@
+{
+  "EnableMod": true,
+  "KickPlayerDelayTime": 1,
+  "RequireSMAPI": true,
+  "LimitMode": "WhiteListMode",
+  "AllowedModListSelected": "Default",
+  "RequiredModListSelected": "Default",
+  "BannedModListSelected": "Default",
+  "AllowedModList": {
+    "Default": []
+  },
+  "RequiredModList": {
+    "Default": []
+  },
+  "BannedModList": {
+    "Default": []
+  }
+}

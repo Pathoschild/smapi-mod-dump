@@ -16,6 +16,8 @@ using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.TerrainFeatures;
 
+using static NermNermNerm.Stardew.LocalizeFromSource.SdvLocalize;
+
 namespace NermNermNerm.Junimatic
 {
     public class UnlockForest
@@ -26,7 +28,7 @@ namespace NermNermNerm.Junimatic
         private const string IsMysticTreeGrownOnFarmEventCondition = "IsMysticTreeGrownOnFarm";
         private const string GrowMysticTreeQuest = "Junmatic.GrowMysticTree";
         private const string MeetLinusMailKey = "Junimatic.MeetLinus";
-        private const string MeetLinusQuestKey = "Junimatic.MeetLinus";
+        private const string MeetLinusInWoodsQuestKey = "Junimatic.CookOutWithLinus";
         private const string LinusCampingEvent = "Junimatic.LinusCamping";
         private const string MysticTreeCelebrationEvent = "Junimatic.MysticTreeCelebration";
         private const string TempMarker = "Junimatic.TemporaryEventMarker";
@@ -47,7 +49,7 @@ namespace NermNermNerm.Junimatic
             Event.RegisterPrecondition(IsMysticTreeGrownOnFarmEventCondition, this.IsMysticTreeGrownOnFarm);
         }
 
-        public bool IsUnlocked => Game1.MasterPlayer.eventsSeen.Contains(MysticTreeCelebrationEvent);
+        public bool IsUnlocked => ModEntry.Config.EnableWithoutQuests || Game1.MasterPlayer.eventsSeen.Contains(MysticTreeCelebrationEvent);
 
         private void JunimosSpringFromTree(Event @event, string[] args, EventContext context)
         {
@@ -111,7 +113,7 @@ namespace NermNermNerm.Junimatic
 
         private void Player_Warped(object? sender, WarpedEventArgs e)
         {
-            if (e.OldLocation.Name == "Woods")
+            if (e.OldLocation.Name == I("Woods"))
             {
                 var oldTorchLocations = e.OldLocation.Objects.Values.Where(o => o.modData.ContainsKey(TempMarker)).Select(t => t.TileLocation).ToList();
                 foreach (var oldCampfire in oldTorchLocations)
@@ -147,7 +149,7 @@ namespace NermNermNerm.Junimatic
                     context.Location.objects[atTile] = campfire;
                     campfire.TileLocation = @event.OffsetTile(atTile);
                     campfire.initializeLightSource(campfire.TileLocation);
-                    campfire.modData["Junimatic.TempMarker"] = "true";
+                    campfire.modData["Junimatic.TempMarker"] = true.ToString();
                 }
             }
             finally
@@ -172,8 +174,8 @@ namespace NermNermNerm.Junimatic
                 e.Edit(editor =>
                 {
                     IDictionary<string, string> data = editor.AsDictionary<string, string>().Data;
-                    data[GrowMysticTreeQuest] = "Basic/Plant The Mystic Seed/Linus gave you some tree seeds...  Do the Junimos talk to him too?/Grow a Mystic Tree and 2 Mahogony Trees to adulthood on your farm./null/-1/0/-1/false";
-                    data[MeetLinusQuestKey] = "Basic/Meet Linus In The Secret Woods/Have dinner with Linus in the Secret Woods/Enter the secret woods on a sunny day between 6 and 11pm./null/-1/0/-1/false";
+                    data[GrowMysticTreeQuest] = SdvQuest("Basic/Plant The Mystic Seed/Linus gave you some tree seeds...  Do the Junimos talk to him too?/Grow a Mystic Tree and 2 Mahogony Trees to adulthood on your farm./null/-1/0/-1/false");
+                    data[MeetLinusInWoodsQuestKey] = SdvQuest("Basic/Meet Linus In The Secret Woods/Have dinner with Linus in the Secret Woods/Enter the secret woods on a sunny day between 6 and 11pm./null/-1/0/-1/false");
                 });
             }
             else if (e.NameWithoutLocale.IsEquivalentTo("Data/Mail"))
@@ -181,15 +183,14 @@ namespace NermNermNerm.Junimatic
                 e.Edit(editor =>
                 {
                     IDictionary<string, string> data = editor.AsDictionary<string, string>().Data;
-                    data[MeetLinusMailKey] = $"@,^how are you doing?  I've decided to spend a night or two in the deep woods, west of Marnie's ranch.  Would you care to share a meal in the wild with me? ^   -Linus%item quest {MeetLinusQuestKey}%%[#]Meet at Linus' camp in the woods";
+                    data[MeetLinusMailKey] = SdvMail($"@,^how are you doing?  I've decided to spend a night or two in the deep woods, west of Marnie's ranch.  Would you care to share a meal in the wild with me? ^   -Linus%item quest {MeetLinusInWoodsQuestKey}%%[#]Meet at Linus' camp in the woods");
                 });
             }
-
         }
 
         private void EditFarmEvents(IDictionary<string, string> eventData)
         {
-            eventData[$"{MysticTreeCelebrationEvent}/H/sawEvent {LinusCampingEvent}/{IsMysticTreeGrownOnFarmEventCondition}"] = $@"playful
+            eventData[IF($"{MysticTreeCelebrationEvent}/H/sawEvent {LinusCampingEvent}/{IsMysticTreeGrownOnFarmEventCondition}")] = SdvEvent($@"playful
 -1000 -1000
 farmer 8 24 0
 removeQuest {GrowMysticTreeQuest}
@@ -205,21 +206,24 @@ spriteText 4 ""You will be wiser.  We will help.""
 spriteText 4 ""Thx!  Bai!!!""
 pause 2000
 end
-".Replace("\r", "").Replace("\n", "/");
+").Replace("\r", "").Replace("\n", "/");
         }
 
         private void EditWoodsEvents(IDictionary<string, string> eventData)
         {
-            eventData[$"{LinusCampingEvent}/H/w sunny/t 1800 2300/n {MeetLinusMailKey}"] = @$"nightTime
+            (int modDeltaX,int modDeltaY) = this.mod.IsRunningSve ? (40, 15) : (0,0);
+
+            eventData[IF($"{LinusCampingEvent}/H/w sunny/t 1800 2300/n {MeetLinusMailKey}")] = SdvEvent(@$"nightTime
 -1000 -1000
-farmer 40 14 3 Linus 29 13 1
-removeQuest {MeetLinusQuestKey}
+farmer {40+modDeltaX} {14+modDeltaY} 3 Linus {29+modDeltaX} {13+modDeltaY} 1
+removeQuest {MeetLinusInWoodsQuestKey}
 
-viewport 27 12 true
+makeInvisible {28+modDeltaX} {7+modDeltaY} 4 9
+viewport {27+modDeltaX} {12+modDeltaY} true
 
-temporaryAnimatedSprite ""LooseSprites\Cursors_1_6"" 48 208 64 48 999999 1 0  28 9  false false 10 0 1 0 0 0/
-temporaryAnimatedSprite ""LooseSprites\Cursors_1_6"" 0 192 48 64  999999 1 0  29 7  false false 11 0 1 0 0 0/
-Junimatic.LightCampFires 30 13 278
+temporaryAnimatedSprite ""LooseSprites\Cursors_1_6"" 48 208 64 48 999999 1 0  {28+modDeltaX} {9+modDeltaY}  false false 10 0 1 0 0 0/
+temporaryAnimatedSprite ""LooseSprites\Cursors_1_6"" 0 192 48 64  999999 1 0  {29+modDeltaX} {7+modDeltaY}  false false 11 0 1 0 0 0/
+Junimatic.LightCampFires {30+modDeltaX} {13+modDeltaY} 278
 setSkipActions addItem (O)MysticTreeSeed 1#addItem (O)292 2#addQuest {GrowMysticTreeQuest}
 skippable
 
@@ -353,7 +357,7 @@ viewport -1000 -1000 true
 Junimatic.LightCampFires 30 13
 addQuest {GrowMysticTreeQuest}
 end warpOut
-".Replace("\r", "").Replace("\n", "/");
+").Replace("\r", "").Replace("\n", "/");
         }
     }
 }

@@ -10,6 +10,7 @@
 
 using stardew_access.Translation;
 using StardewValley;
+using StardewValley.ItemTypeDefinitions;
 using StardewValley.TerrainFeatures;
 using System.Text;
 
@@ -155,7 +156,16 @@ public static class TerrainUtils
 
     public static string GetFlooringInfoString(Flooring flooring)
     {
-        // TODO Needs to be checked
+        if (!MainClass.Config.DisableDescriptiveFlooring)
+        {
+            ParsedItemData floorData = ItemRegistry.GetDataOrErrorItem(flooring.GetData().ItemId);
+            if (floorData != null && !floorData.IsErrorItem)
+            {
+                return floorData.DisplayName;
+            }
+        }
+
+        // Will run if DisableDescriptiveFlooring is on or when it's off but the above code wasn't able to get the floor data
         bool isPathway = flooring.whichFloor.Value is Flooring.gravel or Flooring.cobblestone or Flooring.wood or Flooring.ghost;
         bool isSteppingStone = flooring.whichFloor.Value == Flooring.steppingStone;
         string description = isPathway ? "tile_name-pathway" : (isSteppingStone ? "tile_name-stepping_stone" : "tile_name-flooring");

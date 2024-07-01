@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using GenericModConfigMenu;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -137,7 +138,16 @@ namespace LogMenu
                 if (db.isQuestion)
                 {
                     // Converts each response from Response to string, then adds it to responses list variable
-                    for (int i = 0; i < db.responses.Length; i++) responses.Add(db.responses[i].responseText);
+                    for (int i = 0; i < db.responses.Length; i++) {
+                        string responseText = db.responses[i].responseText.Replace(Environment.NewLine, " ");
+                        
+                        // Fix for issue with Linus going through George's trash scene in which each word was separated by new lines
+                        if (responseText.Length > 0 && responseText[0] == ' ') responseText = responseText[1..];
+                        responseText = Regex.Replace(responseText, @"\s+", " ");
+
+                        // Add text to response list
+                        responses.Add(responseText);
+                    }
                     // TODO: Check player's response to question
                     //this.Monitor.Log($"{responseInd}", LogLevel.Debug);
                 }
@@ -147,13 +157,16 @@ namespace LogMenu
                 string currStr = db.getCurrentString();
                 if (prevAddedDialogue != currStr && db.transitioningBigger)
                 {
+                    // Determine portrait index: if no character dialogue or if db doesn't have portrait (e.g., Sam skateboarding) or if character asking question
                     int portraitIndex = (db.characterDialogue is null) ? -1 : db.characterDialogue.getPortraitIndex();
                     if (db.isQuestion || (Game1.options.showPortraits && !db.isPortraitBox())) portraitIndex = -2;
                     //Monitor.Log("portraitIndex = " + portraitIndex, LogLevel.Debug);
                     //if(db.characterDialogue is not null) Monitor.Log("Emotion = " + db.characterDialogue.CurrentEmotion, LogLevel.Debug);
+
+                    Monitor.Log($"Received dialogue line:{((db.characterDialogue is not null) ? $" {db.characterDialogue.speaker.displayName}:" : "") } {currStr}");
+                    if (responses.Count > 0) Monitor.Log($"Received responses: {string.Join(", ", responses)}");
                     AddToDialogueList(
                         db.characterDialogue,
-                        // Determine portrait index: if no character dialogue or if db doesn't have portrait (e.g., Sam skateboarding) or if character asking question
                         portraitIndex,
                         currStr,
                         responses);
@@ -183,14 +196,13 @@ namespace LogMenu
         /// <param name="e">The event data.</param>
         private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
-            // Do nothing if no save file has been loaded yet
-            if (!Context.IsWorldReady) return;
+            if (!Context.IsWorldReady) return; // Do nothing if no save file has been loaded yet
 
             // Upon pressing the Log button
             if (e.Button == Config.LogButton)
             {
-                // Only open log menu when game is not paused
-                if ((Game1.activeClickableMenu == null || Game1.IsMultiplayer) && !Game1.paused)
+                // Open log menu if in-game conditions are fulfilled (player is free, not using tool, not eating, not playing a minigame)
+                if (Context.IsPlayerFree && !Game1.player.UsingTool && !Game1.player.isEating && Game1.currentMinigame == null)
                 {
                     // Set activeClickableMenu to LogMenu, passing the dialogue list and config options
                     Game1.activeClickableMenu = new LogMenu(dialogueList, Config.StartFromBottom, Config.OldestToNewest);
@@ -242,14 +254,14 @@ namespace LogMenu
             // Replace ^, which represent new line characters in dialogue lines
             dialogue = dialogue.Replace("^", Environment.NewLine);
             if (charDiag is null && Config.NonNPCDialogue is false) return; // If non-NPC dialogue line and non-NPC dialogue config option is false, return
-            splitDialogue(charDiag, portraitIndex, dialogue, 5);
+            splitDialogue(charDiag, portraitIndex, dialogue, 4);
 
             // Handles responses
             if(responses != null && responses.Count > 0)
             {
                 dialogue = "> ";
                 dialogue += string.Join($"{Environment.NewLine}> ", responses);
-                splitDialogue(charDiag, -1, dialogue, 5);
+                splitDialogue(charDiag, -1, dialogue, 4);
             }
         }
 
@@ -258,7 +270,7 @@ namespace LogMenu
             List<string> brokenUpDialogue = new();
             List<string> splitDialogue = dialogue.Split(Environment.NewLine).ToList();
             int n = splitDialogue.Count - 1;
-            // Split up long dialogue lines with more than 4 line breaks
+            // Split up long dialogue lines with more than 4 lines
             if (n > limit)
             {
                 for(int i = 0; i < n; i += limit)
@@ -266,12 +278,21 @@ namespace LogMenu
                     int ind1 = dialogue.IndexOf(splitDialogue[i]);
                     brokenUpDialogue.Add((((n - i) / limit) >= 1) ? dialogue.Substring(ind1, dialogue.IndexOf(splitDialogue[i + limit]) - ind1) : dialogue[ind1..]);
                 }
-                foreach (string s in brokenUpDialogue) dialogueList.enqueue(new DialogueElement(charDiag, Game1.mouseCursors, portraitIndex, s));
+                foreach (string s in brokenUpDialogue)
+                {
+                    dialogueList.enqueue(new DialogueElement(charDiag, Game1.mouseCursors, portraitIndex, s));
+                    Monitor.Log($"Added string to dialogue list: {s}");
+
+                }
             }
             else
             {
                 DialogueElement dialogueElement = new(charDiag, Game1.mouseCursors, portraitIndex, dialogue);
-                if (dialogue != "") dialogueList.enqueue(dialogueElement);
+                if (dialogue != "")
+                {
+                    dialogueList.enqueue(dialogueElement);
+                    Monitor.Log($"Added string to dialogue list: {dialogue}");
+                }
             }
         }
     }

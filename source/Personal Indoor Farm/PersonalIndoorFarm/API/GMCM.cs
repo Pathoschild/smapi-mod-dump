@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using GenericModConfigMenu;
 using GMCMOptions;
 using PersonalIndoorFarm;
+using PersonalIndoorFarm.Lib;
 using static PersonalIndoorFarm.ModEntry;
 
 namespace PersonalIndoorFarm.API
@@ -39,20 +40,34 @@ namespace PersonalIndoorFarm.API
                save: () => Helper.WriteConfig(Config)
            );
 
-            configMenu.AddBoolOption(
+            configMenu.AddTextOption(
                 mod: ModManifest,
-                name: () => "Use Vanilla Doors",
-                tooltip: () => "Whether Vanilla Decorative Doors should act as Dimension Doors",
-                getValue: () => Config.UseVanillaDoors,
-                setValue: value => Config.UseVanillaDoors = value
+                name: () => "Door Owner (Farmhouse)",
+                tooltip: () => "Which players room does a door lead to when inside a farmhouse",
+                allowedValues: new[] {
+                    DoorOwnerEnum.None.ToString(),
+                    DoorOwnerEnum.Host.ToString(),
+                    DoorOwnerEnum.CurrentPlayer.ToString(),
+                    DoorOwnerEnum.Owner.ToString(),
+                    DoorOwnerEnum.PlacedBy.ToString()
+                },
+                getValue: () => Config.OwnerFarmhouse,
+                setValue: value => Config.OwnerFarmhouse = value
             );
 
-            configMenu.AddBoolOption(
+            configMenu.AddTextOption(
                 mod: ModManifest,
-                name: () => "Use VMV Doors",
-                tooltip: () => "Whether Visit Mount Vapius Decorative Doors should act as Dimension Doors",
-                getValue: () => Config.UseVMVDoors,
-                setValue: value => Config.UseVMVDoors = value
+                name: () => "Door Owner (Outside)",
+                tooltip: () => "Which players room does a door lead to when outside a farmhouse",
+                allowedValues: new[] {
+                    DoorOwnerEnum.None.ToString(),
+                    DoorOwnerEnum.Host.ToString(),
+                    DoorOwnerEnum.CurrentPlayer.ToString(),
+                    //DoorOwnerEnum.Owner.ToString(),
+                    DoorOwnerEnum.PlacedBy.ToString()
+                },
+                getValue: () => Config.OwnerOutside,
+                setValue: value => Config.OwnerOutside = value
             );
 
             var configMenuExt = Helper.ModRegistry.GetApi<IGMCMOptionsAPI>("jltaylor-us.GMCMOptions");
@@ -65,6 +80,15 @@ namespace PersonalIndoorFarm.API
                     tooltip: () => "Accessibility option. Changes the color of the locked door icon.",
                     getValue: () => Config.LockedDoorColor,
                     setValue: value => Config.LockedDoorColor = value,
+                    colorPickerStyle: (uint)IGMCMOptionsAPI.ColorPickerStyle.RGBSliders
+                );
+
+            configMenuExt.AddColorOption(
+                    mod: ModManifest,
+                    name: () => "Locked When Offline Door Color",
+                    tooltip: () => "Accessibility option. Changes the color of the locked when offline door icon.",
+                    getValue: () => Config.LockedWhenOfflineDoorColor,
+                    setValue: value => Config.LockedWhenOfflineDoorColor = value,
                     colorPickerStyle: (uint)IGMCMOptionsAPI.ColorPickerStyle.RGBSliders
                 );
 

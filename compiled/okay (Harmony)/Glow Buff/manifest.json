@@ -1,0 +1,10 @@
+{
+  "Name": "Glow Buff",
+  "Author": "MindMeltMax",
+  "Version": "1.0.0",
+  "Description": "Adds a buff for food and drinks to show a glow effect like rings",
+  "UniqueID": "MindMeltMax.GlowBuff",
+  "EntryDll": "Glow Buff.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "nexus:25157" ]
+}

@@ -11,6 +11,7 @@
 using System;
 using System.Linq;
 using StardewArchipelago.Archipelago;
+using StardewArchipelago.Constants.Vanilla;
 using StardewArchipelago.Goals;
 using StardewArchipelago.Stardew;
 using StardewModdingAPI;
@@ -20,22 +21,18 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
 {
     public static class FishingInjections
     {
-        private const int GREEN_ALGAE = 153;
-        private const int WHITE_ALGAE = 157;
-        private const int SEAWEED = 152;
-        private const int ORNATE_NECKLACE = 191;
-        private const int GOLDEN_WALNUT = 73;
-        private const int SECRET_NOTE = 79;
-        private const int PEARL = 797;
-        private const int FOSSILIZED_SPINE = 821;
-        private const int SNAKE_SKULL = 825;
-        private const int JOURNAL_SCRAP = 842;
-        private const int QI_BEAN = 890;
-
-        private static readonly int[] _fishsanityExceptions = new[]
+        private static readonly string[] _fishedTrash = new[]
         {
-            GREEN_ALGAE, WHITE_ALGAE, SEAWEED, ORNATE_NECKLACE, GOLDEN_WALNUT, SECRET_NOTE, FOSSILIZED_SPINE, PEARL, SNAKE_SKULL, JOURNAL_SCRAP,
-            QI_BEAN,
+            QualifiedItemIds.JOJA_COLA, QualifiedItemIds.TRASH, QualifiedItemIds.DRIFTWOOD,
+            QualifiedItemIds.BROKEN_GLASSES, QualifiedItemIds.BROKEN_CD, QualifiedItemIds.SOGGY_NEWSPAPER,
+        };
+
+        private static readonly string[] _fishsanityExceptions = new[]
+        {
+            QualifiedItemIds.GREEN_ALGAE, QualifiedItemIds.WHITE_ALGAE, QualifiedItemIds.SEAWEED, QualifiedItemIds.ORNATE_NECKLACE,
+            QualifiedItemIds.GOLDEN_WALNUT, QualifiedItemIds.SECRET_NOTE, QualifiedItemIds.FOSSILIZED_SPINE, QualifiedItemIds.PEARL,
+            QualifiedItemIds.SNAKE_SKULL, QualifiedItemIds.JOURNAL_SCRAP, QualifiedItemIds.QI_BEAN,
+            QualifiedItemIds.SEA_JELLY, QualifiedItemIds.CAVE_JELLY, QualifiedItemIds.RIVER_JELLY,
         };
         public const string FISHSANITY_PREFIX = "Fishsanity: ";
 
@@ -54,25 +51,27 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             _itemManager = itemManager;
         }
 
-        public static void CaughtFish_Fishsanity_Postfix(Farmer __instance, int index, int size, bool from_fish_pond, int numberCaught, ref bool __result)
+        // public bool caughtFish(string itemId, int size, bool from_fish_pond = false, int numberCaught = 1)
+        public static void CaughtFish_Fishsanity_Postfix(Farmer __instance, string itemId, int size, bool from_fish_pond, int numberCaught, ref bool __result)
         {
             try
             {
-                if (from_fish_pond || (index >= 167 && index < 173) || !_itemManager.ObjectExists(index))
+                // itemId is qualified
+                if (from_fish_pond || (IsFishedTrash(itemId)) || !_itemManager.ItemExistsByQualifiedId(itemId))
                 {
                     return;
                 }
 
-                var fish = _itemManager.GetObjectById(index);
+                var fish = _itemManager.GetItemByQualifiedId(itemId);
                 var fishName = fish.Name;
                 var apLocation = $"{FISHSANITY_PREFIX}{fishName}";
                 if (_archipelago.GetLocationId(apLocation) > -1)
                 {
                     _locationChecker.AddCheckedLocation(apLocation);
                 }
-                else if (!_fishsanityExceptions.Contains(index))
+                else if (!_fishsanityExceptions.Contains(itemId))
                 {
-                    _monitor.Log($"Unrecognized Fishsanity Location: {fishName} [{index}]", LogLevel.Error);
+                    _monitor.Log($"Unrecognized Fishsanity Location: {fishName} [{itemId}]", LogLevel.Error);
                 }
             }
             catch (Exception ex)
@@ -82,7 +81,8 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             }
         }
 
-        public static void CaughtFish_CheckGoalCompletion_Postfix(Farmer __instance, int index, int size, bool from_fish_pond, int numberCaught, ref bool __result)
+        // public bool caughtFish(string itemId, int size, bool from_fish_pond = false, int numberCaught = 1)
+        public static void CaughtFish_CheckGoalCompletion_Postfix(Farmer __instance, string itemId, int size, bool from_fish_pond, int numberCaught, ref bool __result)
         {
             try
             {
@@ -93,6 +93,11 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                 _monitor.Log($"Failed in {nameof(CaughtFish_CheckGoalCompletion_Postfix)}:\n{ex}", LogLevel.Error);
                 return;
             }
+        }
+
+        private static bool IsFishedTrash(string itemId)
+        {
+            return _fishedTrash.Contains(itemId);
         }
     }
 }

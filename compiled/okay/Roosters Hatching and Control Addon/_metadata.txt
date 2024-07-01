@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/22555
+IDs: Mikew.roostersaddon.smapi
+update keys: Nexus:22555

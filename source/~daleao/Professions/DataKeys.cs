@@ -43,4 +43,7 @@ internal sealed class DataKeys
 
     // building keys
     internal const string FamilyLivingHere = "FamilyLivingHere";
+
+    // projectile keys
+    internal const string Overcharge = "Overcharge";
 }

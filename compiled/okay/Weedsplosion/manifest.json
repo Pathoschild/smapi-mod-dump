@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Weedsplosion",
+  "Author": "stardemod",
+  "Version": "1.0.0",
+  "Description": "Weedsplosion: Weeds grow at an extreme rate",
+  "UniqueID": "stardemod.Weedsplosion",
+  "EntryDll": "Weedsplosion.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:25114" ]
+}

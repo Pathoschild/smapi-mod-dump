@@ -161,7 +161,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Tiles
         private bool HasTileProperty(GameLocation location, Vector2 tile, string name, string layer, out string[] arguments)
         {
             bool found = this.HasTileProperty(location, tile, name, layer, out string? value);
-            arguments = value?.Split(' ').ToArray() ?? Array.Empty<string>();
+            arguments = value?.Split(' ').ToArray() ?? [];
             return found;
         }
 

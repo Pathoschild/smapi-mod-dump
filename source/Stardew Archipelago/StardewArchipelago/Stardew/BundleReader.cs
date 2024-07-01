@@ -18,14 +18,13 @@ namespace StardewArchipelago.Stardew
 {
     public class BundleReader
     {
-        private Dictionary<int, string> _bundleIdToName;
-        private Dictionary<string, int> _bundleNameToId;
-        private Dictionary<Area, List<int>> _areaToBundles;
-        private Dictionary<int, Area> _bundleToArea;
+        //private Dictionary<int, string> _bundleIdToName;
+        //private Dictionary<string, int> _bundleNameToId;
+        //private Dictionary<Area, List<int>> _areaToBundles;
+        //private Dictionary<int, Area> _bundleToArea;
 
         public BundleReader()
         {
-            InitAreaBundleConversions();
         }
 
         public bool IsCommunityCenterComplete()
@@ -38,16 +37,35 @@ namespace StardewArchipelago.Stardew
         {
             var communityCenter = GetCommunityCenter();
             var completedBundles = new List<string>();
-            foreach (var (bundleId, bundleName) in _bundleIdToName)
+            foreach (var (key, bundleData) in Game1.netWorldState.Value.BundleData)
             {
+                var splitKey = key.Split('/');
+                var bundleId = Convert.ToInt32(splitKey[1]);
                 var isCompleted = IsBundleComplete(communityCenter, bundleId);
                 if (isCompleted)
                 {
+                    var bundleName = bundleData.Split("/").First();
                     completedBundles.Add(bundleName);
                 }
             }
 
             return completedBundles;
+        }
+
+        private Area GetAreaNumberFromId(int desiredBundleId)
+        {
+            foreach (var (key, bundleName) in Game1.netWorldState.Value.BundleData)
+            {
+                var splitKey = key.Split('/');
+                var bundleId = Convert.ToInt32(splitKey[1]);
+                if (bundleId == desiredBundleId)
+                {
+                    var areaName = splitKey[0];
+                    return (Area)CommunityCenter.getAreaNumberFromName(areaName);
+                }
+            }
+
+            throw new ArgumentException($"Failed in {nameof(GetAreaNumberFromId)}: Could not find a bundle with id {desiredBundleId}");
         }
 
         private CommunityCenter GetCommunityCenter()
@@ -57,51 +75,12 @@ namespace StardewArchipelago.Stardew
 
         private bool IsBundleComplete(CommunityCenter communityCenter, int bundleId)
         {
-            if (_bundleToArea[bundleId] == Area.Vault)
+            if (GetAreaNumberFromId(bundleId) == Area.Vault)
             {
                 return communityCenter.bundles[bundleId][0];
             }
 
             return communityCenter.isBundleComplete(bundleId);
-        }
-
-        public Area GetAreaOfBundle(int bundleId)
-        {
-            return _bundleToArea.ContainsKey(bundleId) ? _bundleToArea[bundleId] : Area.None;
-        }
-
-        public List<int> GetBundlesInArea(Area area)
-        {
-            return _areaToBundles.ContainsKey(area) ? _areaToBundles[area] : new List<int>();
-        }
-
-        private void InitAreaBundleConversions()
-        {
-            _bundleIdToName = new Dictionary<int, string>();
-            _bundleNameToId = new Dictionary<string, int>();
-            _areaToBundles = new Dictionary<Area, List<int>>();
-            _bundleToArea = new Dictionary<int, Area>();
-            foreach (var area in Enum.GetValues<Area>())
-            {
-                _areaToBundles.Add(area, new List<int>());
-            }
-
-            foreach (var keyValuePair in Game1.netWorldState.Value.BundleData)
-            {
-                var splitKey = keyValuePair.Key.Split('/');
-                var splitValue = keyValuePair.Value.Split('/');
-
-                var areaName = splitKey[0];
-                var area = (Area)CommunityCenter.getAreaNumberFromName(areaName);
-                var bundleId = Convert.ToInt32(splitKey[1]);
-
-                var bundleName = splitValue[0];
-
-                _bundleIdToName.Add(bundleId, bundleName);
-                _bundleNameToId.Add(bundleName, bundleId);
-                _areaToBundles[area].Add(bundleId);
-                _bundleToArea.Add(bundleId, area);
-            }
         }
     }
 

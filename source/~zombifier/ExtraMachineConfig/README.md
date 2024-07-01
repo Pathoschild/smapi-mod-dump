@@ -20,17 +20,22 @@ This document is for modders looking to incorporate this mod into their own
 content packs. For users, install the mod as usual from the link above.
 
 ## Table of Contents
-* [Item Features](#item-features)
-    + [Draw smoke particles around item](#draw-smoke-particles-around-item)
-    + [Draw an item's preserve item's sprite instead of its base sprite](#draw-an-items-preserve-items-sprite-instead-of-its-base-sprite)
-    + [Define extra loved items for Junimos](#define-extra-loved-items-for-junimos)
-    + [Append extra context tags to shop and machine item queries](#append-extra-context-tags-to-shop-and-machine-item-queries)
-* [Machine Features](#machine-features)
-    + [Adding additional fuel for a specific recipe](#adding-additional-fuel-for-a-specific-recipe)
-    + [Output inherit the flavor of input items](#output-inherit-the-flavor-of-input-items)
-    + [Output inherit the dye color of input items](#output-inherit-the-dye-color-of-input-items)
-* [Animal Features](#animal-features)
-    + [Define custom male/female ratio](#define-custom-malefemale-ratio)
+- [Extra Machine Configuration Framework](#extra-machine-configuration-framework)
+   * [Table of Contents](#table-of-contents)
+   * [Item Features](#item-features)
+      + [Draw smoke particles around item](#draw-smoke-particles-around-item)
+      + [Draw an item's preserve item's sprite instead of its base sprite](#draw-an-items-preserve-items-sprite-instead-of-its-base-sprite)
+      + [Define extra loved items for Junimos](#define-extra-loved-items-for-junimos)
+      + [Append extra context tags to shop and machine item queries](#append-extra-context-tags-to-shop-and-machine-item-queries)
+   * [Machine Features](#machine-features)
+      + [Adding additional fuel for a specific recipe](#adding-additional-fuel-for-a-specific-recipe)
+      + [Output inherit the flavor of input items](#output-inherit-the-flavor-of-input-items)
+      + [Output inherit the dye color of input items](#output-inherit-the-dye-color-of-input-items)
+      + [Specify range of input count and scale output count with the input amount consumed](#specify-range-of-input-count-and-scale-output-count-with-the-input-amount-consumed)
+      + [Adding extra byproducts for machine recipes](#adding-extra-byproducts-for-machine-recipes)
+      + [Generate nearby flower-flavored modded items (or, generate flavored items outside of machines)](#generate-nearby-flower-flavored-modded-items-or-generate-flavored-items-outside-of-machines)
+      + [Override display name if the output item is unflavored](#override-display-name-if-the-output-item-is-unflavored)
+      + [Generate an input item for recipes that don't have any, and use 'nearby flower' as a possible query](#generate-an-input-item-for-recipes-that-dont-have-any-and-use-nearby-flower-as-a-possible-query)
 
 ## Item Features
 
@@ -222,6 +227,8 @@ honey's flower flavor to the mead, and increment its price accordingly.
       "Entries": {
         "CustomData": {
           "selph.ExtraMachineConfig.InheritPreserveId": "true",
+          // See below for that this does
+          "selph.ExtraMachineConfig.UnflavoredDisplayNameOverride": "{{i18n: selph.FlavoredMead.WildMead.name}}"
         },
         "CopyPrice": true,
         "ObjectInternalName": "{0} Mead",
@@ -308,14 +315,229 @@ be of the base color, even with `CopyColor` set.
 
 ----
 
-## Animal Features
-
-These fields are set in the animal data's `CustomFields` dict. Note that
-`CustomFields` is a dict of string key to string values, so all values must be
-strings (including numbers).
-
-### Define custom male/female ratio
+### Specify range of input count and scale output count with the input amount consumed
 
 | Field Name                         | Description              |
 | ---------------------------------- | ------------------------ |
-| `selph.ExtraMachineConfig.MalePercentage` | An integer between 0 and 100 specifying the percentage of this species that will be male. For example, set to `"40"` to make 40% of animals male. Overrides the regular animal gender settings.|
+| `selph.ExtraMachineConfig.RequiredCountMax` | When set to an int (as a string), the primary input item's count can be between the min value of the trigger rule's `RequiredCount`, or the max value as specified by this field.<br>The output item's stack count will be set to equal the amount of input item consumed, and `MinStack` and `MaxStack` will be ignored. To modify or the stack count, use `StackModifiers` and `StackModifiersMode`.<br>The required fuels (either via `AdditionalConsumedItems` or this mod's per-recipe fuels) will remain the same regardless of how many input items are consumed. For the fuel added by this mod, if you want the amount consumed to depend on the amount of input items consumed, make multiple output rules conditioned on the input item's stack size.|
+
+Note that this functionality is completely achievable with vanilla machine
+rules, using `RequiredCount` and output rules condition. This macro simply
+reduces repetition, and is not as customizable as actual machine rules.
+
+#### Example
+
+The example below modifies the vanilla game's wine recipe to be able to process up to 10 fruits at a time, and produce a wine for every fruit used. If less than 10 fruits are used, only that amount of fruit will be processed.
+
+<details>
+
+<summary>Content Patcher definition</summary>
+
+```
+{
+  "Changes": [
+    {
+      "LogName": "Modify Wine Rules",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC)12", "OutputRules", "Default_Wine", "OutputItem", "Default"],
+      "Fields": {
+        "CustomData": {
+          "selph.ExtraMachineConfig.RequiredCountMax": "10",
+        },
+      },
+    },
+  ]
+}
+```
+
+</details>
+
+----
+
+### Adding extra byproducts for machine recipes
+
+First, write your extra output item queries to a new asset named
+`selph.ExtraMachineConfig/ExtraOutputs`. This asset is a map of unique IDs to
+item queries similar to the ones used in the recipe's `OutputItem` field. Most
+machine-related features (e.g. `CopyColor`, `CopyQuality`, this mod's
+`CustomData` fields, etc.) will be supported in these item queries.
+
+Then, set this field in the actual machine output's `CustomData` dict as usual:
+
+| Field Name                         | Description              |
+| ---------------------------------- | ------------------------ |
+| `selph.ExtraMachineConfig.ExtraOutputIds` | A comma-separated list of item query IDs written to the asset above to also spawn with this output item.|
+
+#### Example
+
+This example modifies the vanilla fruit to wine keg recipe to also spawn fruit-flavored jelly and mead alongside the wine item.
+
+<details>
+
+<summary>Content Patcher definition</summary>
+
+```
+{
+  "Changes": [
+    {
+      "LogName": "Add Jelly&Mead Extra Outputs",
+      "Action": "EditData",
+      "Target": "selph.ExtraMachineConfig/ExtraOutputs",
+      "Entries": {
+        "JellyExtra": {
+          "Id": "JellyExtra",
+          "ItemId": "FLAVORED_ITEM Jelly DROP_IN_ID",
+        },
+        "MeadExtra": {
+          "Id": "MeadExtra",
+          "ItemId": "(O)459",
+          "PreserveId": "DROP_IN",
+          "ObjectInternalName": "{0} Mead",
+          "ObjectDisplayName": "%PRESERVED_DISPLAY_NAME Mead",
+          "PriceModifiers": 
+          [
+            {
+              "Modification": "Multiply",
+              "Amount": 2
+            },
+            {
+              "Modification": "Add",
+              "Amount": 100
+            }
+          ],
+        },
+      },
+    },
+    {
+      "LogName": "Add Jelly and Mead to Wine Rule",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC)12", "OutputRules", "Default_Wine", "OutputItem", "Default", "CustomData"],
+      "Entries": {
+        "selph.ExtraMachineConfig.ExtraOutputIds": "JellyExtra,MeadExtra",
+      },
+    },
+  ]
+}
+```
+
+</details>
+
+---
+
+### Generate nearby flower-flavored modded items (or, generate flavored items outside of machines)
+
+This mod implements a new item query, `selph.ExtraMachineConfig_FLAVORED_ITEM`
+that acts as the generic version of the base game's
+[`FLAVORED_ITEM`](https://stardewvalleywiki.com/Modding:Item_queries#Available_queries),
+but usable for any modded items. The query takes the following arguments:
+
+`selph.ExtraMachineConfig_FLAVORED_ITEM <output item ID> <flavor item ID> [optional override price]`
+
+Replace <output item ID> with your modded artisan item ID, and flavor item ID
+with your desired flavor, including
+[`NEARBY_FLOWER_ID`](https://stardewvalleywiki.com/Modding:Machines) to take
+the ID of a nearby flower if any. Make both of them unqualified (ie. without
+the `(O)` part), or you may get harmless errors in the console.
+
+For example, the following creates nearby flower-flavored mead:
+
+`"ItemId": "selph.ExtraMachineConfig_FLAVORED_ITEM 459 NEARBY_FLOWER_ID"`
+
+The flavored output item spawned by this query will:
+
+* Have its flavor set to the flavor item ID.
+  * Note that like the vanilla `FLAVORED_ITEM` rule, if the flavor is `-1` (due
+    to the `NEARBY_FLOWER_ID` macro) it will be kept as-is and mess up the
+    display name if you use `%PRESERVED_DISPLAY_NAME`! Stardew Valley 1.6.9
+    will fix this as part of the new built-in flavor inherit feature, but in
+    the mean time use the field `UnflavoredDisplayNameOverride` (as detailed
+    below) to get around this.
+* Inherit the color of the flavor item, if any. If you don't want this, simply
+  put an empty sprite next to the item's sprite on the sprite sheet.
+* Have its price set to the first matching entry of the below list:
+  * The optional third parameter, if specified
+  * The flavor item's price, if applicable
+  * The item's base price otherwise. It's recommended that the base price be
+    lower than the potential price of the flavor ingredient item to avoid the
+    unflavored item being more expensive than flavored ones.
+* If you want to scale the price further, use the machine rules' `PriceModifiers`.
+
+Everything else (e.g. display name, etc.) will have to be set manually by the rest of the item/machine query.
+
+Note that this item query technically can be used outside of machine rules.
+
+---
+
+### Override display name if the output item is unflavored
+
+| Field Name                         | Description              |
+| ---------------------------------- | ------------------------ |
+| `selph.ExtraMachineConfig.UnflavoredDisplayNameOverride` | The display name to use for this machine rule's output item if the output happens to be unflavored (due to `InheritPreserveId` copying from an unflavored item, or if `NEARBY_FLOWER_ID` cannot find a nearby flower). |
+
+---
+
+### Generate an input item for recipes that don't have any, and use 'nearby flower' as a possible query
+
+NOTE: This functionality is currently incomplete. It is also *very* specialized
+and should not be used unless you know what you're doing. I'll also likely remove this in a future update tbh.
+
+| Field Name                         | Description              |
+| ---------------------------------- | ------------------------ |
+| `selph.ExtraMachineConfig.OverrideInputItemId` | The item query to use as the actual "input", regardless of what/whether you used an input item. Supports an item query, or if set to `NEARBY_FLOWER_QUALIFIED_ID`, get a nearby flower, or null if no nearby flowers.<br>With this set, you can make use of features that requires a valid input item (`CopyColor`, `CopyPrice`, `PreserveId`, etc.) for non-input trigger rules like `DayUpdate`.|
+
+#### Example
+
+This example modifies the vanilla beehouse recipe to generate flower-flavored
+mead instead of honey. It also colors the mead using
+`selph.ExtraMachineConfig.CopyColor` (though the sprites will look weird since
+the default mead sprite doesn't have a mask).
+
+<details>
+
+<summary>Content Patcher definition</summary>
+
+```
+{
+  "Changes": [
+    {
+      "LogName": "Change Beehouse To Mead",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC)10", "OutputRules", "Default", "OutputItem", "Default"],
+      "Entries": {
+        "ItemId": "(O)459",
+        "ObjectInternalName": "{0} Mead",
+        "ObjectDisplayName": "%PRESERVED_DISPLAY_NAME Mead",
+        "PriceModifiers": [
+          {
+            "Id": "FlowerBase",
+            "Modification": "Multiply",
+            "Amount": 4.0,
+            // This condition will be false if input item is null, and true otherwise.
+            // It is to ensure we only apply the price change if there's an actual nearby flower.
+            // Otherwise, if no flowers are found, it will apply the price change on top of the base mead item!
+            "Condition": "ITEM_PRICE Input 0"
+          },
+          {
+            "Id": "HoneyBase",
+            "Modification": "Add",
+            "Amount": 300,
+            "Condition": "ITEM_PRICE Input 0"
+          },
+        ],
+        // All fields below this will only apply if there is an actual nearby flower.
+        "CopyPrice": true,
+        "PreserveId": "DROP_IN",
+        "CustomData": {
+          "selph.ExtraMachineConfig.CopyColor": "true",
+          "selph.ExtraMachineConfig.OverrideInputItemId": "NEARBY_FLOWER_QUALIFIED_ID",
+        },
+      },
+    },
+  ]
+}
+```
+
+</details>

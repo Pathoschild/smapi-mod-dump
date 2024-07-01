@@ -770,7 +770,7 @@
             "Target": "Data/Festivals/spring24",
             "Entries":
                 {
-                  "Shiro": "{{i18n:Festivals.FlowerDance.Shiro_spouse}}"
+                  "Shiro": "{{i18n:Festivals.FlowerDance.Shiro_spouse{{GenderNeutralRSV}}}}"
                 },
             "When":
                 {

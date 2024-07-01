@@ -73,8 +73,8 @@ namespace SocialNetwork
             ModEntry.api = Helper.ModRegistry.GetApi<IMobilePhoneApi>("aedenthorn.MobilePhone");
             if (ModEntry.api != null)
             {
-                Texture2D appIcon = Helper.Content.Load<Texture2D>(Path.Combine("assets", "app_icon.png"));
-                bool success = ModEntry.api.AddApp(Helper.ModRegistry.ModID, SHelper.Translation.Get("Mod.App.Name"), ModEntry.OpenFeed, appIcon);
+                Texture2D appIcon = Helper.GameContent.Load<Texture2D>(Path.Combine("assets", "app_icon.png"));
+                bool success = ModEntry.api.AddApp(Helper.ModRegistry.ModID, Helper.Translation.Get("Mod.App.Name"), ModEntry.OpenFeed, appIcon);
                 Monitor.Log($"loaded app successfully: {success}", LogLevel.Debug);
                 Utils.MakeTextures();
             }
@@ -116,13 +116,17 @@ namespace SocialNetwork
                     ModEntry.api.SetAppRunning(false);
                     ModEntry.api.SetRunningApp(null);
                 }
-                if (Game1.activeClickableMenu is SocialNetworkMenu)
-                    Game1.activeClickableMenu = null;
 
-                Helper.Events.Display.RenderedWorld -= Display_RenderedWorld;
+                if (Game1.activeClickableMenu is SocialNetworkMenu)
+                {
+                    Game1.activeClickableMenu = null;
+                }
+
+                ModEntry.api.OnAfterRenderScreen -= Display_RenderedWorld;
                 Helper.Events.Input.ButtonPressed -= Input_ButtonPressed;
                 return;
             }
+
             bool refresh = false;
             if(lastScreenRect != ModEntry.api.GetScreenRectangle())
             {

@@ -6,9 +6,9 @@ mods:
    Buttplug Valley
 
 latest commit:
-   commit 64bab6e1a90d3f684c72e75f1bbb9bd76a4cac37
+   commit 3c61d4d1821acdec614660e2752efd59217e4c6e
    Author: DryIcedTea <137447405+DryIcedTea@users.noreply.github.com>
-   Date:   Wed Apr 17 11:03:24 2024 +0200
+   Date:   Tue Jun 18 16:48:40 2024 +0200
    
-       readme
+       New update changelog
    

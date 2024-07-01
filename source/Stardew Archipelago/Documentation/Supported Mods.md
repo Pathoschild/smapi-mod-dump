@@ -22,36 +22,26 @@ A reasonable effort will be made to stay up to date, but it has to be understood
 The following mods are currently supported:
 
 General: 
-- [Stardew Valley Expanded](https://www.nexusmods.com/stardewvalley/mods/3753), by FlashShifter, Version 1.14.24 (including additional [patch](https://github.com/Witchybun/SDV-Randomizer-Content-Patcher/releases))
-- [DeepWoods](https://www.nexusmods.com/stardewvalley/mods/2571), by Max Vollmer, Version 3.0.0-beta
-- [Skull Cavern Elevator](https://www.nexusmods.com/stardewvalley/mods/963), by Lestoph, Version 1.5.0
-- [Bigger Backpack](https://www.nexusmods.com/stardewvalley/mods/1845), by spacechase0, Version 6.0.0
-- [Tractor Mod](https://www.nexusmods.com/stardewvalley/mods/1401), by Pathoschild, Version 4.16.5
-- [Distant Lands - Witch Swamp Overhaul](https://www.nexusmods.com/stardewvalley/mods/18109), by Aimon111, Version 1.0.7
+- [Stardew Valley Expanded](https://www.nexusmods.com/stardewvalley/mods/3753), by FlashShifter, Version 1.14.44 (including additional [patch](https://github.com/Witchybun/SDV-Randomizer-Content-Patcher/releases))
+- [Skull Cavern Elevator](https://www.nexusmods.com/stardewvalley/mods/963), by Lestoph, Version 1.6.1
+- [Bigger Backpack](https://www.nexusmods.com/stardewvalley/mods/1845), by spacechase0, Version 7.1.0
+- [Tractor Mod](https://www.nexusmods.com/stardewvalley/mods/1401), by Pathoschild, Version 4.19.0
+- [Distant Lands - Witch Swamp Overhaul](https://www.nexusmods.com/stardewvalley/mods/18109), by Aimon111, Version 2.0.8
 
 Skills:
-- [Magic](https://www.nexusmods.com/stardewvalley/mods/2007), by spacechase0, Version 0.8.2
-- [Luck Skill](https://www.nexusmods.com/stardewvalley/mods/521), by spacechase0, Version 1.2.4
-- [Socializing Skill](https://www.nexusmods.com/stardewvalley/mods/14142), by drbirbdev, Version 1.1.5
-- [Archaeology](https://www.nexusmods.com/stardewvalley/mods/15793), by drbirbdev, Version 1.6.0
-- [Cooking Skill](https://www.nexusmods.com/stardewvalley/mods/522), by spacechase0, Version 1.4.5
-- [Binning Skill](https://www.nexusmods.com/stardewvalley/mods/14073), by drbirbdev, Version 1.2.7
+- [Luck Skill](https://www.nexusmods.com/stardewvalley/mods/521), by spacechase0, Version 1.2.6
+- [Socializing Skill](https://www.nexusmods.com/stardewvalley/mods/14142), by drbirbdev, Version 2.0.6
+- [Archaeology](https://www.nexusmods.com/stardewvalley/mods/22199), by MoonSlime, Version 2.10.3
+- [Binning Skill](https://www.nexusmods.com/stardewvalley/mods/14073), by drbirbdev, Version 2.0.5
 
 Custom NPCs:
-- [Juna - Roommate NPC](https://www.nexusmods.com/stardewvalley/mods/8606), by elhrvy 2.1.4
-- [Professor Jasper Thomas](https://www.nexusmods.com/stardewvalley/mods/5599), by Lemurkat 1.7.8 (including additional [patch](https://github.com/Witchybun/SDV-Randomizer-Content-Patcher/releases))
-- [Alec Revisited](https://www.nexusmods.com/stardewvalley/mods/10697), by HopeWasHere and SoftPandaBoi, Version 2.1.0
-- [Custom NPC - Yoba](https://www.nexusmods.com/stardewvalley/mods/14871), by Jerem, Version 1.0.0
-- [Custom NPC Eugene](https://www.nexusmods.com/stardewvalley/mods/9222), by Leroy and translated by Sapiescent, Version 1.3.1
-- ['Prophet' Wellwick](https://www.nexusmods.com/stardewvalley/mods/6462), by Jyangnam, Version 1.0.0
-- [Mister Ginger (cat npc)](https://www.nexusmods.com/stardewvalley/mods/5295), by Lemurkat, Version 1.5.9
-- [Shiko - New Custom NPC](https://www.nexusmods.com/stardewvalley/mods/3732), by Papaya, Version 1.1.0
-- [Delores - Custom NPC](https://www.nexusmods.com/stardewvalley/mods/5510), by blaaze6 and Obamoose, Version 1.1.2
-- [Ayeisha - The Postal Worker (Custom NPC)](https://www.nexusmods.com/stardewvalley/mods/6427), by TheLimeyDragon, Version 0.6.2-alpha
-- [Custom NPC - Riley](https://www.nexusmods.com/stardewvalley/mods/5811), by SG, Version 1.2.2
-- [Alecto the Witch](https://www.nexusmods.com/stardewvalley/mods/10671), by zoedoll, Version 1.1.7 (including additional [patch](https://github.com/Witchybun/SDV-Randomizer-Content-Patcher/releases))
-- [Boarding House and Bus Stop Extension](https://www.nexusmods.com/stardewvalley/mods/4120), by TrentXV, Version 4.0.16
-- [Hat Mouse Lacey](https://www.nexusmods.com/stardewvalley/mods/18177) by khortower, Version 1.1.3
+- [Juna - Roommate NPC](https://www.nexusmods.com/stardewvalley/mods/8606), by elhrvy 2.1.5
+- [Professor Jasper Thomas](https://www.nexusmods.com/stardewvalley/mods/5599), by Lemurkat 1.8.2 (including additional [patch](https://github.com/Witchybun/SDV-Randomizer-Content-Patcher/releases))
+- [Alec Revisited](https://www.nexusmods.com/stardewvalley/mods/10697), by HopeWasHere and SoftPandaBoi, Version 2.2.1
+- [Mister Ginger (cat npc)](https://www.nexusmods.com/stardewvalley/mods/5295), by Lemurkat, Version 1.6.2
+- [Ayeisha - The Postal Worker (Custom NPC)](https://www.nexusmods.com/stardewvalley/mods/6427), by TheLimeyDragon, Version 0.7.3-alpha
+- [Alecto the Witch](https://www.nexusmods.com/stardewvalley/mods/10671), by zoedoll, Version 1.1.10 (including additional [patch](https://github.com/Witchybun/SDV-Randomizer-Content-Patcher/releases))
+- [Hat Mouse Lacey](https://www.nexusmods.com/stardewvalley/mods/18177) by khortower, Version 1.2.2
 
 In addition, a [Content Patcher mod](https://github.com/Witchybun/SDV-Randomizer-Content-Patcher/releases) may be required for the mod to properly function alongside your game.  Include these alongside StardewArchipelago.
 
@@ -73,6 +63,23 @@ If you can load the supported mod on the correct version, the exact version of a
 ## Having trouble with the YAML syntax?
 
 Alternatively, the [weighted settings page](https://archipelago.gg/weighted-options) is another option available to add mods to your yaml file. First, click the link. In the section titled **Game Select**, drag the slider beside **Stardew Valley** to 1. Next, scroll down to the secton titled **Mods**. There, you will find a series of checkboxes. Check the checkboxes beside the name of the mods that you'd like to include in your yaml file. Lastly, click the **export settings** button at the bottom of the page, which will download the yaml file to your computer. Open that yaml file in your preferred text editor, and look for the section titled **Mods**. Select that entire section, and copy it to your clipboard. Then, if you haven't already done so, open your yaml file that you'd like to include the mods in, and paste what you've just copied over into it. Make sure that you select over the pre-existing mods category that is included by default by the website. This is the most important step. Ensure you **save** the file to wherever you'd like to save it to. For good measure, open the saved file again to make sure that it saved properly. You've now added mods to your yaml file! 
+
+## Weren't there more mods supported?
+
+The addition of 1.6 caused a bit of strain for every mod developer, and so not every mod was updated to be compatible with 1.6.
+
+The following mods have technical mod support, but are temporarily deprecated as we wait for them to update.  Do not use them for now:
+- [Boarding House and Bus Stop Extension](https://www.nexusmods.com/stardewvalley/mods/4120) by TrentXV, Version 4.0.16
+- [DeepWoods](https://www.nexusmods.com/stardewvalley/mods/2571), by Max Vollmer, Version 3.1.0-beta
+- [Magic](https://www.nexusmods.com/stardewvalley/mods/2007), by spacechase0, Version 0.8.2
+- [Cooking Skill](https://www.nexusmods.com/stardewvalley/mods/522), by spacechase0, Version 1.4.5
+- [Custom NPC - Riley](https://www.nexusmods.com/stardewvalley/mods/5811), by SG, Version 1.2.2
+- [Boarding House and Bus Stop Extension](https://www.nexusmods.com/stardewvalley/mods/4120), by TrentXV, Version 4.0.16
+- [Custom NPC - Yoba](https://www.nexusmods.com/stardewvalley/mods/14871), by Jerem, Version 1.0.0
+- [Custom NPC Eugene](https://www.nexusmods.com/stardewvalley/mods/9222), by Leroy and translated by Sapiescent, Version 1.3.1
+- ['Prophet' Wellwick](https://www.nexusmods.com/stardewvalley/mods/6462), by Jyangnam, Version 1.0.0
+- [Shiko - New Custom NPC](https://www.nexusmods.com/stardewvalley/mods/3732), by Papaya, Version 1.1.0
+- [Delores - Custom NPC](https://www.nexusmods.com/stardewvalley/mods/5510), by blaaze6 and Obamoose, Version 1.1.2
 
 ## Bug Reports
 

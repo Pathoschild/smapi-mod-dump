@@ -1,0 +1,8 @@
+{
+  "config.Enablemodule": "启用模组",
+  "config.autoHit": "启用自动咬钩",
+  "config.sensitivity": "浮漂灵敏度",
+  "config.sensitivity.tooltip": "调整浮漂灵敏度，数值越高移速越慢。",
+  "config.Automaticbaitinstallation": "自动安装鱼饵",
+  "config.Automaticbaitinstallation.tooltip": "自动安装鱼饵与钓具。"
+}

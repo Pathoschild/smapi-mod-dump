@@ -12,6 +12,7 @@ namespace DaLion.Professions.Framework.Patchers.Combat;
 
 #region using directives
 
+using DaLion.Core.Framework.VirtualProperties;
 using DaLion.Professions.Framework.VirtualProperties;
 using DaLion.Shared.Extensions.Stardew;
 using DaLion.Shared.Harmony;

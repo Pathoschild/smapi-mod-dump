@@ -244,6 +244,43 @@ public class ModEntry : Mod
 	        max: 100
         );
         
+        // GOLDEN TREASURE CHESTS
+        
+        menu.AddSectionTitle(
+	        mod: ModManifest,
+	        text: () => "Golden Treasure Chests",
+	        tooltip: () => "Config options to customize the bonuses of golden treasure chests."
+        );
+        
+        menu.AddNumberOption(
+	        mod: ModManifest,
+	        name: () => Helper.Translation.Get("GMCM.GoldPrizeMult.Name"),
+	        tooltip: () => Helper.Translation.Get("GMCM.GoldPrizeMult.Tooltip"),
+	        getValue: () => Config.GoldPrizeMult,
+	        setValue: v => Config.GoldPrizeMult = v,
+	        min: 0,
+	        max: 10
+        );
+        
+        menu.AddNumberOption(
+	        mod: ModManifest,
+	        name: () => Helper.Translation.Get("GMCM.GoldPriceMaxMult.Name"),
+	        tooltip: () => Helper.Translation.Get("GMCM.GoldPriceMaxMult.Tooltip"),
+	        getValue: () => Config.GoldPriceMaxMult,
+	        setValue: v => Config.GoldPriceMaxMult = v,
+	        min: -1,
+	        max: 20
+        );
+        
+        menu.AddNumberOption(
+	        mod: ModManifest,
+	        name: () => Helper.Translation.Get("GMCM.GoldBonusRolls.Name"),
+	        tooltip: () => Helper.Translation.Get("GMCM.GoldBonusRolls.Tooltip"),
+	        getValue: () => Config.GoldBonusRolls,
+	        setValue: v => Config.GoldBonusRolls = v,
+	        min: 0,
+	        max: 10
+        );
         
         // INCLUDED ITEMS
 
@@ -348,14 +385,40 @@ public class ModEntry : Mod
         
         foreach (string key in itemData.Keys)
         {
-	        ObjectData obj = itemData[key];
+	        ObjectData? obj = itemData[key];
             string thisCategory = obj.Category.ToString();
 
-            IdItemPair cacheObj = new IdItemPair(key, obj);
+            IdItemPair? cacheObj = new IdItemPair(key, obj);
+
+            // null guard
+            if (cacheObj == null || cacheObj.obj == null) continue;
             
             if (!CachedItems.ContainsKey(thisCategory))
             {
                 CachedItems.Add(thisCategory, new List<IdItemPair>());
+            }
+
+            if (!CachedItems.ContainsKey("-96") && obj.Type == "Ring")
+            {
+	            CachedItems.Add("-96", new List<IdItemPair>());
+            }
+
+            if (obj.Type == "Ring" || key == "801")
+            {
+	            cacheObj.obj.Category = Object.ringCategory;
+	            CachedItems["-96"].Add(cacheObj);
+	            continue;
+            }
+            
+            if (!CachedItems.ContainsKey("Arch") && obj.Type == "Arch")
+            {
+	            CachedItems.Add("Arch", new List<IdItemPair>());
+            }
+
+            if (obj.Type == "Arch")
+            {
+	            CachedItems["Arch"].Add(cacheObj);
+	            continue;
             }
             
             CachedItems[thisCategory].Add(cacheObj);

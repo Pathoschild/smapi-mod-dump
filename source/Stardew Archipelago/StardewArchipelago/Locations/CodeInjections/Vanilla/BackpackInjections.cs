@@ -9,8 +9,8 @@
 *************************************************/
 
 using System;
-using StardewArchipelago.Archipelago;
 using Microsoft.Xna.Framework.Graphics;
+using StardewArchipelago.Archipelago;
 using StardewArchipelago.Constants.Modded;
 using StardewModdingAPI;
 using StardewValley;
@@ -63,7 +63,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             {
                 _maxItemsForBackpackDisplay = 48;
             }
-            
+
             _dayLastUpdateBackpackDisplay = Game1.stats.DaysPlayed;
         }
 
@@ -112,7 +112,8 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             }
         }
 
-        public static bool PerformAction_BuyBackpack_Prefix(GameLocation __instance, string action, Farmer who, Location tileLocation, ref bool __result)
+        // public virtual bool performAction(string[] action, Farmer who, Location tileLocation)
+        public static bool PerformAction_BuyBackpack_Prefix(GameLocation __instance, string[] action, Farmer who, Location tileLocation, ref bool __result)
         {
             try
             {
@@ -121,8 +122,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                     return true; // run original logic
                 }
 
-                var actionParts = action.Split(' ');
-                var actionName = actionParts[0];
+                var actionName = action[0];
                 if (actionName == "BuyBackpack")
                 {
                     BuyBackPackArchipelago(__instance, out __result);
@@ -171,9 +171,9 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             }
             else if (_archipelago.SlotData.Mods.HasMod(ModNames.BIGGER_BACKPACK) && _locationChecker.IsLocationMissing(PREMIUM_PACK) && numReceivedBackpacks >= 2)
             {
-                Response yes = new Response("Purchase", "Purchase (50,000g)");
-                Response no = new Response("Not", Game1.content.LoadString("Strings\\Locations:SeedShop_BuyBackpack_ResponseNo"));
-                Response[] resps = new Response[] { yes, no };
+                var yes = new Response("Purchase", "Purchase (50,000g)");
+                var no = new Response("Not", Game1.content.LoadString("Strings\\Locations:SeedShop_BuyBackpack_ResponseNo"));
+                var resps = new Response[] { yes, no };
                 __instance.createQuestionDialogue("Backpack Upgrade -- 48 slots", resps, "Backpack");
             }
         }
@@ -183,7 +183,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
         {
             try
             {
-                if (Game1.stats.daysPlayed != _dayLastUpdateBackpackDisplay)
+                if (Game1.stats.DaysPlayed != _dayLastUpdateBackpackDisplay)
                 {
                     UpdateMaxItemsForBackpackDisplay();
                 }
@@ -201,8 +201,8 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                 _monitor.Log($"Failed in {nameof(Draw_SeedShopBackpack_Prefix)}:\n{ex}", LogLevel.Error);
                 return true; // run original logic
             }
-        }        
-        
+        }
+
         // public override void draw(SpriteBatch b)
         public static void Draw_SeedShopBackpack_Postfix(SeedShop __instance, SpriteBatch b)
         {

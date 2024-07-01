@@ -33,7 +33,7 @@ namespace StardewArchipelago.Locations.GingerIsland.Parrots
         }
 
         // public override bool checkAction(Location tileLocation, xTile.Dimensions.Rectangle viewport, Farmer who)
-        public static bool CheckAction_InteractWithParrots_Prefix(IslandLocation __instance, Location tileLocation, xTile.Dimensions.Rectangle viewport, Farmer who, ref bool __result)
+        public static bool CheckAction_InteractWithParrots_Prefix(IslandLocation __instance, Location tileLocation, Rectangle viewport, Farmer who, ref bool __result)
         {
             try
             {

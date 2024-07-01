@@ -27,6 +27,9 @@
   "config.fertilizer_alpha.title": "Fertilizer alpha",
   "config.fertilizer_alpha.tooltip": "Transparency of fertilizer sprite; default 255; range 0-255",
 
+  "config.debug_mode.title": "Debug Mode",
+  "config.debug_mode.tooltip": "Enable debug output to console",
+
 
   "config.section.speed_fertilizer": "Speed Fertilizer",
   

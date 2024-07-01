@@ -1,0 +1,27 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/6480k/colorful-fishing-rods
+**
+*************************************************/
+
+{
+	"Name": "[CP] Colorful Fishing Rods Example Pack",
+	"Author": "6480",
+	"Version": "1.0.0",
+	"Description": "Example template mod for Colorful Fishing Rods which makes the iridium rod green when fishing.",
+	"UniqueID": "6480.colorfulfishingrodstemplate",
+	"MinimumGameVersion": "1.6.0",
+	"ContentPackFor": {
+		"UniqueID": "Pathoschild.ContentPatcher"
+	},
+	"Dependencies": [
+		{
+			"UniqueID": "atravita.ColorfulFishingRods",
+			"IsRequired": true
+		}
+	]
+}

@@ -15,6 +15,7 @@
 	"task.craft.keywords": "制造,烹饪,制作",
 	"task.gift": "礼物",
 	"task.gift.keywords": "送礼物",
+	"task.header": "标题",
 	"task.sell": "出售",
 	"task.sell.keywords": "出售,售卖",
 
@@ -22,6 +23,7 @@
 	"ui.tab.quests": "人物",
 	"ui.tab.tasks": "任务",
 	"ui.tab.notes": "笔记",
+	"ui.tab.overlays": "屏幕叠加层",
 	
 	// tasks page
 	"ui.tasks.help": "点击加号新建任务",
@@ -62,12 +64,17 @@
 	// task parameter names
 	"ui.tasks.parameter.animal": "动物",
 	"ui.tasks.parameter.building": "建筑",
+	"ui.tasks.parameter.color": "颜色",
 	"ui.tasks.parameter.count": "需要",
 	"ui.tasks.parameter.item": "物品",
 	"ui.tasks.parameter.monster": "怪物",
 	"ui.tasks.parameter.npc": "村民",
 	"ui.tasks.parameter.quality": "质量 (最低)",
 	"ui.tasks.parameter.tool": "工具",
+
+	// overlays page
+	"ui.overlays.backgroundcolor": "背景颜色",
+	"ui.overlays.hotkey": "热键: {{keybind}}",
 
 	// +---------------------------------+
 	// | display name aliases (OPTIONAL) |

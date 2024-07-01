@@ -11,11 +11,11 @@
 {
     "Name": "Integrated Minecarts (CP Component)",
     "Author": "Jibb",
-    "Version": "4.3.0",
+    "Version": "4.5.0",
     "Description": "Content Pack for Content Patcher",
     "UniqueID": "jibb.minecarts",
     "MinimumApiVersion": "3.0.0",
-    "UpdateKeys": ["Nexus:11881"],
+    "UpdateKeys": ["Nexus:11881", "CurseForge:988762"],
     "ContentPackFor": {
         "UniqueID": "Pathoschild.ContentPatcher"
     },
@@ -115,6 +115,30 @@
             "IsRequired": false,
         }, {
             "UniqueID": "flashshifter.GrampletonFields",
+            "IsRequired": false,
+        }, {
+            "UniqueID": "Lnh.NewFarm",
+            "IsRequired": false,
+        }, {
+            "UniqueID": "ApryllForever.NuclearBombCP",
+            "IsRequired": false,
+        }, {
+            "UniqueID": "Tarniyar.CP.WalkToDesert",
+            "IsRequired": false,
+        }, {
+            "UniqueID": "Polydot.PolyCarts",
+            "IsRequired": false,
+        }, {
+            "UniqueID": "DeLiXx.Desert_Bloom_Farm",
+            "IsRequired": false,
+        }, {
+            "UniqueID": "DeLiXx.Desert_Bloom_Farm_CFL",
+            "IsRequired": false,
+        }, {
+            "UniqueID": "Aimon.SmallHilltopFarm",
+            "IsRequired": false,
+        }, {
+            "UniqueID": "Lunatyx.DesertedIslandFarmCave",
             "IsRequired": false,
         },
     ]

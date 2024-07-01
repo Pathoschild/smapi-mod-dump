@@ -1445,6 +1445,11 @@
    <property name="Passable" value="T"/>
   </properties>
  </tile>
+ <tile id="811">
+  <properties>
+   <property name="Passable" value="T"/>
+  </properties>
+ </tile>
  <tile id="812">
   <properties>
    <property name="TouchAction" value="PoolEntrance"/>

@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Pathoschild.Stardew.Common;
+using Pathoschild.Stardew.Common.Utilities;
 using Pathoschild.Stardew.LookupAnything.Framework;
 using StardewValley;
 
@@ -21,6 +22,16 @@ namespace Pathoschild.Stardew.LookupAnything
     /// <summary>Provides utility methods for drawing to the screen.</summary>
     internal static class DrawTextHelper
     {
+        /*********
+        ** Fields
+        *********/
+        /// <summary>The last language for which the helper was initialized.</summary>
+        private static string? LastLanguage;
+
+        /// <summary>The characters after which we can line-wrap text, but which are still included in the string.</summary>
+        private static readonly HashSet<char> SoftBreakCharacters = new();
+
+
         /*********
         ** Public methods
         *********/
@@ -39,7 +50,7 @@ namespace Pathoschild.Stardew.LookupAnything
         /// <returns>Returns the text dimensions.</returns>
         public static Vector2 DrawTextBlock(this SpriteBatch batch, SpriteFont font, string? text, Vector2 position, float wrapWidth, Color? color = null, bool bold = false, float scale = 1)
         {
-            return batch.DrawTextBlock(font, new IFormattedText[] { new FormattedText(text, color, bold) }, position, wrapWidth, scale);
+            return batch.DrawTextBlock(font, [new FormattedText(text, color, bold)], position, wrapWidth, scale);
         }
 
         /// <summary>Draw a block of text to the screen with the specified wrap width.</summary>
@@ -64,48 +75,52 @@ namespace Pathoschild.Stardew.LookupAnything
             float blockHeight = lineHeight;
 
             // draw text snippets
+            DrawTextHelper.InitIfNeeded();
             foreach (IFormattedText? snippet in text)
             {
                 if (snippet?.Text == null)
                     continue;
 
-                // track surrounding spaces for combined translations
-                bool startSpace = snippet.Text.StartsWith(" ");
-                bool endSpace = snippet.Text.EndsWith(" ");
-
                 // get word list
                 IList<string> words = new List<string>();
-                string[] rawWords = snippet.Text.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                for (int i = 0, last = rawWords.Length - 1; i <= last; i++)
                 {
-                    // get word
-                    string word = rawWords[i];
-                    if (startSpace && i == 0)
-                        word = $" {word}";
-                    if (endSpace && i == last)
-                        word += " ";
+                    // track surrounding spaces for combined translations
+                    bool startSpace = snippet.Text.StartsWith(" ");
+                    bool endSpace = snippet.Text.EndsWith(" ");
 
-                    // split on newlines
-                    string wordPart = word;
-                    int newlineIndex;
-                    while ((newlineIndex = wordPart.IndexOf(Environment.NewLine, StringComparison.Ordinal)) >= 0)
+                    // build word list
+                    IList<string> rawWords = DrawTextHelper.SplitForLineWrapping(snippet.Text);
+                    for (int i = 0, last = rawWords.Count - 1; i <= last; i++)
                     {
-                        if (newlineIndex == 0)
-                        {
-                            words.Add(Environment.NewLine);
-                            wordPart = wordPart.Substring(Environment.NewLine.Length);
-                        }
-                        else if (newlineIndex > 0)
-                        {
-                            words.Add(wordPart.Substring(0, newlineIndex));
-                            words.Add(Environment.NewLine);
-                            wordPart = wordPart.Substring(newlineIndex + Environment.NewLine.Length);
-                        }
-                    }
+                        // get word
+                        string word = rawWords[i];
+                        if (startSpace && i == 0)
+                            word = $" {word}";
+                        if (endSpace && i == last)
+                            word += " ";
 
-                    // add remaining word (after newline split)
-                    if (wordPart.Length > 0)
-                        words.Add(wordPart);
+                        // split on newlines
+                        string wordPart = word;
+                        int newlineIndex;
+                        while ((newlineIndex = wordPart.IndexOf(Environment.NewLine, StringComparison.Ordinal)) >= 0)
+                        {
+                            if (newlineIndex == 0)
+                            {
+                                words.Add(Environment.NewLine);
+                                wordPart = wordPart.Substring(Environment.NewLine.Length);
+                            }
+                            else if (newlineIndex > 0)
+                            {
+                                words.Add(wordPart.Substring(0, newlineIndex));
+                                words.Add(Environment.NewLine);
+                                wordPart = wordPart.Substring(newlineIndex + Environment.NewLine.Length);
+                            }
+                        }
+
+                        // add remaining word (after newline split)
+                        if (wordPart.Length > 0)
+                            words.Add(wordPart);
+                    }
                 }
 
                 // draw words to screen
@@ -142,6 +157,78 @@ namespace Pathoschild.Stardew.LookupAnything
 
             // return text position & dimensions
             return new Vector2(blockWidth, blockHeight);
+        }
+
+
+        /*********
+        ** Private methods
+        *********/
+        /// <summary>Initialize for the current language if needed.</summary>
+        public static void InitIfNeeded()
+        {
+            string language = LocalizedContentManager.CurrentLanguageString;
+
+            if (DrawTextHelper.LastLanguage != language)
+            {
+                string characters = I18n.GetByKey(I18n.Keys.Generic_LineWrapOn).UsePlaceholder(false);
+                if (!string.IsNullOrEmpty(characters))
+                {
+                    DrawTextHelper.SoftBreakCharacters.Clear();
+                    DrawTextHelper.SoftBreakCharacters.AddMany(characters);
+                }
+
+                DrawTextHelper.LastLanguage = language;
+            }
+        }
+
+        /// <summary>Split a block of text into segments that can have line breaks between them.</summary>
+        /// <param name="text">The text to split.</param>
+        private static IList<string> SplitForLineWrapping(string text)
+        {
+            HashSet<char> splitChars = DrawTextHelper.SoftBreakCharacters;
+
+            // simple case: just split on space
+            string[] words = text.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            if (splitChars.Count == 0)
+                return words;
+
+            // else check for soft breaks within words
+            List<string> output = new List<string>(words.Length);
+            foreach (string word in words)
+            {
+                int start = 0;
+                bool foundValid = false;
+
+                for (int i = 0; i < word.Length; i++)
+                {
+                    bool canBreakHere = splitChars.Contains(word[i]);
+
+                    // found breakable character
+                    if (foundValid && canBreakHere)
+                    {
+                        int end = i;
+
+                        for (int next = i + 1; next < word.Length; next++)
+                        {
+                            end = next;
+                            if (!splitChars.Contains(word[next]))
+                                break;
+                        }
+
+                        output.Add(word.Substring(start, end - start + 1));
+                        foundValid = false;
+                        start = end;
+                    }
+                    else if (!canBreakHere)
+                        foundValid = true;
+                }
+
+                if (start == 0)
+                    output.Add(word);
+                else if (start < word.Length - 1)
+                    output.Add(word.Substring(start));
+            }
+            return output;
         }
     }
 }

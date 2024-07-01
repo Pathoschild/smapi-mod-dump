@@ -1,7 +1,7 @@
 {
   "Name": "SevenDeadlySins-SMAPI",
   "Author": "ricehit",
-  "Version": "3.4.2", // fixed locally
+  "Version": "3.4.4",
   "Description": "SevenDeadlySinsSAMPI",
   "UniqueID": "ricehit.SevenDeadlySinsSAMPI",
   "EntryDll": "SevenDeadlySins.dll",

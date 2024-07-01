@@ -6,9 +6,12 @@ mods:
    Relativity
 
 latest commit:
-   commit f4c9868f6ad7a04714c4e22fdee6965527a95562
+   commit 9a02f8008c08a8be667c56347f0757494bb3c242
    Author: adro <a.schlett@gmx.de>
-   Date:   Sat Jul 23 12:22:56 2022 +0200
+   Date:   Mon Apr 8 21:16:11 2024 +0200
    
-       Version Bump missing from last commit
+       Updated for 1.6
+       - Bump Dependency
+       - Bump target framework to NET6.0
+       - Replace getExtraMillisecondsPerInGameMinuteForThisLocation with corresponding property
    

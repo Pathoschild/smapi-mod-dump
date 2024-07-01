@@ -45,7 +45,7 @@ public class TileDataEntryMenu : IClickableMenu
 
     private readonly ClickableTextureComponent _okButton;
     private static readonly string None = Translator.Instance.Translate("menu-tile_data_entry-none", TranslationCategory.Menu);
-    
+
     public TileDataEntryMenu(int tileX, int tileY, AccessibleTile.JsonSerializerFormat? defaultData = null)
         : base(Game1.viewport.Width / 2 - (1175 + borderWidth * 2) / 2,
             Game1.viewport.Height / 2 - (700 + borderWidth * 2) / 2 - 64, 1175 + borderWidth * 2,
@@ -98,7 +98,7 @@ public class TileDataEntryMenu : IClickableMenu
             }
         }
 
-        AddLabel( Translator.Instance.Translate("menu-tile_data_entry-heading_label",
+        AddLabel(Translator.Instance.Translate("menu-tile_data_entry-heading_label",
                 new { tile_x = _tileX, tile_y = _tileY, location_name = Game1.currentLocation.NameOrUniqueName },
                 TranslationCategory.Menu),
             (int)OptionsIdentifiers.HeadingLabel);
@@ -266,7 +266,7 @@ public class TileDataEntryMenu : IClickableMenu
             if (el is OptionsDropDown) continue;
             if (!el.bounds.Contains(x, y)) continue;
             if (el.greyedOut) continue;
-            
+
             el.receiveLeftClick(x, y);
             return;
         }
@@ -321,7 +321,7 @@ public class TileDataEntryMenu : IClickableMenu
                 case (int)OptionsIdentifiers.FarmTypeCheckbox:
                     var farmTypeCheckbox = (optionsElement as OptionsCheckbox)!;
                     if (farmTypeCheckbox.isChecked)
-                        conditions.Add($"Farm:{FarmTypeName(Game1.whichFarm)}");
+                        conditions.Add($"Farm:{FarmTypeId(Game1.whichFarm)}");
                     break;
                 case (int)OptionsIdentifiers.FarmHouseUpgradeLevelDropDown:
                     var farmHouseUpgradeDropDown = (optionsElement as OptionsDropDown)!;
@@ -382,11 +382,11 @@ public class TileDataEntryMenu : IClickableMenu
         {
             if (!el.bounds.Contains(x, y)) continue;
             if (el.greyedOut) continue;
-            
+
             el.leftClickHeld(x, y);
             return;
         }
-        
+
         base.leftClickHeld(x, y);
     }
 
@@ -396,11 +396,11 @@ public class TileDataEntryMenu : IClickableMenu
         {
             if (!el.bounds.Contains(x, y)) continue;
             if (el.greyedOut) continue;
-            
+
             el.leftClickReleased(x, y);
             return;
         }
-        
+
         base.releaseLeftClick(x, y);
     }
 
@@ -408,7 +408,7 @@ public class TileDataEntryMenu : IClickableMenu
     {
         if (TextBoxPatch.IsAnyTextBoxActive) // Suppress any key input if text box is active
             return;
-        
+
         int x = Game1.getMouseX(true), y = Game1.getMouseY(true);
         foreach (var el in _options)
         {
@@ -447,7 +447,7 @@ public class TileDataEntryMenu : IClickableMenu
             MainClass.ScreenReader.TranslateAndSayWithMenuChecker("common-ui-ok_button", true);
             return;
         }
-        
+
         OptionsElementUtils.NarrateOptionsElements(_options);
     }
 
@@ -460,11 +460,11 @@ public class TileDataEntryMenu : IClickableMenu
             el.draw(b, 0, 0);
         }
         _okButton.draw(b);
-        
+
         drawMouse(b);
     }
 
-    private static string FarmTypeName(int whichFarm) => whichFarm switch
+    private static string FarmTypeId(int whichFarm) => whichFarm switch
     {
         0 => "standard",
         1 => "riverland",
@@ -473,18 +473,23 @@ public class TileDataEntryMenu : IClickableMenu
         4 => "wilderness",
         5 => "fourcorners",
         6 => "beach",
+        7 => Game1.whichModFarm.Id,
         _ => ""
     };
 
     private static string FarmTypeDisplayName(int whichFarm) => whichFarm switch
     {
-        0 => Game1.content.LoadString("Strings\\UI:Character_FarmStandard").Split("_")[0],
-        1 => Game1.content.LoadString("Strings\\UI:Character_FarmFishing").Split("_")[0],
-        2 => Game1.content.LoadString("Strings\\UI:Character_FarmForaging").Split("_")[0],
-        3 => Game1.content.LoadString("Strings\\UI:Character_FarmMining").Split("_")[0],
-        4 => Game1.content.LoadString("Strings\\UI:Character_FarmCombat").Split("_")[0],
-        5 => Game1.content.LoadString("Strings\\UI:Character_FarmFourCorners").Split("_")[0],
-        6 => Game1.content.LoadString("Strings\\UI:Character_FarmBeach").Split("_")[0],
+        0 => FarmTypeDisplayName("Strings\\UI:Character_FarmStandard"),
+        1 => FarmTypeDisplayName("Strings\\UI:Character_FarmFishing"),
+        2 => FarmTypeDisplayName("Strings\\UI:Character_FarmForaging"),
+        3 => FarmTypeDisplayName("Strings\\UI:Character_FarmMining"),
+        4 => FarmTypeDisplayName("Strings\\UI:Character_FarmCombat"),
+        5 => FarmTypeDisplayName("Strings\\UI:Character_FarmFourCorners"),
+        6 => FarmTypeDisplayName("Strings\\UI:Character_FarmBeach"),
+        7 => FarmTypeDisplayName(Game1.whichModFarm.TooltipStringPath),
         _ => ""
     };
+
+    private static string FarmTypeDisplayName(string tooltipStringPath)
+        => Game1.content.LoadString(tooltipStringPath).Split("_")[0];
 }

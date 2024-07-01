@@ -8,10 +8,15 @@
 **
 *************************************************/
 
+using System;
+using System.Collections.Generic;
 using HarmonyLib;
 using StardewArchipelago.Archipelago;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Buffs;
+using StardewValley.Menus;
+using StardewValley.Tools;
 
 namespace StardewArchipelago.Items
 {
@@ -37,8 +42,34 @@ namespace StardewArchipelago.Items
                 postfix: new HarmonyMethod(typeof(PlayerBuffInjections), nameof(PlayerBuffInjections.GetMovementSpeed_AddApBuffs_Postfix))
             );
             _harmony.Patch(
-                original: AccessTools.Method(typeof(Farmer), typeof(Farmer).GetProperty(nameof(Farmer.DailyLuck)).GetGetMethod().Name),
+                original: AccessTools.PropertyGetter(typeof(Farmer), nameof(Farmer.DailyLuck)),
                 postfix: new HarmonyMethod(typeof(PlayerBuffInjections), nameof(PlayerBuffInjections.DailyLuck_AddApBuffs_Postfix))
+            );
+            _harmony.Patch(
+                original: AccessTools.PropertyGetter(typeof(BuffManager), nameof(BuffManager.AttackMultiplier)),
+                postfix: new HarmonyMethod(typeof(PlayerBuffInjections), nameof(PlayerBuffInjections.GetAttackMultiplier_AddApBuffs_Postfix))
+            );
+            _harmony.Patch(
+                original: AccessTools.PropertyGetter(typeof(BuffManager),nameof(BuffManager.Defense)),
+                postfix: new HarmonyMethod(typeof(PlayerBuffInjections), nameof(PlayerBuffInjections.GetDefense_AddApBuffs_Postfix))
+            );
+            _harmony.Patch(
+                original: AccessTools.PropertyGetter(typeof(BuffManager), nameof(BuffManager.Immunity)),
+                postfix: new HarmonyMethod(typeof(PlayerBuffInjections), nameof(PlayerBuffInjections.GetImmunity_AddApBuffs_Postfix))
+            );
+            _harmony.Patch(
+                original: AccessTools.PropertyGetter(typeof(BuffManager), nameof(BuffManager.MaxStamina)),
+                postfix: new HarmonyMethod(typeof(PlayerBuffInjections), nameof(PlayerBuffInjections.GetMaxStamina_AddApBuffs_Postfix))
+            );
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(FishingRod), "calculateTimeUntilFishingBite"),
+                postfix: new HarmonyMethod(typeof(PlayerBuffInjections), nameof(PlayerBuffInjections.CalculateTimeUntilFishingBite_AddApBuffs_Postfix))
+            );
+            
+            var bobberBarContructorParameters = new[] { typeof(string), typeof(float), typeof(bool), typeof(List<string>), typeof(string), typeof(bool), typeof(string), typeof(bool) };
+            _harmony.Patch(
+                original: AccessTools.Constructor(typeof(BobberBar), bobberBarContructorParameters),
+                postfix: new HarmonyMethod(typeof(PlayerBuffInjections), nameof(PlayerBuffInjections.BobberBarConstructor_AddApBuffs_Postfix))
             );
         }
     }

@@ -1,0 +1,16 @@
+{
+  "Name": "Upgraded Jars",
+  "Author": "CyanFire",
+  "Version": "1.5.1",
+  "Description": "Extra code for Upgraded Jars",
+  "UniqueID": "CF.UpgradedJars",
+  "EntryDll": "UpgradedJars.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:15756@NoQualityBonus" ],
+  "Dependencies": [
+    {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "IsRequired": true
+    }
+  ]
+}

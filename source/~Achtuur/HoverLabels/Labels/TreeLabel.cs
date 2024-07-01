@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using HoverLabels.Drawing;
+using AchtuurCore.Framework.Borders;
 using HoverLabels.Framework;
 using Microsoft.Xna.Framework;
 using StardewValley;
@@ -42,8 +42,8 @@ internal class TreeLabel : BaseLabel
     public override void GenerateLabel()
     {
         string tree_name = GetTreeName(Int32.Parse(hoverTree.treeType.Value)) ?? "Tree";
-        AddBorder(new TitleLabelText(tree_name));
-        List<LabelText> description = new();
+        AddBorder(new TitleLabel(tree_name));
+        List<Label> description = new();
         // not fully grown
         if (hoverTree.growthStage.Value < 5)
         {
@@ -53,23 +53,23 @@ internal class TreeLabel : BaseLabel
             {
                 // Only case where grow time is certain
                 if (this.hoverTree.treeType.Value != Tree.mahoganyTree)
-                    description.Add(new LabelText($"Fully grown in {time} days"));
+                    description.Add(new Label($"Fully grown in {time} days"));
 
-                description.Add(new LabelText("Fertilized!"));
+                description.Add(new Label("Fertilized!"));
             } 
             else
             {
                 // grow time is statistically determined (innaccurate)
-                description.Add(new LabelText($"Expected to be fully grown within {time} days"));
+                description.Add(new Label($"Expected to be fully grown within {time} days"));
             }
         }
         else if (hoverTree.stump.Value)
         {
-            description.Add(new LabelText("Fully grown (stump)"));
+            description.Add(new Label("Fully grown (stump)"));
         }
         else
         {
-            description.Add(new LabelText("Fully grown!"));
+            description.Add(new Label("Fully grown!"));
         }
 
         AddBorder(description);

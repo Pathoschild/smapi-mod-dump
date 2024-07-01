@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/25287
+IDs: JollyLlama.PrismaticValleyFramework
+update keys: GitHub:Jolly-Alpaca/PrismaticValleyFramework, Nexus:25287

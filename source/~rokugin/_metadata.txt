@@ -11,9 +11,9 @@ mods:
    Safe Lightning Updated
 
 latest commit:
-   commit c51efa9875e5dac25f2e88d7ebf3e8c0f767bd2d
+   commit 884f15a4b21a7b50b0ccbb3b13b25c5e5f268440
    Author: rokugin <rokugin@gmail.com>
-   Date:   Sun May 26 14:06:28 2024 -0700
+   Date:   Sat Jun 29 15:55:28 2024 -0700
    
-       Add saloon room example to repo
+       Add Scale Up mod usage example to repo
    

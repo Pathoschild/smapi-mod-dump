@@ -166,9 +166,10 @@ namespace RangeHighlight {
                     api.GetCartesianCircleWithRound(2, false),
                     api.GetSquareCircle(5, false));
                 bool[,] mb = api.GetCartesianCircleWithRound(7, false);
+                // strange shape below fixed in SDV 1.6
                 // yeah, it's strange; but I have the screenshots showing this shape
-                mb[1, 5] = mb[1, 6] = mb[1, 7] = mb[1, 8] = mb[1, 9] = false;
-                mb[13, 5] = mb[13, 6] = mb[13, 7] = mb[13, 8] = mb[13, 9] = false;
+                //mb[1, 5] = mb[1, 6] = mb[1, 7] = mb[1, 8] = mb[1, 9] = false;
+                //mb[13, 5] = mb[13, 6] = mb[13, 7] = mb[13, 8] = mb[13, 9] = false;
                 megaBomb = new BombRange(
                     mb,
                     cherryBomb.range,

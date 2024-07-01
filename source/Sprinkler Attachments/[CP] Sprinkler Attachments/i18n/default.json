@@ -1,0 +1,17 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Mushymato/StardewMods
+**
+*************************************************/
+
+{
+    // objects
+    "object.SeedSpreader.DisplayName": "Seed Spreader",
+    "object.SeedSpreader.Description": "Place on a sprinkler and load with seeds to plant overnight.",
+    "object.3in1Nozzle.DisplayName": "3-in-1 Nozzle",
+    "object.3in1Nozzle.Description": "Place on a sprinkler to increase its watering range, load with seeds and fertilizer to plant overnight."
+}

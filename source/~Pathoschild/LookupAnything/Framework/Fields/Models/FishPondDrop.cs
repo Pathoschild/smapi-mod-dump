@@ -39,7 +39,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Fields.Models
         /// <param name="sprite">The sprite icon to draw.</param>
         /// <param name="isUnlocked">Whether the item has been unlocked for the current fish pond.</param>
         public FishPondDrop(FishPondDropData data, Item sampleItem, SpriteInfo? sprite, bool isUnlocked)
-            : base(data.MinPopulation, data.ItemID, data.MinDrop, data.MaxDrop, data.Probability)
+            : base(data.MinPopulation, data.ItemId, data.MinDrop, data.MaxDrop, data.Probability)
         {
             this.SampleItem = sampleItem;
             this.Sprite = sprite;

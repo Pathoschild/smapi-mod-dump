@@ -21,7 +21,6 @@ using Microsoft.Xna.Framework;
 using Pathoschild.Stardew.Common.Utilities;
 using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
-using StardewValley;
 
 namespace ContentPatcher.Framework.Patches
 {
@@ -126,9 +125,6 @@ namespace ContentPatcher.Framework.Patches
 
         /// <inheritdoc />
         public bool IsApplied { get; set; }
-
-        /// <inheritdoc />
-        public bool PredatesTargetLocale { get; }
 
         /// <inheritdoc />
         public int LastChangedTick { get; protected set; }
@@ -279,17 +275,12 @@ namespace ContentPatcher.Framework.Patches
                 this.ManuallyUpdatedTokens.Add(assetLocale);
             if (fromAsset != null)
                 this.ManuallyUpdatedTokens.Add(fromAsset);
-
-            this.PredatesTargetLocale = migrator.Version.IsOlderThan("2.1.0");
-            this.LastChangedTick = Game1.ticks;
         }
 
         /// <summary>Track that the patch values were updated.</summary>
         /// <returns>Returns <c>true</c> for convenience in <see cref="UpdateContext"/>.</returns>
         protected bool MarkUpdated()
         {
-            this.LastChangedTick = Game1.ticks;
-
             return true;
         }
 

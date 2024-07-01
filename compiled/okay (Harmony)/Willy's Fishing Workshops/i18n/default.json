@@ -1,0 +1,44 @@
+{
+  "intro-event.dialog-sequence.1": "Ahoy there! Reckon you're wonderin' what's goin' on here?",
+  "intro-event.dialog-sequence.2": "Come on over, have a gander!",
+  "intro-event.dialog-sequence.3": "Well, I've sunk some hard-earned clams into this here machine to kick off my new fishin' trainin' business.",
+  "intro-event.dialog-sequence.4": "With years of reelin' in the big ones, I figure I can share my know-how with anyone keen on givin' this a serious go.",
+  "intro-event.dialog-sequence.5": "For a fair fee, of course, heh.",
+  "intro-event.dialog-sequence.6": "*sniff* Aye, the ocean's got a mighty fine scent today... I reckon the fish'll be bitin' real good!",
+  "intro-event.dialog-sequence.7": "If yer interested, just take a gander at the board behind me and snag yerself a ticket from that machine.",
+  "intro-event.dialog-sequence.8": "I promise ya won't regret it, and you'll be haulin' in the catch of the day in no time!",
+  "intro-event.dialog-sequence.9": "Alright, time to head out and restock on some fresh catch at the shop!",
+  
+  "workshop-info-board.title": "Willy's Fishing Workshops",
+  "workshop-info-board.description": "Alright, to kick off yer fishin' trainin', ya gotta grab yerself a ticket from the machine, then pick yer fish to practice with.\n\n- Them tickets only work 'round this spot\n- Don't dilly-dally, them tickets got an expiry date\n- Feel free to swap out yer practice fish whenever ya please\n- Remember, any fish ya reel in won't be stickin' 'round\n- Yer baits and tackles won't be takin' a hit either\n- And while ya won't be earnin' any experience points, yer sure to hone yer skills along the way\n\n\nNow, best of luck out there, and most importantly, have a whale of a time!",
+
+  "ticket-machine.dialog.title": "Workshop Ticket Machine",
+  "ticket-machine.dialog.option-select-fish": "Select Fish",
+  "ticket-machine.dialog.option-2h": "2 hours - 200g",
+  "ticket-machine.dialog.option-6h": "6 hours - 500g",
+  "ticket-machine.dialog.option-cancel": "Cancel",
+  
+  "global-info.title-random-fish": "Random Fish",
+  "global-info.ticket-expiry-time": "Ticket expires in: {{time}}",
+  "global-info.ticket-about-to-expire": "Your Ticket is about to expire.",
+  "global-info.ticket-expired": "Your Workshop Ticket has expired. Buy a new one.",
+
+  "fish-menu.clear-button.hover": "Clear search",
+  "fish-menu.sort-by-name-button.asc.hover": "Sort by name ascending",
+  "fish-menu.sort-by-name-button.desc.hover": "Sort by name descending",
+  "fish-menu.sort-by-name-button.off.hover": "Sort by name turned off",
+  "fish-menu.sort-by-difficulty-button.asc.hover": "Sort by difficulty ascending",
+  "fish-menu.sort-by-difficulty-button.desc.hover": "Sort by difficulty decending",
+  "fish-menu.sort-by-difficulty-button.off.hover": "Sort by difficulty turned off",
+  "fish-menu.random-button.hover": "Select random Fish",
+  "fish-menu.confirm-button.hover": "Confirm selection",
+
+  "fish-menu.fish-list-section.random.hover": "Random Fish",
+
+  "fish-menu.info-pane.tags": "Tags:",
+  "fish-menu.info-pane.difficulty": "Difficulty: {{difficultyLevel}}",
+  "fish-menu.info-pane.difficulty.hover": "Difficulty",
+  "fish-menu.info-pane.behavior.hover": "Behavior",
+  "fish-menu.info-pane.season.hover": "Season",
+  "fish-menu.info-pane.weather.hover": "Weather"
+}

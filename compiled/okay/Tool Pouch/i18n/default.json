@@ -1,0 +1,25 @@
+{
+  "pouch.description": "Use to open.^Right click in a menu with an item on your cursor to quick deposit.",
+  "error.pouch": "Unable to put ToolPouch inside of ToolPouch.",
+
+  "pouch.name": "Tool Pouch",
+
+  "letter.body": "Hey @,^Thanks for using my tool upgrade service! As a token of appreciation, here is a tool pouch to hold all of your tools! I look forward to your continued patronage^ -Clint",
+  "letter.signoff": "A Gift From Clint",
+
+  "options.title": "ToolPouch Options",
+  "options.description": "Configure to your liking",
+  "backdrop.title": "Use Backdrop",
+  "backdrop.description": "Use backdrop for better visibility",
+  "animation.title": "Animation time (milliseconds)",
+  "animation.description": "Duration of the opening animation",
+  "gamepadSelect.title": "Select with leftstick",
+  "gamepadSelect.description": "Use left stick of gamepad to select tool",
+  "hover.title": "Hover tool selection",
+  "hover.description1": "Hold",
+  "hover.description2": "and hover over item, stop holding to select",
+  "menu.title": "MenuKey",
+  "menu.description": "Key for opening the ToolPouch menu (Keyboard)",
+  "gamepadMenu.title": "MenuKey",
+  "gamepadMenu.description": "Key for opening the ToolPouch menu (Gamepad)"
+}

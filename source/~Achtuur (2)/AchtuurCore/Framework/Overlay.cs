@@ -124,16 +124,16 @@ public abstract class Overlay
         Vector2 screenCoord = Tiles.GetTileScreenCoords(tile);
 
         // top    
-        spriteBatch.DrawLine(screenCoord.X, screenCoord.Y, new Vector2(tileSize, borderSize), color); // top
+        spriteBatch.DrawRect(screenCoord.X, screenCoord.Y, new Vector2(tileSize, borderSize), color); // top
 
         // bottom    
-        spriteBatch.DrawLine(screenCoord.X, screenCoord.Y + tileSize, new Vector2(tileSize, borderSize), color); // bottom
+        spriteBatch.DrawRect(screenCoord.X, screenCoord.Y + tileSize, new Vector2(tileSize, borderSize), color); // bottom
 
         // left    
-        spriteBatch.DrawLine(screenCoord.X, screenCoord.Y, new Vector2(borderSize, tileSize), color); // left
+        spriteBatch.DrawRect(screenCoord.X, screenCoord.Y, new Vector2(borderSize, tileSize), color); // left
 
         // right    
-        spriteBatch.DrawLine(screenCoord.X + tileSize, screenCoord.Y, new Vector2(borderSize, tileSize), color); // right
+        spriteBatch.DrawRect(screenCoord.X + tileSize, screenCoord.Y, new Vector2(borderSize, tileSize), color); // right
     }
 
     /// <summary>
@@ -153,19 +153,19 @@ public abstract class Overlay
 
         // top
         if (centerTile.Y >= tile.Y)
-            spriteBatch.DrawLine(screenCoord.X, screenCoord.Y, new Vector2(tileSize, borderSize), color); // top
+            spriteBatch.DrawRect(screenCoord.X, screenCoord.Y, new Vector2(tileSize, borderSize), color); // top
 
         // bottom
         if (centerTile.Y <= tile.Y)
-            spriteBatch.DrawLine(screenCoord.X, screenCoord.Y + tileSize, new Vector2(tileSize, borderSize), color); // bottom
+            spriteBatch.DrawRect(screenCoord.X, screenCoord.Y + tileSize, new Vector2(tileSize, borderSize), color); // bottom
 
         // left
         if (centerTile.X >= tile.X)
-            spriteBatch.DrawLine(screenCoord.X, screenCoord.Y, new Vector2(borderSize, tileSize), color); // left
+            spriteBatch.DrawRect(screenCoord.X, screenCoord.Y, new Vector2(borderSize, tileSize), color); // left
 
         // right
         if (centerTile.X <= tile.X)
-            spriteBatch.DrawLine(screenCoord.X + tileSize, screenCoord.Y, new Vector2(borderSize, tileSize), color); // right
+            spriteBatch.DrawRect(screenCoord.X + tileSize, screenCoord.Y, new Vector2(borderSize, tileSize), color); // right
     }
 
     /// <summary>
@@ -187,19 +187,19 @@ public abstract class Overlay
 
         // top
         if (!tileGroup.Contains(new Vector2(tile.X, tile.Y - 1)))
-            spriteBatch.DrawLine(screenCoord.X, screenCoord.Y, new Vector2(tileSize, borderSize), color); // top
+            spriteBatch.DrawRect(screenCoord.X, screenCoord.Y, new Vector2(tileSize, borderSize), color); // top
 
         // bottom
         if (!tileGroup.Contains(new Vector2(tile.X, tile.Y + 1)))
-            spriteBatch.DrawLine(screenCoord.X, screenCoord.Y + tileSize, new Vector2(tileSize, borderSize), color); // bottom
+            spriteBatch.DrawRect(screenCoord.X, screenCoord.Y + tileSize, new Vector2(tileSize, borderSize), color); // bottom
 
         // left
         if (!tileGroup.Contains(new Vector2(tile.X - 1, tile.Y)))
-            spriteBatch.DrawLine(screenCoord.X, screenCoord.Y, new Vector2(borderSize, tileSize), color); // left
+            spriteBatch.DrawRect(screenCoord.X, screenCoord.Y, new Vector2(borderSize, tileSize), color); // left
 
         // right
         if (!tileGroup.Contains(new Vector2(tile.X + 1, tile.Y)))
-            spriteBatch.DrawLine(screenCoord.X + tileSize, screenCoord.Y, new Vector2(borderSize, tileSize), color); // right
+            spriteBatch.DrawRect(screenCoord.X + tileSize, screenCoord.Y, new Vector2(borderSize, tileSize), color); // right
     }
 
 
@@ -210,19 +210,19 @@ public abstract class Overlay
 
         // top
         if (tile.Y <= center.Y && !tileGroup.Contains(new Vector2(tile.X, tile.Y - 1)))
-            spriteBatch.DrawLine(screenCoord.X, screenCoord.Y, new Vector2(tileSize, borderSize), color); // top
+            spriteBatch.DrawRect(screenCoord.X, screenCoord.Y, new Vector2(tileSize, borderSize), color); // top
 
         // bottom
         if (tile.Y >= center.Y && !tileGroup.Contains(new Vector2(tile.X, tile.Y + 1)))
-            spriteBatch.DrawLine(screenCoord.X, screenCoord.Y + tileSize, new Vector2(tileSize, borderSize), color); // bottom
+            spriteBatch.DrawRect(screenCoord.X, screenCoord.Y + tileSize, new Vector2(tileSize, borderSize), color); // bottom
 
         // left
         if (tile.X <= center.X && !tileGroup.Contains(new Vector2(tile.X - 1, tile.Y)))
-            spriteBatch.DrawLine(screenCoord.X, screenCoord.Y, new Vector2(borderSize, tileSize), color); // left
+            spriteBatch.DrawRect(screenCoord.X, screenCoord.Y, new Vector2(borderSize, tileSize), color); // left
 
         // right
         if (tile.X >= center.X && !tileGroup.Contains(new Vector2(tile.X + 1, tile.Y)))
-            spriteBatch.DrawLine(screenCoord.X + tileSize, screenCoord.Y, new Vector2(borderSize, tileSize), color); // right
+            spriteBatch.DrawRect(screenCoord.X + tileSize, screenCoord.Y, new Vector2(borderSize, tileSize), color); // right
     }
 
     public static void DrawPoint(SpriteBatch spriteBatch, Point point, Color? color = null, Texture2D tileTexture = null, float? tileSizePercentage = null)
@@ -232,15 +232,14 @@ public abstract class Overlay
 
     public static void DrawTile(SpriteBatch spriteBatch, Vector2 tile, Color? color = null, Texture2D tileTexture = null, float? tileSizePercentage = null, Vector2? offset = null, float? layerDepth = null)
     {
-        int tilesize_offset = (tileSizePercentage is null) ? 0 : (int)((1 - tileSizePercentage.Value) * Game1.tileSize);
+        int tilesize_offset = (tileSizePercentage is null) ? 0 : (int)((1 - tileSizePercentage.Value)) * Game1.tileSize;
 
         tile = new Vector2(tile.X + tilesize_offset, tile.Y + tilesize_offset);
 
         Vector2 coords = Tiles.GetTileScreenCoords(tile) + (offset ?? Vector2.Zero);
-        Vector2 size = Vector2.One * Game1.tileSize
-            * ((tileSizePercentage is null) ? 1 : tileSizePercentage.Value);
+        Vector2 size = Game1.tileSize * Vector2.One * ((tileSizePercentage is null) ? 1 : tileSizePercentage.Value);
 
-        spriteBatch.DrawTexture(tileTexture ?? TilePlacementTexture, coords, size, color ?? Color.White, layerDepth: layerDepth);
+        spriteBatch.DrawSizedTexture(tileTexture ?? TilePlacementTexture, coords, size, color ?? Color.White, layerDepth: layerDepth);
     }
 
     public static void DrawTiles(SpriteBatch spriteBatch, IEnumerable<Vector2> tiles, Color? color = null, Texture2D tileTexture = null, float? tileSizePercentage = null)

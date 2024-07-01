@@ -8,16 +8,16 @@
 **
 *************************************************/
 
-using Common;
-using Common.Integrations;
-using Common.Patch;
+using weizinai.StardewValleyMod.Common.Log;
+using weizinai.StardewValleyMod.Common.Integration;
+using weizinai.StardewValleyMod.Common.Patcher;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
-using TestMod.Framework;
+using weizinai.StardewValleyMod.TestMod.Framework;
 
-namespace TestMod;
+namespace weizinai.StardewValleyMod.TestMod;
 
 internal class ModEntry : Mod
 {
@@ -27,21 +27,21 @@ internal class ModEntry : Mod
     public override void Entry(IModHelper helper)
     {
         // 初始化
-        Log.Init(Monitor);
+        Log.Init(this.Monitor);
         I18n.Init(helper.Translation);
-        config = helper.ReadConfig<ModConfig>();
+        this.config = helper.ReadConfig<ModConfig>();
         // 注册事件
-        helper.Events.GameLoop.GameLaunched += OnGameLaunched;
-        helper.Events.GameLoop.DayStarted += OnDayStarted;
-        helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
-        helper.Events.Input.ButtonsChanged += OnButtonChanged;
+        helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
+        helper.Events.GameLoop.DayStarted += this.OnDayStarted;
+        helper.Events.GameLoop.UpdateTicked += this.OnUpdateTicked;
+        helper.Events.Input.ButtonsChanged += this.OnButtonChanged;
         // 注册Harmony补丁
         HarmonyPatcher.Apply(this);
     }
 
     private void OnButtonChanged(object? sender, ButtonsChangedEventArgs e)
     {
-        if (config.Key.JustPressed())
+        if (this.config.Key.JustPressed())
             Game1.activeClickableMenu = new ShippingMenu(new List<Item>());
     }
 
@@ -71,35 +71,32 @@ internal class ModEntry : Mod
 
         for (int i = 0; i < 0; i++)
         {
-            Helper.Reflection.GetMethod(Game1.game1, "UpdateControlInput").Invoke(Game1.currentGameTime);
+            this.Helper.Reflection.GetMethod(Game1.game1, "UpdateControlInput").Invoke(Game1.currentGameTime);
         }
     }
 
     private void OnGameLaunched(object? sender, GameLaunchedEventArgs e)
     {
-        var configMenu = Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
+        var configMenu = this.Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
 
         if (configMenu is null) return;
 
-        configMenu.Register(
-            ModManifest,
-            () => config = new ModConfig(),
-            () => Helper.WriteConfig(config)
+        configMenu.Register(this.ModManifest,
+            () => this.config = new ModConfig(),
+            () => this.Helper.WriteConfig(this.config)
         );
 
-        configMenu.AddNumberOption(
-            ModManifest,
-            () => config.RandomInt,
-            value => config.RandomInt = value,
+        configMenu.AddNumberOption(this.ModManifest,
+            () => this.config.RandomInt,
+            value => this.config.RandomInt = value,
             I18n.Config_RandomInt_Name,
             null,
             0,
             14
         );
-        configMenu.AddBoolOption(
-            ModManifest,
-            () => config.RandomBool,
-            value => config.RandomBool = value,
+        configMenu.AddBoolOption(this.ModManifest,
+            () => this.config.RandomBool,
+            value => this.config.RandomBool = value,
             I18n.Config_RandomBool_Name
         );
 

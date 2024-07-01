@@ -1,0 +1,10 @@
+{
+  "Name": "Multiple Horses",
+  "Author": "CyanFire",
+  "Version": "1.0.0",
+  "Description": "Build extra stables and own more horses!",
+  "UniqueID": "CF.MultipleHorses",
+  "EntryDll": "MultipleHorses.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:25620" ]
+}

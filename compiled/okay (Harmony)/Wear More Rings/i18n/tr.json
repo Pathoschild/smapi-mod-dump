@@ -1,0 +1,7 @@
+{
+    // Translation provided by: < discord name: airbench,  Nexus profile: https://next.nexusmods.com/profile/Airbench/about-me >
+    DestroyRingChestsCommand: "Oyuncuların yüzüklerini saklamak için kullanılan kalan yüzük sandıklarını kaldırır. İçindeki tüm eşyalar ayağınızın dibine düşecektir.",
+    OpenForgeCommand: "Demirci menüsünü açar.",
+    RingsName: "Yüzük", RingsTooltip: "Kullanılması istenen yüzük sayısı", 
+    BonusTrinketName: "Bonus ıvır zıvır", BonusTrinketTooltip: "Bir fiyatına iki ıvır zıvır yuvasına sahip olup olmadığınız.",
+}

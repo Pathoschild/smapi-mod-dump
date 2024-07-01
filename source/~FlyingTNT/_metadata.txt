@@ -6,6 +6,8 @@ mods:
    Better Elevator - Continued
    Catalogue Filter - Continued
    Custom Gift Limits - Continued
+   Longer Seasons - Continued
+   Multiple Floor Farmhouse - Continued
    Pacifist Valley - Continued
    Quest Time Limits - Continued
    Resource Storage - Continued
@@ -15,11 +17,9 @@ mods:
    Wall Televisions - Continued
 
 latest commit:
-   commit e4f306d437752928b865ed6e4282a25eed615f59
+   commit f45a194effd24439ac68a29648ee96b5d47c8dcd
    Author: C. Cooper <c.cooper@ku.edu>
-   Date:   Wed May 29 17:59:41 2024 -0500
+   Date:   Sat Jun 29 10:41:38 2024 -0500
    
-       Add Resource Storage 1.0.11
-       
-       Adds exception handling to the Better Crafting integration
+       Switch to Common methods for loading mod data
    

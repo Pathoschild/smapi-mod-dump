@@ -38,38 +38,49 @@ namespace HugsAndKisses.Framework
 
         public static void TrySpousesKiss(GameLocation location)
         {
-
             if (location == null || Game1.eventUp || Game1.activeClickableMenu != null || Game1.player.currentLocation != location || (!Config.AllowNPCSpousesToKiss && !Config.AllowPlayerSpousesToKiss && !Config.AllowNPCRelativesToHug))
+            {
                 return;
+            }
 
             elapsedSeconds++;
 
-            var characters = location.characters;
+            var characters = location.characters?.ToList();
             if (characters == null)
+            {
                 return;
+            }
 
-            List<NPC> list = characters.ToList();
+            Misc.ShuffleList(ref characters);
 
-            Misc.ShuffleList(ref list);
-
-            foreach (NPC npc1 in list)
+            foreach (NPC npc1 in characters)
             {
                 if (!npc1.datable.Value && !npc1.isRoommate() && !Config.AllowNonDateableNPCsToHugAndKiss)
+                {
                     continue;
+                }
 
                 if (lastKissed.ContainsKey(npc1.Name) && elapsedSeconds - lastKissed[npc1.Name] <= Config.MinSpouseKissIntervalSeconds)
+                {
                     continue;
+                }
 
-                foreach (NPC npc2 in list)
+                foreach (NPC npc2 in characters)
                 {
                     if (npc1.Name == npc2.Name)
+                    {
                         continue;
+                    }
 
                     if (!npc2.datable.Value && !Config.AllowNonDateableNPCsToHugAndKiss)
+                    {
                         continue;
+                    }
 
                     if (lastKissed.ContainsKey(npc2.Name) && elapsedSeconds - lastKissed[npc2.Name] <= Config.MinSpouseKissIntervalSeconds)
+                    {
                         continue;
+                    }
 
                     bool npcRelatedHug = Misc.AreNPCsRelated(npc1.Name, npc2.Name) && Config.AllowNPCRelativesToHug;
                     bool npcRoommateHug = !Config.RoommateKisses && (npc1.isRoommate() || npc2.isRoommate());
@@ -85,7 +96,9 @@ namespace HugsAndKisses.Framework
 
                     // check if spouses
                     if (!npcMarriageKiss && !npcRelatedHug && !playerSpouseKiss && !npcRoommateHug)
+                    {
                         continue;
+                    }
 
                     float distance = Vector2.Distance(npc1.position.Value, npc2.position.Value);
                     if (

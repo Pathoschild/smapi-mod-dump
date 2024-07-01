@@ -23,9 +23,12 @@ using System.Threading.Tasks;
 namespace FishCatalogue.Data;
 internal struct FishData
 {
+    public static readonly string WildcardLocation = "All";
     public string QualifiedID { get; private set; }
     public Item FishItem { get; private set; }
     public string Name => FishItem.DisplayName;
+
+    public bool IsLegendary;
 
     /// <summary>
     /// All locations where this fish can be caught
@@ -64,15 +67,17 @@ internal struct FishData
     /// 
     /// This data is incomplete and should be completed by calling <c>AddLocationData</c> for each location
     /// </summary>
-    /// <param name="fish_data">Data for a fish obtained from <c>Data/Fish</c></param>
-    /// <param name="spawn_fish_data">Data for a fish obtained from <c>LocationData.Fish</c></param>
-    /// <param name="location">Location id of the used <c>LocationData</c></param>
-    public FishData(string location_name, SpawnFishData fish_data)
+    public FishData(string location_name, SpawnFishData fish_data, bool is_legendary = false): this(location_name, fish_data.ItemId, is_legendary)
+    {
+    }
+
+    public FishData(string location_name, string qualified_id, bool is_legendary = false)
     {
         Locations = new();
         Locations.Add(location_name);
-        QualifiedID = fish_data.ItemId;
-        FishItem = ItemRegistry.Create(fish_data.ItemId);
+        QualifiedID = qualified_id;
+        FishItem = ItemRegistry.Create(QualifiedID);
+        this.IsLegendary = is_legendary;
     }
 
     public void AddLocation(string loc_name)
@@ -101,7 +106,7 @@ internal struct FishData
 
     public bool CanBeCaughtHere()
     {
-        if (!Locations.Contains(Game1.currentLocation.Name))
+        if (!Locations.Contains(Game1.currentLocation.Name) && !Locations.Contains(WildcardLocation))
             return false;
 
         return spawnConditions is null || spawnConditions.CanSpawn();

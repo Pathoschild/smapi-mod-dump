@@ -1,14 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Version>1.16.1</Version>
+    <Version>1.17.2</Version>
     <RootNamespace>Pathoschild.Stardew.DataLayers</RootNamespace>
-
-    <TranslationClassBuilder_AddGetByKey>true</TranslationClassBuilder_AddGetByKey>
-    <TranslationClassBuilder_AddKeyMap>true</TranslationClassBuilder_AddKeyMap>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Pathoschild.Stardew.ModTranslationClassBuilder" Version="2.0.1" />
+    <PackageReference Include="Pathoschild.Stardew.ModTranslationClassBuilder" Version="2.1.0" />
   </ItemGroup>
 
   <ItemGroup>

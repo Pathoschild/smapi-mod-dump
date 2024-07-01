@@ -10,6 +10,8 @@
 
 using StardewValley;
 
+using static NermNermNerm.Stardew.LocalizeFromSource.SdvLocalize;
+
 namespace NermNermNerm.Stardew.QuestableTractor
 {
     internal class SeederQuestController
@@ -42,7 +44,7 @@ namespace NermNermNerm.Stardew.QuestableTractor
 
         protected override SeederQuest CreatePartQuest() => new SeederQuest(this);
 
-        protected override string QuestCompleteMessage => "Awesome!  You've now got a way to plant and fertilize crops with your tractor!#$b#HINT: To use it, equip seeds or fertilizers while on the tractor.";
+        protected override string QuestCompleteMessage => L("Awesome!  You've now got a way to plant and fertilize crops with your tractor!#$b#HINT: To use it, equip seeds or fertilizers while on the tractor.");
 
         protected override string ModDataKey => ModDataKeys.SeederQuestStatus;
 
@@ -59,7 +61,7 @@ namespace NermNermNerm.Stardew.QuestableTractor
                 && !Game1.player.modData.ContainsKey(ModDataKeys.SeederQuestGeorgeSentMail))
             {
                 Game1.player.mailbox.Add(MailKeys.GeorgeSeederMail);
-                Game1.player.modData[ModDataKeys.SeederQuestGeorgeSentMail] = "sent";
+                Game1.player.modData[ModDataKeys.SeederQuestGeorgeSentMail] = I("sent");
             }
         }
     }

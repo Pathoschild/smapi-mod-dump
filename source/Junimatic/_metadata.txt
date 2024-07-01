@@ -6,9 +6,9 @@ mods:
    Junimatic
 
 latest commit:
-   commit c2f32f84ac93d0e3d678227025e31401cd3daa08
+   commit 905e2bccba59ca4361201eaae37b6448f3bfca58
    Author: SteveBenz <s8878992@hotmail.com>
-   Date:   Thu May 16 12:47:24 2024 -0700
+   Date:   Wed Jun 26 13:41:46 2024 -0700
    
        Bump version
    

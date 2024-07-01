@@ -1,0 +1,352 @@
+{
+    "coordinates": [
+        {
+            "displayName": "Farm/Default",
+            "teleportName": "Farm",
+            "x": 64,
+            "y": 15
+        },
+        {
+            "displayName": "BusStop/Default",
+            "teleportName": "BusStop",
+            "x": 14,
+            "y": 22
+        },
+        {
+            "displayName": "Desert/Default",
+            "teleportName": "Desert",
+            "x": 35,
+            "y": 44
+        },
+        {
+            "displayName": "Backwoods/Default",
+            "teleportName": "Backwoods",
+            "x": 41,
+            "y": 14
+        },
+        {
+            "displayName": "Forest/WizardTower",
+            "teleportName": "Forest",
+            "x": 9,
+            "y": 22
+        },
+        {
+            "displayName": "Forest/MarnieRanch",
+            "teleportName": "Forest",
+            "x": 90,
+            "y": 16
+        },
+        {
+            "displayName": "Forest/LeahCottage",
+            "teleportName": "Forest",
+            "x": 104,
+            "y": 33
+        },
+        {
+            "displayName": "Town/SamHouse",
+            "teleportName": "Town",
+            "x": 10,
+            "y": 86
+        },
+        {
+            "displayName": "Town/HaleyHouse",
+            "teleportName": "Town",
+            "x": 20,
+            "y": 89
+        },
+        {
+            "displayName": "Town/TownSquare",
+            "teleportName": "Town",
+            "x": 29,
+            "y": 67
+        },
+        {
+            "displayName": "Town/Hospital",
+            "teleportName": "Town",
+            "x": 36,
+            "y": 56
+        },
+        {
+            "displayName": "Town/PierreStore_ExtendedHours",
+            "teleportName": "Town",
+            "x": 43,
+            "y": 57
+        },
+        {
+            "displayName": "Town/Blacksmith",
+            "teleportName": "Town",
+            "x": 94,
+            "y": 82
+        },
+        {
+            "displayName": "Town/Saloon",
+            "teleportName": "Town",
+            "x": 45,
+            "y": 71
+        },
+        {
+            "displayName": "Town/ManorHouse",
+            "teleportName": "Town",
+            "x": 58,
+            "y": 86
+        },
+        {
+            "displayName": "Town/Museum",
+            "teleportName": "Town",
+            "x": 101,
+            "y": 90
+        },
+        {
+            "displayName": "Beach/ElliottCabin",
+            "teleportName": "Beach",
+            "x": 49,
+            "y": 11
+        },
+        {
+            "displayName": "Beach/LonelyStone",
+            "teleportName": "Beach",
+            "x": 12,
+            "y": 23
+        },
+        {
+            "displayName": "Town/Sewer",
+            "teleportName": "Town",
+            "x": 35,
+            "y": 97
+        },
+        {
+            "displayName": "Town/Graveyard",
+            "teleportName": "Town",
+            "x": 47,
+            "y": 90
+        },
+        {
+            "displayName": "Town/PamHouse",
+            "teleportName": "Town",
+            "x": 72,
+            "y": 69
+        },
+        {
+            "displayName": "Town/AlexHouse",
+            "teleportName": "Town",
+            "x": 57,
+            "y": 64
+        },
+        {
+            "displayName": "Mountain/Carpenter",
+            "teleportName": "Mountain",
+            "x": 12,
+            "y": 26
+        },
+        {
+            "displayName": "Mountain/Tent",
+            "teleportName": "Mountain",
+            "x": 29,
+            "y": 8
+        },
+        {
+            "displayName": "Mountain/Mines",
+            "teleportName": "Mine",
+            "x": 18,
+            "y": 9
+        },
+        {
+            "displayName": "Mountain/Quarry",
+            "teleportName": "Mountain",
+            "x": 127,
+            "y": 11
+        },
+        {
+            "displayName": "Town/JojaMart",
+            "teleportName": "Town",
+            "x": 95,
+            "y": 51
+        },
+        {
+            "displayName": "Town/MovieTheater_CommunityCenterRoute",
+            "teleportName": "Town",
+            "x": 95,
+            "y": 51
+        },
+        {
+            "displayName": "Beach/FishShop_ExtendedHours",
+            "teleportName": "Beach",
+            "x": 30,
+            "y": 34
+        },
+        {
+            "displayName": "Railroad/Spa",
+            "teleportName": "Railroad",
+            "x": 10,
+            "y": 57
+        },
+        {
+            "displayName": "SecretWoods/Default",
+            "teleportName": "Woods",
+            "x": 72,
+            "y": 28
+        },
+        {
+            "displayName": "Forest/AbandonedHouse",
+            "teleportName": "Forest",
+            "x": 34,
+            "y": 96
+        },
+        {
+            "displayName": "Town/CommunityCenter",
+            "teleportName": "Town",
+            "x": 53,
+            "y": 20
+        },
+        {
+            "displayName": "Forest/SewerPipe",
+            "teleportName": "Forest",
+            "x": 94,
+            "y": 100
+        },
+        {
+            "displayName": "Railroad/Railroad",
+            "teleportName": "Railroad",
+            "x": 29,
+            "y": 45
+        },
+        {
+            "displayName": "Mountain/AdventureGuild",
+            "teleportName": "Custom_AdventurerSummit",
+            "x": 32,
+            "y": 22
+        },
+        {
+            "displayName": "FlashShifter.StardewValleyExpandedCP_TownMap_ShearwaterBridge/FlashShifter.StardewValleyExpandedCP_Town_ShearwaterBridge",
+            "teleportName": "Custom_ShearwaterBridge",
+            "x": 30,
+            "y": 20
+        },
+        {
+            "displayName": "FlashShifter.StardewValleyExpandedCP_TownMap_Andys/FlashShifter.StardewValleyExpandedCP_Town_Andys",
+            "teleportName": "Forest",
+            "x": 62,
+            "y": 67
+        },
+        {
+            "displayName": "FlashShifter.StardewValleyExpandedCP_TownMap_Fairhaven/FlashShifter.StardewValleyExpandedCP_Town_Fairhaven",
+            "teleportName": "Forest",
+            "x": 68,
+            "y": 72
+        },
+        {
+            "displayName": "FlashShifter.StardewValleyExpandedCP_TownMap_SophiasHouse/FlashShifter.StardewValleyExpandedCP_Town_SophiasHouse",
+            "teleportName": "Custom_BlueMoonVineyard",
+            "x": 28,
+            "y": 33
+        },
+        {
+            "displayName": "FlashShifter.StardewValleyExpandedCP_TownMap_Bluemoon/FlashShifter.StardewValleyExpandedCP_Town_Bluemoon",
+            "teleportName": "Custom_BlueMoonVineyard",
+            "x": 28,
+            "y": 47
+        },
+        {
+            "displayName": "FlashShifter.StardewValleyExpandedCP_TownMap_OldCommunityGarden/FlashShifter.StardewValleyExpandedCP_Town_OldCommunityGarden",
+            "teleportName": "Custom_Garden",
+            "x": 23,
+            "y": 27
+        },
+        {
+            "displayName": "FlashShifter.StardewValleyExpandedCP_TownMap_JenkinsResidence/FlashShifter.StardewValleyExpandedCP_Town_JenkinsResidence",
+            "teleportName": "Town",
+            "x": 59,
+            "y": 53
+        },
+        {
+            "displayName": "FlashShifter.StardewValleyExpandedCP_TownMap_EmeraldFarm/FlashShifter.StardewValleyExpandedCP_Town_EmeraldFarm",
+            "teleportName": "Railroad",
+            "x": 38,
+            "y": 51
+        },
+        {
+            "displayName": "GingerIsland/Default",
+            "teleportName": "IslandSouth",
+            "x": 21,
+            "y": 43
+        },
+        {
+            "displayName": "South/Dock",
+            "teleportName": "IslandSouth",
+            "x": 21,
+            "y": 43
+        },
+        {
+            "displayName": "South/Resort",
+            "teleportName": "IslandSouth",
+            "x": 18,
+            "y": 24
+        },
+        {
+            "displayName": "North/Trader",
+            "teleportName": "IslandNorth",
+            "x": 36,
+            "y": 72
+        },
+        {
+            "displayName": "North/FieldOffice",
+            "teleportName": "IslandNorth",
+            "x": 46,
+            "y": 47
+        },
+        {
+            "displayName": "North/DigSite",
+            "teleportName": "IslandNorth",
+            "x": 16,
+            "y": 51
+        },
+        {
+            "displayName": "North/Volcano",
+            "teleportName": "IslandNorth",
+            "x": 40,
+            "y": 24
+        },
+        {
+            "displayName": "East/JungleHut",
+            "teleportName": "IslandEast",
+            "x": 22,
+            "y": 30
+        },
+        {
+            "displayName": "SouthEast/PirateCove",
+            "teleportName": "IslandSouthEast",
+            "x": 25,
+            "y": 21
+        },
+        {
+            "displayName": "West/House",
+            "teleportName": "IslandWest",
+            "x": 77,
+            "y": 40
+        },
+        {
+            "displayName": "West/Shipwreck",
+            "teleportName": "IslandWest",
+            "x": 68,
+            "y": 84
+        },
+        {
+            "displayName": "West/TigerSlimeGrove",
+            "teleportName": "IslandWest",
+            "x": 38,
+            "y": 38
+        },
+        {
+            "displayName": "West/BirdieShack",
+            "teleportName": "IslandWest",
+            "x": 24,
+            "y": 56
+        },
+        {
+            "displayName": "West/QiWalnutRoom",
+            "teleportName": "IslandWest",
+            "x": 20,
+            "y": 23
+        }
+    ]
+}

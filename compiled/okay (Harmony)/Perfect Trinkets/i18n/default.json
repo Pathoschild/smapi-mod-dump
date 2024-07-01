@@ -1,0 +1,16 @@
+﻿{
+  "config.name.FrogEggVariant": "FrogEgg Color Variant",
+  "config.tips.FrogEggVariant": "0:Green 1:Brown 2:Blue-Green 3:Blue 4:Red 5:Yellow 6:Void 7:Prismatic",
+  "config.name.FairyBoxVariant": "FairyBox Color Variant",
+  "config.tips.FairyBoxVariant": "-1:random 0:blue-pink 1:green 2:blue-yellow 3:dim-blue-pink 4:blue-red 5:white 6:black 7:dim-blue-pink-no-hat",
+  "config.name.EnableCombineAllRings": "Enable Combine All Rings",
+  "config.name.EnableGalaxyInfiniteWeaponInnateEnchantment": "Enable Galaxy/Infinite Weapon InnateEnchantment",
+  "config.name.EnableCustomToolEnchantment": "Enable Custom ToolEnchantment as below",
+  "config.name.WeaponEnchantment": "Weapon Enchantment",
+  "config.name.AxeEnchantment": "Axe Enchantment",
+  "config.name.PickaxeEnchantment": "Pickaxe Enchantment",
+  "config.name.FishingRodEnchantment": "FishingRod Enchantment",
+  "config.name.HoeEnchantment": "Hoe Enchantment",
+  "config.name.WateringCanEnchantment": "WateringCan Enchantment",
+  "config.name.PanEnchantment": "Pan Enchantment"
+}

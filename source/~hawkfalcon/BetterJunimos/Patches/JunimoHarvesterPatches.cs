@@ -47,7 +47,10 @@ namespace BetterJunimos.Patches {
     public class PatchTryToHarvestHere {
         public static bool Prefix(JunimoHarvester __instance, ref int ___harvestTimer, ref NetGuid ___netHome) {
             if (!Context.IsMainPlayer) return true;
-
+            if (__instance.home is null) {
+                //BetterJunimos.SMonitor.Log($"No hut assigned");
+                return false;
+            }
             var id = ___netHome.Value;
             var pos = __instance.Tile;
 
@@ -256,7 +259,7 @@ namespace BetterJunimos.Patches {
                     hut.tileX is not null &&
                     hut.tileY is not null &&
                     __instance.currentLocation is not null &&
-                    __instance.currentLocation.IsFarm && (
+                    __instance.currentLocation.NameOrUniqueName == hut.GetParentLocation().NameOrUniqueName && (
                         Math.Abs(__instance.controller.pathToEndPoint.Last().X - hut.tileX.Value - 1) > radius ||
                         Math.Abs(__instance.controller.pathToEndPoint.Last().Y - hut.tileY.Value - 1) > radius
                     );

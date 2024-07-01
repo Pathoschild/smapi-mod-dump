@@ -6,7 +6,8 @@
       2,
       3,
       4,
-      5
+      5,
+      6
     ],
     "ClearFruitTreeSeeds": false,
     "ClearFruitTreeSaplings": false,
@@ -30,7 +31,8 @@
       2,
       3,
       4,
-      5
+      5,
+      6
     ],
     "BreakBouldersAndMeteorites": true,
     "HarvestMineSpawns": true,

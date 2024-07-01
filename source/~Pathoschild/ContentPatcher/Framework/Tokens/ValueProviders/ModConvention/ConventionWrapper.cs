@@ -201,7 +201,7 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders.ModConvention
         {
             return this.GetValidInputsImpl != null
                 ? this.GetValidInputsImpl()
-                : Enumerable.Empty<string>();
+                : [];
         }
 
         /// <summary>Get whether the token always chooses from a set of known values for the given input. Mutually exclusive with <see cref="HasBoundedRangeValues"/>.</summary>
@@ -269,7 +269,7 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders.ModConvention
         {
             return this.GetValuesImpl != null
                 ? this.GetValuesImpl(input)
-                : Enumerable.Empty<string>();
+                : [];
         }
 
         /// <summary>Update the instance when the context changes.</summary>

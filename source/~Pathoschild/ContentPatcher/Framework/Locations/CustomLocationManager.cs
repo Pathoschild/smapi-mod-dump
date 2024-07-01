@@ -35,7 +35,7 @@ namespace ContentPatcher.Framework.Locations
         private static readonly Regex ValidNamePattern = new("^[a-z0-9_]+", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         /// <summary>The registered locations regardless of validity.</summary>
-        private readonly List<CustomLocationData> CustomLocations = new();
+        private readonly List<CustomLocationData> CustomLocations = [];
 
         /// <summary>The enabled locations indexed by their normalized map path.</summary>
         private readonly Dictionary<IAssetName, CustomLocationData> CustomLocationsByMapPath = new();
@@ -150,7 +150,11 @@ namespace ContentPatcher.Framework.Locations
 
                         this.Monitor.Log($"'{customLocation.ModName}' recovered TMXL Map Toolkit location '{legacyName}' which will be mapped to new location '{customLocation.Name}'.", LogLevel.Info);
                         saveLocations.Add(tmxlLocation);
+
+#pragma warning disable AvoidNetField // deliberate since the Name property isn't settable
                         tmxlLocation.name.Value = customLocation.Name;
+#pragma warning restore AvoidNetField
+
                         saveLocationsByName.Value[customLocation.Name] = tmxlLocation;
                         break;
                     }
@@ -247,7 +251,7 @@ namespace ContentPatcher.Framework.Locations
             // read values
             string? name = config?.Name?.Trim();
             string? fromMapFile = config?.FromMapFile?.Trim();
-            string[] migrateLegacyNames = config?.MigrateLegacyNames.Select(p => p?.Trim()!).Where(p => !string.IsNullOrWhiteSpace(p)).ToArray() ?? Array.Empty<string>();
+            string[] migrateLegacyNames = config?.MigrateLegacyNames.Select(p => p?.Trim()!).Where(p => !string.IsNullOrWhiteSpace(p)).ToArray() ?? [];
             parsed = null;
 
             // validate name

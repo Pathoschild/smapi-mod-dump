@@ -42,7 +42,7 @@ namespace ContentPatcher.Framework
 
         /// <summary>The possible values for the <see cref="DynamicTokens"/>.</summary>
         /// <remarks>These must be stored in registration order, since each token value may affect the value of subsequent tokens.</remarks>
-        private readonly List<DynamicTokenValue> DynamicTokenValues = new();
+        private readonly List<DynamicTokenValue> DynamicTokenValues = [];
 
         /// <summary>The alias token names defined for the content pack.</summary>
         private readonly InvariantDictionary<string> AliasTokenNames = new();
@@ -54,7 +54,7 @@ namespace ContentPatcher.Framework
         private InvariantDictionary<MutableInvariantSet> DynamicTokenDependents { get; } = new();
 
         /// <summary>The set of dynamic tokens which are dependencies or dependents for another dynamic token.</summary>
-        private MutableInvariantSet InterdependentTokens { get; } = new();
+        private MutableInvariantSet InterdependentTokens { get; } = [];
 
         /// <summary>Whether any tokens haven't received a context update yet.</summary>
         private bool HasNewTokens;
@@ -142,7 +142,7 @@ namespace ContentPatcher.Framework
             if (tokensUsed.Any())
             {
                 if (!this.DynamicTokenDependencies.TryGetValue(name, out MutableInvariantSet? dependencies))
-                    this.DynamicTokenDependencies[name] = dependencies = new MutableInvariantSet();
+                    this.DynamicTokenDependencies[name] = dependencies = [];
 
                 Queue<string> tokenQueue = new(tokensUsed);
                 while (tokenQueue.Any())
@@ -155,7 +155,7 @@ namespace ContentPatcher.Framework
                     // track dependency => token
                     {
                         if (!this.DynamicTokenDependents.TryGetValue(dependency, out MutableInvariantSet? dependents))
-                            this.DynamicTokenDependents[dependency] = dependents = new MutableInvariantSet();
+                            this.DynamicTokenDependents[dependency] = dependents = [];
 
                         dependents.Add(name);
                     }
@@ -216,7 +216,7 @@ namespace ContentPatcher.Framework
                 {
                     if (!resetDynamicTokens && this.DynamicTokenDependents.TryGetValue(token.Name, out MutableInvariantSet? dependents))
                     {
-                        updateDynamicTokens ??= new MutableInvariantSet();
+                        updateDynamicTokens ??= [];
                         updateDynamicTokens.AddMany(dependents);
                     }
                 }
@@ -232,7 +232,7 @@ namespace ContentPatcher.Framework
                     {
                         if (this.DynamicTokenDependents.TryGetValue(token, out MutableInvariantSet? dependents))
                         {
-                            updateDynamicTokens ??= new MutableInvariantSet();
+                            updateDynamicTokens ??= [];
                             updateDynamicTokens.AddMany(dependents);
                         }
                     }
@@ -350,7 +350,7 @@ namespace ContentPatcher.Framework
         /// <summary>Get the underlying contexts in priority order.</summary>
         private IEnumerable<IContext> GetContexts()
         {
-            return new[] { this.ParentContext, this.LocalContext, this.DynamicContext };
+            return [this.ParentContext, this.LocalContext, this.DynamicContext];
         }
     }
 }

@@ -6,9 +6,9 @@ mods:
    Schedule Viewer
 
 latest commit:
-   commit 0a42c9a38e4fa25411df994845667126462ccce6
+   commit 3efbf016bf81f9939b4be5bca1c49579e487c3ce
    Author: BinaryLip <dev@philliploveland.dev>
-   Date:   Fri May 24 19:53:57 2024 -0400
+   Date:   Sat Jun 22 18:12:05 2024 -0400
    
-       Changed SVE Tile Areas to SVE Add-on"
+       Added check for SVE that suggests downloading the add-on.
    

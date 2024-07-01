@@ -61,6 +61,10 @@ namespace Pathoschild.Stardew.Automate
         /// <summary>The number of ticks until the next automation cycle.</summary>
         private int AutomateCountdown;
 
+        /// <summary>The number of ticks until the config UI is registered with Generic Mod Config Menu.</summary>
+        /// <remarks>This must happen later than <see cref="IGameLoopEvents.GameLaunched"/>, since Content Patcher packs haven't added their edits to <c>Data/Machines</c> yet at that point.</remarks>
+        private int RegisterConfigCountdown = 10;
+
         /// <summary>The current overlay being displayed, if any.</summary>
         private readonly PerScreen<OverlayMenu?> CurrentOverlay = new();
 
@@ -112,7 +116,6 @@ namespace Pathoschild.Stardew.Automate
             this.CommandHandler = new CommandHandler(this.Monitor, () => this.Config, this.MachineManager);
 
             // hook events
-            helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
             helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
             helper.Events.GameLoop.DayStarted += this.OnDayStarted;
             helper.Events.GameLoop.UpdateTicked += this.OnUpdateTicked;
@@ -147,27 +150,6 @@ namespace Pathoschild.Stardew.Automate
         /****
         ** Event handlers
         ****/
-        /// <inheritdoc cref="IGameLoopEvents.GameLaunched"/>
-        /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event data.</param>
-        private void OnGameLaunched(object? sender, GameLaunchedEventArgs e)
-        {
-            // add Generic Mod Config Menu integration
-            new GenericModConfigMenuIntegrationForAutomate(
-                data: this.Data,
-                getConfig: () => this.Config,
-                reset: () => this.Config = new ModConfig(),
-                saveAndApply: () =>
-                {
-                    this.Helper.WriteConfig(this.Config);
-                    this.ReloadConfig();
-                },
-                modRegistry: this.Helper.ModRegistry,
-                monitor: this.Monitor,
-                manifest: this.ModManifest
-            ).Register();
-        }
-
         /// <inheritdoc cref="IGameLoopEvents.SaveLoaded"/>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
@@ -301,39 +283,49 @@ namespace Pathoschild.Stardew.Automate
         /// <param name="e">The event data.</param>
         private void OnUpdateTicked(object? sender, UpdateTickedEventArgs e)
         {
-            if (!Context.IsWorldReady)
-                return;
-
-            bool enableAutomation = this.EnableAutomation;
-            bool enableChangeTracking = this.EnableAutomationChangeTracking;
-
-            try
+            // add Generic Mod Config Menu integration
+            if (this.RegisterConfigCountdown > 0 && --this.RegisterConfigCountdown == 0)
             {
-                // reload machines if needed
-                if (enableAutomation || enableChangeTracking)
-                {
-                    if (this.MachineManager.ReloadQueuedLocations())
-                        this.ResetOverlayIfShown();
-                }
+                new GenericModConfigMenuIntegrationForAutomate(
+                    data: this.Data,
+                    getConfig: () => this.Config,
+                    reset: () => this.Config = new ModConfig(),
+                    saveAndApply: () =>
+                    {
+                        this.Helper.WriteConfig(this.Config);
+                        this.ReloadConfig();
+                    },
+                    modRegistry: this.Helper.ModRegistry,
+                    monitor: this.Monitor,
+                    manifest: this.ModManifest
+                ).Register();
+            }
 
-                // apply automation
-                if (enableAutomation)
+            // run automation
+            if (Context.IsWorldReady && this.EnableAutomation)
+            {
+                try
                 {
-                    // handle delay
-                    this.AutomateCountdown--;
-                    if (this.AutomateCountdown > 0)
-                        return;
-                    this.AutomateCountdown = this.Config.AutomationInterval;
-
+                    // reload machines if needed
+                    if (this.EnableAutomationChangeTracking)
+                    {
+                        if (this.MachineManager.ReloadQueuedLocations())
+                            this.ResetOverlayIfShown();
+                    }
 
                     // process machines
-                    foreach (IMachineGroup group in this.MachineManager.GetActiveMachineGroups())
-                        group.Automate();
+                    if (--this.AutomateCountdown <= 0)
+                    {
+                        this.AutomateCountdown = this.Config.AutomationInterval;
+
+                        foreach (IMachineGroup group in this.MachineManager.GetActiveMachineGroups())
+                            group.Automate();
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                this.HandleError(ex, "processing machines");
+                catch (Exception ex)
+                {
+                    this.HandleError(ex, "processing machines");
+                }
             }
         }
 

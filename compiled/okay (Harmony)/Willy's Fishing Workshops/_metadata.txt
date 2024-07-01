@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/24877
+IDs: not4bene.WillysFishingWorkshops
+update keys: Nexus:24877

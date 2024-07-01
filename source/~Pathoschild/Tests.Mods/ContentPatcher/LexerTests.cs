@@ -95,7 +95,7 @@ namespace Pathoschild.Stardew.Tests.Mods.ContentPatcher
         /// <param name="tokens">The higher-level lexical tokens.</param>
         private void GetLexInfo(string input, bool impliedBraces, out LexBit[] bits, out ILexToken[] tokens)
         {
-            Lexer lexer = new Lexer();
+            Lexer lexer = new();
             bits = lexer.TokenizeString(input).ToArray();
             tokens = lexer.ParseBits(bits, impliedBraces).ToArray();
         }
@@ -117,13 +117,13 @@ namespace Pathoschild.Stardew.Tests.Mods.ContentPatcher
                 {
                     case LexTokenToken token:
                         {
-                            StringBuilder str = new StringBuilder();
+                            StringBuilder str = new();
 
                             str.Append($"<{token.Type}:{token.Name}");
                             if (token.InputArgs != null)
                                 str.Append($" input={this.GetComparableShorthand(token.InputArgs)}");
 
-                            str.Append(">");
+                            str.Append('>');
                             return str.ToString();
                         }
 

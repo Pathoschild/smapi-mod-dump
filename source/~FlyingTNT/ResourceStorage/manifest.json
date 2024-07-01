@@ -11,7 +11,7 @@
 {
   "Name": "Resource Storage",
   "Author": "aedenthorn and FlyingTNT",
-  "Version": "1.0.11",
+  "Version": "1.0.11-sharedResources.1",
   "Description": "Allows you to store infinite amounts of common resources.",
   "UniqueID": "FlyingTNT.ResourceStorage",
   "EntryDll": "ResourceStorage.dll",

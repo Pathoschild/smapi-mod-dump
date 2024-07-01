@@ -7,11 +7,11 @@ mods:
    Yet Another Cooking Skill
 
 latest commit:
-   commit d93fff70c52e4d40554ebe853c8507a0c487d651
+   commit 64eebbae76ade973b28bb597fbb02e79569a1cb5
    Author: Pet-Slime <52937167+Pet-Slime@users.noreply.github.com>
-   Date:   Mon May 13 19:14:28 2024 -0500
+   Date:   Sat Jun 29 13:55:26 2024 -0500
    
-       Merge pull request #31 from burunduk/patch-1
+       Merge pull request #32 from CaranudLapin/patch-1
        
-       Add Ukrainian language
+       Create fr.json (Archelogy Skill - Code)
    

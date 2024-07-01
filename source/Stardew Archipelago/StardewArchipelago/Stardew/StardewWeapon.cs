@@ -30,8 +30,8 @@ namespace StardewArchipelago.Stardew
         public double CriticalChance { get; }
         public double CriticalDamage { get; }
 
-        public StardewWeapon(int id, string name, string description, int minDamage, int maxDamage, double knockBack, double speed, double addedPrecision, double addedDefence, int type, int baseMineLevel, int minMineLevel, double addedAoe, double criticalChance, double criticalDamage, string displayName)
-        : base(id, name, /* TODO */1, displayName, description)
+        public StardewWeapon(string id, string name, string description, int minDamage, int maxDamage, double knockBack, double speed, double addedPrecision, double addedDefence, int type, int baseMineLevel, int minMineLevel, double addedAoe, double criticalChance, double criticalDamage, string displayName)
+            : base(id, name, /* TODO */1, displayName, description)
         {
             MinDamage = minDamage;
             MaxDamage = maxDamage;
@@ -50,11 +50,6 @@ namespace StardewArchipelago.Stardew
         public override Item PrepareForGivingToFarmer(int amount = 1)
         {
             return new MeleeWeapon(Id);
-        }
-
-        public override Item PrepareForRecovery()
-        {
-            return new MeleeWeaponToRecover(Id);
         }
 
         public override void GiveToFarmer(Farmer farmer, int amount = 1)
@@ -81,6 +76,11 @@ namespace StardewArchipelago.Stardew
                 2 => "Club",
                 _ => "Sword",
             };
+        }
+
+        public override string GetQualifiedId()
+        {
+            return $"(W){Id}";
         }
     }
 }

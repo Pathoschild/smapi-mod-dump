@@ -45,7 +45,8 @@
       "Action": "EditData",
       "Entries": {
         "hatter": "{{i18n:mail.hatter}}",
-        "{{Lacey}}": "{{i18n:mail.LaceyGift}}"
+        "{{Lacey}}": "{{i18n:mail.LaceyGift}}",
+        "{{ModId}}_Mail_HatRegistryNotice": "{{i18n:mail.HatRegistryNotice}}"
       }
     },
     {

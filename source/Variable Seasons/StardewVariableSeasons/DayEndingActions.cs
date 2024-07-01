@@ -28,18 +28,20 @@ namespace StardewVariableSeasons
         }
         public static void OnDayEnding(IMonitor monitor, IModHelper helper, object sender, DayEndingEventArgs e)
         {
+            if (!Game1.IsMasterGame) return;
+            
             ModEntry.ChangeDate = helper.Data.ReadSaveData<ModData>("next-season-change").NextSeasonChange;
             
             var changeDate = ModEntry.ChangeDate;
             
-            monitor.Log($"Next season is {SeasonUtils.GetNextSeason(Game1.season).ToString()}", LogLevel.Debug);
+            monitor.Log($"Next season is {SeasonUtils.GetNextSeason(Game1.season).ToString()}");
 
-            monitor.Log($"Current day is {Game1.Date.DayOfMonth.ToString()}", LogLevel.Debug);
+            monitor.Log($"Current day is {Game1.Date.DayOfMonth.ToString()}");
             switch (Game1.dayOfMonth)
             {
                 case 14:
                 {
-                    monitor.Log("Drawing new date...", LogLevel.Debug);
+                    monitor.Log("Drawing new date...");
                     var nextSeasonChange = new ModData
                     {
                         NextSeasonChange = SeasonUtils.GenNextChangeDate()
@@ -71,18 +73,15 @@ namespace StardewVariableSeasons
                 SaveCropSurvivalCounter(helper);
             }
 
-            monitor.Log($"Current actual season is {Game1.season.ToString()}", LogLevel.Debug);
-            monitor.Log($"Current season by day is {ModEntry.SeasonByDay.ToString()}", LogLevel.Debug);
-            monitor.Log($"Next season change on {changeDate.ToString()}", LogLevel.Debug);
-            monitor.Log($"Crop survival counter is {ModEntry.CropSurvivalCounter.ToString()}", LogLevel.Debug);
+            monitor.Log($"Current actual season is {Game1.season.ToString()}");
+            monitor.Log($"Current season by day is {ModEntry.CurrentSeason}");
+            monitor.Log($"Next season change on {changeDate.ToString()}");
+            monitor.Log($"Crop survival counter is {ModEntry.CropSurvivalCounter.ToString()}");
 
             if (Game1.Date.DayOfMonth != changeDate) return;
-            monitor.Log("Change to next season", LogLevel.Debug);
+            monitor.Log("Change to next season");
             Game1.season = SeasonUtils.GetNextSeason(Game1.season);
-
-            Game1.timeOfDay = 600;
-            Game1.setGraphicsForSeason();
-            Game1.netWorldState.Value.UpdateFromGame1();
+            helper.Reflection.GetMethod(typeof(Game1), "OnNewSeason").Invoke();
             
             ModEntry.CropSurvivalCounter = 0;
             SaveCropSurvivalCounter(helper);

@@ -1,0 +1,16 @@
+{
+  "Name": "Seasonal Garden Farmhouse V2",
+  "Author": "CyanFire",
+  "Version": "1.7.14",
+  "Description": "Extra code needed for Seasonal Garden Farmhouse functionality",
+  "UniqueID": "CF.SeasonalGardenFarmhouseV2.SMAPI",
+  "EntryDll": "SeasonalGardenFarmhouseV2.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:17386" ],
+  "Dependencies": [
+    {
+      "UniqueID": "DustBeauty.SeasonalGardernFarmhouse.v2",
+      "IsRequired": true
+    }
+  ]
+}

@@ -11,17 +11,12 @@
 using ChestDisplays.Utility;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Newtonsoft.Json;
 using StardewModdingAPI;
 using StardewValley;
-using StardewValley.Menus;
+using StardewValley.BellsAndWhistles;
 using StardewValley.Objects;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ChestDisplays.Patches
 {
@@ -30,7 +25,7 @@ namespace ChestDisplays.Patches
         private static IModHelper Helper => ModEntry.IHelper;
         private static IMonitor Monitor => ModEntry.IMonitor;
 
-        public static void draw_postfix(Chest __instance, SpriteBatch spriteBatch, int x, int y, float alpha = 1f)
+        public static void draw_postfix(Chest __instance, SpriteBatch spriteBatch, int x, int y)
         {
             try
             {
@@ -40,47 +35,34 @@ namespace ChestDisplays.Patches
                 if (lidFrame != __instance.startingLidFrame.Value) 
                     return;
 
-                Item? i = null;
                 int itemType = -1;
-                if (!Utils.displayItemsCache.ContainsKey(__instance) && __instance.Items.HasAny())
+                bool isBigChest = __instance.SpecialChestType == Chest.SpecialChestTypes.BigChest;
+                bool isMiniFridge = __instance.QualifiedItemId == "(BC)216";
+                if (!Utils.displayItemsCache.TryGetValue(__instance, out Item? i))
                 {
-                    i = __instance.Items.FirstOrDefault(x => x is not null);
-                    if (i is null)
-                        return;
-                    itemType = Utils.getItemType(i);
-                    Utils.drawItem(spriteBatch, i, itemType, Utils.GetLocationFromItemType(itemType, x, y), Utils.GetDepthFromItemType(itemType, x, y));
-                    return;
-                }
-                i = Utils.displayItemsCache[__instance];
-                itemType = Utils.getItemType(i);
-                Utils.drawItem(spriteBatch, i, itemType, Utils.GetLocationFromItemType(itemType, x, y), Utils.GetDepthFromItemType(itemType, x, y));
-                /*if (__instance.modData.ContainsKey(ModEntry.IHelper.ModRegistry.ModID))
-                {
-                    var data = JsonConvert.DeserializeObject<ModData>(__instance.modData[Helper.ModRegistry.ModID]);
-                    if (data is not null)
+                    if (__instance.Items.HasAny() && ModEntry.IConfig.ShowFirstIfNoneSelected)
                     {
-                        Item? i = Utils.getItemFromName(data.Item, data.ItemType, data.ItemQuality, data.UpgradeLevel, data.Color);
-                        if (i is null) 
-                            flag1 = true;
-                        else 
-                            Utils.drawItem(spriteBatch, i, data.ItemType, x, y, Utils.GetLocationFromItemType(data.ItemType, x, y), Utils.GetDepthFromItemType(data.ItemType, x, y));
+                        i = __instance.Items.FirstOrDefault(x => x is not null);
+                        if (i is null)
+                            return;
+                        itemType = Utils.getItemType(i);
+                        Utils.drawItem(spriteBatch, i, itemType, Utils.GetLocationFromItemType(itemType, x, y, isBigChest, isMiniFridge), Utils.GetDepthFromItemType(itemType, x, y));
                     }
                 }
-                else 
-                    flag1 = true;
-
-                if (flag1 && Config.ShowFirstIfNoneSelected && __instance.Items.Count > 0)
+                else
                 {
-                    Item? i = __instance.Items.FirstOrDefault(x => x is not null);
-                    if (i is null) 
-                        return;
-                    int itemType = Utils.getItemType(i);
-                    Utils.drawItem(spriteBatch, i, itemType, x, y, Utils.GetLocationFromItemType(itemType, x, y), Utils.GetDepthFromItemType(itemType, x, y));
-                }*/
+                    itemType = Utils.getItemType(i);
+                    Utils.drawItem(spriteBatch, i, itemType, Utils.GetLocationFromItemType(itemType, x, y, isBigChest, isMiniFridge), Utils.GetDepthFromItemType(itemType, x, y));
+                }
+                var loc = Utils.GetLocationFromItemType(1, x, y, isBigChest, isMiniFridge);
+                if (new Rectangle((int)loc.X, (int)loc.Y - 1, 64, 96).Contains(Game1.getMousePosition()) && Utils.displayModDataCache.TryGetValue(__instance, out var data) && !string.IsNullOrWhiteSpace(data.Name))
+                    SpriteText.drawSmallTextBubble(spriteBatch, data.Name, loc + new Vector2(32, -32), 256, (float)(0.98000001907348633 + __instance.TileLocation.X / 64 * 9.9999997473787516E-05 + __instance.TileLocation.X / 64 * 9.9999999747524271E-07));
             }
-            catch(Exception ex) { Monitor.LogOnce($"Failed drawing object at X : {x} - Y : {y}", LogLevel.Error);  Monitor.LogOnce($"{ex.GetType().FullName} - {ex.Message}", LogLevel.Trace); }
+            catch(Exception ex)
+            {
+                Monitor.LogOnce($"Failed drawing object at X : {x} - Y : {y}", LogLevel.Error);
+                Monitor.LogOnce($"{ex.GetType().FullName} - {ex.Message}\n{ex.StackTrace}", LogLevel.Trace); 
+            }
         }
-
-        
     }
 }

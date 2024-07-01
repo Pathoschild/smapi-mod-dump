@@ -8,7 +8,6 @@
 **
 *************************************************/
 
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
@@ -66,7 +65,7 @@ namespace Pathoschild.Stardew.TractorMod.Framework
         public ModConfigKeys Controls { get; set; } = new();
 
         /// <summary>The custom tools or items to allow. These must match the exact internal tool/item names (not the display names).</summary>
-        public string[] CustomAttachments { get; set; } = Array.Empty<string>();
+        public string[] CustomAttachments { get; set; } = [];
 
         /// <summary>Whether the player should be invincible while they're on the tractor.</summary>
         public bool InvincibleOnTractor { get; set; } = true;
@@ -85,7 +84,7 @@ namespace Pathoschild.Stardew.TractorMod.Framework
             this.BuildMaterials ??= new Dictionary<string, int>();
             this.StandardAttachments ??= new StandardAttachmentsConfig();
             this.Controls ??= new ModConfigKeys();
-            this.CustomAttachments ??= Array.Empty<string>();
+            this.CustomAttachments ??= [];
         }
     }
 }

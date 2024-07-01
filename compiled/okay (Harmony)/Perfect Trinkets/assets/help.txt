@@ -1,0 +1,4 @@
+Customized Dragon Tooth Innate Enchantment : Download Optional file "custom_InnateEnchantment_Config.json" from MOD page on Nexus, and put it into "assets" directory. Edit and modify the value of enchantments, will affect Innate Enchantment result. Delete "custom_InnateEnchantment_Config.json" file if not need. (Note: The configuration here will also affect the default Innate enchantment value on weapons dropped during monster killing)
+
+中文说明：
+自定义龙牙附魔数值：从N网MOD页面下载可选文件"custom_InnateEnchantment_Config.json"，放入当前目录("assets"目录)中即可。使用记事本编辑此文件中各个配置项的数值可以改变武器龙牙附魔的附加值。如果不再需要自定义龙牙附魔数值，删除"custom_InnateEnchantment_Config.json"文件即可。（备注：这里的配置同时会影响杀怪掉落的武器上的默认龙牙附魔数值）

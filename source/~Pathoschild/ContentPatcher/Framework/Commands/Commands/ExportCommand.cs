@@ -57,19 +57,20 @@ namespace ContentPatcher.Framework.Commands.Commands
         /// <inheritdoc />
         public override string GetDescription()
         {
-            return @"
+            return
+                """
                 patch export
-                   Usage: patch export ""<asset name>""
-                   Saves a copy of an asset (including any changes from mods like Content Patcher) to the game folder. The asset name should be the target without the locale or extension, like ""Characters/Abigail"" if you want to export the value of 'Content/Characters/Abigail.xnb'.
+                   Usage: patch export "<asset name>"
+                   Saves a copy of an asset (including any changes from mods like Content Patcher) to the game folder. The asset name should be the target without the locale or extension, like "Characters/Abigail" if you want to export the value of 'Content/Characters/Abigail.xnb'.
 
-                   Usage: patch export ""<asset name>"" ""<C# type name>""
+                   Usage: patch export "<asset name>" "<C# type name>"
                    Same as the previous, but manually specify the C# data type for the asset. This must be the C# full type name. Example types:
                       - A string/string dictionary: System.Collections.Generic.Dictionary`2[[System.String],[System.String]]
                       - A number/string dictionary: System.Collections.Generic.Dictionary`2[[System.Int32],[System.String]]
                       - Movie reactions: System.Collections.Generic.List<StardewValley.GameData.Movies.MovieReaction>
 
                   You can also specify 'image' as the type for a Texture2D value, or 'map' for a xTile.Map.
-            ";
+                """;
         }
 
         /// <inheritdoc />
@@ -87,7 +88,7 @@ namespace ContentPatcher.Framework.Commands.Commands
             string? typeName = args.Length > 1 ? args[1] : null;
 
             // get default type
-            List<Type> possibleTypes = new(this.TryGetTypes(typeName));
+            List<Type> possibleTypes = [..this.TryGetTypes(typeName)];
             switch (possibleTypes.Count)
             {
                 case 0:
@@ -301,25 +302,25 @@ namespace ContentPatcher.Framework.Commands.Commands
         {
             // none specified, default to object
             if (string.IsNullOrWhiteSpace(name))
-                return new[] { typeof(object) };
+                return [typeof(object)];
 
             // short alias
             if (string.Equals(name, "image", StringComparison.OrdinalIgnoreCase))
-                return new[] { typeof(Texture2D) };
+                return [typeof(Texture2D)];
             if (string.Equals(name, "map", StringComparison.OrdinalIgnoreCase))
-                return new[] { typeof(Map) };
+                return [typeof(Map)];
 
             // by assembly-qualified name
             {
                 Type? type = Type.GetType(name);
                 if (type != null)
-                    return new[] { type };
+                    return [type];
             }
 
             // by type name
             {
-                HashSet<Type> typesByName = new();
-                HashSet<Type> typesByFullName = new();
+                HashSet<Type> typesByName = [];
+                HashSet<Type> typesByFullName = [];
                 foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
                 {
                     if (assembly.IsDynamic)
@@ -356,7 +357,7 @@ namespace ContentPatcher.Framework.Commands.Commands
             IAssetName assetName = this.ContentHelper.ParseAssetName(asset);
 
             if (assetName.IsDirectlyUnderPath("Maps"))
-                return new() { typeof(Map), typeof(Texture2D) };
+                return [typeof(Map), typeof(Texture2D)];
 
             if (
                 assetName.IsDirectlyUnderPath("Animals")
@@ -367,7 +368,7 @@ namespace ContentPatcher.Framework.Commands.Commands
                 || assetName.IsDirectlyUnderPath("TerrainFeatures")
                 || assetName.IsDirectlyUnderPath("TileSheets")
             )
-                return new() { typeof(Texture2D) };
+                return [typeof(Texture2D)];
 
             if (
                 assetName.IsDirectlyUnderPath("Characters/Dialogue")
@@ -375,7 +376,7 @@ namespace ContentPatcher.Framework.Commands.Commands
                 || assetName.IsDirectlyUnderPath("Data/Events")
                 || assetName.IsDirectlyUnderPath("Data/festivals")
             )
-                return new() { typeof(Dictionary<string, string>) };
+                return [typeof(Dictionary<string, string>)];
 
             return null;
         }
@@ -415,7 +416,7 @@ namespace ContentPatcher.Framework.Commands.Commands
                 .GetType()
                 .GetMethod(nameof(this.LoadAssetImpl), BindingFlags.NonPublic | BindingFlags.Instance)!
                 .MakeGenericMethod(type)
-                .Invoke(this, new object[] { assetName });
+                .Invoke(this, [assetName]);
         }
 
         /// <summary>Load an asset from a content manager using the given type.</summary>

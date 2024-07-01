@@ -42,7 +42,8 @@ The available settings are:
 Name | Valid settings | Description
 -----|----------------|------------
 AxeUpgradesRequired | A positive integer (default **0**) | The number of axe upgrades required to destroy bushes. 0 allows any axe to remove bushes, 1 requires a copper axe or better, and so on.
-WhenBushesRegrow | A number and a unit of time, e.g. **"3 days"** (or *null* to never regrow bushes) | If the unit is "days", bushes will respawn after that number of days. "Seasons" (or "months") will respawn bushes after that many seasons (on the first day of the season). "Years" will respawn bushes after that many years (on the first day of Spring).
+AxeDamageMultiplier | A decimal (default **1.0**) | A damage multiplier applied when hitting a non-tea bush. 0.5 deals 50% less damage, 2 deals 200% damage, 8 destroys bushes in 1 hit, etc. Note that to avoid bugs, walnut bushes always take at least 2 hits.
+WhenBushesRegrow | An integer and a unit of time, e.g. **"3 days"** (or *null* to never regrow bushes) | If the unit is "days", bushes will respawn after that number of days. "Seasons" (or "months") will respawn bushes after that many seasons (on the first day of the season). "Years" will respawn bushes after that many years (on the first day of Spring).
 DestroyableBushLocations | A list of location names, e.g. `["farm", "forest", "woods"]` | A list of locations where bushes will be destroyable. If the list is blank, bushes will be destroyable at all locations. Names should be in quotation marks and separated by commas. To find a location's name, you may need to use another mod such as [Debug Mode](https://www.nexusmods.com/stardewvalley/mods/679/).
 DestroyableBushTypes | N/A | The settings below control which types of bush will be destroyable.
 SmallBushes | **true** or false | If true, small bushes will be destroyable.

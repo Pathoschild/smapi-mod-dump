@@ -56,6 +56,12 @@ namespace TransparencySettings
             helper.Events.Player.Warped += Warped;
         }
 
+        /// <summary>Clears this class's cache of alpha (transparency) values.</summary>
+        public static void ClearCache()
+        {
+            alphas.Clear(); //reset all alpha values
+        }
+
         private static void UpdateTicking(object sender, UpdateTickingEventArgs e)
         {
             CurrentPlayerTile = Game1.player.Tile; //update cached tile position of the current local player

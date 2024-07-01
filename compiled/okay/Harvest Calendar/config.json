@@ -1,0 +1,10 @@
+{
+  "ToggleMod": true,
+  "IconSize": 2,
+  "IconX": 1.0,
+  "IconY": 0.0,
+  "CropBlackList": [],
+  "ToggleBlackListKeybind": "LeftAlt + H, RightAlt + H",
+  "BlacklistTheCropKeybind": "LeftAlt + G, RightAlt + G",
+  "ToggleCalendarDayDetailKeybind": "MouseLeft, ControllerA"
+}

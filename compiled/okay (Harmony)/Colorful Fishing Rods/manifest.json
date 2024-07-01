@@ -1,0 +1,20 @@
+{
+  /*
+   | This file is automatically updated by ModManifestBuilder
+   | when the project is compiled.
+   | 
+   | Changes made to this file may be overwritten.
+   | 
+   */
+  "$schema": "https://smapi.io/schemas/manifest.json",
+  "UniqueID": "atravita.ColorfulFishingRods",
+  "Name": "Colorful Fishing Rods",
+  "Author": "atravita",
+  "Version": "1.0.0",
+  "Description": "Lets you override the colors of fishing rods.",
+  "MinimumApiVersion": "4.0.7",
+  "EntryDll": "ColorfulFishingRods.dll",
+  "UpdateKeys": [
+    "Nexus: 25258",
+  ]
+}

@@ -8,6 +8,10 @@ for queries and analysis.**
 
 # Version history for AnimalsNeedWater
 
+## 1.5.4
+Released June 16, 2024.
+- Extend functionality to make mod work on Animal House buildings outside the Farm (thanks to @Smoked-Fish).
+
 ## 1.5.3
 Released March 25, 2024.
 - Changed water pathfinding logic. Water pathfinding should work properly now.

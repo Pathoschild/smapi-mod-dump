@@ -219,6 +219,7 @@
   "prestige.level_up.choose": "위신 직업을 선택하라 : ",
   "prestige.level_up.single": "위신 획득",
 
+  "prestige.mastery.warning": "Mastering this skill will prevent it from being reset. Continue?",
   "prestige.mastery.unlocked": "이제 {{skill}} 기술을 더 발전시킬 수 있다.",
   "prestiged.title": "마스터 ",
 
@@ -246,7 +247,7 @@
   "prestige.mastery.cant": "직업 조건이 충족되지 않았습니다.",
 
   // other
-  "treasure_hunt.broadcast.started": "{{player}}이(가) 보물 사냥에 성공했습니다!",
+  "treasure_hunt.broadcast.started": "{{player}}이(가) 보물 사냥을 시작했습니다!",
   "treasure_hunt.broadcast.ended.success": "{{player}}이(가) 보물을 찾았습니다!",
   "treasure_hunt.broadcast.ended.failure": "{{player}}이(가) 보물 찾기에 실패했습니다...",
 
@@ -341,6 +342,11 @@
   "gmcm.aging_trees_quality_syrups.title": "오래된 나무에서 채취하는 수액의 품질 향상",
   "gmcm.aging_trees_quality_syrups.desc": "일반 나무에서 채취하는 수액도 과일 나무처럼 1년이 지날 때마다 품질이 향상됩니다.",
 
+  // rascal
+  "gmcm.sections.prfs.rascal": "Rascal",
+  "gmcm.show_equipped_ammo.title": "Show Equipped Ammo",
+  "gmcm.show_equipped_ammo.desc": "Whether to draw the currently equipped ammo over the slingshot's tooltip.",
+
   // skill reset
   "gmcm.sections.prfs.skill_reset": "스킬 리셋",
   "gmcm.enable_skill_reset.title": "스킬 리셋 활성화",
@@ -394,10 +400,10 @@
   "gmcm.prestige_profession_icon_style.desc": "위신 진척 정도 표기에 사용되는 아이콘의 스타일을 변경합니다.",
   "gmcm.profession_icon_style.metallic_gold": "메탈릭 골드",
   "gmcm.profession_icon_style.posister_gold": "포시스터 골드",
-  "gmcm.mastered_skill_icon_style.title": "Mastered Skill Icon Style",
-  "gmcm.mastered_skill_icon_style.desc": "Determines the style of the sprite used for Mastered skills.",
-  "gmcm.skill_icon_style.silicon_gold": "Silicon Gold",
-  "gmcm.skill_icon_style.kawaii_rose_gold": "Kawaii Rose Gold",
+  "gmcm.mastered_skill_icon_style.title": "숙련된 기술 아이콘 스타일",
+  "gmcm.mastered_skill_icon_style.desc": "숙련된 기술에 사용되는 스프라이트의 스타일을 결정합니다.",
+  "gmcm.skill_icon_style.silicon_gold": "실리콘 골드",
+  "gmcm.skill_icon_style.kawaii_rose_gold": "카와이 로즈 골드",
 
   // links
   "gmcm.go_to.prfs.skills": "스킬 세팅으로 이동",

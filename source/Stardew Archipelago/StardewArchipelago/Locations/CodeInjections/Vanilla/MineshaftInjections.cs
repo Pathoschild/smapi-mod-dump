@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewArchipelago.Archipelago;
-using StardewArchipelago.Items.Unlocks;
+using StardewArchipelago.Items.Unlocks.Vanilla;
 using StardewArchipelago.Textures;
 using StardewModdingAPI;
 using StardewValley;
@@ -22,7 +22,7 @@ using StardewValley.Menus;
 using StardewValley.Objects;
 using StardewValley.Tools;
 using xTile.Dimensions;
-using Rectangle = Microsoft.Xna.Framework.Rectangle;
+using Rectangle = xTile.Dimensions.Rectangle;
 
 namespace StardewArchipelago.Locations.CodeInjections.Vanilla
 {
@@ -32,13 +32,15 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
         private const string ELEVATOR_LOCATION = "Floor {0} Elevator";
 
         private static IMonitor _monitor;
+        private static ModConfig _config;
         private static ArchipelagoClient _archipelago;
         private static LocationChecker _locationChecker;
         private static Texture2D _miniArchipelagoIcon;
 
-        public static void Initialize(IMonitor monitor, IModHelper modHelper, ArchipelagoClient archipelago, LocationChecker locationChecker)
+        public static void Initialize(IMonitor monitor, IModHelper modHelper, ModConfig config, ArchipelagoClient archipelago, LocationChecker locationChecker)
         {
             _monitor = monitor;
+            _config = config;
             _archipelago = archipelago;
             _locationChecker = locationChecker;
 
@@ -55,7 +57,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                     return true; // run original logic
                 }
 
-                if (__instance.items.Count <= 0)
+                if (__instance.Items.Count <= 0)
                 {
                     return true; // run original logic
                 }
@@ -67,15 +69,14 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                     __instance.performOpenChest();
 
                 Game1.mine.chestConsumed();
-                var obj = __instance.items[0];
-                __instance.items[0] = null;
-                __instance.items.RemoveAt(0);
+                var obj = __instance.Items[0];
+                __instance.Items[0] = null;
+                __instance.Items.RemoveAt(0);
                 __result = true;
-                
+
                 _locationChecker.AddCheckedLocation(string.Format(TREASURE_LOCATION, Game1.mine.mineLevel));
 
                 return false; // don't run original logic
-
             }
             catch (Exception ex)
             {
@@ -93,18 +94,17 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                     return true; // run original logic
                 }
 
-                Game1.player.completeQuest(18);
+                Game1.player.completeQuest("18");
                 Game1.getSteamAchievement("Achievement_TheBottom");
                 var chestPosition = new Vector2(9f, 9f);
                 var items = new List<Item>();
-                items.Add(new MeleeWeapon(8));
-                __instance.overlayObjects[chestPosition] = new Chest(0, items, chestPosition)
+                items.Add(new MeleeWeapon("8"));
+                __instance.overlayObjects[chestPosition] = new Chest(items, chestPosition)
                 {
                     Tint = Color.Pink,
                 };
 
                 return false; // don't run original logic
-
             }
             catch (Exception ex)
             {
@@ -140,12 +140,12 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             }
         }
 
-        public static bool PerformAction_LoadElevatorMenu_Prefix(GameLocation __instance, string action, Farmer who,
-            Location tileLocation, ref bool __result)
+        // public virtual bool performAction(string[] action, Farmer who, Location tileLocation)
+        public static bool PerformAction_LoadElevatorMenu_Prefix(GameLocation __instance, string[] action, Farmer who, Location tileLocation, ref bool __result)
         {
             try
             {
-                if (action == null || !who.IsLocalPlayer || action.Split(' ')[0] != "MineElevator")
+                if (action == null || !who.IsLocalPlayer || action[0] != "MineElevator")
                 {
                     return true; // run original logic
                 }
@@ -153,7 +153,6 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                 CreateElevatorMenuIfUnlocked();
                 __result = true;
                 return false; // don't run original logic
-
             }
             catch (Exception ex)
             {
@@ -162,7 +161,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             }
         }
 
-        public static bool CheckAction_LoadElevatorMenu_Prefix(MineShaft __instance, Location tileLocation, xTile.Dimensions.Rectangle viewport, Farmer who, ref bool __result)
+        public static bool CheckAction_LoadElevatorMenu_Prefix(MineShaft __instance, Location tileLocation, Rectangle viewport, Farmer who, ref bool __result)
         {
             try
             {
@@ -176,7 +175,6 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                 CreateElevatorMenuIfUnlocked();
                 __result = true;
                 return false; // don't run original logic
-
             }
             catch (Exception ex)
             {
@@ -209,6 +207,11 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
         {
             try
             {
+                if (!_config.ShowElevatorIndicators)
+                {
+                    return;
+                }
+
                 foreach (var button in __instance.elevators)
                 {
                     var floor = Convert.ToInt32(button.name);
@@ -223,12 +226,12 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
 
                     var buttonLocation = new Vector2(button.bounds.X, button.bounds.Y);
                     var position = buttonLocation + new Vector2(12f, 12f);
-                    var sourceRectangle = new Rectangle(0, 0, 12, 12);
+                    var sourceRectangle = new Microsoft.Xna.Framework.Rectangle(0, 0, 12, 12);
                     var color = Color.White;
                     var origin = new Vector2(8f, 8f);
                     b.Draw(_miniArchipelagoIcon, position, sourceRectangle, color, 0.0f, origin, 1f, SpriteEffects.None, 0.86f);
                 }
-                
+
                 return;
             }
             catch (Exception ex)

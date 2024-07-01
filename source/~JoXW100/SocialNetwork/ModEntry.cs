@@ -48,18 +48,19 @@ namespace SocialNetwork
             HelperEvents.Monitor = Monitor;
             HelperEvents.Config = Config;
 
-
             myRand = new Random(Guid.NewGuid().GetHashCode());
             Helper.Events.GameLoop.GameLaunched += HelperEvents.GameLoop_GameLaunched;
             Helper.Events.GameLoop.DayStarted += HelperEvents.GameLoop_DayStarted;
             Helper.Events.GameLoop.TimeChanged += HelperEvents.GameLoop_TimeChanged;
         }
+
         public static void OpenFeed()
         {
+            Utils.Monitor.Log("SocialNetwork.OpenFeed", LogLevel.Debug);
+            Game1.activeClickableMenu = new SocialNetworkMenu();
             api.SetAppRunning(true);
             api.SetRunningApp(context.Helper.ModRegistry.ModID);
-            Game1.activeClickableMenu = new SocialNetworkMenu();
-            context.Helper.Events.Display.RenderedWorld += HelperEvents.Display_RenderedWorld;
+            api.OnAfterRenderScreen += HelperEvents.Display_RenderedWorld;
             context.Helper.Events.Input.ButtonPressed += HelperEvents.Input_ButtonPressed;
             context.Helper.Events.Input.ButtonReleased += HelperEvents.Input_ButtonReleased;
         }

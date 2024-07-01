@@ -7,9 +7,9 @@ mods:
    Multiplayer Mod
 
 latest commit:
-   commit 3c9ea542f472bf917bc283312d7f8e9c825e2465
+   commit ceea99f26b837458d7fbd6a87bbd551139eabc4a
    Author: Tráº§n Minh ThÃ´ng <98743684+TMThong@users.noreply.github.com>
-   Date:   Thu Apr 4 19:53:55 2024 +0700
+   Date:   Thu Jun 13 19:57:16 2024 +0700
    
-       -Bug fixes when completing community package
+       add framework for cloud save mod
    

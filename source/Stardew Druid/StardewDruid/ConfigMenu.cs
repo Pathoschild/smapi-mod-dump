@@ -111,6 +111,17 @@ namespace StardewDruid
                 setValue: value => Config.activeJournal = value
             );
 
+            string[] textOption = { "cali", "easy", "medium", "hard", "kiwi", };
+
+            configMenu.AddTextOption(
+                mod: mod.ModManifest,
+                name: () => "Mod Difficulty",
+                tooltip: () => "Select Mod difficulty level. Affects monetary rewards, stamina costs, monster difficulty.",
+                allowedValues: textOption,
+                getValue: () => Config.modDifficulty,
+                setValue: value => Config.modDifficulty = value
+            );
+
             configMenu.AddBoolOption(
                 mod: mod.ModManifest,
                 name: () => "Disable Cast Hands",
@@ -145,17 +156,6 @@ namespace StardewDruid
                 tooltip: () => "Automatically returns set progress to 0 after reconfiguring one save file.",
                 getValue: () => Config.setOnce,
                 setValue: value => Config.setOnce = value
-            );
-
-            string[] textOption = { "easy", "medium", "hard", };
-
-            configMenu.AddTextOption(
-                mod: mod.ModManifest,
-                name: () => "Mod Difficulty",
-                tooltip: () => "Select difficulty level for mod-spawned monsters and other effects.",
-                allowedValues: textOption,
-                getValue: () => Config.combatDifficulty,
-                setValue: value => Config.combatDifficulty = value
             );
 
             configMenu.AddBoolOption(
@@ -312,17 +312,6 @@ namespace StardewDruid
                 interval: 1,
                 getValue: () => Config.meteorBehaviour,
                 setValue: value => Config.meteorBehaviour = value
-            );
-
-            configMenu.AddNumberOption(
-                mod: mod.ModManifest,
-                name: () => "Adjust rewards (Percentage)",
-                tooltip: () => "Adjust monetary rewards that are provided on quest completion.",
-                min: 10,
-                max: 200,
-                interval: 10,
-                getValue: () => Config.adjustRewards,
-                setValue: value => Config.adjustRewards = value
             );
 
             configMenu.AddBoolOption(

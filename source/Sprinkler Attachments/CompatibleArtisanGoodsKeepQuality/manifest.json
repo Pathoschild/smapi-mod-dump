@@ -1,0 +1,21 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Mushymato/StardewMods
+**
+*************************************************/
+
+{
+    "Name": "Compatible Artisan Goods Keep Quality",
+    "Author": "mushymato",
+    "Version": "0.0.1",
+    "MinimumApiVersion": "4.0.0",
+    "MinimumGameVersion": "1.6.0",
+    "Description": "Use SMAPI to automatically patch all machines with keep quality rules, so that no change is required for items added by mods.",
+    "UniqueID": "mushymato.CompatibleArtisanGoodsKeepQuality",
+    "UpdateKeys": [],
+    "EntryDll": "CompatibleArtisanGoodsKeepQuality.dll"
+}

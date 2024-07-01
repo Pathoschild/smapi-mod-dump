@@ -65,6 +65,7 @@ cover, see the file [nonlicensed.txt](nonlicensed.txt).
 * Stardew Valley 1.6
 * [SMAPI (4.0.0+)](https://smapi.io) (the mod framework for Stardew Valley)
 * [Content Patcher (2.0.0+)](https://github.com/Pathoschild/StardewMods/tree/develop/ContentPatcher)
+* (optional, since 1.3.0) [Secret Note Framework](https://github.com/ichortower/SecretNoteFramework), for some extra bits of lore
 
 If you are using the legacy branch (1.5.6) of Stardew Valley, use the 1.1.3
 release of this mod; that is the latest one compatible with the previous game
@@ -88,7 +89,7 @@ features.
 
 
 ## Configuration
-In version 1.2, Hat Mouse Lacey supports seven config settings:
+In version 1.3, Hat Mouse Lacey supports seven config settings:
 
 * `DTF`: true/false (default true). If true, enables some suggestive (but not
   explicit) dialogue. Set to false to keep it G-rated.
@@ -127,7 +128,8 @@ More config settings may be added in future releases.
 ## Roadmap
 * ~~`1.0`: Initial release.~~
 * ~~`1.1`: The last SDV 1.5.6-compatible releases.~~
-* `1.2`: Current release. Compatible with Stardew Valley 1.6.
+* ~~`1.2`: Initial 1.6-compatible releases.~~
+* `1.3`: Current release.
 * Beyond: I plan to continue supporting this mod for a while. Future content
   updates, feature additions, and compatibility improvements are expected.
 
@@ -138,6 +140,8 @@ Newly updated compatibility patches:
 
 * &check; [Stardew Valley Expanded](https://www.nexusmods.com/stardewvalley/mods/3753)\
     Added fixes for things that broke in 1.6. Should still be fully compatible.
+* &check; [East Scarp](https://www.nexusmods.com/stardewvalley/mods/5787)\
+    Fixed a few festival collisions, and repaired one that broke since 1.5.6.
 * &check; [Hat Mouse and Friends](https://www.nexusmods.com/stardewvalley/mods/17364)\
     Implemented compatibility with Doragoun's cooperation. The lore doesn't make sense,
     but you get to have more mice.
@@ -158,8 +162,6 @@ game, but please let me know if they do.
 
 * &check; [Ridgeside Village](https://www.nexusmods.com/stardewvalley/mods/7286)\
     Lacey attends the RSV festivals.
-* &check; [East Scarp](https://www.nexusmods.com/stardewvalley/mods/5787)\
-    I have not tested all additional content, so some problems may remain.
 * &check; Multiple popular map recolors:\
     [DaisyNiko's Earthy Recolour](https://www.nexusmods.com/stardewvalley/mods/5255)\
     [Vibrant Pastoral Recolor](https://www.nexusmods.com/stardewvalley/mods/6367)\
@@ -205,11 +207,6 @@ I also frequent [the Stardew Valley Discord
 server](https://discord.gg/stardewvalley). I'm probably in
 `#making-mods-general` or `#modded-farmers`; you can ask me for help or report
 problems to me there as well.
-
-### I found something weird and/or broken in 1.2/Stardew 1.6!
-Please open a ticket or find me on the Discord server, as above. I am playing
-1.6 for the first time myself, so any bugs caused by new content or game
-changes are also new to me! I will fix them when I can.
 
 ### Is this compatible with \<mod name here\>?
 If it's not listed above, under **Compatibility**, the default answer is

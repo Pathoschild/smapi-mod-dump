@@ -8,9 +8,9 @@ mods:
    Mailbox Menu Continued
 
 latest commit:
-   commit 3076f3bbe4a0e2874c1e8f0abfe56c9dadcc1279
+   commit 272689e5660be7aed21d4a6ee49c168212e2284f
    Author: Karson Nguyen <karsonn@sfu.ca>
-   Date:   Sun May 12 23:08:38 2024 -0700
+   Date:   Thu Jun 13 19:45:18 2024 -0700
    
-       crop watering bubbles - exclude fiber seeds
+       add chinese localization
    

@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Pathoschild.Stardew.FastAnimations.Framework;
+using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Objects;
@@ -19,13 +20,13 @@ namespace Pathoschild.Stardew.FastAnimations.Handlers
 {
     /// <summary>Handles the chest-open animation.</summary>
     /// <remarks>See game logic in <see cref="Chest.checkForAction"/>.</remarks>
-    internal class OpenChestHandler : BaseAnimationHandler, IAnimationHandlerWithObjectList
+    internal sealed class OpenChestHandler : BaseAnimationHandler, IAnimationHandlerWithObjectList
     {
         /*********
         ** Fields
         *********/
         /// <summary>The chests in the current location.</summary>
-        private readonly List<Chest> Chests = new();
+        private readonly List<Chest> Chests = [];
 
 
         /*********
@@ -33,12 +34,25 @@ namespace Pathoschild.Stardew.FastAnimations.Handlers
         *********/
         /// <inheritdoc />
         public OpenChestHandler(float multiplier)
-            : base(multiplier) { }
+            : base(multiplier)
+        {
+            if (Context.IsWorldReady)
+                this.UpdateChestCache(Game1.currentLocation);
+        }
 
         /// <inheritdoc />
-        public override bool IsEnabled(int playerAnimationID)
+        public override bool TryApply(int playerAnimationId)
         {
-            return this.GetOpeningChest() != null;
+            Chest? chest = this.GetOpeningChest();
+
+            return
+                chest != null
+                && this.ApplySkipsWhile(() =>
+                {
+                    chest.updateWhenCurrentLocation(Game1.currentGameTime);
+
+                    return this.IsOpening(chest);
+                });
         }
 
         /// <inheritdoc />
@@ -53,21 +67,10 @@ namespace Pathoschild.Stardew.FastAnimations.Handlers
             this.UpdateChestCache(e.Location);
         }
 
-        /// <inheritdoc />
-        public override void Update(int playerAnimationID)
-        {
-            Chest? chest = this.GetOpeningChest();
-
-            this.ApplySkips(
-                run: () => chest?.updateWhenCurrentLocation(Game1.currentGameTime),
-                until: () => !this.IsOpening(chest)
-            );
-        }
-
 
         /*********
-         ** Private methods
-         *********/
+        ** Private methods
+        *********/
         /// <summary>Get the chest in the current location which is currently opening.</summary>
         private Chest? GetOpeningChest()
         {
@@ -84,9 +87,7 @@ namespace Pathoschild.Stardew.FastAnimations.Handlers
         /// <param name="chest">The chest to check.</param>
         private bool IsOpening(Chest? chest)
         {
-            // Don't fast-forward the decrement to zero, since a farmhand will need to get the
-            // mutex at that point.
-            return chest?.frameCounter.Value > 0;
+            return chest?.frameCounter.Value > 0; // don't fast-forward the decrement to zero, since a farmhand will need to get the mutex at that point
         }
 
         /// <summary>Update the cached list of chests in the current location.</summary>

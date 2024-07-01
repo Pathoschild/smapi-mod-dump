@@ -4,6 +4,7 @@
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <RootNamespace>weizinai.StardewValleyMod.ActiveMenuAnywhere</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -12,13 +13,14 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Assets\"/>
+        <Folder Include="assets\" />
+        <Folder Include="Docs\Screenshots\" />
     </ItemGroup>
 
     <ItemGroup>
         <None Remove="ActiveMenuAnywhere.csproj.DotSettings"/>
     </ItemGroup>
 
-    <Import Project="..\Common\Common.projitems" Label="Shared"/>
+    <Import Project="..\Common.Integration\Common.Integration.projitems" Label="Shared" />
 
 </Project>

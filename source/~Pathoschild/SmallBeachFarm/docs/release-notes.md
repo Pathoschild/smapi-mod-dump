@@ -9,6 +9,18 @@ for queries and analysis.**
 [← back to readme](README.md)
 
 # Release notes
+## 2.5.7
+Released 29 June 2024 for SMAPI 4.0.7 or later.
+
+* Improved translations. Thanks to weizinai (updated Chinese)!
+
+## 2.5.6
+Released 08 June 2024 for SMAPI 4.0.7 or later.
+
+* Added validation error if `assets/data.json` is edited to have invalid data.
+* Raised minimum versions to SMAPI 4.0.7 and Stardew Valley 1.6.4.  
+  _This avoids errors due to breaking changes in earlier 1.6 patches._
+
 ## 2.5.5
 Released 22 May 2024 for SMAPI 4.0.0 or later.
 

@@ -160,7 +160,8 @@ namespace StardewArchipelago.Locations
                 return Enumerable.Empty<string>();
             }
 
-            return _archipelago.Session.Locations.AllMissingLocations.Select(_archipelago.GetLocationName);
+            return _archipelago.Session.Locations.AllMissingLocations.Select(_archipelago.GetLocationName)
+                .Where(x => x != null);
         }
 
         public IEnumerable<string> GetAllLocationsNotChecked(string filter)

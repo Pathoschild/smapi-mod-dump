@@ -67,10 +67,12 @@
     { "Name": "festival_spring13_mainEvent_y2", "Value": "34 73 up" },
     { "Name": "festival_spring24_setUp",     "Value": "5 31 left" },
     { "Name": "festival_spring24_mainEvent", "Value": "5 30 right" },
+    { "Name": "festival_spring24_setUp_y2",     "Value": "5 31 left" },
+    { "Name": "festival_spring24_mainEvent_y2", "Value": "5 30 right" },
     { "Name": "festival_summer11_setUp",     "Value": "21 4 down" },
     { "Name": "festival_summer11_mainEvent", "Value": "39 6 down" },
     { "Name": "festival_summer11_setUp_y2",     "Value": "18 4 down" },
-    { "Name": "festival_summer11_mainEvent_y2", "Value": "18 8 right" },
+    { "Name": "festival_summer11_mainEvent_y2", "Value": "26 4 down" },
     { "Name": "festival_summer28_setUp",     "Value": "48 24 down" },
     { "Name": "festival_summer28_setUp_y2",     "Value": "46 24 down" },
     { "Name": "festival_summer28_mainEvent", "Value": "48 24 down" },
@@ -94,16 +96,23 @@
       "When": {"HasMod|contains=ch20youk.TSCCP": true}},
     // flower dance: Aideen (East Scarp)
     { "Name": "festival_spring24_setUp",     "Value": "5 24 left",
-      "When": {"HasMod|contains=Lemurkat.JacobEloise.CP": true}},
+      "When": {"HasMod|contains=Lemurkat.EastScarpNPCs.CP": true}},
+    { "Name": "festival_spring24_setUp_y2",  "Value": "5 28 left",
+      "When": {"HasMod|contains=Lemurkat.EastScarpNPCs.CP": true}},
     // flower dance: Gunther (SVE) when ES is also here
     { "Name": "festival_spring24_setUp",     "Value": "25 24 left",
-      "When": {"HasMod|contains=Lemurkat.JacobEloise.CP": true,
+      "When": {"HasMod|contains=Lemurkat.EastScarpNPCs.CP": true,
                "HasMod|contains=FlashShifter.StardewValleyExpandedCP": true}},
     // luau: terrain (SVE).
-    { "Name": "festival_summer11_setUp", "Value": "21 5 down",
+    { "Name": "festival_summer11_setUp",     "Value": "21 5 down",
       "When": {"HasMod|contains=FlashShifter.StardewValleyExpandedCP": true}},
-    { "Name": "festival_summer11_setUp_y2", "Value": "17 5 down",
-      "When": {"HasMod|contains=FlashShifter.StardewValleyExpandedCP": true}},
+    // luau 2: Aideen (ES) or SVE
+    { "Name": "festival_summer11_setUp_y2",  "Value": "17 5 down",
+      "When": {"HasMod": "Lemurkat.EastScarpNPCs.CP, FlashShifter.StardewValleyExpandedCP"}},
+    // luau: Aideen, but only without SVE
+    { "Name": "festival_summer11_setUp_y2",  "Value": "17 5 down",
+      "When": {"HasMod|contains=Lemurkat.EastScarpNPCs.CP": true,
+               "HasMod|contains=FlashShifter.StardewValleyExpandedCP": false}},
     // luau soup: Andy/Susan (SVE). Aspen (Aspen)
     { "Name": "festival_summer11_mainEvent", "Value": "26 8 right",
       "When": {"HasMod|contains=FlashShifter.StardewValleyExpandedCP, invatorzen.AspenCP": true}},
@@ -182,6 +191,11 @@
       "FromFile": "data/movie-tastes.json"
     },
     {
+      "LogName": "Spouse Portrait",
+      "Action": "Include",
+      "FromFile": "data/spouse-portrait.json"
+    },
+    {
       "LogName": "Special Features",
       "Action": "Include",
       "FromFile": "data/special-features.json"
@@ -190,6 +204,14 @@
       "LogName": "Miscellaneous",
       "Action": "Include",
       "FromFile": "data/hodgepodge.json"
+    },
+    {
+      "LogName": "Secret Notes",
+      "Action": "Include",
+      "FromFile": "data/secret-notes.json",
+      "When": {
+        "HasMod |contains=ichortower.SecretNoteFramework": true
+      }
     },
     {
       "LogName": "DTF overrides",

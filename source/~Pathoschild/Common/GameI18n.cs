@@ -22,24 +22,6 @@ namespace Pathoschild.Stardew.Common
         /*********
         ** Public methods
         *********/
-        /// <summary>Get the translated name for a big craftable object.</summary>
-        /// <param name="id">The big craftable's unqualified ID.</param>
-        public static string GetBigCraftableName(string id)
-        {
-            if (Game1.bigCraftableData == null)
-                return "(missing translation: game hasn't loaded bigcraftable data yet)";
-
-            try
-            {
-                var data = ItemRegistry.GetData(ItemRegistry.ManuallyQualifyItemId(id, ItemRegistry.type_bigCraftable));
-                return data?.DisplayName ?? $"(missing translation: no bigcraftable with ID '{id}')";
-            }
-            catch
-            {
-                return $"(missing translation: bigcraftable object with ID '{id}' has an invalid format)";
-            }
-        }
-
         /// <summary>Get the translated name for a building.</summary>
         /// <param name="id">The object's unqualified ID.</param>
         public static string GetBuildingName(string id)

@@ -1,0 +1,39 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/congha22/foodstore
+**
+*************************************************/
+
+{
+  "Changes": [
+    {
+      "Action": "EditData",
+      "Target": "Data/BigCraftables",
+      "Entries": {
+        "MT.Objects.MarketTownStorageSmall": {
+          "Name": "Market Town Storage Small",
+          "DisplayName": "Market Town Storage Small",
+          "Description": "Automatically restock table within 5 tiles after an item is sold.",
+    	  "CanBePlacedOutdoors": true,
+          "CanBePlacedIndoors": false,
+          "Texture": "Mods/d5a1lamdtd.MarketTown.Chest/MarketTownStorageSmall",
+          "CustomFields": {
+            "furyx639.ExpandedStorage/Enabled": "true",
+            "furyx639.ExpandedStorage/Capacity": "36"
+          }
+        }
+      }
+    },
+    {
+      "Action": "EditData",
+      "Target": "Data/CraftingRecipes",
+      "Entries": {
+        "MT.Objects.MarketTownStorageSmall": "709 25 787 1 621 5/Field/MT.Objects.MarketTownStorageSmall/true/default/Market Town Storage Small"
+      }
+    }
+  ]
+}

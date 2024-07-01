@@ -99,6 +99,27 @@ namespace FurnitureFramework.Patches
 
 		#endregion
 
+		#region updateRotation
+
+		internal static bool updateRotation(Furniture __instance)
+		{
+			try
+			{
+				if (!FurniturePack.try_get_type(__instance, out FurnitureType? type))
+					return true; // run original logic
+
+				type.updateRotation(__instance);
+				return false; // don't run original logic
+			}
+			catch (Exception ex)
+			{
+				ModEntry.log($"Failed in {nameof(updateRotation)}:\n{ex}", LogLevel.Error);
+				return true; // run original logic
+			}
+		}
+
+		#endregion
+
 		#region clicked
 
 		internal static bool clicked(
@@ -315,13 +336,21 @@ callvirt instance void StardewValley.Objects.Furniture::updateRotation()
 					switch (type.s_type)
 					{
 						case SpecialType.Dresser:
-							return new StorageFurniture(itemId, position.Value);
+							__result = new StorageFurniture(itemId, position.Value);
+							break;
 						case SpecialType.TV:
-							return new TV(itemId, position.Value);
+							__result = new TV(itemId, position.Value);
+							break;
 						case SpecialType.Bed:
-							return new BedFurniture(itemId, position.Value)
-							{ bedType = BedFurniture.BedType.Double };
+							__result = new BedFurniture(itemId, position.Value)
+								{ bedType = type.bed_type };
+							break;
+						case SpecialType.FishTank:
+							__result = new FishTankFurniture(itemId, position.Value);
+							break;
 					}
+
+					__result.modData["FF"] = "true";
 				}
 			}
 			catch (Exception ex)
@@ -330,23 +359,6 @@ callvirt instance void StardewValley.Objects.Furniture::updateRotation()
 			}
 
 			return __result;
-		}
-
-		#endregion
-
-		#region updateRotation
-
-		internal static void updateRotation(Furniture __instance)
-		{
-			try
-			{
-				if (FurniturePack.try_get_type(__instance, out FurnitureType? type))
-					type.updateRotation(__instance);
-			}
-			catch (Exception ex)
-			{
-				ModEntry.log($"Failed in {nameof(updateRotation)}:\n{ex}", LogLevel.Error);
-			}
 		}
 
 		#endregion
@@ -767,6 +779,113 @@ callvirt instance void StardewValley.Objects.Furniture::updateRotation()
 			{
 				ModEntry.log($"Failed in {nameof(canBeRemoved)}:\n{ex}", LogLevel.Error);
 			}
+			return __result;
+		}
+
+		#endregion
+	}
+
+	// To Patch:
+	// checkForAction (post)
+	// updateWhenCurrentLocation (post)
+	// draw (pre)
+
+	internal class FishTankFurniturePreFixes
+	{
+		#pragma warning disable 0414
+		static readonly PatchType patch_type = PatchType.Prefix;
+		static readonly Type base_type = typeof(FishTankFurniture);
+		#pragma warning restore 0414
+
+		#region draw
+
+		internal static bool draw(
+			FishTankFurniture __instance,
+			SpriteBatch spriteBatch, int x, int y, float alpha = 1f
+		)
+		{
+			try
+			{
+				if (!FurniturePack.try_get_type(__instance, out FurnitureType? type))
+					return true; // run original logic
+
+				type.draw(__instance, spriteBatch, x, y, alpha);
+				return false; // don't run original logic
+			}
+			catch (Exception ex)
+			{
+				ModEntry.log($"Failed in {nameof(draw)}:\n{ex}", LogLevel.Error);
+				return true; // run original logic
+			}
+		}
+
+		#endregion
+	}
+
+	internal class FishTankFurniturePostFixes
+	{
+		#pragma warning disable 0414
+		static readonly PatchType patch_type = PatchType.Postfix;
+		static readonly Type base_type = typeof(FishTankFurniture);
+		#pragma warning restore 0414
+
+		#region checkForAction
+
+		internal static bool checkForAction(
+			bool __result, FishTankFurniture __instance,
+			Farmer who, bool justCheckingForActivity = false
+		)
+		{
+			try
+			{
+				if (FurniturePack.try_get_type(__instance, out FurnitureType? type))
+					type.checkForAction(__instance, who, justCheckingForActivity, ref __result);
+			}
+			catch (Exception ex)
+			{
+				ModEntry.log($"Failed in {nameof(checkForAction)}:\n{ex}", LogLevel.Error);
+			}
+
+			return __result;
+		}
+
+		#endregion
+	
+		#region updateWhenCurrentLocation
+
+		internal static void updateWhenCurrentLocation(
+			FishTankFurniture __instance
+		)
+		{
+			try
+			{
+				if (FurniturePack.try_get_type(__instance, out FurnitureType? type))
+					type.updateWhenCurrentLocation(__instance);
+			}
+			catch (Exception ex)
+			{
+				ModEntry.log($"Failed in {nameof(updateWhenCurrentLocation)}:\n{ex}", LogLevel.Error);
+			}
+		}
+
+		#endregion
+	
+		#region GetTankBounds
+
+		internal static Rectangle GetTankBounds(
+			Rectangle __result, FishTankFurniture __instance
+		)
+		{
+			try
+			{
+				if (FurniturePack.try_get_type(__instance, out FurnitureType? type))
+					type.GetTankBounds(__instance, ref __result);
+			}
+			catch (Exception ex)
+			{
+				ModEntry.log($"Failed in {nameof(updateWhenCurrentLocation)}:\n{ex}", LogLevel.Error);
+			}
+
 			return __result;
 		}
 

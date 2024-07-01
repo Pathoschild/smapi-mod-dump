@@ -1,0 +1,10 @@
+{
+    "Config.FreeLockKeybind.Name": "Free Lock Keybind",
+    "Config.MoveSpeed.Name": "Move Speed",
+    "Config.MoveSpeed.Tooltip": "The speed at which the viewport moves. (pixels/frame)",
+    "Config.MoveThreshold.Name": "Move Threshold",
+    "Config.MoveThreshold.Tooltip": "The viewport only moves when the distance of the mouse from the edge of the screen reaches a threshold. (pixels)",
+    
+    "UI.ViewportLocked": "The viewport is locked.",
+    "UI.ViewportUnlocked": "The viewport is unlocked.",
+}

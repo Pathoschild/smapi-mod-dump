@@ -5,6 +5,7 @@
   "config.section.BarnVanillaAnimals.name": "Animais do Jogo Base - Celeiro",
   "config.section.BarnModdedAnimals.name": "Animais de Mods - Celeiro",
   "config.section.Animals.name": "Probabilidade dos Animais",
+  "config.section.Animals.description": "Você não precisa equilibrar os percentuais exatamente em 100%. É uma randomização ponderada. Você define a probabilidade para cada animal, e o código leva em consideração todos os percentuais ao fazer a seleção.",
   "config.page.CoopAnimals.name": "Animais de Galinheiro",
   "config.pagelink.CoopAnimals.name": "Definir Probabilidades dos Animais de Galinheiro",
   "config.page.BarnAnimals.name": "Animais de Celeiro",
@@ -13,6 +14,9 @@
   "config.UpdateRate.description": "A taxa na qual as probabilidades serão atualizadas.",
   "config.UpdateRate.values.OnDayStart": "No Começo do Dia",
   "config.UpdateRate.values.OnLocationChange": "Na Mudança de Lugar/Mapa",
+  "config.WildEggEdit.name": "Sprites dos Ovos Combinando",
+  "config.WildEggEdit.description": "Edita o sprite do ovo selvagem para combinar com o do grande ovo selvagem.",
+  
   "config.FallbackAnimal_Coop.name": "Animal Padrão de Galinheiro",
   "config.FallbackAnimal_Coop.description": "O animal escolhido quando nenhum outro for selecionado através das probabilidades.",
   "config.FallbackAnimal_Coop.values.Chicken": "Galinha",
@@ -23,6 +27,10 @@
   "config.FallbackAnimal_Barn.values.Owl": "Coruja",
   "config.ChosenDailyLuckPercentage.name": "Bônus da Sorte Diária",
   "config.ChosenDailyLuckPercentage.description": "Porcentagem extra para adicionar quando com sorte ou subtrair quando com azar.",
+  "config.ShowCoopAnimal.name": "Mostrar Animal do Galinheiro",
+  "config.ShowCoopAnimal.description": "Mostra o animal escolhido no terminal do SMAPI.",
+  "config.ShowBarnAnimal.name": "Mostrar Animal do Celeiro",
+  "config.ShowBarnAnimal.description": "Mostra o animal escolhido no terminal do SMAPI.",
   //
   "config.ChosenChickenPercentage.name": "Probabilidade da Galinha",
   "config.ChosenDuckPercentage.name": "Probabilidade do Pato",
@@ -44,6 +52,19 @@
   "config.ChosenTurkeyPercentage.name": "Probabilidade do Peru",
   "config.ChosenVelociraptorPercentage.name": "Probabilidade do Velociraptor",
   "config.ChosenZebrafinchPercentage.name": "Probabilidade do Mandarim",
+  "config.ChosenDesertChickenPercentage.name": "Desert Chicken Probabilidade",
+  "config.ChosenSmolChichenPercentage.name": "Smol Chichen Probabilidade",
+  "config.ChosenDodoPercentage.name": "Dodo Probabilidade",
+  "config.ChosenSwanPercentage.name": "Swan Probabilidade",
+  "config.ChosenAmherstsPheasantsPercentage.name": "Amhersts Pheasants Probabilidade",
+  "config.ChosenChaboChickenPercentage.name": "Chabo Chicken Probabilidade",
+  "config.ChosenMandarinDuckPercentage.name": "Mandarin Duck Probabilidade",
+  "config.ChosenOnagadoriChickenPercentage.name": "Onagadori Chicken Probabilidade",
+  "config.ChosenAsilChickenPercentage.name": "Asil Chicken Probabilidade",
+  "config.ChosenDomesticGuineaFowlPercentage.name": "Domestic Guinea Fowl Probabilidade",
+  "config.ChosenBlackSpanishChickenPercentage.name": "Black Spanish Chicken Probabilidade",
+  "config.ChosenRunnerDuckPercentage.name": "Runner Duck Probabilidade",
+  "config.ChosenKadaknathChickenPercentage.name": "Kadaknath Chicken Probabilidade",
   //Barn
   "config.ChosenOstrichPercentage.name": "Probabilidade do Avestruz",
   "config.ChosenEmuPercentage.name": "Probabilidade do Emu",
@@ -54,8 +75,16 @@
   "config.ChosenPeacockPercentage.name": "Probabilidade do Pavão",
   "config.ChosenPepperRexPercentage.name": "Probabilidade do Pepper Rex",
   "config.ChosenWildflourCrowPercentage.name": "Probabilidade do Corvo de Wildflour",
+  "config.ChosenGartenPercentage.name": "Garten Probabilidade",
   //
   "Owl.description": "Uma coruja marrom que vive no celeiro.",
   "LargeWildEgg.name": "Grande Ovo Selvagem",
-  "LargeWildEgg.description": "Um grande ovo encontrado na natureza. Você não sabe qual animal o pôs!"
+  "LargeWildEgg.description": "Um grande ovo encontrado na natureza. Você não sabe qual animal o pôs!",
+  "message.new": "Um novo(a)",
+  "message.hatched": "nasceu",
+  "log.chosenanimal.coop": "Animal Escolhido (Galinheiro)",
+  "log.chosenanimal.barn": "Animal Escolhido (Celeiro)",
+  "log.animalnotfound.coop": "O animal especificado do galinheiro não foi detectado. Por favor, verifique se precisa ser ativado nas configurações do mod ou se há um requisito que não foi atendido",
+"log.animalnotfound.barn": "O animal especificado do celeiro não foi detectado. Por favor, verifique se precisa ser ativado nas configurações do mod ou se há um requisito que não foi atendido"
+
 }

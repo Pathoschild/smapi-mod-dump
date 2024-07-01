@@ -1,3 +1,5 @@
 {
-  "OpenQuickShop": "M"
+  "OpenQuickShop": "M",
+  "AllowToolUpgradeAgain": false,
+  "AllowBuildingAgain": false
 }

@@ -18,6 +18,10 @@ using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.TerrainFeatures;
 
+
+using static NermNermNerm.Stardew.LocalizeFromSource.SdvLocalize;
+
+
 namespace NermNermNerm.Junimatic
 {
     internal class FlooringSet
@@ -52,7 +56,7 @@ namespace NermNermNerm.Junimatic
             }
             else if (!l.IsOutdoors && l.isTilePassable(tile) && l.isTilePlaceable(tile) && l.getObjectAtTile(point.X, point.Y) is null)
             {
-                return "#BARE_FLOOR#";
+                return I("#BARE_FLOOR#");
             }
             else
             {

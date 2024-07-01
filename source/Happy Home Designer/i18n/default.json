@@ -72,5 +72,7 @@
 	"config.Magnify.name": "Magnify",
 	"config.Magnify.desc": "Shows a larger preview tooltip, to make detail on large items more visible.",
 	"config.MagnifyScale.name": "Magnify Scale",
-	"config.MagnifyScale.desc": "Size multiplier for the preview tooltip. Does nothing if Magnify is disabled."
+	"config.MagnifyScale.desc": "Size multiplier for the preview tooltip. Does nothing if Magnify is disabled.",
+	"config.GMCMButton.name": "GMCM Button",
+	"config.GMCMButton.desc": "Whether or not to display the config button in the catalogue menu."
 }

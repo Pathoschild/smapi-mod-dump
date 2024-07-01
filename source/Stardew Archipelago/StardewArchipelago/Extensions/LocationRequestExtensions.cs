@@ -48,14 +48,14 @@ namespace StardewArchipelago.Extensions
             {
                 return (locationRequest, warpPointTarget);
             }
-            
+
             foreach (var warp in origin.warps)
             {
                 if (warp.TargetX != warpPointTarget.X || warp.TargetY != warpPointTarget.Y)
                 {
                     continue;
                 }
-                
+
                 foreach (var building in Game1.getFarm().buildings)
                 {
                     if (building is not GreenhouseBuilding greenhouse)
@@ -125,7 +125,10 @@ namespace StardewArchipelago.Extensions
                         break;
                 }
 
-                return farm.GetMapPropertyPosition("FarmCaveEntry", warpPointTarget.X, warpPointTarget.Y);
+                if (farm.TryGetMapPropertyAs("FarmCaveEntry", out Point farmCavePoint))
+                {
+                    return farmCavePoint;
+                }
             }
 
             return warpPointTarget;
@@ -145,7 +148,10 @@ namespace StardewArchipelago.Extensions
                         break;
                 }
 
-                return farm.GetMapPropertyPosition("ForestEntry", warpPointTarget.X, warpPointTarget.Y);
+                if (farm.TryGetMapPropertyAs("ForestEntry", out Point forestPoint))
+                {
+                    return forestPoint;
+                }
             }
 
             return warpPointTarget;
@@ -155,7 +161,10 @@ namespace StardewArchipelago.Extensions
         {
             if (origin.NameOrUniqueName == "BusStop" && warpPointTarget.X == 79 && warpPointTarget.Y == 17)
             {
-                return farm.GetMapPropertyPosition("BusStopEntry", warpPointTarget.X, warpPointTarget.Y);
+                if (farm.TryGetMapPropertyAs("BusStopEntry", out Point busStopPoint))
+                {
+                    return busStopPoint;
+                }
             }
 
             return warpPointTarget;
@@ -165,7 +174,10 @@ namespace StardewArchipelago.Extensions
         {
             if (origin.NameOrUniqueName == "Backwoods" && warpPointTarget.X == 40 && warpPointTarget.Y == 0)
             {
-                return farm.GetMapPropertyPosition("BackwoodsEntry", warpPointTarget.X, warpPointTarget.Y);
+                if (farm.TryGetMapPropertyAs("BackwoodsEntry", out Point backwoodsPoint))
+                {
+                    return backwoodsPoint;
+                }
             }
 
             return warpPointTarget;

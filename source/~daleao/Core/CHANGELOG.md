@@ -8,11 +8,55 @@ for queries and analysis.**
 
 # CORE Changelog
 
+## 1.3.1
+
+### Fixed
+
+* Fixed Null-Reference exception when taking damage from a source that is not a monster.
+
+<sup><sup>[🔼 Back to top](#core-changelog)</sup></sup>
+
+## 1.3.0
+
+### Added
+
+* Added Blind status.
+* Added API.
+* Added README.md
+
+### Fixed
+
+* Fixed Fear status never actually counting down.
+
+<sup><sup>[🔼 Back to top](#core-changelog)</sup></sup>
+
+## 1.2.0
+
+### Added
+
+* Added functionality for new [Enchantments](../Enchantments) mod.
+
+### Changed
+
+* OutOfCombat counter now runs continuously (no longer spams Enabled/Disabled) in the console.
+
+<sup><sup>[🔼 Back to top](#core-changelog)</sup></sup>
+
+## 1.1.2
+
+### Changed
+
+* Removed some drops from Tiger Slime Ball loot table.
+
+<sup><sup>[🔼 Back to top](#core-changelog)</sup></sup>
+
 ## 1.1.1
 
 ### Added
 
 * Added `SObject.IsForage` extension.
+
+<sup><sup>[🔼 Back to top](#core-changelog)</sup></sup>
 
 ## 1.1.0
 

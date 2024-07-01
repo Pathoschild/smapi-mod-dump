@@ -24,7 +24,7 @@ using StardewModdingAPI;
 
 using SObject = StardewValley.Object;
 
-namespace CustomTapperFramework;
+namespace Selph.StardewMods.MachineTerrainFramework;
 
 // Contains utils for handling logic specific to water pot. The rest lives in CustomCrabPotUtils.
 public static class WaterIndoorPotUtils {

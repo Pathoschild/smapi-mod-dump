@@ -9,7 +9,6 @@
 *************************************************/
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
@@ -128,7 +127,7 @@ namespace StardewArchipelago.Items.Mail
                     return true; // run original logic
                 }
 
-                var mailData = Game1.content.Load<Dictionary<string, string>>("Data\\mail");
+                var mailData = DataLoader.Mail(Game1.content);
                 if (!mailData.ContainsKey(nextLetter))
                 {
                     mailData.Add(nextLetter, _state.LettersGenerated[nextLetter]);
@@ -184,7 +183,7 @@ namespace StardewArchipelago.Items.Mail
                 {
                     return true; // run original logic
                 }
-                
+
                 var nextLetter = mailbox.First();
                 if (!nextLetter.Equals(GoalCodeInjection.MASTER_ANGLER_LETTER))
                 {
@@ -204,11 +203,11 @@ namespace StardewArchipelago.Items.Mail
         private static void ReplaceStardropWithSeafoamPudding()
         {
             const string stardropText = "stardrop";
-            const string stardropItemText = "%item object 434 1 %%";
+            const string stardropItemText = "%item id (O)434 1 %%";
             const string puddingText = "pudding";
-            const string seafoamPuddingItemText = "%item object 265 10 %%";
+            const string seafoamPuddingItemText = "%item id (O)265 10 %%";
 
-            var mailContent = Game1.content.Load<Dictionary<string, string>>("Data\\mail");
+            var mailContent = DataLoader.Mail(Game1.content);
             var masterAnglerLetterContent = mailContent[GoalCodeInjection.MASTER_ANGLER_LETTER];
             mailContent[GoalCodeInjection.MASTER_ANGLER_LETTER] = masterAnglerLetterContent
                 .Replace(stardropItemText, seafoamPuddingItemText)
@@ -257,7 +256,7 @@ namespace StardewArchipelago.Items.Mail
             var replacementText = $"We will send {scoutedItemName} to {scoutedPlayer} to commemorate your achievement.";
             const string recipeReplacementText = "";
 
-            var mailContent = Game1.content.Load<Dictionary<string, string>>("Data\\mail");
+            var mailContent = DataLoader.Mail(Game1.content);
             var masterAnglerLetterContent = mailContent[RARECROW_SOCIETY_LETTER];
             mailContent[RARECROW_SOCIETY_LETTER] = masterAnglerLetterContent
                 .Replace(deluxeScarecrowRecipeItemText, recipeReplacementText)

@@ -41,11 +41,10 @@ namespace Pathoschild.Stardew.DataLayers.Layers.Crops
         {
             const string layerId = "WateredCrops";
 
-            this.Legend = new[]
-            {
+            this.Legend = [
                this.Watered = new LegendEntry(I18n.Keys.CropWater_Watered, colors.Get(layerId, "Watered", Color.Green)),
                this.Dry = new LegendEntry(I18n.Keys.CropWater_Dry, colors.Get(layerId, "Dry", Color.Red))
-            };
+            ];
         }
 
         /// <summary>Get the updated data layer tiles.</summary>
@@ -55,11 +54,10 @@ namespace Pathoschild.Stardew.DataLayers.Layers.Crops
         /// <param name="cursorTile">The tile position under the cursor.</param>
         public override TileGroup[] Update(GameLocation location, in Rectangle visibleArea, in Vector2[] visibleTiles, in Vector2 cursorTile)
         {
-            return new[]
-            {
+            return [
                 this.GetGroup(location, visibleTiles, HoeDirt.watered, this.Watered),
                 this.GetGroup(location, visibleTiles, HoeDirt.dry, this.Dry)
-            };
+            ];
         }
 
 

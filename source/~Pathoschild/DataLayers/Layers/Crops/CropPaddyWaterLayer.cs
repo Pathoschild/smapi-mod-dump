@@ -53,11 +53,10 @@ namespace Pathoschild.Stardew.DataLayers.Layers.Crops
         {
             const string layerId = "WaterForPaddyCrops";
 
-            this.Legend = new[]
-            {
+            this.Legend = [
                 this.InRange = new LegendEntry(I18n.Keys.CropPaddyWater_InRange, colors.Get(layerId, "InRange", Color.Green)),
                 this.NotInRange = new LegendEntry(I18n.Keys.CropPaddyWater_NotInRange, colors.Get(layerId, "NotInRange", Color.Red))
-            };
+            ];
         }
 
         /// <summary>Get the updated data layer tiles.</summary>
@@ -75,12 +74,11 @@ namespace Pathoschild.Stardew.DataLayers.Layers.Crops
             }
 
             // get paddy tiles
-            HashSet<Vector2> tilesInRange = new HashSet<Vector2>(this.GetTilesInRange(location, visibleTiles));
-            return new[]
-            {
+            HashSet<Vector2> tilesInRange = [..this.GetTilesInRange(location, visibleTiles)];
+            return [
                 new TileGroup(tilesInRange.Select(pos => new TileData(pos, this.InRange)), outerBorderColor: this.InRange.Color),
                 new TileGroup(visibleTiles.Where(pos => !tilesInRange.Contains(pos)).Select(pos => new TileData(pos, this.NotInRange)))
-            };
+            ];
         }
 
 

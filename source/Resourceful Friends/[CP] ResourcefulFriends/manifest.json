@@ -1,0 +1,31 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/itsbenter/ResourcefulFriends
+**
+*************************************************/
+
+{
+   "$schema": "https://smapi.io/schemas/manifest.json",
+   "Name": "[CP] Resourceful Friends",
+   "Author": "ItsBenter",
+   "Version": "1.0.0",
+   "Description": "Adds five new farm animals and an object for fish pond. Expanding ways to obtain resources in-game.",
+   "UniqueID": "ItsBenter.ResourcefulFriends.CP",
+   "MinimumApiVersion": "4.0.0",
+   "UpdateKeys": [
+      "Nexus:23227"
+   ],
+   "ContentPackFor": {
+      "UniqueID": "Pathoschild.ContentPatcher"
+   },
+   "Dependencies": [
+      {
+         "UniqueID": "mistyspring.ItemExtensions",
+         "IsRequired": true
+      }
+   ]
+}

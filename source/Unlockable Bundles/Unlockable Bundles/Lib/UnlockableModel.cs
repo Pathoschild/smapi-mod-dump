@@ -47,7 +47,10 @@ namespace Unlockable_Bundles.Lib
         public List<Vector2> AlternativeShopPositions = new();
         public string ShopTexture = null;
         public string ShopAnimation = null;
-        public int ShopTextureWidth = 32;
+        public int? ShopTextureWidth = null; //The width of the image
+        public int? ShopTextureHeight = null;
+        public Vector2 ShopDrawDimensions;
+        public Vector2 ShopDrawOffset;
         public string ShopEvent = null;
         public ShopType ShopType = ShopType.Dialogue;
         public bool? InstantShopRemoval = null;
@@ -86,6 +89,8 @@ namespace Unlockable_Bundles.Lib
         public Vector2 EditMapPosition;
         public string EditMapLocation = "";
 
+        public List<PlacementRequirement> SpecialPlacementRequirements = new(); //Not a NetField, only relevant for host
+
         public static explicit operator UnlockableModel(Unlockable v)
         {
             return new UnlockableModel() {
@@ -106,6 +111,9 @@ namespace Unlockable_Bundles.Lib
                 ShopTexture = v.ShopTexture,
                 ShopAnimation = v.ShopAnimation,
                 ShopTextureWidth = v.ShopTextureWidth,
+                ShopTextureHeight = v.ShopTextureHeight,
+                ShopDrawDimensions = v.ShopDrawDimensions,
+                ShopDrawOffset = v.ShopDrawOffset,
                 ShopEvent = v.ShopEvent,
                 ShopType = v.ShopType,
                 InstantShopRemoval = v.InstantShopRemoval,
@@ -141,8 +149,10 @@ namespace Unlockable_Bundles.Lib
                 EditMap = v.EditMap,
                 EditMapMode = v.EditMapMode,
                 EditMapPosition = v.EditMapPosition,
-                EditMapLocation = v.EditMapLocation
-            };
+                EditMapLocation = v.EditMapLocation,
+
+                SpecialPlacementRequirements = PlacementRequirement.CloneList(v.SpecialPlacementRequirements)
+        };
         }
         public void applyDefaultValues()
         {
@@ -152,6 +162,10 @@ namespace Unlockable_Bundles.Lib
             ShopTexture = defaultShopTexture();
             ShopEvent = defaultEventScript();
             ShopAnimation = defaultShopAnimation();
+            ShopTextureWidth = defaultShopTextureWidth();
+            ShopTextureHeight = defaultShopTextureHeight();
+            ShopDrawDimensions = defaultShopDrawDimensions();
+            ShopDrawOffset = defaultShopDrawOffset();
             InstantShopRemoval = defaultShopRemoval();
             JunimoNoteTexture = defaultJunimoNoteTexture();
 
@@ -161,7 +175,61 @@ namespace Unlockable_Bundles.Lib
             InteractionSound = defaultInteractionSound();
 
             TimeUntilChomp = defaultTimeUntilChomp();
-            defaultSpeechbubbleOffset();
+
+            applySpeechbubbleOffset();
+
+            ShopType = overwriteShopType();
+        }
+
+        private Vector2 defaultShopDrawOffset()
+        {
+            if (ShopDrawOffset != Vector2.Zero)
+                return ShopDrawOffset;
+
+            return ShopType switch {
+                ShopType.CCMagicBook => new Vector2(-16, -32),
+                _ => new Vector2(0, 0)
+            };
+        }
+
+        private Vector2 defaultShopDrawDimensions()
+        {
+            if (ShopDrawDimensions != Vector2.Zero)
+                return ShopDrawDimensions;
+
+            return ShopType switch {
+                ShopType.CCMagicBook => new Vector2(96, 192),
+                _ => new Vector2(64, 128)
+            };     
+        }
+
+        private int? defaultShopTextureWidth()
+        {
+            if(ShopTextureWidth is not null)
+                return ShopTextureWidth;
+
+            return ShopType switch {
+                ShopType.CCMagicBook => 48,
+                _ => 32
+            };
+        }
+        private int? defaultShopTextureHeight()
+        {
+            if (ShopTextureHeight is not null)
+                return ShopTextureHeight;
+
+            return ShopType switch {
+                _ => ShopTextureWidth * 2
+            };
+        }
+
+        private ShopType overwriteShopType()
+        {
+            return ShopType switch {
+                ShopType.AltCCBundle => ShopType.CCBundle,
+                ShopType.CCMagicBook => ShopType.CCBundle,
+                _ => ShopType
+            };
         }
 
         private string defaultBundleDescription()
@@ -193,6 +261,7 @@ namespace Unlockable_Bundles.Lib
                 ShopType.Dialogue => "UnlockableBundles/ShopTextures/Sign",
                 ShopType.CCBundle => "UnlockableBundles/ShopTextures/CCBundle",
                 ShopType.AltCCBundle => "UnlockableBundles/ShopTextures/Scroll",
+                ShopType.CCMagicBook => "UnlockableBundles/ShopTextures/MagicBook",
                 ShopType.SpeechBubble => "UnlockableBundles/ShopTextures/Blue_Junimo",
                 ShopType.ParrotPerch => "UnlockableBundles/ShopTextures/ParrotPerch",
                 _ => ""
@@ -207,6 +276,7 @@ namespace Unlockable_Bundles.Lib
 
             return ShopType switch {
                 ShopType.CCBundle or ShopType.AltCCBundle => "0-7@100,8@1000",
+                ShopType.CCMagicBook => "0-23@100",
                 ShopType.SpeechBubble => "0-10@100,11@500",
                 _ => ""
             };
@@ -230,6 +300,7 @@ namespace Unlockable_Bundles.Lib
 
             return ShopType switch {
                 ShopType.AltCCBundle => "UnlockableBundles/UI/AlternativeJunimoNote",
+                ShopType.CCMagicBook => "UnlockableBundles/UI/MagicBookJunimoNote",
                 _ => ""
             };
         }
@@ -241,6 +312,7 @@ namespace Unlockable_Bundles.Lib
 
             return ShopType switch {
                 ShopType.ParrotPerch => true,
+                ShopType.CCMagicBook => true,
                 _ => false
             };
         }
@@ -271,13 +343,14 @@ namespace Unlockable_Bundles.Lib
                 return InteractionSound;
 
             return ShopType switch {
+                ShopType.CCMagicBook => "qi_shop",
                 ShopType.ParrotPerch => "parrot_squawk",
                 ShopType.SpeechBubble => "junimoMeep1",
                 _ => ""
             };
         }
 
-        private void defaultSpeechbubbleOffset()
+        private void applySpeechbubbleOffset()
         {
             if (ShopType == ShopType.SpeechBubble)
                 SpeechBubbleOffset += new Vector2(0, 100);
@@ -301,7 +374,7 @@ namespace Unlockable_Bundles.Lib
                 return ShopEvent;
 
             return ShopType switch {
-                ShopType.CCBundle or ShopType.AltCCBundle or ShopType.ParrotPerch => "none",
+                ShopType.CCBundle or ShopType.AltCCBundle or ShopType.CCMagicBook or ShopType.ParrotPerch => "none",
                 _ => "carpentry"
             };
         }

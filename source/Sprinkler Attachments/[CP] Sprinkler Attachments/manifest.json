@@ -1,0 +1,31 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Mushymato/StardewMods
+**
+*************************************************/
+
+{
+    "Name": "[CP] Sprinkler Attachments",
+    "Author": "mushymato",
+    "Version": "1.0.3",
+    "MinimumApiVersion": "4.0.0",
+    "MinimumGameVersion": "1.6.0",
+    "Description": "Add items supported by mushymato.SprinklerAttachments.",
+    "UniqueID": "mushymato.SprinklerAttachments.CP",
+    "UpdateKeys": [
+        "Nexus:25326"
+    ],
+    "ContentPackFor": {
+        "UniqueID": "Pathoschild.ContentPatcher"
+    },
+    "Dependencies": [
+        {
+            "UniqueID": "mushymato.SprinklerAttachments",
+            "MinimumVersion": "1.0.3"
+        }
+    ]
+}

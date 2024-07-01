@@ -1,0 +1,8 @@
+{
+  "ModEnabled": true,
+  "ToggleKey": "Insert",
+  "ProgressiveMode": true,
+  "SkipKey": "P",
+  "RandomSkip": false,
+  "StopKey": "O"
+}

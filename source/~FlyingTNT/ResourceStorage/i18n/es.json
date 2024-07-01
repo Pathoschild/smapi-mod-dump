@@ -26,5 +26,9 @@
   "take": "Tomar",
   "added-x-y": "Añadido {0} {1} al almacenamiento",
   "removed-x-y": "Tomado {0} {1} del almacenamiento",
-  "resources": "Recursos"
+  "resources": "Recursos",
+  "sort-0": "Nombre (Asc)",
+  "sort-1": "Nombre (Desc)",
+  "sort-2": "Cantidad (Asc)",
+  "sort-3": "Cantidad (Desc)"
 }

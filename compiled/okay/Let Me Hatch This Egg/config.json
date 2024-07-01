@@ -1,0 +1,10 @@
+{
+  "EditEggListByName": true,
+  "EditBirthText": true,
+  "ShowEdits": false,
+  "AlternateBirthText": false,
+  "ShowAnimalKeys": false,
+  "CloneVanillaEggs": false,
+  "DinoEggAsArtifact": false,
+  "CloneMachineRules": false
+}

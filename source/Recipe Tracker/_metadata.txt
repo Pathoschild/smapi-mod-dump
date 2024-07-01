@@ -6,11 +6,9 @@ mods:
    Recipe Tracker
 
 latest commit:
-   commit 08c03a64d2643562c4cacdb760e2be1dade7aaf2
-   Author: Max Balushkin <maximillianmor@gmail.com>
-   Date:   Sat May 4 18:09:05 2024 +0400
+   commit eee2713c33424b0dca11c96aa92b3612f2fb471c
+   Author: Nox Kimaera <maximillianmor@gmail.com>
+   Date:   Sun Jun 2 22:19:30 2024 +0400
    
-       Adds quest tracking (#5)
-       
-       * Adds quest tracking
+       1.1.0: Fixes bugs in bundle tracking, improves error robustness in bundles
    

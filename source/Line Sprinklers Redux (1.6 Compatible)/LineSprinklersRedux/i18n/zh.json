@@ -1,0 +1,26 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/rtrox/LineSprinklersRedux
+**
+*************************************************/
+
+{
+  // Basic
+  "LineSprinkler.DisplayName": "线形洒水器",
+  "LineSprinkler.Description": "每天早晨沿直线浇灌 4 个地块。",
+  // Quality
+  "QualityLineSprinkler.DisplayName": "优质线形洒水器",
+  "QualityLineSprinkler.Description": "每天早晨沿直线浇灌 8 个地块。",
+  // Iridium
+  "IridiumLineSprinkler.DisplayName": "铱制线形洒水器",
+  "IridiumLineSprinkler.Description": "每天早晨沿直线浇灌 24 个地块。",
+
+  // Config
+  "Controls": "控制",
+  "RotateSprinklerKeybind": "旋转洒水器",
+  "RotateSprinklerKeybind.Tooltip": "按住洒水器或将鼠标悬停在已放置的洒水器上方时，按下此键会将其向右旋转 90°。"
+}

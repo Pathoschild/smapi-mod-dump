@@ -1,0 +1,10 @@
+{
+  "Name": "Guniism's Unicycle",
+  "Author": "Guniism",
+  "Version": "1.0.2",
+  "Description": "An electric Unicycle in your inventory to increase speed.",
+  "UniqueID": "Guniism.GuniismUnicycle",
+  "EntryDll": "GuniismUnicycle.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:24876" ]
+}

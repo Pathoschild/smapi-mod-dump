@@ -17,7 +17,7 @@ namespace Pathoschild.Stardew.FastAnimations.Handlers
 {
     /// <summary>Handles the fishing animation.</summary>
     /// <remarks>See game logic in <see cref="StardewValley.Tools.FishingRod.beginUsing"/>.</remarks>
-    internal class FishingHandler : BaseAnimationHandler
+    internal sealed class FishingHandler : BaseAnimationHandler
     {
         /*********
         ** Public methods
@@ -27,18 +27,13 @@ namespace Pathoschild.Stardew.FastAnimations.Handlers
             : base(multiplier) { }
 
         /// <inheritdoc />
-        public override bool IsEnabled(int playerAnimationID)
+        public override bool TryApply(int playerAnimationId)
         {
             return
                 Context.IsWorldReady
                 && Game1.player.UsingTool
-                && Game1.player.CurrentTool is FishingRod { isTimingCast: false, isFishing: false };
-        }
-
-        /// <inheritdoc />
-        public override void Update(int playerAnimationID)
-        {
-            this.SpeedUpPlayer();
+                && Game1.player.CurrentTool is FishingRod { isTimingCast: false, isFishing: false }
+                && this.SpeedUpPlayer();
         }
     }
 }

@@ -14,7 +14,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewArchipelago.Archipelago;
-using StardewArchipelago.Constants;
+using StardewArchipelago.Constants.Vanilla;
 using StardewArchipelago.Extensions;
 using StardewArchipelago.Locations;
 using StardewArchipelago.Locations.CodeInjections.Vanilla;
@@ -25,7 +25,6 @@ using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
 using StardewValley.Quests;
-using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 namespace StardewArchipelago.GameModifications.Tooltips
 {
@@ -33,6 +32,7 @@ namespace StardewArchipelago.GameModifications.Tooltips
     {
         private static IMonitor _monitor;
         private static IModHelper _modHelper;
+        private static ModConfig _config;
         private static ArchipelagoClient _archipelago;
         private static LocationChecker _locationChecker;
         private static Friends _friends;
@@ -40,10 +40,11 @@ namespace StardewArchipelago.GameModifications.Tooltips
         private static Texture2D _miniArchipelagoIcon;
         private static Texture2D _travelingMerchantIcon;
 
-        public static void Initialize(IMonitor monitor, IModHelper modHelper, ArchipelagoClient archipelago, LocationChecker locationChecker, Friends friends)
+        public static void Initialize(IMonitor monitor, IModHelper modHelper, ModConfig config, ArchipelagoClient archipelago, LocationChecker locationChecker, Friends friends)
         {
             _monitor = monitor;
             _modHelper = modHelper;
+            _config = config;
             _archipelago = archipelago;
             _locationChecker = locationChecker;
             _friends = friends;
@@ -118,32 +119,39 @@ namespace StardewArchipelago.GameModifications.Tooltips
         private static void DrawCalendarIndicators(Billboard billBoard, SpriteBatch spriteBatch)
         {
             var calendarDays = billBoard.calendarDays;
-            for (int i = 0; i < calendarDays.Count; i++)
+            var birthdays = billBoard.GetBirthdays();
+            for (var i = 0; i < calendarDays.Count; i++)
             {
-                DrawAPIconIfNeeded(spriteBatch, calendarDays, i);
+                var birthdaysToday = birthdays.GetValueOrDefault(i + 1) ?? new List<NPC>();
+                DrawAPIconIfNeeded(birthdaysToday, spriteBatch, calendarDays, i);
                 DrawTravelingMerchantIconIfNeeded(spriteBatch, calendarDays, i);
             }
         }
 
-        private static void DrawAPIconIfNeeded(SpriteBatch b, List<ClickableTextureComponent> calendarDays, int i)
+        private static void DrawAPIconIfNeeded(List<NPC> birthdaysToday, SpriteBatch b, List<ClickableTextureComponent> calendarDays, int index)
         {
-            var festivalName = calendarDays[i].name;
-            var birthdayName = calendarDays[i].hoverText;
-
-            if (!GetMissingFestivalChecks(festivalName, i).Any() && !GetMissingNpcChecks(birthdayName).Any() && !GetMissingTravelingCartChecks(i).Any())
+            if (!_config.ShowCalendarIndicators)
             {
                 return;
             }
 
-            var calendarDayPosition = new Vector2(calendarDays[i].bounds.X, calendarDays[i].bounds.Y);
-            var logoPosition = calendarDayPosition + new Vector2(calendarDays[i].bounds.Width - 24 - 4, 4f);
+            var day = index + 1;
+            var dayComponent = calendarDays[index];
+
+            if (!GetMissingFestivalChecks(day).Any() && !GetMissingNpcChecks(birthdaysToday).Any() && !GetMissingTravelingCartChecks(day).Any())
+            {
+                return;
+            }
+
+            var calendarDayPosition = new Vector2(dayComponent.bounds.X, dayComponent.bounds.Y);
+            var logoPosition = calendarDayPosition + new Vector2(dayComponent.bounds.Width - 24 - 4, 4f);
             var sourceRectangle = new Rectangle(0, 0, 24, 24);
             b.Draw(_miniArchipelagoIcon, logoPosition, sourceRectangle, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);
         }
 
-        private static void DrawTravelingMerchantIconIfNeeded(SpriteBatch b, List<ClickableTextureComponent> calendarDays, int i)
+        private static void DrawTravelingMerchantIconIfNeeded(SpriteBatch b, List<ClickableTextureComponent> calendarDays, int index)
         {
-            var day = i + 1;
+            var day = index + 1;
             var dayOfWeek = Days.GetDayOfWeekName(day);
             var merchantDayItem = string.Format(TravelingMerchantInjections.AP_MERCHANT_DAYS, dayOfWeek);
             if (!_archipelago.HasReceivedItem(merchantDayItem))
@@ -151,8 +159,8 @@ namespace StardewArchipelago.GameModifications.Tooltips
                 return;
             }
 
-            var calendarDayPosition = new Vector2(calendarDays[i].bounds.X, calendarDays[i].bounds.Y);
-            var logoPosition = calendarDayPosition + new Vector2(4, calendarDays[i].bounds.Height - 24 - 4);
+            var calendarDayPosition = new Vector2(calendarDays[index].bounds.X, calendarDays[index].bounds.Y);
+            var logoPosition = calendarDayPosition + new Vector2(4, calendarDays[index].bounds.Height - 24 - 4);
             var sourceRectangle = new Rectangle(0, 0, 12, 12);
             b.Draw(_travelingMerchantIcon, logoPosition, sourceRectangle, Color.White, 0f, Vector2.Zero, 2f, SpriteEffects.None, 1f);
         }
@@ -168,37 +176,44 @@ namespace StardewArchipelago.GameModifications.Tooltips
                     return;
                 }
 
+                if (!_config.ShowCalendarIndicators)
+                {
+                    return;
+                }
+
                 // private string hoverText = "";
                 var hoverTextField = _modHelper.Reflection.GetField<string>(__instance, "hoverText");
                 var hoverText = hoverTextField.GetValue();
 
-                for (int i = 0; i < __instance.calendarDays.Count; i++)
+                var birthdays = __instance.GetBirthdays();
+
+                for (var i = 0; i < __instance.calendarDays.Count; i++)
                 {
+                    var day = i + 1;
                     if (!__instance.calendarDays[i].bounds.Contains(x, y))
                     {
                         continue;
                     }
 
-                    var festivalName = __instance.calendarDays[i].name;
-                    var birthdayName = __instance.calendarDays[i].hoverText;
+                    var birthdaysToday = birthdays.GetValueOrDefault(day) ?? new List<NPC>();
 
-                    var missingFestivalChecks = GetMissingFestivalChecks(festivalName, i);
-                    var missingNpcChecks = GetMissingNpcChecks(birthdayName);
-                    var missingCartChecks = GetMissingTravelingCartChecks(i);
+                    var missingFestivalChecks = GetMissingFestivalChecks(day);
+                    var missingNpcChecks = GetMissingNpcChecks(birthdaysToday);
+                    var missingCartChecks = GetMissingTravelingCartChecks(day);
 
                     foreach (var location in missingFestivalChecks)
                     {
-                        hoverText += $"{Environment.NewLine}{location}";
+                        hoverText += $"{Environment.NewLine}- {location}";
                     }
 
                     foreach (var location in missingNpcChecks)
                     {
-                        hoverText += $"{Environment.NewLine}{location.TurnHeartsIntoStardewHearts()}";
+                        hoverText += $"{Environment.NewLine}- {location.TurnHeartsIntoStardewHearts()}";
                     }
 
                     foreach (var location in missingCartChecks)
                     {
-                        hoverText += $"{Environment.NewLine}{location}";
+                        hoverText += $"{Environment.NewLine}- {location}";
                     }
                 }
 
@@ -212,49 +227,17 @@ namespace StardewArchipelago.GameModifications.Tooltips
             }
         }
 
-        private static IEnumerable<string> GetMissingFestivalChecks(string festivalName, int day)
+        private static IEnumerable<string> GetMissingFestivalChecks(int day)
         {
-            if (Game1.currentSeason.Equals("winter") && day >= 14 && day <= 16)
-            {
-                var festivalDay = FestivalLocationNames.NIGHT_MARKET_ALL;
-                foreach (var location in FestivalLocationNames.LocationsByFestival[festivalDay])
-                {
-                    if (_locationChecker.IsLocationMissing(location))
-                    {
-                        yield return location;
-                    }
-                }
+            var season = Game1.currentSeason;
+            var festivalIdentifier = FestivalLocationNames.FestivalIdentifier(Game1.season, day);
 
-                if (day == 14)
-                {
-                    festivalDay = FestivalLocationNames.NIGHT_MARKET_15;
-                }
-                else if (day == 15)
-                {
-                    festivalDay = FestivalLocationNames.NIGHT_MARKET_16;
-                }
-                else if (day == 16)
-                {
-                    festivalDay = FestivalLocationNames.NIGHT_MARKET_17;
-                }
-
-                foreach (var location in FestivalLocationNames.LocationsByFestival[festivalDay])
-                {
-                    if (_locationChecker.IsLocationMissing(location))
-                    {
-                        yield return location;
-                    }
-                }
-
-                yield break;
-            }
-
-            if (!FestivalLocationNames.LocationsByFestival.ContainsKey(festivalName))
+            if (!FestivalLocationNames.LocationsByFestival.ContainsKey(festivalIdentifier))
             {
                 yield break;
             }
 
-            var festivalLocations = FestivalLocationNames.LocationsByFestival[festivalName];
+            var festivalLocations = FestivalLocationNames.LocationsByFestival[festivalIdentifier];
             foreach (var location in festivalLocations)
             {
                 if (_locationChecker.IsLocationMissing(location))
@@ -264,19 +247,25 @@ namespace StardewArchipelago.GameModifications.Tooltips
             }
         }
 
-        private static IEnumerable<string> GetMissingNpcChecks(string npcName)
+        private static IEnumerable<string> GetMissingNpcChecks(List<NPC> birthdaysToday)
         {
-            var friend = _friends.GetFriend(npcName);
-            if (friend == null)
+            foreach (var npc in birthdaysToday)
             {
-                return new string[0];
+                var friend = _friends.GetFriend(npc.Name);
+                if (friend == null)
+                {
+                    continue;
+                }
+
+                foreach (var location in _locationChecker.GetAllLocationsNotCheckedContainingWord($"Friendsanity: {friend.ArchipelagoName}"))
+                {
+                    yield return location;
+                }
             }
-            return _locationChecker.GetAllLocationsNotCheckedContainingWord($"Friendsanity: {friend.ArchipelagoName}");
         }
 
-        private static IEnumerable<string> GetMissingTravelingCartChecks(int i)
+        private static IEnumerable<string> GetMissingTravelingCartChecks(int day)
         {
-            var day = i + 1;
             var dayOfWeek = Days.GetDayOfWeekName(day);
             var merchantDayItem = string.Format(TravelingMerchantInjections.AP_MERCHANT_DAYS, dayOfWeek);
             if (!_archipelago.HasReceivedItem(merchantDayItem))

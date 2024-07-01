@@ -11,7 +11,7 @@
 {
   "Name": "Water Your Crops",
   "Author": "chiccen",
-  "Version": "1.0.0",
+  "Version": "1.0.2",
   "Description": "Yet another mod that changes the visual cue for when crops haven't been watered yet.",
   "UniqueID": "chiccen.WaterYourCrops",
   "EntryDll": "WaterYourCrops.dll",
@@ -22,7 +22,7 @@
     "Directory": "_releases",
     "ModFolder": "WaterYourCrops"
   },
-  "UpdateKeys": [ "Nexus:????" ],
+  "UpdateKeys": [ "Nexus:24710" ],
   "Dependencies": [
     {
       "UniqueID": "Platonymous.ModUpdater",

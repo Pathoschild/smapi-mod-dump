@@ -22,8 +22,8 @@ using StardewValley.TerrainFeatures;
 using SObject = StardewValley.Object;
 using StardewValley.Objects;
 using StardewValley.GameData.FruitTrees;
-using HoverLabels.Drawing;
 using System.Security.Cryptography;
+using AchtuurCore.Framework.Borders;
 
 namespace HoverLabels.Labels.Buildings;
 internal class GreenhouseLabel : BuildingLabel
@@ -121,7 +121,7 @@ internal class GreenhouseLabel : BuildingLabel
             .Take(labelListSize);
         
         AddBorder(I18n.LabelGreenhouseHarvestableCrops());
-        AppendLabelToBorder(new InventoryLabelText(orderedCrops));
+        AppendLabelToBorder(new GridLabel(orderedCrops));
 
     }
 
@@ -142,7 +142,7 @@ internal class GreenhouseLabel : BuildingLabel
                 string cropReadyDate = ModEntry.GetDateAfterDays(crop.days_to_grow);
                 string cropGrowText = I18n.LabelGreenhouseCropGrowTime(crop.days_to_grow, cropReadyDate);
                 Item crop_item = ItemRegistry.Create(crop.qualified_id, amount: amount);
-                AppendLabelToBorder(new ItemLabelText(crop_item, cropGrowText));
+                AppendLabelToBorder(new ItemLabel(crop_item, cropGrowText));
             }
 
             // show 'and more...' text

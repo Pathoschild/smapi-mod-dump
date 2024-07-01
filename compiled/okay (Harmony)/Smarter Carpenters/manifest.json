@@ -1,0 +1,10 @@
+{
+  "Name": "Smarter Carpenters",
+  "Author": "TheWarpriest",
+  "Version": "1.1.0",
+  "Description": "Carpenters will look for materials in chests of a designated color in addition to what you are carrying.",
+  "UniqueID": "TheWarpriest.SmarterCarpenters",
+  "EntryDll": "SmarterCarpenters.dll",
+  "MinimumApiVersion": "4.0.8",
+  "UpdateKeys": [ "Nexus:25417" ]
+}

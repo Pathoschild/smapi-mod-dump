@@ -9,6 +9,7 @@
 *************************************************/
 
 using HappyHomeDesigner.Integration;
+using HappyHomeDesigner.Menus;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
@@ -60,6 +61,7 @@ namespace HappyHomeDesigner.Framework
 			set => magnifyScale = Math.Clamp(value, 1f, 5f);
 		}
 		private float magnifyScale;
+		public bool GMCMButton { get; set; }
 
 		public Config()
 		{
@@ -95,6 +97,7 @@ namespace HappyHomeDesigner.Framework
 			gmcm.QuickBind(man, this, nameof(ReplaceFurnitureCatalog));
 			gmcm.QuickBind(man, this, nameof(ReplaceWallpaperCatalog));
 			gmcm.QuickBind(man, this, nameof(ReplaceRareCatalogs));
+			gmcm.QuickBind(man, this, nameof(GMCMButton));
 			gmcm.AddNumberOption(man,
 				() => magnifyScale,
 				v => magnifyScale = v, 
@@ -128,6 +131,7 @@ namespace HappyHomeDesigner.Framework
 			EasierTrashCatalogue = true;
 			Magnify = false;
 			MagnifyScale = 2f;
+			GMCMButton = true;
 		}
 
 		private void Save()
@@ -135,8 +139,8 @@ namespace HappyHomeDesigner.Framework
 			ModEntry.helper.WriteConfig(this);
 			ModEntry.helper.GameContent.InvalidateCache(AssetManager.UI_PATH);
 
-			if (Game1.gameMode is Game1.titleScreenGameMode)
-				AssetManager.ReloadIfNecessary();
+			AssetManager.ReloadIfNecessary();
+			Catalog.UpdateGMCMButton();
 		}
 
 		private static void LoadSkins()

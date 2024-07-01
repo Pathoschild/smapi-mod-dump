@@ -10,11 +10,11 @@
   "UniqueID": "DecidedlyHuman.ClownsSqueakyTools",
   "Name": "ClownSharp",
   "Author": "DecidedlyHuman",
-  "Version": "1.26.0",
+  "Version": "1.50.0",
   "Description": "Tools go squeak.",
   "MinimumApiVersion": "3.15.0",
   "EntryDll": "ClownsSqueakyTools.dll",
   "UpdateKeys": [
-    "Nexus:00000"
+    "Nexus:22600"
   ]
 }

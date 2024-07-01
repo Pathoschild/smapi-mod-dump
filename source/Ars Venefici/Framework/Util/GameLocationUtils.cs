@@ -10,17 +10,8 @@
 
 using StardewValley.TerrainFeatures;
 using StardewValley;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
-using ArsVenefici.Framework.Spells.Effects;
 using ArsVenefici.Framework.Interfaces;
-using static HarmonyLib.Code;
-using StardewModdingAPI.Events;
-using StardewValley.Objects;
 
 namespace ArsVenefici.Framework.Util
 {
@@ -228,15 +219,7 @@ namespace ArsVenefici.Framework.Util
             {
                 foreach (Character character in location.characters)
                 {
-                    //if (character.GetBoundingBox().Intersects(aABB) 
-                    //    || character.GetBoundingBox().Contains(aABB) 
-                    //    || aABB.Intersects(character.GetBoundingBox())
-                    //    || aABB.Contains(character.GetBoundingBox()))
-                    //{
-                    //    list.Add(character);
-                    //}
-
-                    if (aABB.Contains(character.Position))
+                    if (character.GetBoundingBox().Intersects(aABB))
                     {
                         list.Add(character);
                     }
@@ -244,45 +227,15 @@ namespace ArsVenefici.Framework.Util
 
                 foreach (Farmer farmer in location.farmers)
                 {
-                    //if (farmer.GetBoundingBox().Intersects(aABB) 
-                    //    || farmer.GetBoundingBox().Contains(aABB)
-                    //    || aABB.Intersects(farmer.GetBoundingBox())
-                    //    || aABB.Contains(farmer.GetBoundingBox()))
-                    //{
-                    //    list.Add(farmer);
-                    //}
-
-                    if (aABB.Contains(farmer.Position))
+                    if (farmer.GetBoundingBox().Intersects(aABB))
                     {
                         list.Add(farmer);
                     }
                 }
-
-                //if (location.isCollidingPosition(entity.GetBoundingBox(), Game1.viewport, entity))
-                //{
-                //    Character character = isCollidingWithCharacter(aABB, location);
-
-                //    if (character != entity)
-                //    {
-                //        list.Add(character);
-                //    }
-                //}
             }
-
 
             return list;
         }
-
-        //public static Character isCollidingWithCharacter(Rectangle box, GameLocation location)
-        //{
-        //    foreach (Character character in location.characters)
-        //    {
-        //        if (character.GetBoundingBox().Intersects(box))
-        //            return character;
-        //    }
-
-        //    return null;
-        //}
 
         public static bool LineIntersectsRect(Vector2 p1, Vector2 p2, Rectangle r, out Vector2 intersectionPoint)
         {

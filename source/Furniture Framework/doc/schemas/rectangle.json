@@ -17,5 +17,6 @@
 		"Width": {"type": "integer", "minimum": 0},
 		"Height": {"type": "integer", "minimum": 0}
 	},
-	"required": [ "X", "Y", "Width", "Height" ]
+	"required": [ "X", "Y", "Width", "Height" ],
+	"additionalProperties": false
 }

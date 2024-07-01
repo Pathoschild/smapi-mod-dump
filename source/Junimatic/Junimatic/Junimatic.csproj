@@ -3,12 +3,11 @@
     <Version>4.16.5</Version>
     <RootNamespace>NermNermNerm.Junimatic</RootNamespace>
 
-    <TranslationClassBuilder_AddGetByKey>true</TranslationClassBuilder_AddGetByKey>
-    <EnableHarmony>true</EnableHarmony>
+    <IgnoreModFilePatterns>\.edits\.json$,new-language-template\.json$</IgnoreModFilePatterns>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Pathoschild.Stardew.ModTranslationClassBuilder" Version="2.0.1" />
+    <PackageReference Include="NermNermNerm.Stardew.LocalizeFromSource" Version="1.3.16" />
   </ItemGroup>
 
   <ItemGroup>

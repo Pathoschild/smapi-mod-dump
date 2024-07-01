@@ -15,8 +15,8 @@ using StardewValley;
 namespace NoIndoorDismount {
     internal class ModEntry : Mod {
 
-        public static ModConfig Config;
-        public static IMonitor SMonitor;
+        public static ModConfig? Config;
+        public static IMonitor? SMonitor;
 
         public override void Entry(IModHelper helper) {
             Config = helper.ReadConfig<ModConfig>();

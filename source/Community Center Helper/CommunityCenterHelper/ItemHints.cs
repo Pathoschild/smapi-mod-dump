@@ -2153,6 +2153,59 @@ namespace CommunityCenterHelper
                     case ItemID.IT_RadishSalad:
                         return strCookRecipe("Radish Salad");
                     
+                    /********** [Legacy CC Bundles] Pantry **********/
+                    
+                    // [Legacy CC Bundles] Master Artisan Bundle
+                    
+                    case ItemID.IT_Sugar:
+                        return strBuyFrom("shopPierre") + "\n"
+                             + str.Get("putItemInMill", new { rawItem = getItemName(ItemID.IT_Beet) });
+                    
+                    /********** [Legacy CC Bundles] Bulletin Board **********/
+                    
+                    // [Legacy CC Bundles] Home Chef's Bundle
+                    
+                    case ItemID.IT_FriedEel:
+                        return strCookRecipe("Fried Eel") + "\n"
+                             + strBuyFrom("shopSaloon") + "\n"
+                             + strBuyFromKrobusWeekday("saturday");
+                    
+                    case ItemID.IT_ChocolateCake:
+                        return strCookRecipe("Chocolate Cake") + "\n"
+                             + strBuyFrom("shopSaloon") + "\n"
+                             + strBuyFromKrobusWeekday("saturday");
+                    
+                    // [Legacy CC Bundles] Loved Cook's Bundle
+                    
+                    case ItemID.IT_StrangeBun:
+                        return strCookRecipe("Strange Bun") + "\n"
+                             + strBuyFrom("shopSaloon") + "\n"
+                             + strBuyFromKrobusWeekday("saturday");
+                    
+                    case ItemID.IT_BeanHotpot:
+                        return strCookRecipe("Bean Hotpot") + "\n"
+                             + strBuyFrom("shopSaloon") + "\n"
+                             + strBuyFromKrobusWeekday("saturday");
+                    
+                    // [Legacy CC Bundles] Fisherman's Bundle
+                    
+                    case ItemID.IT_DressedSpinner:
+                        return strBuyFrom("shopFish") + (Game1.player.FishingLevel < 8? levelRequirementString("fishing", 8) : "") + "\n"
+                             + strCraftRecipe("Dressed Spinner") + "\n"
+                             + strFishingChest(6);
+                    
+                    case ItemID.IT_CorkBobber:
+                        return strBuyFrom("shopFish") + (Game1.player.FishingLevel < 7? levelRequirementString("fishing", 7) : "") + "\n"
+                             + strCraftRecipe("Cork Bobber");
+                    
+                    case ItemID.IT_TrapBobber:
+                        return strBuyFrom("shopFish") + (Game1.player.FishingLevel < 6? levelRequirementString("fishing", 6) : "") + "\n"
+                             + strCraftRecipe("Trap Bobber");
+                    
+                    case ItemID.IT_TreasureHunter:
+                        return strBuyFrom("shopFish") + (Game1.player.FishingLevel < 7? levelRequirementString("fishing", 7) : "") + "\n"
+                             + strCraftRecipe("Treasure Hunter");
+                    
                     /********** Additional/Orphaned Base Game Item Hints **********/
                     
                     case ItemID.IT_LuckyPurpleShorts:
@@ -3655,8 +3708,8 @@ namespace CommunityCenterHelper
         
         /// <summary>Looks for item by name and returns success.</summary>
         /// <param name="name">The internal name of the item.</param>
-        /// <param name="itemID">Result item ID. -1 if not found.</param>
-        private static bool findItemIDByName(string name, out string itemID)
+        /// <param name="itemID">Result item ID. Empty string if not found.</param>
+        public static bool findItemIDByName(string name, out string itemID)
         {
             foreach (string id in Game1.objectData.Keys)
             {
@@ -3676,8 +3729,8 @@ namespace CommunityCenterHelper
         
         /// <summary>Looks for item by name and returns success.</summary>
         /// <param name="name">The internal name of the item.</param>
-        /// <param name="bigCraftableID">Result Big Craftable ID. -1 if not found.</param>
-        private static bool findBigCraftableIDByName(string name, out string bigCraftableID)
+        /// <param name="bigCraftableID">Result Big Craftable ID. Empty string if not found.</param>
+        public static bool findBigCraftableIDByName(string name, out string bigCraftableID)
         {
             foreach (string id in Game1.bigCraftableData.Keys)
             {

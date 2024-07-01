@@ -1,0 +1,10 @@
+{
+    "Name": "Skip Cutscenes Mod",
+    "Author": "Zexu2K",
+    "Version": "1.0.0",
+    "Description": "Mod to skip cutscenes by pressing R.",
+    "UniqueID": "Zexu2K.SkipCutscenesMod",
+    "EntryDll": "SkipCutscenesMod.dll",
+    "MinimumApiVersion": "3.0.0",
+    "UpdateKeys": []
+}

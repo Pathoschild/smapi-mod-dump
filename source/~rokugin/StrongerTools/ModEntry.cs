@@ -16,7 +16,9 @@ using StardewValley.TerrainFeatures;
 using Microsoft.Xna.Framework;
 using HarmonyLib;
 using StardewValley.Objects;
-using Object = StardewValley.Object;
+using SObject = StardewValley.Object;
+using StardewValley.Triggers;
+using StardewValley.Delegates;
 
 namespace StrongerTools {
     internal class ModEntry : Mod {
@@ -27,6 +29,8 @@ namespace StrongerTools {
 
         public override void Entry(IModHelper helper) {
             config = helper.ReadConfig<ModConfig>();
+
+            helper.ConsoleCommands.Add("rokugin.set_health", "Sets player health to specified amount.\n\nUsage: rokugin.set_health <amount>\n- amount: integer amount", SetHealth);
 
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;
             helper.Events.Input.ButtonPressed += OnButtonPressed;
@@ -56,19 +60,19 @@ namespace StrongerTools {
         }
 
         private void OnDayStarted(object? sender, StardewModdingAPI.Events.DayStartedEventArgs e) {
-            GameLocation location = Game1.getLocationFromName("Backwoods");
+            //GameLocation location = Game1.getLocationFromName("Backwoods");
 
-            AddTerrainFeature(location, new Vector2(34, 10), Tree.pineTree);
-            AddTerrainFeature(location, new Vector2(41, 16), Tree.bushyTree);
-            AddTerrainFeature(location, new Vector2(12, 19), Tree.bushyTree);
-            AddTerrainFeature(location, new Vector2(15, 17), Tree.bushyTree);
-            AddTerrainFeature(location, new Vector2(20, 20), Tree.bushyTree);
-            AddTerrainFeature(location, new Vector2(25, 16), Tree.bushyTree);
-            AddTerrainFeature(location, new Vector2(17, 14), Tree.leafyTree);
-            AddTerrainFeature(location, new Vector2(19, 12), Tree.leafyTree);
-            AddTerrainFeature(location, new Vector2(21, 11), Tree.leafyTree);
-            AddTerrainFeature(location, new Vector2(28, 9), Tree.leafyTree);
-            AddTerrainFeature(location, new Vector2(46, 12), Tree.leafyTree);
+            //AddTerrainFeature(location, new Vector2(34, 10), Tree.pineTree);
+            //AddTerrainFeature(location, new Vector2(41, 16), Tree.bushyTree);
+            //AddTerrainFeature(location, new Vector2(12, 19), Tree.bushyTree);
+            //AddTerrainFeature(location, new Vector2(15, 17), Tree.bushyTree);
+            //AddTerrainFeature(location, new Vector2(20, 20), Tree.bushyTree);
+            //AddTerrainFeature(location, new Vector2(25, 16), Tree.bushyTree);
+            //AddTerrainFeature(location, new Vector2(17, 14), Tree.leafyTree);
+            //AddTerrainFeature(location, new Vector2(19, 12), Tree.leafyTree);
+            //AddTerrainFeature(location, new Vector2(21, 11), Tree.leafyTree);
+            //AddTerrainFeature(location, new Vector2(28, 9), Tree.leafyTree);
+            //AddTerrainFeature(location, new Vector2(46, 12), Tree.leafyTree);
             Game1.netWorldState.Value.canDriveYourselfToday.Value = true;
         }
 
@@ -102,6 +106,8 @@ namespace StrongerTools {
         private void OnGameLaunched(object? sender, StardewModdingAPI.Events.GameLaunchedEventArgs e) {
             SetupGMCM();
             EnableHardwareCursor();
+
+            TriggerActionManager.RegisterAction("rokugin.SetPlayerHealth", SetPlayerHealth);
         }
 
         private void OnButtonPressed(object? sender, StardewModdingAPI.Events.ButtonPressedEventArgs e) {
@@ -124,6 +130,41 @@ namespace StrongerTools {
                     if (config.ShowLogs) Monitor.Log($"{pickaxe.Name} current additional power: +{pickaxe.additionalPower.Value}", LogLevel.Info);
                 }
             }
+        }
+
+        public static bool SetPlayerHealth(string[] args, TriggerActionContext context, out string error) {
+            if (ArgUtility.TryGet(args, 1, out string amount, out error, allowBlank: false)) {
+                if (amount == "full") {
+                    Game1.player.health = Game1.player.maxHealth;
+                    return true;
+                }
+
+                if (!int.TryParse(amount, out int healthAmount)) {
+                    return false;
+                }
+
+                if (healthAmount <= 0) healthAmount = 1;
+
+                Game1.player.health = healthAmount;
+                return true;
+            }
+
+            return false;
+        }
+
+        void SetHealth(string command, string[] args) {
+            if (!Context.IsWorldReady) {
+                Monitor.Log("Load a save first.", LogLevel.Error);
+                return;
+            }
+            if (!int.TryParse(args[0], out int healthAmount)) {
+                Monitor.Log("Could not parse amount to set player health.", LogLevel.Error);
+                return;
+            }
+
+            if (healthAmount <= 0) healthAmount = 1;
+            Game1.player.health = healthAmount;
+            Monitor.Log($"Set player health to {healthAmount}.", LogLevel.Info);
         }
 
         void EnableHardwareCursor() {

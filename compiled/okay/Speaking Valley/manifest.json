@@ -1,0 +1,16 @@
+﻿{
+  "Name": "SpeakingValley",
+  "Author": "Dualityofsoul",
+  "Version": "0.1.1",
+  "Description": "NPCs speak!",
+  "UniqueID": "Dualityofsoul.SpeakingValley",
+  "EntryDll": "SpeakingValley.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [],
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.GenericModConfigMenu",
+      "IsRequired": true
+    }
+  ]
+}

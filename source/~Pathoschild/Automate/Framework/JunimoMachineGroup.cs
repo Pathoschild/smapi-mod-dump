@@ -28,7 +28,7 @@ namespace Pathoschild.Stardew.Automate.Framework
         private readonly Func<IEnumerable<IMachine>, IEnumerable<IMachine>> SortMachines;
 
         /// <summary>The underlying machine groups.</summary>
-        private readonly List<IMachineGroup> MachineGroups = new();
+        private readonly List<IMachineGroup> MachineGroups = [];
 
         /// <summary>A map of covered tiles by location key, if loaded.</summary>
         private Dictionary<string, IReadOnlySet<Vector2>>? Tiles;
@@ -51,9 +51,9 @@ namespace Pathoschild.Stardew.Automate.Framework
         public JunimoMachineGroup(Func<IEnumerable<IMachine>, IEnumerable<IMachine>> sortMachines, Func<IContainer[], StorageManager> buildStorage, IMonitor monitor)
             : base(
                 locationKey: null,
-                machines: Array.Empty<IMachine>(),
-                containers: Array.Empty<IContainer>(),
-                tiles: Array.Empty<Vector2>(),
+                machines: [],
+                containers: [],
+                tiles: [],
                 buildStorage: buildStorage,
                 monitor: monitor
             )
@@ -81,10 +81,10 @@ namespace Pathoschild.Stardew.Automate.Framework
         {
             this.MachineGroups.Clear();
 
-            this.StorageManager.SetContainers(Array.Empty<IContainer>());
+            this.StorageManager.SetContainers([]);
 
-            this.Containers = Array.Empty<IContainer>();
-            this.Machines = Array.Empty<IMachine>();
+            this.Containers = [];
+            this.Machines = [];
             this.Tiles = null;
         }
 

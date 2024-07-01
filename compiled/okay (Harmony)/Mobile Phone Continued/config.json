@@ -19,12 +19,7 @@
   "AppList": [
     "JoXW.MobilePhone",
     "JoXW.MobilePhone_themes",
-    "JoXW.MobilePhone_Rotate",
-    "JoXW.MobileArcadePrairie",
-    "JoXW.MobileArcadeJunimo",
-    "JoXW.MobileCalendar",
-    "JoXW.MobileCataloguesCatalogues",
-    "JoXW.MobileTelevision"
+    "JoXW.MobilePhone_Rotate"
   ],
   "PhoneWidth": 286,
   "PhoneHeight": 503,

@@ -257,7 +257,10 @@ menu-animal_page-animal_info = {$name}, {$type}{$heart_count ->
 
 ### Forge Menu
 
-menu-forge-start_forging_button = Start forging button
+menu-forge-start_forging_button = Start forging button{$forge_cost ->
+    [0] {EMPTYSTRING()}
+    *[other] , costs {$forge_cost} Cinder Shards
+  }
 menu-forge-unforge_button = Unforge button
 menu-forge-weapon_input_slot = {$is_empty ->
     [0] Weapon slot: {$item_name}

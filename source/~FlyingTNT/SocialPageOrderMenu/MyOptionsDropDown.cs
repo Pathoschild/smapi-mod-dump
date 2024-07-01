@@ -20,7 +20,7 @@ namespace SocialPageOrderRedux
 		public override void leftClickReleased(int x, int y)
 		{
 			base.leftClickReleased(x, y);
-            ModEntry.currentSort.Value = selectedOption;
+            ModEntry.CurrentSort = selectedOption;
             ModEntry.ResortSocialList();
         }
 	}

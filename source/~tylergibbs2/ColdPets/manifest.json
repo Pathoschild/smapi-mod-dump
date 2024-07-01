@@ -11,7 +11,7 @@
 {
     "Name": "Cold Pets",
     "Author": "Tyler Gibbs",
-    "Version": "1.1.0",
+    "Version": "1.1.1",
     "Description": "Pets will always stay inside during the winter.",
     "UniqueID": "tylergibbs2.ColdPets",
     "EntryDll": "ColdPets.dll",

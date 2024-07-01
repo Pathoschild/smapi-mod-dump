@@ -9,27 +9,30 @@
 *************************************************/
 
 using StardewArchipelago.Archipelago;
-using StardewModdingAPI;
 using StardewArchipelago.Constants.Modded;
 using StardewArchipelago.GameModifications;
 using StardewArchipelago.GameModifications.CodeInjections.Modded;
+using StardewArchipelago.GameModifications.Modded;
 using StardewArchipelago.Locations.CodeInjections.Modded;
 using StardewArchipelago.Locations.CodeInjections.Modded.SVE;
-using StardewArchipelago.GameModifications.Modded;
+using StardewModdingAPI;
 
 namespace StardewArchipelago.Locations.CodeInjections.Initializers
 {
     public static class ModCodeInjectionInitializer
     {
         static ArchipelagoClient _archipelago;
+        private const string BEAR_KNOWLEDGE = "Bear's Knowledge";
+        private const int OATMEAL_PRICE = 12500;
+        private const int COOKIE_PRICE = 8750;
 
-        public static void Initialize(IMonitor monitor, IModHelper modHelper, ArchipelagoClient archipelago, LocationChecker locationChecker, ShopReplacer shopReplacer, ShopStockGenerator shopStockGenerator, JunimoShopGenerator junimoShopGenerator)
+        public static void Initialize(IMonitor monitor, IModHelper modHelper, ArchipelagoClient archipelago, LocationChecker locationChecker, SeedShopStockModifier seedShopStockModifier)
         {
             _archipelago = archipelago;
-            InitializeModdedContent(monitor, modHelper, archipelago, locationChecker, shopReplacer, shopStockGenerator, junimoShopGenerator);
+            InitializeModdedContent(monitor, modHelper, archipelago, locationChecker, seedShopStockModifier);
         }
 
-        private static void InitializeModdedContent(IMonitor monitor, IModHelper modHelper, ArchipelagoClient archipelago, LocationChecker locationChecker, ShopReplacer shopReplacer, ShopStockGenerator shopStockGenerator, JunimoShopGenerator junimoShopGenerator)
+        private static void InitializeModdedContent(IMonitor monitor, IModHelper modHelper, ArchipelagoClient archipelago, LocationChecker locationChecker, SeedShopStockModifier seedShopStockModifier)
         {
             if (_archipelago.SlotData.Mods.HasMod(ModNames.DEEP_WOODS))
             {
@@ -37,11 +40,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Initializers
             }
             if (_archipelago.SlotData.Mods.HasMod(ModNames.MAGIC))
             {
-                MagicModInjections.Initialize(monitor, modHelper, archipelago, locationChecker, shopReplacer);
-            }
-            if (_archipelago.SlotData.Mods.HasMod(ModNames.SOCIALIZING))
-            {
-                SocializingConfigCodeInjections.Initialize(monitor, modHelper, archipelago);
+                MagicModInjections.Initialize(monitor, modHelper, archipelago, locationChecker);
             }
             if (_archipelago.SlotData.Mods.HasMod(ModNames.ARCHAEOLOGY))
             {
@@ -51,23 +50,18 @@ namespace StardewArchipelago.Locations.CodeInjections.Initializers
             {
                 SkullCavernInjections.Initialize(monitor, modHelper, archipelago, locationChecker);
             }
-            if (archipelago.SlotData.Mods.ModIsInstalledAndLoaded(modHelper, "SpaceCore"))
-            {
-                NewSkillsPageInjections.Initialize(monitor, modHelper, archipelago, locationChecker);
-            }
             if (archipelago.SlotData.Mods.HasMod(ModNames.SVE))
             {
                 SVECutsceneInjections.Initialize(monitor, modHelper, archipelago, locationChecker);
-                SVEShopInjections.Initialize(monitor, modHelper, archipelago, locationChecker, shopReplacer, shopStockGenerator, junimoShopGenerator);
             }
 
-            if (archipelago.SlotData.Mods.HasMod(ModNames.DISTANT_LANDS)) // Only mod for now that needs it.
+            if (archipelago.SlotData.Mods.HasMod(ModNames.DISTANT_LANDS))
             {
                 ModdedEventInjections.Initialize(monitor, modHelper, archipelago, locationChecker);
             }
             if (archipelago.SlotData.Mods.HasMod(ModNames.BOARDING_HOUSE))
             {
-                BoardingHouseInjections.Initialize(monitor, locationChecker, archipelago, shopReplacer);
+                BoardingHouseInjections.Initialize(monitor, locationChecker, archipelago);
             }
         }
     }

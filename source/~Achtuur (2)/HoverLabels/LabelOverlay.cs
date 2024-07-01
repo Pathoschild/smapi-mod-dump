@@ -11,7 +11,7 @@
 using AchtuurCore.Extensions;
 using AchtuurCore.Framework;
 using AchtuurCore.Utility;
-using HoverLabels.Drawing;
+using AchtuurCore.Framework.Borders;
 using HoverLabels.Framework;
 using HoverLabels.Labels;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -63,14 +63,14 @@ internal class LabelOverlay : Overlay
     {
         // add labels to border drawer
         borderDrawer.Reset();
-        List<Border> nonEmptyBorders = ModEntry.Instance.LabelManager.GetLabelContents()
-            .Where(b => !b.IsEmpty).ToList();
+        IEnumerable<Border> nonEmptyBorders = ModEntry.Instance.LabelManager.GetLabelContents()
+            .Where(b => !b.IsEmpty);
         borderDrawer.AddBorder(nonEmptyBorders);
 
         // Get coordinates of cursor on screen
         Vector2 offset = GetOffset(cursorPos);
         Vector2 cursorCoords = AchtuurCore.Utility.Drawing.GetPositionScreenCoords(cursorPos) + offset;
-        cursorCoords -= new Vector2(64); // displace by tile size to look a bit nicer
+        cursorCoords -= new Vector2(Game1.tileSize); // displace by tile size to look a bit nicer
 
         // draw border
         borderDrawer.Draw(spriteBatch, cursorCoords);

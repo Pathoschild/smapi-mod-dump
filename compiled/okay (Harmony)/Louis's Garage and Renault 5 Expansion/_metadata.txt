@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/24687
+IDs: R5.DLL
+update keys: Nexus:24687

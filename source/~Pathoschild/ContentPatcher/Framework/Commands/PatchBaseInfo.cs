@@ -8,7 +8,6 @@
 **
 *************************************************/
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using ContentPatcher.Framework.Conditions;
@@ -40,7 +39,7 @@ namespace ContentPatcher.Framework.Commands
         /// <param name="state">Diagnostic info about the patch.</param>
         public PatchBaseInfo(Condition[]? parsedConditions, bool matchesContext, IContextualState state)
         {
-            this.ParsedConditions = parsedConditions ?? Array.Empty<Condition>();
+            this.ParsedConditions = parsedConditions ?? [];
             this.MatchesContext = matchesContext;
             this.State = state;
         }
@@ -53,7 +52,7 @@ namespace ContentPatcher.Framework.Commands
             // state error
             if (state.InvalidTokens.Count > 0 || state.UnreadyTokens.Count > 0 || state.Errors.Count > 0)
             {
-                List<string> reasons = new();
+                List<string> reasons = [];
 
                 if (state.InvalidTokens.Any())
                     reasons.Add($"invalid tokens: {string.Join(", ", state.InvalidTokens.OrderByHuman())}");

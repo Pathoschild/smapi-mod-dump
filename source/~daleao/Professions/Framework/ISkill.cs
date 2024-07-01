@@ -14,6 +14,7 @@ namespace DaLion.Professions.Framework;
 
 using System.Collections.Generic;
 using System.Linq;
+using DaLion.Professions.Framework.Extensions;
 using DaLion.Shared.Extensions;
 using DaLion.Shared.Extensions.Collections;
 using StardewValley;
@@ -124,15 +125,19 @@ public interface ISkill : IEquatable<ISkill>
     /// <remarks>Will not affect professions or recipes.</remarks>
     void SetLevel(int level);
 
-    /// <summary>Determines whether this skill can be reset for Masteries.</summary>
+    /// <summary>Determines whether this skill can be reset.</summary>
     /// <returns><see langword="true"/> if the local player meets all reset conditions, otherwise <see langword="false"/>.</returns>
     bool CanReset() => CanReset(this);
+
+    /// <summary>Determines whether this skill has been reset at least once.</summary>
+    /// <returns><see langword="true"/> if the local player has reset this skill at least once, otherwise <see langword="false"/>.</returns>
+    bool HasBeenReset() => HasBeenReset(this);
 
     /// <summary>Gets the cost of resetting this skill.</summary>
     /// <returns>A sum of gold to be paid.</returns>
     int GetResetCost() => GetResetCost(this);
 
-    /// <summary>Resets the skill for Masteries.</summary>
+    /// <summary>Resets the skill.</summary>
     void Reset();
 
     /// <summary>Removes all recipes associated with this skill from the local player.</summary>
@@ -145,43 +150,58 @@ public interface ISkill : IEquatable<ISkill>
     /// <summary>Determines whether this skill's level matches the expected level for the current experience, and if not fixes those levels.</summary>
     void Revalidate();
 
-    /// <summary>Determines whether this skill can be reset for Masteries.</summary>
+    /// <summary>Determines whether the <paramref name="skill"/> can be reset.</summary>
     /// <param name="skill">The <see cref="ISkill"/>.</param>
     /// <returns><see langword="true"/> if the local player meets all reset conditions, otherwise <see langword="false"/>.</returns>
     internal static bool CanReset(ISkill skill)
     {
         var farmer = Game1.player;
 
+        if (skill.CanGainPrestigeLevels())
+        {
+            Log.T($"{skill.StringId} skill cannot be reset because it has been Mastered.");
+            return false;
+        }
+
         var isSkillLevelTen = skill.CurrentLevel >= 10;
         if (!isSkillLevelTen)
         {
-            Log.D($"[Masteries]: {skill.StringId} skill cannot be reset because it's level is lower than 10.");
+            Log.T($"{skill.StringId} skill cannot be reset because its level is lower than 10.");
             return false;
         }
 
         var justLeveledUp = skill.NewLevels.Contains(10);
         if (justLeveledUp)
         {
-            Log.D($"[Masteries]: {skill.StringId} skill cannot be reset because {farmer.Name} has not yet seen the level-up menu.");
+            Log.T($"{skill.StringId} skill cannot be reset because {farmer.Name} has not yet seen the level-up menu.");
             return false;
         }
 
         var hasProfessionsLeftToAcquire = farmer.GetProfessionsForSkill(skill, true).Length.IsIn(1..3);
         if (!hasProfessionsLeftToAcquire)
         {
-            Log.D(
-                $"[Masteries]: {skill.StringId} skill cannot be reset because {farmer.Name} either already has all professions in the skill, or has none at all.");
+            Log.T(
+                $"{skill.StringId} skill cannot be reset because {farmer.Name} either already has all professions in the skill, or has none at all.");
             return false;
         }
 
         var alreadyResetThisSkill = State.SkillsToReset.Contains(skill);
         if (alreadyResetThisSkill)
         {
-            Log.D($"[Masteries]: {skill.StringId} skill has already been marked for reset tonight.");
+            Log.T($"{skill.StringId} skill has already been marked for reset tonight.");
             return false;
         }
 
         return !skill.CanGainPrestigeLevels();
+    }
+
+    /// <summary>Determines whether the <paramref name="skill"/> has been reset at least once.</summary>
+    /// <param name="skill">The <see cref="ISkill"/>.</param>
+    /// <returns><see langword="true"/> if the <paramref name="skill"/> has been reset at least once, otherwise <see langword="false"/>.</returns>
+    internal static bool HasBeenReset(ISkill skill)
+    {
+        var count = Game1.player.professions.Intersect(skill.TierTwoProfessionIds).Count();
+        return count != 0 && ((skill.CurrentLevel < 10 && count >= 1) || (skill.CurrentLevel >= 10 && count > 1));
     }
 
     /// <summary>Gets the cost of resetting this skill.</summary>
@@ -206,7 +226,7 @@ public interface ISkill : IEquatable<ISkill>
         return (int)(baseCost * multiplier);
     }
 
-    /// <summary>Determines whether any skill at all can be reset for Masteries.</summary>
+    /// <summary>Determines whether any skill at all can be reset.</summary>
     /// <returns><see langword="true"/> if at least one vanilla or loaded custom skill can be reset, otherwise <see langword="false"/>.</returns>
     internal static bool CanResetAny()
     {

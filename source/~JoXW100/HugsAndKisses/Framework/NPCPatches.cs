@@ -37,54 +37,78 @@ namespace HugsAndKisses.Framework
                     return true;
                 }
 
-
                 Monitor.Log($"Checking action for {who.Name} kissing/hugging {__instance.Name}", LogLevel.Debug);
-
-                if (who.friendshipData.TryGetValue(__instance.Name, out var data)
-                && (data.IsMarried() || data.IsEngaged() || ((__instance.datable.Value || Config.AllowNonDateableNPCsToHugAndKiss) && !data.IsMarried() && !data.IsEngaged() && ((data.IsDating() && Config.DatingKisses) || (who.getFriendshipHeartLevelForNPC(__instance.Name) >= Config.HeartsForFriendship && Config.FriendHugs)))))
+                if (!who.friendshipData.TryGetValue(__instance.Name, out var data))
                 {
-                    __instance.faceDirection(-3);
+                    Monitor.Log($"Checking action failed, {__instance.Name} is missing relation data.", LogLevel.Debug);
+                    return true;
+                }
 
-                    if (__instance.Sprite.CurrentAnimation == null && !__instance.hasTemporaryMessageAvailable() && __instance.currentMarriageDialogue.Count == 0 && __instance.CurrentDialogue.Count == 0 && Game1.timeOfDay < 2200 && !__instance.isMoving() && who.ActiveObject == null)
-                    {
-                        bool kissing = data.IsDating() || data.IsMarried() || data.IsEngaged();
-                        Monitor.Log($"{who.Name} {(kissing ? "kissing" : "hugging")} {__instance.Name}", LogLevel.Debug);
+                if (!data.IsMarried() && !data.IsEngaged() && !((__instance.datable.Value || Config.AllowNonDateableNPCsToHugAndKiss) && ((data.IsDating() && Config.DatingKisses) || (who.getFriendshipHeartLevelForNPC(__instance.Name) >= Config.HeartsForFriendship && Config.FriendHugs))))
+                {
+                    Monitor.Log($"Checking action failed, config disallow it. married = {data.IsMarried()}, engaged = {data.IsEngaged()}, dateable = {__instance.datable.Value}, dating = {data.IsDating()}, hearts = {who.getFriendshipHeartLevelForNPC(__instance.Name)}", LogLevel.Debug);
+                    return true;
+                }
 
-                        if (kissing && __instance.hasBeenKissedToday.Value && !Config.UnlimitedDailyKisses)
-                        {
-                            Monitor.Log($"already kissed {__instance.Name}");
-                            return false;
-                        }
+                __instance.faceDirection(-3);
+                if (__instance.Sprite.CurrentAnimation is not null)
+                {
+                    Monitor.Log($"Checking action failed, {__instance.Name} is in an animation.", LogLevel.Debug);
+                    return true;
+                }
 
-                        __instance.faceGeneralDirection(who.getStandingPosition(), 0, false);
-                        who.faceGeneralDirection(__instance.getStandingPosition(), 0, false);
-                        if (__instance.FacingDirection == 3 || __instance.FacingDirection == 1)
-                        {
-                            if (kissing)
-                            {
-                                Kissing.PlayerNPCKiss(who, __instance);
-                            }
-                            else
-                            {
-                                Kissing.PlayerNPCHug(who, __instance);
-                            }
-                            __result = true;
-                            return false;
-                        }
-                        else
-                        {
-                            Monitor.Log($"Checking action failed, {__instance.Name} is facing the wrong direction");
-                        }
-                    }
-                    else
-                    {
-                        Monitor.Log($"Checking action failed, {__instance.Name} is unavailable");
-                    }
+                if (__instance.hasTemporaryMessageAvailable())
+                {
+                    Monitor.Log($"Checking action failed, {__instance.Name} has temporary message available.", LogLevel.Debug);
+                    return true;
+                }
+
+                if (__instance.currentMarriageDialogue.Count > 0 || __instance.CurrentDialogue.Count > 0)
+                {
+                    Monitor.Log($"Checking action failed, {__instance.Name} has dialoge available.", LogLevel.Debug);
+                    return true;
+                }
+
+                if (__instance.isMoving())
+                {
+                    Monitor.Log($"Checking action failed, {__instance.Name} is moving.", LogLevel.Debug);
+                    return true;
+                }
+
+                if (who.ActiveObject is not null)
+                {
+                    Monitor.Log($"Checking action failed, {__instance.Name} is holding an object.", LogLevel.Debug);
+                    return true;
+                }
+
+                bool kissing = data.IsDating() || data.IsMarried() || data.IsEngaged();
+                if (kissing && __instance.hasBeenKissedToday.Value && !Config.UnlimitedDailyKisses)
+                {
+                    Monitor.Log($"Kissing failed, already kissed {__instance.Name}", LogLevel.Debug);
+                    return true;
+                }
+
+                string actionName = kissing ? "kissing" : "hugging";
+                __instance.faceGeneralDirection(who.getStandingPosition(), 0, false);
+                who.faceGeneralDirection(__instance.getStandingPosition(), 0, false);
+                if (__instance.FacingDirection != 3 && __instance.FacingDirection != 1)
+                {
+                    Monitor.Log($"{actionName} failed, {__instance.Name} is facing the wrong direction", LogLevel.Debug);
+                    return true;
+                }
+
+                Monitor.Log($"{who.Name} {actionName} {__instance.Name}", LogLevel.Debug);
+                if (kissing)
+                {
+                    Kissing.PlayerNPCKiss(who, __instance);
                 }
                 else
                 {
-                    Monitor.Log($"Checking action failed, config disallow it");
+                    Kissing.PlayerNPCHug(who, __instance);
                 }
+
+                __result = true;
+                return false;
             }
             catch (Exception ex)
             {

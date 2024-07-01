@@ -36,17 +36,30 @@ namespace ButtplugValley
         
         public bool VibrateOnHorse { get; set; } = true;
         
-        //DEBUG TEMP STUFF
-        public bool StonePickedUpDebug { get; set; } = false;
+        public bool VibrateOnGrass { get; set; } = true;
+        
+        public bool VibrateOnTreeHit { get; set; } = true;
+        
+        public bool VibrateOnTreeFell { get; set; } = true;
+
+        public bool VibrateOnKiss { get; set; } = true;
         
 
+        public bool VibrateOnSexScene { get; set; } = true;
+
+        public bool VibrateOnRainsInteractionMod { get; set; } = true;
+
+        public bool VibrateOnDarkClubMoans { get; set; } = true;
+
+        public bool VibrateOnDarkClubSex { get; set; } = true;
+
+        //DEBUG TEMP STUFF
+        public bool StonePickedUpDebug { get; set; } = false;      
 
         public bool KeepAlive { get; set; } = true;
 
-
         public int StoneBrokenLevel { get; set; } = 35;
-        public int DamageTakenMax { get; set; } = 100;
-        
+        public int DamageTakenMax { get; set; } = 100;     
         public int EnemyKilledLevel { get; set; } = 35;
         public int FishCollectedBasic { get; set; } = 30;
         public int CropAndMilkBasic { get; set; } = 30;
@@ -64,11 +77,27 @@ namespace ButtplugValley
         public int KeepAliveLevel { get; set; } = 5;
         public int DialogueLevel { get; set; } = 50;
         public int HorseLevel { get; set; } = 50;
-        
+        public int SexSceneLevel { get; set; } = 75;
+        public int RainsInteractionModLevel { get; set; } = 75;
+        public int DarkClubMoanLevel { get; set; } = 50;
+        public int MaxDarkClubSexLevel { get; set; } = 100;
+
         public SButton StopVibrations { get; set; } = SButton.P;
         public SButton DisconnectButtplug { get; set; } = SButton.I;
         public SButton ReconnectButtplug { get; set; } = SButton.K;
 
         public string IntifaceIP { get; set; } = "localhost:12345";
+        
+        public int QueueLength { get; set; } = 20;
+        
+        public int GrassLevel { get; set; } = 400;
+        
+        public int TreeChopLevel { get; set; } = 50;
+        
+        public int TreeFellLevel { get; set; } = 100;
+        
+        public int WateringCanLevel { get; set; } = 25;
+        
+        public int HoeLevel { get; set; } = 25;
     }
 }

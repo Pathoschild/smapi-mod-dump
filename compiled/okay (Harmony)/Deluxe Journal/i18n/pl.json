@@ -15,6 +15,7 @@
 	"task.craft.keywords": "rzemieślnik,kucharz,stwórz,zrób,weź,produkuj,kowal",
 	"task.gift": "Prezent",
 	"task.gift.keywords": "prezent,dajofertuj,przyjemność,podaruj,donuj,dostarczaj,udzielaj",
+	"task.header": "Nagłówek",
 	"task.sell": "Sprzedaj",
 	"task.sell.keywords": "sprzedaj,wysyłaj,rynek,handluj,pozbywaj się,detal,transakcja,wymiana,odsprzedaj,sprzedaż",
 
@@ -22,6 +23,7 @@
 	"ui.tab.quests": "Quests",
 	"ui.tab.tasks": "Tasks",
 	"ui.tab.notes": "Notes",
+	"ui.tab.overlays": "Overlays",
 
 	// tasks page
 	"ui.tasks.help": "naciśnij przycisk 'Dodaj Zadanie'.",
@@ -62,11 +64,16 @@
 	// task parameter names
 	"ui.tasks.parameter.animal": "Zwierzę",
 	"ui.tasks.parameter.building": "Budynek",
+	"ui.tasks.parameter.color": "Kolor",
 	"ui.tasks.parameter.count": "Ilość",
 	"ui.tasks.parameter.item": "Przedmiot",
 	"ui.tasks.parameter.npc": "Mieszkaniec",
 	"ui.tasks.parameter.quality": "Jakość (Minimalna)",
 	"ui.tasks.parameter.tool": "Narzędzie",
+
+	// overlays page
+	"ui.overlays.backgroundcolor": "Kolor tła",
+	"ui.overlays.hotkey": "Klawisz skrótu: {{keybind}}",
 
 	// +---------------------------------+
 	// | display name aliases (OPTIONAL) |

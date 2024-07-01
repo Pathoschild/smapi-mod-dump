@@ -205,20 +205,34 @@
         "{{ModId}}.MouseHouse.stool": "{{i18n:mapstrings.MouseHouse.stool}}",
         "{{ModId}}.MouseSpouse.drawers": "{{i18n:mapstrings.MouseSpouse.drawers}}",
         "{{ModId}}.MouseSpouse.stool": "{{i18n:mapstrings.MouseSpouse.stool}}",
-        "EOF": ""
+        // this key is omitted on purpose (skip displaying text)
+        //"{{ModId}}.HatRegistry.Inspect": "{{i18n:hatreactions.registry.Inspect}}",
+        "{{ModId}}.HatRegistry.InspectDisabled": "{{i18n:hatreactions.registry.InspectDisabled}}",
+        "{{ModId}}.HatRegistry.InspectSpouse": "{{i18n:hatreactions.registry.InspectSpouse |message={{i18n:hatreactions.registry.SpouseNote{{Random:{{Range:1,8}}}}}} }}",
+        "{{ModId}}.HatRegistry.InspectSpouseDisabled": "{{i18n:hatreactions.registry.InspectSpouseDisabled}}"
       }
     },
     {
       "LogName": "Family photo image",
       "Target": "Maps/{{ModId}}/FamilyPhoto",
       "Action": "Load",
-      "FromFile": "assets/maps/familyPhoto.png"
+      "FromFile": "assets/lore/familyPhoto.png"
     },
     {
       "LogName": "Lacey's cabin - remove items when vacant",
       "Target": "Maps/{{ModId}}_MouseHouse",
       "Action": "EditMap",
       "MapTiles": [
+        {
+          "Position": {"X": 5, "Y": 12},
+          "Layer": "Front",
+          "Remove": true
+        },
+        {
+          "Position": {"X": 5, "Y": 13},
+          "Layer": "Buildings",
+          "Remove": true
+        },
         {
           "Position": {"X": 11, "Y": 4},
           "Layer": "Buildings",

@@ -54,8 +54,7 @@ namespace Pathoschild.Stardew.DebugMode
         private readonly Lazy<Texture2D> Pixel = new(ModEntry.CreatePixel);
 
         /// <summary>Keyboard keys which are mapped to a destructive action in debug mode. See <see cref="ModConfig.AllowDangerousCommands"/>.</summary>
-        private readonly SButton[] DestructiveKeys =
-        {
+        private readonly SButton[] DestructiveKeys = [
             SButton.P, // ends current day
             SButton.M, // ends current season
             SButton.H, // randomizes player's hat
@@ -64,7 +63,7 @@ namespace Pathoschild.Stardew.DebugMode
             SButton.L, // randomizes player
             SButton.U, // randomizes farmhouse wallpaper and floors
             SButton.F10 // tries to launch a multiplayer server and crashes
-        };
+        ];
 
 
         /*********
@@ -210,7 +209,7 @@ namespace Pathoschild.Stardew.DebugMode
         private static Texture2D CreatePixel()
         {
             Texture2D texture = new Texture2D(Game1.graphics.GraphicsDevice, 1, 1);
-            texture.SetData(new[] { Color.White });
+            texture.SetData([Color.White]);
             return texture;
         }
 

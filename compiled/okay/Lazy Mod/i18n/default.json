@@ -1,10 +1,11 @@
 ﻿{
     // Config
+    "Config.OpenConfigMenuKeybind.Name": "Open Config Menu Keybind",
     "Config.ToggleModStateKeybind.Name": "Toggle Mod State Keybind",
     "Config.ToggleModStateKeybind.Tooltip": "Keybind for toggling automation feature in mods. AutoOpenAnimalDoor and ShowInfo are not affected.",
     "Config.Cooldown.Name": "Cooldown",
-    "Config.Cooldown.Tooltip": "The cooldown (frames) for each automation operation. The option needs to start a new day after the change to take effect.",
-    
+    "Config.Cooldown.Tooltip": "The cooldown (frames) for each automation operation.",
+
     // Farming
     "Config.FarmingPage.Name": "Farming",
     "Config.AutoTillDirt.Name": "Auto Till Dirt",
@@ -98,8 +99,8 @@
     "Config.AutoBreakContainer.Name": "Auto Break Container",
     "Config.AutoBreakContainer.Tooltip": "This feature only works when you hold the melee weapon(scythe).",
     "Config.AutoBreakContainerRange.Name": "Auto Break Container Range",
-    "Config.FindWeaponFromInventory.Name": "Find Weapon From Inventory",
-    "Config.FindWeaponFromInventory.Tooltip": "When this option is enabled, only a melee weapon (scythe) is required in the backpack for the feature to work.",
+    "Config.FindToolForBreakContainer.Name": "Find Weapon From Inventory",
+    "Config.FindToolForBreakContainer.Tooltip": "When this option is enabled, only a melee weapon (scythe) is required in the backpack for the feature to work.",
     "Config.AutoOpenTreasure.Name": "Auto Open Treasure",
     "Config.AutoOpenTreasureRange.Name": "Auto Open Treasure Range",
     "Config.AutoClearCrystal.Name": "Auto Clear Crystal",
@@ -214,13 +215,16 @@
     "Config.AutoHarvestMachineRange.Name": "Auto Harvest Machine Range",
     "Config.AutoTriggerMachine.Name": "Auto Trigger Machine",
     "Config.AutoTriggerMachineRange.Name": "Auto Trigger Machine Range",
+    "Config.AutoUseFairyDust.Name": "Auto Use Fairy Dust",
+    "Config.AutoUseFairyDust.Tooltip": "This feature only works when you hold the fairy dust.",
+    "Config.AutoUseFairyDustRange.Name": "Auto Use Fairy Dust Range",
     "Config.AutoGarbageCan.Name": "Auto Garbage Can",
     "Config.AutoGarbageCanRange.Name": "Auto Garbage Can Range",
     "Config.StopGarbageCanNearVillager.Name": "Stop Garbage Can Near Villager",
     "Config.AutoPlaceFloor.Name": "Auto Place Floor",
     "Config.AutoPlaceFloor.Tooltip": "This feature only works when you hold the floor.",
     "Config.AutoPlaceFloorRange.Name": "Auto Place Floor Range",
-    
+
     // Tree Settings
     "Config.TreeSettingsPage.Name": "Tree Settings",
     "Config.TreeSettingsPage.Tooltip": "Here you can set the tree that automatically chops the tree.",
@@ -246,7 +250,7 @@
     "Config.ChopSaplingStagePineTree.Name": "Chop Sapling Stage Pine Tree",
     "Config.ChopBushStagePineTree.Name": "Chop Bush Stage Pine Tree",
     "Config.ChopSmallTreeStagePineTree.Name": "Chop Small Tree Stage Pine Tree",
-    "Config.ChopPineTree.Name" : "Chop Pine Tree",
+    "Config.ChopPineTree.Name": "Chop Pine Tree",
     "Config.ChopStumpStagePineTree.Name": "Chop Stump Stage Pine Tree",
     "Config.MahoganyTreeTitle.Name": "Mahogany Tree",
     "Config.ChopSeedStageMahoganyTree.Name": "Chop Seed Stage Mahogany Tree",
@@ -302,6 +306,6 @@
     "BuffType.None.Name": "None",
 
     // Message
-    "Message.ModEnable":"The mod automation feature is enabled.",
-    "Message.ModDisable":"The mod automation feature is disable.",
+    "Message.ModEnable": "The mod automation feature is enabled.",
+    "Message.ModDisable": "The mod automation feature is disable."
 }

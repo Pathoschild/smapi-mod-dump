@@ -48,6 +48,7 @@
     "config.machines.fruit-tree": "树（果树）",
     "config.machines.trash-can": "垃圾桶",
     "config.machines.wild-tree": "树（野树）",
+    "config.machines.feed-hopper": "喂料斗和筒仓",
 
     // special settings for individual machines
     "config.machines.wild-tree.collect-moss.name": "收集苔藓",

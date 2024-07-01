@@ -8,7 +8,6 @@
 **
 *************************************************/
 
-using System;
 using System.Collections.Generic;
 using Pathoschild.Stardew.LookupAnything.Framework.Constants;
 
@@ -63,7 +62,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Data
 
         /// <summary>The experience points needed for each skill level.</summary>
         /// <remarks>Derived from <see cref="StardewValley.Farmer.checkForLevelGain"/>.</remarks>
-        public int[] PlayerSkillPointsPerLevel { get; set; } = Array.Empty<int>();
+        public int[] PlayerSkillPointsPerLevel { get; set; } = [];
 
         /****
         ** Time
@@ -93,14 +92,14 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Data
         /// - artisanal products aged in the cask (derived from <see cref="StardewValley.Objects.Cask.performObjectDropInAction"/>);
         /// - forage crops.
         /// </remarks>
-        public string[] ItemsWithIridiumQuality { get; set; } = Array.Empty<string>();
+        public string[] ItemsWithIridiumQuality { get; set; } = [];
 
         /****
         ** Achievements
         ****/
         /// <summary>The qualified item IDs crops that must be shipped for the polyculture achievement.</summary>
         /// <remarks>Derived from <see cref="StardewValley.Stats.checkForShippingAchievements"/>.</remarks>
-        public string[] PolycultureCrops { get; set; } = Array.Empty<string>();
+        public string[] PolycultureCrops { get; set; } = [];
 
         /// <summary>The number of each crop that must be shipped for the polyculture achievement.</summary>
         /// <remarks>Derived from <see cref="StardewValley.Stats.checkForShippingAchievements"/>.</remarks>

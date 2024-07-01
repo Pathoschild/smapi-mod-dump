@@ -1,0 +1,18 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/zombifier/My_Stardew_Mods
+**
+*************************************************/
+
+using StardewValley.GameData.Machines;
+using Selph.StardewMods.Common;
+
+namespace Selph.StardewMods.ExtraMachineConfig;
+
+public sealed class ExtraOutputAssetHandler : DictAssetHandler<MachineItemOutput> {
+  public ExtraOutputAssetHandler() : base($"{ModEntry.UniqueId}/ExtraOutputs", ModEntry.StaticMonitor) {}
+}

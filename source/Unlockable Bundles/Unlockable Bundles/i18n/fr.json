@@ -16,4 +16,5 @@
   "ub_speech_ask": "{{item}} ? C'est très bien ! Je peux l'avoir ?",
   "ub_speech_money": "L'argent",
   "ub_empty_overview": "Ici, tu peux suivre tes paquets modifiés après qu'ils aient été trouvés.",
+  "ub_overview_button": "Aperçu du paquets",
 }

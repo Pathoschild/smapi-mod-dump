@@ -8,6 +8,21 @@ for queries and analysis.**
 
 # Changelog
 
+## 2.13.0
+Released May 31st, 2024.
+
+### Fixed
+* Support a new 1.6 feature for showing the prices for crafted items.
+* Bulk crafting stopping at 20 items when using the Bulk Crafting menu.
+* Issue with an upcoming SMAPI update that would cause Better Crafting
+  to fail to load due to a constructor signature change within Pintail.
+
+### API
+* Added `IEventedInventoryProvider` to allow mods providing inventories
+  an alternative to `NetMutex` for establishing a lock for ensuring
+  exclusive access for performing write operations to an inventory.
+
+
 ## 2.12.0
 Released May 27th, 2024.
 

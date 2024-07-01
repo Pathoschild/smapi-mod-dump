@@ -11,6 +11,7 @@
 using System.Linq;
 using Microsoft.Xna.Framework;
 using StardewValley;
+using StardewValley.TerrainFeatures;
 
 namespace NermNermNerm.Stardew.QuestableTractor
 {
@@ -183,6 +184,20 @@ namespace NermNermNerm.Stardew.QuestableTractor
         private Vector2 FindPlaceToPutItem(int preferredResourceClumpToHideUnder)
         {
             var farm = Game1.getFarm();
+
+            if (this.Mod.IsRunningGrandpasFarm && preferredResourceClumpToHideUnder == ResourceClump.boulderIndex)
+            {
+                farm.objects.Remove(new Vector2(47, 74));
+                farm.objects.Remove(new Vector2(48, 74));
+                farm.objects.Remove(new Vector2(47, 75));
+                farm.objects.Remove(new Vector2(48, 75));
+                farm.terrainFeatures.Remove(new Vector2(47, 74));
+                farm.terrainFeatures.Remove(new Vector2(48, 74));
+                farm.terrainFeatures.Remove(new Vector2(47, 75));
+                farm.terrainFeatures.Remove(new Vector2(48, 75));
+                farm.resourceClumps.Add(new ResourceClump(ResourceClump.boulderIndex, 2, 2, new Vector2(47, 74)));
+            }
+
             var bottomMostResourceClump = farm.resourceClumps.Where(tf => tf.parentSheetIndex.Value == preferredResourceClumpToHideUnder).OrderByDescending(tf => tf.Tile.Y).FirstOrDefault();
             if (bottomMostResourceClump is not null)
             {

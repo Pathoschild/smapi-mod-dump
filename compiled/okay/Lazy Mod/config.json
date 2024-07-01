@@ -1,4 +1,143 @@
 {
+  "AutoGrabTreasureItem": false,
+  "AutoExitTreasureMenu": false,
+  "OpenConfigMenuKeybind": "R",
+  "ToggleModStateKeybind": "G",
+  "Cooldown": 10,
+  "AutoTillDirt": {
+    "IsEnable": false,
+    "Range": 0
+  },
+  "StopTillDirtStamina": 3.0,
+  "AutoClearTilledDirt": {
+    "IsEnable": false,
+    "Range": 0
+  },
+  "StopClearTilledDirtStamina": 3.0,
+  "AutoWaterDirt": {
+    "IsEnable": false,
+    "Range": 0
+  },
+  "StopWaterDirtStamina": 3.0,
+  "AutoRefillWateringCan": {
+    "IsEnable": false,
+    "Range": 1
+  },
+  "FindWateringCanFromInventory": true,
+  "AutoSeed": {
+    "IsEnable": false,
+    "Range": 0
+  },
+  "AutoFertilize": {
+    "IsEnable": false,
+    "Range": 0
+  },
+  "AutoHarvestCrop": {
+    "IsEnable": false,
+    "Range": 0
+  },
+  "AutoHarvestFlower": false,
+  "AutoShakeFruitTree": {
+    "IsEnable": false,
+    "Range": 1
+  },
+  "AutoClearDeadCrop": {
+    "IsEnable": false,
+    "Range": 0
+  },
+  "FindToolForClearDeadCrop": true,
+  "AutoPetAnimal": {
+    "IsEnable": false,
+    "Range": 1
+  },
+  "AutoPetPet": {
+    "IsEnable": false,
+    "Range": 1
+  },
+  "AutoMilkAnimal": {
+    "IsEnable": false,
+    "Range": 1
+  },
+  "StopMilkAnimalStamina": 3.0,
+  "FindMilkPailFromInventory": true,
+  "AutoShearsAnimal": {
+    "IsEnable": false,
+    "Range": 1
+  },
+  "StopShearsAnimalStamina": 3.0,
+  "FindShearsFromInventory": true,
+  "AutoFeedAnimalCracker": {
+    "IsEnable": false,
+    "Range": 1
+  },
+  "AutoOpenAnimalDoor": false,
+  "AutoOpenFenceGate": {
+    "IsEnable": false,
+    "Range": 1
+  },
+  "AutoClearStone": {
+    "IsEnable": false,
+    "Range": 1
+  },
+  "StopClearStoneStamina": 3.0,
+  "FindPickaxeFromInventory": true,
+  "ClearStoneOnMineShaft": false,
+  "ClearStoneOnVolcano": false,
+  "ClearFarmStone": true,
+  "ClearOtherStone": false,
+  "ClearIslandStone": false,
+  "ClearOreStone": false,
+  "ClearGemStone": false,
+  "ClearGeodeStone": false,
+  "ClearCalicoEggStone": false,
+  "ClearBoulder": false,
+  "ClearMeteorite": false,
+  "AutoCollectCoal": {
+    "IsEnable": false,
+    "Range": 1
+  },
+  "AutoBreakContainer": {
+    "IsEnable": false,
+    "Range": 1
+  },
+  "FindToolForBreakContainer": true,
+  "AutoOpenTreasure": {
+    "IsEnable": false,
+    "Range": 1
+  },
+  "AutoClearCrystal": {
+    "IsEnable": false,
+    "Range": 1
+  },
+  "FindToolForClearCrystal": true,
+  "AutoCoolLava": {
+    "IsEnable": false,
+    "Range": 1
+  },
+  "StopCoolLavaStamina": 3.0,
+  "FindToolForCoolLava": true,
+  "ShowLadderInfo": true,
+  "ShowShaftInfo": true,
+  "ShowMonsterInfo": true,
+  "ShowMonsterKillInfo": true,
+  "ShowMineralInfo": true,
+  "AutoForage": {
+    "IsEnable": false,
+    "Range": 1
+  },
+  "AutoHarvestGinger": {
+    "IsEnable": false,
+    "Range": 0
+  },
+  "StopHarvestGingerStamina": 3.0,
+  "FindToolForHarvestGinger": true,
+  "AutoChopTree": {
+    "IsEnable": false,
+    "Range": 1
+  },
+  "StopChopTreeStamina": 3.0,
+  "ChopTapperTree": false,
+  "ChopVinegarTree": false,
   "ChopOakTree": {
     "0": true,
     "1": false,
@@ -69,118 +208,44 @@
     "5": false,
     "-1": false
   },
-  "AutoGrabTreasureItem": false,
-  "AutoExitTreasureMenu": false,
-  "ToggleModStateKeybind": "G",
-  "Cooldown": 10,
-  "AutoTillDirt": false,
-  "AutoTillDirtRange": 0,
-  "StopTillDirtStamina": 3.0,
-  "AutoClearTilledDirt": false,
-  "AutoClearTilledDirtRange": 0,
-  "StopClearTilledDirtStamina": 3.0,
-  "AutoWaterDirt": false,
-  "AutoWaterDirtRange": 0,
-  "StopWaterDirtStamina": 3.0,
-  "AutoRefillWateringCan": false,
-  "AutoRefillWateringCanRange": 1,
-  "FindWateringCanFromInventory": true,
-  "AutoSeed": false,
-  "AutoSeedRange": 0,
-  "AutoFertilize": false,
-  "AutoFertilizeRange": 0,
-  "AutoHarvestCrop": false,
-  "AutoHarvestCropRange": 1,
-  "AutoHarvestFlower": false,
-  "AutoShakeFruitTree": false,
-  "AutoShakeFruitTreeRange": 1,
-  "AutoClearDeadCrop": false,
-  "AutoClearDeadCropRange": 1,
-  "FindToolForClearDeadCrop": true,
-  "AutoPetAnimal": false,
-  "AutoPetAnimalRange": 1,
-  "AutoPetPet": false,
-  "AutoPetPetRange": 1,
-  "AutoMilkAnimal": false,
-  "AutoMilkAnimalRange": 1,
-  "StopMilkAnimalStamina": 3.0,
-  "FindMilkPailFromInventory": true,
-  "AutoShearsAnimal": false,
-  "AutoShearsAnimalRange": 1,
-  "StopShearsAnimalStamina": 3.0,
-  "FindShearsFromInventory": true,
-  "AutoFeedAnimalCracker": false,
-  "AutoFeedAnimalCrackerRange": 1,
-  "AutoOpenAnimalDoor": false,
-  "AutoOpenFenceGate": false,
-  "AutoOpenFenceGateRange": 1,
-  "AutoClearStone": false,
-  "AutoClearStoneRange": 1,
-  "StopClearStoneStamina": 3.0,
-  "FindPickaxeFromInventory": true,
-  "ClearStoneOnMineShaft": false,
-  "ClearStoneOnVolcano": false,
-  "ClearFarmStone": true,
-  "ClearOtherStone": false,
-  "ClearIslandStone": false,
-  "ClearOreStone": false,
-  "ClearGemStone": false,
-  "ClearGeodeStone": false,
-  "ClearCalicoEggStone": false,
-  "ClearBoulder": false,
-  "ClearMeteorite": false,
-  "AutoCollectCoal": false,
-  "AutoCollectCoalRange": 1,
-  "AutoBreakContainer": false,
-  "AutoBreakContainerRange": 1,
-  "FindWeaponFromInventory": false,
-  "AutoOpenTreasure": false,
-  "AutoOpenTreasureRange": 1,
-  "AutoClearCrystal": false,
-  "AutoClearCrystalRange": 1,
-  "FindToolForClearCrystal": true,
-  "AutoCoolLava": false,
-  "AutoCoolLavaRange": 1,
-  "StopCoolLavaStamina": 3.0,
-  "FindToolForCoolLava": true,
-  "ShowLadderInfo": true,
-  "ShowShaftInfo": true,
-  "ShowMonsterInfo": true,
-  "ShowMonsterKillInfo": true,
-  "ShowMineralInfo": true,
-  "AutoForage": false,
-  "AutoForageRange": 1,
-  "AutoHarvestGinger": false,
-  "AutoHarvestGingerRange": 0,
-  "StopHarvestGingerStamina": 3.0,
-  "FindToolForHarvestGinger": true,
-  "AutoChopTree": false,
-  "AutoChopTreeRange": 1,
-  "StopChopTreeStamina": 3.0,
-  "ChopTapperTree": false,
-  "ChopVinegarTree": false,
-  "AutoShakeTree": false,
-  "AutoShakeTreeRange": 1,
-  "AutoHarvestMoss": false,
-  "AutoHarvestMossRange": 1,
+  "AutoShakeTree": {
+    "IsEnable": false,
+    "Range": 1
+  },
+  "AutoHarvestMoss": {
+    "IsEnable": false,
+    "Range": 1
+  },
   "FindScytheFromInventory": true,
-  "AutoPlaceTapper": false,
-  "AutoPlaceTapperRange": 1,
-  "AutoPlaceVinegar": false,
-  "AutoPlaceVinegarRange": 1,
-  "AutoClearWood": false,
-  "AutoClearWoodRange": 1,
+  "AutoPlaceTapper": {
+    "IsEnable": false,
+    "Range": 1
+  },
+  "AutoPlaceVinegar": {
+    "IsEnable": false,
+    "Range": 1
+  },
+  "AutoClearWood": {
+    "IsEnable": false,
+    "Range": 1
+  },
   "StopClearWoodStamina": 3.0,
   "ClearTwig": true,
   "ClearStump": false,
   "ClearHollowLog": false,
   "FindAxeFromInventory": true,
-  "AutoPlaceCarbPot": false,
-  "AutoPlaceCarbPotRange": 1,
-  "AutoAddBaitForCarbPot": false,
-  "AutoAddBaitForCarbPotRange": 1,
-  "AutoHarvestCarbPot": false,
-  "AutoHarvestCarbPotRange": 1,
+  "AutoPlaceCarbPot": {
+    "IsEnable": false,
+    "Range": 1
+  },
+  "AutoAddBaitForCarbPot": {
+    "IsEnable": false,
+    "Range": 1
+  },
+  "AutoHarvestCarbPot": {
+    "IsEnable": false,
+    "Range": 1
+  },
   "AutoEatFoodForStamina": false,
   "AutoEatFoodStaminaRate": 0.1,
   "IntelligentFoodSelectionForStamina": true,
@@ -196,21 +261,37 @@
   "DrinkBuffMaintain1": "Speed",
   "DrinkBuffMaintain2": "None",
   "MagneticRadiusIncrease": 0,
-  "AutoClearWeeds": false,
-  "AutoClearWeedsRange": 1,
+  "AutoClearWeeds": {
+    "IsEnable": false,
+    "Range": 1
+  },
   "FindToolForClearWeeds": true,
   "ClearLargeWeeds": false,
-  "AutoDigSpots": false,
-  "AutoDigSpotsRange": 0,
+  "AutoDigSpots": {
+    "IsEnable": false,
+    "Range": 0
+  },
   "StopDigSpotsStamina": 3.0,
   "FindHoeFromInventory": true,
-  "AutoHarvestMachine": false,
-  "AutoHarvestMachineRange": 1,
-  "AutoTriggerMachine": false,
-  "AutoTriggerMachineRange": 1,
-  "AutoGarbageCan": false,
-  "AutoGarbageCanRange": 1,
+  "AutoHarvestMachine": {
+    "IsEnable": false,
+    "Range": 1
+  },
+  "AutoTriggerMachine": {
+    "IsEnable": false,
+    "Range": 1
+  },
+  "AutoUseFairyDust": {
+    "IsEnable": false,
+    "Range": 1
+  },
+  "AutoGarbageCan": {
+    "IsEnable": false,
+    "Range": 1
+  },
   "StopGarbageCanNearVillager": true,
-  "AutoPlaceFloor": false,
-  "AutoPlaceFloorRange": 1
+  "AutoPlaceFloor": {
+    "IsEnable": false,
+    "Range": 0
+  }
 }

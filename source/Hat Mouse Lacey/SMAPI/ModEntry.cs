@@ -17,6 +17,7 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Enums;
 using StardewValley;
+using StardewValley.BellsAndWhistles;
 using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
@@ -166,17 +167,20 @@ namespace ichortower_HatMouseLacey
             ModEntry.Config = helper.ReadConfig<ModConfig>();
             helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
             helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
+            helper.Events.GameLoop.DayStarted += this.OnDayStarted;
             helper.Events.GameLoop.ReturnedToTitle += this.OnReturnedToTitle;
             helper.Events.Specialized.LoadStageChanged += this.OnLoadStageChanged;
             helper.Events.Content.AssetRequested += LCCompat.OnAssetRequested;
 
             // see ConsoleCommands.cs
             helper.ConsoleCommands.Add(HML.CommandWord,
-                    "Run a Hat Mouse Lacey command. 'hatmouselacey help' for details.",
+                    $"Run a Hat Mouse Lacey command. '{HML.CommandWord} help' for details.",
                     ConsoleCommands.Main);
 
             GameLocation.RegisterTileAction($"{HML.CPId}_PhotoMessage",
                     this.PhotoMessage);
+            GameLocation.RegisterTileAction($"{HML.CPId}_HatRegistry",
+                    this.HatRegistry);
 
             /*
              * Apply Harmony patches by getting all the methods in Patcher
@@ -288,6 +292,70 @@ namespace ichortower_HatMouseLacey
             return true;
         }
 
+        private bool HatRegistry(GameLocation location, string[] args,
+                Farmer player, Point tile)
+        {
+            string asset = "Strings\\StringsFromMaps";
+            bool enabled = player.hasOrWillReceiveMail($"{HML.MailPrefix}HatReactions");
+            bool isSpouse = (player.getSpouse()?.Name.Equals(HML.LaceyInternalName) == true);
+            string key = $"{HML.CPId}.HatRegistry.Inspect";
+            if (isSpouse) {
+                key += "Spouse";
+            }
+            if (!enabled) {
+                key += "Disabled";
+            }
+
+            Action proceedToRegistry = delegate {
+                Game1.afterFadeFunction openMenu = delegate {
+                    if (enabled) {
+                        Game1.activeClickableMenu = new HatRegistryMenu();
+                    }
+                };
+
+                string messageText = Game1.content.LoadStringReturnNullIfNotFound($"{asset}:{key}");
+                if (messageText is null) {
+                    openMenu();
+                }
+                else {
+                    Game1.drawDialogueNoTyping(messageText);
+                    Game1.afterDialogues = openMenu;
+                }
+            };
+            if (!isSpouse) {
+                proceedToRegistry();
+                return true;
+            }
+
+            var choices = new Response[] {
+                new("shop", Helper.Translation.Get("hatreactions.menu.ShopChoice")),
+                new("registry", Helper.Translation.Get("hatreactions.menu.RegistryChoice")),
+                new("cancel", Helper.Translation.Get("hatreactions.menu.CancelChoice")),
+            };
+            var actions = new Action[] {
+                () => {
+                    Utility.TryOpenShopMenu("HatMouse",
+                            Game1.currentLocation, playOpenSound: true);
+                },
+                proceedToRegistry,
+                () => {}
+            };
+            int width = 600;
+            for (int i = 0; i < choices.Length; ++i) {
+                width = Math.Max(width, SpriteText.getWidthOfString(choices[i].responseText)+128);
+            }
+            Game1.drawObjectQuestionDialogue("", choices, width+64);
+            Game1.currentLocation.afterQuestion = delegate (Farmer who, string whichAnswer) {
+                for (int i = 0; i < choices.Length; ++i) {
+                    if (choices[i].responseKey.Equals(whichAnswer)) {
+                        actions[i]();
+                        return;
+                    }
+                }
+            };
+            return true;
+        }
+
 
         private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
         {
@@ -302,6 +370,28 @@ namespace ichortower_HatMouseLacey
             if (Lacey != null && Lacey.Schedule is null && !Lacey.isMarried()) {
                 Log.Trace($"Regenerating Lacey's schedule");
                 Lacey.TryLoadSchedule();
+            }
+        }
+
+        private void OnDayStarted(object sender, DayStartedEventArgs e)
+        {
+            string registryMail = $"{HML.MailPrefix}HatRegistryNotice";
+            string registryDialogueKey = "Characters\\Dialogue\\MarriageDialogue" +
+                    $"{HML.LaceyInternalName}:HatRegistryNew";
+            if (!LCModData.HasShownAnyHat()) {
+                return;
+            }
+            if (Game1.player.hasOrWillReceiveMail(registryMail)) {
+                return;
+            }
+            NPC spouse = Game1.player.getSpouse();
+            if (spouse?.Name.Equals(HML.LaceyInternalName) == true) {
+                Game1.player.mailReceived.Add(registryMail);
+                Dialogue say = Dialogue.FromTranslation(spouse, registryDialogueKey);
+                spouse.CurrentDialogue.Push(say);
+            }
+            else {
+                Game1.player.mailbox.Add(registryMail);
             }
         }
 

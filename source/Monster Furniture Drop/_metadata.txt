@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/MangusuPixel/MonsterFurnitureDrop
+   Git: https://github.com/MangusuPixel/MonsterFurnitureDrop.git
+
+mods:
+   Monster Furniture Drop
+
+latest commit:
+   commit ccbac577f2b605fab4aa71e8ddf3d4befdc06461
+   Author: MangusuPixel <mangusupixel@gmail.com>
+   Date:   Thu Jun 6 22:28:45 2024 -0400
+   
+       Updated manifest
+   

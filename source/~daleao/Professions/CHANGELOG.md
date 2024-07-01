@@ -8,6 +8,119 @@ for queries and analysis.**
 
 # PROFESSIONS Changelog
 
+## 0.4.0
+
+Updated for DaLionheart 1.3.0.
+
+### Changed
+
+* Tweaked tracking arrow colors a bit. Artifacts spots are now always tracked with green, and are the only thing tracked with that color. Prospector mining nodes is now a darker orange for better contrast with Scavenger forage.
+* Default tracking arrow size was reduced to x1 (default vanilla size), down from x1.2.
+
+### Removed
+
+* Removed FakeFarmer (moved to Core mod).
+
+<sup><sup>[🔼 Back to top](#professions-changelog)</sup></sup>
+
+## 0.3.5
+
+### Changed
+
+* Players can no longer gain Mastery Exp if one or more vanilla skills are not at level 10 or above.
+* Players can no longer enter the Mastery Cave if one ore more vanilla skills are not at level 10 or above.
+
+### Fixed
+
+* Fixed mod not allowing player to gain any Luck exp. **Luck Skill is still not supported.**
+* Fixed Limit Gauge rendering during screenshots.
+* Fixed an issue with multiplayer farmhands getting repeated level ups.
+* Fixed an issue during prestige profession selection introduced in the previous version.
+* Fixed professions stars not appearing after the first skill reset.
+* Fixed minor issues in SpaceCore's SkillLevelUpMenu.
+
+<sup><sup>[🔼 Back to top](#professions-changelog)</sup></sup>
+
+## 0.3.4
+
+### Fixed
+
+* I fixed something. I forgot what it was.
+
+<sup><sup>[🔼 Back to top](#professions-changelog)</sup></sup>
+
+## 0.3.3
+
+### Fixed
+
+* Fixed possible issue in LevelUpMenu code.
+* Added missing translation keys. Updated Chinese translation, thanks to Awassakura.
+
+<sup><sup>[🔼 Back to top](#professions-changelog)</sup></sup>
+
+## 0.3.2
+
+### Fixed
+
+* Add/remove Mastery commands now also correctly changes Mastery level.
+    * You can either use `prfs set <skill> <mastered/unmastered>` to add or remove a mastery, **OR** you can use `prfs add mastery <skill>` / `prfs remove mastery <skill>`. Both commands do the same thing, except that `add` and `remove` commands can accept the parameter `all` instead of a skill name to process all 5 skills at once. Obviously do not use `<>` when actually running these commands.
+
+<sup><sup>[🔼 Back to top](#professions-changelog)</sup></sup>
+
+## 0.3.1
+
+### Added
+
+* All shaken fruits are now considered forage for the purpose of Ecologist perks.
+* Added a warning dialogue before claiming a skill Mastery to inform players that skill resetting will become unavailable. No excuses now.
+* Added back UiInfoSuite2 compatibility.
+
+### Changed
+
+* Angler bonus increased from 0.5% to 1% per unique max-size fish, and from 2% to 5% per Legendary fish.
+* Can no longer enter the Mastery Cave unless all skills are level 10 (vanilla behavior). Otherwise this would allow players to claim Mastery of skills at any level, unless I messed around with vanilla code even more, which just isn't worth it.
+* Skill Reset stars will no longer appear until the player has 2 or more professions in any skill. This is to avoid players getting stuck looking at bronze stars if they don't plan on resetting any time soon.
+
+### Fixed
+
+* Fixed Farmhands not being able to complete Scavenger Hunts.
+* Fixed Delight and Shiny Mayo still being present in the game when disabled.
+* Trash fished out of Fish Ponds no longer counts towards Conservationist perks.
+* Fixed a possible issue in Tree.shake patcher.
+* Updated incorrect description in README for Ecologist profession which stated that it affects Mushroom Boxes. It doesn't.
+
+<sup><sup>[🔼 Back to top](#professions-changelog)</sup></sup>
+
+## 0.3.0
+
+### Added
+
+* Updated few lines of Korean translation by [whdms2008](https://next.nexusmods.com/profile/whdms2008/about-me?gameId=1303).
+* Added Russian translations by [darthalex2014](https://forums.nexusmods.com/profile/122957028-darthalex2014/).
+* Added console command to set/unset mastered skills.
+* Added compatibility for new [Enchantments](../Enchantments) mod.
+* Fish Smoker no longer mentions that it preserves quality, since it doesn't with this mod.
+
+### Changed
+
+* Changed the colors of tracking pointers.
+    * **Yellow:** Foraging stuff (Scavenger)
+    * **Orange:** Mining stuff (Prospector)
+    * **Blue:** Panning spots (Prospector), ladders/shafts (Prospector), artifact spots (both)
+* Removed Golden Mayo from the list of required items for Perfection.
+* Spelunker buff is now a stackable buff.
+* Massive performance improvement (7x) in enemy AI code ~~by undoing a stupid "optimization" I had done a while back~~.
+* Brute rage decay lowered to 15s from 20s.
+
+### Fixed
+
+* Hopefully fixed possible issue caused bad badly-coded fish mods that don't properly assign context tags to their fish.
+* Fixed Ostrich and Golden Mayo items not being produced correctly.
+* Fixed typo in file `skills_KawaiiRoseGold.png`.
+* Fixed an issue causing incorrect level 10 profession choices to be offerred. Apparently this also fixes people being stuck at 5/6.
+
+<sup><sup>[🔼 Back to top](#professions-changelog)</sup></sup>
+
 ## 0.2.10
 
 ### Added

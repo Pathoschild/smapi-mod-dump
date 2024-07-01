@@ -17,9 +17,11 @@ using StardewValley.Menus;
 using DeluxeJournal.Menus.Components;
 using DeluxeJournal.Task;
 
+using static StardewValley.Menus.ClickableComponent;
+
 namespace DeluxeJournal.Menus
 {
-    /// <summary>TasksPage child menu for selecting and navigating a TaskEntryComponent on a gamepad.</summary>
+    /// <summary><see cref="IPage"/> child menu for selecting and navigating a <see cref="TaskEntryComponent"/> on a gamepad.</summary>
     public class TaskEntryMenu : IClickableMenu
     {
         public readonly ClickableComponent checkbox;
@@ -45,15 +47,23 @@ namespace DeluxeJournal.Menus
 
             checkbox = _entry.checkbox;
             checkbox.myID = 100;
+            checkbox.upNeighborID = CUSTOM_SNAP_BEHAVIOR;
+            checkbox.downNeighborID = CUSTOM_SNAP_BEHAVIOR;
+            checkbox.leftNeighborID = CUSTOM_SNAP_BEHAVIOR;
             checkbox.rightNeighborID = 101;
 
             removeButton = _entry.removeButton;
             removeButton.myID = 102;
+            removeButton.upNeighborID = CUSTOM_SNAP_BEHAVIOR;
+            removeButton.downNeighborID = CUSTOM_SNAP_BEHAVIOR;
             removeButton.leftNeighborID = 101;
+            removeButton.rightNeighborID = CUSTOM_SNAP_BEHAVIOR;
 
             editbox = new ClickableComponent(new Rectangle(_entry.bounds.Center.X, checkbox.bounds.Y, checkbox.bounds.Width, checkbox.bounds.Height), "")
             {
                 myID = 101,
+                upNeighborID = CUSTOM_SNAP_BEHAVIOR,
+                downNeighborID = CUSTOM_SNAP_BEHAVIOR,
                 rightNeighborID = 102,
                 leftNeighborID = 100
             };
@@ -65,6 +75,29 @@ namespace DeluxeJournal.Menus
         {
             currentlySnappedComponent = editbox;
             snapCursorToCurrentSnappedComponent();
+        }
+
+        public override void snapCursorToCurrentSnappedComponent()
+        {
+            if (GetParentMenu() != null)
+            {
+                base.snapCursorToCurrentSnappedComponent();
+            }
+        }
+
+        protected override void customSnapBehavior(int direction, int oldRegion, int oldID)
+        {
+            exitThisMenuNoSound();
+
+            // forward snap movement back to TasksPage
+            Game1.activeClickableMenu?.applyMovementKey(direction switch
+            {
+                Game1.up => Game1.options.getFirstKeyboardKeyFromInputButtonList(Game1.options.moveUpButton),
+                Game1.down => Game1.options.getFirstKeyboardKeyFromInputButtonList(Game1.options.moveDownButton),
+                Game1.left => Game1.options.getFirstKeyboardKeyFromInputButtonList(Game1.options.moveLeftButton),
+                Game1.right => Game1.options.getFirstKeyboardKeyFromInputButtonList(Game1.options.moveRightButton),
+                _ => Keys.None
+            });
         }
 
         public override void receiveLeftClick(int x, int y, bool playSound = true)
@@ -104,10 +137,9 @@ namespace DeluxeJournal.Menus
 
         public override void receiveKeyPress(Keys key)
         {
-            if (!Game1.options.SnappyMenus ||
-                Game1.options.doesInputListContain(Game1.options.menuButton, key) ||
-                Game1.options.doesInputListContain(Game1.options.moveUpButton, key) ||
-                Game1.options.doesInputListContain(Game1.options.moveDownButton, key))
+            if (!Game1.options.SnappyMenus
+                || Game1.options.doesInputListContain(Game1.options.menuButton, key)
+                || Game1.options.doesInputListContain(Game1.options.journalButton, key))
             {
                 exitThisMenuNoSound();
 
@@ -136,7 +168,9 @@ namespace DeluxeJournal.Menus
 
         public override void draw(SpriteBatch b)
         {
-            _entry.Draw(b, _task, true);
+            int colorIndex = _task.ColorIndex > 0 || _task.GroupColorIndex < 0 ? _task.ColorIndex : _task.GroupColorIndex;
+
+            _entry.Draw(b, _task, DeluxeJournalMod.ColorSchemas[colorIndex < DeluxeJournalMod.ColorSchemas.Count ? colorIndex : 0], true);
 
             if (_hoverText.Length > 0)
             {

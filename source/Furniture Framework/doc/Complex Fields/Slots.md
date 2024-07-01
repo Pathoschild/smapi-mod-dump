@@ -47,6 +47,10 @@ Defaults to `{"Tile": 0, "Sub": 0}`.
 
 Note: if a Slot has the same depth as a Layer, the item in the Slot will be drawn above the Layer, so you can give the Slot the same depth as the Layer it is supposed to rest on.
 
+## Max Size
+
+This is an **integer** [vector](https://github.com/Leroymilo/FurnitureFramework/blob/main/doc/Structures/Vector.md) that defines how big (in tiles) a Furniture can be to be placed in this spot. It defaults to 1x1 if omitted.
+
 ## Debug Color
 
 This is the name of the color of the rectangle that will be shown if the "Slots Debug" options are enabled in the config, this is just a visual help to know where the Slot's Area is located. See [here](https://learn.microsoft.com/en-us/dotnet/api/system.drawing.color?view=net-8.0#properties) for a list of accepted color names (R, G, B and A are not accepted).

@@ -1,0 +1,37 @@
+{
+    "Config.GeneralSettingTitle.Name": "General Setting",
+    
+    // Enable Mod
+    "Config.EnableMod.Name": "Enable Mod",
+
+    // Kick Player Delay Time
+    "Config.KickPlayerDelayTime.Name": "Kick Player Delay Time",
+    "Config.KickPlayerDelayTIme.Tooltip": "The delay time for a player to be kicked out of the game when he joins the game without meeting the requirements. (Unit: seconds)",
+    
+    "Config.LimitSettingTitle.Name": "Limit Setting",
+    
+    // Require SMAPI 
+    "Config.RequireSMAPI.Name": "Require SMAPI",
+    "Config.RequireSMAPI.Tooltip": "If enabled, players must have SMAPI installed to join the game.",
+    "UI.RequireSMAPI": "{{name}} will be kicked because he doesn't have SMAPI installed.",
+    
+    // Limit Mode
+    "Config.LimitMode.Name": "Limit Mode",
+    "Config.LimitMode.Tooltip": "The way the mod determines if a player meets the mod requirements. When <White List Mode> is selected, the mod will judge whether the player meets the requirements based on <AllowedModList> and <RequiredModList>. When <Black List Mode> is selected, the mod will judge whether the player meets the requirements based on <RequiredModList> and <BannedModList>.",
+    "Config.LimitMode.WhiteListMode": "White List Mode",
+    "Config.LimitMode.BlackListMode": "Black List Mode",
+    "UI.KickPlayerTooltip": "{{name}} will be kicked because he doesn't meet the mod requirements.",
+    "UI.ModLimit.Required": "{{id}} is required.",
+    "UI.ModLimit.Banned": "{{id}} is banned.",
+    
+    // Mod List Selected
+    "Config.ModListSelectedTitle.Name": "Mod List Selected Setting",
+    "Config.ModListSelected.Paragraph": "The mod lists is too complex to be set up on this occasion, so please use the <config.json> file to set it up.\nThis mod allows multiple mod lists to be set up at the same time, each consisting of a name and an array of the mod's UniqueId.\nWhen entering the game, the contents of the following options are automatically generated based on the name.",
+    "Config.AllowedModListSelected.Name": "Allowed Mod List Selected",
+    "Config.AllowedModListSelected.Tooltip": "The mods contained in <AllowedModList> are the mods that are allowed to be installed.",
+    "Config.RequiredModListSelected.Name": "Required Mod List Selected",
+    "Config.RequiredModListSelected.Tooltip": "The mods contained in <RequiredModList> are the mods that are required to be installed.",
+    "Config.BannedModListSelected.Name": "Banned Mod List Selected",
+    "Config.BannedModListSelected.Tooltip": "The mods contained in <BannedModList> are the mods that are banned to be installed.",
+    "UI.GenerateModList": "The mod list has been generated. You'll need to restart the game to set it up in the Generic Mod Config Menu.",
+}

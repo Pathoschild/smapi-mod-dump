@@ -47,7 +47,7 @@ namespace StardewArchipelago.GameModifications
                 }
             }
 
-            tiles = tiles.OrderBy(x => x.GetTotalDistance(player.getTileLocationPoint())).ToList();
+            tiles = tiles.OrderBy(x => x.GetTotalDistance(player.TilePoint)).ToList();
 
             foreach (var tile in tiles)
             {

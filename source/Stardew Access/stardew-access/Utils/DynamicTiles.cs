@@ -508,6 +508,11 @@ public class DynamicTiles
 
             return (mailboxName, mailboxCategory);
         }
+        else if ((farm.GetMainFarmHouse().tileX.Value + 1 == x || farm.GetMainFarmHouse().tileX.Value + 2 == x) && farm.GetMainFarmHouse().tileY.Value + 2 == y)
+        {
+            bool flag = !Game1.player.hasOrWillReceiveMail("TH_LumberPile") && Game1.player.hasOrWillReceiveMail("TH_SandDragon");
+            return ("dynamic_tile-farm-lumber_pile", flag ? CATEGORY.Quest : CATEGORY.Decor);
+        }
         else if (building is not null) // Check if there is a building at the current position
         {
             return GetBuildingInfo(building, x, y, lessInfo);

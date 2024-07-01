@@ -8,7 +8,6 @@
 **
 *************************************************/
 
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -36,12 +35,11 @@ namespace ContentPatcher.Framework.Tokens
         internal const string InputSeparatorKey = "inputSeparator";
 
         /// <summary>The argument names handled by Content Patcher.</summary>
-        private static readonly IInvariantSet ReservedArgKeys = InvariantSets.From(new[]
-        {
+        private static readonly IInvariantSet ReservedArgKeys = InvariantSets.From([
             InputArguments.ContainsKey,
             InputArguments.ValueAtKey,
             InputArguments.InputSeparatorKey
-        });
+        ]);
 
         /****
         ** State
@@ -56,7 +54,7 @@ namespace ContentPatcher.Framework.Tokens
         private string? PositionalSegment;
 
         /// <summary>The backing field for <see cref="PositionalArgs"/>.</summary>
-        private string[] PositionalArgsImpl = Array.Empty<string>();
+        private string[] PositionalArgsImpl = [];
 
         /// <summary>The backing field for <see cref="NamedArgs"/>.</summary>
         private InvariantDictionary<IInputArgumentValue> NamedArgsImpl = new();
@@ -65,7 +63,7 @@ namespace ContentPatcher.Framework.Tokens
         private InvariantDictionary<IInputArgumentValue> ReservedArgsImpl = new();
 
         /// <summary>The backing field for <see cref="ReservedArgsList"/>.</summary>
-        private KeyValuePair<string, IInputArgumentValue>[] ReservedArgsListImpl = Array.Empty<KeyValuePair<string, IInputArgumentValue>>();
+        private KeyValuePair<string, IInputArgumentValue>[] ReservedArgsListImpl = [];
 
 
         /*********

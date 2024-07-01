@@ -14,13 +14,14 @@ using System.Linq;
 using Archipelago.MultiClient.Net.Models;
 using Microsoft.Xna.Framework.Content;
 using StardewArchipelago.Archipelago;
+using StardewArchipelago.Constants.Modded;
 using StardewArchipelago.Extensions;
-using StardewArchipelago.Items.Unlocks;
-using StardewArchipelago.Constants;
+using StardewArchipelago.Items.Unlocks.Vanilla;
 using StardewModdingAPI;
 using StardewValley;
-using StardewValley.GameData;
-using StardewArchipelago.Constants.Modded;
+using StardewValley.GameData.SpecialOrders;
+using StardewValley.SpecialOrders;
+using StardewValley.SpecialOrders.Rewards;
 
 namespace StardewArchipelago.Locations.CodeInjections.Vanilla
 {
@@ -61,41 +62,83 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
         {
             try
             {
-                var specialOrderName = GetEnglishQuestName(__result.questName.Value);
-                if (!_archipelago.LocationExists(specialOrderName))
-                {
-                    return;
-                }
-
-                // Remove vanilla rewards if the player has not received the check.
-                // We will keep vanilla rewards for repeated orders
-                var checkMissing = _locationChecker.IsLocationMissing(specialOrderName);
-                var shouldHaveVanillaRewards = IgnoredModdedStrings.SpecialOrders.Contains(specialOrderName);
-                if (shouldHaveVanillaRewards)
-                {
-                    return;
-                }
-
-                if (checkMissing)
-                {
-                    __result.rewards.Clear();
-                    Game1.player.team.specialOrders.Remove(__result); // Might as well, and it cleans up SVE special orders.
-                    return;
-                }
-
-                for (var i = __result.rewards.Count - 1; i >= 0; i--)
-                {
-                    var reward = __result.rewards[i];
-                    if (reward is MoneyReward or GemsReward or FriendshipReward)
-                    {
-                        continue;
-                    }
-                    __result.rewards.RemoveAt(i);
-                }
+                RemoveObsoleteRewards(__result);
+                AdjustRequirements(__result);
             }
             catch (Exception ex)
             {
                 _monitor.Log($"Failed in {nameof(GetSpecialOrder_ArchipelagoReward_Postfix)}:\n{ex}", LogLevel.Error);
+            }
+        }
+
+        private static void RemoveObsoleteRewards(SpecialOrder specialOrder)
+        {
+            var specialOrderName = GetEnglishQuestName(specialOrder.questName.Value);
+            if (!_archipelago.LocationExists(specialOrderName))
+            {
+                return;
+            }
+
+            // Remove vanilla rewards if the player has not received the check.
+            // We will keep vanilla rewards for repeated orders
+            var checkMissing = _locationChecker.IsLocationMissing(specialOrderName);
+            var shouldHaveVanillaRewards = IgnoredModdedStrings.SpecialOrders.Contains(specialOrderName);
+            if (shouldHaveVanillaRewards)
+            {
+                return;
+            }
+
+            if (checkMissing)
+            {
+                specialOrder.rewards.Clear();
+                Game1.player.team.specialOrders.Remove(specialOrder); // Might as well, and it cleans up SVE special orders.
+                return;
+            }
+
+            // If the order has already been completed once, we can allow some non-unique rewards only
+            for (var i = specialOrder.rewards.Count - 1; i >= 0; i--)
+            {
+                var reward = specialOrder.rewards[i];
+                if (reward is MoneyReward or GemsReward or FriendshipReward)
+                {
+                    continue;
+                }
+                if (reward is ObjectReward objectReward)
+                {
+                    if (objectReward.itemKey.Value == "CalicoEgg")
+                    {
+                        continue;
+                    }
+                }
+                specialOrder.rewards.RemoveAt(i);
+            }
+            return;
+        }
+
+        private static void AdjustRequirements(SpecialOrder specialOrder)
+        {
+            var requirementMultiplier = 1.0;
+            if (_archipelago.SlotData.SpecialOrderLocations.HasFlag(SpecialOrderLocations.VeryShort))
+            {
+                requirementMultiplier = 0.2;
+            }
+            else if (_archipelago.SlotData.SpecialOrderLocations.HasFlag(SpecialOrderLocations.Short))
+            {
+                requirementMultiplier = 0.6;
+            }
+            else
+            {
+                return;
+            }
+
+            foreach (var objective in specialOrder.objectives)
+            {
+                if (objective.maxCount.Value <= 1)
+                {
+                    continue;
+                }
+
+                objective.maxCount.Value = Math.Max(1, (int)Math.Round(objective.maxCount.Value * requirementMultiplier));
             }
         }
 
@@ -104,7 +147,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
         {
             try
             {
-                if (__instance.questState.Value != SpecialOrder.QuestState.Complete)
+                if (__instance.questState.Value != SpecialOrderStatus.Complete)
                 {
                     return;
                 }
@@ -123,8 +166,8 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             }
         }
 
-        // public virtual void SetDuration(SpecialOrder.QuestDuration duration)
-        public static bool SetDuration_UseCorrectDateWithSeasonRandomizer_Prefix(SpecialOrder __instance, SpecialOrder.QuestDuration duration)
+        // public virtual void SetDuration(QuestDuration duration)
+        public static bool SetDuration_UseCorrectDateWithSeasonRandomizer_Prefix(SpecialOrder __instance, QuestDuration duration)
         {
             try
             {
@@ -132,21 +175,24 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                 var today = Game1.Date.TotalDays;
                 switch (duration)
                 {
-                    case SpecialOrder.QuestDuration.Week:
+                    case QuestDuration.Week:
                         // worldDate = new WorldDate(Game1.year, Game1.currentSeason, (Game1.dayOfMonth - 1) / 7 * 7);
                         __instance.dueDate.Value = today + (7 - Game1.dayOfMonth % 7) + 1;
                         break;
-                    case SpecialOrder.QuestDuration.Month:
+                    case QuestDuration.Month:
                         __instance.dueDate.Value = today + (28 - Game1.dayOfMonth) + 1;
                         break;
-                    case SpecialOrder.QuestDuration.TwoWeeks:
+                    case QuestDuration.TwoWeeks:
                         // worldDate = new WorldDate(Game1.year, Game1.currentSeason, (Game1.dayOfMonth - 1) / 7 * 7);
                         __instance.dueDate.Value = today + (14 - Game1.dayOfMonth % 7) + 1;
                         break;
-                    case SpecialOrder.QuestDuration.TwoDays:
+                    case QuestDuration.OneDay:
+                        __instance.dueDate.Value = today + 1;
+                        break;
+                    case QuestDuration.TwoDays:
                         __instance.dueDate.Value = today + 2;
                         break;
-                    case SpecialOrder.QuestDuration.ThreeDays:
+                    case QuestDuration.ThreeDays:
                         __instance.dueDate.Value = today + 3;
                         break;
                 }
@@ -160,63 +206,80 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             }
         }
 
-        // public static void UpdateAvailableSpecialOrders(bool force_refresh)
-        public static bool UpdateAvailableSpecialOrders_ChangeFrequencyToBeLessRng_Prefix(bool force_refresh)
+        // public static void UpdateAvailableSpecialOrders(string orderType, bool forceRefresh)
+        public static bool UpdateAvailableSpecialOrders_ChangeFrequencyToBeLessRng_Prefix(string orderType, bool forceRefresh)
         {
             try
             {
-                UpdateAvailableSpecialOrdersBasedOnApState(force_refresh);
+                if (Game1.player.team.availableSpecialOrders­ is null)
+                {
+                    return true; // run original logic
+                }
+
+                SetDurationOfSpecialOrders(Game1.player.team.availableSpecialOrders);
+
+                // Let the game pick festival orders, they aren't checks anyway, right?
+                if (orderType.Equals("DesertFestivalMarlon", StringComparison.InvariantCultureIgnoreCase) || (!_archipelago.SlotData.SpecialOrderLocations.HasFlag(SpecialOrderLocations.Board) && !_archipelago.SlotData.SpecialOrderLocations.HasFlag(SpecialOrderLocations.Qi)))
+                {
+                    return true; // run original logic
+                }
+
+                UpdateAvailableSpecialOrdersBasedOnApState(orderType, forceRefresh);
                 return false; // don't run original logic;
             }
             catch (Exception ex)
             {
-                _monitor.Log($"Failed in {nameof(IsSpecialOrdersBoardUnlocked_UnlockBasedOnApItem_Prefix)}:\n{ex}", LogLevel.Error);
+                _monitor.Log($"Failed in {nameof(UpdateAvailableSpecialOrders_ChangeFrequencyToBeLessRng_Prefix)}:\n{ex}", LogLevel.Error);
                 return true; // run original logic;
             }
         }
 
-        private static void UpdateAvailableSpecialOrdersBasedOnApState(bool force_refresh)
+        private static void UpdateAvailableSpecialOrdersBasedOnApState(string orderType, bool forceRefresh)
         {
-            if (Game1.player.team.availableSpecialOrders != null)
+            if (!forceRefresh)
             {
-                foreach (var availableSpecialOrder in Game1.player.team.availableSpecialOrders)
+                if (Game1.player.team.availableSpecialOrders.Any(availableSpecialOrder => availableSpecialOrder.orderType.Value == orderType))
                 {
-                    if ((availableSpecialOrder.questDuration.Value == SpecialOrder.QuestDuration.TwoDays ||
-                         availableSpecialOrder.questDuration.Value == SpecialOrder.QuestDuration.ThreeDays) &&
-                        !Game1.player.team.acceptedSpecialOrderTypes.Contains(availableSpecialOrder.orderType.Value))
-                    {
-                        availableSpecialOrder.SetDuration((SpecialOrder.QuestDuration)availableSpecialOrder.questDuration);
-                    }
+                    return;
                 }
             }
 
-            if (Game1.player.team.availableSpecialOrders.Count > 0 && !force_refresh)
-            {
-                return;
-            }
+            SpecialOrder.RemoveAllSpecialOrders(orderType);
 
-            Game1.player.team.availableSpecialOrders.Clear();
-            Game1.player.team.acceptedSpecialOrderTypes.Clear();
-            var random = new Random((int)Game1.uniqueIDForThisGame + (int)(Game1.stats.DaysPlayed * 1.2999999523162842));
-            var allSpecialOrdersData = Game1.content.Load<Dictionary<string, SpecialOrderData>>("Data\\SpecialOrders");
-            var specialOrdersThatCanBeStartedToday = FilterToSpecialOrdersThatCanBeStartedToday(allSpecialOrdersData);
-            var specialOrdersForBoard = CreateSpecialOrderInstancesForType(specialOrdersThatCanBeStartedToday, "", random);
-            var specialOrdersForQi = CreateSpecialOrderInstancesForType(specialOrdersThatCanBeStartedToday, "Qi", random);
+            var random = Utility.CreateRandom((double)Game1.uniqueIDForThisGame, (double)Game1.stats.DaysPlayed * 1.3);
+            var allSpecialOrdersData = DataLoader.SpecialOrders(Game1.content);
+            var specialOrdersThatCanBeStartedToday = FilterToSpecialOrdersThatCanBeStartedToday(allSpecialOrdersData, orderType);
+
+            var specialOrderInstances = CreateSpecialOrderInstancesForType(specialOrdersThatCanBeStartedToday, orderType, random);
 
             var hints = _archipelago.GetHints().Where(x => !x.Found && _archipelago.GetPlayerName(x.FindingPlayer) == _archipelago.SlotData.SlotName).ToArray();
 
-            AddTwoOrdersToBoard(specialOrdersForBoard, hints, random);
-            AddTwoOrdersToBoard(specialOrdersForQi, hints, random);
+            ChooseTwoOrders(specialOrderInstances, hints, random);
+        }
+
+        private static void SetDurationOfSpecialOrders(IEnumerable<SpecialOrder> specialOrders)
+        {
+            foreach (var availableSpecialOrder in specialOrders)
+            {
+                if (availableSpecialOrder.questDuration.Value is QuestDuration.OneDay or QuestDuration.TwoDays or QuestDuration.ThreeDays &&
+                    !Game1.player.team.acceptedSpecialOrderTypes.Contains(availableSpecialOrder.orderType.Value))
+                {
+                    availableSpecialOrder.SetDuration(availableSpecialOrder.questDuration.Value);
+                }
+            }
         }
 
         private static IEnumerable<KeyValuePair<string, SpecialOrderData>> FilterToSpecialOrdersThatCanBeStartedToday(
-            Dictionary<string, SpecialOrderData> allSpecialOrdersData)
+            Dictionary<string, SpecialOrderData> allSpecialOrdersData, string specialOrderType)
         {
+            // A lot of this code is duplicated from SpecialOrder.CanStartOrderNow(orderId, order)
+            // But I need to do something special with CheckTags so I had to split it and run it on my own
             var specialOrdersThatCanBeStartedToday = allSpecialOrdersData
-                .Where(order => !Game1.player.team.completedSpecialOrders.ContainsKey(order.Key) ||
-                                order.Value.Repeatable == "True")
-                .Where(order => order.Value.Duration != "Month" || Game1.dayOfMonth <= 16)
+                .Where(order => order.Value.OrderType == specialOrderType)
+                .Where(order => order.Value.Repeatable || !Game1.MasterPlayer.team.completedSpecialOrders.Contains(order.Key))
+                .Where(order => Game1.dayOfMonth < 16 || order.Value.Duration != QuestDuration.Month)
                 .Where(order => CheckTags(order.Value.RequiredTags))
+                .Where(order => GameStateQuery.CheckConditions(order.Value.Condition))
                 .Where(order => Game1.player.team.specialOrders.All(x => x.questKey.Value != order.Key))
                 .Where(order => !_archipelago.SlotData.ToolProgression.HasFlag(ToolProgression.Progressive) || !order.Key.StartsWith("Demetrius") ||
                                 _archipelago.HasReceivedItem("Progressive Fishing Rod"));
@@ -225,24 +288,28 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
 
         private static bool CheckTags(string requiredTags)
         {
-            var splitTags = requiredTags.Split(",");
-            var allowed = true;
-            foreach (var tag in splitTags)
+            if (requiredTags == null)
             {
-                allowed = allowed & CheckTag(tag.Trim());
+                return true;
             }
 
-            return allowed;
+            var splitTags = requiredTags.Split(",").Select(x => x.Trim()).Where(x => x.Length > 0);
+            if (splitTags.Any(tag => !CheckIslandTagArchipelago(tag)))
+            {
+                return false;
+            }
+
+            return SpecialOrder.CheckTags(requiredTags);
         }
 
-        private static bool CheckTag(string requiredTag)
+        private static bool CheckIslandTagArchipelago(string requiredTag)
         {
-            if (requiredTag.Equals("island", StringComparison.OrdinalIgnoreCase))
+            if (requiredTag.Equals("island", StringComparison.InvariantCultureIgnoreCase))
             {
                 return _archipelago.HasReceivedItem("Island Obelisk") || _archipelago.HasReceivedItem("Boat Repair");
             }
 
-            return SpecialOrder.CheckTags(requiredTag);
+            return true;
         }
 
         private static Dictionary<string, SpecialOrder> CreateSpecialOrderInstancesForType(
@@ -255,7 +322,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             return specialOrders;
         }
 
-        private static void AddTwoOrdersToBoard(Dictionary<string, SpecialOrder> specialOrders,
+        private static void ChooseTwoOrders(Dictionary<string, SpecialOrder> specialOrders,
             Hint[] hints, Random random)
         {
             var allSpecialOrders = specialOrders.Select(x => x.Key).ToList();

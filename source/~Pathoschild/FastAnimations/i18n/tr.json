@@ -34,8 +34,8 @@
     "config.harvest.name": "Hasat",
     "config.harvest.tooltip": "Mahsulleri ve yemleri elle ne kadar hızlı hasat ettiğiniz. Varsayılan {{defaultValue}}x.",
 
-    "config.hold-up-item.name": "Hold up item", // TODO
-    "config.hold-up-item.tooltip": "How fast you hold up an item. Default {{defaultValue}}x.", // TODO
+    "config.hold-up-item.name": "Nesneyi al",
+    "config.hold-up-item.tooltip": "Bir nesnenin ne kadar hızlı ele alınacağı. Varsayılan: {{defaultValue}}x.",
 
     "config.horse-flute.name": "At Flütü Çalmak",
     "config.horse-flute.tooltip": "At flütünü ne kadar hızlı çalabildiğiniz. Varsayılan {{defaultValue}}x.",
@@ -46,8 +46,8 @@
     "config.mount.name": "Binmek/İnmek",
     "config.mount.tooltip": "Atlara ne kadar hızlı binip indiğiniz (Traktör Modu gibi özel binekler dahil). Varsayılan {{defaultValue}}x.",
 
-    "config.read-book.name": "Read book", // TODO
-    "config.read-book.tooltip": "How fast you read books. Default {{defaultValue}}x.", // TODO
+    "config.read-book.name": "Kitap Oku",
+    "config.read-book.tooltip": "Kitapların ne kadar hızlı okunacağı. Varsayılan: {{defaultValue}}x.",
 
     "config.shear.name": "Kırpma",
     "config.shear.tooltip": "Makasları ne kadar hızlı kullandığınız. Varsayılan {{defaultValue}}x.",
@@ -58,8 +58,8 @@
     "config.tool.name": "Sallama aracı",
     "config.tool.tooltip": "Aletlerinizi ne kadar hızlı salladığınız (silahlar ve olta hariç). Varsayılan {{defaultValue}}x, önerilen {{suggestedValue}}x.",
 
-    "config.use-totem.name": "Use totem", // TODO
-    "config.use-totem.tooltip": "How fast you use a totem. Default {{defaultValue}}x.", // TODO
+    "config.use-totem.name": "Totem kullan",
+    "config.use-totem.tooltip": "Totemlerin ne kadar hızlı kullanılacağı. Varsayılan: {{defaultValue}}x.",
 
     "config.weapon.name": "Silah sallama",
     "config.weapon.tooltip": "Silahlarınızı ne kadar hızlı salladığınız. Varsayılan {{defaultValue}}x, önerilen {{suggestedValue}}x.",
@@ -78,28 +78,46 @@
     "config.casino-slots.name": "Kumarhane slotları",
     "config.casino-slots.tooltip": "Kumarhane slotlarının ne kadar hızlı döndüğü. Varsayılan {{defaultValue}}x.",
 
-    "config.fishing-treasure.name": "Fishing treasure chest", // TODO
-    "config.fishing-treasure.tooltip": "How fast you open a fishing treasure chest. Default {{defaultValue}}x.", // TODO
+    "config.event.name": "Arasahneler",
+    "config.event.tooltip": "Arasahnelerin hızını belirler. Varsayılan: {{defaultValue}}x, Önerilen: {{suggestedValue}}x.",
 
-    "config.forge.name": "Forge", // TODO
-    "config.forge.tooltip": "How fast the volcano forge works. Default {{defaultValue}}x.", // TODO
+    "config.fade.name": "Kararma",
+    "config.fade.tooltip": "Ekranın kararma ve aydınlanma hızı. Varsayılan: {{defaultValue}}x.",
 
-    "config.open-chest.name": "Open chest", // TODO
-    "config.open-chest.tooltip": "How fast you open chests. Default {{defaultValue}}x.", // TODO
+    "config.fishing-treasure.name": "Hazine sandıkları",
+    "config.fishing-treasure.tooltip": "Balık tutarken bulunan hazinelerin açılma hızını belirler. Varsayılan: {{defaultValue}}x.",
 
-    "config.prize-ticket-machine.name": "Prize ticket machine", // TODO
-    "config.prize-ticket-machine.tooltip": "How fast Lewis' prize ticket machine accepts a ticket and produces an item. Default {{defaultValue}}x.", // TODO
+    "config.forge.name": "Demir ocağı",
+    "config.forge.tooltip": "Volkan dağındaki demir ocağının hızını belirler. Varsayılan: {{defaultValue}}x.",
+
+    "config.open-chest.name": "Sandık açma",
+    "config.open-chest.tooltip": "Sandıkların ne kadar hızlı açılacağı. Varsayılan: {{defaultValue}}x.",
+
+    "config.parrot-express.name": "Papağan ekspresi",
+    "config.parrot-express.tooltip": "Papağan expresinin ne kadar hızlı çalışacağı. Varsayılan: {{defaultValue}}x.",
+
+    "config.prize-ticket-machine.name": "Ödül makinesi",
+    "config.prize-ticket-machine.tooltip": "Lewis'in ödül bilet makinesinin bir bileti ne kadar hızlı kabul ettiği ve bir ürün ürettiği. Varsayılan: {{defaultValue}}x.",
+
+    "config.tailor.name": "Dikiş makinesi",
+    "config.tailor.tooltip": "Diliş makinesinin ne kadar hızlı çalışacağı. Varsayılan: {{defaultValue}}x.",
 
     "config.tree-fall.name": "Ağaç düşüşü",
     "config.tree-fall.tooltip": "Ağaçları kestikten sonra ne kadar hızlı düştüğü. Varsayılan {{defaultValue}}x, önerilen {{suggestedValue}}x.",
 
-    "config.wheel-spin.name": "Wheel spin", // TODO
-    "config.wheel-spin.tooltip": "How fast the Stardew Valley Fair wheel minigame spins. Default {{defaultValue}}x.", // TODO
+    "config.wheel-spin.name": "Çark döndürme",
+    "config.wheel-spin.tooltip": "Stardew Valley şenliğindeki çarkın dönme hızı. Varsayılan: {{defaultValue}}x.",
 
     /****
     ** 'UI Animation Speeds' section
     ****/
     "config.ui-speeds": "Kullanıcı Arayüzü Animasyon Hızları",
+
+    "config.dialogue-typing.name": "Diyaloglar",
+    "config.dialogue-typing.tooltip": "Diyalog kutularındaki konuşmaların gelme hızı. Varsayılan: {{defaultValue}}x",
+
+    "config.open-dialogue-box.name": "Diyalog kutusunu aç",
+    "config.open-dialogue-box.tooltip": "Diyalog kutularının açılma hızı. Varsayılan: {{defaultValue}}x.",
 
     "config.title-menu.name": "Başlık menüsü geçişleri",
     "config.title-menu.tooltip": "Başlık menüsünün ekranlar arasında ne kadar hızlı geçiş yaptığı. Varsayılan {{defaultValue}}x.",

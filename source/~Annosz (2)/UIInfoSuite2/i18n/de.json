@@ -20,6 +20,8 @@
   "Days": "Tage",
   "Hours": "Stunden",
   "Minutes": "Minuten",
+  "MachineProcessing": "Verarbeitet",
+  "MachineDone": "Fertig",
   //Harvest
   "DaysToMature": "Tage bis gereift",
   "ReadyToHarvest": "Bereit zum Ernten!",
@@ -27,7 +29,8 @@
   "Fertilized": "gedüngt",
   "DoesNotProduceThisSeason": "Produziert in dieser Jahreszeit nichts",
   //Tree
-  "Tree": "Baum",
+  "Stump": "Stumpf",
+  "Tree": " Baum",
   "stage": "Stufe",
   "Oak": "Eiche",
   "Maple": "Ahorn",

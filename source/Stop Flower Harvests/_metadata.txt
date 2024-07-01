@@ -6,9 +6,9 @@ mods:
    Stop Flower Harvests
 
 latest commit:
-   commit e52d922a703ba52d82d7d1b11625afea5646f59d
-   Author: Sabrina Eichenberger <54446558+seichen@users.noreply.github.com>
-   Date:   Mon May 27 17:21:53 2024 -0500
+   commit 1db90991562475492151d5e068b0e8cb1f7aecd8
+   Author: seichen <sabrina.eichenberger7@gmail.com>
+   Date:   Sat Jun 15 10:51:20 2024 -0500
    
-       Create README.md
+       updated manifest
    

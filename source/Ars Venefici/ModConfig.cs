@@ -24,10 +24,10 @@ namespace ArsVenefici
         public Point Position { get; set; } = new(10, 10);
 
         /// <summary>Press Shift and this button to open the spell book.</summary>
-        public SButton OpenSpellBookButton { get; set; }
+        public SButton OpenSpellBookButton { get; set; } = SButton.B;
 
-        /// <summary>Press Shift and this button to move the spell lable.</summary>
-        public SButton MoveCurrentSpellLable { get; set; } = SButton.OemTilde;
+        /// <summary>The button to toggle spell casting on or off. Press Shift and this button to move the spell lable.</summary>
+        public SButton SpellToggle { get; set; } = SButton.OemTilde;
 
         /// <summary>The button to move to the next spell. Press Shift and this button to move to the next shape group on the selected spell.</summary>
         public SButton NextSpellButton { get; set; } = SButton.X;
@@ -38,9 +38,11 @@ namespace ArsVenefici
         /// <summary>The button to cast the current spell.</summary>
         public SButton CastSpellButton { get; set; } = SButton.Q;
 
+        /// <summary>The button to open a menu showing the text from the tutorial.</summary>
+        public SButton OpenTutorialTextButton { get; set; } = SButton.G;
+
         public ModConfig()
         {
-            this.OpenSpellBookButton = SButton.B;
         }
     }
 }

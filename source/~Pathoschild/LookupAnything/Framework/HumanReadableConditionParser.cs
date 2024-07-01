@@ -10,6 +10,7 @@
 
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using StardewValley;
 
 namespace Pathoschild.Stardew.LookupAnything.Framework
@@ -20,9 +21,20 @@ namespace Pathoschild.Stardew.LookupAnything.Framework
         /*********
         ** Public methods
         *********/
-        /// <summary>Get a human-readable representation of a game state query, if available.</summary>
+        /// <summary>Get a human-readable representation of a game state query.</summary>
         /// <param name="condition">The raw game state query to parse.</param>
-        public static string Parse(string condition)
+        public static string Format(string condition)
+        {
+            return
+                HumanReadableConditionParser.Format(condition, null)
+                ?? I18n.Condition_RawCondition(condition);
+        }
+
+        /// <summary>Get a human-readable representation of a game state query.</summary>
+        /// <param name="condition">The raw game state query to parse.</param>
+        /// <param name="defaultValue">The value to return if there's no human-readable representation available.</param>
+        [return: NotNullIfNotNull(nameof(defaultValue))]
+        public static string? Format(string condition, string? defaultValue)
         {
             // parse query
             // (If we get unexpected values at this point, bail early.)
@@ -30,17 +42,21 @@ namespace Pathoschild.Stardew.LookupAnything.Framework
             {
                 GameStateQuery.ParsedGameStateQuery[]? queries = GameStateQuery.Parse(condition);
                 if (queries.Length != 1)
-                    return condition;
+                    return defaultValue;
 
                 query = queries[0];
                 if (query.Error != null || query.Query.Length == 0 || string.IsNullOrWhiteSpace(query.Query[0]))
-                    return condition;
+                    return defaultValue;
             }
 
             // apply parser
             string? parsed = null;
             switch (query.Query[0].ToUpperInvariant().Trim())
             {
+                case nameof(GameStateQuery.DefaultResolvers.DAY_OF_MONTH):
+                    parsed = HumanReadableConditionParser.ParseDayOfMonth(query.Query);
+                    break;
+
                 case nameof(GameStateQuery.DefaultResolvers.ITEM_CONTEXT_TAG):
                     parsed = HumanReadableConditionParser.ParseItemContextTag(query.Query);
                     break;
@@ -53,19 +69,37 @@ namespace Pathoschild.Stardew.LookupAnything.Framework
             // format value
             if (parsed != null)
             {
-                if (query.Negated)
-                    parsed = I18n.ConditionOrContextTag_Negate(value: parsed);
-
-                return parsed;
+                return query.Negated
+                    ? I18n.ConditionOrContextTag_Negate(value: parsed)
+                    : parsed;
             }
 
-            return condition;
+            return defaultValue;
         }
 
 
         /*********
         ** Private methods
         *********/
+        /// <summary>Parse a <see cref="GameStateQuery.DefaultResolvers.DAY_OF_MONTH"/> query into a human-readable representation, if possible.</summary>
+        /// <param name="query">The raw query arguments.</param>
+        private static string ParseDayOfMonth(string[] query)
+        {
+            string[] days = [..  query.Skip(1)];
+
+            for (int i = 0; i < days.Length; i++)
+            {
+                string day = days[i];
+
+                if (string.Equals(day, "even", StringComparison.OrdinalIgnoreCase))
+                    days[i] = I18n.Condition_DayOfMonth_Even();
+                else if (string.Equals(day, "odd", StringComparison.OrdinalIgnoreCase))
+                    days[i] = I18n.Condition_DayOfMonth_Odd();
+            }
+
+            return I18n.Condition_DayOfMonth(days: days);
+        }
+
         /// <summary>Parse a <see cref="GameStateQuery.DefaultResolvers.ITEM_CONTEXT_TAG"/> query into a human-readable representation, if possible.</summary>
         /// <param name="query">The raw query arguments.</param>
         private static string? ParseItemContextTag(string[] query)

@@ -1,0 +1,23 @@
+{
+  "config.bool.showedits.name": "Show Edits",
+  "config.bool.showedits.description": "Shows which animals were edited.",
+  "config.bool.ShowAnimalKeys.name": "Show Animal Keys",
+  "config.bool.ShowAnimalKeys.description": "Shows animal keys instead of the display name. Useful for creating the exclusion list.",
+  "config.bool.editbirthtext.name": "Edit Birth Text",
+  "config.bool.editbirthtext.description": "Edits missing birth texts to: A baby {animalName} was born!",
+  "config.bool.editegglistbyname.name": "Edit Egg Lists",
+  "config.bool.editegglistbyname.description": "Ensures all eggs can be hatched in an incubator by updating laying animal data.",
+  "config.bool.AlternateBirthText.name": "Alternate Birth Text",
+  "config.bool.AlternateBirthText.description": "Alternate Birth Text: A new animal was born: {animalName}!",
+  "config.bool.cloneVanillaEggs.name": "Clone Vanilla Eggs",
+  "config.bool.cloneVanillaEggs.description": "Enable cloned modded animals to produce identical eggs, allowing them to hatch from their own eggs.",
+  "config.bool.dinoEggsAsArtifact.name": "Dino Eggs as Museum Artifacts",
+  "config.bool.dinoEggsAsArtifact.description": "Treat cloned dino eggs as museum artifacts, allowing donation to the museum. Best used with mods that expand museum displays.",
+  "config.bool.cloneMachineRules.name": "Clone Machine Rules",
+  "config.bool.cloneMachineRules.description": "Allow cloned eggs to be used as input in machines with the same rules as vanilla eggs. Note that this may lead to unexpected results, such as a parrot egg producing a pickled chicken egg if a rule is set up to produce pickled chicken eggs.",
+  "message.new": "A baby",
+  "message.hatched": "was born",
+  "message.fullbirthtext": "A baby animal was born",
+  "egg.description": "It's still warm.",
+  "largeegg.description": "It's an uncommonly large egg!"
+}

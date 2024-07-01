@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/11619
+IDs: aedenthorn.Trampoline
+update keys: Nexus:11619, UpdateManifest:https://raw.githubusercontent.com/mouahrara/aedenthorn/master/update-manifest.json@Trampoline, GitHub:aedenthorn/StardewValleyMods

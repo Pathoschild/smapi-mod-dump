@@ -72,7 +72,9 @@ namespace FurnitureFramework
 		private void on_game_launched(object? sender, GameLaunchedEventArgs e)
 		{
 			parse_furniture_packs();
+
 			register_config();
+
 			register_commands();
 
 			if (
@@ -90,18 +92,19 @@ namespace FurnitureFramework
 			if (config == null) throw new NullReferenceException("Config was not set.");
 
 			// get Generic Mod Config Menu's API (if it's installed)
-			var configMenu = Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
-			if (configMenu is null)
+			IGenericModConfigMenuApi? config_menu =
+				Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
+			if (config_menu is null)
 				return;
 
 			// register mod
-			configMenu.Register(
+			config_menu.Register(
 				mod: ModManifest,
 				reset: () => config = new ModConfig(),
 				save: () => Helper.WriteConfig(config)
 			);
 
-			configMenu.AddKeybind(
+			config_menu.AddKeybind(
 				mod: ModManifest,
 				name: () => "Slot Place Keybind",
 				tooltip: () => "The key to press to place an item in a slot.",
@@ -109,7 +112,7 @@ namespace FurnitureFramework
 				setValue: value => config.slot_place_key = value
 			);
 
-			configMenu.AddKeybind(
+			config_menu.AddKeybind(
 				mod: ModManifest,
 				name: () => "Slot Take Keybind",
 				tooltip: () => "The key to press to take an item from a slot.",
@@ -117,7 +120,7 @@ namespace FurnitureFramework
 				setValue: value => config.slot_take_key = value
 			);
 			
-			configMenu.AddBoolOption(
+			config_menu.AddBoolOption(
 				mod: ModManifest,
 				name: () => "Disable AT Warning",
 				tooltip: () => "Check this to disable the warning about Alternative Textures.",
@@ -125,20 +128,20 @@ namespace FurnitureFramework
 				setValue: value => config.disable_AT_warning = value
 			);
 
-			configMenu.AddPageLink(
+			config_menu.AddPageLink(
 				mod: ModManifest,
 				pageId: $"{ModManifest.UniqueID}.slots",
 				text: () => "Slots Debug Options",
 				tooltip: () => "Options to draw slots areas for debugging purposes."
 			);
 
-			configMenu.AddPage(
+			config_menu.AddPage(
 				mod: ModManifest,
 				pageId: $"{ModManifest.UniqueID}.slots",
 				pageTitle: () => "Slots Debug Options"
 			);
 
-			configMenu.AddBoolOption(
+			config_menu.AddBoolOption(
 				mod: ModManifest,
 				name: () => "Enable slots debug",
 				tooltip: () => "Check this to draw a colored rectangle over the areas of Furniture slots.",
@@ -146,7 +149,7 @@ namespace FurnitureFramework
 				setValue: value => config.enable_slot_debug = value
 			);
 
-			configMenu.AddNumberOption(
+			config_menu.AddNumberOption(
 				mod: ModManifest,
 				getValue: () => config.slot_debug_alpha,
 				setValue: value => config.slot_debug_alpha = Math.Clamp(value, 0f, 1f),
@@ -169,6 +172,8 @@ namespace FurnitureFramework
 				showAlpha: false,
 				colorPickerStyle: (uint)IGMCMOptionsAPI.ColorPickerStyle.HSLColorWheel
 			);
+
+			FurniturePack.register_config(config_menu);
 		}
 
 		#region Commands

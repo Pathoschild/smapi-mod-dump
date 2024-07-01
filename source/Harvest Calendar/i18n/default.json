@@ -1,0 +1,48 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/LonerAxl/Stardew_HarvestCalendar
+**
+*************************************************/
+
+{
+  "ToggleMod": "Toggle Mod",
+  "ToggleMod.Desccription": "Turn this mod on/off",
+
+  "IconSize": "Icon Size",
+  "IconSize.Desccription": "Set the Size of the Icon shown on Calendar",
+  "IconSize.Small": "Small",
+  "IconSize.Medium": "Medium",
+  "IconSize.Large": "Large",
+  "IconSize.XLarge": "XLarge",
+
+  "IconPositionX": "Icon Horizontal Position",
+  "IconPositionX.Description": "Set the position of the Icon, 0 means left and 1 means right",
+
+  "IconPositionY": "Icon Vertical Position",
+  "IconPositionY.Description": "Set the position of the Icon, 0 means top and 1 means bottom",
+
+  "ToggleBlackList": "Toggle blacklist Menu keybind",
+  "ToggleBlackList.Description": "Open the crop blacklist menu in game",
+
+  "BlacklistCropKeybind": "Add/Remove crop from blacklist keybind",
+  "BlacklistCropKeybind.Description": "Add/Remove the current pointed crop from blacklist",
+
+  "ToggleCalendarDayDetail": "Toggle Calendar Day Menu keybind",
+  "ToggleCalendarDayDetail.Description": "Open the Calendar Day menu on the Calendar page",
+
+  "UI.CropBlackList.NoItems": "No crops in Blacklist",
+  "UI.CropBlackList.Title": "Crops Blacklist",
+  "UI.CalendarDayDetail.Title": "Today's Harvestable",
+  "UI.CropBlackList.Confirm.Remove": "Are you sure you want to remove {{itemName}} from the Blacklist?",
+  "UI.Remove.Notification": "Removed {{itemName}} from the Blacklist",
+  "UI.Add.Notification": "Added {{itemName}} to the Blacklist",
+
+  "Greenhouse": "Greenhouse",
+  "IslandWest": "IslandWest"
+
+
+}

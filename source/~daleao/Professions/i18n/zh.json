@@ -129,7 +129,7 @@
   "angler.title.female": "钓手",
   "angler.title.prestiged.male": "钓鱼大师",
   "angler.title.prestiged.female": "钓鱼大师",
-  "angler.desc": "每捕获一条独特且尺寸最大的鱼类，鱼的价值增加0.5%。完全使用一种钓具，其效果会在钓竿上持续。",
+  "angler.desc": "每捕获一条独特且尺寸最大的鱼类，鱼的价值增加1%。完全使用一种钓具，其效果会在钓竿上持续。",
   "angler.desc.prestiged": "最多两种钓具效果可以在钓竿上持续。可以重新遇到传说中的鱼。",
   "aquarist.title.male": "鱼塘养殖家",
   "aquarist.title.female": "鱼塘养殖家",
@@ -220,6 +220,7 @@
   "prestige.level_up.choose": "选择一个职业进行声望升级：",
   "prestige.level_up.single": "获得声望",
 
+  "prestige.mastery.warning": "精通这项技能将阻止其被重置。是否继续?",
   "prestige.mastery.unlocked": "现在可以进一步发展 {{skill}} 技能。",
   "prestiged.title": "大师 ",
 
@@ -342,6 +343,11 @@
   "gmcm.aging_trees_quality_syrups.title": "老树产生的高品质树脂",
   "gmcm.aging_trees_quality_syrups.desc": "使普通树木像果树一样增长树龄，这将使每年生产的树脂品质提高1。",
 
+  // rascal
+  "gmcm.sections.prfs.rascal": "淘气鬼",
+  "gmcm.show_equipped_ammo.title": "显示装备的弹药",
+  "gmcm.show_equipped_ammo.desc": "是否在弹弓的提示信息上绘制当前装备的弹药。",
+
   // skill reset
   "gmcm.sections.prfs.skill_reset": "技能重置",
   "gmcm.enable_skill_reset.title": "启用技能重置",
@@ -373,7 +379,7 @@
   "gmcm.hold_key_to_limit_break.title": "按住激活",
   "gmcm.hold_key_to_limit_break.desc": "如果启用，极限突破将通过短时间按住激活键来激活，而不是立即激活。",
   "gmcm.hold_delay_milliseconds.title": "极限激活延迟",
-  "gmcm.hold_delay_milliseconds.desc": "按键需要按住多久才能激活极限突破，单位为秒。",
+  "gmcm.hold_delay_milliseconds.desc": "按键需要按住多久才能激活极限突破。",
   "gmcm.limit_gain_factor.title": "增长因子",
   "gmcm.limit_gain_factor.desc": "影响极限突破槽填充的速率（数值越高填充越快）。",
   "gmcm.limit_drain_factor.title": "消耗因子",

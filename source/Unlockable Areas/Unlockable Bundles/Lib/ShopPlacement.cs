@@ -30,6 +30,7 @@ namespace Unlockable_Bundles.Lib
 {
     //Makes sure bundle shops are placed every DayStart and LocationListChanged
     //DayEnding shop removal happens in SaveDataEvents
+    //SpecialPlacmentRequirements are handled in PlacementRequirement
     public class ShopPlacement
     {
         public static List<GameLocation> ModifiedLocations = new List<GameLocation>();
@@ -39,6 +40,7 @@ namespace Unlockable_Bundles.Lib
 
         public static PerScreen<List<UnlockableModel>> UnappliedMapPatches = new(() => new List<UnlockableModel>());
 
+        public static List<Unlockable> BundlesWaitingForTrigger = new();
         public static void Initialize()
         {
             Helper.Events.GameLoop.DayStarted += dayStarted;
@@ -52,12 +54,16 @@ namespace Unlockable_Bundles.Lib
         {
             Multiplayer.IsScreenReady.Value = false;
             //A splitscreen player leaving through the options menu triggers ReturnedToTitle :3
+
+            UnappliedMapPatches.Value.Clear();
             if (Context.ScreenId > 0)
                 return;
 
             UnlockableBundlesAPI.IsReady = false;
             HasDayStarted = false;
             ModData.Instance = null;
+            ModifiedLocations.Clear();
+            BundlesWaitingForTrigger.Clear();
 
             MapPatches.clearCache();
             UnlockableBundlesAPI.clearCache();
@@ -72,16 +78,23 @@ namespace Unlockable_Bundles.Lib
             var unlockables = Helper.GameContent.Load<Dictionary<string, UnlockableModel>>("UnlockableBundles/Bundles");
 
             foreach (var loc in e.Added.Where(e => !ModifiedLocations.Contains(e)))
-                foreach (var unlockable in unlockables.Where(el => locationMatchesName(el.Value.Location, loc))) {
-                    unlockable.Value.ID = unlockable.Key;
-                    unlockable.Value.LocationUnique = loc.NameOrUniqueName;
+                foreach (var model in unlockables.Where(el => locationMatchesName(el.Value.Location, loc))) {
+                    model.Value.ID = model.Key;
+                    model.Value.LocationUnique = loc.NameOrUniqueName;
 
-                    if (ModData.isUnlockablePurchased(unlockable.Key, loc.NameOrUniqueName))
+                    if (ModData.isUnlockablePurchased(model.Key, loc.NameOrUniqueName))
                         continue;
 
-                    unlockable.Value.applyDefaultValues();
-                    ModData.applySaveData(unlockable.Value);
-                    placeShop(new Unlockable(unlockable.Value), loc);
+                    model.Value.applyDefaultValues();
+                    ModData.applySaveData(model.Value);
+
+                    var unlockable = new Unlockable(model.Value);
+                    if (unlockable.updatePlacementRequirements())
+                        placeShop(unlockable, loc);
+
+                    else
+                        BundlesWaitingForTrigger.Add(unlockable);
+
                 }
         }
 
@@ -117,38 +130,36 @@ namespace Unlockable_Bundles.Lib
             }
 
             resetDay();
+            BundlesWaitingForTrigger = new();
             SaveDataEvents.LoadModData();
             var unlockables = Helper.GameContent.Load<Dictionary<string, UnlockableModel>>("UnlockableBundles/Bundles");
             ModifiedLocations = new List<GameLocation>();
             List<UnlockableModel> applyList = new List<UnlockableModel>();
             AssetRequested.MailData = new Dictionary<string, string>();
 
-            foreach (KeyValuePair<string, UnlockableModel> entry in unlockables) {
-                entry.Value.ID = entry.Key;
-                entry.Value.applyDefaultValues();
-                validateUnlockable(entry.Value);
+            foreach (KeyValuePair<string, UnlockableModel> model in unlockables) {
+                model.Value.ID = model.Key;
+                model.Value.applyDefaultValues();
+                validateUnlockable(model.Value);
 
-                var locations = getLocationsFromName(entry.Value.Location);
+                var locations = getLocationsFromName(model.Value.Location);
                 foreach (var location in locations) {
-                    entry.Value.LocationUnique = location.NameOrUniqueName;
-                    ModData.applySaveData(entry.Value);
-                    var unlockable = new Unlockable(entry.Value);
-                    var loc = unlockable.getGameLocation();
+                    model.Value.LocationUnique = location.NameOrUniqueName;
+                    ModData.applySaveData(model.Value);
+                    var unlockable = new Unlockable(model.Value);
 
-                    if (loc is null) {
-                        Monitor.Log($"skipped applying bundle logic to location {location.NameOrUniqueName} as it does not exist");
-                        continue;
-                    }
-
-                    if (ModData.isUnlockablePurchased(entry.Key, location.NameOrUniqueName)) {
+                    if (ModData.isUnlockablePurchased(model.Key, location.NameOrUniqueName)) {
                         applyList.Add((UnlockableModel)unlockable);
                         MapPatches.applyUnlockable(unlockable);
 
-                    } else
-                        placeShop(unlockable, loc);
+                    } else if (!unlockable.updatePlacementRequirements())
+                        BundlesWaitingForTrigger.Add(unlockable);
 
-                    if (entry.Value.BundleCompletedMail != "")
-                        AssetRequested.MailData.Add(Unlockable.getMailKey(entry.Key), entry.Value.BundleCompletedMail);
+                    else
+                        placeShop(unlockable, location);
+
+                    if (model.Value.BundleCompletedMail != "")
+                        AssetRequested.MailData.Add(Unlockable.getMailKey(model.Key), model.Value.BundleCompletedMail);
 
                 }
             }
@@ -200,8 +211,6 @@ namespace Unlockable_Bundles.Lib
 
         public static void placeShop(Unlockable unlockable, GameLocation location)
         {
-            ModifiedLocations.Add(location);
-
             foreach (var tile in unlockable.PossibleShopPositions) {
                 if (location.objects.TryGetValue(tile, out var obj)) {
                     if (obj.Category != -999) //We replace litter objects
@@ -209,6 +218,9 @@ namespace Unlockable_Bundles.Lib
 
                     location.removeObject(tile, false);
                 }
+                if (!ModifiedLocations.Contains(location))
+                    ModifiedLocations.Add(location);
+
                 var shopObject = new ShopObject(tile, unlockable);
 
                 location.setObject(tile, shopObject);
@@ -249,15 +261,12 @@ namespace Unlockable_Bundles.Lib
         {
             var res = new List<GameLocation>();
 
-            foreach (var loc in Game1.locations) {
-                if (locationMatchesName(name, loc)) {
+            Utility.ForEachLocation((loc) => {
+                if (locationMatchesName(name, loc))
                     res.Add(loc);
-                    continue;
-                }
 
-                foreach (var building in loc.buildings.Where(el => el.indoors?.Value?.Name == name))
-                    res.Add(building.indoors.Value);
-            }
+                return true;
+            }, true, false);
 
             return res;
         }

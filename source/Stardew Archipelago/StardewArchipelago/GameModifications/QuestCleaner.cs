@@ -15,14 +15,13 @@ namespace StardewArchipelago.GameModifications
 {
     public class QuestCleaner
     {
-        private const int INITIATION_ID_SECOND_PART = 16;
-        private const int RAT_PROBLEM_ID = 26;
-        private const int MEET_THE_WIZARD_ID = 1;
-        private const int RAISING_ANIMALS_ID = 7;
+        private const string INITIATION_ID_SECOND_PART = "16";
+        private const string RAT_PROBLEM_ID = "26";
+        private const string MEET_THE_WIZARD_ID = "1";
+        private const string RAISING_ANIMALS_ID = "7";
 
         public QuestCleaner()
         {
-
         }
 
         public void CleanQuests(Farmer player)

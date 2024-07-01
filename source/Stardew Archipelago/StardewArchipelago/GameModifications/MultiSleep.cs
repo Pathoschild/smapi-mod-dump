@@ -44,22 +44,24 @@ namespace StardewArchipelago.GameModifications
 
             _multiSleepPrice = slotData.MultiSleepCostPerDay;
 
+            var performTouchActionParameters = new[] { typeof(string[]), typeof(Vector2) };
             _harmony.Patch(
-                original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.performTouchAction)),
-                prefix: new HarmonyMethod(typeof(MultiSleep), nameof(MultiSleep.PerformTouchAction_Sleep_Prefix))
+                original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.performTouchAction), performTouchActionParameters),
+                prefix: new HarmonyMethod(typeof(MultiSleep), nameof(PerformTouchAction_Sleep_Prefix))
             );
 
             _harmony.Patch(
                 original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.answerDialogueAction)),
-                prefix: new HarmonyMethod(typeof(MultiSleep), nameof(MultiSleep.AnswerDialogueAction_SleepMany_Prefix))
+                prefix: new HarmonyMethod(typeof(MultiSleep), nameof(AnswerDialogueAction_SleepMany_Prefix))
             );
         }
 
-        public static bool PerformTouchAction_Sleep_Prefix(GameLocation __instance, string fullActionString, Vector2 playerStandingPosition)
+        // public virtual void performTouchAction(string[] action, Vector2 playerStandingPosition)
+        public static bool PerformTouchAction_Sleep_Prefix(GameLocation __instance, string[] action, Vector2 playerStandingPosition)
         {
             try
             {
-                var actionStringFirstWord = fullActionString.Split(' ')[0];
+                var actionStringFirstWord = action[0];
 
                 if (Game1.eventUp || actionStringFirstWord != "Sleep" || Game1.newDay || !Game1.shouldTimePass() || !Game1.player.hasMoved || Game1.player.passedOut)
                 {
@@ -72,7 +74,7 @@ namespace StardewArchipelago.GameModifications
                     new Response("Many", "Sleep for multiple days").SetHotKey(Keys.U),
                     new Response("No", Game1.content.LoadString("Strings\\Lexicon:QuestionDialogue_No")).SetHotKey(Keys.Escape),
                 };
-                
+
                 __instance.createQuestionDialogue(Game1.content.LoadString("Strings\\Locations:FarmHouse_Bed_GoToSleep"), possibleResponses, "Sleep", null);
                 return false; // don't run original logic
             }

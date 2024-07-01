@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-namespace FastControlInput.Framework;
+namespace weizinai.StardewValleyMod.FastControlInput.Framework;
 
 internal class ModConfig
 {

@@ -17,6 +17,8 @@ using Netcode;
 using StardewValley;
 using StardewValley.Characters;
 
+using static NermNermNerm.Stardew.LocalizeFromSource.SdvLocalize;
+
 namespace NermNermNerm.Junimatic
 {
     /// <summary>
@@ -53,7 +55,7 @@ namespace NermNermNerm.Junimatic
         {
             // No need for try/catch here really - if this throws due to a code change, it'll break the event,
             // but that won't block progress and it'll leave a very clear trail of destruction in the log file.
-            var colorField = typeof(Junimo).GetField("color", BindingFlags.NonPublic | BindingFlags.Instance);
+            var colorField = typeof(Junimo).GetField(I("color"), BindingFlags.NonPublic | BindingFlags.Instance);
             ((NetColor)colorField!.GetValue(this)!).Value = color;
         }
 

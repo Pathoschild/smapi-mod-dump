@@ -21,6 +21,87 @@
         <member name="M:DaLion.Core.Commands.InflictStatusCommand.CallbackImpl(System.String,System.String[])">
             <inheritdoc />
         </member>
+        <member name="T:DaLion.Core.CoreApi">
+            <summary>The <see cref="T:DaLion.Core.CoreMod"/> API implementation.</summary>
+        </member>
+        <member name="M:DaLion.Core.CoreApi.Bleed(StardewValley.Monsters.Monster,StardewValley.Farmer,System.Int32,System.Int32,System.Int32)">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Core.CoreApi.Unbleed(StardewValley.Monsters.Monster)">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Core.CoreApi.IsBleeding(StardewValley.Monsters.Monster)">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Core.CoreApi.Blind(StardewValley.Monsters.Monster,System.Int32)">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Core.CoreApi.Unblind(StardewValley.Monsters.Monster)">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Core.CoreApi.IsBlinded(StardewValley.Monsters.Monster)">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Core.CoreApi.Burn(StardewValley.Monsters.Monster,StardewValley.Farmer,System.Int32)">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Core.CoreApi.Unburn(StardewValley.Monsters.Monster)">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Core.CoreApi.IsBurning(StardewValley.Monsters.Monster)">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Core.CoreApi.Chill(StardewValley.Monsters.Monster,System.Int32,System.Single,System.Single,System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Core.CoreApi.Unchill(StardewValley.Monsters.Monster)">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Core.CoreApi.IsChilled(StardewValley.Monsters.Monster)">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Core.CoreApi.Fear(StardewValley.Monsters.Monster,System.Int32)">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Core.CoreApi.Unfear(StardewValley.Monsters.Monster)">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Core.CoreApi.IsFeared(StardewValley.Monsters.Monster)">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Core.CoreApi.Freeze(StardewValley.Monsters.Monster,System.Int32)">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Core.CoreApi.Defrost(StardewValley.Monsters.Monster)">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Core.CoreApi.IsFrozen(StardewValley.Monsters.Monster)">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Core.CoreApi.Poison(StardewValley.Monsters.Monster,StardewValley.Farmer,System.Int32,System.Int32,System.Int32)">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Core.CoreApi.Detox(StardewValley.Monsters.Monster)">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Core.CoreApi.IsPoisoned(StardewValley.Monsters.Monster)">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Core.CoreApi.Slow(StardewValley.Monsters.Monster,System.Int32,System.Single)">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Core.CoreApi.Unslow(StardewValley.Monsters.Monster)">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Core.CoreApi.IsSlowed(StardewValley.Monsters.Monster)">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Core.CoreApi.Stun(StardewValley.Monsters.Monster,System.Int32)">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Core.CoreApi.IsStunned(StardewValley.Monsters.Monster)">
+            <inheritdoc />
+        </member>
         <member name="T:DaLion.Core.CoreConfig">
             <summary>Config schema for the Core mod.</summary>
         </member>
@@ -79,6 +160,9 @@
         </member>
         <member name="P:DaLion.Core.CoreState.SecondsOutOfCombat">
             <summary>Gets the number of seconds since the last taking or receiving damage.</summary>
+        </member>
+        <member name="P:DaLion.Core.CoreState.Timers">
+            <summary>Gets a list of <see cref="T:DaLion.Shared.Classes.Timer"/>s managed by the core mod.</summary>
         </member>
         <member name="T:DaLion.Core.Framework.Debuffs.BleedAnimation">
             <summary>The animation that plays above a bleeding <see cref="T:StardewValley.Monsters.Monster"/>.</summary>
@@ -157,6 +241,22 @@
         </member>
         <member name="M:DaLion.Core.Framework.Debuffs.StunAnimation.update(Microsoft.Xna.Framework.GameTime)">
             <inheritdoc />
+        </member>
+        <member name="T:DaLion.Core.Framework.Enchantments.BaseSlingshotEnchantment">
+            <summary>The base class for <see cref="T:StardewValley.Tools.Slingshot"/> weapon enchantments.</summary>
+        </member>
+        <member name="M:DaLion.Core.Framework.Enchantments.BaseSlingshotEnchantment.CanApplyTo(StardewValley.Item)">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Core.Framework.Enchantments.BaseSlingshotEnchantment.OnFire(StardewValley.Tools.Slingshot,StardewValley.Projectiles.BasicProjectile,StardewValley.GameLocation,StardewValley.Farmer)">
+            <summary>Raised when the <paramref name="slingshot"/> fires a <see cref="T:StardewValley.Projectiles.BasicProjectile"/>.</summary>
+            <param name="slingshot">The <see cref="T:StardewValley.Tools.Slingshot"/>.</param>
+            <param name="firedProjectile">The fired <see cref="T:StardewValley.Projectiles.BasicProjectile"/>.</param>
+            <param name="location">The <see cref="T:StardewValley.GameLocation"/>.</param>
+            <param name="firer">The <see cref="T:StardewValley.Farmer"/> who fired the shot.</param>
+        </member>
+        <member name="M:DaLion.Core.Framework.Enchantments.BaseSlingshotEnchantment._OnFire(StardewValley.Tools.Slingshot,StardewValley.Projectiles.BasicProjectile,StardewValley.GameLocation,StardewValley.Farmer)">
+            <inheritdoc cref="M:DaLion.Core.Framework.Enchantments.BaseSlingshotEnchantment.OnFire(StardewValley.Tools.Slingshot,StardewValley.Projectiles.BasicProjectile,StardewValley.GameLocation,StardewValley.Farmer)"/>
         </member>
         <member name="T:DaLion.Core.Framework.Events.BleedAnimationRenderedWorldEvent">
             <summary>Initializes a new instance of the <see cref="T:DaLion.Core.Framework.Events.BleedAnimationRenderedWorldEvent"/> class.</summary>
@@ -402,24 +502,10 @@
             <summary>Initializes a new instance of the <see cref="T:DaLion.Core.Framework.Events.OutOfCombatOneSecondUpdateTickedEvent"/> class.</summary>
             <param name="manager">The <see cref="T:DaLion.Shared.Events.EventManager"/> instance that manages this event.</param>
         </member>
-        <member name="M:DaLion.Core.Framework.Events.OutOfCombatOneSecondUpdateTickedEvent.OnEnabled">
-            <inheritdoc />
-        </member>
-        <member name="M:DaLion.Core.Framework.Events.OutOfCombatOneSecondUpdateTickedEvent.OnDisabled">
+        <member name="P:DaLion.Core.Framework.Events.OutOfCombatOneSecondUpdateTickedEvent.IsEnabled">
             <inheritdoc />
         </member>
         <member name="M:DaLion.Core.Framework.Events.OutOfCombatOneSecondUpdateTickedEvent.OnOneSecondUpdateTickedImpl(System.Object,StardewModdingAPI.Events.OneSecondUpdateTickedEventArgs)">
-            <inheritdoc />
-        </member>
-        <member name="T:DaLion.Core.Framework.Events.OutOfCombatWarpedEvent">
-            <summary>Initializes a new instance of the <see cref="T:DaLion.Core.Framework.Events.OutOfCombatWarpedEvent"/> class.</summary>
-            <param name="manager">The <see cref="T:DaLion.Shared.Events.EventManager"/> instance that manages this event.</param>
-        </member>
-        <member name="M:DaLion.Core.Framework.Events.OutOfCombatWarpedEvent.#ctor(DaLion.Shared.Events.EventManager)">
-            <summary>Initializes a new instance of the <see cref="T:DaLion.Core.Framework.Events.OutOfCombatWarpedEvent"/> class.</summary>
-            <param name="manager">The <see cref="T:DaLion.Shared.Events.EventManager"/> instance that manages this event.</param>
-        </member>
-        <member name="M:DaLion.Core.Framework.Events.OutOfCombatWarpedEvent.OnWarpedImpl(System.Object,StardewModdingAPI.Events.WarpedEventArgs)">
             <inheritdoc />
         </member>
         <member name="T:DaLion.Core.Framework.Events.PoisonAnimationRenderedWorldEvent">
@@ -499,6 +585,20 @@
         <member name="M:DaLion.Core.Framework.Events.StunAnimationUpdateTickedEvent.OnUpdateTickedImpl(System.Object,StardewModdingAPI.Events.UpdateTickedEventArgs)">
             <inheritdoc />
         </member>
+        <member name="T:DaLion.Core.Framework.Events.TimerUpdateTickedEvent">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Core.Framework.Events.TimerUpdateTickedEvent"/> class.</summary>
+            <param name="manager">The <see cref="T:DaLion.Shared.Events.EventManager"/> instance that manages this event.</param>
+        </member>
+        <member name="M:DaLion.Core.Framework.Events.TimerUpdateTickedEvent.#ctor(DaLion.Shared.Events.EventManager)">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Core.Framework.Events.TimerUpdateTickedEvent"/> class.</summary>
+            <param name="manager">The <see cref="T:DaLion.Shared.Events.EventManager"/> instance that manages this event.</param>
+        </member>
+        <member name="P:DaLion.Core.Framework.Events.TimerUpdateTickedEvent.IsEnabled">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Core.Framework.Events.TimerUpdateTickedEvent.OnUpdateTickedImpl(System.Object,StardewModdingAPI.Events.UpdateTickedEventArgs)">
+            <inheritdoc />
+        </member>
         <member name="T:DaLion.Core.Framework.Events.TrackMonstersNpcListChangedEvent">
             <summary>Initializes a new instance of the <see cref="T:DaLion.Core.Framework.Events.TrackMonstersNpcListChangedEvent"/> class.</summary>
             <param name="manager">The <see cref="T:DaLion.Shared.Events.EventManager"/> instance that manages this event.</param>
@@ -548,6 +648,16 @@
             <param name="amount">How many should be consumed.</param>
             <returns>The leftover amount, if not enough were consumed.</returns>
         </member>
+        <member name="T:DaLion.Core.Framework.Extensions.GameLocationExtensions">
+            <summary>Extensions for the <see cref="T:StardewValley.GameLocation"/> class.</summary>
+        </member>
+        <member name="M:DaLion.Core.Framework.Extensions.GameLocationExtensions.DoLightningBarrage(StardewValley.GameLocation,Microsoft.Xna.Framework.Vector2,System.Int32,StardewValley.Farmer)">
+            <summary>Triggers a barrage of lightning strikes at the specified <paramref name="tileLocation"/>.</summary>
+            <param name="location">The <see cref="T:StardewValley.GameLocation"/>.</param>
+            <param name="tileLocation">The <see cref="T:Microsoft.Xna.Framework.Vector2"/> tile location.</param>
+            <param name="radius">The area-of-effect radius.</param>
+            <param name="who">The <see cref="T:StardewValley.Farmer"/> who is attributed the damage.</param>
+        </member>
         <member name="T:DaLion.Core.Framework.Extensions.InventoryExtensions">
             <summary>Extensions for the <see cref="T:StardewValley.Inventories.IInventory"/> interface.</summary>
         </member>
@@ -573,7 +683,7 @@
             <param name="monster">The <see cref="T:StardewValley.Monsters.Monster"/>.</param>
             <param name="bleeder">The <see cref="T:StardewValley.Farmer"/> who caused the bleeding.</param>
             <param name="duration">The duration in milliseconds.</param>
-            <param name="stacks">The intensity of the bleeding effect (how many stacks).</param>
+            <param name="stacks">The number of bleeding stacks.</param>
             <param name="maxStacks">The max number of allowed stacks.</param>
         </member>
         <member name="M:DaLion.Core.Framework.Extensions.MonsterExtensions.Unbleed(StardewValley.Monsters.Monster)">
@@ -584,6 +694,20 @@
             <summary>Checks whether the <paramref name="monster"/> is bleeding.</summary>
             <param name="monster">The <see cref="T:StardewValley.Monsters.Monster"/>.</param>
             <returns><see langword="true"/> if the <paramref name="monster"/> has non-zero bleeding stacks, otherwise <see langword="false"/>.</returns>
+        </member>
+        <member name="M:DaLion.Core.Framework.Extensions.MonsterExtensions.Blind(StardewValley.Monsters.Monster,System.Int32)">
+            <summary>Blinds the <paramref name="monster"/> for the specified <paramref name="duration"/>.</summary>
+            <param name="monster">The <see cref="T:StardewValley.Monsters.Monster"/>.</param>
+            <param name="duration">The duration in milliseconds.</param>
+        </member>
+        <member name="M:DaLion.Core.Framework.Extensions.MonsterExtensions.Unblind(StardewValley.Monsters.Monster)">
+            <summary>Removes blind from <paramref name="monster"/>.</summary>
+            <param name="monster">The <see cref="T:StardewValley.Monsters.Monster"/>.</param>
+        </member>
+        <member name="M:DaLion.Core.Framework.Extensions.MonsterExtensions.IsBlinded(StardewValley.Monsters.Monster)">
+            <summary>Checks whether the <paramref name="monster"/> is blinded.</summary>
+            <param name="monster">The <see cref="T:StardewValley.Monsters.Monster"/>.</param>
+            <returns><see langword="true"/> if the <paramref name="monster"/> has non-zero blind timer, otherwise <see langword="false"/>.</returns>
         </member>
         <member name="M:DaLion.Core.Framework.Extensions.MonsterExtensions.Burn(StardewValley.Monsters.Monster,StardewValley.Farmer,System.Int32)">
             <summary>Burns the <paramref name="monster"/> for the specified <paramref name="duration"/>.</summary>
@@ -650,7 +774,7 @@
             <param name="monster">The <see cref="T:StardewValley.Monsters.Monster"/>.</param>
             <param name="poisoner">The <see cref="T:StardewValley.Farmer"/> who inflicted the poison.</param>
             <param name="duration">The duration in milliseconds.</param>
-            <param name="stacks">The intensity of the poison effect (how many stacks).</param>
+            <param name="stacks">The number of poison stacks.</param>
             <param name="maxStacks">This number of stacks will immediately kill the monster.</param>
         </member>
         <member name="M:DaLion.Core.Framework.Extensions.MonsterExtensions.Detox(StardewValley.Monsters.Monster)">
@@ -666,7 +790,7 @@
             <summary>Slows the <paramref name="monster"/> for the specified <paramref name="duration"/> and with the specified <paramref name="intensity"/>.</summary>
             <param name="monster">The <see cref="T:StardewValley.Monsters.Monster"/>.</param>
             <param name="duration">The duration in milliseconds.</param>
-            <param name="intensity">The intensity of the slow effect.</param>
+            <param name="intensity">The intensity of the slow effect; i.e. the percentage by which the target will be slowed.</param>
         </member>
         <member name="M:DaLion.Core.Framework.Extensions.MonsterExtensions.Unslow(StardewValley.Monsters.Monster)">
             <summary>Removes slow from <paramref name="monster"/>.</summary>
@@ -700,6 +824,12 @@
             <param name="id">A <see cref="T:StardewValley.Item"/> index.</param>
             <returns><see langword="true"/> if the <paramref name="id"/> corresponds any <see cref="T:StardewValley.Objects.Ring"/>, otherwise <see langword="false"/>.</returns>
         </member>
+        <member name="T:DaLion.Core.Framework.FakeFarmer">
+            <summary>A wrapper for fake <see cref="T:StardewValley.Farmer"/> instances used for faking typically farmer-only interactions.</summary>
+        </member>
+        <member name="P:DaLion.Core.Framework.FakeFarmer.IsEnemy">
+            <summary>Gets or sets a value indicating whether the <see cref="T:DaLion.Core.Framework.FakeFarmer"/> is an enemy to be targeted.</summary>
+        </member>
         <member name="M:DaLion.Core.Framework.Patchers.BuffsDisplayDrawPatcher.#ctor(DaLion.Shared.Harmony.Harmonizer)">
             <summary>Initializes a new instance of the <see cref="T:DaLion.Core.Framework.Patchers.BuffsDisplayDrawPatcher"/> class.</summary>
             <param name="harmonizer">The <see cref="T:DaLion.Shared.Harmony.Harmonizer"/> instance that manages this patcher.</param>
@@ -725,8 +855,18 @@
             <summary>Initializes a new instance of the <see cref="T:DaLion.Core.Framework.Patchers.FarmerTakeDamagePatcher"/> class.</summary>
             <param name="harmonizer">The <see cref="T:DaLion.Shared.Harmony.Harmonizer"/> instance that manages this patcher.</param>
         </member>
+        <member name="M:DaLion.Core.Framework.Patchers.FarmerTakeDamagePatcher.FarmerTakeDamagePrefix(StardewValley.Farmer,System.Int32@,StardewValley.Monsters.Monster)">
+            <summary>Implement blind status.</summary>
+        </member>
         <member name="M:DaLion.Core.Framework.Patchers.FarmerTakeDamagePatcher.FarmerTakeDamagePostfix(StardewValley.Farmer)">
             <summary>Reset seconds-out-of-combat.</summary>
+        </member>
+        <member name="M:DaLion.Core.Framework.Patchers.GameLocationDamageMonsterPatcher.#ctor(DaLion.Shared.Harmony.Harmonizer)">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Core.Framework.Patchers.GameLocationDamageMonsterPatcher"/> class.</summary>
+            <param name="harmonizer">The <see cref="T:DaLion.Shared.Harmony.Harmonizer"/> instance that manages this patcher.</param>
+        </member>
+        <member name="M:DaLion.Core.Framework.Patchers.GameLocationDamageMonsterPatcher.GameLocationDamageMonsterPrefix(System.Boolean,StardewValley.Farmer)">
+            <summary>Steadfast enchantment crit. to damage conversion.</summary>
         </member>
         <member name="M:DaLion.Core.Framework.Patchers.GameLocationExplodePatcher.#ctor(DaLion.Shared.Harmony.Harmonizer)">
             <summary>Initializes a new instance of the <see cref="T:DaLion.Core.Framework.Patchers.GameLocationExplodePatcher"/> class.</summary>
@@ -734,6 +874,13 @@
         </member>
         <member name="M:DaLion.Core.Framework.Patchers.GameLocationExplodePatcher.GameLocationExplodePostfix(StardewValley.GameLocation,Microsoft.Xna.Framework.Vector2,System.Int32,StardewValley.Farmer)">
             <summary>Patch for Blaster double coal chance + Demolitionist speed burst.</summary>
+        </member>
+        <member name="M:DaLion.Core.Framework.Patchers.MonsterFindPlayerPatcher.#ctor(DaLion.Shared.Harmony.Harmonizer)">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Core.Framework.Patchers.MonsterFindPlayerPatcher"/> class.</summary>
+            <param name="harmonizer">The <see cref="T:DaLion.Shared.Harmony.Harmonizer"/> instance that manages this patcher.</param>
+        </member>
+        <member name="M:DaLion.Core.Framework.Patchers.MonsterFindPlayerPatcher.MonsterFindPlayerPrefix(StardewValley.Monsters.Monster,StardewValley.Farmer@)">
+            <summary>Patch to implement Blind status.</summary>
         </member>
         <member name="M:DaLion.Core.Framework.Patchers.MonsterShouldActuallyMoveAwayFromPlayerPatcher.#ctor(DaLion.Shared.Harmony.Harmonizer)">
             <summary>Initializes a new instance of the <see cref="T:DaLion.Core.Framework.Patchers.MonsterShouldActuallyMoveAwayFromPlayerPatcher"/> class.</summary>
@@ -755,15 +902,19 @@
         <member name="M:DaLion.Core.Framework.Patchers.MonsterTakeDamagePatcher.MonsterTakeDamagePrefix(StardewValley.Monsters.Monster,System.Int32@)">
             <summary>Frozen effect.</summary>
         </member>
-        <member name="M:DaLion.Core.Framework.Patchers.MonsterTakeDamagePatcher.MonsterTakeDamagePostfix(StardewValley.Farmer)">
-            <summary>Reset seconds out of combat.</summary>
-        </member>
         <member name="M:DaLion.Core.Framework.Patchers.MonsterUpdatePatcher.#ctor(DaLion.Shared.Harmony.Harmonizer)">
             <summary>Initializes a new instance of the <see cref="T:DaLion.Core.Framework.Patchers.MonsterUpdatePatcher"/> class.</summary>
             <param name="harmonizer">The <see cref="T:DaLion.Shared.Harmony.Harmonizer"/> instance that manages this patcher.</param>
         </member>
         <member name="M:DaLion.Core.Framework.Patchers.MonsterUpdatePatcher.MonsterUpdatePrefix(StardewValley.Monsters.Monster,Microsoft.Xna.Framework.GameTime)">
             <summary>Slow and damage-over-time effects.</summary>
+        </member>
+        <member name="M:DaLion.Core.Framework.Patchers.MonsterWithinPlayerThresholdPatcher.#ctor(DaLion.Shared.Harmony.Harmonizer)">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Core.Framework.Patchers.MonsterWithinPlayerThresholdPatcher"/> class.</summary>
+            <param name="harmonizer">The <see cref="T:DaLion.Shared.Harmony.Harmonizer"/> instance that manages this patcher.</param>
+        </member>
+        <member name="M:DaLion.Core.Framework.Patchers.MonsterWithinPlayerThresholdPatcher.MonsterShouldActuallyMoveAwayFromPlayerPrefix(StardewValley.Monsters.Monster,System.Boolean@)">
+            <summary>Implement fear status.</summary>
         </member>
         <member name="M:DaLion.Core.Framework.Patchers.ObjectCheckForActionOnMachinePatcher.#ctor(DaLion.Shared.Harmony.Harmonizer)">
             <summary>Initializes a new instance of the <see cref="T:DaLion.Core.Framework.Patchers.ObjectCheckForActionOnMachinePatcher"/> class.</summary>
@@ -846,6 +997,142 @@
         </member>
         <member name="P:DaLion.Core.Framework.StackableBuff.MaxStacks">
             <summary>Gets the maximum number of stacks for this buff.</summary>
+        </member>
+        <member name="T:DaLion.Core.ICoreApi">
+            <summary>The public interface for the Core mod API.</summary>
+        </member>
+        <member name="M:DaLion.Core.ICoreApi.Bleed(StardewValley.Monsters.Monster,StardewValley.Farmer,System.Int32,System.Int32,System.Int32)">
+            <summary>Causes bleeding on the <paramref name="monster"/> for the specified <paramref name="duration"/> and with the specified <paramref name="intensity"/>.</summary>
+            <param name="monster">The <see cref="T:StardewValley.Monsters.Monster"/>.</param>
+            <param name="bleeder">The <see cref="T:StardewValley.Farmer"/> who caused the bleeding.</param>
+            <param name="duration">The duration in milliseconds.</param>
+            <param name="stacks">The number of bleeding stacks.</param>
+            <param name="maxStacks">The max number of allowed stacks.</param>
+        </member>
+        <member name="M:DaLion.Core.ICoreApi.Unbleed(StardewValley.Monsters.Monster)">
+            <summary>Removes bleeding from the <paramref name="monster"/>.</summary>
+            <param name="monster">The <see cref="T:StardewValley.Monsters.Monster"/>.</param>
+        </member>
+        <member name="M:DaLion.Core.ICoreApi.IsBleeding(StardewValley.Monsters.Monster)">
+            <summary>Checks whether the <paramref name="monster"/> is bleeding.</summary>
+            <param name="monster">The <see cref="T:StardewValley.Monsters.Monster"/>.</param>
+            <returns><see langword="true"/> if the <paramref name="monster"/> has non-zero bleeding stacks, otherwise <see langword="false"/>.</returns>
+        </member>
+        <member name="M:DaLion.Core.ICoreApi.Blind(StardewValley.Monsters.Monster,System.Int32)">
+            <summary>Blinds the <paramref name="monster"/> for the specified <paramref name="duration"/>.</summary>
+            <param name="monster">The <see cref="T:StardewValley.Monsters.Monster"/>.</param>
+            <param name="duration">The duration in milliseconds.</param>
+        </member>
+        <member name="M:DaLion.Core.ICoreApi.Unblind(StardewValley.Monsters.Monster)">
+            <summary>Removes blind from <paramref name="monster"/>.</summary>
+            <param name="monster">The <see cref="T:StardewValley.Monsters.Monster"/>.</param>
+        </member>
+        <member name="M:DaLion.Core.ICoreApi.IsBlinded(StardewValley.Monsters.Monster)">
+            <summary>Checks whether the <paramref name="monster"/> is blinded.</summary>
+            <param name="monster">The <see cref="T:StardewValley.Monsters.Monster"/>.</param>
+            <returns><see langword="true"/> if the <paramref name="monster"/> has non-zero blind timer, otherwise <see langword="false"/>.</returns>
+        </member>
+        <member name="M:DaLion.Core.ICoreApi.Burn(StardewValley.Monsters.Monster,StardewValley.Farmer,System.Int32)">
+            <summary>Burns the <paramref name="monster"/> for the specified <paramref name="duration"/>.</summary>
+            <param name="monster">The <see cref="T:StardewValley.Monsters.Monster"/>.</param>
+            <param name="burner">The <see cref="T:StardewValley.Farmer"/> who inflicted the burn.</param>
+            <param name="duration">The duration in milliseconds.</param>
+        </member>
+        <member name="M:DaLion.Core.ICoreApi.Unburn(StardewValley.Monsters.Monster)">
+            <summary>Removes burn from <paramref name="monster"/>.</summary>
+            <param name="monster">The <see cref="T:StardewValley.Monsters.Monster"/>.</param>
+        </member>
+        <member name="M:DaLion.Core.ICoreApi.IsBurning(StardewValley.Monsters.Monster)">
+            <summary>Checks whether the <paramref name="monster"/> is burning.</summary>
+            <param name="monster">The <see cref="T:StardewValley.Monsters.Monster"/>.</param>
+            <returns><see langword="true"/> if the <paramref name="monster"/> has non-zero burn timer, otherwise <see langword="false"/>.</returns>
+        </member>
+        <member name="M:DaLion.Core.ICoreApi.Chill(StardewValley.Monsters.Monster,System.Int32,System.Single,System.Single,System.Boolean)">
+            <summary>Chills the <paramref name="monster"/> for the specified <paramref name="duration"/>.</summary>
+            <param name="monster">The <see cref="T:StardewValley.Monsters.Monster"/>.</param>
+            <param name="duration">The duration in milliseconds.</param>
+            <param name="intensity">The intensity of the slow effect.</param>
+            <param name="freezeThreshold">The required slow intensity total for the target to be considered frozen.</param>
+            <param name="playSoundEffect">Whether to play the chill sound effect.</param>
+        </member>
+        <member name="M:DaLion.Core.ICoreApi.Unchill(StardewValley.Monsters.Monster)">
+            <summary>Removes chilled status from the <paramref name="monster"/>.</summary>
+            <param name="monster">The <see cref="T:StardewValley.Monsters.Monster"/>.</param>
+        </member>
+        <member name="M:DaLion.Core.ICoreApi.IsChilled(StardewValley.Monsters.Monster)">
+            <summary>Checks whether the <paramref name="monster"/> is chilled.</summary>
+            <param name="monster">The <see cref="T:StardewValley.Monsters.Monster"/>.</param>
+            <returns>The <paramref name="monster"/>'s chilled flag.</returns>
+        </member>
+        <member name="M:DaLion.Core.ICoreApi.Fear(StardewValley.Monsters.Monster,System.Int32)">
+            <summary>Fears the <paramref name="monster"/> for the specified <paramref name="duration"/>.</summary>
+            <param name="monster">The <see cref="T:StardewValley.Monsters.Monster"/>.</param>
+            <param name="duration">The duration in milliseconds.</param>
+        </member>
+        <member name="M:DaLion.Core.ICoreApi.Unfear(StardewValley.Monsters.Monster)">
+            <summary>Removes fear from <paramref name="monster"/>.</summary>
+            <param name="monster">The <see cref="T:StardewValley.Monsters.Monster"/>.</param>
+        </member>
+        <member name="M:DaLion.Core.ICoreApi.IsFeared(StardewValley.Monsters.Monster)">
+            <summary>Checks whether the <paramref name="monster"/> is feared.</summary>
+            <param name="monster">The <see cref="T:StardewValley.Monsters.Monster"/>.</param>
+            <returns><see langword="true"/> if the <paramref name="monster"/> has non-zero fear timer, otherwise <see langword="false"/>.</returns>
+        </member>
+        <member name="M:DaLion.Core.ICoreApi.Freeze(StardewValley.Monsters.Monster,System.Int32)">
+            <summary>Freezes the <paramref name="monster"/> for the specified <paramref name="duration"/>.</summary>
+            <param name="monster">The <see cref="T:StardewValley.Monsters.Monster"/>.</param>
+            <param name="duration">The duration in milliseconds.</param>
+        </member>
+        <member name="M:DaLion.Core.ICoreApi.Defrost(StardewValley.Monsters.Monster)">
+            <summary>Removes frozen status from the <paramref name="monster"/>.</summary>
+            <param name="monster">The <see cref="T:StardewValley.Monsters.Monster"/>.</param>
+        </member>
+        <member name="M:DaLion.Core.ICoreApi.IsFrozen(StardewValley.Monsters.Monster)">
+            <summary>Checks whether the <paramref name="monster"/> is frozen.</summary>
+            <param name="monster">The <see cref="T:StardewValley.Monsters.Monster"/>.</param>
+            <returns><see langword="true"/> if the <paramref name="monster"/> has non-zero freeze stacks, otherwise <see langword="false"/>.</returns>
+        </member>
+        <member name="M:DaLion.Core.ICoreApi.Poison(StardewValley.Monsters.Monster,StardewValley.Farmer,System.Int32,System.Int32,System.Int32)">
+            <summary>Poisons the <paramref name="monster"/> for the specified <paramref name="duration"/> and with the specified <paramref name="intensity"/>.</summary>
+            <param name="monster">The <see cref="T:StardewValley.Monsters.Monster"/>.</param>
+            <param name="poisoner">The <see cref="T:StardewValley.Farmer"/> who inflicted the poison.</param>
+            <param name="duration">The duration in milliseconds.</param>
+            <param name="stacks">The number of poison stacks.</param>
+            <param name="maxStacks">This number of stacks will immediately kill the monster.</param>
+        </member>
+        <member name="M:DaLion.Core.ICoreApi.Detox(StardewValley.Monsters.Monster)">
+            <summary>Removes poison from <paramref name="monster"/>.</summary>
+            <param name="monster">The <see cref="T:StardewValley.Monsters.Monster"/>.</param>
+        </member>
+        <member name="M:DaLion.Core.ICoreApi.IsPoisoned(StardewValley.Monsters.Monster)">
+            <summary>Checks whether the <paramref name="monster"/> is poisoned.</summary>
+            <param name="monster">The <see cref="T:StardewValley.Monsters.Monster"/>.</param>
+            <returns><see langword="true"/> if the <paramref name="monster"/> has non-zero poison stacks, otherwise <see langword="false"/>.</returns>
+        </member>
+        <member name="M:DaLion.Core.ICoreApi.Slow(StardewValley.Monsters.Monster,System.Int32,System.Single)">
+            <summary>Slows the <paramref name="monster"/> for the specified <paramref name="duration"/> and with the specified <paramref name="intensity"/>.</summary>
+            <param name="monster">The <see cref="T:StardewValley.Monsters.Monster"/>.</param>
+            <param name="duration">The duration in milliseconds.</param>
+            <param name="intensity">The intensity of the slow effect; i.e. the percentage by which the target will be slowed.</param>
+        </member>
+        <member name="M:DaLion.Core.ICoreApi.Unslow(StardewValley.Monsters.Monster)">
+            <summary>Removes slow from <paramref name="monster"/>.</summary>
+            <param name="monster">The <see cref="T:StardewValley.Monsters.Monster"/>.</param>
+        </member>
+        <member name="M:DaLion.Core.ICoreApi.IsSlowed(StardewValley.Monsters.Monster)">
+            <summary>Checks whether the <paramref name="monster"/> is slowed.</summary>
+            <param name="monster">The <see cref="T:StardewValley.Monsters.Monster"/>.</param>
+            <returns><see langword="true"/> if the <paramref name="monster"/> has non-zero slow timer, otherwise <see langword="false"/>.</returns>
+        </member>
+        <member name="M:DaLion.Core.ICoreApi.Stun(StardewValley.Monsters.Monster,System.Int32)">
+            <summary>Stuns the <paramref name="monster"/> for the specified <paramref name="duration"/>.</summary>
+            <param name="monster">The <see cref="T:StardewValley.Monsters.Monster"/>.</param>
+            <param name="duration">The duration in milliseconds.</param>
+        </member>
+        <member name="M:DaLion.Core.ICoreApi.IsStunned(StardewValley.Monsters.Monster)">
+            <summary>Checks whether the <paramref name="monster"/> is stunned.</summary>
+            <param name="monster">The <see cref="T:StardewValley.Monsters.Monster"/>.</param>
+            <returns><see langword="true"/> if the <paramref name="monster"/> has non-zero stun timer, otherwise <see langword="false"/>.</returns>
         </member>
         <member name="T:DaLion.Shared.Attributes.DebugAttribute">
             <summary>Indicates that an implicitly-used marked symbol should only be available in debug mode.</summary>
@@ -1731,11 +2018,6 @@
         <member name="T:DaLion.Shared.Extensions.Stardew.ToolExtensions">
             <summary>Extensions for <see cref="T:StardewValley.Tool"/> class.</summary>
         </member>
-        <member name="M:DaLion.Shared.Extensions.Stardew.ToolExtensions.IsScythe(StardewValley.Tool)">
-            <summary>Determines whether the specified <paramref name="tool"/> is a scythe.</summary>
-            <param name="tool">The <see cref="T:StardewValley.Tool"/>.</param>
-            <returns><see langword="true"/> if the <paramref name="tool"/> is a scythe, otherwise <see langword="false"/>.</returns>
-        </member>
         <member name="M:DaLion.Shared.Extensions.Stardew.ToolExtensions.HasAnyEnchantmentOf(StardewValley.Tool,System.Type[])">
             <summary>Determines whether the specified <paramref name="tool"/> contains any <see cref="T:StardewValley.Enchantments.BaseEnchantment"/> of the specified <paramref name="enchantmentTypes"/>.</summary>
             <param name="tool">The <see cref="T:StardewValley.Tool"/>.</param>
@@ -1780,6 +2062,30 @@
             <summary>Gets the general <see cref="T:DaLion.Shared.Enums.FacingDirection"/> pointed by the <see cref="T:Microsoft.Xna.Framework.Vector2"/>.</summary>
             <param name="vector">The <see cref="T:Microsoft.Xna.Framework.Vector2"/>.</param>
             <returns>The corresponding <see cref="T:DaLion.Shared.Enums.FacingDirection"/>.</returns>
+        </member>
+        <member name="M:DaLion.Shared.Extensions.Stardew.Vector2Extensions.GetClosest(Microsoft.Xna.Framework.Vector2,System.Collections.Generic.IEnumerable{Microsoft.Xna.Framework.Vector2},System.Single@,System.Func{Microsoft.Xna.Framework.Vector2,System.Boolean})">
+            <summary>
+                Finds the closest from among the specified <paramref name="candidates"/> to this
+                <paramref name="vector"/>.
+            </summary>
+            <param name="vector">The <see cref="T:Microsoft.Xna.Framework.Vector2"/>.</param>
+            <param name="candidates">The candidates.</param>
+            <param name="distance">The actual tile distance to the closest candidate found.</param>
+            <param name="predicate">An optional condition with which to filter out candidates.</param>
+            <returns>The closest target from among the specified <paramref name="candidates"/> to this <paramref name="vector"/>.</returns>
+        </member>
+        <member name="M:DaLion.Shared.Extensions.Stardew.Vector2Extensions.GetClosest``1(Microsoft.Xna.Framework.Vector2,System.Collections.Generic.IEnumerable{``0},System.Func{``0,Microsoft.Xna.Framework.Vector2},System.Single@,System.Func{``0,System.Boolean})">
+            <summary>
+                Finds the closest target from among the specified <paramref name="candidates"/> to this
+                <paramref name="vector"/>.
+            </summary>
+            <typeparam name="T">The target type.</typeparam>
+            <param name="vector">The <see cref="T:Microsoft.Xna.Framework.Vector2"/>.</param>
+            <param name="candidates">The candidate <see cref="!:T"/>s, if already available.</param>
+            <param name="getPosition">A delegate to retrieve the tile coordinates of <typeparamref name="T"/>.</param>
+            <param name="distance">The actual tile distance to the closest candidate found.</param>
+            <param name="predicate">An optional condition with which to filter out candidates.</param>
+            <returns>The closest target from among the specified <paramref name="candidates"/> to this <paramref name="vector"/>.</returns>
         </member>
         <member name="T:DaLion.Shared.Extensions.DoubleExtensions">
             <summary>Extensions for the primitive <see cref="T:System.Double"/> type.</summary>
@@ -2960,6 +3266,12 @@
             <param name="range">A range of integers.</param>
             <returns><see langword="true"/> if <paramref name="value"/> is greater than or equal to the <paramref name="range"/> start value and less than or equal to the end value, otherwise <see langword="false"/>.</returns>
         </member>
+        <member name="M:DaLion.Shared.Extensions.Int32Extensions.ContainsDigit(System.Int32,System.Int32)">
+            <summary>Determines whether the <paramref name="value"/> contains the specified <paramref name="digit"/>.</summary>
+            <param name="value">The value to check.</param>
+            <param name="digit">The desired digit.</param>
+            <returns><see langword="true"/> if <paramref name="value"/> contains <paramref name="digit"/>, otherwise <see langword="false"/>.</returns>
+        </member>
         <member name="M:DaLion.Shared.Extensions.Int32Extensions.FirstOrDefault(System.Collections.Generic.ICollection{System.Int32},System.Collections.Generic.IEnumerable{System.Int32},System.Int32)">
             <summary>Finds the first common <see cref="T:System.Int32"/>eger between the <paramref name="collection"/> and the specified <paramref name="candidates"/>. If none are found, returns the specified <paramref name="default"/> value.</summary>
             <param name="collection">A <see cref="T:System.Collections.Generic.ICollection`1"/> of <see cref="T:System.Int32"/>egers.</param>
@@ -3615,25 +3927,21 @@
             <param name="c">A <see cref="T:Microsoft.Xna.Framework.Color"/>.</param>
             <returns><see langword="true"/> if all channels of <paramref name="c"/> are contained within the respective inclusive ranges in the <see cref="T:DaLion.Shared.Classes.ColorRange"/>, otherwise <see langword="false"/>.</returns>
         </member>
-        <member name="T:DaLion.Shared.Classes.Countdown">
-            <summary>Counts down from a baseline value.</summary>
+        <member name="T:DaLion.Shared.Classes.Timer">
+            <summary>Counts down from a value in milliseconds.</summary>
         </member>
-        <member name="M:DaLion.Shared.Classes.Countdown.#ctor(System.Int32)">
-            <summary>Initializes a new instance of the <see cref="T:DaLion.Shared.Classes.Countdown"/> class.</summary>
-            <param name="initial">The initial value from which to count down.</param>
+        <member name="M:DaLion.Shared.Classes.Timer.#ctor(System.Func{System.Int32},System.Action{System.Int32},System.Action)">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Shared.Classes.Timer"/> class.</summary>
+            <param name="getCurrent">A <see cref="T:System.Func`1"/> that returns the value that should be counted down.</param>
+            <param name="setCurrent">A <see cref="T:System.Action"/> that sets the value that should be counted down.</param>
+            <param name="callback">An optional <see cref="T:System.Action"/> that will the triggered when the timer hits zero.</param>
         </member>
-        <member name="P:DaLion.Shared.Classes.Countdown.Initial">
-            <summary>Gets the initial value from which to count down.</summary>
-        </member>
-        <member name="P:DaLion.Shared.Classes.Countdown.Current">
+        <member name="P:DaLion.Shared.Classes.Timer.Current">
             <summary>Gets the current value.</summary>
         </member>
-        <member name="M:DaLion.Shared.Classes.Countdown.Decrement">
-            <summary>Reduces the current value by one.</summary>
-            <returns>Returns whether the value was decremented (i.e. wasn't already zero).</returns>
-        </member>
-        <member name="M:DaLion.Shared.Classes.Countdown.Reset">
-            <summary>Restarts the countdown.</summary>
+        <member name="M:DaLion.Shared.Classes.Timer.Decrement">
+            <summary>Decrements the timer by the elapsed number of milliseconds.</summary>
+            <returns><see langword="true"/> if the timer reached zero, otherwise <see langword="false"/>.</returns>
         </member>
         <member name="T:DaLion.Shared.Classes.Quadtree`1">
             <summary>
@@ -4719,6 +5027,82 @@
                 <see cref="T:StardewValley.Mods.ModDataDictionary"/> by 1.
             </summary>
             <param name="crop">The <see cref="T:StardewValley.Crop"/>.</param>
+            <param name="key">The key to update.</param>
+            <param name="modId">The unique ID of the owner mod, to be used as an identifier.</param>
+        </member>
+        <member name="M:DaLion.Shared.Data.ModDataManager.Read(StardewValley.Projectiles.Projectile,System.String,System.String,System.String)">
+            <summary>
+                Reads from a <paramref name="key"/> in the <paramref name="projectile"/>'s
+                <see cref="T:StardewValley.Mods.ModDataDictionary"/> as <see cref="T:System.String"/>.
+            </summary>
+            <param name="projectile">The <see cref="T:StardewValley.Projectiles.Projectile"/>.</param>
+            <param name="key">The key to read from.</param>
+            <param name="defaultValue">The value to return if the <paramref name="key"/> does not exist.</param>
+            <param name="modId">The unique ID of the owner mod, to be used as an identifier.</param>
+            <returns>The value of the <paramref name="key"/> as a <see cref="T:System.String"/>, if it exists, or <paramref name="defaultValue"/> if not.</returns>
+        </member>
+        <member name="M:DaLion.Shared.Data.ModDataManager.ReadAs``1(StardewValley.Projectiles.Projectile,System.String,``0,System.String)">
+            <summary>
+                Reads from a <paramref name="key"/> in the <paramref name="projectile"/>'s
+                <see cref="T:StardewValley.Mods.ModDataDictionary"/> as <typeparamref name="T"/>.
+            </summary>
+            <typeparam name="T">The expected type for the <paramref name="key"/>'s value. This should most likely be a primitive.</typeparam>
+            <param name = "projectile">The <see cref="T:StardewValley.Projectiles.Projectile"/>.</param>
+            <param name="key">The key to read from.</param>
+            <param name="defaultValue"> The value to return if the <paramref name="key"/> does not exist.</param>
+            <param name="modId">The unique ID of the owner mod, to be used as an identifier.</param>
+            <returns>The value of the <paramref name="key"/> as <typeparamref name="T"/>, if it exists, or <paramref name="defaultValue"/> if not.</returns>
+        </member>
+        <member name="M:DaLion.Shared.Data.ModDataManager.Write(StardewValley.Projectiles.Projectile,System.String,System.String,System.String)">
+            <summary>
+                Writes to a <paramref name="key"/> in the <paramref name="projectile"/>'s
+                <see cref="T:StardewValley.Mods.ModDataDictionary"/>, or removes it if supplied a null or empty <paramref name="newValue"/>.
+            </summary>
+            <param name="projectile">The <see cref="T:StardewValley.Projectiles.Projectile"/>.</param>
+            <param name="key">The key to write to.</param>
+            <param name="newValue">The value to write, or <see langword="null"/> to remove the <paramref name="key"/>.</param>
+            <param name="modId">The unique ID of the owner mod, to be used as an identifier.</param>
+        </member>
+        <member name="M:DaLion.Shared.Data.ModDataManager.WriteIfNotExists(StardewValley.Projectiles.Projectile,System.String,System.String,System.String)">
+            <summary>
+                Writes to a <paramref name="key"/> in the <paramref name="projectile"/>'s
+                <see cref="T:StardewValley.Mods.ModDataDictionary"/>, only if it doesn't yet have a value.
+            </summary>
+            <param name="projectile">The <see cref="T:StardewValley.Projectiles.Projectile"/>.</param>
+            <param name="key">The key to write to.</param>
+            <param name="value">The value to write, or <see langword="null"/> to remove the <paramref name="key"/>.</param>
+            <param name="modId">The unique ID of the owner mod, to be used as an identifier.</param>
+            <returns><see langword="true"/> if the <paramref name="key"/> was written to, otherwise <see langword="false"/>.</returns>
+        </member>
+        <member name="M:DaLion.Shared.Data.ModDataManager.Append(StardewValley.Projectiles.Projectile,System.String,System.String,System.Char,System.String)">
+            <summary>
+                Appends a <paramref name="value"/> to an existing <paramref name="key"/> in the
+                <paramref name="projectile"/>'s <see cref="T:StardewValley.Mods.ModDataDictionary"/>, or initializes it with that
+                <paramref name="value"/>.
+            </summary>
+            <param name="projectile">The <see cref="T:StardewValley.Projectiles.Projectile"/>.</param>
+            <param name="key">The key to update.</param>
+            <param name="value">The value to append.</param>
+            <param name="separator">A <see cref="T:System.String"/> with which to separate appended values.</param>
+            <param name="modId">The unique ID of the owner mod, to be used as an identifier.</param>
+        </member>
+        <member name="M:DaLion.Shared.Data.ModDataManager.Increment``1(StardewValley.Projectiles.Projectile,System.String,``0,System.String)">
+            <summary>
+                Increments the value of a numeric <paramref name="key"/> in the <paramref name="projectile"/>'s
+                <see cref="T:StardewValley.Mods.ModDataDictionary"/> by an arbitrary <paramref name="amount"/>.
+            </summary>
+            <typeparam name="T">A numeric type with which to increment the <paramref name="key"/>. This should most likely be an integer type.</typeparam>
+            <param name="projectile">The <see cref="T:StardewValley.Projectiles.Projectile"/>.</param>
+            <param name="key">The key to update.</param>
+            <param name="amount">The amount to increment by.</param>
+            <param name="modId">The unique ID of the owner mod, to be used as an identifier.</param>
+        </member>
+        <member name="M:DaLion.Shared.Data.ModDataManager.Increment(StardewValley.Projectiles.Projectile,System.String,System.String)">
+            <summary>
+                Increments the value of a numeric <paramref name="key"/> in the <paramref name="projectile"/>'s
+                <see cref="T:StardewValley.Mods.ModDataDictionary"/> by 1.
+            </summary>
+            <param name="projectile">The <see cref="T:StardewValley.Projectiles.Projectile"/>.</param>
             <param name="key">The key to update.</param>
             <param name="modId">The unique ID of the owner mod, to be used as an identifier.</param>
         </member>

@@ -20,6 +20,7 @@ using DaLion.Professions.Framework.Events.Input.ButtonsChanged;
 using DaLion.Professions.Framework.Events.Player.Warped;
 using DaLion.Professions.Framework.Limits;
 using DaLion.Professions.Framework.TreasureHunts;
+using DaLion.Professions.Framework.UI;
 using DaLion.Shared.Extensions;
 using StardewValley;
 using StardewValley.Monsters;
@@ -204,4 +205,6 @@ internal sealed class ProfessionsState
             return this._prestigedEcologistBuffsLookup;
         }
     }
+
+    internal MasteryWarningBox? WarningBox;
 }

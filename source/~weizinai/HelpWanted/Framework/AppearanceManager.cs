@@ -14,7 +14,7 @@ using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Extensions;
 
-namespace HelpWanted.Framework;
+namespace weizinai.StardewValleyMod.HelpWanted.Framework;
 
 internal class AppearanceManager
 {
@@ -29,46 +29,46 @@ internal class AppearanceManager
     public AppearanceManager(IModHelper helper, ModConfig config)
     {
         this.config = config;
-        defaultPadTexture = helper.ModContent.Load<Texture2D>("Assets/Pad.png");
-        defaultPinTexture = helper.ModContent.Load<Texture2D>("Assets/Pin.png");
+        this.defaultPadTexture = helper.ModContent.Load<Texture2D>("Assets/Pad.png");
+        this.defaultPinTexture = helper.ModContent.Load<Texture2D>("Assets/Pin.png");
     }
 
     public Texture2D GetPinTexture(string target, string questType)
     {
         // 获取特定NPC和特定任务类型的任务的自定义Pin纹理
-        var texture = GetTexture(PinTexturePath + "/" + target + "/" + questType);
+        var texture = this.GetTexture(PinTexturePath + "/" + target + "/" + questType);
         if (texture != null) return texture;
 
         // 获取特定NPC的任务的自定义Pin纹理
-        texture = GetTexture(PinTexturePath + "/" + target);
+        texture = this.GetTexture(PinTexturePath + "/" + target);
         if (texture is not null) return texture;
 
         // 获取特定任务类型的任务的自定义Pin纹理
-        texture = GetTexture(PinTexturePath + "/" + questType);
+        texture = this.GetTexture(PinTexturePath + "/" + questType);
         if (texture is not null) return texture;
 
         // 获取自定义Pin纹理
-        texture = GetTexture(PinTexturePath);
-        return texture ?? defaultPinTexture;
+        texture = this.GetTexture(PinTexturePath);
+        return texture ?? this.defaultPinTexture;
     }
 
     public Texture2D GetPadTexture(string target, string questType)
     {
         // 获取特定NPC和特定任务类型的任务的自定义Pad纹理
-        var texture = GetTexture(PadTexturePath + "/" + target + "/" + questType);
+        var texture = this.GetTexture(PadTexturePath + "/" + target + "/" + questType);
         if (texture is not null) return texture;
 
         // 获取特定NPC的任务的自定义Pad纹理
-        texture = GetTexture(PadTexturePath + "/" + target);
+        texture = this.GetTexture(PadTexturePath + "/" + target);
         if (texture is not null) return texture;
 
         // 获取特定任务类型的任务的自定义Pad纹理
-        texture = GetTexture(PadTexturePath + "/" + questType);
+        texture = this.GetTexture(PadTexturePath + "/" + questType);
         if (texture is not null) return texture;
 
         // 获取自定义Pad纹理
-        texture = GetTexture(PadTexturePath);
-        return texture ?? defaultPadTexture;
+        texture = this.GetTexture(PadTexturePath);
+        return texture ?? this.defaultPadTexture;
     }
 
     private Texture2D? GetTexture(string path)
@@ -105,8 +105,8 @@ internal class AppearanceManager
     public Color GetRandomColor()
     {
         var random = Game1.random;
-        return new Color((byte)random.Next(config.RandomColorMin, config.RandomColorMax),
-            (byte)random.Next(config.RandomColorMin, config.RandomColorMax),
-            (byte)random.Next(config.RandomColorMin, config.RandomColorMax));
+        return new Color((byte)random.Next(this.config.RandomColorMin, this.config.RandomColorMax),
+            (byte)random.Next(this.config.RandomColorMin, this.config.RandomColorMax),
+            (byte)random.Next(this.config.RandomColorMin, this.config.RandomColorMax));
     }
 }

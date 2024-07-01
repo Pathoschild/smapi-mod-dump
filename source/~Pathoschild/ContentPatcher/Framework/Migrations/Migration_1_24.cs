@@ -82,12 +82,11 @@ namespace ContentPatcher.Framework.Migrations
             {
                 lexToken = new LexTokenToken(
                     name: nameof(ConditionType.Merge),
-                    inputArgs: new LexTokenInput(new ILexToken[]
-                    {
+                    inputArgs: new LexTokenInput([
                         new LexTokenToken(nameof(ConditionType.Roommate), null, impliedBraces: false),
                         new LexTokenLiteral(","),
                         new LexTokenToken(nameof(ConditionType.Spouse), token.InputArgs, impliedBraces: false)
-                    }),
+                    ]),
                     impliedBraces: token.ImpliedBraces
                 );
             }

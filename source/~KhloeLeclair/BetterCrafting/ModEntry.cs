@@ -34,6 +34,8 @@ using Leclair.Stardew.Common.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
+using Nanoray.Pintail;
+
 using Newtonsoft.Json.Linq;
 
 using StardewModdingAPI;
@@ -132,6 +134,7 @@ public class ModEntry : PintailModSubscriber {
 
 		Instance = this;
 		AdvancedMultipleMutexRequest.Mod = this;
+		MultipleEventedInventoryExclusiveRequest.Mod = this;
 
 		// Before Harmony...
 		SpookyAction = new SpookyActionAtADistance(this);
@@ -1755,6 +1758,44 @@ public class ModEntry : PintailModSubscriber {
 	#endregion
 
 	#region Providers
+
+	private readonly Dictionary<Type, IProxyFactory<string>?> ProxyFactories = new();
+
+	public bool TryPrimeProviderProxyFactory(string otherMod, Type sourceType, [NotNullWhen(true)] out IProxyFactory<string>? factory) {
+		if (ProxyFactories.TryGetValue(sourceType, out factory))
+			return factory is not null;
+
+		// This will only run once per type.
+		foreach (var type in new Type[] {
+			typeof(IEventedInventoryProvider)
+		}) {
+			if (TryGetProxyFactory(sourceType, otherMod, type, ModManifest.UniqueID, out factory, silent: true)) {
+				Log($"Proxying type {sourceType} into advanced IInventoryProvider type {type}.", LogLevel.Debug);
+				break;
+			}
+		}
+
+		ProxyFactories[sourceType] = factory;
+		return factory is not null;
+	}
+
+	public IInventoryProvider UpgradeProviderProxy(string otherMod, IInventoryProvider provider) {
+
+		if (!TryUnproxy(provider, out object? unboxed, silent: true))
+			return provider;
+
+		// If we somehow had a boxed copy of a native IRecipe, go for it.
+		if (unboxed is IInventoryProvider ours)
+			return ours;
+
+		TryPrimeProviderProxyFactory(otherMod, unboxed.GetType(), out var factory);
+
+		try {
+			return factory is null ? provider : (IInventoryProvider) factory.ObtainProxy(GetProxyManager()!, unboxed);
+		} catch (Exception) {
+			return provider;
+		}
+	}
 
 	public void RegisterProviders() {
 		RegisterInventoryProvider(typeof(Chest), new ChestProvider(any: true));

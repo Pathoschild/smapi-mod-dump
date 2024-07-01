@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <Import Project="..\common.targets" />
   <PropertyGroup>
-    <Version>1.4.3</Version>
+    <Version>1.4.6</Version>
     <TargetFramework>net6.0</TargetFramework>
     <EnableHarmony>true</EnableHarmony>
     <UpdateKeys>Nexus:21730</UpdateKeys>

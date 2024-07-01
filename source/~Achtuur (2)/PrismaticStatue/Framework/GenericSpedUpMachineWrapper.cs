@@ -145,9 +145,9 @@ public abstract class GenericSpedUpMachineWrapper
     /// <returns><see cref="Vector2"/> with tile position of this wrapper's IMachine, or null if no IMachine held.</returns>
     public Vector2? GetTile()
     {
-        return (this.automateMachine is not null)
-            ? new Vector2(this.automateMachine.TileArea.X, this.automateMachine.TileArea.Y)
-            : null;
+        if (this.automateMachine is null)
+            return null;
+        return new Vector2(this.automateMachine.TileArea.X, this.automateMachine.TileArea.Y);
     }
 
     /// <summary>
@@ -187,7 +187,7 @@ public abstract class GenericSpedUpMachineWrapper
     /// Updates number of statues this wrapper's machine is in contact with. Should only be called if the number of statues changes.
     /// </summary>
     /// <param name="new_n_statues"></param>
-    public void OnNStautesChange(int new_n_statues)
+    public void OnNStatuesChange(int new_n_statues)
     {
         this.n_statues = new_n_statues;
 

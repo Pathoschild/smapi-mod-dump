@@ -26,5 +26,10 @@ namespace StardewArchipelago.GameModifications.EntranceRandomizer
             TileY = tileY;
             FacingDirectionAfterWarp = facingDirectionAfterWarp;
         }
+
+        public override string ToString()
+        {
+            return $"WarpRequest(LocationRequest: {LocationRequest}, TileX: {TileX}, TileY: {TileY}, FacingDirectionAfterWarp: {FacingDirectionAfterWarp})";
+        }
     }
 }

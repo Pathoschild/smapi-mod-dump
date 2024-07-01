@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/25595
+IDs: AvalonMFX.FriendshipStreaks
+update keys: Nexus:25595, GitHub:1Avalon/Avas-Stardew-Mods

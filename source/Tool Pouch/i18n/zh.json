@@ -1,0 +1,33 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Brandon22Adams/ToolPouch
+**
+*************************************************/
+
+{
+    "pouch.description": "使用以打开。^将鼠标光标上的物品拖动到菜单中右键快速存放。",
+    "error.pouch": "无法将工具包放入另一个工具包内。",
+
+    "pouch.name": "工具包",
+
+    "letter.body": "嘿 @,^感谢使用我的升级工具服务！作为感谢的象征，这是一个工具包，用来存放你所有的工具！我期待你继续惠顾^ -克林特",
+    "letter.signoff": "克林特的礼物",
+
+    "options.title": "工具包选项",
+    "options.description": "根据个人喜好进行配置",
+    "backdrop.title": "使用背景",
+    "backdrop.description": "使用背景以提高可见性",
+    "animation.title": "动画时间（毫秒）",
+    "animation.description": "打开动画的持续时间",
+    "gamepadSelect.title": "使用左摇杆选择",
+    "gamepadSelect.description": "使用游戏手柄的左摇杆选择工具",
+    "hover.title": "悬停工具选择",
+    "hover.description1": "按住",
+    "hover.description2": "并悬停在物品上，停止按住以选择",
+    "menu.title": "菜单键",
+    "menu.description": "打开工具包菜单的键（键盘）"
+}

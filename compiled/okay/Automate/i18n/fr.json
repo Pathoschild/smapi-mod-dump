@@ -48,6 +48,7 @@
     "config.machines.fruit-tree": "Arbre (fruitier)",
     "config.machines.trash-can": "Poubelle",
     "config.machines.wild-tree": "Arbre (sauvage)",
+    "config.machines.feed-hopper": "Trémie d'alimentation et silo",
 
     // special settings for individual machines
     "config.machines.wild-tree.collect-moss.name": "Collecte de mousse",

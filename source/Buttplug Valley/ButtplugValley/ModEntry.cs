@@ -9,29 +9,30 @@
 *************************************************/
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Reflection;
-using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using HarmonyLib;
-using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
 using StardewValley.Minigames;
 using StardewValley.TerrainFeatures;
+using StardewValley.Tools;
 using Object = StardewValley.Object;
 
 namespace ButtplugValley
 {
     internal sealed class ModEntry : Mod
     {
-        private BPManager buttplugManager;
+        private static BPManager buttplugManager;
+        private static ModConfig SConfig;
         private ModConfig Config;
         private FishingMinigame fishingMinigame;
+        private ConfigMenu configMenu;
         private bool isVibrating = false;
         private int previousHealth;
         private int previousCoins;
@@ -40,18 +41,31 @@ namespace ButtplugValley
 
         private const int CoffeeBeansID = 433;
         private const int WoolID = 440;
-        
+
         //Arcade Machines
         private int previousMinekartHealth;
         private int previousAbigailHealth;
         private int previousPowerupCount;
         private bool isGameOverAbigail = false;
+        
+        public static IMonitor StaticMonitor { get; private set; }
+        public static BPManager StaticButtplugManager { get; private set; }
+        
+        public static ModConfig StaticConfig { get; private set; }
+
+        private static IMonitor ModMonitor;
+
+        private readonly static string[] darkClubSounds = {"badend", "fellatio01", "fellatio02", "fellatio03", "fellatio04", "fellatio05", "fuck01", "fuck02", "fuck03"};
+        private readonly static string[] darkClubSoundsOther = {"moan01", "moan02", "moan03", "moan04", "moan05", "moan06", "moan07", "moan08", "moan09", "moan10", "moan11", "moan12", "moan13", "moan14", "moan15", "pant01", "pant02", "pant03", "pant04", "pant05"};
+
 
         public override void Entry(IModHelper helper)
         {
             this.Config = this.Helper.ReadConfig<ModConfig>();
+            SConfig = this.Config;
             buttplugManager = new BPManager();
             fishingMinigame = new FishingMinigame(helper, Monitor, buttplugManager);
+            configMenu = new ConfigMenu(helper, Monitor, buttplugManager, Config, this.ModManifest);
             new FishingRod(helper, Monitor, buttplugManager, Config);
             Task.Run(async () =>
             {
@@ -59,6 +73,12 @@ namespace ButtplugValley
                 await buttplugManager.ScanForDevices();
 
             });
+
+            StaticMonitor = Monitor;
+            StaticButtplugManager = buttplugManager;
+            StaticConfig = Config;
+            
+            ModMonitor = this.Monitor;
 
             helper.Events.Input.ButtonPressed += OnButtonPressed;
             helper.Events.GameLoop.DayStarted += OnDayStarted;
@@ -73,37 +93,207 @@ namespace ButtplugValley
             helper.Events.Display.MenuChanged += OnMenuChanged;
             
 
-            // var harmony = new Harmony(this.ModManifest.UniqueID);
-            //
-            //
-            // harmony.Patch(
-            //     original: AccessTools.Method(typeof(StardewValley.Farmer), nameof(StardewValley.Farmer.PerformKiss)),
-            //     postfix: new HarmonyMethod(typeof(ModEntry), nameof(ModEntry.Kissing_Postfix))
-            // );
+            var harmony = new Harmony(this.ModManifest.UniqueID);
+            
+            
+            // Tree hit harmony patch
+            harmony.Patch(
+                original: AccessTools.Method(typeof(Tree), nameof(Tree.performToolAction)),
+                postfix: new HarmonyMethod(typeof(ModEntry), nameof(TreeHit_Postfix))
+            );
+
+            // Tree fell harmony patch
+            harmony.Patch(
+                original: AccessTools.Method(typeof(Tree), "performTreeFall"),
+                postfix: new HarmonyMethod(typeof(ModEntry), nameof(TreeFall_Postfix))
+            );
+            
+            harmony.Patch(
+                original: AccessTools.Method(typeof(WateringCan), nameof(WateringCan.DoFunction)),
+                postfix: new HarmonyMethod(typeof(ModEntry), nameof(WateringCan_Postfix))
+            );
+            
+            harmony.Patch(
+                original: AccessTools.Method(typeof(Hoe), nameof(Hoe.DoFunction)),
+                postfix: new HarmonyMethod(typeof(ModEntry), nameof(Hoe_Postfix))
+            );
+            //Harmony kiss detect
+            MethodInfo originalCheckKiss = AccessTools.Method(typeof(Farmer), nameof(Farmer.PerformKiss));           
+            harmony.Patch(original: originalCheckKiss, new HarmonyMethod(typeof(ModEntry), nameof(ModEntry.Kissing_Postfix)));
+
+
+            //SV has multiple ways of playing sound, so I need to capture all the sounds
+            MethodInfo prefixCheckLocal2 = AccessTools.Method(typeof(GameLocation), nameof(GameLocation.localSound));
+            MethodInfo prefixCheckLocal = AccessTools.Method(typeof(GameLocation), nameof(GameLocation.playSound));
+            harmony.Patch(prefixCheckLocal, new HarmonyMethod(typeof(ModEntry), nameof(PlaySoundPrefix)));
+            harmony.Patch(prefixCheckLocal2, new HarmonyMethod(typeof(ModEntry), nameof(PlaySoundPrefix)));
+            var methodList = typeof(Game1).GetMethods();
+            foreach (var method in methodList)
+            {
+                if (method.Name == "playSound" && method.GetParameters().Length > 0)
+                {                  
+                    harmony.Patch(method, new HarmonyMethod(typeof(ModEntry), nameof(PlaySoundPrefix)));
+                }
+            }
         }
         
-        private static void Kissing_Postfix()
+        public static void TreeHit_Postfix(Tree __instance)
         {
-            //This code is suposed to be ran every time the player kisses another player, but the vibrations do not work.
-            //Not going to mess around with this anymore, but if anyone wants to make it work then that would be amazing
-            //Kissing_Postfix needs to be static which sucks
-            try
+            StaticMonitor.Log("Tree hit", LogLevel.Info);
+            StaticButtplugManager.VibrateDevicePulse(StaticConfig.TreeChopLevel, 300);
+            // Use StaticButtplugManager as needed
+        }
+
+        // This method will be called after a tree falls
+        public static void TreeFall_Postfix(Tree __instance)
+        {
+            StaticMonitor.Log("Tree fell", LogLevel.Info);
+            StaticButtplugManager.VibrateDevicePulse(StaticConfig.TreeFellLevel, 2000);
+        }
+        
+        public static void WateringCan_Postfix(WateringCan __instance, GameLocation location, int x, int y, int power, Farmer who)
+        {
+            int intensity = 25 * (power+1);
+
+            
+            StaticMonitor.Log($"Watering can used with power {power}, intensity {intensity}", LogLevel.Info);
+            
+            StaticButtplugManager.VibrateDevicePulse(intensity, 300);
+        }
+
+        public static void Hoe_Postfix(Hoe __instance, GameLocation location, int x, int y, int power, Farmer who)
+        {
+            int intensity = 25 * (power + 1);
+
+            StaticMonitor.Log($"Hoe used with power {power}, intensity {intensity}", LogLevel.Info);
+
+            StaticButtplugManager.VibrateDevicePulse(intensity, 300);
+        }
+
+        static async void OnSoundPlayed(string cueName)
+        {                                  
+            if (SConfig.VibrateOnSexScene) {
+                // Almost all sex scenes in mods use these sounds
+                if ((cueName == "slimeHit" || cueName == "fishSlap" || cueName == "gulp") && Game1.eventUp)
+                {                 
+                    buttplugManager.VibrateDevicePulse(SConfig.SexSceneLevel, 150);
+                    return;
+                }
+
+                //Spesificlly for cumming sex scene
+                if (cueName == "swordswipe" && Game1.eventUp)
+                {
+                    buttplugManager.VibrateDevicePulse(SConfig.SexSceneLevel, 600);
+                    return;
+                }
+            }
+            // VibrateOnRainsInteractionMod sex sound
+            if (SConfig.VibrateOnRainsInteractionMod && cueName == "ButtHit")
+            {                
+                buttplugManager.VibrateDevicePulse(SConfig.RainsInteractionModLevel, 100);
+                return;
+            }
+            if (SConfig.VibrateOnHorse)
             {
-                BPManager buttplugManager = new BPManager();
-                buttplugManager.VibrateDevicePulse(100,4000);
+                bool isRidingHorse = Game1.player.isRidingHorse();
+                if (isRidingHorse)
+                {
+                    // All step sounds while riding will be procesed as movement
+                    // Don't add this to the queue, so if it's a little laggy, it will create a different pattern
+                    if (cueName.Contains("Step"))
+                    {                       
+                        buttplugManager.VibrateDevicePulse(SConfig.HorseLevel, 100);
+                        return;
+                    }
+                }
+            }
+            if (SConfig.VibrateOnDarkClubMoans)
+            {
+                // Sounds of machines, slaves, etc.
+                foreach (string soundName in darkClubSoundsOther)
+                {
+                    if (soundName.Contains(cueName))
+                    {                        
+                        buttplugManager.VibrateDevicePulse(SConfig.DarkClubMoanLevel, 150);
+                    }
+                }
+            }
+
+            if(SConfig.VibrateOnDarkClubSex)
+            {
+                foreach (string soundName in darkClubSounds)
+                {
+                    if (soundName.Contains(cueName))
+                    {
+                        // There are multiple intensities during a sex scene separated by a number in the sound name
+                        ICue testC = Game1.soundBank.GetCue(cueName);
+                        testC.Play();
+                        string numString = Regex.Match(cueName, @"\d+\.*\d*").Value;
+                        int num = 0;
+                        if (numString != "")
+                        {
+                            num = int.Parse(numString);
+                        }
+                        double power = SConfig.MaxDarkClubSexLevel;
+                        if (num == 1)
+                        {
+                            power = Math.Round(power * 0.3);
+                        }
+                        if (num == 2)
+                        {
+                            power = Math.Round(power * 0.6);
+                        }
+
+                        // Sex sounds in this mod have usually have multiple seconds, so I need a loop with a delay
+                        // Might be interesting to put a random deley in there
+                        while (testC.IsPlaying)
+                        {
+                            if (!Game1.eventUp)
+                            {
+                                testC.Stop(AudioStopOptions.Immediate);
+                                return;
+                            }                            
+                            buttplugManager.VibrateDevicePulse((float)power, 100);
+                            await Task.Delay(300);
+                        }
+
+                    }
+                }
+            }
+        }
+        
+
+
+        // Just to merge and ignore other arguments besides the sound name
+        public static void PlaySoundPrefix(object __0)
+        {            
+            if (__0 is string soundName)
+            {
+                OnSoundPlayed(soundName);
+            }           
+        }
+
+        private static async void Kissing_Postfix()
+        {
+            try
+            {   if (SConfig.VibrateOnKiss)
+                {                   
+                    await buttplugManager.VibrateDevicePulse(100, 1000);
+                }
+
             }
             catch (Exception ex)
             {
-                //Monitor.Log($"Failed in {nameof(Kissing_Postfix)}:\n{ex}", LogLevel.Error);
+                ModMonitor.Log($"Failed in {nameof(Kissing_Postfix)}:\n{ex}", LogLevel.Error);
             }
         }
 
-        private void OnMenuChanged(object sender, MenuChangedEventArgs e)
+        private async void OnMenuChanged(object sender, MenuChangedEventArgs e)
         {
             if (e.NewMenu is DialogueBox && Config.VibrateOnDialogue)
             {
                 Monitor.Log("Dialogue Box Triggered", LogLevel.Trace);
-                buttplugManager.VibrateDevicePulse(Config.DialogueLevel, 550);
+                await buttplugManager.VibrateDevicePulse(Config.DialogueLevel, 550);
             }
         }
 
@@ -138,411 +328,8 @@ namespace ButtplugValley
 
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {
-            // get Generic Mod Config Menu's API (if it's installed)
-            var configMenu = this.Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
-            if (configMenu is null)
-                return;
-
-            // register mod
-            configMenu.Register(
-                mod: this.ModManifest,
-                reset: () => this.Config = new ModConfig(),
-                save: () => this.Helper.WriteConfig(this.Config)
-            );
-            
-            configMenu.AddPageLink(
-                mod: this.ModManifest,
-                pageId: "ButtplugValley.VibrationEvents",
-                text: () => "Vibration Events"
-            );
-            
-            configMenu.AddPageLink(
-                mod: this.ModManifest,
-                pageId: "ButtplugValley.VibrationLevels",
-                text: () => "Vibration Levels"
-            );
-            configMenu.AddPageLink(
-                mod: this.ModManifest,
-                pageId: "ButtplugValley.Keybinds",
-                text: () => "Keybinds"
-            );
-            configMenu.AddPageLink(
-                mod: this.ModManifest,
-                pageId: "ButtplugValley.EditIP",
-                text: () => "Edit IP"
-            ); 
-            
-            configMenu.AddPage(
-                mod: this.ModManifest,
-                pageId: "ButtplugValley.VibrationEvents",
-                pageTitle: () => "Vibration Events"
-            );
-            
-            configMenu.AddSectionTitle(mod:this.ModManifest, text: () => "Vibration Events");
-
-            // add some config options
-            configMenu.AddBoolOption(
-                mod: this.ModManifest,
-                name: () => "Crop and Milk Pickup",
-                tooltip: () => "Should the device vibrate on collecting crops and milk?",
-                getValue: () => this.Config.VibrateOnCropAndMilkCollected,
-                setValue: value => this.Config.VibrateOnCropAndMilkCollected = value
-            );
-            configMenu.AddBoolOption(
-                mod: this.ModManifest,
-                name: () => "Fish Pickup",
-                tooltip: () => "Should the device vibrate on collecting fish?",
-                getValue: () => this.Config.VibrateOnFishCollected,
-                setValue: value => this.Config.VibrateOnFishCollected = value
-            );
-            configMenu.AddBoolOption(
-                mod: this.ModManifest,
-                name: () => "Flower Pickup",
-                tooltip: () => "Should the device vibrate on collecting flowers?",
-                getValue: () => this.Config.VibrateOnFlowersCollected,
-                setValue: value => this.Config.VibrateOnFlowersCollected = value
-            );
-            configMenu.AddBoolOption(
-                mod: this.ModManifest,
-                name: () => "Foraging Pickup",
-                tooltip: () => "Should the device vibrate on collecting foraging?",
-                getValue: () => this.Config.VibrateOnForagingCollected,
-                setValue: value => this.Config.VibrateOnForagingCollected = value
-            );
-            configMenu.AddBoolOption(
-                mod: this.ModManifest,
-                name: () => "Stone Broken",
-                tooltip: () => "Should the device vibrate on breaking stone and ores?",
-                getValue: () => this.Config.VibrateOnStoneBroken,
-                setValue: value => this.Config.VibrateOnStoneBroken = value
-            );
-            configMenu.AddBoolOption(
-                mod: this.ModManifest,
-                name: () => "Tree Broken",
-                tooltip: () => "Should the device vibrate on fully chopping down a tree?",
-                getValue: () => this.Config.VibrateOnTreeBroken,
-                setValue: value => this.Config.VibrateOnTreeBroken = value
-            );
-            configMenu.AddBoolOption(
-                mod: this.ModManifest,
-                name: () => "Damage Taken",
-                tooltip: () => "Should the device vibrate on taking damage? Scales with health",
-                getValue: () => this.Config.VibrateOnDamageTaken,
-                setValue: value => this.Config.VibrateOnDamageTaken = value
-            );
-            configMenu.AddBoolOption(
-                mod: this.ModManifest,
-                name: () => "Enemy Killed",
-                tooltip: () => "Should the device vibrate on killing an enemy? Scales with enemies killed at once.",
-                getValue: () => this.Config.VibrateOnEnemyKilled,
-                setValue: value => this.Config.VibrateOnEnemyKilled = value
-            );
-            configMenu.AddBoolOption(
-                mod: this.ModManifest,
-                name: () => "Day Start",
-                tooltip: () => "Should the device vibrate when the day starts?",
-                getValue: () => this.Config.VibrateOnDayStart,
-                setValue: value => this.Config.VibrateOnDayStart = value
-            );
-            configMenu.AddBoolOption(
-                mod: this.ModManifest,
-                name: () => "Day Ending",
-                tooltip: () => "Should the device vibrate when the day ends?",
-                getValue: () => this.Config.VibrateOnDayEnd,
-                setValue: value => this.Config.VibrateOnDayEnd = value
-            );
-            configMenu.AddBoolOption(
-                mod: this.ModManifest,
-                name: () => "Fishing Minigame",
-                tooltip: () => "Should the device vibrate in the fishing minigame? Scales with the capture bar",
-                getValue: () => this.Config.VibrateOnFishingMinigame,
-                setValue: value => this.Config.VibrateOnFishingMinigame = value
-            );
-            configMenu.AddBoolOption(
-                mod: this.ModManifest,
-                name: () => "Fishing Rod",
-                tooltip: () => "Should the device vibrate when using fishing rod",
-                getValue: () => this.Config.VibrateOnFishingRodUsage,
-                setValue: value => this.Config.VibrateOnFishingRodUsage = value
-            );
-            configMenu.AddBoolOption(
-                mod: this.ModManifest,
-                name: () => "Arcade Minigames",
-                tooltip: () => "Should the device vibrate on certain events in the arcade minigames?",
-                getValue: () => this.Config.VibrateOnArcade,
-                setValue: value => this.Config.VibrateOnArcade = value
-            );
-            configMenu.AddBoolOption(
-                mod: this.ModManifest,
-                name: () => "Dialogue Boxes",
-                tooltip: () => "Should the device vibrate on opening a dialogue box?",
-                getValue: () => this.Config.VibrateOnDialogue,
-                setValue: value => this.Config.VibrateOnDialogue = value
-            );
-            configMenu.AddBoolOption(
-                mod: this.ModManifest,
-                name: () => "Horse Riding",
-                tooltip: () => "Should the device vibrate while riding a horse?",
-                getValue: () => this.Config.VibrateOnHorse,
-                setValue: value => this.Config.VibrateOnHorse = value
-            );
-            
-            // configMenu.AddBoolOption(
-            //     mod: this.ModManifest,
-            //     name: () => "STONE PICK UP (Test version only)",
-            //     tooltip: () => "Should the device vibrate on picking up stone and ore?",
-            //     getValue: () => this.Config.StonePickedUpDebug,
-            //     setValue: value => this.Config.StonePickedUpDebug = value
-            // );
-
-            configMenu.AddBoolOption(
-                mod: this.ModManifest,
-                name: () => "Keep Alive Pulse",
-                tooltip: () => "Vibrate every 30s to keep connection alive?",
-                getValue: () => this.Config.KeepAlive,
-                setValue: value => this.Config.KeepAlive = value
-            );
-            /*
-             * 
-             * VIBRATION LEVELS
-             * 
-             */
-            
-            configMenu.AddPage(
-                mod: this.ModManifest,
-                pageId: "ButtplugValley.VibrationLevels",
-                pageTitle: () => "Vibration Levels"
-            );
-            
-            configMenu.AddSectionTitle(mod:this.ModManifest, text: () => "Vibration Levels (0-100)");
-            configMenu.AddNumberOption(
-                mod: this.ModManifest,
-                name: () => "Basic Crops and Milk",
-                tooltip: () => "How Strong should the vibration be for normal milk and crops?",
-                getValue: () => this.Config.CropAndMilkBasic,
-                setValue: value => this.Config.CropAndMilkBasic = value,
-                min: 0,
-                max: 100
-            );
-            configMenu.AddNumberOption(
-                mod: this.ModManifest,
-                name: () => "Basic Fish Pickup",
-                tooltip: () => "How Strong should the vibration be for picking up normal fish?",
-                getValue: () => this.Config.FishCollectedBasic,
-                setValue: value => this.Config.FishCollectedBasic = value,
-                min: 0,
-                max: 100
-            );
-            configMenu.AddNumberOption(
-                mod: this.ModManifest,
-                name: () => "Basic Flower Pickup",
-                tooltip: () => "How Strong should the vibration be for picking up normal flowers?",
-                getValue: () => this.Config.FlowerBasic,
-                setValue: value => this.Config.FlowerBasic = value,
-                min: 0,
-                max: 100
-            );
-            configMenu.AddNumberOption(
-                mod: this.ModManifest,
-                name: () => "Basic Foraging Pickup",
-                tooltip: () => "How Strong should the vibration be for picking up normal foraging?",
-                getValue: () => this.Config.ForagingBasic,
-                setValue: value => this.Config.ForagingBasic = value,
-                min: 0,
-                max: 100
-            );
-            configMenu.AddNumberOption(
-                mod: this.ModManifest,
-                name: () => "Silver Fish, Crops and Milk",
-                tooltip: () => "How Strong should the vibration be for ALL silver fish, crops and milk?",
-                getValue: () => this.Config.SilverLevel,
-                setValue: value => this.Config.SilverLevel = value,
-                min: 0,
-                max: 100
-            );
-            configMenu.AddNumberOption(
-                mod: this.ModManifest,
-                name: () => "Gold Fish, Crops and Milk",
-                tooltip: () => "How Strong should the vibration be for ALL Gold fish, crops and milk?",
-                getValue: () => this.Config.GoldLevel,
-                setValue: value => this.Config.GoldLevel = value,
-                min: 0,
-                max: 100
-            );
-            configMenu.AddNumberOption(
-                mod: this.ModManifest,
-                name: () => "Iridium Fish, Crops and Milk",
-                tooltip: () => "How Strong should the vibration be for ALL Iridium fish, crops and milk?",
-                getValue: () => this.Config.IridiumLevel,
-                setValue: value => this.Config.IridiumLevel = value,
-                min: 0,
-                max: 100
-            );
-            configMenu.AddNumberOption(
-                mod: this.ModManifest,
-                name: () => "Stone Broken",
-                tooltip: () => "How Strong should the vibration be?",
-                getValue: () => this.Config.StoneBrokenLevel,
-                setValue: value => this.Config.StoneBrokenLevel = value,
-                min: 0,
-                max: 100
-            );
-            configMenu.AddNumberOption(
-                mod: this.ModManifest,
-                name: () => "Tree Broken",
-                tooltip: () => "How Strong should the vibration be for breaking a tree?",
-                getValue: () => this.Config.TreeBrokenLevel,
-                setValue: value => this.Config.TreeBrokenLevel = value,
-                min: 0,
-                max: 100
-            );
-            configMenu.AddNumberOption(
-                mod: this.ModManifest,
-                name: () => "Damage Taken Max",
-                tooltip: () => "How Strong should the MAX vibration be when taking damage?",
-                getValue: () => this.Config.DamageTakenMax,
-                setValue: value => this.Config.DamageTakenMax = value,
-                min: 0,
-                max: 100
-            );
-            configMenu.AddNumberOption(
-                mod: this.ModManifest,
-                name: () => "Enemy Killed",
-                tooltip: () => "How Strong should the vibration be when killing an enemy?",
-                getValue: () => this.Config.EnemyKilledLevel,
-                setValue: value => this.Config.EnemyKilledLevel = value,
-                min: 0,
-                max: 100
-            );
-            configMenu.AddNumberOption(
-                mod: this.ModManifest,
-                name: () => "Day Start",
-                tooltip: () => "How Strong should the vibration be when the day starts?",
-                getValue: () => this.Config.DayStartLevel,
-                setValue: value => this.Config.DayStartLevel = value,
-                min: 0,
-                max: 100
-            );
-            configMenu.AddNumberOption(
-                mod: this.ModManifest,
-                name: () => "Day End",
-                tooltip: () => "How Strong should the MAX vibration be when the day ends? Min 50",
-                getValue: () => this.Config.DayEndMax,
-                setValue: value => this.Config.DayEndMax = value,
-                min: 50,
-                max: 100
-            );
-            configMenu.AddNumberOption(
-                mod: this.ModManifest,
-                name: () => "Fishing Minigame",
-                tooltip: () => "How Strong should the MAX vibration be in the fishing minigame?",
-                getValue: () => this.Config.MaxFishingVibration,
-                setValue: value => this.Config.MaxFishingVibration = value,
-                min: 0,
-                max: 100
-            );
-            configMenu.AddNumberOption(
-                mod: this.ModManifest,
-                name: () => "Arcade Minigames",
-                tooltip: () => "How Strong should the vibration be in the arcade minigames?",
-                getValue: () => this.Config.ArcadeLevel,
-                setValue: value => this.Config.ArcadeLevel = value,
-                min: 0,
-                max: 100
-            );
-            configMenu.AddNumberOption(
-                mod: this.ModManifest,
-                name: () => "Dialogue Box",
-                tooltip: () => "How Strong should the vibration be when opening a dialogue box?",
-                getValue: () => this.Config.DialogueLevel,
-                setValue: value => this.Config.DialogueLevel = value,
-                min: 0,
-                max: 100
-            );
-            configMenu.AddNumberOption(
-                mod: this.ModManifest,
-                name: () => "Horse Riding",
-                tooltip: () => "How Strong should the vibration be when riding a horse?",
-                getValue: () => this.Config.HorseLevel,
-                setValue: value => this.Config.HorseLevel = value,
-                min: 0,
-                max: 100
-            );
-            
-            configMenu.AddNumberOption(
-                mod: this.ModManifest,
-                name: () => "Keep Alive Interval",
-                tooltip: () => "How frequently should the Keep alive signal be sent (in seconds)",
-                getValue: () => this.Config.KeepAliveInterval,
-                setValue: value => this.Config.KeepAliveInterval = value,
-                min: 5,
-                max: 300,
-                interval: 5
-            );
-            configMenu.AddNumberOption(
-                mod: this.ModManifest,
-                name: () => "Keep Alive Intensity",
-                tooltip: () => "How strong should the keep alive vibration be?",
-                getValue: () => this.Config.KeepAliveLevel,
-                setValue: value => this.Config.KeepAliveLevel = value,
-                min: 0,
-                max: 100
-            );
-            /*
-             * 
-             * Keybinds
-             * 
-             */
-            
-            configMenu.AddPage(
-                mod: this.ModManifest,
-                pageId: "ButtplugValley.Keybinds",
-                pageTitle: () => "Keybinds"
-            );
-            
-            configMenu.AddSectionTitle(mod:this.ModManifest, text: () => "Keybinds");
-            configMenu.AddKeybind(
-                mod: this.ModManifest,
-                name: () => "Stop Vibrations",
-                tooltip: () => "Stops all ongoing vibrations",
-                getValue: () => this.Config.StopVibrations,
-                setValue: value => this.Config.StopVibrations = value
-            );
-            configMenu.AddKeybind(
-                mod: this.ModManifest,
-                name: () => "Disconnect",
-                tooltip: () => "Disconnects the game from intiface",
-                getValue: () => this.Config.DisconnectButtplug,
-                setValue: value => this.Config.DisconnectButtplug = value
-            );
-            configMenu.AddKeybind(
-                mod: this.ModManifest,
-                name: () => "Reconnect",
-                tooltip: () => "Reconnects the game to intiface",
-                getValue: () => this.Config.ReconnectButtplug,
-                setValue: value => this.Config.ReconnectButtplug = value
-            );
-            
-            /*
-             * 
-             * Intiface Connection
-             * 
-             */
-            
-            configMenu.AddPage(
-                mod: this.ModManifest,
-                pageId: "ButtplugValley.EditIP",
-                pageTitle: () => "Edit IP"
-            );
-            configMenu.AddSectionTitle(mod:this.ModManifest, text: () => "Edit IP");
-            configMenu.AddParagraph(mod:this.ModManifest, text: () => "Press the Reconnect keybind after saving to reconnect. Ignore this if you don't know what this is.");
-            configMenu.AddTextOption(
-                mod: this.ModManifest,
-                name: () => "Intiface IP",
-                tooltip: () => "The address used to connect to intiface. Leave default if you don't know what this is",
-                getValue: () => this.Config.IntifaceIP,
-                setValue: value => this.Config.IntifaceIP = value
-            );
+            buttplugManager.config = this.Config;
+            this.configMenu.LoadConfigMenu();
         }
 
         private void OnObjectListChanged(object sender, ObjectListChangedEventArgs e)
@@ -747,6 +534,18 @@ namespace ButtplugValley
             {
                 foreach (var feature in e.Removed)
                 {
+                    
+                    //if feature is grass
+                    if (feature.Value is Grass grass && Config.VibrateOnGrass)
+                    {
+                        Monitor.Log($"Removed {feature.Value.GetType().Name}", LogLevel.Trace);
+                        Task.Run(async () =>
+                        {
+                            this.Monitor.Log($"{Game1.player.Name} VIBRATING AT {Config.GrassLevel}.", LogLevel.Trace);
+                            await buttplugManager.VibrateDevicePulse(Config.GrassLevel, 300);
+                        });
+                    }
+                    
                     if (feature.Value is Tree tree && Config.VibrateOnTreeBroken)
                     {
                         // Tree is fully chopped
@@ -858,9 +657,6 @@ namespace ButtplugValley
             }
             // Update the previous health value for the next tick
             previousHealth = Game1.player.health;
-            
-            //Check if the player is riding a horse
-            if (e.IsMultipleOf(20)) HorseRidingCheck();
 
 
             // Vibrate the plug for keepalive
@@ -869,31 +665,6 @@ namespace ButtplugValley
                 if (!Config.KeepAlive) return;
                 int duration = 250;
                 buttplugManager.VibrateDevicePulse(Config.KeepAliveLevel, duration);
-            }
-        }
-
-        private void HorseRidingCheck()
-        {
-            if (!Context.IsWorldReady) return;
-            
-            // Check if the player is riding a horse
-            bool isRidingHorse = Game1.player.isRidingHorse();
-
-            if (isRidingHorse && Config.VibrateOnHorse)
-            {
-                //Deliberately not including a check for if you werent riding a horse before in case some other vibration interrupts the horseriding
-                wasRidingHorse = true;
-                buttplugManager.VibrateDevice(Config.HorseLevel);
-            }
-            else
-            {
-                if (wasRidingHorse)
-                {
-                    // Player just left the horse, vibrate once at 0
-                    buttplugManager.VibrateDevice(0);
-                }
-                // Set the toggle to false since the player is not riding the horse
-                wasRidingHorse = false;
             }
         }
  

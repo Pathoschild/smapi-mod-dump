@@ -15,6 +15,7 @@ namespace DeluxeJournal.Task.Tasks
     internal static class TaskTypes
     {
         public static readonly string Basic = Register("basic", typeof(BasicTask), typeof(BasicFactory<BasicTask>), 0, 0);
+        public static readonly string Header = Register("header", typeof(HeaderTask), typeof(BasicFactory<HeaderTask>), 0, 0);
         public static readonly string Collect = Register("collect", typeof(CollectTask), typeof(CollectTask.Factory), 1, 32);
         public static readonly string Craft = Register("craft", typeof(CraftTask), typeof(CraftTask.Factory), 2, 30);
         public static readonly string Blacksmith = Register("blacksmith", typeof(BlacksmithTask), typeof(BlacksmithTask.Factory), 3, 34);

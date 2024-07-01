@@ -1,0 +1,16 @@
+{
+    "invest-button": "Invest",
+    "back-button": "Back",
+    "next-button": "Next",
+    "menu-title-skills": "Invest Mastery Points",
+    "menu-title-profession": "{{skill}} Investment",
+    "hover-skill": "Unlock a {{skill}} Upgrade",
+    "added-profession": "{{skill}}: {{prof}} profession added.",
+    "need-more-professions": "You need {{amount}} professions in this Skill.",
+    "need-more-levels": "Not enough mastery points.",
+    "cant-spend": "Can't unlock anything.",
+    "look-only": "Look only.",
+    "cant-access-skill": "You haven't unlocked the level 10 {{skill}} profession.",
+    "every-profession-unlocked": "Every {{skill}} profession unlocked!",
+    "transcend-mortal-knowledge": "or one that transcended mortal knowledge."
+}

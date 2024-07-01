@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<EnableModZip>false</EnableModZip>
+		<RootNamespace>ArsVenefici</RootNamespace>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<EnableHarmony>true</EnableHarmony>
+		<GamePath>$(StardewValleyGamePath)</GamePath>
+		<BaseOutputPath></BaseOutputPath>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Remove="assets\json_assets\**" />
+		<Compile Remove="obj\**" />
+		<EmbeddedResource Remove="assets\json_assets\**" />
+		<EmbeddedResource Remove="obj\**" />
+		<None Remove="assets\json_assets\**" />
+		<None Remove="obj\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
+		<Reference Include="SpaceCore" HintPath="$(StardewValleyGamePath)\mods\[A] Core Mods\SpaceCore\SpaceCore.dll" Private="False" />
+	</ItemGroup>
+	
+	<ItemGroup>
+		<None Update="manifest.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+	
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+	  <Exec Command="xcopy &quot;E:\Game Root\Game Materials\Stardew Valley\My Mods\Ars Venefici\bin\Debug\net6.0\*&quot; &quot;E:\Game Root\Game Materials\Stardew Valley\My Mods\Ars Venefici\bin\Debug\$(TargetFramework)\Ars Venifici\ArsVenifici&quot; /y /r" />
+	</Target>
+
+</Project>

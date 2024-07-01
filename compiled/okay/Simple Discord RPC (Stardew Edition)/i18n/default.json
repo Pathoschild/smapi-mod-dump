@@ -1,0 +1,7 @@
+{
+  // Placeholders
+  "rpc.placeholder.hosting_coop": "Hosting a Co-Op ({server.players.current} of {server.players.max})",
+  "rpc.placeholder.playing_on": "Playing on server with {server.players.current} players",
+  "rpc.placeholder.solo": "Playing Lonely Mode",
+  "rpc.placeholder.none": "None"
+}

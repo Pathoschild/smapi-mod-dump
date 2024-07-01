@@ -16,4 +16,5 @@
   "ub_speech_ask": "{{item}}? How nice! Can I have that?",
   "ub_speech_money": "Money",
   "ub_empty_overview": "You can trace your custom bundles here after discovering them.",
+  "ub_overview_button": "Bundle Overview",
 }

@@ -21,7 +21,7 @@ namespace Unlockable_Bundles.Lib.MapFeatures
         public static void Initialize()
         {
             UB_NoGrass.Initialize();
-            UB_SharedDigSpot.Initialize();
+            DigSpot.Initialize();
         }
     }
 }

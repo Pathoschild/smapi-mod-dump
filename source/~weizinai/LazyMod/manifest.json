@@ -11,7 +11,7 @@
 {
     "Name": "Lazy Mod",
     "Author": "weizinai",
-    "Version": "1.0.8",
+    "Version": "1.1.1",
     "Description": "A mod help you do many things.",
     "UniqueID": "weizinai.LazyMod",
     "EntryDll": "LazyMod.dll",

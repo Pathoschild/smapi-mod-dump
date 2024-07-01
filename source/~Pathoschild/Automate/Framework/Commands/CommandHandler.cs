@@ -38,11 +38,10 @@ namespace Pathoschild.Stardew.Automate.Framework.Commands
         /// <param name="machineManager">Manages machine groups.</param>
         private static ICommand[] BuildCommands(IMonitor monitor, Func<ModConfig> config, MachineManager machineManager)
         {
-            return new ICommand[]
-            {
+            return [
                 new ResetCommand(monitor, machineManager),
                 new SummaryCommand(monitor, config, machineManager)
-            };
+            ];
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Crowcalypse",
   "Author": "stardemod",
-  "Version": "1.4.1", // fixed locally
+  "Version": "1.4.2",
   "Description": "Crowcalypse: Crows stealing everything",
   "UniqueID": "stardemod.Crowcalypse",
   "EntryDll": "Crowcalypse.dll",

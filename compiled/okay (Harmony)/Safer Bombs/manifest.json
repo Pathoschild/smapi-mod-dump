@@ -1,7 +1,7 @@
 {
   "Name": "Safer Bombs",
   "Author": "Dragoon23",
-  "Version": "1.0.0",
+  "Version": "1.0.2",
   "Description": "Make bombs safer.",
   "UniqueID": "Dragoon23.SaferBombs",
   "EntryDll": "SaferBombs.dll",

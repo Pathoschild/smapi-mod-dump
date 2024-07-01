@@ -18,7 +18,7 @@ namespace StardewArchipelago.GameModifications.CodeInjections
 {
     public class ForestInjections
     {
-        private const int RAT_PROBLEM_ID = 26;
+        private const string RAT_PROBLEM_ID = "26";
 
         private static IMonitor _monitor;
         private static ArchipelagoClient _archipelago;
@@ -28,7 +28,7 @@ namespace StardewArchipelago.GameModifications.CodeInjections
             _monitor = monitor;
             _archipelago = archipelago;
         }
-        
+
         public static bool IsWizardHouseUnlocked_UnlockAtRatProblem_Prefix(Forest __instance, ref bool __result)
         {
             try

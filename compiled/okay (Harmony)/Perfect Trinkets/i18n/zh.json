@@ -1,0 +1,16 @@
+{
+  "config.name.FrogEggVariant": "青蛙蛋颜色参数",
+  "config.tips.FrogEggVariant": "0:绿 1:棕 2:蓝绿 3:蓝 4:红 5:黄 6:虚空 7:五彩",
+  "config.name.FairyBoxVariant": "仙女盒颜色参数",
+  "config.tips.FairyBoxVariant": "-1:随机(每次重新穿戴时随机改变颜色) 0:蓝-粉 1:绿色 2:绿-黄 3:暗-蓝-粉 4:蓝-红 5:白色 6:黑色 7:暗-蓝-粉-无帽",
+  "config.name.EnableCombineAllRings": "允许锻造台合并任何戒指",
+  "config.name.EnableGalaxyInfiniteWeaponInnateEnchantment": "允许龙牙附魔银河及无限武器",
+  "config.name.EnableCustomToolEnchantment": "工具使用下面自定义的五彩石附魔类型",
+  "config.name.WeaponEnchantment": "武器附魔",
+  "config.name.AxeEnchantment": "斧头附魔",
+  "config.name.PickaxeEnchantment": "稿子附魔",
+  "config.name.FishingRodEnchantment": "鱼竿附魔",
+  "config.name.HoeEnchantment": "锄头附魔",
+  "config.name.WateringCanEnchantment": "水壶附魔",
+  "config.name.PanEnchantment": "淘盘附魔"
+}

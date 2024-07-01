@@ -92,7 +92,7 @@ public static class DropsHelper
     List<PossibleDroppedItem> drops = GetFruitTreeDropItems(tree, harvestIncludeToday);
     if (drops.Count == 1)
     {
-      name = $"{drops[0].Item.DisplayName} {I18n.Tree()}";
+      name = $"{drops[0].Item.DisplayName}{I18n.Tree()}";
     }
 
     return new FruitTreeInfo(name, drops);

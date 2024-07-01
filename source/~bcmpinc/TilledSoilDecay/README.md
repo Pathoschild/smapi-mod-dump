@@ -27,6 +27,9 @@ This mod requires the following mods to be installed:
 Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 
 ## Changes
+#### 7.4:
+* Korean translation.
+
 #### 7.3:
 * Fix soil outside of farm areas not decaying.
 

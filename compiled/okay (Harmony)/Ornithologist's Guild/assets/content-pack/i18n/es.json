@@ -1,0 +1,67 @@
+{
+  "birdie.AmericanGoldfinch.commonName": "Jilguero yanqui",
+  "birdie.AmericanGoldfinch.scientificName": "Spinus tristis",
+  "birdie.AmericanGoldfinch.attribute.1": "plumaje amarillo brillante",
+  "birdie.AmericanGoldfinch.attribute.2": "pico naranja",
+  "birdie.AmericanGoldfinch.attribute.3": "cresta negra",
+  "birdie.AmericanGoldfinch.funFact": "El jilguero norteamericano es la única especie de pinzón que muda (cambia de plumaje) dos veces al año.",
+  
+  "birdie.AmericanRobin.commonName": "Mirlo americano",
+  "birdie.AmericanRobin.scientificName": "Turdus migratorius",
+  "birdie.AmericanRobin.attribute.1": "pecho rojo",
+  "birdie.AmericanRobin.attribute.2": "arcos oculares blancos",
+  "birdie.AmericanRobin.funFact": "¡Los mirlos americanos pueden provocar el caos emborrachándose con bayas fermentadas!",
+  
+  "birdie.BlackCappedChickadee.commonName": "Carbonero cabecinegro",
+  "birdie.BlackCappedChickadee.scientificName": "Poecile atricapillus",
+  "birdie.BlackCappedChickadee.attribute.1": "cuerpo regordete",
+  "birdie.BlackCappedChickadee.attribute.2": "cabezón",
+  "birdie.BlackCappedChickadee.attribute.3": "cresta negra",
+  "birdie.BlackCappedChickadee.funFact": "¡Los carboneros cabecinegros tienen 15 llamadas únicas, cada una de las cuales significa algo diferente!",
+  
+  "birdie.AmericanBushtit.commonName": "Mito sastrecillo",
+  "birdie.AmericanBushtit.scientificName": "Psaltriparus minimus",
+  "birdie.AmericanBushtit.attribute.1": "diminuto",
+  "birdie.AmericanBushtit.attribute.2": "cuerpo gris",
+  "birdie.AmericanBushtit.funFact": "¡En las noches frías, estas bolitas se acurrucan en un gran manojo de alegría para mantenerse calientes!",
+  
+  "birdie.HouseFinch.commonName": "Pinzón mexicano",
+  "birdie.HouseFinch.scientificName": "Haemorhous mexicanus",
+  "birdie.HouseFinch.attribute.1": "cabeza roja",
+  "birdie.HouseFinch.attribute.2": "cuerpo marrón",
+  "birdie.HouseFinch.funFact": "¡Las hembras prefieren a los machos más rojos: señal de un compañero gordo y bien alimentado!",
+  
+  "birdie.HouseSparrow.commonName": "Gorrión común",
+  "birdie.HouseSparrow.scientificName": "Passer domesticus",
+  "birdie.HouseSparrow.attribute.1": "marcas negras en la cara",
+  "birdie.HouseSparrow.attribute.2": "alas marrones",
+  "birdie.HouseSparrow.funFact": "El gorrión común es el ave más extendida del mundo y se encuentra a menudo en las ciudades.",
+  
+  "birdie.RedWingedBlackbird.commonName": "Tordo sargento",
+  "birdie.RedWingedBlackbird.scientificName": "Agelaius phoeniceus",
+  "birdie.RedWingedBlackbird.attribute.1": "pico puntiagudo",
+  "birdie.RedWingedBlackbird.attribute.2": "cuerpo negro",
+  "birdie.RedWingedBlackbird.attribute.3": "marcas alares rojo-amarillo",
+  "birdie.RedWingedBlackbird.funFact": "¡Algunas bandadas pueden superar el millón de aves! ¡Eso son muchos pájaros!",
+  
+  "birdie.SpottedTowhee.commonName": "Rascador moteado",
+  "birdie.SpottedTowhee.scientificName": "Pipilo maculatus",
+  "birdie.SpottedTowhee.attribute.1": "cabeza negra",
+  "birdie.SpottedTowhee.attribute.2": "ojos rojos",
+  "birdie.SpottedTowhee.attribute.3": "cuerpo rojizo",
+  "birdie.SpottedTowhee.funFact": "Los rascadores moteados buscan comida en el suelo levantando la tierra y los escombros!",
+
+  "birdie.Verdin.commonName": "Baloncito verdín",
+  "birdie.Verdin.scientificName": "Auriparus flaviceps",
+  "birdie.Verdin.attribute.1": "cabeza amarilla",
+  "birdie.Verdin.attribute.2": "castaño",
+  "birdie.Verdin.attribute.3": "cuerpo gris",
+  "birdie.Verdin.funFact": "Los baloncitos construyen nidos insólitos en forma de esfera, en los que suelen posarse durante todo el año.!",
+
+  "birdie.Mallard.commonName": "Ánade real",
+  "birdie.Mallard.scientificName": "Anas platyrhynchos",
+  "birdie.Mallard.attribute.1": "pico amarillo",
+  "birdie.Mallard.attribute.2": "parche ala azul",
+  "birdie.Mallard.attribute.3": "patas naranjas",
+  "birdie.Mallard.funFact": "¡Los ánades reales se encuentran en todo el mundo y pueden vivir hasta los 20 años!"
+}

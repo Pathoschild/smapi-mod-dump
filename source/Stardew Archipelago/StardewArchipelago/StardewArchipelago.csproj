@@ -1,21 +1,27 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-    <ApplicationManifest>manifest.json</ApplicationManifest>
-    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-    <EnableHarmony>true</EnableHarmony>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ApplicationManifest>manifest.json</ApplicationManifest>
+        <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+        <EnableHarmony>true</EnableHarmony>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <None Include="..\.editorconfig" Link=".editorconfig" />
-  </ItemGroup>
+    <ItemGroup>
+      <Compile Remove="GameModifications\Buildings\**" />
+      <EmbeddedResource Remove="GameModifications\Buildings\**" />
+      <None Remove="GameModifications\Buildings\**" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Archipelago.Gifting.Net" Version="0.2.3" />
-    <PackageReference Include="Archipelago.MultiClient.Net" Version="5.0.6" />
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.0" />
-  </ItemGroup>
+    <ItemGroup>
+        <None Include="..\.editorconfig" Link=".editorconfig" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Archipelago.Gifting.Net" Version="0.3.0" />
+        <PackageReference Include="Archipelago.MultiClient.Net" Version="6.0.0-rc5" />
+        <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
+    </ItemGroup>
 
   <ItemGroup>
     <None Update="IdTables\stardew_valley_item_table.json">
@@ -108,6 +114,15 @@
     <None Update="Textures\Archipelago\Custom\48x48 white icon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Textures\Archipelago\Custom\bushipelago_1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\Archipelago\Custom\bushipelago_2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\Archipelago\Custom\walnut-bush.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Textures\Archipelago\Original\115x115 pleading icon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -195,10 +210,19 @@
     <None Update="Textures\Archipelago\Original\48x48 white icon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Textures\Archipelago\Original\walnut-bush.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Textures\Bundles\agronomists_bundle.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Textures\Bundles\archaeologists_bundle.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\Bundles\bait_bundle.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\Bundles\bait_bundle_worm_bin.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Textures\Bundles\bartenders_bundle.png">
@@ -213,6 +237,12 @@
     <None Update="Textures\Bundles\cinder_shard_bundle.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Textures\Bundles\clay_farmer_bundle.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\Bundles\clay_farmer_bundle_2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Textures\Bundles\deep_fishing_bundle.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -222,7 +252,13 @@
     <None Update="Textures\Bundles\desert_foraging_bundle.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Textures\Bundles\dried_bundle.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Textures\Bundles\gamblers_bundle.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\Bundles\green_rain_bundle.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Textures\Bundles\island_crops_bundle.png">
@@ -241,6 +277,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Textures\Bundles\mines_foraging_bundle.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\Bundles\minmaxer_bundle.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Textures\Bundles\money_cheap_bundle.png">
@@ -276,6 +315,12 @@
     <None Update="Textures\Bundles\slime_farmer_bundle.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Textures\Bundles\sommelier_bundle.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\Bundles\specific_bait_bundle.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Textures\Bundles\summer_foraging_bundle.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -288,13 +333,16 @@
     <None Update="Textures\Bundles\walnut_hunter_bundle.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Textures\Bundles\wine_rack.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Textures\traveling_merchant.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="GameModifications\CustomOptions\" />
-    <Folder Include="Test\" />
-  </ItemGroup>
+    <ItemGroup>
+        <Folder Include="GameModifications\CustomOptions\" />
+        <Folder Include="Test\" />
+    </ItemGroup>
 </Project>

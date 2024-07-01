@@ -21,7 +21,7 @@ namespace StardewArchipelago.Locations.GingerIsland.Parrots
     {
         private const string AP_BRIDGE_PARROT = "Dig Site Bridge";
         private const string AP_TRADER_PARROT = "Island Trader";
-        private const string AP_PROF_SNAIL_CAVE = "Open Professor Snail Cave";
+        public const string AP_PROF_SNAIL_CAVE = "Open Professor Snail Cave";
 
         private static IMonitor _monitor;
         private static IModHelper _modHelper;

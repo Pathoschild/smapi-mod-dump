@@ -58,9 +58,8 @@
     "config.build-price.name": "建造价格",
     "config.build-price.tooltip": "拖拉机仓库的价格。默认{{defaultValue}}金。",
 
-    // TODO
-    "config.require-build-materials.name": "Require Build Materials",
-    "config.require-build-materials.tooltip": "Whether you need to provide materials to build a tractor garage, in addition to the gold price.",
+    "config.require-build-materials.name": "需要建造材料",
+    "config.require-build-materials.tooltip": "是否需要提供除金钱以外的建造拖拉机仓库的材料。",
 
     "config.can-summon-without-garage.name": "未建造仓库时召唤拖拉机",
     "config.can-summon-without-garage.tooltip": "在未建造拖拉机仓库的情况下，是否能召唤一台临时拖拉机。",
@@ -148,7 +147,7 @@
     "config.harvest-giant-crops.tooltip": "是否收获巨大作物。",
 
     "config.harvest-crops.name": "收获农作物",
-    "config.Harvest Crops.tooltip": "是否收获农作物。",
+    "config.harvest-crops.tooltip": "是否收获农作物。",
 
     "config.harvest-flowers.name": "收获花",
     "config.harvest-flowers.tooltip": "是否收获花。",
@@ -218,8 +217,8 @@
     /****
     ** Melee
     ****/
-    "config.Attack-monsters.name": "攻击怪物",
-    "config.Attack-monsters.tooltip": "是否攻击怪物。（由于拖拉机的攻速，基本上开了就无敌了）",
+    "config.attack-monsters.name": "攻击怪物",
+    "config.attack-monsters.tooltip": "是否攻击怪物。（由于拖拉机的攻速，基本上开了就无敌了）",
 
 
     /****

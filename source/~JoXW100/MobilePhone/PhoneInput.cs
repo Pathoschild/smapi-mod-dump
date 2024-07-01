@@ -9,16 +9,9 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using StardewModdingAPI;
 using StardewValley;
-using StardewValley.Menus;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
 
 namespace MobilePhone
 {
@@ -59,6 +52,7 @@ namespace MobilePhone
                 return;
             }
 
+            float ratio = Game1.options.zoomLevel != 1f ? 1f : 1f / Game1.options.uiScale;
             Point mousePos = Game1.getMousePosition();
 
             if (!ModEntry.phoneOpen)
@@ -69,7 +63,7 @@ namespace MobilePhone
                     Monitor.Log($"Incoming Calls Enabled: {Config.EnableIncomingCalls}");
                     Helper.WriteConfig(Config);
                 }
-                else if (e.Button == SButton.MouseLeft && Game1.displayHUD && Config.ShowPhoneIcon && new Rectangle((int)ModEntry.phoneIconPosition.X, (int)ModEntry.phoneIconPosition.Y, Config.PhoneIconWidth, Config.PhoneIconHeight).Contains(mousePos))
+                else if (e.Button == SButton.MouseLeft && Game1.displayHUD && Config.ShowPhoneIcon && PhoneUtils.ScaleRect(ModEntry.phoneIconPosition.X, ModEntry.phoneIconPosition.Y, Config.PhoneIconWidth, Config.PhoneIconHeight, ratio).Contains(mousePos.ToVector2() * ratio))
                 {
                     Helper.Input.Suppress(SButton.MouseLeft);
                     ModEntry.clickingPhoneIcon = true;
@@ -81,7 +75,7 @@ namespace MobilePhone
 
             if (e.Button == SButton.MouseLeft)
             {
-                if (Game1.activeClickableMenu == null && !ModEntry.inCall && !ModEntry.appRunning && !ModEntry.phoneRect.Contains(mousePos))
+                if (Game1.activeClickableMenu == null && !ModEntry.inCall && !ModEntry.appRunning && !PhoneUtils.ScaleRect(ModEntry.phoneRect, ratio).Contains(mousePos.ToVector2() * ratio))
                 {
                     Monitor.Log($"pressing mouse outside of opened phone");
                     Helper.Input.Suppress(SButton.MouseLeft);
@@ -89,7 +83,7 @@ namespace MobilePhone
                     return;
                 }
 
-                if (ModEntry.phoneRect.Contains(mousePos) && !ModEntry.screenRect.Contains(mousePos))
+                if (PhoneUtils.ScaleRect(ModEntry.phoneRect, ratio).Contains(mousePos) && !PhoneUtils.ScaleRect(ModEntry.screenRect, ratio).Contains(mousePos.ToVector2() * ratio))
                 {
                     Monitor.Log($"pressing mouse key on phone border");
                     Helper.Input.Suppress(SButton.MouseLeft);
@@ -100,7 +94,7 @@ namespace MobilePhone
                 }
 
 
-                if(ModEntry.callingNPC != null && ModEntry.screenRect.Contains(mousePos))
+                if(ModEntry.callingNPC != null && PhoneUtils.ScaleRect(ModEntry.screenRect, ratio).Contains(mousePos.ToVector2() * ratio))
                 {
                     Monitor.Log($"pressing mouse key in phone while calling");
                     Helper.Input.Suppress(SButton.MouseLeft);
@@ -109,7 +103,7 @@ namespace MobilePhone
                     return;
                 }
 
-                if (!ModEntry.appRunning && ModEntry.screenRect.Contains(mousePos))
+                if (!ModEntry.appRunning && PhoneUtils.ScaleRect(ModEntry.screenRect, ratio).Contains(mousePos.ToVector2() * ratio))
                 {
                     Monitor.Log($"pressing mouse key in phone");
                     Helper.Input.Suppress(SButton.MouseLeft);
@@ -119,8 +113,8 @@ namespace MobilePhone
                     for (int i = 0; i < ModEntry.appOrder.Count; i++)
                     {
                         Vector2 pos = PhoneUtils.GetAppPos(i);
-                        Rectangle r = new Rectangle((int)pos.X, (int)pos.Y, Config.IconWidth, Config.IconHeight);
-                        if (r.Contains(mousePos))
+                        Rectangle r = PhoneUtils.ScaleRect(pos.X, pos.Y, Config.IconWidth, Config.IconHeight, ratio);
+                        if (r.Contains(mousePos.ToVector2() * ratio))
                         {
                             ModEntry.clickingApp = i;
                             ModEntry.clickingTicks = 0;
@@ -135,7 +129,9 @@ namespace MobilePhone
         public static void PressKey(MobileApp app)
         {
             if(app.closePhone)
+            {
                 PhoneUtils.TogglePhone(false);
+            }
 
             if (!Enum.TryParse(app.keyPress, out SButton keyPress))
             {

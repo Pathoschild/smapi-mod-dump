@@ -115,12 +115,15 @@ namespace ArsVenefici.Framework.GUI.Menus
         public static Vector2 GetAppropriateMenuPosition()
         {
 
-            int x = Game1.viewport.Size.Width / 2 - windowWidth / 2;
-            int y = Game1.viewport.Size.Height / 2 - windowHeight / 2;
+            //int x = Game1.viewport.Size.Width / 2 - windowWidth / 2;
+            //int y = Game1.viewport.Size.Height / 2 - windowHeight / 2;
+
+            int x = Game1.uiViewport.Width / 2 - windowWidth / 2;
+            int y = Game1.uiViewport.Height / 2 - windowHeight / 2;
 
             Vector2 defaultPosition = new Vector2(x, y);
 
-            defaultPosition = defaultPosition * Game1.options.zoomLevel;
+            //defaultPosition = defaultPosition * Game1.options.zoomLevel;
 
             return defaultPosition;
 
@@ -710,22 +713,6 @@ namespace ArsVenefici.Framework.GUI.Menus
                     applyMovementKey(key);
                 }
             }
-        }
-
-        /// <summary>
-        /// Changes Scale When A Component Is Hovered.
-        /// </summary>
-        /// <param name="component">Current Component</param>
-        /// <param name="x">X Position Of The Mouse</param>
-        /// <param name="y">Y Position Of The Mouse</param>
-        /// <param name="min">The Minimum Scale</param>
-        /// <param name="max">The Maximum Scale</param>
-        public void ChangeHoverActionScale(ClickableTextureComponent component, int x, int y, float min, float max)
-        {
-            if (component.containsPoint(x, y))
-                component.scale = Math.Min(component.scale + min, component.baseScale + max);
-            else
-                component.scale = Math.Max(component.scale - min, component.baseScale);
         }
 
         private void SetDragged(SpellPartDraggable dragged)

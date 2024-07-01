@@ -18,6 +18,8 @@
   "config.option.only_show_met_npcs.description": "Hides NPCs you haven't talked to before in the list.",
   "config.option.only_show_socializable_npcs.name": "Hide non-socializable NPCs",
   "config.option.only_show_socializable_npcs.description": "Hides NPCs you can't socialize with (ex: Gunther or Sandy before the bus is repaired) in the list.",
+  "config.option.ignored_npcs.name": "Ignored NPCs",
+  "config.option.ignored_npcs.description": "A comma-separated list of NPC names to hide in the list. Prepending a name with \"^\" will match any names that start with that value (ex: \"^Ha\" will hide both Haley and Harvey)",
   "error.mismatch_mods": "Warning! You and the host player have different mods/mod versions which can affect the accuracy of the schedules. See SMAPI log for more details.",
   "error.mismatch_game_version": "Warning! You and the host player have different game versions which can affect the accuracy of the schedules.",
   "location_hover_text": "At tile ({{x}}, {{y}}) facing {{facingDirection}}",

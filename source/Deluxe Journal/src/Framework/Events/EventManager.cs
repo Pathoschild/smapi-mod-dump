@@ -17,19 +17,23 @@ namespace DeluxeJournal.Framework.Events
 {
     internal class EventManager
     {
-        public ManagedEvent<ItemReceivedEventArgs> ItemCollected { get; }
+        public IManagedEvent<TaskListChangedArgs> TaskListChanged { get; }
 
-        public ManagedEvent<ItemReceivedEventArgs> ItemCrafted { get; }
+        public IManagedEvent<TaskStatusChangedArgs> TaskStatusChanged { get; }
 
-        public ManagedEvent<GiftEventArgs> ItemGifted { get; }
+        public IManagedEvent<ItemReceivedEventArgs> ItemCollected { get; }
 
-        public ManagedEvent<SalableEventArgs> SalablePurchased { get; }
+        public IManagedEvent<ItemReceivedEventArgs> ItemCrafted { get; }
 
-        public ManagedEvent<SalableEventArgs> SalableSold { get; }
+        public IManagedEvent<GiftEventArgs> ItemGifted { get; }
 
-        public ManagedEvent<FarmAnimalEventArgs> FarmAnimalPurchased { get; }
+        public IManagedEvent<SalableEventArgs> SalablePurchased { get; }
 
-        public ManagedEvent<FarmAnimalEventArgs> FarmAnimalSold { get; }
+        public IManagedEvent<SalableEventArgs> SalableSold { get; }
+
+        public IManagedEvent<FarmAnimalEventArgs> FarmAnimalPurchased { get; }
+
+        public IManagedEvent<FarmAnimalEventArgs> FarmAnimalSold { get; }
 
         public BuildingConstructedEvent BuildingConstructed { get; }
 
@@ -42,6 +46,8 @@ namespace DeluxeJournal.Framework.Events
             ModEvents = modEvents;
             Monitor = monitor;
 
+            TaskListChanged = new ManagedEvent<TaskListChangedArgs>(nameof(TaskListChanged));
+            TaskStatusChanged = new ManagedEvent<TaskStatusChangedArgs>(nameof(TaskStatusChanged));
             ItemCollected = new ManagedEvent<ItemReceivedEventArgs>(nameof(ItemCollected));
             ItemCrafted = new ManagedEvent<ItemReceivedEventArgs>(nameof(ItemCrafted));
             ItemGifted = new ManagedEvent<GiftEventArgs>(nameof(ItemGifted));
@@ -58,11 +64,11 @@ namespace DeluxeJournal.Framework.Events
         {
             if (e.FromModID == DeluxeJournalMod.Instance?.ModManifest.UniqueID)
             {
-                if (GetType().GetProperty(e.Type, BindingFlags.Public | BindingFlags.Instance)?.GetValue(this) is IManagedNetEvent managed)
+                if (GetType().GetProperty(e.Type, BindingFlags.Public | BindingFlags.Instance)?.GetValue(this) is IReceivableNetEvent netEvent)
                 {
                     try
                     {
-                        managed.RaiseFromMessage(sender, e);
+                        netEvent.RaiseFromMessage(sender, e);
                     }
                     catch (Exception ex)
                     {

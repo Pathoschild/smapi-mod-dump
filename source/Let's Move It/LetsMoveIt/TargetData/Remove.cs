@@ -22,7 +22,7 @@ namespace LetsMoveIt.TargetData
     internal partial class Target
     {
         /// <summary>Remove the current target.</summary>
-        public static void Remove()
+        public void Remove()
         {
             if (!Config.ModEnabled)
             {
@@ -49,7 +49,11 @@ namespace LetsMoveIt.TargetData
             }
             else if (TargetObject is FarmAnimal farmAnimal)
             {
-                if (farmAnimal.home.GetIndoors() is AnimalHouse animalHouse)
+                if (MarniesLivestock && TargetLocation is Forest forest)
+                {
+                    forest.marniesLivestock.Remove(farmAnimal);
+                }
+                if (farmAnimal.home?.GetIndoors() is AnimalHouse animalHouse)
                 {
                     animalHouse.animalsThatLiveHere.Remove(farmAnimal.myID.Value);
                 }
@@ -202,10 +206,6 @@ namespace LetsMoveIt.TargetData
                         return;
                     }
                 }
-            }
-            if (TargetObject is null)
-            {
-                Game1.playSound("trashcan");
             }
         }
     }

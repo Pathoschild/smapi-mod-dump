@@ -89,6 +89,7 @@
         "winter_{{Lacey}}": "{{i18n: marriage.winter_HatMouseLacey}}",
         "funLeave_{{Lacey}}": "{{i18n: marriage.funLeave_HatMouseLacey}}",
         "funReturn_{{Lacey}}": "{{i18n: marriage.funReturn_HatMouseLacey}}",
+        "HatRegistryNew": "{{i18n: marriage.HatRegistryNew}}",
         "EOF": ""
       }
     }

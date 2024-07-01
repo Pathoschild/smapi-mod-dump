@@ -5,8 +5,8 @@
   "Config.AnythingAnywhere.EnablePlacing.Name": "Permitir colocação",
   "Config.AnythingAnywhere.EnablePlacing.Description": "Permite colocar objetos (móveis, baús, etc) em qualquer lugar.",
 
-  "Config.AnythingAnywhere.EnableFreePlace.Name": "Coloque em qualquer lugar",
-  "Config.AnythingAnywhere.EnableFreePlace.Description": "Permite colocar móveis em qualquer local, até mesmo em paredes.",
+  "Config.AnythingAnywhere.EnablePlaceAnywhere.Name": "Coloque em qualquer lugar",
+  "Config.AnythingAnywhere.EnablePlaceAnywhere.Description": "Permite colocar móveis em qualquer local, até mesmo em paredes.",
 
   "Config.AnythingAnywhere.EnableRugRemovalBypass.Name": "Ignorar remoção de tapete",
   "Config.AnythingAnywhere.EnableRugRemovalBypass.Description": "Permite pegar tapetes com móveis em cima.",
@@ -50,11 +50,6 @@
   "Config.AnythingAnywhere.BypassMagicInk.Name": "Ignorar tinta mágica",
   "Config.AnythingAnywhere.BypassMagicInk.Description": "Ignora a necessidade de tinta mágica.",
 
-  // Buildable Locations Config
-  "Config.AnythingAnywhere.BlacklistedLocations.Title": "Esconder localização",
-  "Config.AnythingAnywhere.BlacklistedLocations.Button": "Localização atual",
-  "Config.AnythingAnywhere.BlacklistedLocations.Description": "Impede que a localização atual apareça no menu da Robin",
-
   // Farming Config
   "Config.AnythingAnywhere.Farming.Title": "Plantação",
 
@@ -70,11 +65,8 @@
   "Config.AnythingAnywhere.EnableWildTreeTweaks.Name": "Ajuste de árvores selvagens",
   "Config.AnythingAnywhere.EnableWildTreeTweaks.Description": "Remove as restrições de crescimento de árvores selvagens. Isso ficará rapidamente fora de controle.",
 
-  // Other Config
-  "Config.AnythingAnywhere.Other.Title": "Diversos",
-
-  "Config.AnythingAnywhere.EnableAnimalRelocate.Name": "Relocação de Animais",
-  "Config.AnythingAnywhere.EnableAnimalRelocate.Description": "Permite realocar animais de um local para o outro.",
+  // Misc Config
+  "Config.AnythingAnywhere.Misc.Title": "Diversos",
 
   "Config.AnythingAnywhere.EnableCaskFunctionality.Name": "Ajuste do Barril",
   "Config.AnythingAnywhere.EnableCaskFunctionality.Description": "Permite que o barril funcione em qualquer lugar.",
@@ -88,17 +80,32 @@
   "Config.AnythingAnywhere.MultipleMiniObelisks.Name": "Múltiplos Mini Obeliscos",
   "Config.AnythingAnywhere.MultipleMiniObelisks.Description": "Permite colocar mais de dois mini obeliscos por local.",
 
-  "Config.AnythingAnywhere.EnableCabinsAnywhere.Name": "Cabanas/Casas de Fazenda em qualquer lugar",
-  "Config.AnythingAnywhere.EnableCabinsAnywhere.Description": "ISTO CAUSARÁ ERROS! Desativa as verificações de Cabanas e Casas de Fazenda.",
-
-  // Button
+  // Reset Page Button
   "Config.AnythingAnywhere.ResetPage.Button": "Resetar página",
+
+  // Buildable Locations Button
+  "Config.AnythingAnywhere.BlacklistedLocations.Title": "Esconder localização",
+  "Config.AnythingAnywhere.BlacklistedLocations.Button": "Localização atual",
+  "Config.AnythingAnywhere.BlacklistedLocations.Description": "Impede que a localização atual apareça no menu da Robin",
 
   // Player Messages
   "Message.AnythingAnywhere.NoBuildingIndoors": "A construção interna está desativada.",
   "Message.AnythingAnywhere.NoMovingBuildingLocation": "{{buildingName}} não pode ser movida para outro mapa.",
   "Message.AnythingAnywhere.NoMagicInk": "Você precisa de tinta mágica para abrir o menu de construção do Feiticeiro.",
-  "Message.AnythingAnywhere.MultiplayerRelocate": "Você não pode mover construções para outros locais no modo multijogador.",
-  "Message.AnythingAnywhere.ChooseBuildingLocation": "Para onde você deseja mover a construção?",
-  "Message.AnythingAnywhere.ChooseAnimalLocation": "Para onde você deseja mover os animais?"
+
+
+  //TODO
+  "Message.AnythingAnywhere.NoBuildingInInstancedLocations": "Buildings build here will not not save correctly",
+  "Config.AnythingAnywhere.DisableSeasonRestrictions.Name": "Grow in Any Season",
+  "Config.AnythingAnywhere.DisableSeasonRestrictions.Description": "Removes growth restrictions on crops so they can grow in any season",
+  "Config.AnythingAnywhere.UpgradeCabins.Name": "Upgrade Cabins",
+  "Config.AnythingAnywhere.UpgradeCabins.Description": "Lets you upgrade cabins from Robins shop",
+  "Config.AnythingAnywhere.RenovateCabins.Name": "Renovate Cabins",
+  "Config.AnythingAnywhere.RenovateCabins.Description": "Lets you renovate cabins from Robins shop",
+  "Config.AnythingAnywhere.InstantHomeUpgrade.Name": "Instant House Upgrade",
+  "Config.AnythingAnywhere.InstantHomeUpgrade.Description": "Instantly upgrades the farmhouse/cabin",
+  "Config.AnythingAnywhere.ForceCorrectTreeSprite.Name": "Force Season Tree Texture",
+  "Config.AnythingAnywhere.ForceCorrectTreeSprite.Description": "When 'Grow in Any Season' is enabled, this will make tree textures go back to the seasonal sprite texture",
+  "Config.AnythingAnywhere.CabinMenuButton.Name": "Cabin Menu",
+  "Config.AnythingAnywhere.CabinMenuButton.Description": "Opens the menu to upgrade/renovate the cabins if you can't use Robins menu due to mod conflicts"
 }

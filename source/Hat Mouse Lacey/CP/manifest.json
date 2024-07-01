@@ -12,7 +12,7 @@
   "Name": "Hat Mouse Lacey",
   "Author": "ichortower",
   "Description": "Makes the hat mouse a real NPC named Lacey.",
-  "Version": "1.2.2",
+  "Version": "1.3.0",
   "UniqueID": "ichortower.HatMouseLacey",
   "ContentPackFor": {
     "UniqueID": "Pathoschild.ContentPatcher"
@@ -21,7 +21,7 @@
   "Dependencies": [
     {
       "UniqueID": "ichortower.HatMouseLacey.Core",
-      "MinimumVersion": "1.2.2",
+      "MinimumVersion": "1.3.0",
       "IsRequired": true
     },
     // SVE overwrites festival set-up fields, so load after it

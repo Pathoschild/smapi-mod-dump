@@ -1,0 +1,60 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/weizinai/StardewValleyMods
+**
+*************************************************/
+
+{
+    "Format": "2.0.0",
+    "Changes": [
+        {
+            "Action": "Load",
+            "Target": "{{ModId}}/MiniCabin",
+            "FromFile": "assets/MiniCabin.png"
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Buildings",
+            "Entries": {
+                "{{ModId}}_MiniCabin": {
+                    // Required fields
+                    "Name": "{{i18n:Buildings.MiniCabin.Name}}",
+                    "Description": "{{i18n:Buildings.MiniCabin.Description}}",
+                    "Texture": "{{ModId}}/MiniCabin",
+                    // Construction
+                    "Builder": "Robin",
+                    "BuildCondition": "CAN_BUILD_CABIN",
+                    // Exterior behavior
+                    "Size": {
+                        "X": 2,
+                        "Y": 1
+                    },
+                    "HumanDoor": {
+                        "X": 0,
+                        "Y": 0
+                    },
+                    // Exterior appearance
+                    "DrawShadow": false,
+                    // Interior
+                    "IndoorMap": "FarmHouse",
+                    "IndoorMapType": "StardewValley.Locations.Cabin",
+                    // Tile interactions
+                    "ActionTiles": [
+                        {
+                            "Id": "Default_OpenMailbox",
+                            "Tile": {
+                                "X": 1,
+                                "Y": 0
+                            },
+                            "Action": "Mailbox"
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}

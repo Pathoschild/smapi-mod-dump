@@ -23,7 +23,7 @@ using StardewModdingAPI;
 
 using SObject = StardewValley.Object;
 
-namespace CustomTapperFramework;
+namespace Selph.StardewMods.MachineTerrainFramework;
 
 class CrabPotData {
   public Vector2 directionOffset = Vector2.Zero;

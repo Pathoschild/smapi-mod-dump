@@ -61,7 +61,7 @@ namespace DestroyableBushes
                 [...]
                 if ((int)axe.upgradeLevel >= getUpgradeLevelRequirement() || (int)this.size == 3)
                 [...]
-                this.health -= (((int)this.size == 3) ? 0.5f : improveNormalAxeDamage(((float)(int)axe.upgradeLevel / 5f)));
+                this.health -= (((int)this.size == 3) ? 0.5f : modifyAxeDamage(((float)(int)axe.upgradeLevel / 5f)));
              
             Old IL:
                 IL_000b: ldarg.0
@@ -105,7 +105,7 @@ namespace DestroyableBushes
 		        IL_00dd: conv.r4
 		        IL_00de: ldc.r4 5
 		        IL_00e3: div
-                    (?): call float DestroyableBushes.HarmonyPatch_BushesAreDestroyable::improveNormalAxeDamage(float)
+                    (?): call float DestroyableBushes.HarmonyPatch_BushesAreDestroyable::modifyAxeDamage(float)
 		        IL_00e4: br.s IL_00eb
         */
 
@@ -127,7 +127,8 @@ namespace DestroyableBushes
                      && patched[x + 2].opcode == OpCodes.Ldc_I4_4)
                     {
                         //before the integer 4 is pushed onto the stack, remove the Bush.size value, then replace it with integer 0
-                        patched.InsertRange(x + 2, [
+                        patched.InsertRange(x + 2,
+                        [
                             new CodeInstruction(OpCodes.Pop),
                             new CodeInstruction(OpCodes.Ldc_I4_0)
                         ]);
@@ -155,7 +156,7 @@ namespace DestroyableBushes
                     }
                 }
 
-                var damageMethod = AccessTools.Method(typeof(HarmonyPatch_BushesAreDestroyable), nameof(improveNormalAxeDamage)); //get the method to use when modifying 
+                var damageMethod = AccessTools.Method(typeof(HarmonyPatch_BushesAreDestroyable), nameof(modifyAxeDamage)); //get the method to use when modifying 
 
                 for (int x = patched.Count - 5; x >= 0; x--) //for each instruction, looping backward, skipping the last 4
                 {
@@ -166,7 +167,12 @@ namespace DestroyableBushes
                      && patched[x + 3].opcode == OpCodes.Ldc_R4
                      && patched[x + 4].opcode == OpCodes.Div)
                     {
-                        patched.Insert(x + 5, new CodeInstruction(OpCodes.Call, damageMethod)); //after the original value is calculated, add a method call to conditionally modify it
+                        //after the original value is calculated, add a method call to conditionally modify it
+                        patched.InsertRange(x + 5,
+                        [
+                            new CodeInstruction(OpCodes.Ldarg_0), //load this Bush instance onto the stack
+                            new CodeInstruction(OpCodes.Call, damageMethod) //call the damage method
+                        ]);
 
                         ModEntry.Instance.Monitor.VerboseLog($"Transpiler replaced \"axe.upgradeLevel / 5f\" with a conditional value at line {x}.");
                     }
@@ -190,10 +196,21 @@ namespace DestroyableBushes
 
         /// <summary>Modifies the damage value used by axes when hitting non-tea bushes.</summary>
         /// <param name="oldDamage">The original damage value produced by the game.</param>
+        /// <param name="bush">The bush being hit.</param>
         /// <returns>The modified damage value to use.</returns>
-        private static float improveNormalAxeDamage(float oldDamage)
+        /// <remarks>
+        /// As of SDV 1.6.8, bushes normally start with 0 health, take 0.2 damage per axe upgrade when hit, and are destroyed at -1 health.
+        /// </remarks>
+        private static float modifyAxeDamage(float oldDamage, Bush bush)
         {
-            return Math.Max(oldDamage, 0.125f); //deal at least 0.125 damage (i.e. destroy bushes in 8 hits or less)
+            float newDamage = Math.Max(oldDamage, 0.125f); //deal at least 0.125 damage (i.e. destroy bushes in 8 hits or less)
+
+            newDamage *= ModEntry.Config?.AxeDamageMultiplier ?? 1; //multiply damage based on the player's config, or 1 if unavailable for some reason
+
+            if (bush.health == 0f && bush.size.Value == 4) //if this is the player's first hit on a walnut bush
+                return Math.Min(newDamage, 0.9f); //limit damage to prevent destroying it in a single hit (which causes issues with walnut drops)
+
+            return newDamage;
         }
 
         /// <summary>Makes all bushes destroyable by appropriate tools.</summary>

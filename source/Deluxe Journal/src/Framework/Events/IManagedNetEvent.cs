@@ -8,15 +8,15 @@
 **
 *************************************************/
 
-using StardewModdingAPI.Events;
-
 namespace DeluxeJournal.Framework.Events
 {
-    internal interface IManagedNetEvent : IManagedEvent
+    internal interface IManagedNetEvent<TEventArgs> : IReceivableNetEvent, IManagedEvent<TEventArgs>
+        where TEventArgs : EventArgs
     {
-        /// <summary>Raise this event from a broadcast message.</summary>
-        /// <param name="invoker">Object that raised this event.</param>
-        /// <param name="args"><see cref="IMultiplayerEvents.ModMessageReceived"/> event args.</param>
-        void RaiseFromMessage(object? invoker, ModMessageReceivedEventArgs args);
+        /// <summary>Broadcast this event to all peers via multiplayer message.</summary>
+        /// <param name="args">Event arguments.</param>
+        /// <param name="sendToSelf">Raise event locally, since multiplayer messages are not sent back to the sender.</param>
+        /// <exception cref="InvalidOperationException">Thrown when broadcasting before mod initialization.</exception>
+        void Broadcast(TEventArgs args, bool sendToSelf = true);
     }
 }

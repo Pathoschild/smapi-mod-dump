@@ -6,9 +6,9 @@ mods:
    More Random Edition
 
 latest commit:
-   commit c6353fa77817af83899a224d967338d8f58d8c4f
+   commit 24a9cadb8319a3220f8c350d39e490ef6ffe3780
    Author: Chikakoo <lionel.crafts@gmail.com>
-   Date:   Sat Apr 13 17:24:30 2024 -0500
+   Date:   Sun Jun 16 09:02:27 2024 -0500
    
-       Fix weapons being assigned damage values where min > max, which results in errors
+       FIlter out invalid filename characters so the spoiler log doesn't cause issues
    

@@ -89,10 +89,10 @@ namespace StardewArchipelago.Archipelago
                         Slot = _session.ConnectionInfo.Slot,
                         Operations = new OperationSpecification[]
                         {
-                            new() { OperationType = OperationType.Add, Value = JToken.Parse(amount.ToString()) }
-                        }
+                            new() { OperationType = OperationType.Add, Value = JToken.Parse(amount.ToString()) },
+                        },
                     }
- 				);
+                );
 
                 return true;
             }
@@ -107,10 +107,10 @@ namespace StardewArchipelago.Archipelago
         {
             try
             {
-	            var operations = new List<OperationSpecification>
-	            {
-		            new() { OperationType = OperationType.Add, Value = JToken.Parse("-" + amount) }
-	            };
+                var operations = new List<OperationSpecification>
+                {
+                    new() { OperationType = OperationType.Add, Value = JToken.Parse("-" + amount) },
+                };
 
                 if (dontGoBelowZero)
                     operations.Add(new() { OperationType = OperationType.Max, Value = 0 });
@@ -121,7 +121,7 @@ namespace StardewArchipelago.Archipelago
                         Key = key,
                         DefaultValue = 0,
                         Slot = _session.ConnectionInfo.Slot,
-                        Operations = operations.ToArray()
+                        Operations = operations.ToArray(),
                     }
                 );
 
@@ -165,8 +165,7 @@ namespace StardewArchipelago.Archipelago
 
     class EnergyLinkSetPacket : SetPacket
     {
-        [JsonProperty("slot")]
-        public int Slot { get; set; }
+        [JsonProperty("slot")] public int Slot { get; set; }
     }
 
 }

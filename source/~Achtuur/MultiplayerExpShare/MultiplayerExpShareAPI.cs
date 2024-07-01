@@ -9,6 +9,7 @@
 *************************************************/
 
 using AchtuurCore.Framework;
+using AchtuurCore.Framework.Particle;
 using Microsoft.Xna.Framework;
 
 namespace MultiplayerExpShare;
@@ -20,8 +21,6 @@ internal class MultiplayerExpShareAPI : IMultiplayerExpShareAPI
         ModEntry.ShareTrailParticles.Add(
             skill_id,
             new TrailParticle(
-                Vector2.Zero,
-                Vector2.Zero,
                 ModEntry.Instance.ParticleTrailLength,
                 color,
                 ModEntry.Instance.ParticleSize

@@ -1,0 +1,9 @@
+{
+  "Name": "Custom Fence Decay",
+  "Author": "Jean Seb Gwak",
+  "Version": "1.0.0",
+  "Description": "Allow player to customize the fences decaying, independently or for all.",
+  "UniqueID": "CustomFenceDecay",
+  "EntryDll": "CustomFenceDecay.dll",
+  "UpdateKeys": [ "Nexus:???" ]
+}

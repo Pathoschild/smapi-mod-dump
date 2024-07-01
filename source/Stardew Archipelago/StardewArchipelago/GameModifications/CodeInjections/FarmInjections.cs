@@ -146,7 +146,7 @@ namespace StardewArchipelago.GameModifications.CodeInjections
                     var clump = farm.resourceClumps[i];
                     if (Game1.random.NextDouble() > chanceOfStaying)
                     {
-                        farm.removeEverythingFromThisTile((int)clump.tile.X, (int)clump.tile.Y);
+                        farm.removeEverythingFromThisTile((int)clump.Tile.X, (int)clump.Tile.Y);
                     }
                 }
 
@@ -224,31 +224,36 @@ namespace StardewArchipelago.GameModifications.CodeInjections
             }
             catch (Exception ex)
             {
-                _monitor.Log($"Failed in {nameof(DeleteStartingDebris)}:\n{ex}", LogLevel.Error);
+                _monitor.Log($"Failed in {nameof(PlaceEarlyShippingBin)}:\n{ex}", LogLevel.Error);
                 return;
             }
         }
 
         private static void ConstructStarterShippingBin(Farm farm)
         {
-            var blueprint = new BluePrint("Shipping Bin");
-            var tileLocation = farm.GetStarterShippingBinLocation();
-            var shippingBin = new ShippingBin(blueprint, tileLocation);
-            for (var y = 0; y < blueprint.tilesHeight; ++y)
+            var blueprint = "Shipping Bin";
+            var tile = farm.GetStarterShippingBinLocation();
+            var collisionMask = CollisionMask.Buildings | CollisionMask.Characters | CollisionMask.Farmers | CollisionMask.Flooring | CollisionMask.Furniture | CollisionMask.Objects;
+            for (var x = 0; x < 2; x++)
             {
-                for (var x = 0; x < blueprint.tilesWidth; ++x)
+                var tileLocation = new Vector2(tile.X + x, tile.Y);
+                var isBuildable = !farm.IsTileOccupiedBy(tileLocation, collisionMask) &&
+                                  farm.GetFurnitureAt(tileLocation) == null;
+                if (!isBuildable)
                 {
-                    var isBuildable = !farm.isTileOccupiedForPlacement(tileLocation, null) && 
-                                      farm.GetFurnitureAt(tileLocation) == null;
-                    if (!isBuildable)
-                    {
-                        return;
-                    }
+                    return;
                 }
             }
 
-            farm.buildings.Add(shippingBin);
+            foreach (var building in farm.buildings)
+            {
+                if (building.buildingType.Value == blueprint)
+                    return;
+            }
+
+            var shippingBin = Building.CreateInstanceFromId(blueprint, tile);
             shippingBin.load();
+            farm.buildings.Add(shippingBin);
         }
 
         public static bool TryFindShippingBin(Farm farm, out ShippingBin shippingBin)
@@ -276,20 +281,28 @@ namespace StardewArchipelago.GameModifications.CodeInjections
                 }
 
                 const string forcedPetName = "alwaysintreble";
-                Pet pet = Game1.player.catPerson ? new Cat(68, 13, Game1.player.whichPetBreed) : new Dog(68, 13, Game1.player.whichPetBreed);
+                var pet = new Pet(68, 13, Game1.player.whichPetBreed, Game1.player.whichPetType);
                 pet.warpToFarmHouse(Game1.player);
                 pet.Name = forcedPetName;
                 pet.displayName = pet.Name;
+                foreach (var building in Game1.getFarm().buildings)
+                {
+                    if (building is PetBowl petBowl && !petBowl.HasPet())
+                    {
+                        petBowl.AssignPet(pet);
+                        break;
+                    }
+                }
                 Game1.player.RemoveMail("rejectedPet");
 
                 const string forcedPetMailKey = "petOverride";
                 const string forcedPetMailTitle = "Don't dodge destiny";
                 var animalType = Game1.player.catPerson ? "cat" : "dog";
                 var scoutedInfo = GetScoutedInfoForPet();
-                var forcedPetMailContent = $"I heard you rejected this poor {animalType} that she brought you.^" + 
-                                                    "Look kid, you and I both know you'll need it down the line.^" +
-                                                    $"{scoutedInfo}^" +
-                                                    $"  Your friend, Mr. Qi[#]{forcedPetMailTitle}";
+                var forcedPetMailContent = $"I heard you rejected this poor {animalType} that she brought you.^" +
+                                           "Look kid, you and I both know you'll need it down the line.^" +
+                                           $"{scoutedInfo}^" +
+                                           $"  Your friend, Mr. Qi[#]{forcedPetMailTitle}";
 
                 mailman.GenerateMail(forcedPetMailKey, forcedPetMailContent);
                 mailman.SendMail(forcedPetMailKey);
@@ -310,7 +323,7 @@ namespace StardewArchipelago.GameModifications.CodeInjections
                 return "What would your grandfather say if you abandoned this poor animal?";
             }
 
-            var location = string.Format(FriendshipInjections.FRIENDSANITY_PATTERN, Locations.CodeInjections.Vanilla.Relationship.Friends.PET_NAME, 5);
+            var location = string.Format(FriendshipInjections.FRIENDSANITY_PATTERN, Friends.PET_NAME, 5);
             var scouted = _archipelago.ScoutSingleLocation(location);
             return $"After all, what would {scouted.PlayerName} do without their {scouted.ItemName}?";
         }

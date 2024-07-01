@@ -462,12 +462,10 @@ namespace StardewDruid.Cast
                         }
 
                         // if unable to add to inventory spawn as debris
-                        Vector2 playerTile = ModUtility.PositionToTile(Game1.player.Position);
-
                         if (item is StardewValley.Object)
                         {
 
-                            Game1.createObjectDebris(item.ParentSheetIndex.ToString(), (int)playerTile.X, (int)playerTile.Y, -1, quality);
+                            Game1.createItemDebris(item, Game1.player.Position, 2, Game1.player.currentLocation, -1);
 
                         }
                         else
@@ -481,9 +479,7 @@ namespace StardewDruid.Cast
 
                     }
 
-                    Vector2 extractTile = ModUtility.PositionToTile(destination);
-
-                    Game1.createObjectDebris(item.ParentSheetIndex.ToString(), (int)extractTile.X, (int)extractTile.Y, -1, quality);
+                    Game1.createItemDebris(item, destination, 2, Game1.player.currentLocation, -1);
 
                     break;
 
@@ -548,7 +544,7 @@ namespace StardewDruid.Cast
 
             Game1.player.faceDirection(2);
 
-            Game1.player.freezePause = 4000;
+            Game1.player.freezePause = 3000;
 
             Game1.player.FarmerSprite.animateOnce(
                     new FarmerSprite.AnimationFrame[3]{

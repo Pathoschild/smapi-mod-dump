@@ -19,6 +19,13 @@ using StardewDruid.Journal;
 using System.Linq;
 using StardewValley.TerrainFeatures;
 using Netcode;
+using StardewDruid.Event;
+using StardewDruid.Monster;
+using StardewValley.Minigames;
+using StardewDruid.Location;
+using xTile.Tiles;
+using xTile.Layers;
+using StardewDruid.Character;
 
 namespace StardewDruid.Cast.Mists
 {
@@ -86,7 +93,7 @@ namespace StardewDruid.Cast.Mists
 
                             Vector2 boltVector = new(warpVector.X, warpVector.Y - 2);
 
-                            Mod.instance.iconData.AnimateBolt(location, boltVector * 64 + new Vector2(32));
+                            Mod.instance.spellRegister.Add(new(boltVector * 64 + new Vector2(32), 128, IconData.impacts.puff, new()) { type = SpellHandle.spells.bolt });
 
                             Mod.instance.rite.specialCasts[locationName].Add("warp");
 
@@ -119,7 +126,7 @@ namespace StardewDruid.Cast.Mists
 
                             Game1.playSound("fireball");
 
-                            Mod.instance.iconData.AnimateBolt(location, fireVector * 64 + new Vector2(32));
+                            Mod.instance.spellRegister.Add(new(fireVector * 64 + new Vector2(32), 128, IconData.impacts.puff, new()) { type = SpellHandle.spells.bolt });
 
                             Mod.instance.rite.specialCasts[locationName].Add("fire");
 
@@ -162,7 +169,7 @@ namespace StardewDruid.Cast.Mists
 
                                     targetObject.shakeTimer = 1000;
 
-                                    Mod.instance.iconData.AnimateBolt(location, tileVector * 64 + new Vector2(32));
+                                    Mod.instance.spellRegister.Add(new(tileVector * 64 + new Vector2(32), 128, IconData.impacts.puff, new()) { type = SpellHandle.spells.bolt });
 
                                     Mod.instance.rite.specialCasts[locationName].Add("rod" + j.ToString());
 
@@ -193,7 +200,7 @@ namespace StardewDruid.Cast.Mists
 
                                     Game1.playSound("fireball");
 
-                                    Mod.instance.iconData.AnimateBolt(location, tileVector * 64 + new Vector2(32));
+                                    Mod.instance.spellRegister.Add(new(tileVector * 64 + new Vector2(32), 128, IconData.impacts.puff, new()) { type = SpellHandle.spells.bolt });
 
                                     Mod.instance.rite.specialCasts[locationName].Add("campfire");
 
@@ -211,7 +218,9 @@ namespace StardewDruid.Cast.Mists
 
                                     ArtificeScarecrow(location,tileVector);
 
-                                    Mod.instance.rite.castCost += Math.Max(8, 32 - Game1.player.FarmingLevel * 3);
+                                    int tryCost = 32 - Game1.player.FarmingLevel * 3;
+
+                                    Mod.instance.rite.castCost += tryCost < 8 ? 8 : tryCost;
 
                                     Mod.instance.rite.specialCasts[locationName].Add(scid);
 
@@ -244,7 +253,7 @@ namespace StardewDruid.Cast.Mists
 
                                     targetObject.MinutesUntilReady = 1;
 
-                                    Mod.instance.iconData.AnimateBolt(location, tileVector * 64 + new Vector2(32));
+                                    Mod.instance.spellRegister.Add(new(tileVector * 64 + new Vector2(32), 128, IconData.impacts.puff, new()) { type = SpellHandle.spells.bolt });
 
                                     Mod.instance.rite.specialCasts[locationName].Add("mushroomlog" + j.ToString());
 
@@ -255,40 +264,16 @@ namespace StardewDruid.Cast.Mists
                                 }
 
                             }
-                            /*else if(targetObject.QualifiedItemId.Contains("93"))
+                            /*else if (targetObject.QualifiedItemId.Contains("93"))
                             {
 
-                                Utility.trySpawnRareObject(Game1.player, tileVector * 64, location, 9.0);
+                                Game1.warpFarmer(LocationData.druid_tomb_name, 27, 30, 1);
 
-                                location.objects.Remove(tileVector);
+                                Game1.xLocationAfterWarp = 27;
 
-                                Mod.instance.questHandle.AssignQuest("relicsMists");
+                                Game1.yLocationAfterWarp = 30;
 
-                                //new ThrowHandle(Game1.player, tileVector * 64, WarpData.WarpTotems(Game1.getLocationFromName("Beach")), 0).register();
-
-                                StardewDruid.Monster.Boss newBoss = new StardewDruid.Monster.DarkShooter(tileVector, Mod.instance.CombatDifficulty());
-
-                                location.characters.Add(newBoss);
-
-                                newBoss.update(Game1.currentGameTime, location);
-
-                                newBoss = new StardewDruid.Monster.DarkBrute(tileVector + new Vector2(0, 1), Mod.instance.CombatDifficulty());
-
-                                location.characters.Add(newBoss);
-
-                                newBoss.update(Game1.currentGameTime, location);
-
-                                newBoss = new StardewDruid.Monster.DarkBrute(tileVector + new Vector2(-1, 1), Mod.instance.CombatDifficulty());
-
-                                location.characters.Add(newBoss);
-
-                                newBoss.update(Game1.currentGameTime, location);
-
-                                newBoss = new StardewDruid.Monster.DarkBrute(tileVector + new Vector2(1, 1), Mod.instance.CombatDifficulty());
-
-                                location.characters.Add(newBoss);
-
-                                newBoss.update(Game1.currentGameTime, location);
+                                Game1.facingDirectionAfterWarp = 0;
 
                             }*/
 
@@ -400,11 +385,7 @@ namespace StardewDruid.Cast.Mists
             if (animate)
             {
 
-                Mod.instance.iconData.AnimateBolt(Game1.player.currentLocation, targetVector * 64 - new Vector2(0, 96));
-
-                Mod.instance.iconData.ImpactIndicator(Game1.player.currentLocation, targetVector * 64 - new Vector2(0, 416), IconData.impacts.cloud, 3f, new() { interval = 125, color = Microsoft.Xna.Framework.Color.White, flip = true, layer = 997f, });
-
-                Mod.instance.iconData.ImpactIndicator(Game1.player.currentLocation, targetVector * 64 - new Vector2(0, 416), IconData.impacts.cloud, 4f, new() { interval = 125, color = Microsoft.Xna.Framework.Color.Gray, layer = 996f, });
+                Mod.instance.spellRegister.Add(new(targetVector * 64 - new Vector2(0, 32), 128, IconData.impacts.boltswirl, new()) { type = SpellHandle.spells.bolt });
 
             }
 

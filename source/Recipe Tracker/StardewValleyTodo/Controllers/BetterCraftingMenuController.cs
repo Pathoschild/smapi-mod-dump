@@ -20,7 +20,6 @@ namespace StardewValleyTodo.Controllers {
 
         public BetterCraftingMenuController(InventoryTracker inventoryTracker) {
             _inventoryTracker = inventoryTracker;
-
         }
 
         public void ProcessInput(IClickableMenu page) {

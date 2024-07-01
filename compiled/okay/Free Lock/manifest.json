@@ -1,0 +1,17 @@
+{
+    "Name": "Free Lock",
+    "Author": "weizinai",
+    "Version": "0.1.0",
+    "Description": "The mod allows you to move the viewpoint.",
+    "UniqueID": "weizinai.FreeLock",
+    "EntryDll": "FreeLock.dll",
+    "UpdateKeys": [
+        "Nexus:25329"
+    ],
+    "Dependencies": [
+        {
+            "UniqueID": "spacechase0.GenericModConfigMenu",
+            "IsRequired": false
+        }
+    ]
+}

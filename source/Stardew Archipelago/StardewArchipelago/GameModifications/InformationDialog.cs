@@ -27,14 +27,14 @@ namespace StardewArchipelago.GameModifications
         private bool active = true;
 
         public InformationDialog(
-          string message,
-          ConfirmationDialog.behavior onClickOkBehavior = null,
-          ConfirmationDialog.behavior onCloseBehavior = null)
-          : base(Game1.uiViewport.Width / 2 - (int)Game1.dialogueFont.MeasureString(message).X / 2 - borderWidth, Game1.uiViewport.Height / 2 - (int)Game1.dialogueFont.MeasureString(message).Y / 2, (int)Game1.dialogueFont.MeasureString(message).X + borderWidth * 2, (int)Game1.dialogueFont.MeasureString(message).Y + borderWidth * 2 + 160)
+            string message,
+            ConfirmationDialog.behavior onClickOkBehavior = null,
+            ConfirmationDialog.behavior onCloseBehavior = null)
+            : base(Game1.uiViewport.Width / 2 - (int)Game1.dialogueFont.MeasureString(message).X / 2 - borderWidth, Game1.uiViewport.Height / 2 - (int)Game1.dialogueFont.MeasureString(message).Y / 2, (int)Game1.dialogueFont.MeasureString(message).X + borderWidth * 2, (int)Game1.dialogueFont.MeasureString(message).Y + borderWidth * 2 + 160)
         {
             onClickOk = onClickOkBehavior ?? CloseDialog;
             onClose = onCloseBehavior;
-            var titleSafeArea = Game1.graphics.GraphicsDevice.Viewport.GetTitleSafeArea();
+            var titleSafeArea = Game1.graphics.GraphicsDevice.Viewport.TitleSafeArea;
             this.message = Game1.parseText(message, Game1.dialogueFont, Math.Min(titleSafeArea.Width - 64, width));
             okButton = new ClickableTextureComponent("OK", new Rectangle(xPositionOnScreen + width - borderWidth - spaceToClearSideBorder - 128 - 4, yPositionOnScreen + height - borderWidth - spaceToClearTopBorder + 21, 64, 64), null, null, Game1.mouseCursors, Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, 46), 1f);
             okButton.myID = 101;
@@ -57,7 +57,7 @@ namespace StardewArchipelago.GameModifications
         {
             if (key == Keys.None)
                 return;
-            if (Game1.options.doesInputListContain(Game1.options.menuButton, key) && this.readyToClose())
+            if (Game1.options.doesInputListContain(Game1.options.menuButton, key) && readyToClose())
             {
                 CloseDialog(Game1.player);
                 return;

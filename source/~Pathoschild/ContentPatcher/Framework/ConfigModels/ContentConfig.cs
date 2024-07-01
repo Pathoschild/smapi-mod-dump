@@ -8,7 +8,6 @@
 **
 *************************************************/
 
-using System;
 using System.Linq;
 using Pathoschild.Stardew.Common;
 using Pathoschild.Stardew.Common.Utilities;
@@ -54,10 +53,10 @@ namespace ContentPatcher.Framework.ConfigModels
         public ContentConfig(ISemanticVersion? format, DynamicTokenConfig?[]? dynamicTokens, InvariantDictionary<string?>? aliasTokenNames, CustomLocationConfig?[]? customLocations, PatchConfig?[]? changes, InvariantDictionary<ConfigSchemaFieldConfig?>? configSchema)
         {
             this.Format = format;
-            this.DynamicTokens = dynamicTokens?.WhereNotNull().ToArray() ?? Array.Empty<DynamicTokenConfig>();
+            this.DynamicTokens = dynamicTokens?.WhereNotNull().ToArray() ?? [];
             this.AliasTokenNames = aliasTokenNames ?? new InvariantDictionary<string?>();
-            this.CustomLocations = customLocations ?? Array.Empty<CustomLocationConfig>();
-            this.Changes = changes?.WhereNotNull().ToArray() ?? Array.Empty<PatchConfig>();
+            this.CustomLocations = customLocations ?? [];
+            this.Changes = changes?.WhereNotNull().ToArray() ?? [];
             this.ConfigSchema = configSchema ?? new InvariantDictionary<ConfigSchemaFieldConfig?>();
         }
     }

@@ -24,7 +24,7 @@ using AchtuurCore.Framework;
 using StardewValley.Objects;
 using HoverLabels.Labels.Objects;
 using SObject = StardewValley.Object;
-using HoverLabels.Drawing;
+using AchtuurCore.Framework.Borders;
 
 namespace HoverLabels.Labels.Buildings;
 internal class JunimoHutLabel : BuildingLabel
@@ -65,22 +65,22 @@ internal class JunimoHutLabel : BuildingLabel
         if (hutInventory.Items.Count != items.Count())
         {
             ResetBorders();
-            AddBorder(new TitleLabelText("Junimo Hut (Prismatic)"));
+            AddBorder(new TitleLabel("Junimo Hut (Prismatic)"));
         }
             
 
-        InventoryLabelText inventoryContents = ChestLabel.ListInventoryContents(items, ModEntry.IsShowDetailButtonPressed());
-        AddBorder(inventoryContents);
+        IEnumerable<Item> inventoryContents = ChestLabel.ListInventoryContents(items, ModEntry.IsShowDetailButtonPressed());
+        AddBorder(new GridLabel(inventoryContents));
 
         Border control_border = new Border();
         string showAllMsg = ChestLabel.GetShowAllMessage(hutInventory.Items);
         if (showAllMsg is not null)
-            control_border.AddLabelText(showAllMsg);
+            control_border.AddLabel(showAllMsg);
 
-        if (!ModEntry.IsAlternativeSortButtonPressed() && inventoryContents.ItemCount > 1)
-            control_border.AddLabelText(I18n.LabelChestAltsort(ModEntry.GetAlternativeSortButtonName()));
+        if (!ModEntry.IsAlternativeSortButtonPressed() && inventoryContents.Count() > 1)
+            control_border.AddLabel(I18n.LabelChestAltsort(ModEntry.GetAlternativeSortButtonName()));
 
-        control_border.AddLabelText(I18n.LabelShowrange(ModEntry.GetShowDetailButtonName()));
+        control_border.AddLabel(I18n.LabelShowrange(ModEntry.GetShowDetailButtonName()));
     }
 
     public override void DrawOnOverlay(SpriteBatch spriteBatch)

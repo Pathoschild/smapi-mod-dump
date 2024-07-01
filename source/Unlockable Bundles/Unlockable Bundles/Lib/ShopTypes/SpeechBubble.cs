@@ -25,6 +25,7 @@ using StardewValley.BellsAndWhistles;
 using StardewValley.Menus;
 using Unlockable_Bundles.Lib.AdvancedPricing;
 using static Unlockable_Bundles.ModEntry;
+using Unlockable_Bundles.Lib.WalletCurrency;
 
 namespace Unlockable_Bundles.Lib.ShopTypes
 {
@@ -96,12 +97,8 @@ namespace Unlockable_Bundles.Lib.ShopTypes
             addNetFieldsAndEvents();
             NetFields.Parent = shop.NetFields;
 
-            if (shop.ShopType == ShopType.ParrotPerch) {
+            if (shop.ShopType == ShopType.ParrotPerch)
                 ParrotPerch = new ParrotUpgradePerch(shop.Unlockable.getGameLocation(), shop.TileLocation.ToPoint(), shop.Unlockable.ParrotTarget, 1, null, null);
-
-                if(Unlockable.ParrotTexture != "")
-                    ParrotPerch.texture = Helper.GameContent.Load<Texture2D>(Unlockable.ParrotTexture);
-            }
                 
             assignNextItem();
         }
@@ -252,8 +249,11 @@ namespace Unlockable_Bundles.Lib.ShopTypes
                         Game1.specialCurrencyDisplay.ShowCurrency("walnuts");
                     else if (NextId == "(O)858")
                         Game1.specialCurrencyDisplay.ShowCurrency("qiGems");
+                    else if(WalletCurrencyHandler.getCurrencyItemMatch(NextId, out var match, out var currency, out var relevantPlayer))
+                        WalletCurrencyBillboard.ShowCurrency(currency, relevantPlayer);
                 } else {
                     Game1.specialCurrencyDisplay.ShowCurrency(null);
+                    WalletCurrencyBillboard.StopForceShow();
                 }
             }
         }

@@ -13,16 +13,7 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
-using StardewValley.Locations;
-using StardewValley.Menus;
-using StardewValley.Objects;
-using StardewValley.Util;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Object = StardewValley.Object;
 
 namespace MobileCatalogues
 {
@@ -40,6 +31,7 @@ namespace MobileCatalogues
             Helper = helper;
             Config = config;
         }
+
         public static void GameLoop_GameLaunched(object sender, GameLaunchedEventArgs e)
         {
             ModEntry.api = Helper.ModRegistry.GetApi<IMobilePhoneApi>("JoXW.MobilePhone");
@@ -56,10 +48,13 @@ namespace MobileCatalogues
                 Visuals.MakeTextures();
             }
         }
+
         public static void Input_ButtonPressed(object sender, ButtonPressedEventArgs e)
         {
             if (api.IsCallingNPC() || api.GetRunningApp() != Helper.ModRegistry.ModID)
+            {
                 return;
+            }
 
             if (e.Button == SButton.MouseLeft)
             {
@@ -78,6 +73,7 @@ namespace MobileCatalogues
                     CataloguesApp.CloseApp();
                     return;
                 }
+
                 CataloguesApp.opening = false;
                 Visuals.clicking = true;
                 Visuals.lastMousePosition = mousePos;

@@ -9,7 +9,6 @@
 *************************************************/
 
 using System;
-using Microsoft.Xna.Framework;
 using StardewArchipelago.Archipelago;
 using StardewModdingAPI;
 using StardewValley;
@@ -31,14 +30,14 @@ namespace StardewArchipelago.Locations.Festival
             _locationChecker = locationChecker;
         }
 
-        // public virtual void command_switchEvent(GameLocation location, GameTime time, string[] split)
-        public static void SwitchEvent_GovernorReactionToSoup_Postfix(Event __instance, GameLocation location, GameTime time, string[] split)
+        // public static void SwitchEvent(Event @event, string[] args, EventContext context)
+        public static void SwitchEvent_GovernorReactionToSoup_Postfix(Event @event, string[] args, EventContext context)
         {
             try
             {
-                var switchEventKey = split[1];
+                var switchEventKey = args[1];
                 var governorReactionKey = "governorReaction";
-                if (!__instance.isSpecificFestival("summer11") || !switchEventKey.StartsWith(governorReactionKey))
+                if (!@event.isSpecificFestival("summer11") || !switchEventKey.StartsWith(governorReactionKey))
                 {
                     return;
                 }

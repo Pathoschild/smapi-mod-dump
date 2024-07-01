@@ -6,7 +6,7 @@ for queries and analysis.**
 
 ----
 
-The Mouahrara's Module Collection mod is a compilation of tweaks, features, additions, and overhauls that enhance the quality of life, improve gameplay, introduce new functionality and provide functional details.
+The Mouahrara's Module Collection mod is a compilation of tweaks and features that enhance the quality of life, introduce new functionality and provide functional details.
 
 ![](https://raw.githubusercontent.com/wiki/mouahrara/mouahrarasModuleCollection/images/main.jpg)
 
@@ -16,9 +16,6 @@ The Mouahrara's Module Collection mod is a compilation of tweaks, features, addi
  - Run the game using **SMAPI**.
 
 ## Modules
-
-### Tweaks & Features
-This section contains modules that add minor tweaks and features designed to enhance the quality of life and provide functional details.
 
 - #### Arcade games
 
@@ -53,35 +50,22 @@ https://github.com/mouahrara/mouahrarasModuleCollection/assets/131559634/594ed45
 
 https://github.com/mouahrara/mouahrarasModuleCollection/assets/131559634/b18f9426-7f22-4689-a453-60ecd19f5295
 
-| Module         | Functionality                                                                                                                     | GMCM options                                                                                                         |
-|----------------|-----------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------|
-| Fast scrolling | Allows you to scroll faster when building, moving, painting or destroying buildings and when purchasing or moving farm animals.   | <ul><li>Enabled</li><li>Scroll speed multiplier</li></ul>                                                            |
-| Zoom           | Allows you to zoom in and out when building, moving, painting or destroying buildings and when purchasing or moving farm animals. | <ul><li>Enabled</li><li>Secondary zoom-in key</li><li>Secondary zoom-out key</li><li>Zoom speed multiplier</li></ul> |
+| Module         | Functionality                                                                                                                     | GMCM options                                                                                                                                    |
+|----------------|-----------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|
+| Fast scrolling | Allows you to scroll faster when building, moving, painting or destroying buildings and when purchasing or moving farm animals.   | <ul><li>Enabled</li><li>Scroll speed multiplier</li><li>Consistent scrolling</li></ul>                                                          |
+| Zoom           | Allows you to zoom in and out when building, moving, painting or destroying buildings and when purchasing or moving farm animals. | <ul><li>Enabled</li><li>Secondary zoom-in key</li><li>Secondary zoom-out key</li><li>Zoom speed multiplier</li><li>Minimum zoom level</li></ul> |
 
 - #### Other
 
 https://github.com/mouahrara/mouahrarasModuleCollection/assets/131559634/f01b4bd0-aead-4ca0-8529-c14a395e91fa
 
-| Module            | Functionality                                                            | GMCM options                                                                     | Additional Information                                                                                                                                                                                                                                                                                                                           |
-|-------------------|--------------------------------------------------------------------------|----------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Festival end time | Allows you to get back home at the time the festival is supposed to end. | <ul><li>Enabled</li><li>Duration (in hours)</li></ul>                            | The festival end time is determined by the minimum between 1am and the sum of the arrival end time and the duration of the festival.<br><br>The formula is: min(1am, ArrivalEndTime + FestivalDuration).<br><br>For example, the arrival end time of the Egg Festival is 2pm. Considering the default duration of 2 hours, the festival end time is 4pm. |
-
-### Additions
-This section contains modules that add content, such as events or objects, designed to introduce new functionality, enhance gameplay, and provide functional details.
-
-| Module               | Functionality | GMCM options              |
-|----------------------|---------------|---------------------------|
-| (in future releases) |               | <ul><li>Enabled</li></ul> |
-
-### Overhauls
-This section contains modules that introduce overhauls to various game elements, aiming to introduce new functionality, enhance gameplay, and provide functional details.
-
-| Module               | Functionality | GMCM options              |
-|----------------------|---------------|---------------------------|
-| (in future releases) |               | <ul><li>Enabled</li></ul> |
+| Module              | Functionality                                                                                                                               | GMCM options                                                                     | Additional Information                                                                                                                                                                                                                                                                                                                                   |
+|---------------------|---------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Festival end time   | Allows you to get back home at the time the festival is supposed to end.                                                                    | <ul><li>Enabled</li><li>Duration (in hours)</li></ul>                            | The festival end time is determined by the minimum between 1am and the sum of the arrival end time and the duration of the festival.<br><br>The formula is: min(1am, ArrivalEndTime + FestivalDuration).<br><br>For example, the arrival end time of the Egg Festival is 2pm. Considering the default duration of 2 hours, the festival end time is 4pm. |
+| Better porch repair | Completely repairs the farmhouse porch after its first upgrade, allowing you to walk on the previously broken area and place objects there. | <ul><li>Enabled</li></ul>                                                        |                                                                                                                                                                                                                                                                                                                                                          |
 
 ## Accessibility
-Chinese (thanks to **wsphm**), English and French translations are included in the base mod, and contributions are welcome. To contribute, please submit a pull request on the [GitHub repository](https://github.com/mouahrara/mouahrarasModuleCollection/pulls).
+Chinese (thanks to **Awassakura** and **wsphm**), English and French translations are included in the base mod, and contributions are welcome. To contribute, please submit a pull request on the [GitHub repository](https://github.com/mouahrara/mouahrarasModuleCollection/pulls).
 
 ## Compatibility
 Mouahrara's Module Collection is compatible with Stardew Valley 1.6.0+ on Linux/Mac/Windows, both single-player and multiplayer.
@@ -90,7 +74,7 @@ Mouahrara's Module Collection is compatible with Stardew Valley 1.6.0+ on Linux/
 - **Can I use this mod on an existing save?**\
 Yes, no problem at all.
 - **Can I uninstall this mod without any issues?**\
-Yes, to uninstall the mod, run the `mmc_uninstall` command in the [SMAPI](https://smapi.io) console and save the game. You can then remove the mouahrara's Module Collection mod from the `Stardew Valley/Mods` folder.
+Yes.
 
 ## See also
 - [Release notes](https://github.com/mouahrara/mouahrarasModuleCollection/releases)

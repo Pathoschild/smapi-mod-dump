@@ -13,6 +13,7 @@ namespace DaLion.Professions.Framework.VirtualProperties;
 #region using directives
 
 using System.Runtime.CompilerServices;
+using DaLion.Core.Framework;
 using StardewValley.Monsters;
 
 #endregion using directives

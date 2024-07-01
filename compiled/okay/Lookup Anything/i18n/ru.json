@@ -2,6 +2,10 @@
     /*********
     ** Generic translations
     *********/
+    // language info
+    "generic.list-separator": ", ", // text between listed values (like ", " in "A, B, C")
+    "generic.line-wrap-on": "",     // characters after which we can line-wrap text if needed, even if there's no space
+
     // date names
     "generic.now": "Сейчас",
     "generic.tomorrow": "Завтра",
@@ -9,7 +13,6 @@
 
     // generic values
     "generic.unknown": "Неизвестно",
-    "generic.list-separator": ", ", // text between listed values (like ", " in "A, B, C")
 
     // generic field values
     "generic.percent": "{{percent}}%",
@@ -46,6 +49,9 @@
     "quality.silver": "Серебрянное",
     "quality.gold": "Золотое",
     "quality.iridium": "Иридиевое",
+
+    // item names shown in recipes
+    "item.wild-seeds": "Wild Seeds (Any)", // TODO
 
     // NPC friendship
     "friendship-status.friendly": "Дружный",
@@ -130,24 +136,30 @@
     /*********
     ** Conditions & context tags
     *********/
-    // TODO
-    "condition-or-context-tag.negate": "not {{value}}",
+    "condition-or-context-tag.negate": "не {{value}}",
 
-    "condition.item-type.input": "input item",
-    "condition.item-type.target": "target item",
+    "condition.day-of-month": "on specific days ({{days}})", // TODO
+    "condition.day-of-month.even": "even days", // TODO
+    "condition.day-of-month.odd": "odd days", // TODO
 
-    "condition.item-context-tag": "{{item}} has context tag {{tags}}",
-    "condition.item-context-tags": "{{item}} has context tags {{tags}}",
+    "condition.item-type.input": "входной элемент",
+    "condition.item-type.target": "целевой элемент",
+
+    "condition.raw-context-tag": "контекстный тег \"{{tag}}\"",
+    "condition.raw-condition": "запрос \"{{tag}}\"",
+
+    "condition.item-context-tag": "{{item}} имеет контекстный тег {{tags}}",
+    "condition.item-context-tags": "{{item}} имеет контекстные теги {{tags}}",
     "condition.item-context-tag.value": "'{{tag}}'", // the format of each context tag in the list (each context tag isn't translated)
 
-    "condition.item-edibility.edible": "{{item}} is edible",
-    "condition.item-edibility.min": "{{item}} has edibility of {{min}} or more",
-    "condition.item-edibility.range": "{{item}} has edibility of {{min}} to {{max}}",
+    "condition.item-edibility.edible": "{{item}} съедобен",
+    "condition.item-edibility.min": "Съедобность {{item}} составляет {{min}} или больше",
+    "condition.item-edibility.range": "{{item}} имеет съедобность от {{min}} до {{max}}",
 
-    "context-tag.bone": "any bone",
-    "context-tag.egg": "any egg",
-    "context-tag.large-egg": "any large egg",
-    "context-tag.preserved-item": "preserved {{name}}",
+    "context-tag.bone": "любая кость",
+    "context-tag.egg": "любое яйцо",
+    "context-tag.large-egg": "любое большое яйцо",
+    "context-tag.preserved-item": "сохраненный {{name}}",
 
 
     /*********
@@ -328,14 +340,14 @@
     "item.needed-for.full-collection": "Достижение 'Полная коллекция' (Пожертвуйте музею)",
     "item.needed-for.gourmet-chef": "Достижение 'Шеф-повар' (приготовьте рецепт: {{recipes}})",
     "item.needed-for.craft-master": "Достижение 'Мастер' (создайте предмет: {{recipes}})",
-    "item.needed-for.quests": "current quests ({{quests}})", // TODO
-    "item.unknown-recipes": "{{count}} unknown recipes", // TODO
+    "item.needed-for.quests": "текущие квесты ({{quests}})",
+    "item.unknown-recipes": "{{count}} неизвестных рецептов",
     "item.sells-to.shipping-box": "Отгрузочный ящик",
     "item.recipes-for-ingredient.entry": "{{name}} ({{count}} шт.)",
     "item.recipes-for-machine.multiple-items": "{{name}} x{{count}}",
-    "item.recipes-for-machine.same-as-input": "[same as input]", // e.g. crystalarium produces same item that was put in // TODO
-    "item.recipes-for-machine.conditions": "[conditions: {{conditions}}]", // TODO
-    "item.recipes-for-machine.too-complex": "Some machine rules are too dynamic to display.", // TODO
+    "item.recipes-for-machine.same-as-input": "[то же, что и на входе]", // e.g. crystalarium produces same item that was put in 
+    "item.recipes-for-machine.conditions": "[условия: {{conditions}}]",
+    "item.recipes-for-machine.too-complex": "Функции некоторого оборудования слишком сложны для отображения.",
     "item.number-owned.summary": "У вас есть {{count}} шт.",
     "item.number-crafted.summary": "Вы создали {{count}} шт.",
 
@@ -408,13 +420,12 @@
     "item.melee-weapon.speed": "Скорость атаки",
 
     // values
-    // TODO
-    "item.melee-weapon.critical-damage.label": "{{multiplier}} times normal damage (before player bonuses)",
-    "item.melee-weapon.defense.label": "{{amount}} while equipped",
-    "item.melee-weapon.knockback.label": "{{amount}} ({{multiplier}} times normal distance)",
-    "item.melee-weapon.reach.label": "{{amount}} pixels",
-    "item.melee-weapon.speed.shown-vs-actual": "shown: {{shownSpeed}}{{lineBreak}}actual: {{actualSpeed}}",
-    "item.melee-weapon.speed.summary": "{{speed}} ({{milliseconds}} milliseconds per swing frame, before player speed bonuses)",
+    "item.melee-weapon.critical-damage.label": "{{multiplier}}, умножающий обычный урон (до бонусов игрока)",
+    "item.melee-weapon.defense.label": "{{amount}} при экипировке",
+    "item.melee-weapon.knockback.label": "{{amount}} ({{multiplier}}, умноженный на обычное расстояние)",
+    "item.melee-weapon.reach.label": "{{amount}} пикселей",
+    "item.melee-weapon.speed.shown-vs-actual": "показана: {{shownSpeed}}{{lineBreak}}фактическая: {{actualSpeed}}",
+    "item.melee-weapon.speed.summary": "{{speed}} ({{milliseconds}} миллисекунд на кадр замаха, до бонусов скорости игрока)",
 
 
     /*********
@@ -426,7 +437,7 @@
     "item.movie-ticket.loves-movie": "Любит кино",
     "item.movie-ticket.likes-movie": "Нравится кино",
     "item.movie-ticket.dislikes-movie": "Не нравится кино",
-    "item.movie-ticket.rejects-movie": "Won't watch movie", // TODO
+    "item.movie-ticket.rejects-movie": "Не буду смотреть фильм",
 
     // values
     "item.movie-snack-preference.love": "{{name}} любит это",
@@ -485,7 +496,7 @@
     "npc.friendship.need-bouquet": "нужен букет для след.",
     "npc.friendship.need-points": "след. через {{count}}",
     "npc.undiscovered-gift-taste": "{{count}} нераскрытых предметов",
-    "npc.unowned-gift-taste": "{{count}} unowned items", // TODO
+    "npc.unowned-gift-taste": "{{count}} бесхозных предметов",
 
 
     /*********
@@ -666,17 +677,16 @@
     "config.force-full-screen.desc": "Всегда ли меню должно быть полноэкранным, а не размещаться по центру окна. В основном это полезно при просмотре полей с большим колличеством данных.",
 
     // progression mode
-    // TODO
     "config.title.progression": "Режим прохождения без спойлеров",
 
-    "config.progression.show-unknown-gift-tastes.name": "Show unknown gift tastes",
-    "config.progression.show-unknown-gift-tastes.desc": "Whether to show gift tastes you haven't learned about in-game yet (e.g. from dialogue text or experimenting).",
+    "config.progression.show-unknown-gift-tastes.name": "Показывать неизвестные предпочтения подарков",
+    "config.progression.show-unknown-gift-tastes.desc": "Показывать ли предпочтения подарков, о которых вы еще не узнали в игре (например, из текста диалога или экспериментируя)",
 
-    "config.progression.show-unknown-recipes.name": "Show unknown recipes",
-    "config.progression.show-unknown-recipes.desc": "Whether to show recipes you haven't learned in-game yet.",
+    "config.progression.show-unknown-recipes.name": "Показывать неизвестные рецепты",
+    "config.progression.show-unknown-recipes.desc": "Показывать ли рецепты, которые вы еще не выучили в игре.",
 
-    "config.progression.show-puzzle-solutions.name": "Show puzzle solutions",
-    "config.progression.show-puzzle-solutions.desc": "Whether to show puzzle solutions.",
+    "config.progression.show-puzzle-solutions.name": "Показывать решения головоломок",
+    "config.progression.show-puzzle-solutions.desc": "Показывать ли решения головоломок",
 
     // gift tastes
     "config.title.gift-tastes": "Подарки для персонажей",
@@ -698,46 +708,43 @@
     "config.highlight-unrevealed-gift-tastes.desc": "Следует ли выделять подарки, которые не указаны в профиле персонажа. Если эта функция включена, то нераскрытые предпочтения подарков будут выделены жирным шрифтом.",
 
     // collapse fields
-    // TODO
-    "config.title.collapse-fields": "Collapse large fields",
+    "config.title.collapse-fields": "Свернуть большие поля",
 
-    "config.collapse-fields.enabled.name": "Enabled",
-    "config.collapse-fields.enabled.desc": "Whether to collapse large fields, so the lookup menu will replace the list with a clickable 'show X values' link to expand it.",
+    "config.collapse-fields.enabled.name": "Включено",
+    "config.collapse-fields.enabled.desc": "Нужно ли сворачивать большие поля, чтобы меню поиска заменяло список с кликабельной ссылкой \"Показать X значений\", чтобы развернуть его.",
 
-    "config.collapse-fields.building-recipes.name": "Building lookup: recipes",
-    "config.collapse-fields.item-recipes.name": "Item lookup: recipes",
-    "config.collapse-fields.npc-gift-tastes.name": "NPC lookup: gift tastes",
-    "config.collapse-fields.any.desc": "If the field contains this many values, the lookup menu will replace the list with a clickable 'show X values' link to expand it.",
+    "config.collapse-fields.building-recipes.name": "Building lookup: рецепты", // TODO
+    "config.collapse-fields.item-recipes.name": "Поиск по предметам: рецепты",
+    "config.collapse-fields.npc-gift-tastes.name": "Поиск по NPC: предпочтения подарков",
+    "config.collapse-fields.any.desc": "Если поле содержит столько значений, то меню поиска заменит список ссылкой \"показать X значений\", чтобы развернуть его",
 
     // advanced options
-    // TODO
-    "config.title.advanced-options": "Advanced options",
-    "config.tile-lookups.name": "Tile lookups",
-    "config.tile-lookups.desc": "Whether to include map tiles as lookup targets.",
-    "config.data-mining-fields.name": "Show data mining fields",
-    "config.data-mining-fields.desc": "Whether to show raw data useful for data miners (as separate fields at the bottom of lookup results). This is an advanced feature not intended for most players.",
-    "config.target-redirection.name": "Target redirection",
-    "config.target-redirection.desc": "In some cases the game spawns a temporary entity to represent another one. For example, Abigail in the mines is actually a temporary NPC with the name 'AbigailMine', so looking her up there won't show Abigail's real info. With this option enabled, Lookup Anything will look up the original Abigail instead.",
-    "config.scroll-amount.name": "Scroll amount",
-    "config.scroll-amount.desc": "The number of pixels to shift content on each up/down scroll.",
+    "config.title.advanced-options": "Дополнительные опции",
+    "config.tile-lookups.name": "Просмотр плиток",
+    "config.tile-lookups.desc": "Включать ли плитки карты в качестве целей поиска.",
+    "config.data-mining-fields.name": "Показывать поля для добычи данных",
+    "config.data-mining-fields.desc": "Показывать ли необработанные данные, полезные для специалистов по добыче данных (в виде отдельных полей внизу результатов поиска). Это продвинутая функция, не предназначенная для большинства игроков.",
+    "config.target-redirection.name": "Перенаправление цели",
+    "config.target-redirection.desc": "В некоторых случаях игра порождает временную сущность для представления другой сущности. Например, Эбигейл в шахтах на самом деле временный NPC с именем 'AbigailMine', поэтому при поиске ее там не будет показана настоящая информация об Эбигейл. При включении этой опции функция Lookup Anything будет искать оригинальную Эбигейл.",
+    "config.scroll-amount.name": "Количество прокруток",
+    "config.scroll-amount.desc": "Количество пикселей, на которое будет смещаться содержимое при каждом прокручивании вверх/вниз.",
 
     // controls section
-    // TODO
-    "config.title.controls": "Controls",
-    "config.hide-on-key-up.name": "Hide on key up",
-    "config.hide-on-key-up.desc": "Whether to hide the lookup UI when you release the lookup key.",
-    "config.toggle-lookup.name": "Toggle lookup",
-    "config.toggle-lookup.desc": "The keys which toggle the lookup UI for something under the cursor.",
-    "config.toggle-search.name": "Toggle search",
-    "config.toggle-search.desc": "The keys which toggle the search UI.",
-    "config.scroll-up.name": "Scroll up",
-    "config.scroll-up.desc": "The keys which scroll up long content by a few lines.",
-    "config.scroll-down.name": "Scroll down",
-    "config.scroll-down.desc": "The keys which scroll down long content by a few lines.",
-    "config.page-up.name": "Page up",
-    "config.page-up.desc": "The keys which scroll up long content by a full page.",
-    "config.page-down.name": "Page down",
-    "config.page-down.desc": "The keys which scroll down long content by a full page.",
-    "config.toggle-debug.name": "Toggle debug",
-    "config.toggle-debug.desc": "The keys which toggle the display of debug information."
+    "config.title.controls": "Управление",
+    "config.hide-on-key-up.name": "Скрывать при отпускании клавиши",
+    "config.hide-on-key-up.desc": "Скрывать ли пользовательский интерфейс поиска при отпускании клавиши поиска.",
+    "config.toggle-lookup.name": "Toggle lookup", // TODO
+    "config.toggle-lookup.desc": "Клавиши, которые переключают пользовательский интерфейс для поиска чего-либо под курсором",
+    "config.toggle-search.name": "Toggle search", // TODO
+    "config.toggle-search.desc": "Клавиши, которые переключают пользовательский интерфейс поиска.",
+    "config.scroll-up.name": "Прокрутка вверх",
+    "config.scroll-up.desc": "Клавиши, которые прокручивают длинное содержимое на несколько строк вверх",
+    "config.scroll-down.name": "Прокрутка вниз",
+    "config.scroll-down.desc": "Клавиши, которые прокручивают длинное содержимое на несколько строк вниз.",
+    "config.page-up.name": "Страница вверх",
+    "config.page-up.desc": "Клавиши, которые прокручивают длинное содержимое вверх на целую страницу.",
+    "config.page-down.name": "Страница вниз",
+    "config.page-down.desc": "Клавиши, которые прокручивают длинное содержимое вниз на целую страницу.",
+    "config.toggle-debug.name": "Toggle debug", // TODO
+    "config.toggle-debug.desc": "Клавиши, переключающие отображение отладочной информации."
 }

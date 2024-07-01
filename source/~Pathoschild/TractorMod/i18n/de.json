@@ -152,7 +152,7 @@
     "config.harvest-giant-crops.tooltip": "Ob riesige Pflanzen geerntet werden sollen.",
 
     "config.harvest-crops.name": "Ernten von Feldfrüchten",
-    "config.Harvest Crops.tooltip": "Ob Feldfrüchte geerntet werden sollen.",
+    "config.harvest-crops.tooltip": "Ob Feldfrüchte geerntet werden sollen.",
 
     "config.harvest-flowers.name": "Ernten von Blumen",
     "config.harvest-flowers.tooltip": "Ob Blumen geerntet werden sollen.",
@@ -223,8 +223,8 @@
     /****
     ** Melee
     ****/
-    "config.Attack-monsters.name": "Monster angreifen",
-    "config.Attack-monsters.tooltip": "Ob man Monster angreift. (Dies ist aufgrund der Geschwindigkeit des Traktorwerkzeugs extrem overpowered).",
+    "config.attack-monsters.name": "Monster angreifen",
+    "config.attack-monsters.tooltip": "Ob man Monster angreift. (Dies ist aufgrund der Geschwindigkeit des Traktorwerkzeugs extrem overpowered).",
 
 
     /****

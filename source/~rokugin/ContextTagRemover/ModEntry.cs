@@ -11,16 +11,15 @@
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley.GameData.Objects;
-using HarmonyLib;
-using StardewValley;
-using Object = StardewValley.Object;
-using StardewValley.GameData.Machines;
-using Microsoft.Xna.Framework;
 
 namespace ContextTagRemover {
     internal class ModEntry : Mod {
 
-        Dictionary<string, List<string>> DataObjectsTags = new Dictionary<string, List<string>>();
+        readonly string objectTagsPath = "assets/objectTags.json";
+
+        TagRemoverContentLoader tagRemoverContentLoader = null!;
+
+        Dictionary<string, List<string>> dataObjectsTags = new Dictionary<string, List<string>>();
 
         bool dictionariesFilled = false;
 
@@ -36,8 +35,8 @@ namespace ContextTagRemover {
                     var data = asset.AsDictionary<string, ObjectData>().Data;
 
                     foreach ((string itemID, ObjectData itemData) in data) {
-                        if (DataObjectsTags.ContainsKey(itemID)) {
-                            foreach (var tag in DataObjectsTags[itemID]) {
+                        if (dataObjectsTags.ContainsKey(itemID)) {
+                            foreach (var tag in dataObjectsTags[itemID]) {
                                 itemData.ContextTags.Remove(tag);
                             }
                         }
@@ -47,11 +46,11 @@ namespace ContextTagRemover {
         }
 
         void FillDictionaries() {
-            DataObjectsTags.Add("74", new List<string> { "crystalarium_banned" });
+            dataObjectsTags.Add("74", new List<string> { "crystalarium_banned" });
             //DataObjectsTags.Add("MysteryBox", new List<string> { "geode_crusher_ignored" });
             //DataObjectsTags.Add("GoldenMysteryBox", new List<string> { "geode_crusher_ignored" });
-            DataObjectsTags.Add("275", new List<string> { "geode_crusher_ignored" });
-            DataObjectsTags.Add("791", new List<string> { "geode_crusher_ignored" });
+            dataObjectsTags.Add("275", new List<string> { "geode_crusher_ignored" });
+            dataObjectsTags.Add("791", new List<string> { "geode_crusher_ignored" });
 
             dictionariesFilled = true;
         }

@@ -12,9 +12,9 @@ mods:
    Spouses in Ginger Island
 
 latest commit:
-   commit aa551442446f556aea61d941d8fcfe67da992f41
+   commit ffb7c663468da74f6ab417f1961137bf11fe966d
    Author: Mistyspring <105533011+misty-spring@users.noreply.github.com>
-   Date:   Mon May 27 22:42:19 2024 +0000
+   Date:   Sun Jun 30 23:03:43 2024 -0400
    
-       fix typo
+       fix plantability issue
    

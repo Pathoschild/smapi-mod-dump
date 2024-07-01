@@ -11,9 +11,6 @@
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
-using StardewValley.Menus;
-using System;
-using System.Collections.Generic;
 
 namespace Email
 {
@@ -23,10 +20,10 @@ namespace Email
 
         public void OpenEmailApp()
         {
-            Helper.Events.Input.ButtonPressed += Input_ButtonPressed;
             api.SetAppRunning(true);
             api.SetRunningApp(Helper.ModRegistry.ModID);
-            Helper.Events.Display.RenderedWorld += Display_RenderedWorld;
+            api.OnAfterRenderScreen += Display_RenderedWorld;
+            Helper.Events.Input.ButtonPressed += Input_ButtonPressed;
             opening = true;
         }
 
@@ -34,8 +31,8 @@ namespace Email
         {
             api.SetAppRunning(false);
             api.SetRunningApp(null);
+            api.OnAfterRenderScreen -= Display_RenderedWorld;
             Helper.Events.Input.ButtonPressed -= Input_ButtonPressed;
-            Helper.Events.Display.RenderedWorld -= Display_RenderedWorld;
         }
 
 

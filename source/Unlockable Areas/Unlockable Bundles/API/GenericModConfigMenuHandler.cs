@@ -38,8 +38,21 @@ namespace Unlockable_Bundles.API
             configMenu.Register(
                 mod: ModManifest,
                 reset: () => Config = new ModConfig(),
-                save: () => Helper.WriteConfig(ModEntry.Config)
+                save: () => {
+                    Helper.WriteConfig(Config);
+                    DebugLogLevel = Config.DebugLogging ? LogLevel.Debug : LogLevel.Trace;
+                }
             );
+
+            configMenu.AddBoolOption(
+                mod: ModManifest,
+                name: () => "Debug Logging",
+                getValue: () => Config.DebugLogging,
+                setValue: value => Config.DebugLogging = value,
+                tooltip: () => "Will log mostly in LogLevel.Debug instead of LogLevel.Trace"
+             );
+
+            configMenu.AddSectionTitle(ModManifest, () => "Dialogue Bundle Options");
 
             configMenu.AddNumberOption(
                 mod: ModManifest,
@@ -53,7 +66,7 @@ namespace Unlockable_Bundles.API
 
             configMenu.AddNumberOption(
                 mod: ModManifest,
-                name: () => "Max Cost Name Characters",
+                name: () => "Max Characters",
                 getValue: () => Config.ScrollCharacterLength,
                 setValue: value => Config.ScrollCharacterLength = value,
                 interval: 1,

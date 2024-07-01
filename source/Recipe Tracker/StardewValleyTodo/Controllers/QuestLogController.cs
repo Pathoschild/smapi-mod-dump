@@ -96,7 +96,7 @@ namespace StardewValleyTodo.Controllers {
             var info = Game1.objectData[key];
             var itemName = LocalizedStringLoader.Load(info.DisplayName);
 
-            return (new CountableItem(key, itemName, amount));
+            return new CountableItem(key, itemName, amount);
         }
 
         private string FormatQuestName(string title, string npcName) {

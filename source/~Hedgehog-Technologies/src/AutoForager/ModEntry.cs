@@ -119,7 +119,7 @@ namespace AutoForager
 		{
 			if (data is Dictionary<string, FruitTreeData> fruitTreeData)
 			{
-				Monitor.Log("Parsing Fruit Tree Data", LogLevel.Debug);
+				Monitor.Log("Parsing Fruit Tree Data", _config.DebugLogLevel());
 
 				_forageableTracker.FruitTreeForageables.Clear();
 				_forageableTracker.FruitTreeForageables.AddRange(ForageableItem.ParseFruitTreeData(fruitTreeData, _config?.ForageToggles[Constants.FruitTreeToggleKey], Monitor));
@@ -129,12 +129,12 @@ namespace AutoForager
 			{
 				if (ObjectCache is null || ObjectCache.Count == 0)
 				{
-					Monitor.Log("Sub-Location: Grabbing Object Data", LogLevel.Debug);
+					Monitor.Log("Sub-Location: Grabbing Object Data", _config.DebugLogLevel());
 
 					ObjectCache = DataLoader.Objects(Game1.content);
 				}
 
-				Monitor.Log("Parsing Location Data", LogLevel.Debug);
+				Monitor.Log("Parsing Location Data", _config.DebugLogLevel());
 
 				_forageableTracker.ObjectForageables.AddOrMergeCustomFieldsRange(ForageableItem.ParseLocationData(locationData, _config?.ForageToggles[Constants.ForagingToggleKey], Monitor));
 				_forageableTracker.ObjectForageables.SortByDisplayName();
@@ -143,7 +143,7 @@ namespace AutoForager
 			{
 				var parsedObjectForageableItems = ForageableItem.ParseObjectData(objectData, _config, Monitor);
 
-				Monitor.Log("Parsing Object Data", LogLevel.Debug);
+				Monitor.Log("Parsing Object Data", _config.DebugLogLevel());
 
 				_forageableTracker.ObjectForageables.Clear();
 				_forageableTracker.ObjectForageables.AddRange(parsedObjectForageableItems.Item1);
@@ -155,14 +155,14 @@ namespace AutoForager
 
 				if (LocationCache is not null && LocationCache.Count > 0)
 				{
-					Monitor.Log("Sub-Object: Parsing Location Data", LogLevel.Debug);
+					Monitor.Log("Sub-Object: Parsing Location Data", _config.DebugLogLevel());
 					_forageableTracker.ObjectForageables.AddOrMergeCustomFieldsRange(ForageableItem.ParseLocationData(LocationCache, _config?.ForageToggles[Constants.ForagingToggleKey], Monitor));
 					_forageableTracker.ObjectForageables.SortByDisplayName();
 				}
 			}
 			else if (data is Dictionary<string, WildTreeData> wildTreeData)
 			{
-				Monitor.Log("Parsing Wild Tree Data", LogLevel.Debug);
+				Monitor.Log("Parsing Wild Tree Data", _config.DebugLogLevel());
 
 				_forageableTracker.WildTreeForageables.Clear();
 				_forageableTracker.WildTreeForageables.AddRange(ForageableItem.ParseWildTreeData(wildTreeData, _config?.ForageToggles[Constants.WildTreeToggleKey], Monitor));
@@ -171,7 +171,7 @@ namespace AutoForager
 
 			if (_config is not null && _gameStarted)
 			{
-				Monitor.Log("Reregistering Generic Mod Config Menu", LogLevel.Debug);
+				Monitor.Log("Reregistering Generic Mod Config Menu", _config.DebugLogLevel());
 
 				_config.RegisterModConfigMenu(Helper, ModManifest);
 			}
@@ -381,7 +381,7 @@ namespace AutoForager
 						}
 						else
 						{
-							Monitor.LogOnce($"Found Bush Bloom Schedule for: [{itemId}]", LogLevel.Debug);
+							Monitor.LogOnce($"Found Bush Bloom Schedule for: [{itemId}]", _config.DebugLogLevel());
 							_bushBloomItems.Add(itemId, "Category.BushBlooms");
 						}
 					}
@@ -402,7 +402,7 @@ namespace AutoForager
 						}
 						else
 						{
-							Monitor.LogOnce($"Found Custom Bush for: [{itemId}]", LogLevel.Debug);
+							Monitor.LogOnce($"Found Custom Bush for: [{itemId}]", _config.DebugLogLevel());
 							_customTeaBushItems.Add(itemId, "Category.Custombushes");
 						}
 					}
@@ -410,6 +410,7 @@ namespace AutoForager
 
 				_ftm = new FarmTypeManagerWrapper(Monitor, Helper);
 				var ftmForageables = _ftm.UpdateForageIds();
+				var logLevel = _config.DebugLogLevel();
 
 				foreach (var kvp in ftmForageables)
 				{
@@ -422,7 +423,7 @@ namespace AutoForager
 						cpName = cpMod.Manifest.Name;
 					}
 
-					Monitor.Log($"{cpName} - {cpUniqueName}", LogLevel.Debug);
+					Monitor.Log($"{cpName} - {cpUniqueName}", logLevel);
 
 					foreach (var value in kvp.Value)
 					{
@@ -430,11 +431,11 @@ namespace AutoForager
 
 						if (_ftmForageables.ContainsKey(itemId))
 						{
-							Monitor.Log($"\tFound repeat forageable: {itemId}", LogLevel.Debug);
+							Monitor.Log($"\tFound repeat forageable: {itemId}", logLevel);
 						}
 						else
 						{
-							Monitor.Log($"\tFound new forageable: {itemId}", LogLevel.Debug);
+							Monitor.Log($"\tFound new forageable: {itemId}", logLevel);
 							_ftmForageables.Add(itemId, cpName);
 						}
 					}
@@ -491,7 +492,7 @@ namespace AutoForager
 								|| (tree.GetData().ShakeItems?.Any(s => _forageableTracker.WildTreeForageables.Any(i => (s.ItemId.Contains(i.QualifiedItemId) || s.ItemId.Contains(i.ItemId)) && i.IsEnabled)) ?? false)))
 							{
 								tree.performUseAction(tree.Tile);
-								Monitor.Log($"Tree shaken: {string.Join(", ", seedItemIds)}", LogLevel.Debug);
+								Monitor.Log($"Tree shaken: {string.Join(", ", seedItemIds)}", _config.DebugLogLevel());
 
 								foreach (var id in seedItemIds)
 								{
@@ -550,7 +551,7 @@ namespace AutoForager
 							if (_forageableTracker.FruitTreeForageables.Any(i => fruitItemIds.Contains(i.QualifiedItemId) && i.IsEnabled))
 							{
 								fruitTree.performUseAction(fruitTree.Tile);
-								Monitor.Log($"Fruit Tree shaken: {string.Join(", ", fruitItemIds)}", LogLevel.Debug);
+								Monitor.Log($"Fruit Tree shaken: {string.Join(", ", fruitItemIds)}", _config.DebugLogLevel());
 
 								foreach (var id in fruitItemIds)
 								{
@@ -566,7 +567,7 @@ namespace AutoForager
 							}
 							else
 							{
-								Monitor.Log($"Fruit Tree not shaken: {string.Join(", ", fruitItemIds)}", LogLevel.Debug);
+								Monitor.Log($"Fruit Tree not shaken: {string.Join(", ", fruitItemIds)}", _config.DebugLogLevel());
 							}
 
 							break;
@@ -632,7 +633,7 @@ namespace AutoForager
 
 								default:
 									// $TODO - Improve error message
-									Monitor.LogOnce($"No good case: {whichCrop}", LogLevel.Debug);
+									Monitor.LogOnce($"No good case: {whichCrop}", _config.DebugLogLevel());
 									break;
 							}
 
@@ -674,13 +675,13 @@ namespace AutoForager
 						if (!_config.RequireHoe && tool is null)
 						{
 							tool = new Hoe();
-							Monitor.Log($"Failed to get instance of existing Hoe Tool - {_config.RequireHoe}", LogLevel.Debug);
+							Monitor.Log($"Failed to get instance of existing Hoe Tool - {_config.RequireHoe}", _config.DebugLogLevel());
 						}
 
 						// TODO - Improve logging
 						if (tool is null)
 						{
-							Monitor.Log($"Failed to get instance of Hoe Tool - {_config.RequireHoe}", LogLevel.Debug);
+							Monitor.Log($"Failed to get instance of Hoe Tool - {_config.RequireHoe}", _config.DebugLogLevel());
 						}
 						else
 						{
@@ -733,7 +734,7 @@ namespace AutoForager
 
 			_isForagerActive = !_isForagerActive;
 			Task.Run(() => Helper.WriteConfig(_config)).ContinueWith(t =>
-				Monitor.Log(t.Status == TaskStatus.RanToCompletion ? "Config saved successfully!" : $"Saving config unsuccessful {t.Status}", LogLevel.Debug));
+				Monitor.Log(t.Status == TaskStatus.RanToCompletion ? "Config saved successfully!" : $"Saving config unsuccessful {t.Status}", _config.DebugLogLevel()));
 
 			var state = _isForagerActive ? I18n.State_Activated() : I18n.State_Deactivated();
 			var message = I18n.Message_AutoForagerToggled(state);
@@ -801,7 +802,7 @@ namespace AutoForager
 			if (!bush.isActionable())
 			{
 				Monitor.Log($"A bush feature of size [{bush.size.Value}] was marked as not actionable. This shouldn't be possible.", LogLevel.Warn);
-				Monitor.Log($"Size: [{bush.size.Value}]; Location: [{bush.Location.NameOrUniqueName}]; Tile Location [{bush.Tile}]; Town Bush: [{bush.townBush.Value}]", LogLevel.Debug);
+				Monitor.Log($"Size: [{bush.size.Value}]; Location: [{bush.Location.NameOrUniqueName}]; Tile Location [{bush.Tile}]; Town Bush: [{bush.townBush.Value}]", _config.DebugLogLevel());
 			}
 
 			switch (bush.size.Value)
@@ -833,7 +834,7 @@ namespace AutoForager
 
 						if (!_forageableTracker.BushForageables.TryGetItem(shakeOffItem, out var bItem) || !(bItem?.IsEnabled ?? false))
 						{
-							Monitor.LogOnce($"{shakeOffItem} was not shaken from custom bush as it does not exist or is disabled.", LogLevel.Debug);
+							Monitor.LogOnce($"{shakeOffItem} was not shaken from custom bush as it does not exist or is disabled.", _config.DebugLogLevel());
 							return false;
 						}
 						else
@@ -1026,7 +1027,7 @@ namespace AutoForager
 					try
 					{
 						var content = pack.ReadJsonFile<ContentEntry>("content.json");
-						Monitor.LogOnce($"Found content pack: {pack.DirectoryPath}", LogLevel.Debug);
+						Monitor.LogOnce($"Found content pack: {pack.DirectoryPath}", _config.DebugLogLevel());
 
 						if (content?.Forageables is not null)
 						{

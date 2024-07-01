@@ -28,7 +28,20 @@ namespace TransparencySettings
                 if (api == null) //if the API is not available
                     return;
 
-                api.Register(ModManifest, () => Config = new ModConfig(), () => Helper.WriteConfig(Config)); //register the mod's menu, define its reset/save actions, and allow in-game changes
+                api.Register //register the mod's menu, define its reset/save actions, and allow in-game changes
+                (
+                    mod: ModManifest,
+                    reset: () =>
+                    {
+                        Config = new ModConfig();
+                        CacheManager.ClearCache(); //reset cache whenever settings change
+                    },
+                    save: () =>
+                    {
+                        Helper.WriteConfig(Config);
+                        CacheManager.ClearCache();
+                    }
+                );
 
                 //register an option for each of this mod's config settings
 
@@ -219,6 +232,54 @@ namespace TransparencySettings
                     tooltip: () => Helper.Translation.Get("Grass.MinimumOpacity.Desc"),
                     getValue: () => Config.GrassSettings.MinimumOpacity,
                     setValue: (float val) => Config.GrassSettings.MinimumOpacity = val,
+                    min: 0f,
+                    max: 1f,
+                    interval: 0.01f
+                );
+
+                //crops
+
+                api.AddSectionTitle
+                (
+                    mod: ModManifest,
+                    text: () => Helper.Translation.Get("Crop.Title.Name"),
+                    tooltip: () => Helper.Translation.Get("Crop.Title.Desc")
+                );
+
+                api.AddBoolOption
+                (
+                    mod: ModManifest,
+                    name: () => Helper.Translation.Get("Crop.Enable.Name"),
+                    tooltip: () => Helper.Translation.Get("Crop.Enable.Desc"),
+                    getValue: () => Config.CropSettings.Enable,
+                    setValue: (bool val) => Config.CropSettings.Enable = val
+                );
+
+                api.AddBoolOption
+                (
+                    mod: ModManifest,
+                    name: () => Helper.Translation.Get("Crop.Below.Name"),
+                    tooltip: () => Helper.Translation.Get("Crop.Below.Desc"),
+                    getValue: () => Config.CropSettings.BelowPlayerOnly,
+                    setValue: (bool val) => Config.CropSettings.BelowPlayerOnly = val
+                );
+
+                api.AddNumberOption
+                (
+                    mod: ModManifest,
+                    name: () => Helper.Translation.Get("Crop.Distance.Name"),
+                    tooltip: () => Helper.Translation.Get("Crop.Distance.Desc"),
+                    getValue: () => Config.CropSettings.TileDistance,
+                    setValue: (int val) => Config.CropSettings.TileDistance = val
+                );
+
+                api.AddNumberOption
+                (
+                    mod: ModManifest,
+                    name: () => Helper.Translation.Get("Crop.MinimumOpacity.Name"),
+                    tooltip: () => Helper.Translation.Get("Crop.MinimumOpacity.Desc"),
+                    getValue: () => Config.CropSettings.MinimumOpacity,
+                    setValue: (float val) => Config.CropSettings.MinimumOpacity = val,
                     min: 0f,
                     max: 1f,
                     interval: 0.01f

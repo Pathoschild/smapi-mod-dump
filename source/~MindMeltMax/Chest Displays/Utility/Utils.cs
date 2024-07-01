@@ -46,19 +46,20 @@ namespace ChestDisplays.Utility
         internal static Dictionary<string, string> boots = Game1.content.Load<Dictionary<string, string>>("Data\\Boots", LocalizedContentManager.LanguageCode.en);
 
         internal static Dictionary<Chest, Item> displayItemsCache = new();
+        internal static Dictionary<Chest, ModData> displayModDataCache = new();
 
         public static int getItemType(Item i)
         {
             return i switch
             {
-                Hat _ => 2,
-                Boots _ => 8,
-                Clothing _ => 7,
-                Ring _ => 4,
-                Furniture _ => 5,
-                MeleeWeapon _ => 9,
-                Slingshot _ => 9,
-                Tool _ => 6,
+                Hat => 2,
+                Boots => 8,
+                Clothing => 7,
+                Ring => 4,
+                Furniture => 5,
+                MeleeWeapon => 9,
+                Slingshot => 9,
+                Tool => 6,
                 Object o => o.bigCraftable.Value ? 3 : 1,
                 _ => 1
             };
@@ -73,8 +74,8 @@ namespace ChestDisplays.Utility
                     i.drawInMenu(spriteBatch, location, 0.5f, ItemTransparency, layerDepth, StackDrawType.Hide, Color.White, false);
                     if (ModEntry.IConfig.DisplayQuality && quality > 0)
                     {
-                        float num = quality < 4 ? 0.0f : (float)((Math.Cos((double)Game1.currentGameTime.TotalGameTime.Milliseconds * Math.PI / 512.0) + 1.0) * 0.0500000007450581);
-                        spriteBatch.Draw(Game1.mouseCursors, location + new Vector2(12f, 32f + num), new Rectangle?(quality < 4 ? new Rectangle(338 + (quality - 1) * 8, 400, 8, 8) : new Rectangle(346, 392, 8, 8)), Color.White, 0.0f, new Vector2(4f, 4f), (float)(3.0 * 0.5 * (1.0 + num)), SpriteEffects.None, layerDepth + 0.0000001f);
+                        float num = quality < 4 ? 0.0f : (float)((Math.Cos(Game1.currentGameTime.TotalGameTime.Milliseconds * Math.PI / 512.0) + 1.0) * 0.0500000007450581);
+                        spriteBatch.Draw(Game1.mouseCursors, location + new Vector2(18f, 42f + num), new Rectangle?(quality < 4 ? new Rectangle(338 + (quality - 1) * 8, 400, 8, 8) : new Rectangle(346, 392, 8, 8)), Color.White, 0.0f, new Vector2(4f, 4f), (float)(4.0 * 0.5 * (1.0 + num)), SpriteEffects.None, layerDepth + 0.0000001f);
                     }
                     break;
                 case 3:
@@ -86,18 +87,19 @@ namespace ChestDisplays.Utility
             }
         }
 
-        public static Vector2 GetLocationFromItemType(int itemType, int x, int y)
+        public static Vector2 GetLocationFromItemType(int itemType, int x, int y, bool isBigChest = false, bool isMiniFridge = false)
         {
             return itemType switch
             {
-                2 => Game1.GlobalToLocal(Game1.viewport, new Vector2((x * 64) + 1f - 2, (y * 64 - 64 + 21 + 8 + 4 - 1))),
-                3 => Game1.GlobalToLocal(Game1.viewport, new Vector2((x * 64), (y * 64 - 64 + 21 + 2 + 4 - 1))),
-                4 => Game1.GlobalToLocal(Game1.viewport, new Vector2((x * 64) - 1f + 4, (y * 64 - 64 + 21 + 8 + 4 - 1))),
-                5 => Game1.GlobalToLocal(Game1.viewport, new Vector2((x * 64), (y * 64 - 64 + 21 + 4 + 4 - 1))),
-                6 => Game1.GlobalToLocal(Game1.viewport, new Vector2((x * 64) + 2f, (y * 64 - 64 + 21 + 4 + 4 - 1))),
-                7 => Game1.GlobalToLocal(Game1.viewport, new Vector2((x * 64) - 2, (y * 64 - 64 + 21 + 2 + 4 - 1))),
-                9 => Game1.GlobalToLocal(Game1.viewport, new Vector2((x * 64) + 2f, (y * 64 - 64 + 21 + 4 + 4 - 1))),
-                _ => Game1.GlobalToLocal(Game1.viewport, new Vector2((x * 64) + 8, (y * 64) - 32)),
+                2 => Game1.GlobalToLocal(Game1.viewport, new Vector2((x * 64) + 1f - 2, (y * 64 - 64 + 21 + 8) - (isMiniFridge ? 24 : (isBigChest ? 16 : 0)))),
+                3 => Game1.GlobalToLocal(Game1.viewport, new Vector2((x * 64), (y * 64 - 64 + 21 + 2 + 4 - 1) - (isMiniFridge ? 24 : 0))),
+                4 => Game1.GlobalToLocal(Game1.viewport, new Vector2((x * 64) + 8, (y * 64 - 64 + 21 + 16) - (isMiniFridge ? 12 : (isBigChest ? 8 : 0)))),
+                5 => Game1.GlobalToLocal(Game1.viewport, new Vector2((x * 64), (y * 64 - 64 + 21 + 4 + 4 - 1) - (isMiniFridge ? 18 : (isBigChest ? 12 : 0)))),
+                6 => Game1.GlobalToLocal(Game1.viewport, new Vector2((x * 64) + 2f, (y * 64 - 64 + 21 + 4 + 4 - 1) - (isMiniFridge ? 18 : (isBigChest ? 12 : 0)))),
+                7 => Game1.GlobalToLocal(Game1.viewport, new Vector2((x * 64), (y * 64 - 64 + 21 + 2 + 4 - 1) - (isMiniFridge ? 24 : (isBigChest ? 16 : 0)))),
+                8 => Game1.GlobalToLocal(Game1.viewport, new Vector2((x * 64) + 10, (y * 64) - 24 - (isMiniFridge ? 18 : (isBigChest ? 12 : 0)))),
+                9 => Game1.GlobalToLocal(Game1.viewport, new Vector2((x * 64), (y * 64 - 64 + 21 + 4 + 4 - 1) - (isMiniFridge ? 20 : (isBigChest ? 8 : 0)))),
+                _ => Game1.GlobalToLocal(Game1.viewport, new Vector2((x * 64), (y * 64) - 36 - (isMiniFridge ? 16 : (isBigChest ? 16 : 0)))),
             };
         }
 
@@ -115,7 +117,7 @@ namespace ChestDisplays.Utility
             };
         }
 
-        public static bool InvalidChest(Chest c) => c.Type != "Crafting" || c.giftbox.Value || c.fridge.Value;
+        public static bool InvalidChest(Chest c) => c.Type != "Crafting" || c.giftbox.Value || (c.Name.Contains("Fridge") && !ModEntry.IConfig.ShowFridgeIcon);
 
         public static IEnumerable<SButton> ParseSButton(string btn)
         {
@@ -128,9 +130,12 @@ namespace ChestDisplays.Utility
         internal static void updateCache(Chest c)
         {
             displayItemsCache.Remove(c);
+            displayModDataCache.Remove(c);
             if (!c.modData.ContainsKey(ModEntry.IHelper.ModRegistry.ModID))
                 return;
             var data = JsonConvert.DeserializeObject<ModData>(c.modData[ModEntry.IHelper.ModRegistry.ModID]);
+            if (data is not null)
+                displayModDataCache.Add(c, data);
             Item? i = BuildItemFromData(data);
             if (i is null)
                 return;

@@ -9,6 +9,7 @@
 *************************************************/
 
 {
+  "$schema": "https://smapi.io/schemas/manifest.json",
   "Name": "Context Tag Remover",
   "Author": "rokugin",
   "Version": "1.0.0",

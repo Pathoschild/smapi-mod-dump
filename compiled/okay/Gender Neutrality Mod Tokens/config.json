@@ -1,6 +1,6 @@
 {
   "Singular": false,
-  "SubjectivePronoun": "Xe",
+  "SubjectivePronoun": "They",
   "ObjectivePronoun": "Them",
   "PosessivePronoun": "Their",
   "Title": "Mx.",
@@ -16,5 +16,6 @@
   "ChildFamilialNoun": "Cousin",
   "ServiceFormalNoun": "Esteemed Patron",
   "TraderNoun": "Traveller",
-  "ParentalNoun": "Parent"
+  "ParentalNoun": "Parent",
+  "TermOfEndearment": "Sweetie"
 }

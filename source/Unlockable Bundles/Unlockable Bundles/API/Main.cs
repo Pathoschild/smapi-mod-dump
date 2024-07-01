@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Unlockable_Bundles.API.ContentPatcher;
 
 namespace Unlockable_Bundles.API
 {

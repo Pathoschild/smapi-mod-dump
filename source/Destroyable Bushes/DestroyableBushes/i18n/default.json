@@ -9,12 +9,14 @@
 *************************************************/
 
 {
-  "AxeUpgradesRequired.Name": "Axe upgrade",
+  "AxeUpgradesRequired.Name": "Minimum axe upgrade",
   "AxeUpgradesRequired.Desc": "The minimum axe upgrade required to destroy bushes.",
+  "AxeDamageMultiplier.Name": "Axe damage multiplier",
+  "AxeDamageMultiplier.Desc": "When an axe hits a bush, the damage is multiplied by this number.\n\nThis doesn't affect tea bushes. To prevent bugs, walnut bushes always take at least 2 hits.\n\nExamples: \"0.5\" deals half damage. \"2\" deals double damage. \"8\" destroys bushes in one hit.",
   "WhenBushesRegrow.Name": "When bushes regrow",
-  "WhenBushesRegrow.Desc": "The amount of time before destroyed bushes will regrow.\nType a number and then a unit of time (Days, Seasons, Years).\nIf this is blank, bushes will never regrow.\nExamples: \"3 days\" \"1 season\" \"1 year\"",
+  "WhenBushesRegrow.Desc": "The amount of time before destroyed bushes will regrow. If this is blank, bushes will never regrow.\n\nType a number and then a unit of time (Days, Seasons, Years).\n\nExamples: \"3 days\" \"1 season\" \"1 year\"",
   "DestroyableBushLocations.Name": "Destroyable bush locations",
-  "DestroyableBushLocations.Desc": "A list of locations where bushes should be destroyable.\nIf the list is empty, all locations will be allowed.\nSeparate each name with a comma.\nExample: \"Farm, BusStop, Forest, Woods\"",
+  "DestroyableBushLocations.Desc": "A list of locations where bushes can be destroyed. If the list is empty, they can be destroyed anywhere.\n\nSeparate each location name with a comma.\n\nExample: \"Farm, BusStop, Forest, Woods\"",
   "DestroyableBushTypes.Name": "Destroyable bush types",
   "DestroyableBushTypes.Desc": "The types of bush that are allowed to be destroyed.",
   "DestroyableBushTypes.SmallBushes.Name": "Small bushes",

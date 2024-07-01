@@ -2,5 +2,7 @@
     "AutoSwingWeapon.name": "Auto Swing Weapon",
     "InstantClubsSpecialAttack.name": "Club Spam Special Attack",
     "InstantClubsSpecialAttack.tooltip": "Press and hold the Right-Click/DoAction-Button to perform special ground slam with the club weapon.",
-    "AlwaysFaceTheCursor.name": "Always Face The Cursor Direction"
+    "AlwaysFaceTheCursor.name": "Always Face The Cursor Direction",
+    "DisableChangeFacingDirection.name": "Disable Change Facing Direction",
+    "DisableChangeFacingDirection.tooltip": "If disabled, \"Always Face The Cursor Direction\" will not work."
 }

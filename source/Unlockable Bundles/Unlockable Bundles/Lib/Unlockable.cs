@@ -27,6 +27,7 @@ using Unlockable_Bundles.Lib.AdvancedPricing;
 using StardewValley.GameData;
 using StardewValley.Internal;
 using static Unlockable_Bundles.ModEntry;
+using Unlockable_Bundles.Lib.WalletCurrency;
 
 namespace Unlockable_Bundles.Lib
 {
@@ -51,6 +52,9 @@ namespace Unlockable_Bundles.Lib
         private NetString _shopTexture = new();
         private NetString _shopAnimation = new();
         private NetInt _shopTextureWidth = new();
+        private NetInt _shopTextureHeight = new();
+        private NetVector2 _shopDrawDimensions = new();
+        private NetVector2 _shopDrawOffset = new();
         private NetString _shopEvent = new();
         private NetEnum<ShopType> _shopType = new();
         private NetBool _instantShopRemoval = new();
@@ -89,7 +93,6 @@ namespace Unlockable_Bundles.Lib
         private NetString _editMapLocation = new();
 
         public NetBool _completed = new NetBool(false); //This value is currently only valid from the moment a bundle was purchased till end of day
-
         public string ID { get => _id.Value; set => _id.Value = value; }
         public string Location { get => _location.Value; set => _location.Value = value; }
         public string LocationUnique { get => _locationUnique.Value; set => _locationUnique.Value = value; }
@@ -107,6 +110,9 @@ namespace Unlockable_Bundles.Lib
         public string ShopTexture { get => _shopTexture.Value; set => _shopTexture.Value = value; }
         public string ShopAnimation { get => _shopAnimation.Value; set => _shopAnimation.Value = value; }
         public int ShopTextureWidth { get => _shopTextureWidth.Value; set => _shopTextureWidth.Value = value; }
+        public int ShopTextureHeight { get => _shopTextureHeight.Value; set => _shopTextureHeight.Value = value; }
+        public Vector2 ShopDrawDimensions { get => _shopDrawDimensions.Value; set => _shopDrawDimensions.Value = value; }
+        public Vector2 ShopDrawOffset { get => _shopDrawOffset.Value; set => _shopDrawOffset.Value = value; }
         public string ShopEvent { get => _shopEvent.Value; set => _shopEvent.Value = value; }
         public ShopType ShopType { get => _shopType.Value; set => _shopType.Value = value; }
         public bool InstantShopRemoval { get => _instantShopRemoval.Value; set => _instantShopRemoval.Value = value; }
@@ -138,6 +144,8 @@ namespace Unlockable_Bundles.Lib
         public Vector2 EditMapPosition { get => _editMapPosition.Value; set => _editMapPosition.Value = value; }
         public string EditMapLocation { get => _editMapLocation.Value; set => _editMapLocation.Value = value; }
 
+        public List<PlacementRequirement> SpecialPlacementRequirements = new(); //Not a NetField, only relevant for host
+
         private string CachedLocalizedShopDescription = null;
         private string CachedLocalizedOverviewDescription = null;
         public static Dictionary<string, string> CachedJsonAssetIDs = new Dictionary<string, string>();
@@ -163,7 +171,10 @@ namespace Unlockable_Bundles.Lib
             this._alternativeShopPositions = new(model.AlternativeShopPositions);
             this.ShopTexture = model.ShopTexture;
             this.ShopAnimation = model.ShopAnimation;
-            this.ShopTextureWidth = model.ShopTextureWidth;
+            this.ShopTextureWidth = (int)model.ShopTextureWidth;
+            this.ShopTextureHeight = (int)model.ShopTextureHeight;
+            this.ShopDrawDimensions = model.ShopDrawDimensions;
+            this.ShopDrawOffset = model.ShopDrawOffset;
             this.ShopEvent = model.ShopEvent;
             this.ShopType = model.ShopType;
             this.InstantShopRemoval = model.InstantShopRemoval == true;
@@ -201,6 +212,8 @@ namespace Unlockable_Bundles.Lib
             this.EditMapPosition = model.EditMapPosition;
             this.EditMapLocation = model.EditMapLocation;
             addNetFields();
+
+            this.SpecialPlacementRequirements = PlacementRequirement.CloneList(model.SpecialPlacementRequirements);
         }
 
         public Unlockable() => addNetFields();
@@ -223,6 +236,9 @@ namespace Unlockable_Bundles.Lib
             .AddField(_shopTexture, "_shopTexture")
             .AddField(_shopAnimation, "_shopAnimation")
             .AddField(_shopTextureWidth, "_shopTextureWidth")
+            .AddField(_shopTextureHeight, "_shopTextureHeight")
+            .AddField(_shopDrawDimensions, "_shopDrawDimensions")
+            .AddField(_shopDrawOffset, "_shopDrawOffset")
             .AddField(_shopEvent, "_shopEvent")
             .AddField(_shopType, "_shopType")
             .AddField(_instantShopRemoval, "_instantShopRemoval")
@@ -342,7 +358,7 @@ namespace Unlockable_Bundles.Lib
                 _ => -1
             };
         }
-        public static bool isExceptionItem(string id) => id.ToLower().Trim() == "money" || id == "(O)858" || id == "(O)73";
+        public static bool isExceptionItem(string id) => id.ToLower().Trim() == "money" || id == "(O)858" || id == "(O)73" || WalletCurrencyHandler.getCurrencyItemMatch(id, out _, out _, out _);
         public static string getIDFromReqSplit(string key)
         {
             var id = key.Split(":").First().Trim();
@@ -386,8 +402,15 @@ namespace Unlockable_Bundles.Lib
 
         public void processShopEvent()
         {
-            if (InstantShopRemoval)
-                Task.Delay(800).ContinueWith(t => ShopPlacement.removeShop(this));
+            Task.Delay(800).ContinueWith(t => {
+                if (InstantShopRemoval)
+                    ShopPlacement.removeShop(this);
+
+                if (Context.IsMainPlayer)
+                    PlacementRequirement.CheckShopPlacement(PlacementRequirementType.BundleCompletion);
+                else
+                    Helper.Multiplayer.SendMessage(new KeyValuePair<PlacementRequirementType, string>(PlacementRequirementType.BundleCompletion, ""), "SPRUpdated", modIDs: new[] { ModManifest.UniqueID }, playerIDs: new[] { Game1.MasterPlayer.UniqueMultiplayerID});
+            });
 
             if (ShopEvent.ToLower() != "none" && Game1.activeClickableMenu != null) {
                 Game1.dialogueUp = false;
@@ -403,7 +426,7 @@ namespace Unlockable_Bundles.Lib
                 openRewardsMenu();
                 return;
             } else {
-                if (!ShopEvent.Contains(UBEvent.APPLYPATCH))
+                if (!ShopEvent.ToLower().Contains(UBEvent.APPLYPATCH.ToLower()))
                     MapPatches.applyUnlockable(this);
                 var ev = new UBEvent(this, ShopEvent, Game1.player);
                 ev.onEventFinished = openRewardsMenu;
@@ -483,7 +506,7 @@ namespace Unlockable_Bundles.Lib
             if (_completed.Value)
                 return true;
 
-            if (ShopType is ShopType.CCBundle or ShopType.AltCCBundle)
+            if (ShopType is ShopType.CCBundle)
                 return _alreadyPaid.Count() >= BundleSlots;
 
             return _price.Pairs.All(e => _alreadyPaid.ContainsKey(e.Key));
@@ -510,11 +533,6 @@ namespace Unlockable_Bundles.Lib
 
             else if (id.TrimStart().StartsWith(AdvancedPricingItem.FLAVOREDTYPEDEFINITION, StringComparison.OrdinalIgnoreCase))
                 return AdvancedPricingItem.parseFlavoredItem(id, initialStack, quality);
-
-            else if (id.TrimStart().StartsWith("(!UB)", StringComparison.OrdinalIgnoreCase))
-                Monitor.Log("The Syntax for advanced pricing changed a little to be more readable. Thank you for understanding.\n" +
-                    "New Syntax for generated flavored items: (UB.Flavored)<PreserveType>.<QualifiedItemId>\n" +
-                    "New Syntax for advanced pricing items: (UB.AP)<AdvancedPricingKey>", LogLevel.Warn);
 
             var ret = ItemRegistry.Create(id, initialStack, quality: quality);
 
@@ -596,6 +614,16 @@ namespace Unlockable_Bundles.Lib
                     ret.Add(item);
             }
             return ret;
+        }
+
+        public bool updatePlacementRequirements()
+        {
+            var allFulfilled = true;
+            foreach (var placementRequirement in SpecialPlacementRequirements)
+                if (!placementRequirement.UpdateFulfilled(this))
+                    allFulfilled = false;
+
+            return allFulfilled;
         }
     }
 }

@@ -32,9 +32,9 @@
       "code": 717021,
       "classification": "progression"
     },
-    "Movie Theater": {
+    "Progressive Movie Theater": {
       "code": 717022,
-      "classification": "useful"
+      "classification": "progression"
     },
     "Stardrop": {
       "code": 717023,
@@ -46,159 +46,151 @@
     },
     "Rusty Sword": {
       "code": 717025,
-      "classification": "progression"
+      "classification": "filler"
     },
     "Leather Boots": {
       "code": 717026,
-      "classification": "progression"
+      "classification": "filler"
     },
     "Work Boots": {
       "code": 717027,
-      "classification": "useful"
+      "classification": "filler"
     },
     "Wooden Blade": {
       "code": 717028,
-      "classification": "progression"
+      "classification": "filler"
     },
     "Iron Dirk": {
       "code": 717029,
-      "classification": "progression"
+      "classification": "filler"
     },
     "Wind Spire": {
       "code": 717030,
-      "classification": "progression"
+      "classification": "filler"
     },
     "Femur": {
       "code": 717031,
-      "classification": "progression"
+      "classification": "filler"
     },
     "Steel Smallsword": {
       "code": 717032,
-      "classification": "progression"
+      "classification": "filler"
     },
     "Wood Club": {
       "code": 717033,
-      "classification": "progression"
+      "classification": "filler"
     },
     "Elf Blade": {
       "code": 717034,
-      "classification": "progression"
-    },
-    "Glow Ring": {
-      "code": 717035,
-      "classification": "useful"
-    },
-    "Magnet Ring": {
-      "code": 717036,
-      "classification": "useful"
+      "classification": "filler"
     },
     "Slingshot": {
       "code": 717037,
-      "classification": "progression"
+      "classification": "filler"
     },
     "Tundra Boots": {
       "code": 717038,
-      "classification": "useful"
+      "classification": "filler"
     },
     "Thermal Boots": {
       "code": 717039,
-      "classification": "useful"
+      "classification": "filler"
     },
     "Combat Boots": {
       "code": 717040,
-      "classification": "useful"
+      "classification": "filler"
     },
     "Silver Saber": {
       "code": 717041,
-      "classification": "progression"
+      "classification": "filler"
     },
     "Pirate's Sword": {
       "code": 717042,
-      "classification": "progression"
+      "classification": "filler"
     },
     "Crystal Dagger": {
       "code": 717043,
-      "classification": "progression"
+      "classification": "filler"
     },
     "Cutlass": {
       "code": 717044,
-      "classification": "progression"
+      "classification": "filler"
     },
     "Iron Edge": {
       "code": 717045,
-      "classification": "progression"
+      "classification": "filler"
     },
     "Burglar's Shank": {
       "code": 717046,
-      "classification": "progression"
+      "classification": "filler"
     },
     "Wood Mallet": {
       "code": 717047,
-      "classification": "progression"
+      "classification": "filler"
     },
     "Master Slingshot": {
       "code": 717048,
-      "classification": "progression"
+      "classification": "filler"
     },
     "Firewalker Boots": {
       "code": 717049,
-      "classification": "useful"
+      "classification": "filler"
     },
     "Dark Boots": {
       "code": 717050,
-      "classification": "useful"
+      "classification": "filler"
     },
     "Claymore": {
       "code": 717051,
-      "classification": "progression"
+      "classification": "filler"
     },
     "Templar's Blade": {
       "code": 717052,
-      "classification": "progression"
+      "classification": "filler"
     },
     "Kudgel": {
       "code": 717053,
-      "classification": "progression"
+      "classification": "filler"
     },
     "Shadow Dagger": {
       "code": 717054,
-      "classification": "progression"
+      "classification": "filler"
     },
     "Obsidian Edge": {
       "code": 717055,
-      "classification": "progression"
+      "classification": "filler"
     },
     "Tempered Broadsword": {
       "code": 717056,
-      "classification": "progression"
+      "classification": "filler"
     },
     "Wicked Kris": {
       "code": 717057,
-      "classification": "progression"
+      "classification": "filler"
     },
     "Bone Sword": {
       "code": 717058,
-      "classification": "progression"
+      "classification": "filler"
     },
     "Ossified Blade": {
       "code": 717059,
-      "classification": "progression"
+      "classification": "filler"
     },
     "Space Boots": {
       "code": 717060,
-      "classification": "useful"
+      "classification": "filler"
     },
     "Crystal Shoes": {
       "code": 717061,
-      "classification": "useful"
+      "classification": "filler"
     },
     "Steel Falchion": {
       "code": 717062,
-      "classification": "progression"
+      "classification": "filler"
     },
     "The Slammer": {
       "code": 717063,
-      "classification": "progression"
+      "classification": "filler"
     },
     "Skull Key": {
       "code": 717064,
@@ -314,7 +306,7 @@
     },
     "Slime Hutch": {
       "code": 717092,
-      "classification": "useful"
+      "classification": "progression"
     },
     "Shipping Bin": {
       "code": 717093,
@@ -342,7 +334,7 @@
     },
     "Iridium Snake Milk": {
       "code": 717099,
-      "classification": "progression"
+      "classification": "useful"
     },
     "JotPK: Progressive Boots": {
       "code": 717100,
@@ -370,15 +362,15 @@
     },
     "Galaxy Sword": {
       "code": 717106,
-      "classification": "progression"
+      "classification": "filler"
     },
     "Galaxy Dagger": {
       "code": 717107,
-      "classification": "progression"
+      "classification": "filler"
     },
     "Galaxy Hammer": {
       "code": 717108,
-      "classification": "progression"
+      "classification": "filler"
     },
     "Movement Speed Bonus": {
       "code": 717109,
@@ -390,7 +382,7 @@
     },
     "Lava Katana": {
       "code": 717111,
-      "classification": "progression"
+      "classification": "filler"
     },
     "Progressive House": {
       "code": 717112,
@@ -426,11 +418,11 @@
     },
     "Traveling Merchant Stock Size": {
       "code": 717120,
-      "classification": "progression"
+      "classification": "useful"
     },
     "Traveling Merchant Discount": {
       "code": 717121,
-      "classification": "progression"
+      "classification": "useful"
     },
     "Return Scepter": {
       "code": 717122,
@@ -898,7 +890,7 @@
     },
     "Sewing Machine": {
       "code": 717239,
-      "classification": "progression"
+      "classification": "useful"
     },
     "Coffee Maker": {
       "code": 717240,
@@ -1022,7 +1014,7 @@
     },
     "Volcano Exit Shortcut": {
       "code": 717270,
-      "classification": "progression"
+      "classification": "useful"
     },
     "Island Resort": {
       "code": 717271,
@@ -1066,7 +1058,7 @@
     },
     "Sinister Signal": {
       "code": 717281,
-      "classification": "useful"
+      "classification": "filler"
     },
     "Dark Talisman": {
       "code": 717282,
@@ -1088,72 +1080,784 @@
       "code": 717286,
       "classification": "progression"
     },
-    "Burnt": {
+    "Treehouse": {
+      "code": 717287,
+      "classification": "progression"
+    },
+    "Coffee Bean": {
+      "code": 717288,
+      "classification": "progression"
+    },
+    "Progressive Weapon": {
+      "code": 717289,
+      "classification": "progression"
+    },
+    "Progressive Sword": {
+      "code": 717290,
+      "classification": "progression"
+    },
+    "Progressive Club": {
+      "code": 717291,
+      "classification": "progression"
+    },
+    "Progressive Dagger": {
+      "code": 717292,
+      "classification": "progression"
+    },
+    "Progressive Slingshot": {
+      "code": 717293,
+      "classification": "progression"
+    },
+    "Progressive Footwear": {
+      "code": 717294,
+      "classification": "useful"
+    },
+    "Small Glow Ring": {
+      "code": 717295,
+      "classification": "filler"
+    },
+    "Glow Ring": {
+      "code": 717296,
+      "classification": "useful"
+    },
+    "Small Magnet Ring": {
+      "code": 717297,
+      "classification": "filler"
+    },
+    "Magnet Ring": {
+      "code": 717298,
+      "classification": "useful"
+    },
+    "Slime Charmer Ring": {
+      "code": 717299,
+      "classification": "useful"
+    },
+    "Warrior Ring": {
+      "code": 717300,
+      "classification": "useful"
+    },
+    "Vampire Ring": {
+      "code": 717301,
+      "classification": "useful"
+    },
+    "Savage Ring": {
+      "code": 717302,
+      "classification": "useful"
+    },
+    "Ring of Yoba": {
+      "code": 717303,
+      "classification": "useful"
+    },
+    "Sturdy Ring": {
+      "code": 717304,
+      "classification": "useful"
+    },
+    "Burglar's Ring": {
+      "code": 717305,
+      "classification": "useful"
+    },
+    "Iridium Band": {
+      "code": 717306,
+      "classification": "useful"
+    },
+    "Jukebox Ring": {
+      "code": 717307,
+      "classification": "filler"
+    },
+    "Amethyst Ring": {
+      "code": 717308,
+      "classification": "useful"
+    },
+    "Topaz Ring": {
+      "code": 717309,
+      "classification": "useful"
+    },
+    "Aquamarine Ring": {
+      "code": 717310,
+      "classification": "useful"
+    },
+    "Jade Ring": {
+      "code": 717311,
+      "classification": "useful"
+    },
+    "Emerald Ring": {
+      "code": 717312,
+      "classification": "useful"
+    },
+    "Ruby Ring": {
+      "code": 717313,
+      "classification": "useful"
+    },
+    "Wedding Ring": {
+      "code": 717314,
+      "classification": "useful"
+    },
+    "Crabshell Ring": {
+      "code": 717315,
+      "classification": "useful"
+    },
+    "Napalm Ring": {
+      "code": 717316,
+      "classification": "useful"
+    },
+    "Thorns Ring": {
+      "code": 717317,
+      "classification": "useful"
+    },
+    "Lucky Ring": {
+      "code": 717318,
+      "classification": "useful"
+    },
+    "Hot Java Ring": {
+      "code": 717319,
+      "classification": "useful"
+    },
+    "Protection Ring": {
+      "code": 717320,
+      "classification": "useful"
+    },
+    "Soul Sapper Ring": {
+      "code": 717321,
+      "classification": "useful"
+    },
+    "Phoenix Ring": {
+      "code": 717322,
+      "classification": "useful"
+    },
+    "Immunity Band": {
+      "code": 717323,
+      "classification": "useful"
+    },
+    "Glowstone Ring": {
+      "code": 717324,
+      "classification": "useful"
+    },
+    "Fairy Dust Recipe": {
+      "code": 717325,
+      "classification": "progression"
+    },
+    "Heavy Tapper Recipe": {
+      "code": 717326,
+      "classification": "progression"
+    },
+    "Hyper Speed-Gro Recipe": {
+      "code": 717327,
+      "classification": "progression"
+    },
+    "Deluxe Fertilizer Recipe": {
+      "code": 717328,
+      "classification": "progression"
+    },
+    "Hopper Recipe": {
+      "code": 717329,
+      "classification": "progression"
+    },
+    "Magic Bait Recipe": {
+      "code": 717330,
+      "classification": "progression"
+    },
+    "Jack-O-Lantern Recipe": {
+      "code": 717331,
+      "classification": "progression"
+    },
+    "Tub o' Flowers Recipe": {
+      "code": 717333,
+      "classification": "progression"
+    },
+    "Moonlight Jellies Banner": {
+      "code": 717335,
+      "classification": "filler"
+    },
+    "Starport Decal": {
+      "code": 717336,
+      "classification": "filler"
+    },
+    "Golden Egg": {
+      "code": 717337,
+      "classification": "progression"
+    },
+    "Algae Soup Recipe": {
+      "code": 717340,
+      "classification": "progression"
+    },
+    "Artichoke Dip Recipe": {
+      "code": 717341,
+      "classification": "progression"
+    },
+    "Autumn's Bounty Recipe": {
+      "code": 717342,
+      "classification": "progression"
+    },
+    "Baked Fish Recipe": {
+      "code": 717343,
+      "classification": "progression"
+    },
+    "Banana Pudding Recipe": {
+      "code": 717344,
+      "classification": "progression"
+    },
+    "Bean Hotpot Recipe": {
+      "code": 717345,
+      "classification": "progression"
+    },
+    "Blackberry Cobbler Recipe": {
+      "code": 717346,
+      "classification": "progression"
+    },
+    "Blueberry Tart Recipe": {
+      "code": 717347,
+      "classification": "progression"
+    },
+    "Bread Recipe": {
+      "code": 717348,
+      "classification": "progression"
+    },
+    "Bruschetta Recipe": {
+      "code": 717349,
+      "classification": "progression"
+    },
+    "Carp Surprise Recipe": {
+      "code": 717350,
+      "classification": "progression"
+    },
+    "Cheese Cauliflower Recipe": {
+      "code": 717351,
+      "classification": "progression"
+    },
+    "Chocolate Cake Recipe": {
+      "code": 717352,
+      "classification": "progression"
+    },
+    "Chowder Recipe": {
+      "code": 717353,
+      "classification": "progression"
+    },
+    "Coleslaw Recipe": {
+      "code": 717354,
+      "classification": "progression"
+    },
+    "Complete Breakfast Recipe": {
+      "code": 717355,
+      "classification": "progression"
+    },
+    "Cookies Recipe": {
+      "code": 717356,
+      "classification": "progression"
+    },
+    "Crab Cakes Recipe": {
+      "code": 717357,
+      "classification": "progression"
+    },
+    "Cranberry Candy Recipe": {
+      "code": 717358,
+      "classification": "progression"
+    },
+    "Cranberry Sauce Recipe": {
+      "code": 717359,
+      "classification": "progression"
+    },
+    "Crispy Bass Recipe": {
+      "code": 717360,
+      "classification": "progression"
+    },
+    "Dish O' The Sea Recipe": {
+      "code": 717361,
+      "classification": "progression"
+    },
+    "Eggplant Parmesan Recipe": {
+      "code": 717362,
+      "classification": "progression"
+    },
+    "Escargot Recipe": {
+      "code": 717363,
+      "classification": "progression"
+    },
+    "Farmer's Lunch Recipe": {
+      "code": 717364,
+      "classification": "progression"
+    },
+    "Fiddlehead Risotto Recipe": {
+      "code": 717365,
+      "classification": "progression"
+    },
+    "Fish Stew Recipe": {
+      "code": 717366,
+      "classification": "progression"
+    },
+    "Fish Taco Recipe": {
+      "code": 717367,
+      "classification": "progression"
+    },
+    "Fried Calamari Recipe": {
+      "code": 717368,
+      "classification": "progression"
+    },
+    "Fried Eel Recipe": {
+      "code": 717369,
+      "classification": "progression"
+    },
+    "Fried Egg Recipe": {
+      "code": 717370,
+      "classification": "progression"
+    },
+    "Fried Mushroom Recipe": {
+      "code": 717371,
+      "classification": "progression"
+    },
+    "Fruit Salad Recipe": {
+      "code": 717372,
+      "classification": "progression"
+    },
+    "Ginger Ale Recipe": {
+      "code": 717373,
+      "classification": "progression"
+    },
+    "Glazed Yams Recipe": {
+      "code": 717374,
+      "classification": "progression"
+    },
+    "Hashbrowns Recipe": {
+      "code": 717375,
+      "classification": "progression"
+    },
+    "Ice Cream Recipe": {
+      "code": 717376,
+      "classification": "progression"
+    },
+    "Lobster Bisque Recipe": {
+      "code": 717377,
+      "classification": "progression"
+    },
+    "Lucky Lunch Recipe": {
+      "code": 717378,
+      "classification": "progression"
+    },
+    "Maki Roll Recipe": {
+      "code": 717379,
+      "classification": "progression"
+    },
+    "Mango Sticky Rice Recipe": {
+      "code": 717380,
+      "classification": "progression"
+    },
+    "Maple Bar Recipe": {
+      "code": 717381,
+      "classification": "progression"
+    },
+    "Miner's Treat Recipe": {
+      "code": 717382,
+      "classification": "progression"
+    },
+    "Omelet Recipe": {
+      "code": 717383,
+      "classification": "progression"
+    },
+    "Pale Broth Recipe": {
+      "code": 717384,
+      "classification": "progression"
+    },
+    "Pancakes Recipe": {
+      "code": 717385,
+      "classification": "progression"
+    },
+    "Parsnip Soup Recipe": {
+      "code": 717386,
+      "classification": "progression"
+    },
+    "Pepper Poppers Recipe": {
+      "code": 717387,
+      "classification": "progression"
+    },
+    "Pink Cake Recipe": {
+      "code": 717388,
+      "classification": "progression"
+    },
+    "Pizza Recipe": {
+      "code": 717389,
+      "classification": "progression"
+    },
+    "Plum Pudding Recipe": {
+      "code": 717390,
+      "classification": "progression"
+    },
+    "Poi Recipe": {
+      "code": 717391,
+      "classification": "progression"
+    },
+    "Poppyseed Muffin Recipe": {
+      "code": 717392,
+      "classification": "progression"
+    },
+    "Pumpkin Pie Recipe": {
+      "code": 717393,
+      "classification": "progression"
+    },
+    "Pumpkin Soup Recipe": {
+      "code": 717394,
+      "classification": "progression"
+    },
+    "Radish Salad Recipe": {
+      "code": 717395,
+      "classification": "progression"
+    },
+    "Red Plate Recipe": {
+      "code": 717396,
+      "classification": "progression"
+    },
+    "Rhubarb Pie Recipe": {
+      "code": 717397,
+      "classification": "progression"
+    },
+    "Rice Pudding Recipe": {
+      "code": 717398,
+      "classification": "progression"
+    },
+    "Roasted Hazelnuts Recipe": {
+      "code": 717399,
+      "classification": "progression"
+    },
+    "Roots Platter Recipe": {
+      "code": 717400,
+      "classification": "progression"
+    },
+    "Salad Recipe": {
+      "code": 717401,
+      "classification": "progression"
+    },
+    "Salmon Dinner Recipe": {
+      "code": 717402,
+      "classification": "progression"
+    },
+    "Sashimi Recipe": {
+      "code": 717403,
+      "classification": "progression"
+    },
+    "Seafoam Pudding Recipe": {
+      "code": 717404,
+      "classification": "progression"
+    },
+    "Shrimp Cocktail Recipe": {
+      "code": 717405,
+      "classification": "progression"
+    },
+    "Spaghetti Recipe": {
+      "code": 717406,
+      "classification": "progression"
+    },
+    "Spicy Eel Recipe": {
+      "code": 717407,
+      "classification": "progression"
+    },
+    "Squid Ink Ravioli Recipe": {
+      "code": 717408,
+      "classification": "progression"
+    },
+    "Stir Fry Recipe": {
+      "code": 717409,
+      "classification": "progression"
+    },
+    "Strange Bun Recipe": {
+      "code": 717410,
+      "classification": "progression"
+    },
+    "Stuffing Recipe": {
+      "code": 717411,
+      "classification": "progression"
+    },
+    "Super Meal Recipe": {
+      "code": 717412,
+      "classification": "progression"
+    },
+    "Survival Burger Recipe": {
+      "code": 717413,
+      "classification": "progression"
+    },
+    "Tom Kha Soup Recipe": {
+      "code": 717414,
+      "classification": "progression"
+    },
+    "Tortilla Recipe": {
+      "code": 717415,
+      "classification": "progression"
+    },
+    "Triple Shot Espresso Recipe": {
+      "code": 717416,
+      "classification": "progression"
+    },
+    "Tropical Curry Recipe": {
+      "code": 717417,
+      "classification": "progression"
+    },
+    "Trout Soup Recipe": {
+      "code": 717418,
+      "classification": "progression"
+    },
+    "Vegetable Medley Recipe": {
+      "code": 717419,
+      "classification": "progression"
+    },
+    "Gate Recipe": {
+      "code": 717425,
+      "classification": "progression"
+    },
+    "Wood Fence Recipe": {
+      "code": 717426,
+      "classification": "progression"
+    },
+    "Deluxe Retaining Soil Recipe": {
+      "code": 717427,
+      "classification": "progression"
+    },
+    "Grass Starter Recipe": {
+      "code": 717428,
+      "classification": "progression"
+    },
+    "Wood Floor Recipe": {
+      "code": 717429,
+      "classification": "progression"
+    },
+    "Rustic Plank Floor Recipe": {
+      "code": 717430,
+      "classification": "progression"
+    },
+    "Straw Floor Recipe": {
+      "code": 717431,
+      "classification": "progression"
+    },
+    "Weathered Floor Recipe": {
+      "code": 717432,
+      "classification": "progression"
+    },
+    "Crystal Floor Recipe": {
+      "code": 717433,
+      "classification": "progression"
+    },
+    "Stone Floor Recipe": {
+      "code": 717434,
+      "classification": "progression"
+    },
+    "Stone Walkway Floor Recipe": {
+      "code": 717435,
+      "classification": "progression"
+    },
+    "Brick Floor Recipe": {
+      "code": 717436,
+      "classification": "progression"
+    },
+    "Wood Path Recipe": {
+      "code": 717437,
+      "classification": "progression"
+    },
+    "Gravel Path Recipe": {
+      "code": 717438,
+      "classification": "progression"
+    },
+    "Cobblestone Path Recipe": {
+      "code": 717439,
+      "classification": "progression"
+    },
+    "Stepping Stone Path Recipe": {
+      "code": 717440,
+      "classification": "progression"
+    },
+    "Crystal Path Recipe": {
+      "code": 717441,
+      "classification": "progression"
+    },
+    "Wedding Ring Recipe": {
+      "code": 717442,
+      "classification": "progression"
+    },
+    "Warp Totem: Desert Recipe": {
+      "code": 717443,
+      "classification": "progression"
+    },
+    "Warp Totem: Island Recipe": {
+      "code": 717444,
+      "classification": "progression"
+    },
+    "Torch Recipe": {
+      "code": 717445,
+      "classification": "progression"
+    },
+    "Campfire Recipe": {
+      "code": 717446,
+      "classification": "progression"
+    },
+    "Wooden Brazier Recipe": {
+      "code": 717447,
+      "classification": "progression"
+    },
+    "Stone Brazier Recipe": {
+      "code": 717448,
+      "classification": "progression"
+    },
+    "Gold Brazier Recipe": {
+      "code": 717449,
+      "classification": "progression"
+    },
+    "Carved Brazier Recipe": {
+      "code": 717450,
+      "classification": "progression"
+    },
+    "Stump Brazier Recipe": {
+      "code": 717451,
+      "classification": "progression"
+    },
+    "Barrel Brazier Recipe": {
+      "code": 717452,
+      "classification": "progression"
+    },
+    "Skull Brazier Recipe": {
+      "code": 717453,
+      "classification": "progression"
+    },
+    "Marble Brazier Recipe": {
+      "code": 717454,
+      "classification": "progression"
+    },
+    "Wood Lamp-post Recipe": {
+      "code": 717455,
+      "classification": "progression"
+    },
+    "Iron Lamp-post Recipe": {
+      "code": 717456,
+      "classification": "progression"
+    },
+    "Furnace Recipe": {
+      "code": 717457,
+      "classification": "progression"
+    },
+    "Wicked Statue Recipe": {
+      "code": 717458,
+      "classification": "progression"
+    },
+    "Chest Recipe": {
+      "code": 717459,
+      "classification": "progression"
+    },
+    "Wood Sign Recipe": {
+      "code": 717460,
+      "classification": "progression"
+    },
+    "Stone Sign Recipe": {
+      "code": 717461,
+      "classification": "progression"
+    },
+    "Railroad Boulder Removed": {
+      "code": 717469,
+      "classification": "progression"
+    },
+    "Fruit Bats": {
+      "code": 717470,
+      "classification": "progression"
+    },
+    "Mushroom Boxes": {
+      "code": 717471,
+      "classification": "progression"
+    },
+    "The Gateway Gazette": {
+      "code": 717475,
+      "classification": "progression"
+    },
+    "Burnt Trap": {
       "code": 721001,
       "classification": "trap"
     },
-    "Darkness": {
+    "Darkness Trap": {
       "code": 721002,
       "classification": "trap"
     },
-    "Frozen": {
+    "Frozen Trap": {
       "code": 721003,
       "classification": "trap"
     },
-    "Jinxed": {
+    "Jinxed Trap": {
       "code": 721004,
       "classification": "trap"
     },
-    "Nauseated": {
+    "Nauseated Trap": {
       "code": 721005,
       "classification": "trap"
     },
-    "Slimed": {
+    "Slimed Trap": {
       "code": 721006,
       "classification": "trap"
     },
-    "Weakness": {
+    "Weakness Trap": {
       "code": 721007,
       "classification": "trap"
     },
-    "Taxes": {
+    "Taxes Trap": {
       "code": 721008,
       "classification": "trap"
     },
-    "Random Teleport": {
+    "Random Teleport Trap": {
       "code": 721009,
       "classification": "trap"
     },
-    "The Crows": {
+    "The Crows Trap": {
       "code": 721010,
       "classification": "trap"
     },
-    "Monsters": {
+    "Monsters Trap": {
       "code": 721011,
       "classification": "trap"
     },
-    "Entrance Reshuffle": {
+    "Entrance Reshuffle Trap": {
       "code": 721012,
       "classification": "trap"
     },
-    "Debris": {
+    "Debris Trap": {
       "code": 721013,
       "classification": "trap"
     },
-    "Shuffle": {
+    "Shuffle Trap": {
       "code": 721014,
       "classification": "trap"
     },
-    "Temporary Winter": {
+    "Temporary Winter Trap": {
       "code": 721015,
       "classification": "trap"
     },
-    "Pariah": {
+    "Pariah Trap": {
       "code": 721016,
       "classification": "trap"
     },
-    "Drought": {
+    "Drought Trap": {
       "code": 721017,
+      "classification": "trap"
+    },
+    "Time Flies Trap": {
+      "code": 721018,
+      "classification": "trap"
+    },
+    "Babies Trap": {
+      "code": 721019,
+      "classification": "trap"
+    },
+    "Meow Trap": {
+      "code": 721020,
+      "classification": "trap"
+    },
+    "Bark Trap": {
+      "code": 721021,
+      "classification": "trap"
+    },
+    "Depression Trap": {
+      "code": 721022,
+      "classification": "trap"
+    },
+    "Benjamin Budton Trap": {
+      "code": 721023,
+      "classification": "trap"
+    },
+    "Inflation Trap": {
+      "code": 721024,
+      "classification": "trap"
+    },
+    "Bomb Trap": {
+      "code": 721025,
       "classification": "trap"
     },
     "Resource Pack: 500 Money": {
@@ -1964,9 +2668,9 @@
       "code": 722201,
       "classification": "useful"
     },
-    "30 Qi Gems": {
+    "15 Qi Gems": {
       "code": 722202,
-      "classification": "useful"
+      "classification": "progression"
     },
     "Solar Panel": {
       "code": 722203,
@@ -2026,7 +2730,7 @@
     },
     "Deluxe Scarecrow": {
       "code": 722217,
-      "classification": "filler"
+      "classification": "useful"
     },
     "Furnace": {
       "code": 722218,
@@ -2054,11 +2758,11 @@
     },
     "Horse Flute": {
       "code": 722224,
-      "classification": "filler"
+      "classification": "useful"
     },
     "Pierre's Missing Stocklist": {
       "code": 722225,
-      "classification": "filler"
+      "classification": "useful"
     },
     "Hopper": {
       "code": 722226,
@@ -2078,7 +2782,7 @@
     },
     "Key To The Town": {
       "code": 722230,
-      "classification": "filler"
+      "classification": "useful"
     },
     "Galaxy Soul": {
       "code": 722231,
@@ -2104,26 +2808,6 @@
       "code": 722236,
       "classification": "filler"
     },
-    "Heavy Tapper Recipe": {
-      "code": 722237,
-      "classification": "filler"
-    },
-    "Hyper Speed-Gro Recipe": {
-      "code": 722238,
-      "classification": "filler"
-    },
-    "Deluxe Fertilizer Recipe": {
-      "code": 722239,
-      "classification": "filler"
-    },
-    "Hopper Recipe": {
-      "code": 722240,
-      "classification": "filler"
-    },
-    "Magic Bait Recipe": {
-      "code": 722241,
-      "classification": "filler"
-    },
     "Exotic Double Bed": {
       "code": 722242,
       "classification": "filler"
@@ -2132,17 +2816,9 @@
       "code": 722243,
       "classification": "filler"
     },
-    "Golden Egg": {
-      "code": 722244,
-      "classification": "filler"
-    },
     "Golden Walnut": {
       "code": 722245,
       "classification": "filler"
-    },
-    "Fairy Dust Recipe": {
-      "code": 722246,
-      "classification": "useful"
     },
     "Fairy Dust": {
       "code": 722247,
@@ -2220,6 +2896,18 @@
       "code": 722265,
       "classification": "useful"
     },
+    "Resource Pack: 5 Staircase": {
+      "code": 722266,
+      "classification": "filler"
+    },
+    "Auto-Petter": {
+      "code": 722267,
+      "classification": "useful"
+    },
+    "Auto-Grabber": {
+      "code": 722268,
+      "classification": "useful"
+    },
     "Luck Level": {
       "code": 727001,
       "classification": "progression"
@@ -2258,7 +2946,7 @@
     },
     "Spell: Till": {
       "code": 727010,
-      "classification": "useful"
+      "classification": "progression"
     },
     "Spell: Water": {
       "code": 727011,
@@ -2270,11 +2958,11 @@
     },
     "Spell: Evac": {
       "code": 727013,
-      "classification": "useful"
+      "classification": "progression"
     },
     "Spell: Haste": {
       "code": 727014,
-      "classification": "filler"
+      "classification": "progression"
     },
     "Spell: Heal": {
       "code": 727015,
@@ -2282,7 +2970,7 @@
     },
     "Spell: Buff": {
       "code": 727016,
-      "classification": "useful"
+      "classification": "progression"
     },
     "Spell: Shockwave": {
       "code": 727017,
@@ -2292,7 +2980,7 @@
       "code": 727018,
       "classification": "progression"
     },
-    "Spell: Frostbite": {
+    "Spell: Frostbolt": {
       "code": 727019,
       "classification": "progression"
     },
@@ -2302,7 +2990,7 @@
     },
     "Spell: Lantern": {
       "code": 727021,
-      "classification": "filler"
+      "classification": "progression"
     },
     "Spell: Tendrils": {
       "code": 727022,
@@ -2310,7 +2998,7 @@
     },
     "Spell: Photosynthesis": {
       "code": 727023,
-      "classification": "useful"
+      "classification": "progression"
     },
     "Spell: Descend": {
       "code": 727024,
@@ -2322,11 +3010,11 @@
     },
     "Spell: Bloodmana": {
       "code": 727026,
-      "classification": "useful"
+      "classification": "progression"
     },
     "Spell: Lucksteal": {
       "code": 727027,
-      "classification": "useful"
+      "classification": "progression"
     },
     "Spell: Spirit": {
       "code": 727028,
@@ -2334,7 +3022,19 @@
     },
     "Spell: Rewind": {
       "code": 727029,
-      "classification": "useful"
+      "classification": "progression"
+    },
+    "Pendant of Community": {
+      "code": 727030,
+      "classification": "progression"
+    },
+    "Pendant of Elders": {
+      "code": 727031,
+      "classification": "progression"
+    },
+    "Pendant of Depths": {
+      "code": 727032,
+      "classification": "progression"
     },
     "Juna <3": {
       "code": 727101,
@@ -2380,13 +3080,357 @@
       "code": 727111,
       "classification": "progression"
     },
-    "Progressive Wood Obelisk Sigils": {
+    "Claire <3": {
+      "code": 727112,
+      "classification": "progression"
+    },
+    "Lance <3": {
+      "code": 727113,
+      "classification": "progression"
+    },
+    "Olivia <3": {
+      "code": 727114,
+      "classification": "progression"
+    },
+    "Sophia <3": {
+      "code": 727115,
+      "classification": "progression"
+    },
+    "Victor <3": {
+      "code": 727116,
+      "classification": "progression"
+    },
+    "Andy <3": {
+      "code": 727117,
+      "classification": "progression"
+    },
+    "Apples <3": {
+      "code": 727118,
+      "classification": "progression"
+    },
+    "Gunther <3": {
+      "code": 727119,
+      "classification": "progression"
+    },
+    "Martin <3": {
+      "code": 727120,
+      "classification": "progression"
+    },
+    "Marlon <3": {
+      "code": 727121,
+      "classification": "progression"
+    },
+    "Morgan <3": {
+      "code": 727122,
+      "classification": "progression"
+    },
+    "Scarlett <3": {
+      "code": 727123,
+      "classification": "progression"
+    },
+    "Susan <3": {
+      "code": 727124,
+      "classification": "progression"
+    },
+    "Morris <3": {
+      "code": 727125,
+      "classification": "progression"
+    },
+    "Alecto <3": {
+      "code": 727126,
+      "classification": "progression"
+    },
+    "Zic <3": {
+      "code": 727127,
+      "classification": "progression"
+    },
+    "Lacey <3": {
+      "code": 727128,
+      "classification": "progression"
+    },
+    "Gregory <3": {
+      "code": 727129,
+      "classification": "progression"
+    },
+    "Sheila <3": {
+      "code": 727130,
+      "classification": "progression"
+    },
+    "Joel <3": {
+      "code": 727131,
+      "classification": "progression"
+    },
+    "Progressive Woods Obelisk Sigils": {
       "code": 727301,
       "classification": "progression"
     },
     "Progressive Skull Cavern Elevator": {
       "code": 727302,
       "classification": "progression"
+    },
+    "Baked Berry Oatmeal Recipe": {
+      "code": 727401,
+      "classification": "progression"
+    },
+    "Big Bark Burger Recipe": {
+      "code": 727402,
+      "classification": "progression"
+    },
+    "Flower Cookie Recipe": {
+      "code": 727403,
+      "classification": "progression"
+    },
+    "Frog Legs Recipe": {
+      "code": 727404,
+      "classification": "progression"
+    },
+    "Glazed Butterfish Recipe": {
+      "code": 727405,
+      "classification": "progression"
+    },
+    "Mixed Berry Pie Recipe": {
+      "code": 727406,
+      "classification": "progression"
+    },
+    "Mushroom Berry Rice Recipe": {
+      "code": 727407,
+      "classification": "progression"
+    },
+    "Seaweed Salad Recipe": {
+      "code": 727408,
+      "classification": "progression"
+    },
+    "Void Delight Recipe": {
+      "code": 727409,
+      "classification": "progression"
+    },
+    "Void Salmon Sushi Recipe": {
+      "code": 727410,
+      "classification": "progression"
+    },
+    "Mushroom Kebab Recipe": {
+      "code": 727411,
+      "classification": "progression"
+    },
+    "Crayfish Soup Recipe": {
+      "code": 727412,
+      "classification": "progression"
+    },
+    "Pemmican Recipe": {
+      "code": 727413,
+      "classification": "progression"
+    },
+    "Void Mint Tea Recipe": {
+      "code": 727414,
+      "classification": "progression"
+    },
+    "Ginger Tincture Recipe": {
+      "code": 727415,
+      "classification": "progression"
+    },
+    "Special Pumpkin Soup Recipe": {
+      "code": 727416,
+      "classification": "progression"
+    },
+    "Void Mint Seeds": {
+      "code": 727450,
+      "classification": "progression"
+    },
+    "Vile Ancient Fruit Seeds": {
+      "code": 727451,
+      "classification": "progression"
+    },
+    "Marlon's Boat Paddle": {
+      "code": 727501,
+      "classification": "progression"
+    },
+    "Diamond Wand": {
+      "code": 727502,
+      "classification": "filler"
+    },
+    "Iridium Bomb": {
+      "code": 727503,
+      "classification": "progression"
+    },
+    "Void Spirit Peace Agreement": {
+      "code": 727504,
+      "classification": "useful"
+    },
+    "Kittyfish Spell": {
+      "code": 727505,
+      "classification": "progression"
+    },
+    "Nexus: Adventurer's Guild Runes": {
+      "code": 727506,
+      "classification": "progression"
+    },
+    "Nexus: Junimo Woods Runes": {
+      "code": 727507,
+      "classification": "progression"
+    },
+    "Nexus: Aurora Vineyard Runes": {
+      "code": 727508,
+      "classification": "progression"
+    },
+    "Nexus: Sprite Spring Runes": {
+      "code": 727509,
+      "classification": "progression"
+    },
+    "Nexus: Outpost Runes": {
+      "code": 727510,
+      "classification": "progression"
+    },
+    "Nexus: Farm Runes": {
+      "code": 727511,
+      "classification": "progression"
+    },
+    "Nexus: Wizard Runes": {
+      "code": 727512,
+      "classification": "progression"
+    },
+    "Fable Reef Portal": {
+      "code": 727513,
+      "classification": "progression"
+    },
+    "Tempered Galaxy Sword": {
+      "code": 727514,
+      "classification": "filler"
+    },
+    "Tempered Galaxy Dagger": {
+      "code": 727515,
+      "classification": "filler"
+    },
+    "Tempered Galaxy Hammer": {
+      "code": 727516,
+      "classification": "filler"
+    },
+    "Grandpa's Shed": {
+      "code": 727517,
+      "classification": "progression"
+    },
+    "Aurora Vineyard Tablet": {
+      "code": 727518,
+      "classification": "progression"
+    },
+    "Scarlett's Job Offer": {
+      "code": 727519,
+      "classification": "progression"
+    },
+    "Morgan's Schooling": {
+      "code": 727520,
+      "classification": "progression"
+    },
+    "Magic Elixir Recipe": {
+      "code": 727601,
+      "classification": "progression"
+    },
+    "Travel Core Recipe": {
+      "code": 727602,
+      "classification": "progression"
+    },
+    "Haste Elixir Recipe": {
+      "code": 727603,
+      "classification": "progression"
+    },
+    "Hero Elixir Recipe": {
+      "code": 727604,
+      "classification": "progression"
+    },
+    "Armor Elixir Recipe": {
+      "code": 727605,
+      "classification": "progression"
+    },
+    "Neanderthal Skeleton Recipe": {
+      "code": 727606,
+      "classification": "progression"
+    },
+    "Pterodactyl Skeleton L Recipe": {
+      "code": 727607,
+      "classification": "progression"
+    },
+    "Pterodactyl Skeleton M Recipe": {
+      "code": 727608,
+      "classification": "progression"
+    },
+    "Pterodactyl Skeleton R Recipe": {
+      "code": 727609,
+      "classification": "progression"
+    },
+    "T-Rex Skeleton L Recipe": {
+      "code": 727610,
+      "classification": "progression"
+    },
+    "T-Rex Skeleton M Recipe": {
+      "code": 727611,
+      "classification": "progression"
+    },
+    "T-Rex Skeleton R Recipe": {
+      "code": 727612,
+      "classification": "progression"
+    },
+    "Resource Pack: 3 Magic Elixir": {
+      "code": 727701,
+      "classification": "filler"
+    },
+    "Resource Pack: 3 Travel Core": {
+      "code": 727702,
+      "classification": "filler"
+    },
+    "Preservation Chamber": {
+      "code": 727703,
+      "classification": "filler"
+    },
+    "Hardwood Preservation Chamber": {
+      "code": 727704,
+      "classification": "filler"
+    },
+    "Resource Pack: 3 Water Shifter": {
+      "code": 727705,
+      "classification": "filler"
+    },
+    "Resource Pack: 5 Hardwood Display": {
+      "code": 727706,
+      "classification": "filler"
+    },
+    "Resource Pack: 5 Wooden Display": {
+      "code": 727707,
+      "classification": "filler"
+    },
+    "Grinder": {
+      "code": 727708,
+      "classification": "filler"
+    },
+    "Ancient Battery Production Station": {
+      "code": 727709,
+      "classification": "filler"
+    },
+    "Hero Elixir": {
+      "code": 727710,
+      "classification": "filler"
+    },
+    "Aegis Elixir": {
+      "code": 727711,
+      "classification": "filler"
+    },
+    "Haste Elixir": {
+      "code": 727712,
+      "classification": "filler"
+    },
+    "Lightning Elixir": {
+      "code": 727713,
+      "classification": "filler"
+    },
+    "Armor Elixir": {
+      "code": 727714,
+      "classification": "filler"
+    },
+    "Gravity Elixir": {
+      "code": 727715,
+      "classification": "filler"
+    },
+    "Barbarian Elixir": {
+      "code": 727716,
+      "classification": "filler"
     }
   }
 }

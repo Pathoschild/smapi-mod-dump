@@ -13,7 +13,7 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using StardewValley.Menus;
 
-namespace Common.UI;
+namespace weizinai.StardewValleyMod.Common.UI;
 
 public class CombineImage : Element
 {
@@ -41,29 +41,29 @@ public class CombineImage : Element
         this.content = content;
         this.contentSourceRectangle = contentSourceRectangle;
         this.contentColor = contentColor;
-        LocalPosition = localPosition;
+        this.LocalPosition = localPosition;
         this.scale = scale;
     }
 
-    public override int Width => (int)GetImageSize().X;
-    public override int Height => (int)GetImageSize().Y;
+    public override int Width => (int)this.GetImageSize().X;
+    public override int Height => (int)this.GetImageSize().Y;
 
 
     public override void Draw(SpriteBatch spriteBatch)
     {
-        if (IsHidden()) return;
-        IClickableMenu.drawTextureBox(spriteBatch, background, backgroundSourceRectangle,
-            (int)Position.X, (int)Position.Y, Width, Height, backgroundColor, 1f, false);
-        spriteBatch.Draw(content, GetContentRectangle(), contentSourceRectangle, contentColor);
+        if (this.IsHidden()) return;
+        IClickableMenu.drawTextureBox(spriteBatch, this.background, this.backgroundSourceRectangle,
+            (int)this.Position.X, (int)this.Position.Y, this.Width, this.Height, this.backgroundColor, 1f, false);
+        spriteBatch.Draw(this.content, this.GetContentRectangle(), this.contentSourceRectangle, this.contentColor);
     }
 
     private Rectangle GetContentRectangle()
     {
-        return new Rectangle((int)Position.X + ContentPadding, (int)Position.Y + ContentPadding, Width - ContentPadding * 2, Height - ContentPadding * 2);
+        return new Rectangle((int)this.Position.X + ContentPadding, (int)this.Position.Y + ContentPadding, this.Width - ContentPadding * 2, this.Height - ContentPadding * 2);
     }
 
     private Vector2 GetImageSize()
     {
-        return new Vector2(backgroundSourceRectangle.Width, backgroundSourceRectangle.Height) * scale;
+        return new Vector2(this.backgroundSourceRectangle.Width, this.backgroundSourceRectangle.Height) * this.scale;
     }
 }

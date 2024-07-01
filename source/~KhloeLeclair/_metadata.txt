@@ -15,9 +15,9 @@ mods:
    Theme Manager
 
 latest commit:
-   commit 772bb54fec811257b163fc2d0e3fc2153b6f8089
+   commit f66ae9967f40deb23dcf695c16ce3c99f62e3624
    Author: Khloe Leclair <xivkhloeleclair@gmail.com>
-   Date:   Mon May 27 17:21:32 2024 -0400
+   Date:   Fri May 31 16:22:33 2024 -0400
    
-       Better Crafting 2.12.0
+       Better Crafting 2.13.0
    

@@ -10,11 +10,13 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
+using xTile;
 using SObject = StardewValley.Object;
 
 namespace LetsMoveIt.TargetData
@@ -25,15 +27,20 @@ namespace LetsMoveIt.TargetData
         private static IModHelper Helper = null!;
         private static IMonitor Monitor = null!;
 
-        public static string? Name;
+        public string? Name;
         //public static string? Index;
         //public static Guid? Guid;
-        public static object? TargetObject;
-        public static GameLocation TargetLocation = null!;
-        public static Vector2 TilePosition;
-        public static Vector2 TileOffset;
-        private static readonly HashSet<Vector2> BoundingBoxTile = [];
+        public bool MarniesLivestock;
+        public object? TargetObject;
+        public GameLocation TargetLocation = null!;
+        public Vector2 TilePosition;
+        public Vector2 TileOffset;
+        private readonly HashSet<Vector2> BoundingBoxTile = [];
 
+        public Target(GameLocation location, Vector2 tile, Point map)
+        {
+            Get(location, tile, map);
+        }
         /// <summary>Only for set values</summary>
         public static void Init(ModConfig config, IModHelper helper, IMonitor monitor)
         {
@@ -42,36 +49,36 @@ namespace LetsMoveIt.TargetData
             Monitor = monitor;
         }
 
-        public static void ButtonAction(GameLocation location, Vector2 tile)
-        {
-            if (Config.ModKey == SButton.None)
-                return;
-            if (Helper.Input.IsDown(Config.ModKey))
-            {
-                Get(location, tile, Mod1.GetGlobalMousePosition());
-                return;
-            }
-            if (TargetObject is not null)
-            {
-                Helper.Input.Suppress(Config.MoveKey);
-                bool overwriteTile = Helper.Input.IsDown(Config.OverwriteKey);
-                if (IsOccupied(location, tile) && !overwriteTile)
-                {
-                    Game1.playSound("cancel");
-                    return;
-                }
-                if (Config.CopyMode)
-                {
-                    CopyTo(location, tile, overwriteTile);
-                }
-                else
-                {
-                    MoveTo(location, tile, overwriteTile);
-                }
-            }
-        }
+        //public static void ButtonAction(GameLocation location, Vector2 tile)
+        //{
+        //    if (Config.ModKey == SButton.None)
+        //        return;
+        //    if (Helper.Input.IsDown(Config.ModKey))
+        //    {
+        //        Get(location, tile, Mod1.GetGlobalMousePosition());
+        //        return;
+        //    }
+        //    if (TargetObject is not null)
+        //    {
+        //        Helper.Input.Suppress(Config.MoveKey);
+        //        bool overwriteTile = Helper.Input.IsDown(Config.OverwriteKey);
+        //        if (IsOccupied(location, tile) && !overwriteTile)
+        //        {
+        //            Game1.playSound("cancel");
+        //            return;
+        //        }
+        //        if (Config.CopyMode)
+        //        {
+        //            CopyTo(location, tile, overwriteTile);
+        //        }
+        //        else
+        //        {
+        //            MoveTo(location, tile, overwriteTile);
+        //        }
+        //    }
+        //}
 
-        private static bool IsOccupied(GameLocation location, Vector2 tile)
+        public bool IsOccupied(GameLocation location, Vector2 tile)
         {
             bool occupied = false;
             if (!location.isTilePassable(tile) || !location.isTileOnMap(tile) || location.isTileHoeDirt(tile) || location.isCropAtTile((int)tile.X, (int)tile.Y) || location.IsTileBlockedBy(tile, ignorePassables: CollisionMask.All))
@@ -121,12 +128,6 @@ namespace LetsMoveIt.TargetData
                 });
             }
             return occupied;
-        }
-
-        public static void PlaySound()
-        {
-            if (!string.IsNullOrEmpty(Config.Sound))
-                Game1.playSound(Config.Sound);
         }
     }
 }

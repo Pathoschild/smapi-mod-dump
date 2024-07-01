@@ -308,6 +308,7 @@
           "Edibility": 18,
           "ContextTags": [
             "color_red",
+            "fruit_tree_item"
           ],
         },
         "Rafseazz.RSVCP_Clementine_Cake": {
@@ -457,6 +458,7 @@
           "Edibility": 22,
           "ContextTags": [
             "color_orange",
+            "fruit_tree_item"
           ],
         },
         "Rafseazz.RSVCP_Elven_Comb": {
@@ -485,6 +487,7 @@
           "Edibility": 17,
           "ContextTags": [
             "color_dark_red",
+            "fruit_tree_item"
           ],
         },
         "Rafseazz.RSVCP_Entombed_Ring": {
@@ -1105,6 +1108,7 @@
           "Edibility": 14,
           "ContextTags": [
             "color_dark_pink",
+            "fruit_tree_item"
           ],
         },
         "Rafseazz.RSVCP_Highland_Revani": {
@@ -1710,6 +1714,7 @@
           "Edibility": 15,
           "ContextTags": [
             "color_pink",
+            "fruit_tree_item"
           ],
         },
         "Rafseazz.RSVCP_Mountain_Redbelly_Dace": {
@@ -1770,6 +1775,7 @@
           "Edibility": 14,
           "ContextTags": [
             "color_light_green",
+            "fruit_tree_item"
           ],
         },
         "Rafseazz.RSVCP_Old_Lucky_Foxtail_Charm": {
@@ -1823,6 +1829,7 @@
           "Edibility": 16,
           "ContextTags": [
             "color_light_orange",
+            "fruit_tree_item"
           ],
         },
         "Rafseazz.RSVCP_Pebble_Back_Crab": {
@@ -2728,6 +2735,7 @@
           "Edibility": 23,
           "ContextTags": [
             "color_yellow",
+            "fruit_tree_item"
           ],
         },
         "Rafseazz.RSVCP_Tropic_Mango_Cake": {
@@ -2975,6 +2983,12 @@
           "Texture": "Mods\\Rafseazz.RSVCP\\Objects\\Objects",
           "SpriteIndex": "118",
           "Edibility": -300,
+          "CustomFields": {
+            "PeacefulEnd.CustomCompanions/Companions/Variety": 1,
+
+            "PeacefulEnd.CustomCompanions/Companions/0/Id": "Rafseazz.RSVCC.RingSpirit",
+            "PeacefulEnd.CustomCompanions/Companions/0/NumberToSummon": 1,
+          },
         },
         "Rafseazz.RSVCP_The_Fairy_Doe_Fox_s_Ring": {
           "Name": "The Fairy Doe Fox's Ring",
@@ -2986,6 +3000,12 @@
           "Texture": "Mods\\Rafseazz.RSVCP\\Objects\\Objects",
           "SpriteIndex": "119",
           "Edibility": -300,
+          "CustomFields": {
+            "PeacefulEnd.CustomCompanions/Companions/Variety": 1,
+
+            "PeacefulEnd.CustomCompanions/Companions/0/Id": "Rafseazz.RSVCC.SpiritFoxRing",
+            "PeacefulEnd.CustomCompanions/Companions/0/NumberToSummon": 1,
+          },
         },
         "Rafseazz.RSVCP_The_Ring_of_the_Ridge_Deities": {
           "Name": "The Ring of the Ridge Deities",
@@ -2997,6 +3017,12 @@
           "Texture": "Mods\\Rafseazz.RSVCP\\Objects\\Objects",
           "SpriteIndex": "120",
           "Edibility": -300,
+          "CustomFields": {
+            "PeacefulEnd.CustomCompanions/Companions/Variety": 1,
+
+            "PeacefulEnd.CustomCompanions/Companions/0/Id": "Rafseazz.RSVCC.MistFoxRing",
+            "PeacefulEnd.CustomCompanions/Companions/0/NumberToSummon": 1,
+          },
         },
       }
     }

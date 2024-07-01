@@ -22,6 +22,8 @@ using System.Data.Common;
 using System.Linq;
 using System.Net.Sockets;
 using System.Runtime.Intrinsics.X86;
+using static StardewDruid.Data.IconData;
+using xTile.Dimensions;
 
 namespace StardewDruid.Data
 {
@@ -67,8 +69,10 @@ namespace StardewDruid.Data
 
         }
 
-        public static void ReactTo(NPC NPC, reactions reaction, int friendship = 0, List<string> context = null)
+        public static void ReactTo(NPC NPC, reactions reaction, int friendship = 0, List<int> context = null)
         {
+
+            Mod.instance.Witnessed(reaction, NPC, true);
 
             List<string> stringList = VillagerData.CustomReaction(reaction, NPC.Name);
 
@@ -319,8 +323,24 @@ namespace StardewDruid.Data
                     }
 
                     break;
-
                 case reactions.fates:
+
+                    string trick = "levitation";
+
+                    switch (context.First())
+                    {
+
+                        case 0:
+                            trick = "random critters";
+                            break;
+                        case 1:
+                            trick = "jumping fishes";
+                            break;
+                        case 2:
+                            trick = "a burst of butterflies";
+                            break;
+
+                    }
 
                     if (friendship >= 75)
                     {
@@ -338,7 +358,7 @@ namespace StardewDruid.Data
                             case 1:
                                 NPC.doEmote(20, true);
 
-                                stringList.Add("I think " + context.First() + " is my new favourite trick. $l");
+                                stringList.Add("I think " + trick + " is my new favourite trick. $l");
 
 
                                 break;
@@ -411,7 +431,7 @@ namespace StardewDruid.Data
 
                                 NPC.doEmote(32, true);
 
-                                stringList.Add(context.First().ToUpper() + "! Now that was special.$h");
+                                stringList.Add(trick.ToUpper() + "! Now that was special.$h");
 
                                 break;
 
@@ -481,7 +501,7 @@ namespace StardewDruid.Data
 
                                 NPC.doEmote(24, true);
 
-                                stringList.Add("Hmmm. Well, I think " + context.First() + " might not be your strongest trick. How about cake out of a hat?");
+                                stringList.Add("Hmmm. Well, I think " + trick + " might not be your strongest trick. How about cake out of a hat?");
 
                                 stringList.Add("I mean, who doesn't like cake? Maybe a couple of the older guys.");
 
@@ -526,7 +546,7 @@ namespace StardewDruid.Data
                             else
                             {
 
-                                stringList.Add("Ughh. I think I'll be happy if random " + context.First() + " never happen to me again.$a");
+                                stringList.Add("Ughh. I think I'll be happy if " + trick + " never happen to me again.$a");
 
                             }
 

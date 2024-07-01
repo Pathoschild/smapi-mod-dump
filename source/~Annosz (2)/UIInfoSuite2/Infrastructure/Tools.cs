@@ -169,6 +169,70 @@ public static class Tools
     }
   }
 
+  public static void CopySection(
+    Texture2D sourceTexture,
+    Texture2D destinationTexture,
+    Rectangle sourceRectangle,
+    Point destinationPosition,
+    bool overlayTransparent = false
+  )
+  {
+    // Ensure the source rectangle is within the bounds of the source texture
+    if (sourceRectangle.X < 0 ||
+        sourceRectangle.Y < 0 ||
+        sourceRectangle.X + sourceRectangle.Width > sourceTexture.Width ||
+        sourceRectangle.Y + sourceRectangle.Height > sourceTexture.Height)
+    {
+      throw new ArgumentOutOfRangeException(
+        nameof(sourceRectangle),
+        "Source rectangle is out of bounds of the source texture."
+      );
+    }
+
+    // Ensure the destination rectangle is within the bounds of the destination texture
+    if (destinationPosition.X < 0 ||
+        destinationPosition.Y < 0 ||
+        destinationPosition.X + sourceRectangle.Width > destinationTexture.Width ||
+        destinationPosition.Y + sourceRectangle.Height > destinationTexture.Height)
+    {
+      throw new ArgumentOutOfRangeException(
+        nameof(destinationPosition),
+        "Destination position is out of bounds of the destination texture."
+      );
+    }
+
+    var emptyColor = new Color(0, 0, 0, 0);
+    var sourceData = new Color[sourceRectangle.Width * sourceRectangle.Height];
+    sourceTexture.GetData(0, sourceRectangle, sourceData, 0, sourceData.Length);
+
+    // Extract the color data from the destination texture
+    var destinationData = new Color[destinationTexture.Width * destinationTexture.Height];
+    destinationTexture.GetData(destinationData);
+
+    // Copy the source data into the destination data at the specified position
+    for (var y = 0; y < sourceRectangle.Height; y++)
+    {
+      for (var x = 0; x < sourceRectangle.Width; x++)
+      {
+        int destIndex = (destinationPosition.Y + y) * destinationTexture.Width + destinationPosition.X + x;
+        int sourceIndex = y * sourceRectangle.Width + x;
+
+        Color sourcePixel = sourceData[sourceIndex];
+
+        // If using overlay mode, don't copy transparent pixels
+        if (overlayTransparent && emptyColor.Equals(sourcePixel))
+        {
+          continue;
+        }
+
+        destinationData[destIndex] = sourcePixel;
+      }
+    }
+
+    // Set the modified color data back to the destination texture
+    destinationTexture.SetData(destinationData);
+  }
+
   public static IEnumerable<int> GetDaysFromCondition(GameStateQuery.ParsedGameStateQuery parsedGameStateQuery)
   {
     HashSet<int> days = new();

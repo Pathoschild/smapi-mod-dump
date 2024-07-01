@@ -15,6 +15,7 @@ using StardewArchipelago.Archipelago;
 using StardewArchipelago.Archipelago.Gifting;
 using StardewArchipelago.Items.Mail;
 using StardewArchipelago.Items.Traps;
+using StardewArchipelago.Locations;
 using StardewArchipelago.Stardew;
 using StardewModdingAPI;
 
@@ -29,10 +30,10 @@ namespace StardewArchipelago.Items
         private Mailman _mail;
         private HashSet<ReceivedItem> _itemsAlreadyProcessed;
 
-        public ItemManager(IMonitor monitor, IModHelper helper, Harmony harmony, ArchipelagoClient archipelago, StardewItemManager itemManager, Mailman mail, TileChooser tileChooser, BabyBirther babyBirther, GiftSender giftSender, IEnumerable<ReceivedItem> itemsAlreadyProcessed)
+        public ItemManager(IMonitor monitor, IModHelper helper, Harmony harmony, ArchipelagoClient archipelago, LocationChecker locationChecker, StardewItemManager itemManager, Mailman mail, TileChooser tileChooser, BabyBirther babyBirther, GiftSender giftSender, IEnumerable<ReceivedItem> itemsAlreadyProcessed)
         {
             _archipelago = archipelago;
-            _itemParser = new ItemParser(monitor, helper, harmony, archipelago, itemManager, tileChooser, babyBirther, giftSender);
+            _itemParser = new ItemParser(monitor, helper, harmony, archipelago, locationChecker, itemManager, tileChooser, babyBirther, giftSender);
             _mail = mail;
             _itemsAlreadyProcessed = itemsAlreadyProcessed.ToHashSet();
         }

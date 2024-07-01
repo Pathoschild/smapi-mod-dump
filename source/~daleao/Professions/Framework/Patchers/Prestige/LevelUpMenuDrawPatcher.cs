@@ -200,11 +200,13 @@ internal sealed class LevelUpMenuDrawPatcher : HarmonyPatcher
                 }
 
                 __instance.okButton.draw(b);
-                if (!Game1.options.SnappyMenus || __instance.hasMovedSelection)
+                if (Game1.options.SnappyMenus && !__instance.hasMovedSelection)
                 {
-                    Game1.mouseCursorTransparency = 1f;
-                    __instance.drawMouse(b);
+                    return false; // don't run original logic
                 }
+
+                Game1.mouseCursorTransparency = 1f;
+                __instance.drawMouse(b);
             }
 
             #endregion choose single profession
@@ -320,7 +322,6 @@ internal sealed class LevelUpMenuDrawPatcher : HarmonyPatcher
                 (menu.width / 2) - 40,
                 menu.height - 264);
             b.Draw(Game1.staminaRect, selectionArea, new Color(Color.Black, 0.3f));
-
             if (selectionArea.Contains(Game1.getMouseX(), Game1.getMouseY()))
             {
                 var hoverText = leftProfession % 6 <= 1
@@ -339,7 +340,6 @@ internal sealed class LevelUpMenuDrawPatcher : HarmonyPatcher
                 (menu.width / 2) - 40,
                 menu.height - 264);
             b.Draw(Game1.staminaRect, selectionArea, new Color(Color.Black, 0.3f));
-
             if (selectionArea.Contains(Game1.getMouseX(), Game1.getMouseY()))
             {
                 var hoverText = leftProfession % 6 <= 1

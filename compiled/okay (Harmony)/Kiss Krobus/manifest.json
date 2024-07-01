@@ -1,0 +1,10 @@
+﻿{
+  "Name": "KissKrobus",
+  "Author": "EnanoForro",
+  "Version": "1.0.0",
+  "Description": "Makes you able to kiss Krobus.",
+  "UniqueID": "EnanoForro.KissKrobus",
+  "EntryDll": "KissKrobus.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": []
+}

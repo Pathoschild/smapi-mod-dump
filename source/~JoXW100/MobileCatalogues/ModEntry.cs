@@ -36,6 +36,5 @@ namespace MobileCatalogues
 
             Helper.Events.GameLoop.GameLaunched += HelperEvents.GameLoop_GameLaunched;
         }
-
     }
 }

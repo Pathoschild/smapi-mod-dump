@@ -10,6 +10,8 @@
 
 using StardewModdingAPI;
 using HarmonyLib;
+using StardewValley.GameData.Buildings;
+using StardewModdingAPI.Events;
 
 namespace NoGreenhouseEntranceTiles
 {
@@ -26,6 +28,21 @@ namespace NoGreenhouseEntranceTiles
                 original: AccessTools.Method(typeof(StardewValley.Buildings.GreenhouseBuilding), nameof(StardewValley.Buildings.GreenhouseBuilding.CanDrawEntranceTiles)),
                 prefix: new HarmonyMethod(typeof(ModEntry), nameof(ModEntry.AlwaysFalse))
                 );
+            helper.Events.Content.AssetRequested += Content_AssetRequested;
+        }
+
+        private void Content_AssetRequested(object? sender, StardewModdingAPI.Events.AssetRequestedEventArgs e)
+        {
+            if (e.Name.IsEquivalentTo("Data/Buildings"))
+            {
+                e.Edit(asset =>
+                {
+                    var data = asset.AsDictionary<string, BuildingData>().Data;
+                    if (data.ContainsKey("Greenhouse"))
+                        data["Greenhouse"].AdditionalPlacementTiles = null;
+                },
+                AssetEditPriority.Early);
+            }
         }
 
         private static bool AlwaysFalse(ref bool __result)

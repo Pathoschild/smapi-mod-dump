@@ -11,9 +11,9 @@
 using System;
 using System.Collections.Generic;
 using ContentPatcher.Framework.Conditions;
-using ContentPatcher.Framework.Constants;
 using Pathoschild.Stardew.Common.Utilities;
 using StardewValley;
+using StardewValley.GameData.Characters;
 
 namespace ContentPatcher.Framework.Tokens.ValueProviders
 {
@@ -71,13 +71,12 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
                         // track pregnancy/adoption
                         if (this.PregnancyOnly)
                         {
-                            Gender playerGender = player.IsMale ? Gender.Male : Gender.Female;
-                            if (playerGender != spouseGender)
+                            if (this.CanHavePregnancyWith(player, spouseName, spouseGender, isPlayerSpouse))
                             {
-                                if (playerGender == Gender.Female)
-                                    this.PartnersHavingChild.Add(playerPrefix + player.Name);
-                                if (spouseGender == Gender.Female)
+                                if (spouseGender is Gender.Female)
                                     this.PartnersHavingChild.Add((isPlayerSpouse ? playerPrefix : "") + spouseName);
+                                else if (player.Gender is Gender.Female)
+                                    this.PartnersHavingChild.Add(playerPrefix + player.Name);
                             }
                         }
                         else
@@ -96,6 +95,30 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
             this.AssertInput(input);
 
             return this.PartnersHavingChild;
+        }
+
+
+        /*********
+        ** Private methods
+        *********/
+        /// <summary>Get whether the player or their spouse can get pregnant.</summary>
+        /// <param name="player">The player to check.</param>
+        /// <param name="spouseName">The spouse name.</param>
+        /// <param name="spouseGender">The spouse gender.</param>
+        /// <param name="spouseIsPlayer">Whether the spouse is a player, rather than an NPC.</param>
+        /// <remarks>Derived from <see cref="NPC.isAdoptionSpouse"/>.</remarks>
+        private bool CanHavePregnancyWith(Farmer player, string spouseName, Gender spouseGender, bool spouseIsPlayer)
+        {
+            // based on data
+            if (!spouseIsPlayer)
+            {
+                if (NPC.TryGetData(spouseName, out CharacterData spouseData) && spouseData.SpouseAdopts is not null)
+                    return !GameStateQuery.CheckConditions(spouseData.SpouseAdopts, player: player);
+            }
+
+            // else based on gender
+            return spouseGender != player.Gender;
+
         }
     }
 }

@@ -1,0 +1,9 @@
+{
+  "ModEnabled": true,
+  "FireButton": "Insert",
+  "ScaleWithSkill": true,
+  "FireDamage": 50,
+  "FireDistance": 256,
+  "FireSound": "furnace",
+  "FireAnnoysNonMonsters": false
+}

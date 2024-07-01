@@ -1,0 +1,643 @@
+// Please help make this translation better!  Search for '>>>' to find known issues with the
+// translation.  When you've corrected everything and tested it locally, send your copy of this
+// file back to the mod's author for integration into the mod.  Instructions on how to integrate
+// it into the source repository can be found here:
+// https://github.com/NermNermNerm/LocalizeFromSource?tab=readme-ov-file#ingesting-translations
+//
+// Built from commit: 905e2bccba59ca4361201eaae37b6448f3bfca58  !! DO NOT DELETE THIS LINE !!
+{
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/ConversationKeys.cs#L18
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "You've been to the mines I see...  Your grandfather did too, even after his mind began to go.  I worried for him, but there was no stopping him.$0#$b#Then one day he came to me, shaken to the core.  He sobbed 'A big slime ate my friend!' but I know he went to the mines alone...$2#$b#He kept going on like that for several days.  I felt terrible for him, because although *I* knew it wasn't real, it was real enough to him.$0#$b#He never went back to the mines; that was very much for the best.$2"
+    "KOEpNoH7vj": "Je vois que tu es allé dans les mines... Ton grand-père aussi, même après que son esprit ait commencé à s'égarer. Je m'inquiétais pour lui, mais rien ne pouvait l'arrêter.$0#$b#Et puis un jour, il est venu vers moi, profondément secoué.  Il a sangloté : « Un gros limon a mangé mon ami ! » mais je savais qu'il était parti seul dans les mines...$2#$b#Il a continué ainsi pendant plusieurs jours. Je me sentais mal pour lui, parce que même si moi, je savais que ce n'était pas réel, c'était suffisamment réel pour lui.$0#$b#Il n'est jamais retourné aux mines ; c'était vraiment mieux pour tout le monde.$2",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/ModConfigMenu.cs#L38
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Junimos work anywhere"
+    "NbEFcDz1jb": "Les Junimos fonctionnent partout",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/ModConfigMenu.cs#L41
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Normally Junimos only work on player farms, as they are shy.  Turning this on allows Junimo portals to work anywhere."
+    "n3yOJ9dnKX": "Normalement, les Junimos ne travaillent que dans les fermes des joueurs car ils sont timides. L'activation de cette option permet aux portails Junimo de fonctionner n'importe où.",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/ModConfigMenu.cs#L46
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Minimal Questing"
+    "rHYaECJWre": "Quêtes minimales",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/ModConfigMenu.cs#L49
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Normally quests are required to unlock the Junimos.  This enables skipping most of the quests - you just have to complete the portal quest."
+    "ryZXAFukmX": "Normalement, des quêtes sont nécessaires pour débloquer les Junimos. Cela permet de sauter la plupart des quêtes - il vous suffit de terminer la quête du portail.",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/PetFindsThings.cs#L138
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "I wonder what {{arg0}} has been up to..."
+    "vONvot9XIi": "jJ me demande ce que {{arg0}} est en train de faire...",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/PetFindsThings.cs#L77
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Pets sometimes have an uncanny ability to spot missing things!$0#$b#Just last week I lost my favorite milking bucket.  I came across it a few days later and my cat, Muffin, was sleeping in it.$1#$b#Well, I guess she didn't exactly find it for me, but at least she knew where it was!$0"
+    "djmeLRwMtO": "Les animaux de compagnie ont parfois une étrange capacité pour repérer des objets perdus !$0#$b#La semaine dernière, j'ai perdu mon seau de traite préféré. Je l'ai découvert quelques jours plus tard et mon chat, M. Roux, dormait dedans.$1#$b#Eh bien, je suppose qu'il ne l'a pas vraiment trouvé pour moi, mais au moins il savait où il se trouvait !$0",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/PetFindsThings.cs#L85
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Do I miss my \"normal\" life on days like this?$2#$b#No, not really.  Except for Jeremy Clarkson...$1#$b#...My pet Schnauzer.  He had an uncanny ability to fetch the thing I wanted before I even knew I wanted it.$0"
+    "N1gDRt0T0i": "Est-ce que ma vie « normale » me manque dans des jours comme celui-ci ?$2#$b#Non, pas vraiment. Sauf Jeremy Clarkson...$1#$b#...Mon Schnauzer de compagnie. Il avait une étrange capacité à récupérer ce que je voulais avant même que je sache que je le voulais.$0",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockAnimal.cs#L62
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "That's not a chicken."
+    "aEWmrG5CfR": "Ce n'est pas une poule.",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockAnimal.cs#L62
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "I wonder if it's lost and can't find its way home...  It seems distressed."
+    "MBkkio0DCs": "Je me demande s’il ne s’est pas perdu et n'arrive pas à retrouver le chemin du retour... Il semble en détresse.",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockAnimal.cs#L62
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Maybe a Junimo Portal would help it find its way home."
+    "fpgy1f2A0N": "Peut-être qu’un portail Junimo l’aiderait à retrouver son chemin.",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockAnimal.cs#L104
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "That wasn't a chicken...  was it?$2#$b#Your grandfather had some little houses like that on his farm.  He said they were for his 'helpers'.  But as he declined, he was prone to say, well, a lot of stuff....$2#$b#I suppose I caught a glimpse of them from time to time, but, well...  I think I'm more comfortable not seeing them.$3#$b#You say they're good creatures?  Well...  Okay.  *Something* was sure keeping that farm in trim when your Grandad was declining.$2#$b#I suppose everybody needs a little magic in their lives from time to time.$0"
+    "cNwHdGjcxq": "Ce n'était pas une poule... n'est-ce pas ?$2#$b#Ton grand-père avait quelques petites maisons comme celle-là sur sa ferme. Il disait qu'elles étaient destinés à ses « assistants ». Mais comme il vieillissait, il était enclin à dire, eh bien, beaucoup de choses...$2#$b#Je suppose que je les ai aperçus de temps en temps, mais bon... Je pense que je préfère ne pas les voir.$3#$b#Tu dis que ce sont de bonnes créatures ? Bien, OK. *Quelque chose* gardait cette ferme en bon état quand ton grand-père commençait à aller mal.$2#$b#Je suppose que tout le monde a besoin d'un peu de magie dans sa vie de temps en temps.$0",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockAnimal.cs#L182
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Thank you for helping our friend get home..."
+    "Giekfc5hqc": "Merci d'avoir aidé notre ami à rentrer à la maison...",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockAnimal.cs#L182
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "I can help you, like I helped your Grandfather..."
+    "aLauGiQih1": "Je peux t'aider, comme j'ai aidé ton grand-père...",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockAnimal.cs#L182
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "I like animals and the wonderful things you can make with their help..."
+    "T4sugTti3v": "J'aime les animaux et les choses merveilleuses que l'on peut réaliser avec leur aide...",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockAnimal.cs#L205
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Hello @!  Are you missing any chickens?  I think one might have run off!"
+    "Q2hxdvc5kS": "Bonjour @ ! Il te manque des poules ? Je pense que l'une d'entre elles aurait pu s'enfuir !",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockAnimal.cs#L205
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "I saw it across the river to the south of my farm!  I went over to try and round it up, but it ran away from me!$2#$b#Maybe it would come to you if you went down there and called it!"
+    "K9koWKoaPA": "Je l'ai vue de l'autre côté de la rivière, au sud de ma ferme ! J’ai essayé de la récupérer, mais elle m'a échappé !$2#$b#Peut-être qu’elle viendrait vers toi si c’était toi qui y allait et l'appelait !",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockAnimal.cs#L205
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Oof! I need to be getting back! Anyway, I hope you can wrangle it back home!  Bye now!  Don't be a stranger!"
+    "ES1Adkpzkl": "Ouf ! Il faut que j’y retourne ! Quoi qu’il en soit, j’espère que tu pourras la ramener à la maison ! Et maintenant, à bientôt ! Tiens-moi au courant !",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockAnimal.cs#L228
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Chicken Round-Up"
+    "liglB0huCJ": "Poule échappée !",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockAnimal.cs#L228
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Marnie thinks one of your chickens has escaped and is in the forest south of her farm; you should investigate."
+    "Khq4khgEh6": "Marnie pense qu'une de vos poules s'est échappée et se trouve dans la forêt au sud de sa ferme ; tu devrais enquêter.",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockAnimal.cs#L228
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Enter the Cindersnap Forest during the day."
+    "PQglbbKcy5": "Entrez dans la forêt Cindersnap pendant la journée.",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockAnimal.cs#L229
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Help the Junimo Go Home"
+    "MqDgX5oqrz": "Aidez le Junimo à rentrer chez lui",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockAnimal.cs#L229
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Help the Junimo in the Cindersnap Forest get home."
+    "AHR3GCj5Mv": "Aidez le Junimo de la forêt Sève-Cendreuse à rentrer chez lui.",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockAnimal.cs#L229
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Enter the Cindersnap Forest during the day with a Junimo Portal in your inventory."
+    "vWAr85iFBF": "Entrez dans la forêt Sève-Cendreuse pendant la journée avec un portail Junimo dans votre inventaire.",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockCropMachines.cs#L112
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "We love giant crops!  Please keep growing them!"
+    "uScnjVETFm": "Nous adorons les cultures géantes ! S'il te plaît, continue à les cultiver !",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockCropMachines.cs#L112
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "One of us will come and help with your kegs, casks and preserves jars if you connect them to a portal!"
+    "x0JObvTAuL": "L'un de nous viendra t’aider avec tes fûts, tonneaux et bocaux si tu les connectes à un portail !",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockCropMachines.cs#L134
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Did you ever see the giant crops your Granddad used to crow?  Crazy big pumpkins.#$b#Abby campaigned for me to buy one every year.  I think she wanted me to buy one so she could carve out a house for herself.$1"
+    "nypR1cZjON": "As-tu déjà vu les récoltes géantes que ton grand-père cultivait ? De grosses citrouilles, vraiment géantes.#$b#Abby a fait campagne pour que j'en achète une chaque année. Je pense qu'elle la voulait pour qu'elle puisse se construire une maison.$1",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockCropMachines.cs#L143
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Has Abby been needling you about growing giant pumpkins?$4#$b#Don't do it, really, there's no money in it.  Quantity is good, sure, but the quality isn't.$2#$b#Your grandpa grew them in his declining years in particular.  He said 'my helpers like them'.  Not sure what he meant by that, but he really enjoyed them that made it worth it to him!$1"
+    "RWSgCcWL4J": "Abby t’a demandé pour la citrouille géante ?$4#$b#Ne le fais pas, vraiment, il n’y a pas d’argent à en tirer. On s’y retrouve en quantité, bien sûr, mais pas en qualité.$2#$b#Ton grand-père les cultivait notamment vers la fin de sa vie. Il disait \"mes assistants les adorent\".  Je ne suis pas sûr de ce qu'il voulait entendre par là mais il en prenait soin, ça en valait la peine pour lui !$1",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockCropMachines.cs#L152
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "When you were a kid visiting the farm, did you ever see any of the giant cauliflowers that your grandpa grew?  I mean huge!  like way huge!$1#$b#I only got to see them once that I can recall when my Mom took me down there one afternoon.#$b#I climbed one like a tree and my Mom got all worried.#$b#Your grandad fished me down and told my mom not to worry because magical creatures would protect me.#$b#I don't know why, I guess it's because I was just a kid, but I felt really special for a long time after that day."
+    "xo6o8p862z": "Lorsque tu étais enfant et que tu visitais la ferme, as-tu déjà vu les choux-fleurs géants que ton grand-père cultivait ? Énorme, je veux dire ! Genre, vraiment énorme !$1#$b#Je n'ai pu les voir qu'une seule fois et je me souviens que ma mère m'y avait emmené un après-midi.#$b#J'en ai grimpé un comme si c’était un arbre et ma mère s'est inquiétée.#$b#Ton grand-père m'a récupéré et a dit à ma mère de ne pas s'inquiéter parce que des créatures magiques me protégeraient.#$b#Je ne sais pas pourquoi, je suppose que c'est parce que je n'étais qu'un enfant, mais je me suis sentie vraiment spéciale longtemps après ce jour.",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockCropMachines.cs#L161
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Your grandad used to grow these gigantic pumpkins.  I totally wanted to carve one of those things.$1#$b#But my mom wouldn't buy one and your grandad invented this cock&bull story about magical creatures.$5#$b#Didn't he know I was too old for stories like that?  Meh.  I guess I should cut him slack for being old and senile.$2#$b#So...  Do you want to hear about any more of my first-world problems?$2"
+    "JVwYRHGRNB": "Ton grand-père cultivait ces gigantesques citrouilles. Je voulais absolument sculpter une de ces choses.$1#$b#Mais ma mère ne voulait pas en acheter et ton grand-père a inventé cette histoire à dormir debout sur des créatures magiques.$5#$b#Il ne savait pas que j'étais trop vieille pour des histoires comme ça ? Hum. Je suppose que je devrais laisser passer parce qu'il était vieux et sénile.$2#$b#Alors... Tu veux en savoir plus sur mes problèmes de riche ?$2",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L48
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Enables the fishing Junimo - Enables the Junimo for handling fishing things with or without having done the quest."
+    "MdQHomtqLT": "Permet le Junimo de pêche - Permet au Junimo de gérer les actions de pêche avec ou sans avoir effectué la quête.",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L170
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "{{arg0}} of 6 teleported"
+    "uaY6CDf9CM": "{{arg0}} sur 6 téléportés",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L215
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "You've made a new Junimo friend that will help with traps and fishing-related machines"
+    "zHGVhw2toA": "Vous vous êtes fait un nouvel ami Junimo qui vous aidera\navec les casiers et les machines associées à la pêche.",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L346
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "@!  I'm so glad you came!"
+    "u5Xs3tgNPi": "@ ! Je suis tellement content que tu sois venu !",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L346
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Please come to the mines with me.  There's something I have to show you!"
+    "BpE8De3Ya3": "S'il te plaît, viens avec moi dans les mines.  Il y a quelque chose que je dois te montrer !",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L346
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "I had been having these recurring dreams...  In it, there was somebody like me, but wasn't me...  You know how dreams are."
+    "ktA1j1jHzJ": "J'avais fait ces rêves récurrents... Dedans, il y avait quelqu'un comme moi mais ce n'était pas moi... Tu sais comment sont les rêves.",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L346
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Anyway, this other me was at a pool, deep in a cave.  It was filled with litter, but the whole community was pitching in to clean it up."
+    "Ww5peBcXuE": "Quoi qu'il en soit, cet autre moi était au bord d'une piscine, au fond d'une grotte. Elle était remplie de détritu, mais toute la communauté s'est mobilisée pour le nettoyer.",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L346
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "They cleaned it, but there were no fish in it anymore, which made the other me sad."
+    "uTDMjRgVJy": "Ils l'ont nettoyé mais il n'y avait plus de poisson dedans, ce qui m'a rendu triste.",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L346
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "But then a fish tank appeared!  And then fish started appearing in the fish tank, and the other me started netting them out and releasing them into the pond!"
+    "CsYnBwJciE": "Mais ensuite un aquarium est apparu ! Et puis des poissons ont commencé à apparaître dans l’aquarium, et l’autre moi a commencé à les sortir dans des filets et à les relâcher dans l’étang !",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L346
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "As to what happened next, well, you'd best see for yourself.  Please take the elevator down to 60."
+    "deAMOx4enW": "Quant à ce qui s’est passé ensuite, eh bien, tu ferais mieux de le constater par toi-même. Prends l'ascenseur jusqu'au soixantième étage.",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L393
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "It was just a dream, I thought, but the next night I dreamt the same thing, so I just had to come down here."
+    "kQGrrfg5xP": "C'était juste un rêve, je pensais, mais la nuit suivante, j'ai rêvé de la même chose, alors j'ai dû venir ici.",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L393
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Look at this!  The fish tank from my dream!  Where did that come from?"
+    "nqawfSl7dr": "Regarde ça ! L'aquarium de mon rêve ! D'où vient-il ?",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L393
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Well, the tank was empty, and I decided I'd try putting a fish in there, so I caught a ghostfish and put it in there."
+    "vfyxUCodZX": "Eh bien, le réservoir était vide et j'ai décidé d'essayer d'y mettre un poisson, alors j'ai attrapé un poisson-fantôme et je l'y ai mis.",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L393
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "AND IT DISAPPEARED!"
+    "laaojosbjM": "ET IL A DISPARU !",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L393
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Poof!"
+    "fCtFLI4LeZ": "Pouf !",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L393
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Gone!"
+    "fMkItbauLZ": "Disparu !",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L393
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "So I put in another, and it disappeared too!"
+    "G2Ps8uc6RK": "Alors j'en ai mis un autre et il a disparu aussi !",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L393
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Is it going to the world in my dream?  I don't know, but after about half a dozen fish went in there they stopped disappearing."
+    "Ub8dFjg0BF": "Est-ce que ça va au monde de mon rêve ?  Je l’ignore mais après qu'une demi-douzaine de poissons y soient entrés, ils ont arrêté de disparaître.",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L393
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "...But the tank is still here..."
+    "ZWLPDQQZ62": "... Mais le réservoir est toujours là...",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L393
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "I see some smaller fish darting around in the pool, but I haven't been able to land any of them."
+    "vV1ZQpSDhe": "Je vois des poissons plus petits s'élancer dans la piscine mais je n'ai réussi à en attraper aucun.",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L393
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "You're the only one that can help since you've got the skill, the equipment and can handle yourself this deep in the mine."
+    "OxjKrcriFv": "Tu es le seul à pouvoir m’aider puisque tu possèdes les compétences et l'équipement nécessaires. Et tu sais comment aller profondément dans la mine.",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L393
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Could you try and catch some of those little fish and put them in the tank and see what happens?"
+    "OM9yp5ibnu": "Pourrais-tu essayer d'attraper quelques-uns de ces petits poissons, les mettre dans l'aquarium et voir ce qui se passe ?",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L393
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "I'm afraid I've got to leave you to it.  I know it could take a while to catch them and I..."
+    "bJtL0fPDHo": "J'ai bien peur de devoir te laisser faire. Je sais que ça peut prendre un certain temps pour les attraper et je...",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L393
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Well, I've got a lot to think about."
+    "mgTWGTTK0z": "Eh bien, il y a beaucoup de choses qui me demandent de réfléchir.",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L312
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Find Linus At His Tent"
+    "QtyXFFxBHc": "Trouvez Linus dans sa tente",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L312
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Linus said he had something he needed your help with."
+    "a3sOXMDZvV": "Linus a dit qu'il avait besoin de votre aide pour quelque chose.",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L312
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Go to Linus' tent before 10pm"
+    "lbIlqYzNWx": "Rendez-vous à la tente de Linus avant 22h",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L313
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Meet Linus At Level 60"
+    "aUfDSfqXNA": "Rencontrez Linus dans les mines",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L313
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Linus had something he wanted to show you at level 60 of the mines."
+    "ksKMHp4F7z": "Linus avait quelque chose à vous montrer au niveau 60 des mines.",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L313
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Follow Linus to level 60"
+    "sciNRXGlJs": "Suivez Linus jusqu'au niveau 60",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L314
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Catch Six Ice Pips"
+    "NwZy9Wf803": "Attrapez six poissons-glace",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L314
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Catch six ice pips and put them in the mysterious fish tank."
+    "YRzobXsl4e": "Attrapez six poissons-glace et placez-les dans le mystérieux aquarium.",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L322
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "@,^Please come visit me at my tent.  I've found something and I need your help to sort it out.^   -Linus"
+    "xw8PvRWl5h": "@,^S'il te plaît, viens me rendre visite dans ma tente. J'ai trouvé quelque chose et j'ai besoin de ton aide.^   - Linus",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L322
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Meet Linus at his tent"
+    "vTqnS5SaOA": "Rencontrez Linus dans sa tente",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L330
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "I'm still having those dreams.  The other me...  who seems less and less like me each night, keeps checking that fish tank in his world.  He's disappointed and puzzled.#$b#I'm pretty puzzled too.  But I'm glad you're working on it."
+    "ruSiyojzaq": "Je fais toujours ces rêves.  L'autre moi... qui me ressemble de moins en moins chaque nuit, continue de vérifier cet aquarium dans son monde. Il est déçu et perplexe.#$b#Je suis assez perplexe aussi.  Mais je suis content que tu sois dessus.",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L331
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Did you finish collecting those fish?  I'm betting you have.  I had one last dream, where the fish were released and the tank disappeared.#$b#You know, one of the reasons I adopted my, uh...  lifestyle is that I was, well, not so stable in the head.#$b#And sometimes angry.  That was the part that made me take what most would regard as a drastic lifestyle change.#$b#But I've never felt saner.  At least up until these dreams started happening.#$b#But in these visions there is nothing like anger, so, well, that's good.#$b#But I still hope they go away."
+    "pgldaGwn6v": "As-tu fini de ramasser ces poissons ?  Je parie que oui. J'ai fait un dernier rêve, où les poissons étaient relâchés et l'aquarium disparaissait.#$b#Tu sais, l'une des raisons pour lesquelles j'ai adopté mon style de vie, c'est que je n'étais pas très stable mentalement.#$b#Et parfois en colère.  C’est ce qui m’a poussé à adopter ce que la plupart considèrent comme un changement radical de style de vie.#$b#Mais je ne me suis jamais senti plus sain d'esprit. Du moins jusqu'à ce que ces rêves commencent à se réaliser.#$b#Mais dans ces visions, il n'y a rien qui ressemble à de la colère, alors bon, c'est bien.#$b#Mais j'espère toujours qu'ils disparaîtront.",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L339
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Hey I just read a paper written by one of my old college buddies on habitat restoration of an underground pool populated with Ghostfish and Ice Pips!$1#$b#I'm told we have such a cavern deep in the mines.  Perhaps you could take me to it one day.#$b#Funny, the paper didn't specify where he got the fish to repopulate from...$3"
+    "Niz2hChPAS": "Hé, je viens de lire un article rédigé par un de mes anciens copains d'université sur la restauration de l'habitat d'une piscine souterraine peuplée de poissons fantômes et de poissons-glace !$1#$b#On m’a dit que nous avions une caverne similaire au fond des mines. Peut-être que tu pourrais m'y emmener un jour.#$b#C'est drôle, le journal n'a pas précisé d'où provenaient les poissons qui ont repeuplé cet habitat...$3",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L183
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Thx!  Bai!!!"
+    "TPJNvwmuSR": "Merci ! Ciao !!!",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L183
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "The giant trees were cut down to make ships and buildings and other wonderful things..."
+    "jDjeyijfdQ": "Les arbres géants ont été abattus pour fabriquer des navires, des bâtiments et d'autres choses merveilleuses...",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L183
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "...but they cut like there would always be more, until they cut down the last one."
+    "XEBSO9uSW8": "... mais ils ont coupé comme s'il y en aurait toujours plus, jusqu'à ce qu'ils coupent le dernier.",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L183
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "You will be wiser.  We will help."
+    "eFJvx689nC": "Tu seras plus sage. Nous t’aiderons.",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L206
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Welcome!  You're just in time!"
+    "gZocCqhgXS": "Salut !  Tu arrives juste à temps !",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L206
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "I hiked the back-woods trail today."
+    "RrI5xa73j3": "J'ai parcouru le sentier forestier aujourd'hui.",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L206
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "It can be a bit treacherous at my age..."
+    "KaRNxr3YIH": "Cela peut être un peu dangereux à mon âge...",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L206
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "But the view of the desert is breathtaking."
+    "HfsVff5XXS": "Mais la vue sur le désert est imprenable.",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L206
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "I picked a few wild mushrooms and herbs along the way."
+    "LqwpJR5PXw": "J'ai cueilli quelques champignons sauvages et des herbes en cours de route.",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L206
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Dinner is served!"
+    "wbswl1MG0p": "Le diner est servi !",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L206
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "What do you think?"
+    "MwzKrmro2h": "Qu'en penses-tu?",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L206
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "I'm glad you like it."
+    "YSO3qN9j4O": "Je suis content que tu apprécies.",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L206
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "You know, when people see you talking to the trees, well...  They tend to think you're crazy.$2"
+    "LsnsBa8pGp": "Tu sais, quand les gens te voient parler aux arbres, eh bien... Ils ont tendance à penser que tu es fou.$2",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L206
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "But when you hear the trees talking *to* *you*, then... well...#$b#Then maybe they're right.$2"
+    "GNQsVZOcgc": "Mais quand tu entends les arbres *te* parler à *toi*, eh bien...#$b#Alors peut-être qu'ils ont raison.$2",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L206
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Last night I dreamt I saw what these trees looked like before they were cut..."
+    "urrMKMGmv7": "Cette nuit, j'ai rêvé que je voyais à quoi ressemblaient ces arbres avant qu'ils ne soient coupés...",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L206
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Then, the vision pivoted to your farm; your farm when those big stumps and logs were standing trees..."
+    "MS7oJsd5r6": "Ensuite, la vision s’est tournée vers ta ferme ; ta ferme quand ces grosses souches et ces rondins étaient des arbres vivants...",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L206
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "I found these seeds in my tent as I was stepping out this morning.#$b#I guess I tracked them in last night.  They're usually not so easy to find.  Here.  I think they're meant for you."
+    "IdMfVTp1WE": "J'ai trouvé ces graines dans ma tente alors que je sortais ce matin.#$b#Je suppose que je les ai récupérées hier soir. Elles ne sont généralement pas si faciles à trouver. Tiens. Je pense qu'elles sont faites pour toi.",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L206
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "I'm glad you're the sort of friend that doesn't mind listening to the ravings of a crazy old man."
+    "kzV8AFCjUA": "Je suis content que tu sois le genre d'ami qui n'hésite pas à écouter les divagations d'un vieil homme fou.^Je suis content que tu sois le genre d'amie qui n'hésite pas à écouter les divagations d'un vieil homme fou.",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L206
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Well...  It's getting late.  You should get back to your farm and I should crawl into my tent.#$b#I plan on breaking camp in the morning and making the hike up to the mountain."
+    "m2ysp95THa": "Eh bien... Il se fait tard.  Tu devrais retourner à ta ferme et je devrais retourner dans ma tente.#$b#Je prévois de lever le camp le matin et de continuer la randonnée jusqu'à la montagne.",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L206
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Do the trees talk to you too?"
+    "PaVvrqHeAU": "Les arbres te parlent aussi ?",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L206
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Hm.  Perhaps it's best not to answer that one..."
+    "OGGOrzoslh": "Hum. Il vaut peut-être mieux que tu ne répondes pas à cette question-là...",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L167
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Plant The Mystic Seed"
+    "fBeysmsxcb": "Plantez la graine mystique",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L167
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Linus gave you some tree seeds...  Do the Junimos talk to him too?"
+    "qeDVDSoV4F": "Linus vous a donné des graines d'arbres... Est-ce que les Junimos lui parlent aussi ?",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L167
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Grow a Mystic Tree and 2 Mahogony Trees to adulthood on your farm."
+    "XjovUPUpOK": "Cultivez un arbre mystique et deux acajous jusqu'à l'âge adulte dans votre ferme.",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L168
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Meet Linus In The Secret Woods"
+    "fXwO7pRsAh": "Rencontrez Linus dans les bois secrets",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L168
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Have dinner with Linus in the Secret Woods"
+    "oD0YBwmUKy": "Dîner avec Linus dans les bois secrets",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L168
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Enter the secret woods on a sunny day between 6 and 11pm."
+    "dtOYnKDbnP": "Entrez dans les bois secrets par une journée ensoleillée entre 18h et 23h.",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L176
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "@,^how are you doing?  I've decided to spend a night or two in the deep woods, west of Marnie's ranch.  Would you care to share a meal in the wild with me? ^   -Linus"
+    "wUzYzsuFrB": "@,^comment vas-tu ? J'ai décidé de passer une nuit ou deux dans les bois profonds, à l'ouest du ranch de Marnie. Souhaiterais-tu partager un repas dans la nature avec moi ?^  - Linus",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L176
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Meet at Linus' camp in the woods"
+    "mGm0o8rO1f": "Rendez-vous au camp de Linus dans les bois",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockMiner.cs#L44
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Give the strange orb to the host player - only the host can advance this quest.  (Put it in a chest for them)"
+    "iqYpoWQEl8": "Donnez l'orbe étrange au joueur hôte - seul l'hôte peut avancer dans cette quête. (Mettez-le dans un coffre pour qu’il puisse être récupéré)",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockMiner.cs#L96
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "a strange faintly glowing orb"
+    "gmlJQdk8lf": "Un étrange orbe, faiblement brillant",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockMiner.cs#L96
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "It looks vaguely magical. It's quite hard and smooth."
+    "WCZNY4BDTA": "Cela a l’air vaguement magique. C'est assez dur et lisse.",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockMiner.cs#L106
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "My dear boy...^My beloved grand-daughter...#$b#I am sorry to come to you like this, but I had to thank you for rescuing my dear Junimo friend.#$b#He protected me at a time when my darkest enemy was my own failing mind.#$b#In better days, he helped me with my smelters and other mine-related machines.  He will help you too; he really enjoys watching the glow of the fires!#$b#I rest much easier now knowing that my friend is safe.  I am so proud of you..."
+    "T7QBZYZe9a": "Mon cher garçon...^Ma petite-fille adorée...#$b#Je suis désolé de venir vers toi comme ça, mais je devais te remercier d'avoir sauvé mon cher ami Junimo.#$b#Il m'a protégé à une époque où mon plus sombre ennemi était mon propre esprit défaillant.#$b#Dans des jours meilleurs, il m'a aidé avec mes fonderies et d’autres machines du même genre.  Il t’aidera aussi ; il aime vraiment regarder la lueur des flammes !#$b#Je me repose beaucoup plus facilement maintenant, en sachant que mon ami est en sécurité.  Je suis si fier de toi...",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockMiner.cs#L123
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "What have you brought for me this time?"
+    "s5xLKhGeJz": "Qu'est-ce que tu m'as apporté cette fois ?",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockMiner.cs#L123
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Hm..  Yes...#$b#Junimos are harmless, but they are not defenseless.  When this one was overwhelmed by the slime, it bound itself into a protective stasis and went into a sort of torpor.#$b#If we return this to the Junimo's world, they will be able to care for this one."
+    "vzsfntmac2": "Hm.. Oui...#$b#Les Junimos sont inoffensifs, mais ils ne sont pas sans défense. Lorsque celui-ci fut submergé par le limon, il s’enferma dans une stase protectrice et entra dans une sorte de torpeur.#$b#Si nous rendons cela au monde Junimo, ils pourront s'en occuper.",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockMiner.cs#L123
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "I shall, using my immense powers, transport this one back to the Junimo realm!"
+    "o5ZUcAdfjZ": "Je vais, en utilisant mes immenses pouvoirs, transporter celui-ci dans le royaume Junimo !",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockMiner.cs#L123
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "There.  Done."
+    "SFICKyeN6K": "Voilà. C’est fait.",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockMiner.cs#L123
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Yes.  Done.  It's safely back to the Junimo realm and you should get about your business."
+    "c3J39hhYpX": "Oui. C’est fait. Il est de retour en toute sécurité dans le royaume Junimo et tu devrais retourner à tes affaires.",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockMiner.cs#L123
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "That's it...#$b#Really...#$b#I think."
+    "AstEj4WO8L": "C'est bon...#$b#Vraiment...#$b#Je pense.",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockMiner.cs#L204
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "The Strange Orb"
+    "xRj9KIs8xE": "L'orbe étrange",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockMiner.cs#L204
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Investigate the strange glowing thing you found inside a big slime."
+    "k18OUCY10Z": "Enquêtez sur l'étrange chose brillante que vous avez trouvée à l'intérieur d'un gros limon.",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockMiner.cs#L204
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Bring the faintly glowing orb to the wizard's tower."
+    "xnJcqLM5pj": "Apportez l'orbe faiblement brillant à la tour du sorcier.",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockPortal.cs#L143
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Ah... Come in."
+    "iJO75x9GnF": "Ah... Entre.",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockPortal.cs#L63
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Give the strange little structure to the host player - only the host can advance this quest.  (Put it in a chest for them.)"
+    "M8yHwtBPah": "Donnez l'étrange petite structure au joueur hôte - seul l'hôte peut avancer dans cette quête. (Mettez-le dans un coffre pour qu’il puisse être récupéré)",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockPortal.cs#L119
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "A portal through which Junimos who want to help out on the farm can appear.  Place pathways next to these when placing them outdoors so the Junimos will know where to go."
+    "DPZMafDe9x": "Un portail à travers lequel peuvent apparaître les Junimos qui souhaitent aider à la ferme. Placez des chemins à côté de ceux-ci lorsque vous les placez à l’extérieur afin que les Junimos sachent où aller.",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockPortal.cs#L119
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Junimo Portal"
+    "PQKLcoVlHA": "Portail Junimo",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockPortal.cs#L133
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "a strange little structure"
+    "CXUrtaOigV": "Une étrange petite structure",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockPortal.cs#L133
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "At first it looked like a woody weed, but a closer look makes it like a little structure, and it smells sorta like the Wizard's forest-magic potion."
+    "DkGS7LQ3rk": "Au début, cela ressemblait à une mauvaise herbe mais en y regardant de plus près, cela ressemble à une petite structure et ça sent un peu les potions magiques du sorcier.",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockPortal.cs#L143
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "You have something to show me?  Well, bring it to me!"
+    "R48vE4R2Kv": "Tu as quelque chose à me montrer ? Eh bien, apporte-le-moi !",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockPortal.cs#L143
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Ah I see why you thought I should see this...#$b#I believe I recognize the magical traces, but let me consult my vast reference library to be certain..."
+    "pUzIQ7qsKu": "Ah, je vois pourquoi tu pensais que je devrais voir ça...#$b#Je crois reconnaître des traces magiques mais permet-moi de consulter ma vaste bibliothèque pour en être sûr...",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockPortal.cs#L195
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Come along then!"
+    "ZxAxDD4aib": "Viens donc !",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockPortal.cs#L195
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Yes.  I was right...#$b#As always."
+    "mrTqHoj8qR": "Oui. J'avais raison...#$b#Comme toujours.",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockPortal.cs#L227
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "This is a sort of a crude portal, made by your Grandfather to allow Junimos to easily travel between their world and ours.#$b#It's an easy thing to construct, even the greenest apprentice could do it.  Here, let me teach it to you."
+    "PYI0in4tJw": "Il s'agit d'une sorte de portail rudimentaire, réalisé par ton grand-père pour permettre aux Junimos de voyager facilement entre leur monde et le nôtre.#$b#C'est une chose facile à construire, même l'apprenti le plus débutant pourrait le fabriquer. Tiens, laissez-moi te l'apprendre.",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockPortal.cs#L227
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "I learned how to craft a 'Junimo Portal'"
+    "pxvf6js4j1": "J'ai appris à créer un « portail Junimo ».",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockPortal.cs#L227
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Enticing a Junimo to *use* it, well, that's up to the Junimo..."
+    "YzFzmLhV1i": "Quant à inciter un Junimo à *utiliser* ça, eh bien, c'est au Junimo d’en décider...",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockPortal.cs#L227
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Usage: After completing quests to get junimo helpers, you can place Junimo Portals either in buildings or outside.  If outside, place walkways between the hut and any chests or machines you want the Junimo to automate.  If in a building, you can place walkways or just leave a clear path."
+    "Ln1mYzqDlE": "Utilisation : après avoir terminé des quêtes pour obtenir des assistants Junimo, vous pouvez placer des portails Junimo soit dans des bâtiments, soit à l'extérieur. Si vous êtes à l'extérieur, placez des chemins entre la hutte et les coffres ou machines que vous souhaitez que le Junimo automatise. Si vous êtes dans un bâtiment, vous pouvez placer des chemins ou plus simplement laisser un chemin dégagé.",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockPortal.cs#L276
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "That was some storm!  I wonder if the rain washed the mud off of any of Grandpa's old stuff!"
+    "yr9QG3hVkF": "C'était une sacrée tempête ! Je me demande si la pluie n’a pas lavé la boue des vieilles affaires de grand-père dans le champ !",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockPortal.cs#L112
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "The Strange Little Structure"
+    "DUQ46Jdpha": "L'étrange petite structure",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockPortal.cs#L112
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "You found the remnants of what looks like a little building.  It smells like it has some Forest Magic in it."
+    "vXt8llcQp8": "Vous avez trouvé les restes de ce qui ressemble à un petit bâtiment. Ça sent comme une odeur de magie de la forêt.",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockPortal.cs#L112
+    // Translated by github:CaranudLapin on 6/21/2024
+    // source: "Bring the remnants of the strange little structure to the wizard's tower."
+    "oduPiN5wI0": "Apportez les restes de l'étrange petite structure à la tour du sorcier."
+}

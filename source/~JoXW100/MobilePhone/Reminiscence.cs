@@ -19,14 +19,14 @@ namespace MobilePhone
 
         public void WeedOutUnseen()
         {
-            if (events.Count == 0)
-                return;
             for (int i = events.Count - 1; i >= 0; i--)
             {
                 string ids = events[i].eventId;
 
                 if (!Game1.player.eventsSeen.Contains(ids))
+                {
                     events.RemoveAt(i);
+                }
             }
         }
     }

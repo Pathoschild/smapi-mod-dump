@@ -10,11 +10,11 @@
 
 using System;
 using System.Reflection;
-using Netcode;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
-using StardewModdingAPI;
+using Netcode;
 using StardewArchipelago.Archipelago;
+using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Characters;
 using StardewValley.Objects;
@@ -87,6 +87,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Modded
                     {
                         swordItem = swordItem.Substring(0, 20); //Lets make it readable for the Archipidle enjoyers.
                     }
+
                     _locationChecker.AddCheckedLocation(EXCALIBUR_AP_LOCATION);
                     Game1.addHUDMessage(new HUDMessage(string.Format(EXCALIBUR_WIN, swordItem)) { noIcon = true });
                     swordPulledOut.Value = true;
@@ -150,7 +151,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Modded
                 _monitor.Log($"Failed in {nameof(Constructor_WoodsDepthChecker_Postfix)}:\n{ex}", LogLevel.Error);
                 return;
             }
-}
+        }
 
 
         //It makes the chime if you pet after reload, but not really a problem.  Also patches out being scared
@@ -161,35 +162,36 @@ namespace StardewArchipelago.Locations.CodeInjections.Modded
         {
             try
             {
-                __result = true; //conclude with same value as original method
-                var isPettedField = _helper.Reflection.GetField<NetBool>(__instance, "isPetted");
-                var isPetted = isPettedField.GetValue();
-                if (isPetted)
-                {
-                    return false; // don't run original logic
-                }
+                throw new Exception($"{nameof(CheckAction_PetUnicornLocation_Prefix)} is not ready for 1.6");
+                //__result = true; //conclude with same value as original method
+                //var isPettedField = _helper.Reflection.GetField<NetBool>(__instance, "isPetted");
+                //var isPetted = isPettedField.GetValue();
+                //if (isPetted)
+                //{
+                //    return false; // don't run original logic
+                //}
 
-                // I am not sure which of the following two lines truly does what we need. Maybe both? To be tested
-                isPettedField.SetValue(new NetBool(true));
-                // isPetted.Value = true;
+                //// I am not sure which of the following two lines truly does what we need. Maybe both? To be tested
+                //isPettedField.SetValue(new NetBool(true));
+                //// isPetted.Value = true;
 
-                who.farmerPassesThrough = true;
-                who.health = who.maxHealth;
-                who.Stamina = who.MaxStamina;
-                who.addedLuckLevel.Value = Math.Max(10, who.addedLuckLevel.Value);
-                if (!_locationChecker.IsLocationChecked(MEET_UNICORN_AP_LOCATION))
-                {
-                    _locationChecker.AddCheckedLocation(MEET_UNICORN_AP_LOCATION);
-                }
+                //who.farmerPassesThrough = true;
+                //who.health = who.maxHealth;
+                //who.Stamina = who.MaxStamina;
+                //who.addedLuckLevel.Value = Math.Max(10, who.addedLuckLevel.Value);
+                //if (!_locationChecker.IsLocationChecked(MEET_UNICORN_AP_LOCATION))
+                //{
+                //    _locationChecker.AddCheckedLocation(MEET_UNICORN_AP_LOCATION);
+                //}
 
-                l.playSoundAt("achievement", __instance.getTileLocation());
-                l.playSoundAt("healSound", __instance.getTileLocation());
-                l.playSoundAt("reward", __instance.getTileLocation());
-                l.playSoundAt("secret1", __instance.getTileLocation());
-                l.playSoundAt("shiny4", __instance.getTileLocation());
-                l.playSoundAt("yoba", __instance.getTileLocation());
+                //l.playSoundAt("achievement", __instance.Tile);
+                //l.playSoundAt("healSound", __instance.Tile);
+                //l.playSoundAt("reward", __instance.Tile);
+                //l.playSoundAt("secret1", __instance.Tile);
+                //l.playSoundAt("shiny4", __instance.Tile);
+                //l.playSoundAt("yoba", __instance.Tile);
 
-                return false; // don't run original logic
+                //return false; // don't run original logic
             }
             catch (Exception ex)
             {
@@ -204,33 +206,35 @@ namespace StardewArchipelago.Locations.CodeInjections.Modded
         {
             try
             {
-                var isPettedField = _helper.Reflection.GetField<NetBool>(__instance, "isPetted");
-                var isPetted = isPettedField.GetValue();
-                var isScaredField = _helper.Reflection.GetField<NetBool>(__instance, "isScared");
-                var isScared = isScaredField.GetValue();    
-            if (isScared || isPetted)
-                return false;
+                throw new Exception($"{nameof(CheckScared_MakeUnicornLessScared_Prefix)} is not ready for 1.6");
+                //var isPettedField = _helper.Reflection.GetField<NetBool>(__instance, "isPetted");
+                //var isPetted = isPettedField.GetValue();
+                //var isScaredField = _helper.Reflection.GetField<NetBool>(__instance, "isScared");
+                //var isScared = isScaredField.GetValue();
+                //if (isScared || isPetted)
+                //    return false;
 
-            foreach (Farmer farmer in __instance.currentLocation.farmers)
-            {
-                if ((farmer.Position - __instance.Position).Length() < 512)
-                {
-                    if (farmer.running)
-                    {
-                        isScared.Value = true;
-                        __instance.farmerPassesThrough = true;
-                        Game1.player.team.sharedDailyLuck.Value = -0.12;
-                        farmer.addedLuckLevel.Value = Math.Min(-10, farmer.addedLuckLevel.Value);
-                        __instance.currentLocation.playSoundAt("thunder_small", __instance.getTileLocation());
-                        __instance.currentLocation.playSoundAt("ghost", __instance.getTileLocation());
-                        Game1.isRaining = true;
-                        Game1.isLightning = true;
-                        Game1.changeMusicTrack("rain");
-                        return false;
-                    }
-                }
-            }
-                return false; //don't run original logic
+                //foreach (Farmer farmer in __instance.currentLocation.farmers)
+                //{
+                //    if ((farmer.Position - __instance.Position).Length() < 512)
+                //    {
+                //        if (farmer.running)
+                //        {
+                //            isScared.Value = true;
+                //            __instance.farmerPassesThrough = true;
+                //            Game1.player.team.sharedDailyLuck.Value = -0.12;
+                //            farmer.addedLuckLevel.Value = Math.Min(-10, farmer.addedLuckLevel.Value);
+                //            __instance.currentLocation.playSoundAt("thunder_small", __instance.Tile);
+                //            __instance.currentLocation.playSoundAt("ghost", __instance.Tile);
+                //            Game1.isRaining = true;
+                //            Game1.isLightning = true;
+                //            Game1.changeMusicTrack("rain");
+                //            return false;
+                //        }
+                //    }
+                //}
+
+                //return false; //don't run original logic
             }
             catch (Exception ex)
             {
@@ -257,10 +261,12 @@ namespace StardewArchipelago.Locations.CodeInjections.Modded
                     Game1.playSound(isTrashCan.Value ? "trashcan" : "openChest");
                     chestOrTrashThatGrantedAPCheck = __instance;
                 }
+
                 if (chestOrTrashThatGrantedAPCheck != __instance)
                 {
                     return true; //run original logic (all other treasure save first is vanilla)
                 }
+
                 return false; //don't run original logic
             }
             catch (Exception ex)
@@ -328,25 +334,26 @@ namespace StardewArchipelago.Locations.CodeInjections.Modded
         {
             try
             {
-                __result = true;
-                
-                if (_locationChecker.IsLocationMissing(FOUNTAIN_DRINK_LOCATION))
-                {
-                    var apMessage = "You drink the water... it tastes like a stale Burger King Meal...?";
-                    _locationChecker.AddCheckedLocation(FOUNTAIN_DRINK_LOCATION);
-                    location.playSoundAt("gulp", tileLocation);
-                    DelayedAction.playSoundAfterDelay("yoba", 800, location, -1);
-                    Game1.addHUDMessage(new HUDMessage(apMessage) { noIcon = true });
-                    fountainThatGrantedAPCheck = __instance;
-                    return false; //don't run original logic
-                }
+                throw new Exception($"{nameof(PerformUseAction_HealingFountainLocation_Prefix)} is not ready for 1.6");
+                //__result = true;
 
-                if (fountainThatGrantedAPCheck != __instance)
-                {
-                    return true; //run original logic
-                }
+                //if (_locationChecker.IsLocationMissing(FOUNTAIN_DRINK_LOCATION))
+                //{
+                //    var apMessage = "You drink the water... it tastes like a stale Burger King Meal...?";
+                //    _locationChecker.AddCheckedLocation(FOUNTAIN_DRINK_LOCATION);
+                //    location.playSoundAt("gulp", tileLocation);
+                //    DelayedAction.playSoundAfterDelay("yoba", 800, location, -1);
+                //    Game1.addHUDMessage(new HUDMessage(apMessage) { noIcon = true });
+                //    fountainThatGrantedAPCheck = __instance;
+                //    return false; //don't run original logic
+                //}
 
-                return false; //don't run original logic
+                //if (fountainThatGrantedAPCheck != __instance)
+                //{
+                //    return true; //run original logic
+                //}
+
+                //return false; //don't run original logic
             }
             catch (Exception ex)
             {

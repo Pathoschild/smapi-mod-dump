@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using HoverLabels.Drawing;
+using AchtuurCore.Framework.Borders;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Objects;
@@ -42,7 +42,7 @@ internal class Casklabel : ObjectLabel
         SObject helditem = hoverCask.heldObject.Value;
         if (helditem is null)
             return;
-        ItemLabelText itemlabel = new ItemLabelText(helditem, helditem.DisplayName);
+        ItemLabel itemlabel = new ItemLabel(helditem, helditem.DisplayName);
         AddBorder(itemlabel);
 
         if (hoverCask.readyForHarvest.Value)
@@ -54,7 +54,7 @@ internal class Casklabel : ObjectLabel
     private void GenerateReadyLabel()
     {
         SObject heldItem = hoverCask.heldObject.Value;
-        ItemLabelText itemlabel = new(heldItem.QualifiedItemId, I18n.Ready());
+        ItemLabel itemlabel = new(heldItem.QualifiedItemId, I18n.Ready());
         AddBorder(itemlabel);
         //this.Description.Add(I18n.LabelMachineSingleItemReady(heldItem.DisplayName));
     }

@@ -1,0 +1,9 @@
+{
+  "GentleJunimos": false,
+  "AllowOverride": true,
+  "HarvestCountMethod": "Harvests per Season",
+  "RandomizationSetting": "None",
+  "UpperRandModifier": 2,
+  "LowerRandModifier": 2,
+  "BaseHarvests": 5
+}

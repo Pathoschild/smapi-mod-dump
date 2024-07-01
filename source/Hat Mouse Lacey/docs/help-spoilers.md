@@ -65,7 +65,10 @@ After receiving a letter with instructions to this effect, enter town between
 12 noon and 1 pm.
 * *10 hearts*\
 After receiving an invitation, enter her house after 8 pm when she's there
-(not on a festival day).
+(not on a festival day).\
+Unfortunately, this event is missable if you marry Lacey before seeing it; her
+marriage schedule never takes her to the house at a suitable time. I plan to
+address this in the future.
 * *14 hearts*\
 Enter the bus stop *from town* on a sunny day, not in winter, between 3 pm
 and 6 pm.
@@ -86,8 +89,9 @@ lists.
 You have to see her 2-heart event first. She also only reacts to each hat once;
 if you already showed her your hat, you don't get the reaction again.
 
-There isn't currently a way to see (in game) which hats you've already shown
-her. Maybe a future update will include this.
+As of version 1.3.0, there is now a hat registry menu in Lacey's cabin (or in
+her spouse room, if you have married her) where you can check which hats you
+have shown her and replay the commentary she gave you.
 
 ## Is that a reference to...?
 Here's a list of intentional references to other media:
@@ -125,6 +129,10 @@ Robin Hood (and his merry men).
 * *Quest title "Hats for the Hat Mouse"*\
 [Blood for the Blood God](https://knowyourmeme.com/memes/blood-for-the-blood-god)
 (*Warhammer 40k*).
+* *"But one does want a hint of color."*\
+[*The Birdcage* (1996)](https://www.youtube.com/embed/N-CVGYw8ST4?start=144&end=154).
+* *"Watch out everyone, it's the Puzzler!"*\
+[This gag](https://www.youtube.com/embed/qxNsRo4eYuA?start=9&end=13) from *Batman Forever* (1995).
 
 And here are some intentional gags at Stardew Valley's expense:
 
@@ -139,6 +147,9 @@ The actual rule is "it's Haley, if she's dancing", but also it's not really a
 thing.
 * *"This town has a strange definition of 'potluck'."*\
 I, the author, am delivering this line.
+* *"There are some angles where I can't even tell you're wearing it."*\
+This is poking fun at Abigail's default sprite, which wears a hair bow, versus
+Abigail's default portrait, which omits it.
 
 ## I got Lacey to 8 hearts and tried to give her a bouquet, but she turned me down. What gives?
 
@@ -147,15 +158,48 @@ mean things to her in her heart events.
 
 Go get a good night's sleep. You'll feel better in the morning.
 
+## How do I find the secret notes you added?
+
+You'll know a secret note is available to find when its outline appears in the
+Secret Notes tab on the Collections menu. They can appear anywhere that vanilla
+secret notes do (i.e. anywhere except on Ginger Island), and by doing the same
+actions (digging, chopping, mining, fishing, killing monsters).
+
+Here are the conditions for availability (but note that each one only becomes
+available on **the next day** after meeting the conditions):
+
+* #1: after reaching 6 hearts with Lacey
+* #2: after reaching 7 hearts with Lacey, and after finding #1
+* #3: after reaching 8 hearts with Lacey, and after finding #2
+* #4: after reaching 8 hearts with Lacey, and after finding #3
+
+You will need to have my [Secret Note
+Framework](https://github.com/ichortower/SecretNoteFramework) installed.
+Without it, they won't be added to the game.
+
 ## What happened to Lacey's family?
 
-See below.
+They died in an unspecified tragedy a number of years ago. Only Lacey survived.
+
+I may specify the tragedy in the future. For now, you may substitute your own
+version.
 
 ## Why aren't there any other mice?
 
-There is a canon (i.e. my headcanon) answer for these two questions. I have
-deliberately not specified it, so that your headcanon can take its place. That
-will probably be more satisfying to you than reading mine.
+This is explained (obliquely) in the four "Forgotten Diary" secret notes that
+I added in version 1.3.0. Here's a plain-language summary:
+
+Lacey's parents were human thieves who had worked together for years. Their
+final mark was a very wealthy recluse who turned out to be a vengeful wizard;
+he caught them and cursed them, transforming them into humanoid mice.
+
+They were distraught for a time, but soon enough she convinced him (and
+herself) to assume a new name and leave their old life behind. They married and
+had two daughters (both mice): Lacey is the younger.
+
+They concealed the truth from the girls, and died suddenly without having told
+them, so Lacey never found out. As the product of a unique curse, her parents
+were a unique type of humanoid mouse; Lacey is now the only one.
 
 ## Our kids don't look right. How do I fix it?
 

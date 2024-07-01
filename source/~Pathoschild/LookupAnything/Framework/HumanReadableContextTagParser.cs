@@ -22,12 +22,23 @@ namespace Pathoschild.Stardew.LookupAnything.Framework
         /*********
         ** Public methods
         *********/
-        /// <summary>Get a human-readable representation of a context tag, if available.</summary>
+        /// <summary>Get a human-readable representation of a context tag.</summary>
         /// <param name="contextTag">The raw context tag to parse.</param>
-        public static string Parse(string contextTag)
+        public static string Format(string contextTag)
+        {
+            return
+                HumanReadableContextTagParser.Format(contextTag, null)
+                ?? I18n.Condition_RawContextTag(contextTag);
+        }
+
+        /// <summary>Get a human-readable representation of a context tag.</summary>
+        /// <param name="contextTag">The raw context tag to parse.</param>
+        /// <param name="defaultValue">The value to return if there's no human-readable representation available.</param>
+        [return: NotNullIfNotNull(nameof(defaultValue))]
+        public static string? Format(string contextTag, string? defaultValue)
         {
             if (string.IsNullOrWhiteSpace(contextTag))
-                return contextTag;
+                return defaultValue;
 
             // extract negation
             bool negate = contextTag.StartsWith('!');
@@ -48,7 +59,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework
                     : parsed;
             }
 
-            return contextTag;
+            return defaultValue;
         }
 
 

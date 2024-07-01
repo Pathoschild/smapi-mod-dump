@@ -37,8 +37,73 @@ namespace FarmTypeManager
             /// <remarks>This is part of a quick workaround for item IDs' conversion from integers to strings in SDV v1.6.</remarks>
             [JsonIgnore]
             public string StringID { get { return ID?.ToString(); } set { ID = value; } }
+            /// <summary>The backing field for <see cref="DaysUntilExpire"/>.</summary>
+            private int? daysUntilExpire = null;
             /// <summary>The remaining number of days before this object should be removed from the game.</summary>
-            public int? DaysUntilExpire { get; set; } = null;
+            public int? DaysUntilExpire
+            {
+                get
+                {
+                    if (daysUntilExpire == null) //if null, determine default expiration behavior based on type and config settings
+                    {
+                        if (ConfigItem?.CanBePickedUp == false) //if this can't be picked up
+                            daysUntilExpire = 1; //expire overnight
+                        else
+                        {
+                            switch (Type)
+                            {
+                                case ObjectType.Monster:
+                                case ObjectType.DGA: //certain DGA item types spawn as a PlacedItem
+                                    daysUntilExpire = 1; //expire overnight
+                                    break;
+                                case ObjectType.Item:
+                                    switch (ConfigItem.Category.ToLower())
+                                    {
+                                        //include all Item-type categories that CAN be serialized, which means they do NOT require a default expiration
+                                        //refer to CreateItem.cs for supported names
+                                        case "(bc)":
+                                        case "bc":
+                                        case "bigcraftable":
+                                        case "bigcraftables":
+                                        case "big craftable":
+                                        case "big craftables":
+                                        case "fence":
+                                        case "fences":
+                                        case "gate":
+                                        case "gates":
+                                        case "(f)":
+                                        case "f":
+                                        case "furniture":
+                                            break;
+                                        default: //categories spawned as PlacedItem, etc
+                                            daysUntilExpire = 1; //expire overnight
+                                            break;
+                                    }
+                                    break;
+                                case ObjectType.Container:
+                                    switch (ConfigItem.Category.ToLower())
+                                    {
+                                        //include all Container-type categories that CAN be serialized, which means they do NOT require a default expiration
+                                        //refer to CreateItem.cs for supported names
+                                        case "chest":
+                                        case "chests":
+                                            break;
+                                        default: //categories spawned as BreakableContainerFTM, etc
+                                            daysUntilExpire = 1; //expire overnight
+                                            break;
+                                    }
+                                    break;
+                            }
+                        }
+                    }
+
+                    return daysUntilExpire;
+                }
+                set
+                {
+                    daysUntilExpire = value;
+                }
+            }
             /// <summary>The specific in-game time at which this object will spawn.</summary>
             public StardewTime SpawnTime { get; set; } = 600; //default to 6:00AM
             /// <summary>The list of definitions for this saved object's contents. Null if this type does not use the ConfigItem format.</summary>

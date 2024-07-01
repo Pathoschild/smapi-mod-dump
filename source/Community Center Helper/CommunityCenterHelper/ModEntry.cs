@@ -278,34 +278,105 @@ namespace CommunityCenterHelper
                         if (definitionText.Contains("{{")) // Simplify JSON asset references to just {{}}
                             definitionText = System.Text.RegularExpressions.Regex.Replace(definitionText, "\\{\\{[^\\}]*\\}\\}", "{{}}");
                         
-                        string[] definitionSplit = definitionText.Split('/');
-                        string ingredientText = definitionSplit.Length > 2? definitionSplit[2] : "";
-                        string[] ingredientList = ingredientText.Split(' ');
-                        
-                        for (int i = 0; i < ingredientList.Length; i += 3)
+                        if (definitionText.Split("/").Length >= 3) // Original format: data string split by /s using item IDs
                         {
-                            string itemID = ingredientList[i];
-                            if (itemID.Equals("{{}}")) // Skip over old JSON asset references
-                                continue;
+                            string[] definitionSplit = definitionText.Split('/');
+                            string ingredientText = definitionSplit.Length > 2? definitionSplit[2] : "";
+                            string[] ingredientList = ingredientText.Split(' ');
+                        
+                            for (int i = 0; i < ingredientList.Length; i += 3)
+                            {
+                                string itemID = ingredientList[i];
+                                if (itemID.Equals("{{}}")) // Skip over old JSON asset references
+                                    continue;
+                                
+                                string itemName = ItemHints.getItemName(itemID);
+                                if (listItemsInEachBundle)
+                                    allItemsInBundle.Write((i > 0? ", " : "") + itemName);
+                                
+                                int itemQuality = 0;
+                                if (i + 2 < ingredientList.Length)
+                                    int.TryParse(ingredientList[i + 2], out itemQuality);
+                                
+                                if (printedItemIDs.Contains(itemID)) // Already printed hint for this item
+                                    continue;
+                                printedItemIDs.Add(itemID);
+                                
+                                string hintText = ItemHints.getHintText(itemID, itemQuality, itemID.StartsWith("-")? int.Parse(itemID) : 0);
+                                if (hintText != "")
+                                    str.WriteLine(itemName + " [" + itemID + "]\n" + hintText + "\n");
+                                else
+                                    str.WriteLine("ERROR: No hint for " + itemName + " [" + itemID + "]\n"
+                                                + definitionText + "\n");
+                            }
+                        }
+                        else // RandomBundles format: item quantities and names separated by commas
+                        {
+                            string[] ingredientList = definitionText.Split(", ");
+                            System.Collections.Generic.List<string> fullIngredientList = new System.Collections.Generic.List<string>();
                             
-                            string itemName = ItemHints.getItemName(itemID);
-                            if (listItemsInEachBundle)
-                                allItemsInBundle.Write((i > 0? ", " : "") + itemName);
+                            for (int i = 0; i < ingredientList.Length; i++)
+                            {
+                                string itemEntry = ingredientList[i];
+                                if (itemEntry.StartsWith("[")) // Multiple possible items
+                                {
+                                    itemEntry = itemEntry.Substring(1, itemEntry.Length - 1);
+                                    string[] possibleItems = itemEntry.Split('|');
+                                    foreach (string item in possibleItems)
+                                        fullIngredientList.Add(item);
+                                }
+                                else // Single item
+                                    fullIngredientList.Add(itemEntry);
+                            }
                             
-                            int itemQuality = 0;
-                            if (i + 2 < ingredientList.Length)
-                                int.TryParse(ingredientList[i + 2], out itemQuality);
-                            
-                            if (printedItemIDs.Contains(itemID)) // Already printed hint for this item
-                                continue;
-                            printedItemIDs.Add(itemID);
-                            
-                            string hintText = ItemHints.getHintText(itemID, itemQuality, itemID.StartsWith("-")? int.Parse(itemID) : 0);
-                            if (hintText != "")
-                                str.WriteLine(itemName + " [" + itemID + "]\n" + hintText + "\n");
-                            else
-                                str.WriteLine("ERROR: No hint for " + itemName + " [" + itemID + "]\n"
-                                            + definitionText + "\n");
+                            for (int i = 0; i < fullIngredientList.Count; i++)
+                            {
+                                string itemEntry = ingredientList[i];
+                                string itemName = itemEntry.Substring(itemEntry.IndexOf(" ") + 1); // Remove quantity at start
+                                
+                                int itemQuality = 0;
+                                if (itemName.StartsWith("SQ "))
+                                {
+                                    itemQuality = 1;
+                                    itemName = itemEntry.Substring(itemEntry.IndexOf(" ") + 1);
+                                }
+                                else if (itemName.StartsWith("GQ "))
+                                {
+                                    itemQuality = 2;
+                                    itemName = itemEntry.Substring(itemEntry.IndexOf(" ") + 1);
+                                }
+                                else if (itemName.StartsWith("IQ "))
+                                {
+                                    itemQuality = 3;
+                                    itemName = itemEntry.Substring(itemEntry.IndexOf(" ") + 1);
+                                }
+                                
+                                string itemID = "";
+                                if (itemName == "EggCategory")
+                                    itemID = StardewValley.Object.EggCategory.ToString();
+                                else if (itemName == "MilkCategory")
+                                    itemID = StardewValley.Object.MilkCategory.ToString();
+                                else
+                                    ItemHints.findItemIDByName(itemName, out itemID);
+                                if (itemID == "")
+                                {
+                                    str.WriteLine("ERROR: No item found matching name " + itemName + "\n");
+                                    continue;
+                                }
+                                if (listItemsInEachBundle)
+                                    allItemsInBundle.Write((i > 0? ", " : "") + itemName);
+                                
+                                if (printedItemIDs.Contains(itemID)) // Already printed hint for this item
+                                    continue;
+                                printedItemIDs.Add(itemID);
+                                
+                                string hintText = ItemHints.getHintText(itemID, itemQuality, itemID.StartsWith("-")? int.Parse(itemID) : 0);
+                                if (hintText != "")
+                                    str.WriteLine(itemName + " [" + itemID + "]\n" + hintText + "\n");
+                                else
+                                    str.WriteLine("ERROR: No hint for " + itemName + " [" + itemID + "]\n"
+                                                + definitionText + "\n");
+                            }
                         }
                         
                         if (listItemsInEachBundle)

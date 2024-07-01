@@ -8,7 +8,6 @@
 **
 *************************************************/
 
-using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using DeluxeJournal.Events;
@@ -31,7 +30,7 @@ namespace DeluxeJournal.Task.Tasks
 
             public override bool EnableSmartIconCount => BuildingType != "Farmhouse";
 
-            public override void Initialize(ITask task, ITranslationHelper translation)
+            protected override void InitializeInternal(ITask task)
             {
                 if (task is BuildTask buildTask)
                 {
@@ -40,7 +39,7 @@ namespace DeluxeJournal.Task.Tasks
                 }
             }
 
-            public override ITask? Create(string name)
+            protected override ITask? CreateInternal(string name)
             {
                 return BuildingType != null ? new BuildTask(name, BuildingType, Count) : null;
             }

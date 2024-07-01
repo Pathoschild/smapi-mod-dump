@@ -9,6 +9,7 @@
 *************************************************/
 
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using ContentPatcher.Framework.Constants;
 
 namespace ContentPatcher.Framework.TextOperations
@@ -49,6 +50,7 @@ namespace ContentPatcher.Framework.TextOperations
         }
 
         /// <inheritdoc />
+        [return: NotNullIfNotNull(nameof(text))]
         public override string? Apply(string? text)
         {
             if (string.IsNullOrEmpty(text))
@@ -71,7 +73,7 @@ namespace ContentPatcher.Framework.TextOperations
                         {
                             if (values[i] == search)
                             {
-                                List<string> modified = new(values);
+                                List<string> modified = [..values];
                                 modified.RemoveAt(i);
                                 values = modified;
 
@@ -86,7 +88,7 @@ namespace ContentPatcher.Framework.TextOperations
                         {
                             if (values[i] == search)
                             {
-                                List<string> modified = new(values);
+                                List<string> modified = [..values];
                                 modified.RemoveAt(i);
                                 values = modified;
 
@@ -104,7 +106,7 @@ namespace ContentPatcher.Framework.TextOperations
                             {
                                 if (values[i] == search)
                                 {
-                                    modified ??= new List<string>(values);
+                                    modified ??= [..values];
                                     modified.RemoveAt(i);
 
                                     replaced = true;

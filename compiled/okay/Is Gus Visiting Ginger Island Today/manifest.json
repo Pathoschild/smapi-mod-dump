@@ -1,0 +1,14 @@
+{
+    "Name": "Is Gus Visiting Island",
+    "Author": "SaltyEggplant",
+    "Version": "1.0.1",
+    "Description": "Let's you know whether Gus is on Ginger Island or not by calling him.",
+    "UniqueID": "SaltyEggplant.IsGusVisitingIsland",
+    "UpdateKeys": ["Nexus:25270"], // when you release the mod, see https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Update_checks
+    "EntryDll": "IsGusVisitingIsland.dll",
+    "MinimumApiVersion": "3.0.0",
+    "Dependencies": [
+        { "UniqueID": "Pathoschild.ContentPatcher", 
+        "IsRequired": false }
+     ]
+}

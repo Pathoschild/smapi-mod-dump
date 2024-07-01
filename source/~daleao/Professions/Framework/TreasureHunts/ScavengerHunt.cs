@@ -443,7 +443,6 @@ internal sealed class ScavengerHunt : TreasureHunt
         var luckModifier = 1.0 + (Game1.player.DailyLuck * 10);
         if (this.Random.NextBool(0.25 * luckModifier))
         {
-            // !!! COMBAT INTERVENTION NEEDED
             if (this.Random.NextBool(0.05 * luckModifier))
             {
                 treasures.Add(new MeleeWeapon(QualifiedWeaponIds.ForestSword));
@@ -451,7 +450,6 @@ internal sealed class ScavengerHunt : TreasureHunt
         }
         else if (this.Random.NextBool(0.25 * luckModifier))
         {
-            // !!! COMBAT INTERVENTION NEEDED
             if (this.Random.NextBool(0.05 * luckModifier))
             {
                 treasures.Add(new MeleeWeapon(QualifiedWeaponIds.ElfBlade));

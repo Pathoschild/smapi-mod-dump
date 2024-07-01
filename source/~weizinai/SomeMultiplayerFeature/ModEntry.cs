@@ -8,128 +8,60 @@
 **
 *************************************************/
 
-using Common.Integrations;
-using Common.Patch;
-using SomeMultiplayerFeature.Framework;
+using weizinai.StardewValleyMod.Common.Log;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
-using StardewValley;
-using StardewValley.Menus;
+using weizinai.StardewValleyMod.SomeMultiplayerFeature.Framework;
+using weizinai.StardewValleyMod.SomeMultiplayerFeature.Handlers;
 
-namespace SomeMultiplayerFeature;
+namespace weizinai.StardewValleyMod.SomeMultiplayerFeature;
 
 public class ModEntry : Mod
 {
     private ModConfig config = null!;
-    private IClickableMenu? lastShopMenu;
 
     public override void Entry(IModHelper helper)
     {
         // 初始化
-        config = helper.ReadConfig<ModConfig>();
+        Log.Init(this.Monitor);
         I18n.Init(helper.Translation);
+        this.config = helper.ReadConfig<ModConfig>();
+        this.InitHandler();
         // 注册事件
-        helper.Events.GameLoop.GameLaunched += OnGameLaunched;
-        helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
-        helper.Events.Input.ButtonsChanged += OnButtonChanged;
-        helper.Events.Multiplayer.ModMessageReceived += OnModMessageReceived;
-        // 注册Harmony补丁
-        HarmonyPatcher.Apply(this);
+        helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
+        helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
     }
 
-    private void OnUpdateTicked(object? sender, UpdateTickedEventArgs e)
+    private void OnSaveLoaded(object? sender, SaveLoadedEventArgs e)
     {
-        if (Game1.activeClickableMenu is ShopMenu shopMenu1 && lastShopMenu is not ShopMenu)
-        {
-            var message = new ModMessage(Game1.player.Name, shopMenu1.ShopId);
-            Helper.Multiplayer.SendMessage(message, "ShopMessage", new[] { "weizinai.SomeMultiplayerFeature" });
-        }
-        else if (lastShopMenu is ShopMenu shopMenu2 && Game1.activeClickableMenu is not ShopMenu)
-        {
-            var message = new ModMessage(Game1.player.Name, shopMenu2.ShopId, true);
-            Helper.Multiplayer.SendMessage(message, "ShopMessage", new[] { "weizinai.SomeMultiplayerFeature" });
-        }
-
-        lastShopMenu = Game1.activeClickableMenu;
-    }
-
-    private void OnButtonChanged(object? sender, ButtonsChangedEventArgs e)
-    {
-        if (!Context.IsMultiplayer) return;
-
-        if (config.ShowModInfoKeybind.JustPressed())
-        {
-            var modInstall = true;
-            foreach (var farmer in Game1.getOnlineFarmers())
-            {
-                var peer = Helper.Multiplayer.GetConnectedPlayer(farmer.UniqueMultiplayerID);
-                if (peer is null) continue;
-                if (peer.GetMod(ModManifest.UniqueID) is null)
-                {
-                    var hudMessage = new HUDMessage($"{farmer.Name}没有安装该模组")
-                    {
-                        noIcon = true,
-                        timeLeft = 500f,
-                    };
-                    Game1.addHUDMessage(hudMessage);
-                    modInstall = false;
-                }
-            }
-
-            if (modInstall)
-            {
-                var hudMessage = new HUDMessage("所有人都安装了模组")
-                {
-                    noIcon = true,
-                    timeLeft = 500f,
-                };
-                Game1.addHUDMessage(hudMessage);
-            }
-        }
-
-        if (Context.IsMainPlayer && Game1.activeClickableMenu is ReadyCheckDialog menu && config.SetAllPlayerReadyKeybind.JustPressed())
-        {
-            Helper.Multiplayer.SendMessage(menu.checkName, "SetAllPlayerReady", new[] { "weizinai.SomeMultiplayerFeature" });
-        }
-    }
-
-    private void OnModMessageReceived(object? sender, ModMessageReceivedEventArgs e)
-    {
-        if (config.ShowShopInfo && e is { FromModID: "weizinai.SomeMultiplayerFeature", Type: "ShopMessage" })
-        {
-            var message = e.ReadAs<ModMessage>();
-            var hudMessage = new HUDMessage(message.ToString())
-            {
-                noIcon = true,
-                timeLeft = 500f,
-                type = message.PlayerName + message.IsExit
-            };
-            Game1.addHUDMessage(hudMessage);
-        }
-
-        if (e is { FromModID: "weizinai.SomeMultiplayerFeature", Type: "SetAllPlayerReady" })
-        {
-            var message = e.ReadAs<string>();
-            switch (message)
-            {
-                case "sleep":
-                    Helper.Reflection.GetMethod(new GameLocation(), "startSleep").Invoke();
-                    break;
-                default:
-                    Game1.netReady.SetLocalReady(message, true);
-                    break;
-            }
-        }
+        if (!Context.IsMainPlayer) Log.Info("该模组大部分功能仅在主机端有效。");
     }
 
     private void OnGameLaunched(object? sender, GameLaunchedEventArgs e)
     {
-        new GenericModConfigMenuIntegrationForSomeMultiplayerFeature(
-            Helper,
-            ModManifest,
-            () => config,
-            () => config = new ModConfig(),
-            () => Helper.WriteConfig(config)
+        new GenericModConfigMenuIntegrationForSomeMultiplayerFeature(this.Helper, this.ModManifest,
+            () => this.config,
+            () => this.config = new ModConfig(),
+            () => this.Helper.WriteConfig(this.config)
         ).Register();
+    }
+
+    private void InitHandler()
+    {
+        var handlers = new IHandler[]
+        {
+            new AccessShopInfoHandler(this.Helper, this.config),
+            new AutoClickHandler(this.Helper, this.config),
+            new CustomCommandHandler(this.Helper, this.config),
+            new DelayedPlayerHandler(this.Helper, this.config),
+            new IpConnectionHandler(this.Helper, this.config),
+            new ItemCheatHandler(this.Helper, this.config),
+            new PlayerCountHandler(this.Helper, this.config),
+            new TipHandler(this.Helper, this.config),
+            new UnreadyPlayerHandler(this.Helper, this.config),
+            new VersionLimitHandler(this.Helper, this.config)
+        };
+
+        foreach (var handler in handlers) handler.Init();
     }
 }

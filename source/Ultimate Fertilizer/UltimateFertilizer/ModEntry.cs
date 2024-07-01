@@ -152,8 +152,8 @@ namespace UltimateFertilizer {
                 mod: ModManifest,
                 name: () => _helper.Translation.Get("config.debug_mode.title"),
                 tooltip: () => _helper.Translation.Get("config.debug_mode.tooltip"),
-                getValue: () => _config.EnableKeepFertilizerAcrossSeason,
-                setValue: value => _config.EnableKeepFertilizerAcrossSeason = value
+                getValue: () => _config.DebugMode,
+                setValue: value => _config.DebugMode = value
             );
 
             configMenu.AddSectionTitle(mod: ModManifest,

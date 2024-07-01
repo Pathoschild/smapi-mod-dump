@@ -8,12 +8,16 @@
 **
 *************************************************/
 
+using ArsVenefici.Framework.Skill;
 using ArsVenefici.Framework.Interfaces;
 using ArsVenefici.Framework.Interfaces.Spells;
+using ArsVenefici.Framework.Spells.Components;
 using ArsVenefici.Framework.Util;
 using SpaceCore;
 using StardewValley;
+using StardewValley.Menus;
 using System;
+using StardewValley.Buffs;
 
 namespace ArsVenefici.Framework.Spells
 {
@@ -38,7 +42,7 @@ namespace ArsVenefici.Framework.Spells
             this.shapeGroups = shapeGroups;
             this.spellStack = spellStack;
 
-            continuous = new Lazy<bool>(() => FirstShape(CurrentShapeGroupIndex()).IsContinuous());
+            continuous = new Lazy<bool>(() => FirstShape(CurrentShapeGroupIndex()) != null &&  FirstShape(CurrentShapeGroupIndex()).IsContinuous());
 
             empty = new Lazy<bool>(() => !ShapeGroups().Any() || ShapeGroups().All(g => g.IsEmpty()) && SpellStack().IsEmpty());
 
@@ -92,8 +96,13 @@ namespace ArsVenefici.Framework.Spells
                 {
                     list = SpellStack().Parts;
                 }
+                
+                ISpellShape spellShape = null;
 
-                ISpellShape spellShape = (ISpellShape)list.FirstOrDefault();
+                if (list.Any() && IsValid())
+                {
+                    spellShape = (ISpellShape)list.FirstOrDefault();
+                }
 
                 return spellShape;
             }
@@ -122,8 +131,11 @@ namespace ArsVenefici.Framework.Spells
 
         public void CurrentShapeGroupIndex(int shapeGroup)
         {
-            if (shapeGroup >= ShapeGroups().Count() || shapeGroup < 0)
-                throw new ArgumentOutOfRangeException("Invalid shape group index!");
+            //if (shapeGroup >= ShapeGroups().Count() || shapeGroup < 0)
+            //    throw new ArgumentOutOfRangeException("Invalid shape group index!");
+
+            if(shapeGroup >= ShapeGroups().Count() || shapeGroup < 0)
+                return;
 
             shapeGroupIndex = shapeGroup;
         }
@@ -135,15 +147,41 @@ namespace ArsVenefici.Framework.Spells
             if (((Farmer)caster.entity).GetCurrentMana() < manaValue) 
                 return new SpellCastResult(SpellCastResultType.NOT_ENOUGH_MANA);
 
+            foreach (ISpellPart spellPart in SpellStack().Parts)
+            {
+                if (spellPart is Grow)
+                {
+
+                    if (modEntry.dailyTracker.GetDailyGrowCastCount() > modEntry.dailyTracker.GetMaxDailyGrowCastCount())
+                    {
+                        string message = modEntry.Helper.Translation.Get("world.max_grow_spell_cast.message.1") + "^" + modEntry.Helper.Translation.Get("world.max_grow_spell_cast.message.2") + "^" + modEntry.Helper.Translation.Get("world.max_grow_spell_cast.message.3") + "^";
+                        Game1.activeClickableMenu = new DialogueBox(message);
+
+                        return new SpellCastResult(SpellCastResultType.EFFECT_FAILED);
+                    }
+                    else if (Game1.player.hasBuff("HeyImAmethyst.ArsVenifici_GrowSickness"))
+                    {
+                        return new SpellCastResult(SpellCastResultType.EFFECT_FAILED);
+                    }
+                }
+            }
+
             SpellHelper spellHelper = SpellHelper.Instance();
             SpellCastResult result = spellHelper.Invoke(modEntry, this, caster, gameLocation, null, castingTicks, 0, awardXp);
 
             int manaValueInt = (int)Math.Round(manaValue - (((Farmer)caster.entity).GetSpellBook().GetManaCostReductionAmount() / manaValue), 0, MidpointRounding.AwayFromZero);
 
-            int manaCostPercentage = 75;
-            int randomValueBetween0And99 = ModEntry.RandomGen.Next(100);
+            if (Game1.player.HasCustomProfession(Skill.Skill.ManaConservationProfession))
+            {
+                int manaCostPercentage = 75;
+                int randomValueBetween0And99 = ModEntry.RandomGen.Next(100);
 
-            if (randomValueBetween0And99 < manaCostPercentage)
+                if (randomValueBetween0And99 < manaCostPercentage)
+                {
+                    ((Farmer)caster.entity).AddMana(-manaValueInt);
+                }
+            }
+            else
             {
                 ((Farmer)caster.entity).AddMana(-manaValueInt);
             }

@@ -116,8 +116,12 @@ namespace TrainInfo
             bool isTomorrowAFestival = Utility.isFestivalDay(Game1.dayOfMonth + 1, Game1.season);
             if (r.NextDouble() < 0.2 && Game1.isLocationAccessible("Railroad") && !isTomorrowAFestival)
             {
-                TrainTimeTomorrow = r.Next(900, 1800);
-                TrainTimeTomorrow -= TrainTimeTomorrow % 10;
+                int trainTimeTomorrow = r.Next(900, 1800); // generate time between 9am - 6pm i.e. 1234
+                trainTimeTomorrow -= trainTimeTomorrow % 10; // remove the last digit i.e. 1230
+                if (trainTimeTomorrow % 100 < 60) // make sure it's a real time i.e. 30 < 60
+                {
+                    TrainTimeTomorrow = trainTimeTomorrow;
+                }
             }
         }
 

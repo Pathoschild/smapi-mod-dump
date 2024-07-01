@@ -63,6 +63,8 @@ namespace StardewDruid.Monster
             blobfiend,
             darkbrute,
             darkshooter,
+            spectre,
+            phantom,
             demonki,
             dino,
             dragon,
@@ -92,6 +94,8 @@ namespace StardewDruid.Monster
         public Random randomIndex;
 
         public bool spawnWater;
+
+        public bool spawnVoid;
 
         public MonsterHandle(Vector2 target, GameLocation location)
         {
@@ -209,8 +213,6 @@ namespace StardewDruid.Monster
 
                         spawnAmount++;
 
-                        spawnTotal++;
-
                         break;
 
                     }
@@ -268,7 +270,13 @@ namespace StardewDruid.Monster
 
                 string groundCheck = ModUtility.GroundCheck(spawnLocation, spawnVector, true);
 
-                if (groundCheck == "water" && !spawnWater)
+                if (groundCheck == "void" && !spawnVoid)
+                {
+
+                    continue;
+
+                }
+                else if (groundCheck == "water" && !spawnWater)
                 {
 
                     continue;
@@ -276,12 +284,15 @@ namespace StardewDruid.Monster
                 }
                 else if (groundCheck != "ground")
                 {
+                    
                     continue;
+               
                 }
-
-                if (ModUtility.NeighbourCheck(spawnLocation, spawnVector, 0, 0).Count > 0)
+                else if (ModUtility.NeighbourCheck(spawnLocation, spawnVector, 0, 0).Count > 0)
                 {
+                    
                     continue;
+                
                 }
 
                 return spawnVector;
@@ -378,6 +389,18 @@ namespace StardewDruid.Monster
 
                     break;
 
+                case bosses.spectre:
+
+                    theMonster = new Spectre(spawnVector, combatModifier);
+
+                    break;
+
+                case bosses.phantom:
+
+                    theMonster = new Phantom(spawnVector, combatModifier);
+
+                    break;
+
                     /*case bosses.gargoyle:
 
                         theMonster = new Gargoyle(spawnVector, combatModifier);
@@ -467,25 +490,6 @@ namespace StardewDruid.Monster
             }
 
             return theMonster;
-
-        }
-
-        public static bool BossMonster(StardewValley.Monsters.Monster monster)
-        {
-
-            if (monster is Monster.Boss boss)
-            {
-
-                if(boss.netMode.Value >= 2)
-                {
-
-                    return true;
-
-                }
-
-            }
-
-            return false;
 
         }
 

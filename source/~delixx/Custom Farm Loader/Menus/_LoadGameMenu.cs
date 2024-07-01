@@ -92,6 +92,10 @@ namespace Custom_Farm_Loader.Menus
             );
 
             Helper.Events.Content.LocaleChanged += (s, e) => clearCache();
+            Helper.Events.GameLoop.ReturnedToTitle += (s, e) => {
+                if (Context.ScreenId == 0 && LocalizedContentManager.CurrentLanguageCode != LocalizedContentManager.LanguageCode.en)
+                    clearCache();
+            };
         }
 
         private static void clearCache()
@@ -192,7 +196,7 @@ namespace Custom_Farm_Loader.Menus
                 return name;
             }
 
-            if(whichFarm == "MeadowlandsFarm") {
+            if (whichFarm == "MeadowlandsFarm") {
                 name = Game1.content.LoadString("Strings/1_6_Strings:Farm_Ranching_Description");
 
                 name = name.Split("_").First();

@@ -9,16 +9,16 @@
 *************************************************/
 
 using HarmonyLib;
+using MobilePhone.Api;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MobilePhone.Api;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
 using StardewValley.Network;
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace MobilePhone
 {
@@ -70,7 +70,8 @@ namespace MobilePhone
         public static Texture2D phoneBookTexture;
         public static Texture2D phoneBookHeaderTexture;
 
-        public static string npcDictPath = "aedenthorn.MobilePhone/npcs";
+        public static string oldNPCDictPath = "aedenthorn.MobilePhone/npcs"; // Maybe update path...
+        public static string npcDictPath = "JoXW.MobilePhone/npcs";
 
         public static Dictionary<string, MobileApp> apps = new Dictionary<string, MobileApp>();
         public static List<string> appOrder;
@@ -250,7 +251,6 @@ namespace MobilePhone
             Helper.Events.GameLoop.TimeChanged += PhoneGameLoop.GameLoop_TimeChanged;
             Helper.Events.GameLoop.OneSecondUpdateTicked += PhoneGameLoop.GameLoop_OneSecondUpdateTicked;
             Helper.Events.Display.WindowResized += PhoneVisuals.Display_WindowResized;
-
             Helper.Events.Content.AssetRequested += Content_AssetRequested;
             /*
             var files = Directory.GetFiles(Path.Combine(Helper.DirectoryPath, Path.Combine("assets", "events")));
@@ -270,7 +270,7 @@ namespace MobilePhone
 
         private void Content_AssetRequested(object sender, StardewModdingAPI.Events.AssetRequestedEventArgs e)
         {
-            if (e.NameWithoutLocale.IsEquivalentTo(npcDictPath))
+            if (e.NameWithoutLocale.IsEquivalentTo(npcDictPath) || e.NameWithoutLocale.IsEquivalentTo(oldNPCDictPath))
             {
                 e.LoadFrom(() => new Dictionary<string, CustomNPCData>(), StardewModdingAPI.Events.AssetLoadPriority.Exclusive);
             }
@@ -282,11 +282,9 @@ namespace MobilePhone
                     {
                         foreach (EventFork fork in invite.forks)
                         {
-                            var f = fork;
                             e.Edit(delegate (IAssetData obj) {
                                 var dict = obj.AsDictionary<string, string>();
                                 dict.Data.Add(fork.key, MobilePhoneCall.CreateEventString(fork.nodes, invitedNPC));
-
                             });
                         }
                     }
@@ -305,6 +303,5 @@ namespace MobilePhone
             appRunning = false;
             runningApp = null;
         }
-
     }
 }

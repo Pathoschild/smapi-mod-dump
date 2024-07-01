@@ -6,9 +6,9 @@ mods:
    Market Town
 
 latest commit:
-   commit dd97b00ea1505fec735fdcd2e278541df484d192
+   commit 9ddb5ae3da6a33bf1fd70c7e30bd65fb10194504
    Author: Ha <thongha2208@gmail.com>
-   Date:   Mon Apr 15 04:38:55 2024 -0400
+   Date:   Sat Jun 29 19:17:26 2024 -0400
    
-       v5.4.3-build 1
+       v6.0.0_alpha4-build2
    

@@ -6,9 +6,9 @@ mods:
    Desert Bloom Farm
 
 latest commit:
-   commit b1a561bd8ac8dabb869c274dcdeaca75c1c32d74
+   commit 081718acc03aaa3d8520d381414c457332fe2bea
    Author: DeLiXx <fake122344@gmail.com>
-   Date:   Fri Apr 5 01:01:40 2024 +0200
+   Date:   Sat Jun 8 17:03:52 2024 +0200
    
-       updated to 2.0.1
+       using the new SpecialPlacementRequirements instead
    

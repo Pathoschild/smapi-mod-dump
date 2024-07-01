@@ -124,7 +124,7 @@ namespace RidgesideVillage
         public static bool SpawnForage(string id, GameLocation location, Vector2 tile, bool destroyOvernight)
         {
             StardewValley.Object forageObj;
-            forageObj = new StardewValley.Object(RSVConstants.IFOXBLOOM, 1); //generate the object (use the constructor that allows pickup)
+            forageObj = new StardewValley.Object(RSVConstants.I_FOXBLOOM, 1); //generate the object (use the constructor that allows pickup)
             if (destroyOvernight)
                 forageObj.destroyOvernight = true;
 
@@ -134,6 +134,15 @@ namespace RidgesideVillage
                 location.Objects.Remove(tile * 64f);
             }
             return location.dropObject(forageObj, tile * 64f, Game1.viewport, true, null); //attempt to place the object and return success/failure
+        }
+
+        public static void SpawnDebris(string itemID, int tileX, int tileY, GameLocation location)
+        {
+            if (itemID != null)
+            {
+                Game1.createObjectDebris(itemID, tileX, tileY, location: location);
+            }
+
         }
 
         public static bool IsSomeoneHere(int x, int y, int w, int h)

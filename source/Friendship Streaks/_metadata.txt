@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/1Avalon/Avas-Stardew-Mods
+   Git: https://github.com/1Avalon/Avas-Stardew-Mods.git
+
+mods:
+   Friendship Streaks
+
+latest commit:
+   commit 1e301ed08e6db90c1d6ce1dcd07fcf29b6a1b4a7
+   Author: Avalon <axj30.11.04@gmail.com>
+   Date:   Sun Jun 30 20:59:16 2024 +0100
+   
+       add update  keys
+   

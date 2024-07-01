@@ -4,12 +4,15 @@
   //GUI - Billboard
   "Billboard": "Billboard",
   "Calendar": "Calendar",
+  "SlayerGoals": "Monster Eradication Goals",
   //GUI - Seed shop
   "HarvestPrice": "Harvest price",
   //Production
   "Days": "days",
   "Hours": "hours",
   "Minutes": "minutes",
+  "MachineProcessing": "Processing",
+  "MachineDone": "Done",
   //Harvest
   "DaysToMature": "days to mature",
   "ReadyToHarvest": "Ready to harvest!",
@@ -17,8 +20,10 @@
   "Fertilized": "fertilized",
   "DoesNotProduceThisSeason": "Does not produce this season",
   //Tree
-  "Tree": "Tree",
-  "stage": "stage",
+  "Stump": "stump",
+  // This space is required for languages that use a space between words, delete otherwise (e.g. Korean)
+  "Tree": " Tree",
+  "stage": "Stage",
   "Oak": "Oak",
   "Maple": "Maple",
   "Pine": "Pine",
@@ -30,6 +35,7 @@
   "GreenRainType2": "Green Rain Type 2",
   "GreenRainType3": "Green Rain Type 3",
   "Mystic": "Mystic",
+  "VmvBirch": "(VMV) Birch",
   //Display icons - General
   "TodaysRecipe": "Today's Recipe: ",
   "TravelingMerchantIsInTown": "Traveling merchant is in town!",

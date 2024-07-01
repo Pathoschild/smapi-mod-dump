@@ -6,9 +6,9 @@ mods:
    Questable Tractor
 
 latest commit:
-   commit 6fcc3a3964acfb0f55578ec83decd05b6f8e8b5f
+   commit b81b7e05945ad49d721a1256cad832ce12186e06
    Author: SteveBenz <s8878992@hotmail.com>
-   Date:   Sun May 19 19:49:12 2024 -0700
+   Date:   Sun Jun 16 12:38:52 2024 -0700
    
-       Bump version
+       Update the notes on translations
    

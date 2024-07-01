@@ -1,0 +1,13 @@
+{
+  "Name": "Tidy orchard - move fruit trees",
+  "Author": "huan",
+  "Version": "1.0.1",
+  "Description": "Allows you to pick fruit trees into inventory, and replant them elsewhere.",
+  "UniqueID": "huan.tidy_orchard_move_fruit_trees",
+  "EntryDll": "TidyOrchard.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [
+    "nexus:25054",
+    "github:huancz/SDV-TidyOrchard"
+  ]
+}

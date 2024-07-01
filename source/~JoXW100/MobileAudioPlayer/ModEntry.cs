@@ -89,7 +89,7 @@ namespace MapTeleport
         {
             api.SetAppRunning(true);
             api.SetRunningApp(Helper.ModRegistry.ModID);
-            Helper.Events.Display.RenderedWorld += Display_RenderedWorld;
+            api.OnAfterRenderScreen += Display_RenderedWorld;
             opening = true;
         }
 
@@ -163,6 +163,7 @@ namespace MapTeleport
 
         private void ClickButton(int idx)
         {
+            Monitor.Log("AudioPlayer.ClickButton idx = " + idx, LogLevel.Debug);
             switch (idx)
             {
                 case 0:
@@ -272,8 +273,8 @@ namespace MapTeleport
             screenSize = api.GetScreenSize();
             if (!api.GetPhoneOpened() || !api.GetAppRunning() || api.GetRunningApp() != Helper.ModRegistry.ModID)
             {
-                Monitor.Log($"Closing app: phone opened {api.GetPhoneOpened()} app running {api.GetAppRunning()} running app {api.GetRunningApp()}");
-                Helper.Events.Display.RenderedWorld -= Display_RenderedWorld;
+                Monitor.Log($"Closing app: phone opened {api.GetPhoneOpened()} app running {api.GetAppRunning()} running app {api.GetRunningApp()}", LogLevel.Debug);
+                api.OnAfterRenderScreen -= Display_RenderedWorld;
 
                 if (api.GetRunningApp() == Helper.ModRegistry.ModID || !api.GetAppRunning())
                 {

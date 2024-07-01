@@ -2,6 +2,10 @@
     /*********
     ** Generic translations
     *********/
+    // language info
+    "generic.list-separator": ", ", // text between listed values (like ", " in "A, B, C")
+    "generic.line-wrap-on": "",    // characters after which we can line-wrap text if needed, even if there's no space
+
     // date names
     "generic.now": "most",
     "generic.tomorrow": "holnap",
@@ -9,7 +13,6 @@
 
     // generic values
     "generic.unknown": "unknown", // TODO
-    "generic.list-separator": ", ", // text between listed values (like ", " in "A, B, C")
 
     // generic field values
     "generic.percent": "{{percent}}%",
@@ -46,6 +49,9 @@
     "quality.silver": "ezüst",
     "quality.gold": "arany",
     "quality.iridium": "irídium",
+
+    // item names shown in recipes
+    "item.wild-seeds": "Wild Seeds (Any)", // TODO
 
     // NPC friendship
     "friendship-status.friendly": "Barát",
@@ -133,8 +139,15 @@
     // TODO
     "condition-or-context-tag.negate": "not {{value}}",
 
+    "condition.day-of-month": "on specific days ({{days}})",
+    "condition.day-of-month.even": "even days",
+    "condition.day-of-month.odd": "odd days",
+
     "condition.item-type.input": "input item",
     "condition.item-type.target": "target item",
+
+    "condition.raw-context-tag": "context tag \"{{tag}}\"",
+    "condition.raw-condition": "query \"{{tag}}\"",
 
     "condition.item-context-tag": "{{item}} has context tag {{tags}}",
     "condition.item-context-tags": "{{item}} has context tags {{tags}}",

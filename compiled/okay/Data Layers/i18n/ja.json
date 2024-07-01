@@ -1,4 +1,7 @@
 ﻿{
+    /*********
+    ** Data Layers UI
+    *********/
     // accessible
     "accessible.name": "移動可能",
     "accessible.clear": "通れる",
@@ -68,5 +71,48 @@
     "tillable.tillable": "耕せる",
     "tillable.tilled": "耕し済み",
     "tillable.occupied": "占有",
-    "tillable.not-tillable": "耕作不可能"
+    "tillable.not-tillable": "耕作不可能",
+
+
+    /*********
+    ** Generic Mod Config Menu UI
+    *********/
+    // section names
+    "config.section.main-options": "メインオプション",
+    "config.section.main-controls": "メインコントロール",
+    "config.section.layer": "「{{LayerName}}」のレイヤー", // {{LayerName}} is the layer name set above.
+
+    // main options
+    "config.show-grid.name": "グリッド表示",
+    "config.show-grid.desc": "レイヤーが開いているときにタイルグリッドを表示する。",
+
+    "config.combine-borders.name": "重なったボーダーを組み合わせる",
+    "config.combine-borders.desc": "同じ色の2つのグループが重なっている場合、それぞれのボーダーではなく、組み合わされたエッジの周りに1つのボーダーを描く。",
+
+    "config.color-scheme.name": "配色",
+    "config.color-schene.desc": "適用する配色で、すべてのデータレイヤー全体の色を変更する。",
+    "config.color-schemes.default": "標準の色",
+
+    // main controls
+    "config.toggle-layer-key.name": "データレイヤーの切り替え",
+    "config.toggle-layer-key.desc": "データレイヤーのオーバーレイを表示または非表示にするキー。",
+
+    "config.prev-layer-key.name": "前のレイヤー",
+    "config.prev-layer-key.desc": "利用可能なデータレイヤーを循環させるキー。",
+
+    "config.next-layer-key.name": "次のレイヤー",
+    "config.next-layer-key.desc": "利用可能なデータレイヤーを循環させるキー。",
+
+    // data layers
+    "config.layer-enabled.name": "有効",
+    "config.layer-enabled.desc": "このレイヤーをゲーム内で利用可能にする。",
+
+    "config.layer-update-on-view-change.name": "適時更新",
+    "config.layer-update-on-view-change.desc": "「1秒あたりの更新数」の設定に関係なく、ワールドの新しい部分が視界に入ったときに描画レイヤー情報を更新するかどうか。",
+
+    "config.layer-updates-per-second.name": "1秒あたりの更新数",
+    "config.layer-updates-per-second.desc": "レイヤーを表示する際の更新頻度を1秒あたりの数値で指定する。デフォルトより高い値を設定すると、ラグが発生する可能性があります。標準は{{defaultValue}}。",
+
+    "config.layer-shortcut.name": "ショートカットキー",
+    "config.layer-shortcut.desc": "オーバーレイが開いているときに、このレイヤーを選択するキー。"
 }

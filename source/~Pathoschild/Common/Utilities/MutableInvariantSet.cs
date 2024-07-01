@@ -307,7 +307,7 @@ namespace Pathoschild.Stardew.Common.Utilities
                 // create copy
                 else
                 {
-                    HashSet<string> copy = new(this.Set);
+                    HashSet<string> copy = [..this.Set];
                     return new InvariantSet(copy);
                 }
             }

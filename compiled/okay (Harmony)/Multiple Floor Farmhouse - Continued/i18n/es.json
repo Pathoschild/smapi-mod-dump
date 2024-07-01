@@ -1,0 +1,10 @@
+{
+  "GMCM_EnableMod": "Activar mod",
+  "GMCM_StairsX": "Escaleras posición X",
+  "GMCM_StairsY": "Escaleras posición Y",
+  "GMCM_Stairs_Description": "La distancia de las escaleras de la esquina superior izquierda de la alquería. Se debe recargar la guardada para tener efecto.",
+  "GMCM_CombineWithCellarStairs": "Combinar con las escaleras de la bodega",
+  "GMCM_FloorNames": "Nombres de pisos",
+  "GMCM_FloorNames_Description": "Los pisos a usar, de abajo hacia arriba, no sensible a mayúsculas y minúsculas. Se debe recargar el juego para tener efecto. Los pisos instalados son: {{allOptions}}",
+  "GMCM_ActiveFloors": "Los pisos en uso actualmente son: {{activeFloors}}. Si algo falta, sin duda verifica su deletreo y recargar el juego."
+}

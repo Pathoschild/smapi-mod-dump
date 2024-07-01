@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2677
-IDs: mikko.Always_On_Server
-update keys: Nexus:2677

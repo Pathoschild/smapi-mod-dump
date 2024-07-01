@@ -122,20 +122,6 @@ namespace Pathoschild.Stardew.Common.Items
                             break;
                     }
                 }
-
-                // wallpapers
-                if (onlyType is null or "(WP)")
-                {
-                    for (int id = 0; id < 112; id++)
-                        yield return this.TryCreate("(WP)", id.ToString(), p => new Wallpaper(int.Parse(p.Id)) { Category = SObject.furnitureCategory });
-                }
-
-                // flooring
-                if (onlyType is null or "(FL)")
-                {
-                    for (int id = 0; id < 56; id++)
-                        yield return this.TryCreate("(FL)", id.ToString(), p => new Wallpaper(int.Parse(p.Id), isFloor: true) { Category = SObject.furnitureCategory });
-                }
             }
 
             return (
@@ -274,8 +260,8 @@ namespace Pathoschild.Stardew.Common.Items
         /// <param name="complexTags">A list of tag sets which match roe-producing fish.</param>
         private void GetRoeContextTagLookups(out HashSet<string> simpleTags, out List<List<string>> complexTags)
         {
-            simpleTags = new HashSet<string>();
-            complexTags = new List<List<string>>();
+            simpleTags = [];
+            complexTags = [];
 
             foreach (FishPondData data in this.TryLoad(() => DataLoader.FishPondData(Game1.content)))
             {

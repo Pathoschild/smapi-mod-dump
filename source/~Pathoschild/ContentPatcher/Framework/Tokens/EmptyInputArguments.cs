@@ -8,7 +8,6 @@
 **
 *************************************************/
 
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
@@ -31,7 +30,7 @@ namespace ContentPatcher.Framework.Tokens
         public ITokenString? TokenString => null;
 
         /// <inheritdoc />
-        public string[] PositionalArgs => Array.Empty<string>();
+        public string[] PositionalArgs => [];
 
         /// <inheritdoc />
         public IDictionary<string, IInputArgumentValue> NamedArgs => EmptyInputArguments.EmptyArgValues;
@@ -40,7 +39,7 @@ namespace ContentPatcher.Framework.Tokens
         public IDictionary<string, IInputArgumentValue> ReservedArgs => EmptyInputArguments.EmptyArgValues;
 
         /// <inheritdoc />
-        public KeyValuePair<string, IInputArgumentValue>[] ReservedArgsList => Array.Empty<KeyValuePair<string, IInputArgumentValue>>();
+        public KeyValuePair<string, IInputArgumentValue>[] ReservedArgsList => [];
 
         /// <inheritdoc />
         public bool HasNamedArgs => false;

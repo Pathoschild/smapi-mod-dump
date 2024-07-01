@@ -114,7 +114,7 @@ namespace HugsAndKisses.Framework
         {
             ModEntry.mp.broadcastSprites(npc.currentLocation, new TemporaryAnimatedSprite[]
             {
-                new TemporaryAnimatedSprite("LooseSprites\\Cursors", new Rectangle(211, 428, 7, 6), 2000f, 1, 0, npc.Tile * 64f + new Vector2(16f, -64f), false, false, 1f, 0f, Color.White, 4f, 0f, 0f, 0f, false)
+                new("LooseSprites\\Cursors", new Rectangle(211, 428, 7, 6), 2000f, 1, 0, npc.Tile * 64f + new Vector2(16f, -64f), false, false, 1f, 0f, Color.White, 4f, 0f, 0f, 0f, false)
                 {
                     motion = new Vector2(0f, -0.5f),
                     alphaFade = 0.01f
@@ -125,11 +125,11 @@ namespace HugsAndKisses.Framework
         {
             ModEntry.mp.broadcastSprites(npc.currentLocation, new TemporaryAnimatedSprite[]
             {
-                    new TemporaryAnimatedSprite("LooseSprites\\emojis", new Rectangle(0, 0, 9, 9), 2000f, 1, 0, npc.Tile * 64f + new Vector2(16f, -64f), false, false, 1f, 0f, Color.White, 4f, 0f, 0f, 0f, false)
-                    {
-                        motion = new Vector2(0f, -0.5f),
-                        alphaFade = 0.01f
-                    }
+                new("LooseSprites\\emojis", new Rectangle(0, 0, 9, 9), 2000f, 1, 0, npc.Tile * 64f + new Vector2(16f, -64f), false, false, 1f, 0f, Color.White, 4f, 0f, 0f, 0f, false)
+                {
+                    motion = new Vector2(0f, -0.5f),
+                    alphaFade = 0.01f
+                }
             });
         }
 
@@ -202,15 +202,13 @@ namespace HugsAndKisses.Framework
         public static void SetNPCRelations()
         {
             ModEntry.relationships.Clear();
-            var characters = Helper.GameContent.Load<Dictionary<string, CharacterData>>("Data/Characters");
-
-            foreach (var (Key, Value) in characters)
+            foreach (var (key, value) in Game1.characterData)
             {
-                ModEntry.relationships[Key] = Value.FriendsAndFamily;
+                ModEntry.relationships[key] = value.FriendsAndFamily;
             }
         }
 
-        public static string[] relativeRoles = new string[]
+        public static readonly string[] relativeRoles = new string[]
         {
             "son",
             "daughter",
@@ -238,7 +236,7 @@ namespace HugsAndKisses.Framework
             "grandnephew"
         };
 
-        public static string[] spouseRoles = new string[]
+        public static readonly string[] spouseRoles = new string[]
         {
             "husband",
             "wife",
@@ -250,48 +248,24 @@ namespace HugsAndKisses.Framework
 
         public static bool AreNPCsMarried(string npc1, string npc2)
         {
-            if (ModEntry.relationships.ContainsKey(npc1) && ModEntry.relationships[npc1].ContainsKey(npc2))
-            {
-                string relation = ModEntry.relationships[npc1][npc2];
-                foreach (string r in spouseRoles)
-                {
-                    if (relation.Contains(r))
-                    {
-                        return true;
-                    }
-                }
-            }
-            if (ModEntry.relationships.ContainsKey(npc2) && ModEntry.relationships[npc2].ContainsKey(npc1))
-            {
-                string relation = ModEntry.relationships[npc2][npc1];
-                foreach (string r in spouseRoles)
-                {
-                    if (relation.Contains(r))
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
+            return IsRelated(npc1, npc2, spouseRoles) || IsRelated(npc2, npc1, spouseRoles);
         }
 
         public static bool AreNPCsRelated(string npc1, string npc2)
         {
-            if (ModEntry.relationships.ContainsKey(npc1) && ModEntry.relationships[npc1].ContainsKey(npc2))
+            return IsRelated(npc1, npc2, relativeRoles) || IsRelated(npc2, npc1, relativeRoles);
+        }
+
+        private static bool IsRelated(string npc1, string npc2, IEnumerable<string> roles)
+        {
+            if (npc1 is null || npc2 is null)
             {
-                string relation = ModEntry.relationships[npc1][npc2];
-                foreach (string r in relativeRoles)
-                {
-                    if (relation.Contains(r))
-                    {
-                        return true;
-                    }
-                }
+                return false;
             }
-            if (ModEntry.relationships.ContainsKey(npc2) && ModEntry.relationships[npc2].ContainsKey(npc1))
+
+            if (ModEntry.relationships.TryGetValue(npc1, out var relations) && relations.TryGetValue(npc2, out var relation))
             {
-                string relation = ModEntry.relationships[npc2][npc1];
-                foreach (string r in relativeRoles)
+                foreach (string r in roles)
                 {
                     if (relation.Contains(r))
                     {
@@ -306,25 +280,22 @@ namespace HugsAndKisses.Framework
         public static void ShuffleList<T>(ref List<T> list)
         {
             int n = list.Count;
-            while (n > 1)
+            while (n-- > 1)
             {
-                n--;
                 int k = ModEntry.myRand.Next(n + 1);
-                var value = list[k];
-                list[k] = list[n];
-                list[n] = value;
+                (list[n], list[k]) = (list[k], list[n]);
             }
         }
+
         public static void ShuffleDic<T1, T2>(ref Dictionary<T1, T2> list)
         {
             int n = list.Count;
-            while (n > 1)
+            while (n-- > 1)
             {
-                n--;
                 int k = ModEntry.myRand.Next(n + 1);
-                var value = list[list.Keys.ToArray()[k]];
-                list[list.Keys.ToArray()[k]] = list[list.Keys.ToArray()[n]];
-                list[list.Keys.ToArray()[n]] = value;
+                var key_k = list.Keys.ToArray()[k];
+                var key_n = list.Keys.ToArray()[n];
+                (list[key_n], list[key_k]) = (list[key_k], list[key_n]);
             }
         }
     }

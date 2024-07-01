@@ -11,26 +11,30 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
+using StardewValley.Menus;
 using DeluxeJournal.Task;
 
 using static DeluxeJournal.Task.TaskParameterAttribute;
 
 namespace DeluxeJournal.Menus.Components
 {
-    /// <summary>A TextBox that parses input for a TaskParameter.</summary>
-    public class TaskParameterTextBox : SideScrollingTextBox
+    /// <summary>A <see cref="SideScrollingTextBox"/> that parses input for a <see cref="TaskParameter"/>.</summary>
+    public class TaskParameterTextBox : SideScrollingTextBox, ITaskParameterComponent
     {
-        public TaskParameter TaskParameter { get; set; }
+        public ClickableComponent ClickableComponent { get; }
 
-        public TaskParser TaskParser { get; }
+        public TaskParameter Parameter { get; set; }
+
+        public TaskParser Parser { get; }
 
         public string Label { get; set; } = string.Empty;
 
-        public TaskParameterTextBox(TaskParameter parameter, Task.TaskFactory factory, Texture2D? textBoxTexture, Texture2D? caretTexture, SpriteFont font, Color textColor, ITranslationHelper translation)
+        public TaskParameterTextBox(TaskParameter parameter, Task.TaskFactory factory, ClickableComponent component, Texture2D? textBoxTexture, Texture2D? caretTexture, SpriteFont font, Color textColor, ITranslationHelper translation)
             : base(textBoxTexture, caretTexture, font, textColor)
         {
-            TaskParameter = parameter;
-            TaskParser = new TaskParser(translation, new()
+            ClickableComponent = component;
+            Parameter = parameter;
+            Parser = new TaskParser(translation, new()
             {
                 EnableFuzzySearch = true,
                 IgnoreItems = !parameter.Attribute.Tag.Equals(TaskParameterTag.ItemList),
@@ -46,7 +50,7 @@ namespace DeluxeJournal.Menus.Components
                 Factory = factory
             };
 
-            TaskParser.ApplyParameterValue(parameter);
+            Parser.ApplyParameterValue(parameter);
             FillWithParsedText(true);
         }
 
@@ -66,13 +70,13 @@ namespace DeluxeJournal.Menus.Components
         {
             string previous = Text;
 
-            Text = TaskParameter.Attribute.Tag switch
+            Text = Parameter.Attribute.Tag switch
             {
-                TaskParameterTag.ItemList => TaskParser.ProxyItemDisplayName,
-                TaskParameterTag.NpcName => TaskParser.NpcDisplayName,
-                TaskParameterTag.Building => TaskParser.BuildingDisplayName,
-                TaskParameterTag.FarmAnimalList => TaskParser.FarmAnimalDisplayName,
-                TaskParameterTag.Count => TaskParser.Count.ToString(),
+                TaskParameterTag.ItemList => Parser.ProxyItemDisplayName,
+                TaskParameterTag.NpcName => Parser.NpcDisplayName,
+                TaskParameterTag.Building => Parser.BuildingDisplayName,
+                TaskParameterTag.FarmAnimalList => Parser.FarmAnimalDisplayName,
+                TaskParameterTag.Count => Parser.Count.ToString(),
                 _ => string.Empty
             };
 
@@ -82,6 +86,29 @@ namespace DeluxeJournal.Menus.Components
             }
 
             return previous != Text;
+        }
+
+        public IEnumerable<ClickableComponent> GetClickableComponents()
+        {
+            yield return ClickableComponent;
+        }
+
+        public void RecalculateBounds()
+        {
+            X = ClickableComponent.bounds.X;
+            Y = ClickableComponent.bounds.Y;
+            Width = ClickableComponent.bounds.Width;
+            Height = ClickableComponent.bounds.Height;
+        }
+
+        public void TryHover(int x, int y)
+        {
+        }
+
+        public void ReceiveLeftClick(int x, int y, bool playSound = true)
+        {
+            SelectMe();
+            ForceUpdate();
         }
 
         public override void RecieveTextInput(char inputChar)
@@ -108,22 +135,27 @@ namespace DeluxeJournal.Menus.Components
             }
         }
 
+        public void Draw(SpriteBatch b)
+        {
+            base.Draw(b);
+        }
+
         private void UpdateParameter()
         {
             if (string.IsNullOrEmpty(Text))
             {
                 ClearParameterValue();
             }
-            else if (!TaskParser.Parse(Text, TaskParser.ParseMode.UpdateFactory))
+            else if (!Parser.Parse(Text, TaskParser.ParseMode.UpdateFactory))
             {
-                TaskParameter.Value = null;
+                Parameter.Value = null;
             }
         }
 
         private void ClearParameterValue()
         {
-            TaskParameter.Value = null;
-            TaskParser.ApplyParameterValue(TaskParameter);
+            Parameter.Value = null;
+            Parser.ApplyParameterValue(Parameter);
         }
     }
 }

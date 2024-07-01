@@ -1,8 +1,8 @@
 ﻿ {
   "Name": "Unbreakable Tackles",
   "Author": "MindMeltMax",
-  "Version": "1.0.2",
-  "Description": "Never again will you're tackles break",
+  "Version": "1.0.3",
+  "Description": "Never again will your tackles break",
   "UniqueID": "MindMeltMax.UnbreakableTackles",
   "EntryDll": "Unbreakable Tackles.dll",
   "MinimumApiVersion": "4.0.0",

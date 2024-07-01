@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34902.65
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lidgren.Network", "Lidgren.Network\Lidgren.Network.csproj", "{F36D88E4-3179-4335-AE43-7BE05550124C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IPv6", "IPv6\IPv6.csproj", "{17570513-FD57-4B4E-9886-8DF7B9B537D0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F36D88E4-3179-4335-AE43-7BE05550124C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F36D88E4-3179-4335-AE43-7BE05550124C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F36D88E4-3179-4335-AE43-7BE05550124C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F36D88E4-3179-4335-AE43-7BE05550124C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17570513-FD57-4B4E-9886-8DF7B9B537D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17570513-FD57-4B4E-9886-8DF7B9B537D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17570513-FD57-4B4E-9886-8DF7B9B537D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17570513-FD57-4B4E-9886-8DF7B9B537D0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D7FFCB28-7A33-49D8-9436-4C398292160C}
+	EndGlobalSection
+EndGlobal

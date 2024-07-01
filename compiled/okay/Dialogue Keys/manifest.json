@@ -1,7 +1,7 @@
 {
   "Name": "DialogueKeys",
   "Author": "PokeBenji",
-  "Version": "1.0.8",
+  "Version": "1.0.9",
   "Description": "A Stardew Valley mod that allows you to use number keys to select dialogue options.",
   "UniqueID": "PokeBenji.DialogueKeys",
   "EntryDll": "DialogueKeys.dll",

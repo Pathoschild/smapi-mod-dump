@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using System.Diagnostics.CodeAnalysis;
 using ContentPatcher.Framework.Constants;
 
 namespace ContentPatcher.Framework.TextOperations
@@ -33,6 +34,7 @@ namespace ContentPatcher.Framework.TextOperations
 
         /// <summary>Get a copy of the input with the text operation applied.</summary>
         /// <param name="text">The input to modify.</param>
+        [return: NotNullIfNotNull(nameof(text))]
         string? Apply(string? text);
     }
 }

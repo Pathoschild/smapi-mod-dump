@@ -1,7 +1,7 @@
 {
   "Name": "PortraiturePlus",
   "Author": "Arborsm",
-  "Version": "1.0.0",
+  "Version": "1.0.5",
   "Description": "Add tokens to Portraiture",
   "UniqueID": "Arborsm.PortraiturePlus",
   "EntryDll": "PortraiturePlus.dll",

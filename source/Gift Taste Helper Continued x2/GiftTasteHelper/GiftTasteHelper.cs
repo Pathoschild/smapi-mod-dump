@@ -14,6 +14,8 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
+using System.Collections.Generic;
+using static GiftTasteHelper.GiftTasteHelper;
 
 namespace GiftTasteHelper
 {
@@ -35,7 +37,7 @@ namespace GiftTasteHelper
         { 
             get
             {
-                if (MultiplayerGiftHelperMap.TryGetValue(Game1.player.UniqueMultiplayerID, out var context))
+                if (MultiplayerGiftHelperMap.TryGetValue(Context.ScreenId, out var context))
                 {
                     return context.GiftHelpers;
                 }
@@ -46,13 +48,13 @@ namespace GiftTasteHelper
             }
             set
             {
-                if (MultiplayerGiftHelperMap.TryGetValue(Game1.player.UniqueMultiplayerID, out var context))
+                if (MultiplayerGiftHelperMap.TryGetValue(Context.ScreenId, out var context))
                 {
                     context.GiftHelpers = value;
                 }
                 else
                 {
-                    MultiplayerGiftHelperMap[Game1.player.UniqueMultiplayerID] = new() 
+                    MultiplayerGiftHelperMap[Context.ScreenId] = new() 
                     { 
                         GiftHelpers = value
                     };
@@ -63,7 +65,7 @@ namespace GiftTasteHelper
         {
             get
             {
-                if (MultiplayerGiftHelperMap.TryGetValue(Game1.player.UniqueMultiplayerID, out var context))
+                if (MultiplayerGiftHelperMap.TryGetValue(Context.ScreenId, out var context))
                 {
                     return context.CurrentGiftHelper;
                 }
@@ -74,13 +76,13 @@ namespace GiftTasteHelper
             }
             set
             {
-                if (MultiplayerGiftHelperMap.TryGetValue(Game1.player.UniqueMultiplayerID, out var context))
+                if (MultiplayerGiftHelperMap.TryGetValue(Context.ScreenId, out var context))
                 {
                     context.CurrentGiftHelper = value;
                 }
                 else
                 {
-                    MultiplayerGiftHelperMap[Game1.player.UniqueMultiplayerID] = new()
+                    MultiplayerGiftHelperMap[Context.ScreenId] = new()
                     {
                         CurrentGiftHelper = value
                     };
@@ -97,7 +99,7 @@ namespace GiftTasteHelper
         {
             get
             {
-                if (MultiplayerGiftHelperMap.TryGetValue(Game1.player.UniqueMultiplayerID, out var context))
+                if (MultiplayerGiftHelperMap.TryGetValue(Context.ScreenId, out var context))
                 {
                     return context.Active;
                 }
@@ -108,13 +110,13 @@ namespace GiftTasteHelper
             }
             set
             {
-                if (MultiplayerGiftHelperMap.TryGetValue(Game1.player.UniqueMultiplayerID, out var context))
+                if (MultiplayerGiftHelperMap.TryGetValue(Context.ScreenId, out var context))
                 {
                     context.Active = value;
                 }
                 else
                 {
-                    MultiplayerGiftHelperMap[Game1.player.UniqueMultiplayerID] = new()
+                    MultiplayerGiftHelperMap[Context.ScreenId] = new()
                     {
                         Active = value
                     };
@@ -149,14 +151,36 @@ namespace GiftTasteHelper
 
         private void OnPeerDisconnected(object? sender, PeerDisconnectedEventArgs e)
         {
-            MultiplayerGiftHelperMap.Remove(e.Peer.PlayerID);
+            if (e.Peer.IsSplitScreen)
+            {
+                var id = e.Peer.ScreenID;
+                if (id.HasValue)
+                {
+                    MultiplayerGiftHelperMap.Remove(id.Value);
+                }
+                else
+                {
+                    Monitor?.Log("Splitscreen peer had no screen id.", LogLevel.Warn);
+                }
+            }
         }
 
         private void OnPeerConnected(object? sender, PeerConnectedEventArgs e)
         {
-            var context = new MultiplayerContext();
-            RebuildGiftHelpers(Helper, context);
-            MultiplayerGiftHelperMap.Add(e.Peer.PlayerID, context);
+            if (e.Peer.IsSplitScreen)
+            {
+                var id = e.Peer.ScreenID;
+                if (id.HasValue)
+                {
+                    var context = new MultiplayerContext();
+                    RebuildGiftHelpers(Helper, context);
+                    MultiplayerGiftHelperMap.Add(id.Value, context);
+                }
+                else
+                {
+                    Monitor?.Log("Splitscreen peer had no screen id.", LogLevel.Warn);
+                }
+            }
         }
 
         // Called when the mod starts up or is being hot-reloaded.
@@ -183,7 +207,7 @@ namespace GiftTasteHelper
 
                 var context = new MultiplayerContext();
                 RebuildDataProvider(Helper, context);
-                MultiplayerGiftHelperMap[Game1.player.UniqueMultiplayerID] = context;
+                MultiplayerGiftHelperMap[Context.ScreenId] = context;
             }
         }
 
@@ -375,7 +399,7 @@ namespace GiftTasteHelper
         {
             if (DataProvider is null)
             {
-                Utils.DebugLog($"{nameof(RebuildGiftHelpers)} called when {nameof(DataProvider)} is null", LogLevel.Debug);
+                Utils.DebugLog($"{nameof(RebuildGiftHelpers)} called when {nameof(DataProvider)} is null", LogLevel.Warn);
                 return;
             }
 

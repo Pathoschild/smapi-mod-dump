@@ -24,12 +24,14 @@ namespace ColdPets
 
         private void OnDayStarted(object? sender, DayStartedEventArgs e)
         {
-            Pet pet = Game1.player.getPet();
-            if (pet is null || Game1.currentSeason != "winter" || !Context.IsMainPlayer)
+            if (Game1.currentSeason != "winter" || !Context.IsMainPlayer)
                 return;
 
-            pet!.CurrentBehavior = Pet.behavior_SitDown;
-            pet.warpToFarmHouse(Game1.player);
+            foreach (Pet pet in Utility.getAllPets())
+            {
+                pet.CurrentBehavior = Pet.behavior_SitDown;
+                pet.warpToFarmHouse(Game1.player);
+            }
         }
     }
 }

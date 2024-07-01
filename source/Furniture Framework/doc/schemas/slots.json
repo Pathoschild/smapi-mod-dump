@@ -37,11 +37,17 @@
 				"$ref": "/Leroymilo/FurnitureFramework/main/doc/schemas/depth.json"
 			},
 
+			"Max Size": {
+				"$ref": "/Leroymilo/FurnitureFramework/main/doc/schemas/vector.json",
+				"description": "The maximum size of Furniture that can be placed in this slot."
+			},
+
 			"Debug Color": {
 				"type": "string",
 				"description": "See here for a list of valid colors https://learn.microsoft.com/en-us/dotnet/api/system.drawing.color?view=net-8.0#properties."
 			}
-		}
-	},
-	"required": [ "Area" ]
+		},
+		"required": [ "Area" ],
+		"additionalProperties": false
+	}
 }

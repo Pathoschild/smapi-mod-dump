@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using AchtuurCore;
 using AchtuurCore.Patches;
 using SpaceCore;
 using StardewModdingAPI;
@@ -23,32 +24,6 @@ namespace StardewTravelSkill;
 
 internal sealed class ModEntry : Mod
 {
-    /// <summary>
-    /// All buttons that correspond to moving up/north
-    /// </summary>
-    public static readonly SButton[] MoveUpButtons = { SButton.W, SButton.LeftThumbstickUp, SButton.DPadUp };
-    /// <summary>
-    /// All buttons that correspond to moving down/south
-    /// </summary>
-    public static readonly SButton[] MoveDownButtons = { SButton.S, SButton.LeftThumbstickDown, SButton.DPadDown };
-    /// <summary>
-    /// All buttons that correspond to moving left/west
-    /// </summary>
-    public static readonly SButton[] MoveLeftButtons = { SButton.A, SButton.LeftThumbstickLeft, SButton.DPadLeft };
-    /// <summary>
-    /// All buttons that correspond to moving right/east
-    /// </summary>
-    public static readonly SButton[] MoveRightButtons = { SButton.D, SButton.LeftThumbstickRight, SButton.DPadRight };
-    /// <summary>
-    /// All buttons that correspond to movement
-    /// </summary>
-    public static readonly SButton[] AllMovementButtons = {
-        SButton.W, SButton.LeftThumbstickUp, SButton.DPadUp,
-        SButton.S, SButton.LeftThumbstickDown, SButton.DPadDown,
-        SButton.A, SButton.LeftThumbstickLeft, SButton.DPadLeft,
-        SButton.D, SButton.LeftThumbstickRight, SButton.DPadRight
-    };
-
     internal static ModEntry Instance;
     public TravelSkill travelSkill;
 
@@ -74,6 +49,10 @@ internal sealed class ModEntry : Mod
     /// </summary>
     private PerScreen<uint> m_consecutiveSteps = new PerScreen<uint>();
 
+    private PerScreen<float> m_AccumulatedExp = new PerScreen<float>();
+
+    private PerScreen<int> m_LastWalkTick = new PerScreen<int>();
+
     /// <summary>
     /// Whether totem recipe has been changed as result of profession
     /// </summary>
@@ -85,6 +64,15 @@ internal sealed class ModEntry : Mod
     private bool obeliskRecipeChanged;
 
     /// <summary>
+    /// Returns true if the player is currently walking
+    /// </summary>
+    /// <returns></returns>
+    public static bool IsWalking()
+    {
+        return Game1.player.movementDirections.Count > 0;
+    }
+
+    /// <summary>
     /// Returns movespeed multiplier farmer should receive
     /// </summary>
     /// <returns>
@@ -94,6 +82,9 @@ internal sealed class ModEntry : Mod
     /// </returns>
     public static float GetMovespeedMultiplier()
     {
+        if (!Context.IsWorldReady)
+            return 1.0f;
+
         float professionbonus = Game1.player.HasCustomProfession(TravelSkill.ProfessionMovespeed) ? Instance.Config.MovespeedProfessionBonus : 0.0f;
         float sprintbonus = (ModEntry.Instance.SprintActive.Value) ? Instance.Config.SprintMovespeedBonus : 0.0f;
 
@@ -117,14 +108,6 @@ internal sealed class ModEntry : Mod
         return Game1.player.HasCustomProfession(TravelSkill.ProfessionRestoreStamina)
             ? Instance.Config.RestoreStaminaPercentage
             : 0.0;
-    }
-
-    /// <summary>
-    /// Returns true if a button corresponding to movement is held
-    /// </summary>
-    public static bool MovementButtonHeld()
-    {
-        return AllMovementButtons.Any(movement_button => ButtonHeld(movement_button));
     }
 
     /// <summary>
@@ -155,10 +138,9 @@ internal sealed class ModEntry : Mod
 
         // Setup event listeners
         helper.Events.GameLoop.GameLaunched += this.OnGameLaunch;
-        helper.Events.GameLoop.SaveCreated += this.OnSaveCreate;
+        helper.Events.GameLoop.SaveCreated += this.OnSaveLoad;
         helper.Events.GameLoop.SaveLoaded += this.OnSaveLoad;
         helper.Events.GameLoop.TimeChanged += this.OnTimeChanged;
-        helper.Events.Input.ButtonReleased += this.OnButtonReleased;
         helper.Events.GameLoop.UpdateTicked += this.OnUpdateTicked;
         helper.Events.GameLoop.DayStarted += this.OnDayStart;
 
@@ -180,51 +162,40 @@ internal sealed class ModEntry : Mod
 
     private void OnUpdateTicked(object sender, EventArgs e)
     {
-        if (Game1.player.HasCustomProfession(TravelSkill.ProfessionSprint))
-            CheckSprintActive();
-    }
+        if (!Context.IsWorldReady || !Context.IsPlayerFree)
+            return;
 
-    private void OnSaveCreate(object sender, EventArgs e)
-    {
-        InitValueTrackers();
+        if (IsWalking())
+            m_LastWalkTick.Value = Game1.ticks;
+
+        CheckSprintActive();
+
+        UpdateExp();
     }
 
     private void OnSaveLoad(object sender, EventArgs e)
     {
         InitValueTrackers();
-        registerProfessionAssetEvents();
+        RegisterProfessionAssetEvents();
     }
 
     private void OnDayStart(object sender, DayStartedEventArgs e)
     {
-        registerProfessionAssetEvents();
+        RegisterProfessionAssetEvents();
     }
-
-    /// <summary>
-    /// On button release, check the amount of steps taken and increase EXP based on that
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    private void OnButtonReleased(object sender, ButtonReleasedEventArgs e)
+    private void UpdateExp()
     {
-        // Exit early if no world loaded
-        if (!Context.IsWorldReady)
-            return;
-
-        // Exit early if button pressed was not a movement command
-        if (e.IsSuppressed() || !this.isMovementButton(e.Button))
-            return;
-
-        // Calcuate difference in steps, and if it exceeds 1 exp treshold, add it as exp. Hacky fix to get xp values between 0 and 1
         uint step_diff = Game1.player.stats.StepsTaken - this.m_previousSteps.Value;
-        if (step_diff >= Instance.Config.StepsPerExp * Instance.Config.AddExpIncrement)
-        {
-            Game1.player.AddCustomSkillExperience(travelSkill, Instance.Config.AddExpIncrement);
-            // Set previous steps to current steps, with correction
-            uint steps_over_exp_incr = step_diff - (uint)(Instance.Config.StepsPerExp * Instance.Config.AddExpIncrement);
-            this.m_previousSteps.Value = Game1.player.stats.StepsTaken - steps_over_exp_incr;
-        }
+        // If steps are less than the number of steps than the increment, early return
+        if (step_diff < Config.StepsPerExp * Config.ExpGainStepThreshold)
+            return;
 
+        m_AccumulatedExp.Value += (float)step_diff / (float)Config.StepsPerExp;
+        int exp_to_add = (int)m_AccumulatedExp.Value; // take integer part of exp
+        m_AccumulatedExp.Value -= exp_to_add;
+        Game1.player.AddCustomSkillExperience(travelSkill, exp_to_add);
+
+        m_previousSteps.Value = Game1.player.stats.StepsTaken;
     }
 
     /// <summary>
@@ -262,20 +233,20 @@ internal sealed class ModEntry : Mod
     /// <summary>
     /// Register events for AssetRequested for the obelisk and totem recipe professions
     /// </summary>
-    private void registerProfessionAssetEvents()
+    private void RegisterProfessionAssetEvents()
     {
         if (!Context.IsWorldReady)
             return;
 
         if (!totemRecipeChanged && Game1.player.HasCustomProfession(TravelSkill.ProfessionCheapWarpTotem))
         {
-            Instance.Helper.Events.Content.AssetRequested += updateTotemRecipe;
+            Instance.Helper.Events.Content.AssetRequested += UpdateTotemRecipe;
             Instance.Helper.GameContent.InvalidateCache("Data/CraftingRecipes");
         }
 
         if (!obeliskRecipeChanged && Game1.player.HasCustomProfession(TravelSkill.ProfessionCheapObelisk))
         {
-            Instance.Helper.Events.Content.AssetRequested += updateObeliskRecipe;
+            Instance.Helper.Events.Content.AssetRequested += UpdateObeliskRecipe;
             Instance.Helper.GameContent.InvalidateCache("Data/Blueprints");
         }
     }
@@ -285,7 +256,7 @@ internal sealed class ModEntry : Mod
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void updateTotemRecipe(object sender, AssetRequestedEventArgs e)
+    private void UpdateTotemRecipe(object sender, AssetRequestedEventArgs e)
     {
         if (!e.NameWithoutLocale.IsEquivalentTo("Data/CraftingRecipes") || !Game1.player.HasCustomProfession(TravelSkill.ProfessionCheapWarpTotem))
             return;
@@ -313,7 +284,7 @@ internal sealed class ModEntry : Mod
 
         // Unsubscribe this method so asset isn't needlessly updated again
         totemRecipeChanged = true;
-        Instance.Helper.Events.Content.AssetRequested -= updateTotemRecipe;
+        Instance.Helper.Events.Content.AssetRequested -= UpdateTotemRecipe;
     }
 
     /// <summary>
@@ -321,7 +292,7 @@ internal sealed class ModEntry : Mod
     /// </summary>
     /// <param name="sender"><inheritdoc/></param>
     /// <param name="e"><inheritdoc/></param>
-    private void updateObeliskRecipe(object sender, AssetRequestedEventArgs e)
+    private void UpdateObeliskRecipe(object sender, AssetRequestedEventArgs e)
     {
         if (!e.NameWithoutLocale.IsEquivalentTo("Data/Blueprints") || !Game1.player.HasCustomProfession(TravelSkill.ProfessionCheapObelisk))
             return;
@@ -344,26 +315,16 @@ internal sealed class ModEntry : Mod
         });
 
         obeliskRecipeChanged = true;
-        Instance.Helper.Events.Content.AssetRequested -= updateObeliskRecipe;
+        Instance.Helper.Events.Content.AssetRequested -= UpdateObeliskRecipe;
     }
 
     /// <summary>
-    /// Returns true if <paramref name="button"/> is a movement control button
+    /// Returns true if the player is walking or has walked within the last 10 ticks
     /// </summary>
-    /// <param name="button">Button to check</param>
-    private bool isMovementButton(SButton button)
+    /// <returns></returns>
+    public bool IsWalkingWithMargin()
     {
-        return AllMovementButtons.Any(b => b.Equals(button));
-    }
-
-    /// <summary>
-    /// Checks whether <paramref name="button"/> is held this tick
-    /// </summary>
-    /// <param name="button">Button to check</param> 
-    private static bool ButtonHeld(SButton button)
-    {
-        SButtonState state = Instance.Helper.Input.GetState(button);
-        return state == SButtonState.Held || state == SButtonState.Pressed;
+        return IsWalking() || Game1.ticks - m_LastWalkTick.Value < 20;
     }
 
     /// <summary>
@@ -372,9 +333,13 @@ internal sealed class ModEntry : Mod
     /// </summary>
     private void CheckSprintActive()
     {
-        if (!MovementButtonHeld())
+        if (!Game1.player.HasCustomProfession(TravelSkill.ProfessionSprint))
+            return;
+
+        if (!IsWalkingWithMargin() && this.SprintActive.Value)
         {
             // "Reset" counter by setting it to current step count
+            AchtuurCore.Logger.DebugLog(ModEntry.Instance.Monitor, "No longer sprinting");
             this.m_consecutiveSteps.Value = Game1.player.stats.StepsTaken;
             this.SprintActive.Value = false;
             return;

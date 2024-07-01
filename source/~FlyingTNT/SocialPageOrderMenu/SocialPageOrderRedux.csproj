@@ -5,11 +5,6 @@
 	<EnableHarmony>true</EnableHarmony>
 	<Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
-  <ItemGroup>
-    <Compile Remove="i18n\**" />
-    <EmbeddedResource Remove="i18n\**" />
-    <None Remove="i18n\**" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
@@ -21,4 +16,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+
+  <Import Project="..\Common\Common.projitems" Label="Shared" />
 </Project>

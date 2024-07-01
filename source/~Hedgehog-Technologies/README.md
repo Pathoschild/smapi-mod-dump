@@ -42,7 +42,7 @@ on the wiki for help contributing translations.
 &nbsp;     | Allow Beach Sprinklers                        | Auto Forager                             | Full Fishing Bar                        | Auto Trasher
 :--------: | :-------------------------------------------: | :--------------------------------------: | :-------------------------------------: | :-----------------------------------:
 Chinese    | [🤖](./src/AllowBeachSprinklers/i18n/zh.json) | [❔](./src/AutoForager/i18n/zh.json)    | [🤖](./src/FullFishingBar/i18n/zh.json) | [🤖](./src/AutoTrasher/i18n/zh.json)
-French     | [🤖](./src/AllowBeachSprinklers/i18n/fr.json) | [❌](./src/AutoForager/i18n)            | [🤖](./src/FullFishingBar/i18n/fr.json) | [🤖](./src/AutoTrasher/i18n/fr.json)
+French     | [🤖](./src/AllowBeachSprinklers/i18n/fr.json) | [✔](./src/AutoForager/i18n/fr.json)     | [🤖](./src/FullFishingBar/i18n/fr.json) | [🤖](./src/AutoTrasher/i18n/fr.json)
 German     | [🤖](./src/AllowBeachSprinklers/i18n/de.json) | [❌](./src/AutoForager/i18n)            | [🤖](./src/FullFishingBar/i18n/de.json) | [🤖](./src/AutoTrasher/i18n/de.json)
 Hungarian  | [🤖](./src/AllowBeachSprinklers/i18n/hu.json) | [❌](./src/AutoForager/i18n)            | [🤖](./src/FullFishingBar/i18n/hu.json) | [🤖](./src/AutoTrasher/i18n/hu.json)
 Italian    | [🤖](./src/AllowBeachSprinklers/i18n/it.json) | [❌](./src/AutoForager/i18n)            | [🤖](./src/FullFishingBar/i18n/it.json) | [🤖](./src/AutoTrasher/i18n/it.json)

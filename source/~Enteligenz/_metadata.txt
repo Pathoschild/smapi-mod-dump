@@ -7,9 +7,11 @@ mods:
    Twitch Chat Integration
 
 latest commit:
-   commit b913a09d571a4f8e0616e2345398a063be8b7441
-   Author: Enteligenz <blacklilydragon@gmail.com>
-   Date:   Fri Aug 18 14:42:47 2023 +0200
+   commit 671993c833ed02427321af14ceb3e6bf6a6d079d
+   Author: Enteligenz <55539979+Enteligenz@users.noreply.github.com>
+   Date:   Wed Jun 26 00:52:23 2024 +0200
    
-       [FoodCravings] fixed versioning mess
+       Merge pull request #11 from SocksTheWolf/master
+       
+       Fix watch streak messages not appearing
    

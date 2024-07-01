@@ -214,60 +214,6 @@ namespace StardewDruid.Data
 
         }
 
-        public static Vector2 WarpStart(string defaultMap = "FarmCave")
-        {
-
-            if (defaultMap == "Follow")
-            {
-
-                defaultMap = "Farm";
-
-            }
-
-            switch (defaultMap)
-            {
-
-                case "Mountain":
-
-                    return new Vector2(6176, 1728);
-
-                case "18465_Crypt":
-
-                    return new Vector2(1280, 448);
-
-                case Location.LocationData.druid_grove_name:
-
-                    return new Vector2(36,15) * 64;
-
-                case "Farm":
-                case "FarmCave":
-
-
-                    Dictionary<string, Vector2> farmPositions = new() { ["FarmCave"] = new Vector2(6, 6) * 64, ["Farm"] = Vector2.One * 64 };
-
-                    foreach (Warp warp in Game1.getFarm().warps)
-                    {
-
-                        if (warp.TargetName == "FarmCave")
-                        {
-
-                            Vector2 cavePosition = new Vector2(warp.TargetX - 2, warp.TargetY - 3) * 64;
-
-                            Vector2 farmPosition = new Vector2(warp.X, warp.Y + 5) * 64;
-
-                            farmPositions = new() { ["FarmCave"] = cavePosition, ["Farm"] = farmPosition, };
-
-                        }
-
-                    }
-
-                    return farmPositions[defaultMap];
-
-            }
-
-            return Vector2.Zero;
-
-        }
 
         public static Vector2 WarpEntrance(GameLocation targetLocation, Vector2 origin)
         {

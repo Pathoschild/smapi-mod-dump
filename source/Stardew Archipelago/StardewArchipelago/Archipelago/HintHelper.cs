@@ -8,13 +8,8 @@
 **
 *************************************************/
 
-using Archipelago.MultiClient.Net.MessageLog.Messages;
 using StardewValley;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Archipelago.MultiClient.Net;
 using Microsoft.Xna.Framework;
 

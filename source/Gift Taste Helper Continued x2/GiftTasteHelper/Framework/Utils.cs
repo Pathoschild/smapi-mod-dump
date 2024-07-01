@@ -179,7 +179,7 @@ namespace GiftTasteHelper.Framework
                 return GiftTaste.MAX;
             }
 
-            if (itemId is null || !Game1.objectData.ContainsKey(itemId))
+            if (!ItemData.Validate(itemId))
             {
                 // Item is likely a category
                 return GiftTaste.MAX;

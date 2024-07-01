@@ -55,37 +55,37 @@ namespace StardewArchipelago.Archipelago
                 return false;
             }
 
-            if (this.ItemId != otherReceivedItem.ItemId)
+            if (ItemId != otherReceivedItem.ItemId)
             {
                 return false;
             }
 
-            if (this.LocationId != otherReceivedItem.LocationId)
+            if (LocationId != otherReceivedItem.LocationId)
             {
                 return false;
             }
 
-            if (this.PlayerId != otherReceivedItem.PlayerId)
+            if (PlayerId != otherReceivedItem.PlayerId)
             {
                 return false;
             }
 
-            if (this.ItemName != otherReceivedItem.ItemName)
+            if (ItemName != otherReceivedItem.ItemName)
             {
                 return false;
             }
 
-            if (this.LocationName != otherReceivedItem.LocationName)
+            if (LocationName != otherReceivedItem.LocationName)
             {
                 return false;
             }
 
-            if (this.PlayerName != otherReceivedItem.PlayerName)
+            if (PlayerName != otherReceivedItem.PlayerName)
             {
                 return false;
             }
 
-            if (this.UniqueId != otherReceivedItem.UniqueId)
+            if (UniqueId != otherReceivedItem.UniqueId)
             {
                 return false;
             }

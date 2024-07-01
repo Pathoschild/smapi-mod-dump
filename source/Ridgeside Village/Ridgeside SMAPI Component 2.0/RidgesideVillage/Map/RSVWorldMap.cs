@@ -45,22 +45,6 @@ namespace RidgesideVillage
         internal static void Setup(IModHelper helper)
         {
             Helper = helper;
-            Helper.Events.Display.MenuChanged += OnMenuChanged;
-        }
-
-        private static void OnMenuChanged(object sender, MenuChangedEventArgs e)
-        {
-            if(!ModEntry.Config.ShowRSVCustomMap)
-            {
-                return;
-            }
-            if(e.NewMenu is GameMenu gameMenu)
-            {
-                if(gameMenu.currentTab == GameMenu.mapTab && Game1.currentLocation.Name.StartsWith("Custom_Ridgeside"))
-                {
-                    Open(gameMenu);
-                }
-            }
         }
 
         internal static void Open(IClickableMenu gameMenu)
@@ -68,7 +52,7 @@ namespace RidgesideVillage
             if (gameMenu is GameMenu menu)
             {
                 Texture2D image = Helper.GameContent.Load<Texture2D>(MapPath);
-                Vector2 topLeft = Utility.getTopLeftPositionForCenteringOnScreen((int)(image.Width), (int)(image.Height));
+                Vector2 topLeft = Utility.getTopLeftPositionForCenteringOnScreen((int)(image.Width * 5), (int)(image.Height * 5));
 
                 var mapMenu = new RSVWorldMap((int)topLeft.X, (int)topLeft.Y, image);
                 menu.SetChildMenu(mapMenu);
@@ -76,7 +60,7 @@ namespace RidgesideVillage
             }
         }
         internal RSVWorldMap(int x, int y, Texture2D mapTexture):
-            base(x, y, mapTexture.Width, mapTexture.Height, showUpperRightCloseButton: true)
+            base(x, y, mapTexture.Width * 5, mapTexture.Height * 5, showUpperRightCloseButton: true)
         {
             //move close button a little
             this.upperRightCloseButton.bounds.X += 18;
@@ -86,8 +70,8 @@ namespace RidgesideVillage
             MapData = new MapData("RSV/RSVWorldMapData");
             NPCLocationData = new WorldMapAreas();
 
-            TopLeft = Utility.getTopLeftPositionForCenteringOnScreen((int)(image.Width), (int)(image.Height));
-            MapRectangle = new Rectangle((int)TopLeft.X, (int)TopLeft.Y, (int)(image.Width), (int)(image.Height));
+            TopLeft = Utility.getTopLeftPositionForCenteringOnScreen((int)(image.Width * 5), (int)(image.Height * 5));
+            MapRectangle = new Rectangle((int)TopLeft.X, (int)TopLeft.Y, (int)(image.Width * 5), (int)(image.Height * 5));
 
             foreach(var entry in NPCLocationData.NPCMarkers)
             {
@@ -139,19 +123,18 @@ namespace RidgesideVillage
             b.Draw(Game1.fadeToBlackRect, Game1.graphics.GraphicsDevice.Viewport.Bounds, Color.Black * 0.6f);
             Game1.DrawBox(MapRectangle.X, MapRectangle.Y, MapRectangle.Width, MapRectangle.Height);
            
-            b.Draw(image, this.TopLeft, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);
+            b.Draw(image, this.TopLeft, null, Color.White, 0f, Vector2.Zero, 5f, SpriteEffects.None, 1f);
 
             foreach (var npcMarker in NPCLocationData.NPCMarkers)
             {
                 npcMarker.draw(b);
             }
 
-
             if (farmerMarker != null)
             {
                 Game1.player.FarmerRenderer.drawMiniPortrat(b, farmerMarker.MapPosition, 0.5f, 2f, 2, Game1.player);
             }
-
+            
             bool drawPeopleOnAreaHover = true;
 
             //check if people have to be drawn

@@ -31,7 +31,7 @@ namespace StardewDruid.Cast.Mists
         public Fishspot()
         {
 
-            expireIn = 300;
+            activeLimit = 300;
 
         }
 
@@ -40,9 +40,10 @@ namespace StardewDruid.Cast.Mists
 
             base.EventActivate();
 
-            Mod.instance.iconData.AnimateBolt(location, origin + new Vector2(32));
+            //Mod.instance.iconData.AnimateBolt(location, origin + new Vector2(32));
+            Mod.instance.spellRegister.Add(new(origin + new Vector2(32), 128, IconData.impacts.puff, new()) { type = SpellHandle.spells.bolt });
 
-            IconData.relics fishRelic = Mod.instance.relicsData.RelicsFishQuest();
+            IconData.relics fishRelic = Mod.instance.relicsData.RelicMistsLocations();
 
             if (fishRelic != IconData.relics.none)
             {
@@ -124,7 +125,7 @@ namespace StardewDruid.Cast.Mists
                 if(fishTotal == 80 && fishingRelic)
                 {
 
-                    IconData.relics fishRelic = Mod.instance.relicsData.RelicsFishQuest();
+                    IconData.relics fishRelic = Mod.instance.relicsData.RelicMistsLocations();
 
                     if (fishRelic != IconData.relics.none)
                     {
@@ -138,11 +139,11 @@ namespace StardewDruid.Cast.Mists
 
                             Mod.instance.relicsData.ReliquaryUpdate(fishRelic.ToString());
 
-                            fishingRelic = false;
-
                         }
 
                     }
+
+                    fishingRelic = false;
 
                 }
 
@@ -181,7 +182,7 @@ namespace StardewDruid.Cast.Mists
 
                 }
 
-                int objectIndex = SpawnData.RandomHighFish(Game1.player.currentLocation, enableRare);
+                string objectIndex = SpawnData.RandomHighFish(Game1.player.currentLocation, enableRare);
 
                 int animationRow = 10;
 
@@ -215,7 +216,7 @@ namespace StardewDruid.Cast.Mists
                     0f
                 );
 
-                fishingRod.startMinigameEndFunction(new StardewValley.Object(objectIndex.ToString(),1));
+                fishingRod.startMinigameEndFunction(new StardewValley.Object(objectIndex,1));
 
                 Game1.player.currentLocation.temporarySprites.Add(newAnimation);
 

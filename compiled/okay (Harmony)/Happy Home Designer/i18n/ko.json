@@ -1,0 +1,27 @@
+﻿{
+	/* translated by twinklesky6 on NexusMods */
+	/* https://forums.nexusmods.com/profile/181405749-twinklesky6/ */
+	"furniture.Catalog.name": "해피 홈 카탈로그",
+	"furniture.Catalog.description": "당신의 집 꾸미기에 무제한의 벽지와 가구, 그리고 편의성을 제공합니다!",
+	"config.CloseWithKey.name": "닫기 키",
+	"config.CloseWithKey.desc": "메뉴 키로 꾸미기 메뉴를 바로 닫을 수 있게 합니다.",
+	"config.GiveModifier.name": "가구 인벤토리에 넣기 키",
+	"config.GiveModifier.desc": "이 키를 누른 채로 아이템을 클릭하면 인벤토리로 이동됩니다..",
+	"config.FavoriteModifier.name": "즐겨찾기 키",
+	"config.FavoriteModifier.desc": "이 키를 누른 채로 아이템을 클릭하면 즐겨찾기에 등록됩니다..",
+	"config.ExtendedCategories.name": "확장된 카테고리",
+	"config.ExtendedCategories.desc": "활성화 하면 가구 분류 카테고리를 좀 더 세분화합니다.",
+	"config.FurnitureTooltips.name": "가구 툴팁",
+	"config.FurnitureTooltips.desc": "활성화하면 아이템 위에 마우스를 올릴 시 아이템의 정보가 오버레이됩니다.",
+	"config.PauseTime.name": "시간 정지",
+	"config.PauseTime.desc": "활성화 하면 카탈로그 창이 열려 있는 동안 시간의 흐름이 멈춥니다. 멀티플레이에서는 효과가 없습니다.",
+	"config.ReplaceFurnitureCatalog.name": "가구 카탈로그 UI 재배치",
+	"config.ReplaceFurnitureCatalog.desc": "활성화 하면,기본 가구 카탈로그 UI를 새 UI로 바꿉니다.",
+	"config.ReplaceWallpaperCatalog.name": "벽지 & 바닥 카탈로그 UI 재배치",
+	"config.ReplaceWallpaperCatalog.desc": "활성화 하면,기본 벽지 & 바닥 카탈로그 UI를 새 UI로 바꿉니다.",
+	"logging.alternativeTextures.versionWarning": "현재 버전의 해피 홈 디자이너 모드는 {{min}} 버전 이상의 대체 텍스쳐 모드만 지원합니다. {{current}} 버전의 대체 텍스쳐 모드에서는 텍스쳐 통합이 지원되지 않습니다. 통합 기능을 재활성화 하려면 {{min}} 버전 이상의 대체 택스쳐 모드를 설치해주세요.",
+	"logging.removedWallsAndFloors": " {{walls}} 또는  {{floors}} 의 중복 배치가 발견되어 제거하였습니다.",
+	"config.ToggleShortcut.name": "카탈로그 보이기/숨기기 단축키",
+	"config.ToggleShortcut.desc": "카탈로그를 여는 동안 카탈로그 창을 보이거나 숨기는 단축키.",
+	"ui.search.name": "검색"
+}

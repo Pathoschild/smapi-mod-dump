@@ -21,12 +21,13 @@ Here's a list of published mods using this Framework that you can use as example
 
 If you are a C# mod author and need an API for this mod, you can either make it and ask for a pull request, or ping me on the SV discord server, I should be able to make it for you.
 
-If you came here to update your Furniture Pack to the latest format version, check the [Format changelogs](https://github.com/Leroymilo/FurnitureFramework/blob/main/doc/Format%20changelogs.md).
+[CHANGELOGS](https://github.com/Leroymilo/FurnitureFramework/blob/main/doc/Changelogs.md)
 
 # Features
 
 What parts of Furniture are customizable with this Framework:
 - Display Name (translation not supported yet)
+- Custom Description
 - Default Price
 - Custom Rotations
 - Custom Bounding Box Size
@@ -48,23 +49,20 @@ What parts of Furniture are customizable with this Framework:
 - Custom Sound Effects
 - Custom Particles
 - Animated base Sprite and Layers
-- Support for some special Furniture (Dresser, TV, Bed)
+- Support for special Furniture (Dresser, TV, Bed, FishTank)
 - Support for Rugs and Wall-mounted Furniture
+- Support for configurable includes
 
 # Thanks
 
 Huge thanks to:
-- @LynnNexus for testing, feedback and bug report
-- @atravita for the initial idea to implement multiple slots per Furniture
 - The Stardew Valley modding community for all their help and support
+- @LynnNexus for testing, feedback and bug report
+- @atravita for the initial idea on how to implement multiple slots per Furniture
 
 # TODO
 
 What parts of Furniture I plan to add customization to in this Framework:
-- Custom Description
-- Support "includes"			@nova
-- Config-Conditional includes	@nova
-- Custom Fish Tanks
 - Custom light sources
 - Add better titles and descriptions for the json schema
 - Support for i18n translations (I have no idea how to do this)
@@ -77,3 +75,5 @@ What I don't plan on adding, but I can work on if someone asks for it:
 # Known Issues
 
 - Default Slots Debug Color does not apply until Pack reload or restart.
+- Custom beds are forced into the "large bed" type so they cannot be placed in the un-upgraded farmhouse (will fix by adding a "Bed Type" field).
+- Rugs with rotations will skip the 3rd rotation (fixed in next update)

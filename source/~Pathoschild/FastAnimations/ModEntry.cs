@@ -132,11 +132,8 @@ namespace Pathoschild.Stardew.FastAnimations
             int playerAnimationId = Game1.player.FarmerSprite.currentSingleAnimation;
             foreach (IAnimationHandler handler in this.Handlers)
             {
-                if (handler.IsEnabled(playerAnimationId))
-                {
-                    handler.Update(playerAnimationId);
+                if (handler.TryApply(playerAnimationId))
                     break;
-                }
             }
         }
 
@@ -194,22 +191,34 @@ namespace Pathoschild.Stardew.FastAnimations
                 yield return new BreakingGeodeHandler(config.BreakGeodeSpeed);
             if (config.CasinoSlotsSpeed > 1)
                 yield return new CasinoSlotsHandler(config.CasinoSlotsSpeed);
+            if (config.EventSpeed > 1)
+                yield return new EventHandler(config.EventSpeed);
+            if (config.FadeSpeed > 1)
+                yield return new FadeHandler(config.FadeSpeed);
             if (config.FishingTreasureSpeed > 1)
                 yield return new FishingTreasureHandler(config.FishingTreasureSpeed);
             if (config.ForgeSpeed > 1)
-                yield return new ForgeHandler(config.ForgeSpeed, this.Helper.Reflection);
+                yield return new ForgeHandler(config.ForgeSpeed);
             if (config.OpenChestSpeed > 1)
                 yield return new OpenChestHandler(config.OpenChestSpeed);
+            if (config.OpenDialogueBoxSpeed > 1)
+                yield return new OpenDialogueBoxHandler(config.OpenDialogueBoxSpeed);
             if (config.PamBusSpeed > 1)
                 yield return new PamBusHandler(config.PamBusSpeed);
+            if (config.ParrotExpressSpeed > 1)
+                yield return new ParrotExpressHandler(config.ParrotExpressSpeed);
             if (config.PrizeTicketMachineSpeed > 1)
                 yield return new PrizeTicketMachineHandler(config.PrizeTicketMachineSpeed, this.Helper.Reflection);
+            if (config.TailorSpeed > 1)
+                yield return new TailoringHandler(config.TailorSpeed);
             if (config.TreeFallSpeed > 1)
                 yield return new TreeFallingHandler(config.TreeFallSpeed);
             if (config.WheelSpinSpeed > 1)
                 yield return new WheelSpinHandler(config.WheelSpinSpeed);
 
             // UI animations
+            if (config.DialogueTypeSpeed > 1)
+                yield return new DialogueTypingHandler(config.DialogueTypeSpeed);
             if (config.TitleMenuTransitionSpeed > 1)
                 yield return new TitleMenuHandler(config.TitleMenuTransitionSpeed);
             if (config.LoadGameBlinkSpeed > 1)

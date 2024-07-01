@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using StardewArchipelago.Archipelago;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Constants;
 using StardewValley.Objects;
 
 namespace StardewArchipelago.GameModifications.CodeInjections.Television
@@ -138,7 +139,7 @@ namespace StardewArchipelago.GameModifications.CodeInjections.Television
         private static void AddSinisterTvChannel(Farmer who, List<Response> channelsList)
         {
             if (Game1.currentSeason != "fall" || Game1.Date.DayOfMonth != 26 ||
-                Game1.stats.getStat("childrenTurnedToDoves") <= 0U || who.mailReceived.Contains("cursed_doll"))
+                Game1.stats.Get(StatKeys.ChildrenTurnedToDoves) <= 0U || who.mailReceived.Contains("cursed_doll"))
             {
                 return;
             }
@@ -163,10 +164,10 @@ namespace StardewArchipelago.GameModifications.CodeInjections.Television
 
         private static void AddGatewayGazetteChannel(string dayOfWeek, List<Response> channelsList)
         {
-            var hasWrongEntranceRando = _archipelago.SlotData.EntranceRandomization is EntranceRandomization.Disabled or EntranceRandomization.Chaos;
+            var hasWrongEntranceRando = _archipelago.SlotData.EntranceRandomization is EntranceRandomization.Disabled;
             var hasWrongDay = !dayOfWeek.Equals("Mon") && !dayOfWeek.Equals("Fri");
             var missingChannel = !_archipelago.HasReceivedItem(AP_GATEWAY_GAZETTE);
-            if (hasWrongEntranceRando || hasWrongDay)//  || missingChannel)
+            if (hasWrongEntranceRando || hasWrongDay || missingChannel)
             {
                 return;
             }

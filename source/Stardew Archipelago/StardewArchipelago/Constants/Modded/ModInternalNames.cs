@@ -14,10 +14,10 @@ namespace StardewArchipelago.Constants.Modded
 {
     public static class ModInternalNames
     {
-        public static readonly Dictionary<string, string> InternalNames = new Dictionary<string, string>()
+        public static readonly Dictionary<string, string> InternalNames = new()
         {
-            { ModNames.ALEC, "NPC Alec Revisited" },
-            { ModNames.ARCHAEOLOGY, "ExcavationSkill" },
+            { ModNames.ALEC, "[CP] Alec Revisited" },
+            { ModNames.ARCHAEOLOGY, "ArchaeologySkill" },
             { ModNames.AYEISHA, "Ayeisha" },
             { ModNames.DELORES, "Delores" },
             { ModNames.EUGENE, "Eugene NPC Eng Translation" },

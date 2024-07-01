@@ -80,4 +80,3 @@ I just started playing the game and wanted a mod like this but i didnt found any
 **If you like the mod and wants to support me, you can do so in my** [**Ko-Fi**](https://ko-fi.com/trapyy)**
 
 ![](https://i.imgur.com/bosQb0J.png)
-

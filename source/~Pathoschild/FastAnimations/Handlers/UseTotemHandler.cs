@@ -20,15 +20,8 @@ namespace Pathoschild.Stardew.FastAnimations.Handlers
 {
     /// <summary>Handles the use-totem animation.</summary>
     /// <remarks>See game logic in <see cref="SObject.performUseAction"/>.</remarks>
-    internal class UseTotemHandler : BaseAnimationHandler
+    internal sealed class UseTotemHandler : BaseAnimationHandler
     {
-        /*********
-        ** Fields
-        *********/
-        /// <summary>The last totem used.</summary>
-        private Item? LastTotem;
-
-
         /*********
         ** Public methods
         *********/
@@ -37,42 +30,33 @@ namespace Pathoschild.Stardew.FastAnimations.Handlers
             : base(multiplier) { }
 
         /// <inheritdoc />
-        public override bool IsEnabled(int playerAnimationID)
+        public override bool TryApply(int playerAnimationId)
         {
             Farmer player = Game1.player;
+            Item? totem = player.CurrentItem;
 
-            if (player.CurrentItem?.Name?.Contains("Totem") == true)
-                this.LastTotem = player.CurrentItem;
-
-            return this.IsUsingTotem(player);
-        }
-
-        /// <inheritdoc />
-        public override void Update(int playerAnimationID)
-        {
-            Farmer player = Game1.player;
-            GameLocation location = player.currentLocation;
-
-            this.ApplySkips(
-                () =>
+            return
+                totem?.Name?.Contains("Totem") is true
+                && this.IsUsingTotem(player)
+                && this.ApplySkipsWhile(() =>
                 {
                     // player animation
-                    player.Update(Game1.currentGameTime, location);
+                    player.Update(Game1.currentGameTime, player.currentLocation);
 
                     // animation of item thrown in the air
-                    foreach (TemporaryAnimatedSprite sprite in this.GetTemporarySprites(player).ToArray())
+                    foreach (TemporaryAnimatedSprite sprite in this.GetTemporarySprites(player, totem).ToArray())
                     {
                         bool done = sprite.update(Game1.currentGameTime);
                         if (done)
-                            location.TemporarySprites.Remove(sprite);
+                            player.currentLocation.TemporarySprites.Remove(sprite);
                     }
 
                     // rain totem
-                    if (this.LastTotem?.QualifiedItemId == "(O)681")
+                    if (totem.QualifiedItemId == "(O)681")
                         Game1.updatePause(Game1.currentGameTime);
-                },
-                () => !this.IsUsingTotem(player)
-            );
+
+                    return this.IsUsingTotem(player);
+                });
         }
 
 
@@ -81,15 +65,13 @@ namespace Pathoschild.Stardew.FastAnimations.Handlers
         *********/
         /// <summary>Get the temporary animated sprites added as part of the use-totem animation.</summary>
         /// <param name="player">The player being animated.</param>
+        /// <param name="totem">The totem being animated.</param>
         /// <remarks>Derived from <see cref="SObject.performUseAction"/>.</remarks>
-        private IEnumerable<TemporaryAnimatedSprite> GetTemporarySprites(Farmer player)
+        private IEnumerable<TemporaryAnimatedSprite> GetTemporarySprites(Farmer player, Item totem)
         {
-            if (this.LastTotem is null)
-                yield break;
-
             foreach (TemporaryAnimatedSprite sprite in player.currentLocation.TemporarySprites)
             {
-                ParsedItemData data = ItemRegistry.GetDataOrErrorItem(this.LastTotem.QualifiedItemId);
+                ParsedItemData data = ItemRegistry.GetDataOrErrorItem(totem.QualifiedItemId);
 
                 // Item sprite
                 if (sprite.textureName == data.TextureName && sprite.sourceRect == data.GetSourceRect())
@@ -109,11 +91,7 @@ namespace Pathoschild.Stardew.FastAnimations.Handlers
         /// <remarks>Derived from <see cref="SObject.performUseAction"/>.</remarks>
         private bool IsUsingTotem(Farmer player)
         {
-            List<FarmerSprite.AnimationFrame>? animation = player.FarmerSprite.currentAnimation;
-
-            return
-                animation?.Count > 0
-                && animation[0] is { frame: 57, milliseconds: 2000 };
+            return player.FarmerSprite.currentAnimation is [{ frame: 57, milliseconds: 2000 }, ..];
         }
     }
 }

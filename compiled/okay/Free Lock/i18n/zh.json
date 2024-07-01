@@ -1,0 +1,10 @@
+{
+    "Config.FreeLockKeybind.Name": "自由视角快捷键",
+    "Config.MoveSpeed.Name": "移动速度",
+    "Config.MoveSpeed.Tooltip": "视角移动的速度。（像素/帧）",
+    "Config.MoveThreshold.Name": "移动阈值",
+    "Config.MoveThreshold.Tooltip": "当鼠标离屏幕边缘的距离达到阈值时，视角才会移动。（像素）",
+
+    "UI.ViewportLocked": "视角已锁定",
+    "UI.ViewportUnlocked": "视角已解锁",
+}

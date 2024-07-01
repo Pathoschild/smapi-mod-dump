@@ -12,6 +12,21 @@
     "Format": "2.0.0",
     "Changes": [
         // add item
+      //load the image for new items
+		{
+			"Action" : "Load",
+			"Target": "Mods/d5a1lamdtd.MarketTown.Item/RestaurantDecor",
+        	"FromFile": "assets/RestaurantDecor.png"
+		},
+
+      {
+          "Action": "EditData",
+          "Target": "Data/Furniture",
+          "Entries": {
+            "MT.Objects.RestaurantDecor": "Restaurant Decor/decor/2 2/1 1/1/300/-1/Restaurant Decor/0/Mods\\d5a1lamdtd.MarketTown.Item\\RestaurantDecor/true"
+          }
+        },
+
         {
             "Action": "EditData",
             "Target": "Data/Objects",
@@ -19,7 +34,7 @@
                 "MT.Objects.MarketLicense": {
                     "Name": "Market License",
                     "Displayname": "Market License",
-                    "Description": "The Ferngill Republic requires this license for all shop owners. To register your Building as a business, you must display this License on a Sign at all times. Any change made will take effect the next day.",
+                    "Description": "Display on a Sign inside a Farm Building to use it as a Store that can sell everything. Change take effect the next day. Buildings on Paradise Island are NOT required a License",
                     "Type": "Basic",
                     "Price": 7500,
 
@@ -29,7 +44,7 @@
                 "MT.Objects.RestaurantLicense": {
                     "Name": "Restaurant License",
                     "Displayname": "Restaurant License",
-                    "Description": "The Ferngill Republic issues this License to Restaurant owner to operate food service. To register your Building as a Restaurant, the License must be displayed on a Sign. Any change made will take effect the next day.",
+                    "Description": "Display on a Sign inside a Farm Building to use it as a Restaurant and sell food items. Change take effect the next day. Buildings on Paradise Island are NOT required a License",
                     "Type": "Basic",
                     "Price": 4000,
 
@@ -39,17 +54,61 @@
                 "MT.Objects.MuseumLicense": {
                     "Name": "Museum License",
                     "Displayname": "Museum License",
-                    "Description": "Display this on a Sign will register your Building as public Museum and visitors will visits. Any change made will take effect the next day.",
+                    "Description": "Display on a Sign inside a Farm Building to register it as a Museum where guests can visit. Change take effect the next day. Buildings on Paradise Island are NOT required a License",
                     "Type": "Basic",
                     "Price": 5000,
 
                     "Texture": "{{InternalAssetKey: assets/MuseumLicense.png}}",
                     "SpriteIndex": 0
+                      },
+                "MT.Objects.InviteLetter": {
+                    "Name": "Invite Letter",
+                    "Displayname": "Invite Letter",
+                    "Description": "Give this Letter to the guest you want to invite to your place.",
+                    "Type": "Basic",
+                    "Price": 200,
+                    "ContextTags": [
+                          "not_giftable"
+                        ],
+                    "Texture": "{{InternalAssetKey: assets/InviteLetter.png}}",
+                    "SpriteIndex": 0
+                      },
+                "MT.Objects.CustomerNote": {
+                    "Name": "Customer Note",
+                    "Displayname": "Customer Note",
+                    "Description": "Give this Note to your customer to gather their opinion about your sold dish.",
+                    "Type": "Basic",
+                    "Price": 20,
+                    "ContextTags": [
+                          "not_giftable"
+                        ],
+                    "Texture": "{{InternalAssetKey: assets/CustomerNote.png}}",
+                    "SpriteIndex": 0
                       }
             }
         },
 
+        {
+          "Action": "EditData",
+          "Target": "Data/CraftingRecipes",
+          "Entries": {
+            "MT.Objects.InviteLetter": "393 2 92 2 338 2/Field/MT.Objects.InviteLetter/false/default/",
+            "MT.Objects.CustomerNote": "771 5 92 2 382 1/Field/MT.Objects.CustomerNote/false/default/"
+          }
+        },
 
+        {
+          "Action": "EditData",
+          "Target": "Data/NPCGiftTastes",
+          "TextOperations": [
+                {
+                    "Operation": "Append",
+                    "Target": ["Entries", "Universal_Like"],
+                    "Value": "MT.Objects.InviteLetter MT.Objects.CustomerNote",
+                    "Delimiter": " "
+                }
+            ]
+        },
 
         {
             "Action": "EditData",
@@ -105,6 +164,21 @@
                     "ItemId": "(O)MT.Objects.MuseumLicense",
                     "Price": 10000,
                     "Condition": "PLAYER_HAS_MAIL any MT.MuseumLicense received"
+                }
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Shops",
+            "TargetField": [ "Carpenter", "Items" ],
+            "Entries": {
+                "MT.Objects.RestaurantDecor": {
+                    "Id": "MT.Objects.RestaurantDecor",
+                    "ItemId": "(F)MT.Objects.RestaurantDecor",
+                    "Price": 5000,
+                    "TradeItemId": "(O)597",
+                    "TradeItemAmount": 5,
+                    "Condition": "PLAYER_HAS_MAIL any MT.RestaurantLicense received"
                 }
             }
         }

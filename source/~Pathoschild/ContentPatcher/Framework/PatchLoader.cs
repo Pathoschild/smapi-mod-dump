@@ -97,7 +97,7 @@ namespace ContentPatcher.Framework
             // preprocess patches
             PatchConfig[] patches = this.SplitPatches(rawPatches).ToArray();
             if (!patches.Any())
-                return Array.Empty<IPatch>();
+                return [];
             this.UniquelyNamePatches(patches);
 
             // apply patch-list migrations
@@ -105,7 +105,7 @@ namespace ContentPatcher.Framework
             if (!contentPack.Migrator.TryMigrate(ref patches, out string? error))
             {
                 this.Monitor.Log($"Ignored {path}: {error}", LogLevel.Warn);
-                return Array.Empty<IPatch>();
+                return [];
             }
 
             // load patches
@@ -117,7 +117,7 @@ namespace ContentPatcher.Framework
                 var localPath = path.With(patch.LogName!);
                 if (verbose)
                     this.Monitor.Log($"   loading {localPath}...");
-                IPatch? loaded = this.LoadPatch(contentPack, patch, tokenParser, rootIndexPath.Concat(new[] { index }).ToArray(), localPath, parentPatch, logSkip: reasonPhrase => this.Monitor.Log($"Ignored {localPath}: {reasonPhrase}", LogLevel.Warn));
+                IPatch? loaded = this.LoadPatch(contentPack, patch, tokenParser, rootIndexPath.Concat([index]).ToArray(), localPath, parentPatch, logSkip: reasonPhrase => this.Monitor.Log($"Ignored {localPath}: {reasonPhrase}", LogLevel.Warn));
                 if (loaded != null)
                     loadedPatches.Add(loaded);
             }
@@ -152,20 +152,20 @@ namespace ContentPatcher.Framework
             if (raw == null || !raw.Any())
             {
                 immutableRequiredModIDs = InvariantSets.Empty;
-                conditions = Array.Empty<Condition>();
+                conditions = [];
                 error = null;
                 return true;
             }
 
             // parse conditions
-            MutableInvariantSet requiredModIds = new();
+            MutableInvariantSet requiredModIds = [];
             InvariantDictionary<Condition> parsed = new();
             foreach ((string key, string? value) in raw.OrderBy(p => this.GetConditionParseOrder(p.Key, p.Value)))
             {
                 if (!this.TryParseCondition(key, value, tokenParser, path.With(key), out Condition? condition, ref requiredModIds, out error))
                 {
                     immutableRequiredModIDs = InvariantSets.Empty;
-                    conditions = Array.Empty<Condition>();
+                    conditions = [];
                     return false;
                 }
 
@@ -251,9 +251,10 @@ namespace ContentPatcher.Framework
                 // to populate the split patches.
                 IEnumerable<string?> AlwaysIterate(string[] values)
                 {
-                    return values.Length > 0
-                        ? values
-                        : new string?[] { null };
+                    if (values.Length > 0)
+                        return values;
+
+                    return [null];
                 }
 
                 // create new patches
@@ -273,7 +274,7 @@ namespace ContentPatcher.Framework
                             newPatch.LogName = this.GetDefaultPatchName(newPatch);
                         else
                         {
-                            List<string> labels = new();
+                            List<string> labels = [];
 
                             if (targets.Length > 1)
                                 labels.Add($"{target}");
@@ -829,7 +830,7 @@ namespace ContentPatcher.Framework
             }
 
             // parse as an offset like 'Medium + 10'
-            int splitAt = patch.Priority.IndexOfAny(new[] { '-', '+' });
+            int splitAt = patch.Priority.IndexOfAny(['-', '+']);
             if (splitAt > 0)
             {
                 string rawPriority = patch.Priority[..splitAt];
@@ -898,7 +899,7 @@ namespace ContentPatcher.Framework
                 }
 
                 // parse target
-                List<IManagedTokenString> target = new List<IManagedTokenString>();
+                List<IManagedTokenString> target = [];
                 foreach (string? field in operation.Target)
                 {
                     if (!tokenParser.TryParseString(field, assumeModIds, localPath.With(nameof(TextOperationConfig.Target), i.ToString()), out string? targetError, out IManagedTokenString? parsed))
@@ -979,10 +980,10 @@ namespace ContentPatcher.Framework
         /// <returns>Returns whether parsing succeeded.</returns>
         private bool TryParseEditDataFields(PatchConfig entry, TokenParser tokenParser, IInvariantSet assumeModIds, LogPathBuilder path, out List<EditDataPatchRecord> entries, out List<EditDataPatchField> fields, out List<EditDataPatchMoveRecord> moveEntries, out List<IManagedTokenString> targetField, [NotNullWhen(false)] out string? error)
         {
-            entries = new List<EditDataPatchRecord>();
-            fields = new List<EditDataPatchField>();
-            moveEntries = new List<EditDataPatchMoveRecord>();
-            targetField = new List<IManagedTokenString>();
+            entries = [];
+            fields = [];
+            moveEntries = [];
+            targetField = [];
 
             bool Fail(string reason, out string outReason)
             {
@@ -1043,7 +1044,7 @@ namespace ContentPatcher.Framework
                     LogPathBuilder localPath = path.With(nameof(entry.MoveEntries), i++.ToString());
 
                     // validate
-                    string?[] targets = { moveEntry.BeforeID, moveEntry.AfterID, moveEntry.ToPosition };
+                    string?[] targets = [moveEntry.BeforeID, moveEntry.AfterID, moveEntry.ToPosition];
                     if (string.IsNullOrWhiteSpace(moveEntry.ID))
                         return Fail($"{nameof(PatchConfig.MoveEntries)} > move entry is invalid: must specify an {nameof(PatchMoveEntryConfig.ID)} value", out error);
                     switch (targets.Count(p => !string.IsNullOrWhiteSpace(p)))

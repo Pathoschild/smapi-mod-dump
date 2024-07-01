@@ -11,6 +11,9 @@
   "Config.UseVanillaMenu.Name": "バニラのメニューを使用",
   "Config.UseVanillaMenu.Description": "バニラのスペシェルアイテム＆パワーのメニューを使用する。有効にすると、Special Power Utilitiesのカスタムメニューは使用されなくなる。カテゴリは表示されず、MOD作者によって使用不可とされた権限も表示されません。ただし、パワーの効果自体は適用されます。",
 
+  "Config.StripelessBooks.Name": "ストライプの削除",
+  "Config.StripelessBooks.Description": "本を読んだときに流れるアニメーションで、本から2本のストライプを消す。",
+
   "HoverText.StardewValley": "Stardew Valley",
   "HoverText.Misc": "その他",
   "HoverText.Unavailable": "使用不可"

@@ -31,16 +31,17 @@ namespace DeluxeJournal.Menus
         {
             TabTexture = tabTexture;
             TabSourceRect = tabSourceRect;
+            exitFunction = Game1.exitActiveMenu;
         }
 
-        /// <summary>Get the ClickableTextureComponent for the page tab.</summary>
+        /// <summary>Get the <see cref="ClickableTextureComponent"/> for the page tab.</summary>
         public override ClickableTextureComponent GetTabComponent()
         {
-            Rectangle bounds = new Rectangle(xPositionOnScreen - 64, yPositionOnScreen + 16 + TabID * 64, 64, 64);
+            Rectangle bounds = new Rectangle(xPositionOnScreen - 64, yPositionOnScreen + 16 + TabId * 64, 64, 64);
 
             return new ClickableTextureComponent(Name, bounds, "", Title, TabTexture, TabSourceRect, 4f)
             {
-                myID = TabComponentID,
+                myID = TabComponentId,
                 rightNeighborID = SNAP_TO_DEFAULT,
                 leftNeighborID = CUSTOM_SNAP_BEHAVIOR,
                 fullyImmutable = true
@@ -57,10 +58,14 @@ namespace DeluxeJournal.Menus
         {
         }
 
-        /// <summary>Returns true if keyboard input should be ignored by the parent DeluxeJournalMenu.</summary>
+        /// <summary>Returns true if keyboard input should be ignored by the parent <see cref="DeluxeJournalMenu"/>.</summary>
         public override bool KeyboardHasFocus()
         {
             return false;
+        }
+
+        public override void gameWindowSizeChanged(Rectangle oldBounds, Rectangle newBounds)
+        {
         }
 
         public override void performHoverAction(int x, int y)
@@ -68,20 +73,15 @@ namespace DeluxeJournal.Menus
             HoverText = string.Empty;
         }
 
-        protected override void cleanupBeforeExit()
-        {
-            Game1.exitActiveMenu();
-        }
-
-        /// <summary>Snap to the tab ClickableComponent of the active page.</summary>
+        /// <summary>Snap to the tab <see cref="ClickableComponent"/> of the active page.</summary>
         public virtual void SnapToActiveTabComponent()
         {
             currentlySnappedComponent = getComponentWithID(TabRegion + DeluxeJournalMenu.ActiveTab);
             snapCursorToCurrentSnappedComponent();
         }
 
-        /// <summary>Set the child menu and snap to the default ClickableComponent.</summary>
-        /// <param name="menu">IClickableMenu to be set as the child of this page.</param>
+        /// <summary>Set the child menu and snap to the default <see cref="ClickableComponent"/>.</summary>
+        /// <param name="menu"><see cref="IClickableMenu"/> to be set as the child of this page.</param>
         protected void SetSnappyChildMenu(IClickableMenu? menu)
         {
             SetChildMenu(menu);
@@ -97,6 +97,20 @@ namespace DeluxeJournal.Menus
                 {
                     _childMenu.snapToDefaultClickableComponent();
                 }
+            }
+        }
+
+        /// <summary>Exit the active <see cref="DeluxeJournalMenu"/>.</summary>
+        /// <param name="playSound">Allow sound to be played while exiting.</param>
+        protected void ExitJournalMenu(bool playSound = true)
+        {
+            if (Game1.activeClickableMenu is DeluxeJournalMenu menu)
+            {
+                menu.exitThisMenu(playSound);
+            }
+            else
+            {
+                exitThisMenu(playSound);
             }
         }
     }

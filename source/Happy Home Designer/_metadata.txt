@@ -6,9 +6,10 @@ mods:
    Happy Home Designer
 
 latest commit:
-   commit baab6e542632f4e48e9ee929ba8d3704e6176e70
+   commit 6d96576c01a423b870f2a46a13cf1197603ebb68
    Author: Wren <grahamgrasley@gmail.com>
-   Date:   Tue May 28 23:54:16 2024 -0400
+   Date:   Mon Jun 10 13:42:50 2024 -0400
    
-       add german translation
+       add japanese
+       from mitekano23
    

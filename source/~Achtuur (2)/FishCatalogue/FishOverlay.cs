@@ -9,9 +9,11 @@
 *************************************************/
 
 using AchtuurCore.Framework;
+using AchtuurCore.Utility;
 using FishCatalogue.Drawing;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Graphics.PackedVector;
 using StardewValley;
 using System;
 using System.Collections.Generic;
@@ -23,21 +25,64 @@ namespace FishCatalogue;
 internal class FishOverlay : Overlay
 {
     FishHUD fishHud;
-    FishSpawnsPage fishSpawnsPage;
+    FishHUD trapHud;
     public FishOverlay()
     {
         fishHud = new FishHUD();
-        fishSpawnsPage = new FishSpawnsPage();
+        trapHud = new FishHUD();
+    }
+    public void EnableFishHud() => fishHud.Enable();
+
+    public void DisableFishHud() => fishHud.Disable();
+
+    public void ToggleFishHud() => fishHud.Toggle();
+
+    public void EnableTrapHud() => trapHud.Enable();
+
+    public void DisableTrapHud() => trapHud.Disable();
+
+    public void ToggleTrapHud() => trapHud.Toggle();
+
+    internal void DisableHuds()
+    {
+        DisableFishHud();
+        DisableTrapHud();
+    }
+
+    // Sets enabled state for entire overlay based on huds and fishpage
+    internal void SetEnabledState()
+    {
+        this.Enabled = fishHud.Enabled || trapHud.Enabled;
     }
 
     protected override void DrawOverlayToScreen(SpriteBatch spriteBatch)
     {
-        //fishSpawnsPage.Draw(spriteBatch);
-
         string loc_id = Game1.currentLocation.Name;
-        if (!FishCatalogue.LocationFishData.ContainsKey(loc_id))
+        if (FishCatalogue.LocationFishData.ContainsKey(loc_id))
+            DrawFishHud(spriteBatch, ModEntry.Instance.Config.HudPosition(), 1f);
+        
+        if (FishCatalogue.LocationFishAreas.ContainsKey(loc_id))
+            DrawTrapHud(spriteBatch, ModEntry.Instance.Config.HudPosition(), 1f);
+    }
+
+
+    private void DrawFishHud(SpriteBatch sb, Vector2 pos, float alpha)
+    {
+        fishHud.Reset();
+        if (!fishHud.Enabled)
             return;
 
-        fishHud.Draw(spriteBatch, ModEntry.Instance.Config.HudPosition(), 1f);
+        fishHud.AddAvailableFishBorder(FishCatalogue.GetCurrentlyAvailableFish());
+        fishHud.Draw(sb, pos, alpha);
+    }
+
+    private void DrawTrapHud(SpriteBatch sb, Vector2 pos, float alpha)
+    {
+        trapHud.Reset();
+        if (!trapHud.Enabled)
+            return;
+
+        trapHud.AddAvailableFishBorder(FishCatalogue.GetCurrentLocationTrappers());
+        trapHud.Draw(sb, pos, alpha);
     }
 }

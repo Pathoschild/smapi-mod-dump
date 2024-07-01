@@ -6,9 +6,9 @@ mods:
    Personal Anvil
 
 latest commit:
-   commit 9df276c5cf8abd6e88051337237188d4bf7da939
-   Author: Ishan Jalan <44338423+ishanjalan@users.noreply.github.com>
-   Date:   Mon Nov 14 01:25:25 2022 +0530
+   commit 7c972866fba7ee6c99443b9eee84b6ed84ff8431
+   Author: Ishan Jalan <ishan1337@gmail.com>
+   Date:   Sun Jun 2 15:04:58 2024 +0530
    
-       SMAPI 4.0.0 migration
+       Cleaning up leftover files
    

@@ -967,12 +967,12 @@ namespace Unlockable_Bundles.Lib.ShopTypes
                 if (!completed)
                     b.Draw(Game1.shadowTexture, new Vector2(c.bounds.Center.X - Game1.shadowTexture.Bounds.Width * 4 / 2 - 4, c.bounds.Center.Y + 4), Game1.shadowTexture.Bounds, Color.White * alpha_mult, 0f, Vector2.Zero, 4f, SpriteEffects.None, 0.1f);
 
-                if (c.ReqItemId == "money") {
+                if (c.ReqItemId == "money")
                     c.draw(b, Color.White * (completed ? 0.25f : alpha_mult), 0.89f);
-                    UtilityMisc.drawKiloFormat(b, c.ReqValue, c.bounds.X, c.bounds.Y, Color.White * (completed ? 0.25f : alpha_mult));
+                else if (c.item != null && c.visible)
+                    c.item.drawInMenu(b, new Vector2(c.bounds.X, c.bounds.Y), c.scale / 4f, 1f, 0.9f, StackDrawType.HideButShowQuality, Color.White * (completed ? 0.25f : alpha_mult), drawShadow: false);
 
-                } else if (c.item != null && c.visible)
-                    c.item.drawInMenu(b, new Vector2(c.bounds.X, c.bounds.Y), c.scale / 4f, 1f, 0.9f, StackDrawType.Draw, Color.White * (completed ? 0.25f : alpha_mult), drawShadow: false);
+                UtilityMisc.drawKiloFormat(b, c.ReqValue, c.bounds.X + 2, c.bounds.Y + 2, Color.White * (completed ? 0.25f : alpha_mult));
             }
         }
 

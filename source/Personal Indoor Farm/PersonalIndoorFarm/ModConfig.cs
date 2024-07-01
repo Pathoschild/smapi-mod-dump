@@ -9,6 +9,7 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
+using PersonalIndoorFarm.Lib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,16 +20,17 @@ namespace PersonalIndoorFarm
 {
     public class ModConfig
     {
-        public bool UseVanillaDoors { get; set; }
-        public bool UseVMVDoors { get; set; }
-
+        public string OwnerFarmhouse { get; set; }
+        public string OwnerOutside { get; set; }
         public Color LockedDoorColor { get; set; }
+        public Color LockedWhenOfflineDoorColor { get; set; }
         public Color UnlockedDoorColor { get; set; }
         public ModConfig()
         {
-            UseVanillaDoors = true;
-            UseVMVDoors = true;
+            OwnerFarmhouse = DoorOwnerEnum.Owner.ToString();
+            OwnerOutside = DoorOwnerEnum.PlacedBy.ToString();
             LockedDoorColor = Color.Red * 0.6f;
+            LockedWhenOfflineDoorColor = Color.Yellow * 0.6f;
             UnlockedDoorColor = Color.ForestGreen * 0.6f;
         }
     }

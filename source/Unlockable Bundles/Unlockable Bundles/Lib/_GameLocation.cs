@@ -30,11 +30,24 @@ namespace Unlockable_Bundles.Lib
                 original: AccessTools.DeclaredMethod(typeof(GameLocation), nameof(GameLocation.reloadMap)),
                 postfix: new HarmonyMethod(typeof(_GameLocation), nameof(_GameLocation.reloadMap_Postfix))
             );
+
+            harmony.Patch(
+                original: AccessTools.DeclaredMethod(typeof(GameLocation), nameof(GameLocation.MakeMapModifications), new[] { typeof(bool) }),
+                postfix: new HarmonyMethod(typeof(_GameLocation).GetMethod(nameof(_GameLocation.MakeMapModifications_Postfix)), after: new[] { "aedenthorn.MapEdit" })
+            );
         }
 
         public static void reloadMap_Postfix(GameLocation __instance)
         {
-            MapPatches.checkIfMapPatchesNeedToBeReapplied(__instance);
+            MapPatches.checkIfMapPatchesNeedToBeReapplied(__instance, "reloadMap");
+        }
+
+        public static void MakeMapModifications_Postfix(GameLocation __instance, bool force)
+        {
+            if (!Helper.ModRegistry.IsLoaded("aedenthorn.MapEdit"))
+                return;
+
+            MapPatches.checkIfMapPatchesNeedToBeReapplied(__instance, "MakeMapModifications");
         }
     }
 }

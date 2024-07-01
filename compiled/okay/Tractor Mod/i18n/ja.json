@@ -48,9 +48,8 @@
     "config.build-price.name": "販売価格",
     "config.build-price.tooltip": "トラクターガレージの購入費。標準は{{defaultValue}}gです。",
 
-    // TODO
-    "config.require-build-materials.name": "Require Build Materials",
-    "config.require-build-materials.tooltip": "Whether you need to provide materials to build a tractor garage, in addition to the gold price.",
+    "config.require-build-materials.name": "ガレージ建設時の資材",
+    "config.require-build-materials.tooltip": "トラクターガレージを建設するために、購入費に加えて資材も必要とする。",
 
     "config.can-summon-without-garage.name": "ガレージなしで使用する",
     "config.can-summon-without-garage.tooltip": "ガレージなしでトラクターを呼び出す。",
@@ -138,7 +137,7 @@
     "config.harvest-giant-crops.tooltip": "巨大な作物を収穫する。",
 
     "config.harvest-crops.name": "作物の収穫",
-    "config.Harvest Crops.tooltip": "作物を収穫する。",
+    "config.harvest-crops.tooltip": "作物を収穫する。",
 
     "config.harvest-flowers.name": "花の収穫",
     "config.harvest-flowers.tooltip": "花を収穫する。",
@@ -208,8 +207,8 @@
     /****
     ** Melee
     ****/
-    "config.Attack-monsters.name": "モンスターへの攻撃",
-    "config.Attack-monsters.tooltip": "モンスターを攻撃する。これはトラクターの速度で攻撃するため、非常にオーバーパワーである。",
+    "config.attack-monsters.name": "モンスターへの攻撃",
+    "config.attack-monsters.tooltip": "モンスターを攻撃する。これはトラクターの速度で攻撃するため、非常にオーバーパワーである。",
 
 
     /****

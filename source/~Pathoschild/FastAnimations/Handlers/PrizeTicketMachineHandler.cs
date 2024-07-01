@@ -39,24 +39,27 @@ namespace Pathoschild.Stardew.FastAnimations.Handlers
         }
 
         /// <inheritdoc />
-        public override bool IsEnabled(int playerAnimationID)
+        public override bool TryApply(int playerAnimationId)
         {
             return
                 Game1.activeClickableMenu is PrizeTicketMenu menu
-                && (
-                    this.Reflection.GetField<bool>(menu, "gettingReward").GetValue()
-                    || this.Reflection.GetField<bool>(menu, "movingRewardTrack").GetValue()
+                && this.IsAnimating(menu)
+                && this.ApplySkips(() =>
+                    menu.update(Game1.currentGameTime)
                 );
         }
 
-        /// <inheritdoc />
-        public override void Update(int playerAnimationID)
-        {
-            PrizeTicketMenu menu = (PrizeTicketMenu)Game1.activeClickableMenu;
 
-            this.ApplySkips(
-                () => menu.update(Game1.currentGameTime)
-            );
+        /*********
+        ** Private methods
+        *********/
+        /// <summary>Get whether the target animation is playing.</summary>
+        /// <param name="menu">The menu to check.</param>
+        private bool IsAnimating(PrizeTicketMenu menu)
+        {
+            return
+                this.Reflection.GetField<bool>(menu, "gettingReward").GetValue()
+                || this.Reflection.GetField<bool>(menu, "movingRewardTrack").GetValue();
         }
     }
 }

@@ -19,5 +19,12 @@
 	"ContentPackFor": 
 	{
 		"UniqueID": "Pathoschild.ContentPatcher"
-	}
+	},
+    "Dependencies":[
+        {
+            "UniqueID":"d5a1lamdtd.MarketTown",
+            "IsRequired":true
+        }
+    ]
+
 }

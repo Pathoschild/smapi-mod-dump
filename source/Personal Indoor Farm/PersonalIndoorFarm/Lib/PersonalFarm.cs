@@ -101,20 +101,30 @@ namespace PersonalIndoorFarm.Lib
 
         public static string getMapAsset(Farmer who, PersonalFarmModel model)
         {
-            return who.HouseUpgradeLevel switch {
-                >= 2 => model.MapAsset_T2,
-                1 => model.MapAsset_T1,
-                _ => model.MapAsset_T0
-            };
+            if(who.HouseUpgradeLevel >= 3 && !string.IsNullOrEmpty(model.MapAsset_T3))
+                return model.MapAsset_T3;
+
+            if (who.HouseUpgradeLevel == 2 && !string.IsNullOrEmpty(model.MapAsset_T2))
+                return model.MapAsset_T2;
+
+            if (who.HouseUpgradeLevel == 1 && !string.IsNullOrEmpty(model.MapAsset_T1))
+                return model.MapAsset_T1;
+
+            return model.MapAsset_T0;
         }
 
         public static Point getArrivalTile(Farmer who, PersonalFarmModel model)
         {
-            return who.HouseUpgradeLevel switch {
-                >= 2 => model.ArrivalTile_T2,
-                1 => model.ArrivalTile_T1,
-                _ => model.ArrivalTile_T0
-            };
+            if (who.HouseUpgradeLevel >= 3 && !string.IsNullOrEmpty(model.MapAsset_T3))
+                return model.ArrivalTile_T3;
+
+            if (who.HouseUpgradeLevel == 2 && !string.IsNullOrEmpty(model.MapAsset_T2))
+                return model.ArrivalTile_T2;
+
+            if (who.HouseUpgradeLevel == 1 && !string.IsNullOrEmpty(model.MapAsset_T1))
+                return model.ArrivalTile_T1;
+
+            return model.ArrivalTile_T0;
         }
 
         public static void setInitialDayAndSeason(GameLocation location)
@@ -181,7 +191,7 @@ namespace PersonalIndoorFarm.Lib
 
             }
 
-            if(!Game1.locations.Contains(location))
+            if (!Game1.locations.Contains(location))
                 Game1.locations.Add(location);
 
             location.modData[OwnerKey] = who.UniqueMultiplayerID.ToString();
@@ -190,6 +200,8 @@ namespace PersonalIndoorFarm.Lib
 
             var locationAsset = DataLoader.Locations(Game1.content);
             locationAsset.TryAdd(locationKey, model);
+
+            location.DisplayName += $" ({who.displayName})";
             return location;
         }
         public static void checkHouseUpgraded(Farmer who, GameLocation loc, string pid)

@@ -10,7 +10,7 @@
   "UniqueID": "ApryllForever.NuclearBomb",
   "Name": "NuclearBomb",
   "Author": "ApryllForever",
-  "Version": "1.0.2",
+  "Version": "1.0.3",
   "Description": "Nuclear Bombs.",
   "MinimumApiVersion": "3.16.0",
   "EntryDll": "NuclearBomb.dll",

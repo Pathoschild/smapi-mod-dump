@@ -15,6 +15,7 @@
 	"task.craft.keywords": "craft,cook,create,make,get",
 	"task.gift": "Gift",
 	"task.gift.keywords": "gift,give",
+	"task.header": "Header",
 	"task.sell": "Sell",
 	"task.sell.keywords": "sell,ship",
 
@@ -22,6 +23,7 @@
 	"ui.tab.quests": "Quests",
 	"ui.tab.tasks": "Tasks",
 	"ui.tab.notes": "Notes",
+	"ui.tab.overlays": "Overlays",
 	
 	// tasks page
 	"ui.tasks.help": "Press the Add Task button below",
@@ -62,11 +64,16 @@
 	// task parameter names
 	"ui.tasks.parameter.animal": "Animal",
 	"ui.tasks.parameter.building": "Building",
+	"ui.tasks.parameter.color": "Color",
 	"ui.tasks.parameter.count": "Count",
 	"ui.tasks.parameter.item": "Item",
 	"ui.tasks.parameter.npc": "Villager",
 	"ui.tasks.parameter.quality": "Quality (Minimum)",
 	"ui.tasks.parameter.tool": "Tool",
+
+	// overlays page
+	"ui.overlays.backgroundcolor": "Background Color",
+	"ui.overlays.hotkey": "Hotkey: {{keybind}}",
 
 	// +---------------------------------+
 	// | display name aliases (OPTIONAL) |

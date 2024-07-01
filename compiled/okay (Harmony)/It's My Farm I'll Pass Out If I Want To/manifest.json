@@ -1,0 +1,10 @@
+{
+    "Name": "It's My Farm, I Can Pass Out If I Want To!",
+    "Author": "Apprehentice",
+    "Version": "1.0.1",
+    "Description": "Don't lose money for passing out on your own farm. You sleep better in bed, though.",
+    "UniqueID": "apprehentice.IMFIPOIIWT",
+    "EntryDll": "IMFIPOIIWT.dll",
+    "MinimumApiVersion": "3.0.0",
+    "UpdateKeys": [ "Nexus:25188" ]
+  }

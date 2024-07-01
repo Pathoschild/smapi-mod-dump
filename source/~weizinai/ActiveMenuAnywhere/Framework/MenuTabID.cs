@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-namespace ActiveMenuAnywhere.Framework;
+namespace weizinai.StardewValleyMod.ActiveMenuAnywhere.Framework;
 
 internal enum MenuTabID
 {

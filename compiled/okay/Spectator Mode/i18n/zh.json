@@ -1,0 +1,25 @@
+{
+    // 旁观者模式
+    "Config.SpectatorModeTitle.Name": "旁观者模式",
+    "UI.SpectatorMode.Title": "正在旁观 {{name}}",
+    "Config.SpectateLocationKeybind.Name": "旁观地点快捷键",
+    "UI.SpectateLocation.Fail": "{{locationName}}不存在。",
+    "UI.SpectateLocation.Success": "{{locationName}}存在，开始旁观。",
+
+    "Config.SpectatePlayerKeybind.Name": "旁观玩家快捷键",
+    "UI.SpectatePlayer.Fail": "{{playerName}}不存在。",
+    "UI.SpectatePlayer.Success": "{{playerName}}存在，开始旁观。",
+    "UI.NoPlayerOnline": "没有玩家在线",
+
+    "Config.ToggleStateKeybind.Name": "切换状态快捷键",
+
+    "Config.MoveSpeed.Name": "移动速度",
+    "Config.MoveThreshold.Name": "移动阈值",
+
+    // 轮播玩家
+    "Config.RotatePlayerTitle.Name": "轮播玩家",
+    "Config.RotatePlayerKeybind.Name": "轮播玩家快捷键",
+    "Config.RotationInterval.Name": "轮播间隔",
+    "UI.StartRotatePlayer": "开始轮播玩家",
+    "UI.StopRotatePlayer": "结束轮播玩家"
+}

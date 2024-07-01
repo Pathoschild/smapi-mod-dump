@@ -31,6 +31,7 @@ Once again, this documentation uses the [Example Pack](https://github.com/Leroym
 		* [Shows in Shops](#shows-in-shops)
 		* [Shop Id](#shop-id)
 	* [Variants](#variants)
+	* [Description](#description)
 	* [Animation](#animation)
 	* [Special Type](#special-type)
 	* [Placement Type](#placement-type)
@@ -212,6 +213,10 @@ Note: this will create as many separate Furniture as offsets are given, but all 
 
 Note 2: you can also use a list of Source Rect Offsets instead of a dictionary but the `{{RectVariant}}` token will be empty.
 
+### Description
+
+The description of the Furniture that will be displayed in the game. If this is not set, the game will use one of the default descriptions that depends on the [placement restriction](#placement-restriction) of the Furniture (like vanilla Furniture have).
+
 ### Animation
 
 You can define animations for your Furniture, but you'll need to fill a few fields for it to work:
@@ -239,12 +244,9 @@ This kind of replace the "Type" field in the vanilla Furniture data. It's a stri
 - Dresser
 - [TV](https://github.com/Leroymilo/FurnitureFramework/blob/main/doc/Special%20Types/TV.md)
 - [Bed](https://github.com/Leroymilo/FurnitureFramework/blob/main/doc/Special%20Types/Bed.md)
+- [FishTank](https://github.com/Leroymilo/FurnitureFramework/blob/main/doc/Special%20Types/FishTank.md)
 
 Some Special Types have their own documentation linked in this list for extra info.
-
-Other types that I need to add:
-- FishTank
-- RandomPlant
 
 ### Placement Type
 

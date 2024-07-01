@@ -23,6 +23,8 @@ using StardewValley.GameData.GarbageCans;
 using StardewValley.GameData.Objects;
 using StardewValley.GameData.Tools;
 
+using static NermNermNerm.Stardew.LocalizeFromSource.SdvLocalize;
+
 namespace NermNermNerm.Stardew.QuestableTractor
 {
     public class ModEntry
@@ -53,10 +55,12 @@ namespace NermNermNerm.Stardew.QuestableTractor
 
         public PetFindsThings PetFindsThings = new PetFindsThings();
 
-
         public override void Entry(IModHelper helper)
         {
             Instance = this;
+
+            Initialize(this, I("en"));
+
             this.Harmony = new Harmony(this.ModManifest.UniqueID);
 
             this.PetFindsThings.Entry(this);
@@ -82,28 +86,31 @@ namespace NermNermNerm.Stardew.QuestableTractor
             this.Helper.Events.GameLoop.DayEnding += this.OnDayEnding;
 
             this.Helper.ConsoleCommands.Add(
-                "fixqt",
-                "Fixes Questable Tractor - It finds all the objects buried on the farm and adds them to our inventory.  It starts the main tractor quest and the quests for the two hidden parts.  It replaces any missing quest items and deletes excess quest items.  Note this command does not look at or alter chests or other players' inventories.  You can run this command again to get rid of the duplicate if you need to.",
+                I("fixqt"),
+                I("Fixes Questable Tractor - It finds all the objects buried on the farm and adds them to our inventory.  It starts the main tractor quest and the quests for the two hidden parts.  It replaces any missing quest items and deletes excess quest items.  Note this command does not look at or alter chests or other players' inventories.  You can run this command again to get rid of the duplicate if you need to."),
                 this.FixItAll);
         }
+
+        public bool IsRunningGrandpasFarm => this.Helper.ModRegistry.IsLoaded("flashshifter.GrandpasFarm");
+
 
         private void FixItAll(string cmd, string[] args)
         {
             if (Game1.player is null || !Game1.hasLoadedGame)
             {
-                this.LogInfo("Cannot run command - the game isn't loaded/started yet.");
+                this.LogInfo($"Cannot run command - the game isn't loaded/started yet.");
                 return;
             }
 
             if (!Game1.IsMasterGame)
             {
-                this.LogInfo("Cannot run command - only the master player in a multiplayer game can run this command.");
+                this.LogInfo($"Cannot run command - only the master player in a multiplayer game can run this command.");
                 return;
             }
 
             if (Game1.player.freeSpotsInInventory() < 5)
             {
-                this.LogInfo("Cannot run command - need at least 5 free spots in your inventory.");
+                this.LogInfo($"Cannot run command - need at least 5 free spots in your inventory.");
                 return;
             }
 
@@ -219,7 +226,7 @@ namespace NermNermNerm.Stardew.QuestableTractor
                 }
                 else
                 {
-                    this.LogTraceOnce("All quests are in-progress, no hint topics given.");
+                    this.LogTraceOnce($"All quests are in-progress, no hint topics given.");
                 }
             }
         }
@@ -268,7 +275,7 @@ namespace NermNermNerm.Stardew.QuestableTractor
                 e.Edit(editor =>
                 {
                     IDictionary<string, string> recipes = editor.AsDictionary<string, string>().Data;
-                    recipes["TractorMod.ScytheAttachment"] = $"{ObjectIds.BustedScythe} 1 {ObjectIds.ScythePart1} 1 {ObjectIds.ScythePart2} 1/Field/{ObjectIds.WorkingScythe}/false/default/";
+                    recipes["TractorMod.ScytheAttachment"] = IF($"{ObjectIds.BustedScythe} 1 {ObjectIds.ScythePart1} 1 {ObjectIds.ScythePart2} 1/Field/{ObjectIds.WorkingScythe}/false/default/");
                 });
             }
             else if (e.NameWithoutLocale.IsEquivalentTo("Data/Mail"))

@@ -8,7 +8,6 @@
 **
 *************************************************/
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using ContentPatcher.Framework.Conditions;
@@ -79,7 +78,7 @@ namespace ContentPatcher.Framework.Commands
                 rawType: patch.RawType,
                 parsedType: patch.ParsedType,
                 priority: null,
-                conditions: Array.Empty<Condition>(),
+                conditions: [],
                 matchesContext: false,
                 state: new ContextualState().AddError(patch.ReasonDisabled),
                 contentPack: patch.ContentPack
@@ -118,7 +117,7 @@ namespace ContentPatcher.Framework.Commands
         /// <summary>Get a human-readable list of changes applied to the asset for display when troubleshooting.</summary>
         public IEnumerable<string> GetChangeLabels()
         {
-            return this.Patch?.GetChangeLabels() ?? Enumerable.Empty<string>();
+            return this.Patch?.GetChangeLabels() ?? [];
         }
 
         /// <summary>Get a human-readable reason that the patch isn't applied.</summary>

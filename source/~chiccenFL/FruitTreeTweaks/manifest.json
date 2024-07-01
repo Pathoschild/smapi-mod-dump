@@ -11,7 +11,7 @@
 {
   "Name": "Fruit Tree Tweaks",
   "Author": "chiccen",
-  "Version": "0.5.11",
+  "Version": "0.5.12",
   "Description": "Fruit Tree Tweaks.",
   "UniqueID": "chiccen.FruitTreeTweaks",
   "EntryDll": "FruitTreeTweaks.dll",

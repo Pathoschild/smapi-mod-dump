@@ -34,6 +34,9 @@ Please report bugs on [GitHub](https://github.com/spacechase0/BiggerBackpack/iss
 To remove the mod, first run `player_setbackpacksize 36` in the SMAPI console and safe your game. 
 
 ## Changes
+#### 7.3:
+* Polish translation.
+
 #### 7.2:
 * Korean translation.
 

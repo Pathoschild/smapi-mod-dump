@@ -75,6 +75,7 @@ internal sealed class RevalidateBuildingsDayEndingEvent(EventManager? manager = 
 
                             break;
                         }
+
                         case false when barn.animalLimit.Value == 14:
                         {
                             barn.animalLimit.Value = 12;
@@ -86,6 +87,7 @@ internal sealed class RevalidateBuildingsDayEndingEvent(EventManager? manager = 
                                     barn.Objects[hopper.TileLocation] = hopper;
                                 }
                             }
+
                             break;
                         }
                     }
@@ -94,7 +96,13 @@ internal sealed class RevalidateBuildingsDayEndingEvent(EventManager? manager = 
                     break;
 
                 case AnimalHouse coop when coop.Name.Contains("Coop"):
-                    coop.animalLimit.Value = areThereAnyPrestigedProducers ? 14 : 12;
+                    coop.animalLimit.Value = areThereAnyPrestigedProducers switch
+                    {
+                        true when coop.animalLimit.Value == 12 => 14,
+                        false when coop.animalLimit.Value == 14 => 12,
+                        _ => coop.animalLimit.Value,
+                    };
+
                     ModHelper.GameContent.InvalidateCache("Maps/Coop3");
                     break;
 

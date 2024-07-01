@@ -8,7 +8,6 @@
 **
 *************************************************/
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -48,12 +47,11 @@ namespace Pathoschild.Stardew.DataLayers.Layers
         {
             const string layerId = "MachineProcessing";
 
-            this.Legend = new[]
-            {
+            this.Legend = [
                 this.Empty = new LegendEntry(I18n.Keys.Machines_Empty, colors.Get(layerId, "Empty", Color.Red)),
                 this.Processing = new LegendEntry(I18n.Keys.Machines_Processing, colors.Get(layerId, "Processing", Color.Orange)),
                 this.Finished = new LegendEntry(I18n.Keys.Machines_Finished, colors.Get(layerId, "Finished", Color.Green))
-            };
+            ];
             this.Mods = mods;
         }
 
@@ -75,7 +73,7 @@ namespace Pathoschild.Stardew.DataLayers.Layers
                 .Select(type =>
                 {
                     if (!tiles.TryGetValue(type.Id, out TileData[]? groupTiles))
-                        groupTiles = Array.Empty<TileData>();
+                        groupTiles = [];
 
                     return new TileGroup(groupTiles, outerBorderColor: type.Color);
                 })

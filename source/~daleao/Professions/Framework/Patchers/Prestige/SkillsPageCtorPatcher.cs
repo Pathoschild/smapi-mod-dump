@@ -41,13 +41,20 @@ internal sealed class SkillsPageCtorPatcher : HarmonyPatcher
     {
         if (ShouldEnableSkillReset)
         {
-            Skill? maxSkill = null;
+            ISkill? maxSkill = null;
             var maxLength = 0;
             foreach (var skill in Skill.List)
             {
                 var length = Game1.player.GetProfessionsForSkill(skill, true).Length;
-                if (maxSkill is not null && length <= maxLength &&
-                    (length != maxLength || skill.CurrentLevel <= maxSkill.CurrentLevel))
+                if (maxSkill is null)
+                {
+                    maxSkill = skill;
+                    maxLength = length;
+                    continue;
+                }
+
+                if (length <= maxLength &&
+                    (length != maxLength || maxSkill.HasBeenReset() || !((ISkill)skill).HasBeenReset()))
                 {
                     continue;
                 }
@@ -56,12 +63,19 @@ internal sealed class SkillsPageCtorPatcher : HarmonyPatcher
                 maxLength = length;
             }
 
-            if (maxLength > 0)
+            if (maxLength > 1 || maxSkill?.HasBeenReset() == true)
             {
-                __instance.width += (maxLength + (maxSkill!.CurrentLevel >= 10 ? 2 : 1)) * 4 * (int)Textures.STARS_SCALE;
+                var highestLevel = Skill.List.Cast<ISkill>()
+                    .Concat(CustomSkill.Loaded.Values)
+                    .Max(skill => skill.CurrentLevel);
+                __instance.width += (maxLength + (highestLevel >= 10 ? 2 : 1)) * (int)Textures.STARS_SCALE * 4;
                 SkillsPageDrawPatcher.RibbonXOffset = 48 - (maxLength * 12);
+                SkillsPageDrawPatcher.ShouldDrawRibbons = true;
             }
-
+            else
+            {
+                SkillsPageDrawPatcher.ShouldDrawRibbons = false;
+            }
         }
 
         if (!ShouldEnablePrestigeLevels)

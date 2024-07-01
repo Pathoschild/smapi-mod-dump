@@ -36,7 +36,7 @@ namespace Pathoschild.Stardew.Automate.Framework.Models
         /// <param name="suggestedIntegrations">Mods which add custom machine recipes and require a separate automation component.</param>
         public DataModel(DataModelIntegration[]? suggestedIntegrations)
         {
-            this.SuggestedIntegrations = suggestedIntegrations ?? Array.Empty<DataModelIntegration>();
+            this.SuggestedIntegrations = suggestedIntegrations ?? [];
             this.DefaultMachineOverrides = this.DefaultMachineOverrides.ToNonNullCaseInsensitive();
         }
     }

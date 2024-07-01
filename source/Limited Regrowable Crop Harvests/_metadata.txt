@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/Adradis/StardewMods
+   Git: https://github.com/Adradis/StardewMods.git
+
+mods:
+   Limited Regrowable Crop Harvests
+
+latest commit:
+   commit 5720c7d949ffe89be5db11436f8d726d4ee3f848
+   Author: Adradis <4307704+Adradis@users.noreply.github.com>
+   Date:   Sun Jun 2 16:50:39 2024 -0700
+   
+       Add project files.
+   

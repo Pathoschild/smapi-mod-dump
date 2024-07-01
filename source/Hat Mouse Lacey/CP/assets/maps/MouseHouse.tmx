@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="16" height="18" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="10">
+<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="16" height="18" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="11">
  <properties>
   <property name="AmbientLight" value="42 42 42"/>
   <property name="DayTiles" value="Front 8 8 256 Front 8 9 288 Front 13 8 256 Front 13 9 288 Front 9 1 405 Front 10 1 406 Front 2 12 405 Front 3 12 406"/>
@@ -81,7 +81,7 @@
  <objectgroup id="2" name="Back"/>
  <layer id="3" name="Buildings" width="16" height="18">
   <data encoding="base64" compression="zlib">
-   eJxjYMAOGIGYCYiZ0TALVI4QUARiLSziOkCsSoR+RyAOxIFdidRfiIbTgB5KZyJe/1KgR5dBPXsUSLcB9baToB8XIEZ/IhA7A+10wRLYzXj0cTFgxtlhJPlDSOI8WPRjc/ccJPZsJDY2f2CLtz1I8rsZ8McjSP9fYBj/A+JeDgaGPg5I3MEAcnyC9IP8y42EQX6VBXpODognAfVOBuIcpDCsBJrbARTr5IDoB9nnjIaJBTD9yWhYiwm/vjag3UvYEPqbmEmwFIv9pOq/xMrAcJkVoh+UzuawENbTCHTzBCgGgS4OSDpkhOJEqDpkMZh4BjA8Mpkw5UAYACaALIo=
+   eJxjYMAOGIGYCYiZ0TALVI4QUARiLSziOkCsSoR+RyAOxIFdidRfiIbTgB5KZyJe/1KgR5dBPXsUSLcB9baToB8XIEZ/IhA7A+10wRLYzXj0cTFgxtlhJPlDSOI8WPRjc/ccJPZsJDY2f2CLtz1I8rsZ8McjSP9fYBj/A+JeDgaGPg5I3MEAcnyC9IP8y42EQX6VBXpODognAfVOBuIcpDCsBJrbARTr5IDoB9nnjIaJBTD9yWh4Cgd+fW1A+SVsCP1NzCRYisV+UvVfYmVguMwK0Q9KZ3NYCOtpBLp5AhSDQBcHJB0yQnEiVB2yGEw8AxjmmUyYciAMAKm6LPo=
   </data>
  </layer>
  <objectgroup id="4" name="Buildings">
@@ -110,10 +110,15 @@
     <property name="Action" value="ichortower.HatMouseLacey_PhotoMessage &quot;Maps\ichortower.HatMouseLacey\FamilyPhoto&quot; &quot;&quot; 0 -1"/>
    </properties>
   </object>
+  <object id="10" name="TileData" x="80" y="208" width="16" height="16">
+   <properties>
+    <property name="Action" value="ichortower.HatMouseLacey_HatRegistry"/>
+   </properties>
+  </object>
  </objectgroup>
  <layer id="5" name="Front" width="16" height="18">
   <data encoding="base64" compression="zlib">
-   eJxjYKA9mMbIwDCdkXR95kwMDBZM5NvbCrSzDWqvMyuE/kaCecuBeleQ4W4YOA7Ue4IC/cugeDGS2BIi9M0F+nEeBeG2F6h3H1Q/Ixb3YxNDBneBeu9B9StiUYtNDB/wQVIfCTS3mYOBoYWDNDPwgSYORBptItLcFjYEO4mZMvtJ1b8JmJY3s5JuTw/QbxOh/mtF8udRBkQaA6WvZQy40x6yHDo4isNeXOpBAAAaNh/x
+   eJxjYKA9mMbIwDCdkXR95kwMDBZM5NvbCrSzDWqvMyuE/kaCecuBeleQ4W4YOA7Ue4IC/cugeDGS2BIi9M0F+nEeBeG2F6h3H1Q/Ixb3YxNDBneBeu9B9StiUYtNDB/wQVIfCTS3mYOBoYWDNDPwgSYORBoFsfuJMLuFDcFOYqbMflL1bwKm5c2spNvTA/TXRKjfWpH8eJQBkcZA6WsZA+60hyyHDo7isBeXehAAAPDiIIg=
   </data>
  </layer>
  <objectgroup id="6" name="Front"/>

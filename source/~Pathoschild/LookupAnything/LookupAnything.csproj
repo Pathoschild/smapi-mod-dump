@@ -1,15 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Version>1.44.0</Version>
+    <Version>1.45.1</Version>
     <RootNamespace>Pathoschild.Stardew.LookupAnything</RootNamespace>
 
-    <TranslationClassBuilder_AddGetByKey>true</TranslationClassBuilder_AddGetByKey>
     <TranslationClassBuilder_ClassModifiers>internal static partial</TranslationClassBuilder_ClassModifiers>
     <TranslationClassBuilder_Namespace>Pathoschild.Stardew.LookupAnything.Framework</TranslationClassBuilder_Namespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Pathoschild.Stardew.ModTranslationClassBuilder" Version="2.0.1" />
+    <PackageReference Include="Pathoschild.Stardew.ModTranslationClassBuilder" Version="2.1.0" />
   </ItemGroup>
 
   <ItemGroup>

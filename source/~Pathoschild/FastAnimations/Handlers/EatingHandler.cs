@@ -23,13 +23,13 @@ namespace Pathoschild.Stardew.FastAnimations.Handlers
 {
     /// <summary>Handles the eating animation.</summary>
     /// <remarks>See game logic in <see cref="Game1.pressActionButton"/> (opens confirmation dialogue), <see cref="Farmer.showEatingItem"/> (main animation logic), and <see cref="FarmerSprite"/>'s private <c>animateOnce(GameTime)</c> method (runs animation + some logic).</remarks>
-    internal class EatingHandler : BaseAnimationHandler
+    internal sealed class EatingHandler : BaseAnimationHandler
     {
         /*********
         ** Fields
         *********/
         /// <summary>The temporary animations showing the item thrown into the air.</summary>
-        private readonly HashSet<TemporaryAnimatedSprite> ItemAnimations = new();
+        private readonly HashSet<TemporaryAnimatedSprite> ItemAnimations = [];
 
         /// <summary>Whether to disable the confirmation dialogue before eating or drinking.</summary>
         private readonly bool DisableConfirmation;
@@ -48,18 +48,10 @@ namespace Pathoschild.Stardew.FastAnimations.Handlers
         }
 
         /// <inheritdoc />
-        public override bool IsEnabled(int playerAnimationID)
-        {
-            // to allow disabling the confirmation even if the animation isn't sped up, the handler is still called with multiplier ≤ 1
-            return
-                (this.Multiplier > 1 && this.IsAnimationPlaying())
-                || (this.DisableConfirmation && this.IsConfirmationShown(out _));
-        }
-
-        /// <inheritdoc />
-        public override void Update(int playerAnimationID)
+        public override bool TryApply(int playerAnimationId)
         {
             // disable confirmation
+            bool skippedConfirmation = false;
             if (this.DisableConfirmation && this.IsConfirmationShown(out DialogueBox? eatMenu))
             {
                 // When the animation starts, the game shows a yes/no dialogue asking the player to
@@ -68,10 +60,12 @@ namespace Pathoschild.Stardew.FastAnimations.Handlers
                 Response yes = eatMenu.responses[0];
                 Game1.currentLocation.answerDialogue(yes);
                 eatMenu.closeDialogue();
+
+                skippedConfirmation = true;
             }
 
             // speed up animation
-            if (this.Multiplier > 1 && this.IsAnimationPlaying())
+            if (this.Multiplier > 1 && Context.IsWorldReady && Game1.player.isEating && Game1.player.Sprite.CurrentAnimation != null)
             {
                 // The farmer eating animation spins off two main temporary animations: the item being
                 // held (at index 1) and the item being thrown into the air (at index 2). The drinking
@@ -80,7 +74,7 @@ namespace Pathoschild.Stardew.FastAnimations.Handlers
                 int indexInAnimation = Game1.player.FarmerSprite.currentAnimationIndex;
                 if (indexInAnimation <= 1)
                     this.ItemAnimations.Clear();
-                if ((indexInAnimation == 1 || (indexInAnimation == 2 && playerAnimationID == FarmerSprite.eat)) && Game1.player.itemToEat is Object obj && obj.QualifiedItemId != Object.stardropQID)
+                if ((indexInAnimation == 1 || (indexInAnimation == 2 && playerAnimationId == FarmerSprite.eat)) && Game1.player.itemToEat is Object obj && obj.QualifiedItemId != Object.stardropQID)
                 {
                     var data = ItemRegistry.GetDataOrErrorItem(Game1.player.itemToEat.QualifiedItemId);
                     Texture2D texture = data.GetTexture();
@@ -93,7 +87,7 @@ namespace Pathoschild.Stardew.FastAnimations.Handlers
                 // speed up animations
                 GameTime gameTime = Game1.currentGameTime;
                 GameLocation location = Game1.player.currentLocation;
-                this.ApplySkips(() =>
+                return this.ApplySkips(() =>
                 {
                     // temporary item animations
                     foreach (TemporaryAnimatedSprite animation in this.ItemAnimations.ToArray())
@@ -110,6 +104,8 @@ namespace Pathoschild.Stardew.FastAnimations.Handlers
                     Game1.player.Update(gameTime, location);
                 });
             }
+
+            return skippedConfirmation;
         }
 
 
@@ -136,16 +132,6 @@ namespace Pathoschild.Stardew.FastAnimations.Handlers
 
             menu = null;
             return false;
-
-        }
-
-        /// <summary>Get whether the eat/drink animation is being played.</summary>
-        private bool IsAnimationPlaying()
-        {
-            return
-                Context.IsWorldReady
-                && Game1.player.isEating
-                && Game1.player.Sprite.CurrentAnimation != null;
         }
     }
 }

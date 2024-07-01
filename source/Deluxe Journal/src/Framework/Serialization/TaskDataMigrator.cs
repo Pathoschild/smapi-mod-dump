@@ -29,11 +29,12 @@ namespace DeluxeJournal.Framework.Serialization
         }
 
         /// <summary>Migrate task from data versions 1.0.x.</summary>
-        /// <param name="taskObject"></param>
-        /// <param name="taskType"></param>
-        /// <param name="task"></param>
-        /// <returns></returns>
-        /// <exception cref="JsonReaderException"></exception>
+        /// <remarks>The <see cref="JObject"/> is modified during the migration.</remarks>
+        /// <param name="taskJson">JSON object containing the task properties.</param>
+        /// <param name="taskType">The type of task that should be instantiated using the JSON data.</param>
+        /// <param name="task">Task instance.</param>
+        /// <returns><c>true</c> if a valid task was produced; <c>false</c> if the operation was aborted due to insufficient or incorrect JSON data.</returns>
+        /// <exception cref="JsonReaderException">Migrated task data could not be deserialized.</exception>
         public bool Migrate_1_0(JObject taskJson, Type taskType, out ITask? task)
         {
             string? targetDisplayName = taskJson["TargetDisplayName"]?.Value<string>();
@@ -104,7 +105,7 @@ namespace DeluxeJournal.Framework.Serialization
             }
             else
             {
-                throw new JsonReaderException($"{nameof(Migrate_1_0)}: Unable to deserialize ITask");
+                throw new JsonReaderException($"{nameof(Migrate_1_0)}: Unable to deserialize task of type {taskType.Name}.");
             }
         }
     }

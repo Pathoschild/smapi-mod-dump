@@ -46,40 +46,45 @@ namespace StardewValleyTodo.Game {
                 var roomId = parsedKey.SpriteIndex;
 
                 // Fodder/BO 104 1/262 10 0 178 10 0 613 3 0/3///Кормовой
-                var parsedValue = BundleStringParser.ParseValue(rawBundle.Value);
-                var ingredientsString = parsedValue.Ingredients;
-                var slots = parsedValue.NumberOfItems;
-                var localeName = parsedValue.DisplayName;
+                try {
+                    var parsedValue = BundleStringParser.ParseValue(rawBundle.Value);
+                    var ingredientsString = parsedValue.Ingredients;
+                    var slots = parsedValue.NumberOfItems;
+                    var localeName = parsedValue.DisplayName;
 
-                var bundle = new JunimoBundle(roomId, localeName, slots);
-                _junimoBundles.Add(bundle);
+                    var bundle = new JunimoBundle(roomId, localeName, slots);
+                    _junimoBundles.Add(bundle);
 
-                var netbundle = _communityCenter.bundles[roomId];
-                var rawIngredients = ingredientsString.Split(' ');
-                for (var i = 0; i < rawIngredients.Length; i += 3) {
-                    var objectId = rawIngredients[i];
-                    var objectCount = int.Parse(rawIngredients[i + 1]);
-                    var objectQuality = int.Parse(rawIngredients[i + 2]);
+                    var netbundle = _communityCenter.bundles[roomId];
+                    var rawIngredients = ingredientsString.Split(' ');
+                    for (var i = 0; i < rawIngredients.Length; i += 3) {
+                        var objectId = rawIngredients[i];
+                        var objectCount = int.Parse(rawIngredients[i + 1]);
+                        var objectQuality = int.Parse(rawIngredients[i + 2]);
 
-                    // Skip Money bundles
-                    if (objectId == "-1") {
-                        continue;
+                        // Skip Money bundles
+                        if (objectId == "-1") {
+                            continue;
+                        }
+
+                        var displayNameRaw = Game1.objectData[objectId].DisplayName;
+                        var displayName = LocalizedStringLoader.Load(displayNameRaw);
+
+                        var isDonated = netbundle[i / 3];
+                        var ingredient = new JunimoBundleIngredient(objectId, i / 3, displayName, objectCount, objectQuality, isDonated);
+                        bundle.AddIngredient(ingredient);
                     }
 
-                    var displayNameRaw = Game1.objectData[objectId].DisplayName;
-                    var displayName = LocalizedStringLoader.Load(displayNameRaw);
+                    if (bundle.Slots == 0) {
+                        bundle.Slots = bundle.Ingredients.Count;
+                    }
 
-                    var isDonated = netbundle[i / 3];
-                    var ingredient = new JunimoBundleIngredient(objectId, i / 3, displayName, objectCount, objectQuality, isDonated);
-                    bundle.AddIngredient(ingredient);
-                }
-
-                if (bundle.Slots == 0) {
-                    bundle.Slots = bundle.Ingredients.Count;
-                }
-
-                if (netbundle.All(x => x)) {
-                    bundle.IsComplete = true;
+                    if (netbundle.All(x => x)) {
+                        bundle.IsComplete = true;
+                    }
+                } catch (Exception exception) {
+                    GlobalMonitor.Instance.Log($"Can not load bundle: {rawBundle.Value}", StardewModdingAPI.LogLevel.Error);
+                    throw exception;
                 }
             }
         }

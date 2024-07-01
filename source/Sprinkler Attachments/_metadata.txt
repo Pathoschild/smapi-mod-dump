@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/Mushymato/StardewMods
+   Git: https://github.com/Mushymato/StardewMods.git
+
+mods:
+   Sprinkler Attachments
+
+latest commit:
+   commit 196f899422f307491f84ff1085b82b29fdcdb426
+   Author: mushymato <wildshinobu@gmail.com>
+   Date:   Mon Jul 1 00:04:20 2024 -0400
+   
+       support for bigger backpack type mods
+   

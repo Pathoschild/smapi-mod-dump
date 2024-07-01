@@ -1,0 +1,10 @@
+{
+  "default": {
+    "generalSettings": "General settings",
+    "modActive": "Activate mod"
+  },
+  "fr-FR": {
+    "generalSettings": "Paramètres généraux",
+    "modActive": "Activer le mod"
+  }
+}

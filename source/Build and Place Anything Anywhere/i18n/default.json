@@ -15,14 +15,11 @@
   "Config.AnythingAnywhere.EnablePlacing.Name": "Enable Placing",
   "Config.AnythingAnywhere.EnablePlacing.Description": "Enables placing objects(furniture, chests, etc) at any location",
 
-  "Config.AnythingAnywhere.EnableFreePlace.Name": "Place Anywhere",
-  "Config.AnythingAnywhere.EnableFreePlace.Description": "Enables placing furniture at any location, even in walls",
+  "Config.AnythingAnywhere.EnablePlaceAnywhere.Name": "Place Anywhere",
+  "Config.AnythingAnywhere.EnablePlaceAnywhere.Description": "Enables placing furniture at any location, even in walls",
 
   "Config.AnythingAnywhere.EnableRugRemovalBypass.Name": "Rug Removal Bypass",
   "Config.AnythingAnywhere.EnableRugRemovalBypass.Description": "Enables picking up rugs with furniture on top of them",
-
-  "Config.AnythingAnywhere.EnableWallFurnitureIndoors.Name": "Wall Furniture Indoors",
-  "Config.AnythingAnywhere.EnableWallFurnitureIndoors.Description": "Enables placing wall furniture at any location inside decoratable locations",
 
   // Building Configs
   "Config.AnythingAnywhere.Building.Title": "Building",
@@ -63,8 +60,17 @@
   // Farming Config
   "Config.AnythingAnywhere.Farming.Title": "Farming",
 
-  "Config.AnythingAnywhere.EnablePlanting.Name": "Enable Farming",
-  "Config.AnythingAnywhere.EnablePlanting.Description": "Enables farming at any location",
+  "Config.AnythingAnywhere.EnableFarmingAnywhere.Name": "Enable Farming",
+  "Config.AnythingAnywhere.EnableFarmingAnywhere.Description": "Enables farming at any location",
+
+  "Config.AnythingAnywhere.EnableCropsAnytime.Name": "Crops in Any Season",
+  "Config.AnythingAnywhere.EnableCropsAnytime.Description": "Removes restrictions on crops so they can grow in any season",
+
+  "Config.AnythingAnywhere.EnableTreesAnytime.Name": "Trees in Any Season",
+  "Config.AnythingAnywhere.EnableTreesAnytime.Description": "Removes restrictions on fruit trees so they can produce in any season",
+
+  "Config.AnythingAnywhere.EnableBushesAnytime.Name": "Bushes in Any Season",
+  "Config.AnythingAnywhere.EnableBushesAnytime.Description": "Removes restrictions on bushes so they can produce in any season",
 
   "Config.AnythingAnywhere.EnableDiggingAll.Name": "Hoe Anything",
   "Config.AnythingAnywhere.EnableDiggingAll.Description": "Enables hoeing any tile",
@@ -75,14 +81,41 @@
   "Config.AnythingAnywhere.EnableWildTreeTweaks.Name": "Wild Tree Tweaks",
   "Config.AnythingAnywhere.EnableWildTreeTweaks.Description": "Removes growth restrictions on wild trees. This will quickly grow out of control",
 
-  // Other Config
-  "Config.AnythingAnywhere.Other.Title": "Misc",
+  "Config.AnythingAnywhere.ForceGreenhouseTreeSprite.Name": "Greenhouse Tree Texture",
+  "Config.AnythingAnywhere.ForceGreenhouseTreeSprite.Description": "This will make tree textures have the greenhouse texture when 'EnableTreesAnytime' is enabled",
 
-  "Config.AnythingAnywhere.EnableAnimalRelocate.Name": "Animal Relocation",
-  "Config.AnythingAnywhere.EnableAnimalRelocate.Description": "Enables relocating animals from location to location",
+  // House Config
+  "Config.AnythingAnywhere.House.Title": "House",
+
+  "Config.AnythingAnywhere.DisableHardCodedWarp.Name": "Remove Hardcoded Warps",
+  "Config.AnythingAnywhere.DisableHardCodedWarp.Description": "Remove the Hardcoded warp in the farmhouse",
+
+  "Config.AnythingAnywhere.InstantHomeUpgrade.Name": "Instant House Upgrade",
+  "Config.AnythingAnywhere.InstantHomeUpgrade.Description": "Instantly upgrades the farmhouse/cabin",
+
+  "Config.AnythingAnywhere.UpgradeCabins.Name": "Upgrade Cabins",
+  "Config.AnythingAnywhere.UpgradeCabins.Description": "Lets you upgrade cabins from Robins shop",
+
+  "Config.AnythingAnywhere.RenovateCabins.Name": "Renovate Cabins",
+  "Config.AnythingAnywhere.RenovateCabins.Description": "Lets you renovate cabins from Robins shop",
+
+  "Config.AnythingAnywhere.CabinMenuButton.Name": "Cabin Menu",
+  "Config.AnythingAnywhere.CabinMenuButton.Description": "Opens the menu to upgrade/renovate the cabins if you can't use Robins menu due to mod conflicts",
+
+  "Config.AnythingAnywhere.EnableFreeHouseUpgrade.Name": "Free House Upgrades",
+  "Config.AnythingAnywhere.EnableFreeHouseUpgrade.Description": "Makes house upgrades free",
+
+  "Config.AnythingAnywhere.EnableFreeRenovations.Name": "Free Renovations",
+  "Config.AnythingAnywhere.EnableFreeRenovations.Description": "Makes house renovations free",
+
+  // Misc Config
+  "Config.AnythingAnywhere.Misc.Title": "Misc",
 
   "Config.AnythingAnywhere.EnableCaskFunctionality.Name": "Cask Tweaks",
   "Config.AnythingAnywhere.EnableCaskFunctionality.Description": "Enables cask functionality anywhere",
+
+  "Config.AnythingAnywhere.EnableFreeCommunityUpgrade.Name": "Free Community Upgrades",
+  "Config.AnythingAnywhere.EnableFreeCommunityUpgrade.Description": "Makes community upgrades free",
 
   "Config.AnythingAnywhere.EnableJukeboxFunctionality.Name": "Jukebox Tweaks",
   "Config.AnythingAnywhere.EnableJukeboxFunctionality.Description": "Enables jukebox functionality anywhere. (except in the rain)",
@@ -92,9 +125,6 @@
 
   "Config.AnythingAnywhere.MultipleMiniObelisks.Name": "Multiple Mini-Obelisk",
   "Config.AnythingAnywhere.MultipleMiniObelisks.Description": "Enables placing more than 2 mini-obelisks per location",
-
-  "Config.AnythingAnywhere.EnableCabinsAnywhere.Name": "House/Cabin Bypass",
-  "Config.AnythingAnywhere.EnableCabinsAnywhere.Description": "THIS WILL CAUSE ERRORS! Disables the Cabins and Farm House checks",
 
   // Reset Page Button
   "Config.AnythingAnywhere.ResetPage.Button": "Reset Page",
@@ -106,9 +136,7 @@
 
   // Player Messages
   "Message.AnythingAnywhere.NoBuildingIndoors": "Building indoors is disabled",
+  "Message.AnythingAnywhere.NoBuildingInInstancedLocations": "Buildings build here will not not save correctly",
   "Message.AnythingAnywhere.NoMovingBuildingLocation": "{{buildingName}} cannot be moved to another map",
-  "Message.AnythingAnywhere.NoMagicInk": "You need Magic Ink to open the Wizard's Build Menu",
-  "Message.AnythingAnywhere.MultiplayerRelocate": "You cannot move buildings to other locations while in multiplayer",
-  "Message.AnythingAnywhere.ChooseBuildingLocation": "Where do you want to relocate the building?",
-  "Message.AnythingAnywhere.ChooseAnimalLocation": "Where do you want to relocate the animal?"
+  "Message.AnythingAnywhere.NoMagicInk": "You need Magic Ink to open the Wizard's Build Menu"
 }

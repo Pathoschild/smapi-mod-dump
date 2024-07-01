@@ -84,12 +84,15 @@ namespace MobileTelevision
             {
                 spriteBatch.Draw(backgroundTexture, ModEntry.api.GetScreenRectangle(), Color.White);
                 sprite.scale = GetScale(sprite.sourceRect);
+                sprite.position = getScreenPosition();
+                sprite.scale = GetScale(sprite.sourceRect);
                 typeof(TV).GetField("screen", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(this, sprite);
                 sprite.update(Game1.currentGameTime);
                 sprite.draw(spriteBatch, true, 0, 0, 1f);
-                TemporaryAnimatedSprite  sprite2 = (TemporaryAnimatedSprite)typeof(TV).GetField("screenOverlay", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(this);
+                TemporaryAnimatedSprite sprite2 = (TemporaryAnimatedSprite)typeof(TV).GetField("screenOverlay", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(this);
                 if (sprite2 != null)
                 {
+                    sprite2.position = getScreenPosition();
                     sprite2.scale = GetScale(sprite2.sourceRect);
                     typeof(TV).GetField("screenOverlay", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(this, sprite2);
                     sprite2.update(Game1.currentGameTime);
@@ -118,7 +121,7 @@ namespace MobileTelevision
             if (phoneScreenSize.X > phoneScreenSize.Y)
             {
                 screenScale = phoneScreenSize.Y / 28f;
-                screenSize = new Vector2(42 * screenScale, phoneScreenSize.Y);
+                screenSize = new Vector2(42 * ModEntry.api.GetUIScale() * screenScale, phoneScreenSize.Y);
             }
             else
             {

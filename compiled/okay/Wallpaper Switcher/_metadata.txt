@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/24822
+IDs: PikachuDeBigode.WallpaperSwitcher
+update keys: Nexus:24822, GitHub:JulianoSFA/WallpaperSwitcher

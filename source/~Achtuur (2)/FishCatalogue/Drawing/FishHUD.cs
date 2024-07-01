@@ -27,44 +27,64 @@ internal class FishHUD
     static Color UndiscoveredColor = new Color(0, 0, 0, 50);
     static Color UncaughtColor = new Color(72, 72, 72, 150);
 
+    public bool Enabled;
     BorderDrawer borderDrawer;
     public FishHUD()
     {
         borderDrawer = new();
     }
 
+    internal void Enable()
+    {
+        Enabled = true;
+    }
+
+    internal void Disable()
+    {
+        Enabled = false;
+    }
+
+    internal void Toggle()
+    {
+        Enabled = !Enabled;
+    }
+
     public void Draw(SpriteBatch sb, Vector2 position, float alpha)
     {
-        borderDrawer.Reset();
-        borderDrawer.AddBorder(CreateBorders());
+        if (!Enabled)
+            return;
         borderDrawer.Draw(sb, position);
     }
 
-    private IEnumerable<Border> CreateBorders()
+    public void Reset()
     {
-        yield return CreateAvailableFishBorder();
-        yield return CreateUnavailableFishBorder();
+        borderDrawer.Reset();
     }
 
-    private Border CreateAvailableFishBorder()
+    public void AddAvailableFishBorder(IEnumerable<FishData> AvailableFish)
     {
-        IEnumerable<ItemLabel> itemLabels = FishCatalogue
-            .GetCurrentlyAvailableFish()
+        IEnumerable<ItemLabel> itemLabels = AvailableFish
+            .OrderBy(fish => fish.FishItem.Name)
             .Select(fish => GenerateItemLabel(fish));
+
+        if (itemLabels.Count() == 0)
+            return;
 
         GridLabel grid_label = new(itemLabels);
         grid_label.SetNumberOfColumns(ModEntry.Instance.Config.HUD_Columns);
-        return new Border(grid_label);
+        borderDrawer.AddBorder(new Border(grid_label));
     }
 
-    private Border CreateUnavailableFishBorder()
+    private void AddUnavailableFishBorder(IEnumerable<FishData> AvailableFish, IEnumerable<FishData> CurrentLocationFish)
     {
-        IEnumerable<IEnumerable<Label>> itemLabels = FishCatalogue
-            .GetCurrentLocationFish()
-            .Except(FishCatalogue.GetCurrentlyAvailableFish())
+        IEnumerable<IEnumerable<Label>> itemLabels = CurrentLocationFish
+            .Except(AvailableFish)
             .Where(fish => fish.CanBeCaughtThisSeason())
+            .OrderBy(fish => fish.FishItem.Name)
             .Select(fish => fish.GenerateUnfulfilledConditionLabel());
 
+        if (itemLabels.Count() == 0)
+            return;
         // Make sure all labels have the same number of columns
         // To align the grid
         int max_columns = itemLabels.Max(label => label.Count());
@@ -73,7 +93,7 @@ internal class FishHUD
 
         GridLabel grid_label = new(itemLabels.SelectMany(l => l));
         grid_label.SetNumberOfColumns(max_columns);
-        return new Border(grid_label);
+        borderDrawer.AddBorder(new Border(grid_label));
     }
 
     private ItemLabel GenerateItemLabel(FishData fish)
@@ -98,4 +118,6 @@ internal class FishHUD
 
         return itemLabel;
     }
+
+    
 }

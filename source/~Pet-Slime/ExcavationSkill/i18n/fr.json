@@ -1,0 +1,63 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Pet-Slime/StardewValley
+**
+*************************************************/
+
+{
+    "skill.name": "Archéologie",
+    "skill.perk": "+{{bonus}}% chance d’un objet bonus en creusant",
+    "skill.perk_bonus": "Chance d’obtenir {{rarity}} bonus en creusant",
+
+    "config.AlternativeSkillPageIcon": "Icône de compétence alternative",
+    "config.AlternativeSkillPageIcon.tooltip": "Nécessite un redémarrage, change l’icône de brosse et pierre à une pelle.",
+
+    "config.ExperienceFromArtifactSpots": "EXP (lieu d’artefact)",
+    "config.ExperienceFromArtifactSpots.tooltip": "Montant d’expérience d’Archéologie obtenue en creusant spécifiquement dans un lieu d’artefact (avec les vers).",
+
+    "config.ExperienceFromMinesDigging": "EXP (mines et Caverne Crâne)",
+    "config.ExperienceFromMinesDigging.tooltip": "Montant d’expérience d’Archéologie obtenue en creusant dans les Mines ou la Caverne Crâne.",
+
+    "config.ExperienceFromBuriedAndPannedItem": "EXP (Objets enterrés et tamisage)",
+    "config.ExperienceFromBuriedAndPannedItem.tooltip": "Montant d’expérience d’Archéologie obtenue en creusant des objets aléatoires comme l’argile et en tamisant.",
+
+    "config.ExperienceFromWaterShifter": "EXP (Tamis aquatique)",
+    "config.ExperienceFromWaterShifter.tooltip": "Montant d’expérience d’Archéologie obtenue en utilisant le tamis aquatique.",
+
+    "config.ExperienceFromResearchTable": "EXP (Table de recherche) - /!\\ ",
+    "config.ExperienceFromResearchTable.tooltip": "/!\\ Cette option ne fait rien pour le moment.",
+
+    "config.ExperienceFromAncientBattery": "EXP (Ancienne batterie)",
+    "config.ExperienceFromAncientBattery.tooltip": "Montant d’expérience d’Archéologie obtenue en récolant à partir d’une ancienne batterie.",
+
+    "config.ExperienceFromPreservationChamber": "EXP (Chambre de préservation)",
+    "config.ExperienceFromPreservationChamber.tooltip": "Montant d’expérience d’Archéologie obtenue en récoltant d’une chambre de préservation.",
+
+    "config.ExperienceFromHPreservationChamber": "EXP (Chambre de préservation\nen bois dur)",
+    "config.ExperienceFromHPreservationChamber.tooltip": "Montant d’expérience d’Archéologie obtenue en récoltant d’une chambre de préservation en bois dur.",
+
+    "moonslime.Archaeology.skill_book.levelup": "Vous avez appris des choses en Archéologie.",
+
+    "moonslime.Archaeology.water_shifter.name": "Tamis aquatique",
+    "moonslime.Archaeology.water_shifter.description": "Placer dans l’eau, attacher avec de la fibre, vérifier le lendemain pour voir s’il y a quelque chose.\nFonctionne dans les ruisseaux, lacs et l’océan.",
+
+
+    "Archaeology5a.name": "Pionnier",
+    "Archaeology5a.desc": "Chances supplémentaires d’apparition d’un lieu d’artefact.",
+    "Archaeology5b.name": "Sourcier",
+    "Archaeology5b.desc": "Chances supplémentaires d’apparition d’un lieu de tamisage.",
+    "Archaeology10a1.name": "Antiquaire",
+    "Archaeology10a1.desc": "Trouve des artefacts supplémentaires en creusant.",
+    "Archaeology10a2.name": "Curateur",
+    "Archaeology10a2.desc": "Vend des artefacts en exposition pour le double du prix !",
+    "Archaeology10b1.name": "Dragueur",
+    "Archaeology10b1.desc": "Obtient des objets supplémentaires en tamisant.",
+    "Archaeology10b2.name": "Prospecteur d’or",
+    "Archaeology10b2.desc": "Sur un tamisage ou un forage réussi, obtient un bonus de vitesse.\nDurée basée sur le niveau.",
+    "Archaeology10b2.buff": "Ruée vers l’or !"
+
+}

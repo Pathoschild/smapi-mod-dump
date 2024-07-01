@@ -11,7 +11,9 @@
 using GenericModConfigMenu;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Delegates;
 using StardewValley.Menus;
+using StardewValley.Triggers;
 
 namespace BetterStardrops {
     internal class ModEntry : Mod {
@@ -195,6 +197,7 @@ namespace BetterStardrops {
                     Game1.player.applyBuff(buffToApply);
                     buffToApply.visible = false;
                 }
+                Game1.player.stamina = Game1.player.MaxStamina;
             }
         }
 

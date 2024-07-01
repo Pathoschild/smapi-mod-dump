@@ -121,7 +121,7 @@ namespace StardewArchipelago.GameModifications.CodeInjections
         private const string _characterTexturePrefix = "Characters\\";
         private static readonly Dictionary<string, Point> _characterSpritesAndSize = new()
         {
-            { "Junimo", new Point(16, 16)},
+            { "Junimo", new Point(16, 16) },
             { "Dwarf", new Point(16, 24) },
             { "Krobus", new Point(16, 24) },
             { "Krobus_Trenchcoat", new Point(16, 24) },

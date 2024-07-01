@@ -11,24 +11,6 @@
 {
   "Changes": [
     {
-      "LogName": "Add flour context tag (Cornucopia_BuckwheatFlour)",
-      "Action": "EditData",
-      "Target": "Data/Objects",
-      "TargetField": [ "Cornucopia_BuckwheatFlour", "ContextTags" ],
-      "Entries": {
-        "#-1": "BarleyZP.BzpAllergies_FlourIngredient"
-      }
-    },
-    {
-      "LogName": "Add flour context tag (Cornucopia_SemolinaFlour)",
-      "Action": "EditData",
-      "Target": "Data/Objects",
-      "TargetField": [ "Cornucopia_SemolinaFlour", "ContextTags" ],
-      "Entries": {
-        "#-1": "BarleyZP.BzpAllergies_FlourIngredient"
-      }
-    },
-    {
       "LogName": "Add plant milk context tag (Cornucopia_Oats)",
       "Action": "EditData",
       "Target": "Data/Objects",

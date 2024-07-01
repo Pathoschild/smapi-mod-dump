@@ -14,7 +14,7 @@ using StardewValley.Buildings;
 
 namespace StardewDisableBuildingFade;
 
-internal class ModConfig
+public sealed class ModConfig
 {
     internal bool FadeDisabled { get; set; } = true;
 }

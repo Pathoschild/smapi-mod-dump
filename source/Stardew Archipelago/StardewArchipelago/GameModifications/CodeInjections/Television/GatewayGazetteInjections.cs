@@ -28,6 +28,8 @@ namespace StardewArchipelago.GameModifications.CodeInjections.Television
             "Welcome back to the Gateway Gazette! The bi-weekly show where brave adventurers explore the strange topology of the world around us!";
         private const string GAZETTE_EPISODE =
             "On today's episode, our agent {0} has traversed from {1} and discovered... {2}! They came back safe and sound to share this wonderful knowledge with us!";
+        private const string GAZETTE_CHAOS_EPISODE =
+            "On today's episode, our agent {0} has was sent to explore... but we haven't heard back from them. Let's send them thoughts and prayers! Don't walk outside unprepared, kids!";
 
         private static IMonitor _monitor;
         private static IModHelper _modHelper;
@@ -106,10 +108,17 @@ namespace StardewArchipelago.GameModifications.CodeInjections.Television
             }
         }
 
-        private static void PlayGazetteEpisode(TV __instance)
+        private static void PlayGazetteEpisode(TV tv)
         {
-            SetGazetteScreen(__instance);
+            SetGazetteScreen(tv);
+
             var random = new Random((int)(Game1.uniqueIDForThisGame + Game1.stats.DaysPlayed));
+            if (_archipelago.SlotData.EntranceRandomization == EntranceRandomization.Chaos)
+            {
+                PlayChaosGazetteEpisode(tv, random);
+                return;
+            }
+
             var agentName = Community.AllNames[random.Next(Community.AllNames.Length)];
             var entrancesNotChecked = _entranceManager.ModifiedEntrances.Keys.Where(x => !_state.EntrancesTraversed.Contains(x)).ToArray();
             if (!entrancesNotChecked.Any())
@@ -121,7 +130,14 @@ namespace StardewArchipelago.GameModifications.CodeInjections.Television
             var destinationInternalName = _entranceManager.ModifiedEntrances[entranceToReveal];
             var destinationFriendlyName = GetFriendlyDestinationName(destinationInternalName);
             Game1.drawObjectDialogue(Game1.parseText(string.Format(GAZETTE_EPISODE, agentName, friendlyEntranceName, destinationFriendlyName)));
-            Game1.afterDialogues = __instance.proceedToNextScene;
+            Game1.afterDialogues = tv.proceedToNextScene;
+        }
+
+        private static void PlayChaosGazetteEpisode(TV tv, Random random)
+        {
+            var agentName = Community.AllNames[random.Next(Community.AllNames.Length)];
+            Game1.drawObjectDialogue(Game1.parseText(string.Format(GAZETTE_CHAOS_EPISODE, agentName)));
+            Game1.afterDialogues = tv.proceedToNextScene;
         }
 
         private static string GetFriendlyDestinationName(string destinationInternalName)

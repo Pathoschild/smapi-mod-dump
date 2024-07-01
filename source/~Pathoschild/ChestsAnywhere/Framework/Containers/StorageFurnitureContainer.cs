@@ -53,7 +53,7 @@ namespace Pathoschild.Stardew.ChestsAnywhere.Framework.Containers
             this.Furniture = furniture;
             this.Data = new ContainerData(furniture.modData);
 
-            StorageFurnitureContainer.DresserCategories ??= new HashSet<int>(new ShopMenu("Dresser", new List<ISalable>()).categoriesToSellHere);
+            StorageFurnitureContainer.DresserCategories ??= [..new ShopMenu("Dresser", new List<ISalable>()).categoriesToSellHere];
         }
 
         /// <inheritdoc />

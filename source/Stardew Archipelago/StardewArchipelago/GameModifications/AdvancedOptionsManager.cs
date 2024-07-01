@@ -45,8 +45,8 @@ namespace StardewArchipelago.GameModifications
         private void InjectAdvancedOptionsRemoval()
         {
             _harmony.Patch(
-                original: AccessTools.Method(typeof(CharacterCustomization), "setUpPositions"),
-                postfix: new HarmonyMethod(typeof(AdvancedOptionsManager), nameof(SetUpPositions_RemoveAdvancedOptionsButton_Postfix))
+                original: AccessTools.Method(typeof(CharacterCustomization), "ResetComponents"),
+                postfix: new HarmonyMethod(typeof(AdvancedOptionsManager), nameof(ResetComponents_RemoveAdvancedOptionsButton_Postfix))
             );
         }
 
@@ -76,7 +76,8 @@ namespace StardewArchipelago.GameModifications
             );
         }
 
-        public static void SetUpPositions_RemoveAdvancedOptionsButton_Postfix(CharacterCustomization __instance)
+        // private void ResetComponents()
+        public static void ResetComponents_RemoveAdvancedOptionsButton_Postfix(CharacterCustomization __instance)
         {
             try
             {
@@ -89,7 +90,7 @@ namespace StardewArchipelago.GameModifications
             }
             catch (Exception ex)
             {
-                _modEntry.Monitor.Log($"Failed in {nameof(SetUpPositions_RemoveAdvancedOptionsButton_Postfix)}:\n{ex}", LogLevel.Error);
+                _modEntry.Monitor.Log($"Failed in {nameof(ResetComponents_RemoveAdvancedOptionsButton_Postfix)}:\n{ex}", LogLevel.Error);
                 return;
             }
         }
@@ -120,32 +121,18 @@ namespace StardewArchipelago.GameModifications
         private static void ForceGameSeedToArchipelagoProvidedSeed()
         {
             var trimmedSeed = _archipelago.SlotData.Seed.Trim();
-            
-            int result = int.Parse(trimmedSeed.Substring(0, Math.Min(9, trimmedSeed.Length)));
+
+            var result = int.Parse(trimmedSeed.Substring(0, Math.Min(9, trimmedSeed.Length)));
             Game1.startingGameSeed = (ulong)result;
         }
 
         private static void ForceFarmTypeToArchipelagoProvidedFarm()
         {
-            var farmTypes = new[]
-            {
-                "Standard Farm", "Riverland Farm", "Forest Farm", "Hill-top Farm", "Wilderness Farm", "Four Corners Farm", "Beach Farm",
-            };
-
-            // To remove once Beta 5 is done
-            for (var i = 0; i < farmTypes.Length; i++)
-            {
-                if (_archipelago.HasReceivedItem(farmTypes[i]))
-                {
-                    Game1.whichFarm = i;
-                    Game1.spawnMonstersAtNight = i == 4;
-                    return;
-                }
-            }
-
             var farmType = _archipelago.SlotData.FarmType;
-            Game1.whichFarm = (int)_archipelago.SlotData.FarmType;
-            Game1.spawnMonstersAtNight = farmType == FarmType.Wilderness;
+            
+            Game1.whichFarm = farmType.GetWhichFarm();
+            Game1.whichModFarm = farmType.GetWhichModFarm();
+            Game1.spawnMonstersAtNight = farmType.GetSpawnMonstersAtNight();
         }
 
         public static void TitleMenuUpdate_ReplaceCharacterMenu_Postfix(TitleMenu __instance, GameTime time)

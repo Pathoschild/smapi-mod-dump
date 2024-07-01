@@ -29,7 +29,7 @@ namespace Pathoschild.Stardew.Automate.Framework
         ** Accessors
         *********/
         /// <summary>The log keys for entities which throw an exception when scanned, to avoid logging them repeatedly.</summary>
-        private static readonly HashSet<string> LoggedErrorKeys = new();
+        private static readonly HashSet<string> LoggedErrorKeys = [];
 
         /// <summary>The indexed entities.</summary>
         private readonly IDictionary<Vector2, object[]> Entities;
@@ -62,7 +62,7 @@ namespace Pathoschild.Stardew.Automate.Framework
         {
             return this.Entities.TryGetValue(tile, out object[]? entities)
                 ? entities
-                : Array.Empty<object>();
+                : [];
         }
 
 

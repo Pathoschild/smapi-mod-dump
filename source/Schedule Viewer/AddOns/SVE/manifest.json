@@ -11,7 +11,7 @@
 {
   "Name": "Schedule Viewer - SVE Add-on",
   "Author": "BinaryLip",
-  "Version": "1.0.0",
+  "Version": "1.0.1",
   "Description": "Enhances schedule details for Stardew Valley Expanded NPCs in Schedule Viewer",
   "UniqueID": "BinaryLip.SVEAddOn",
   "UpdateKeys": ["Nexus:19305@SVEAddOn"],

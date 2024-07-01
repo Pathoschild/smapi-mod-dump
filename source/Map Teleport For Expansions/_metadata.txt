@@ -1,0 +1,16 @@
+urls:
+   web: https://github.com/kesesek/StardewValleyMapTeleport
+   Git: https://github.com/kesesek/StardewValleyMapTeleport.git
+
+mods:
+   Map Teleport For Expansions
+
+latest commit:
+   commit 359448e8ef13c1c076a375219d873deb0784a9df
+   Author: Lyvia Huang <126723293+kesesek@users.noreply.github.com>
+   Date:   Mon Jun 24 11:46:02 2024 +1200
+   
+       Merge pull request #1 from CaranudLapin/patch-1
+       
+       Create fr.json (Map Teleport For Expansions)
+   

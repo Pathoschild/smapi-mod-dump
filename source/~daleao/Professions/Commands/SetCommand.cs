@@ -18,6 +18,8 @@ using DaLion.Professions.Framework.Limits;
 using DaLion.Shared.Commands;
 using DaLion.Shared.Extensions;
 using DaLion.Shared.Extensions.Stardew;
+using StardewValley.Constants;
+using StardewValley.Menus;
 using StardewValley.Tools;
 
 #endregion using directives
@@ -77,22 +79,62 @@ internal sealed class SetCommand(CommandHandler handler)
             return true;
         }
 
-        if (Skill.TryFromName(key, true, out var vanillaSkill) && int.TryParse(value, out var level))
+        int level;
+        if (Skill.TryFromName(key, true, out var vanillaSkill))
         {
-            vanillaSkill.SetLevel(level);
-            return true;
+            if (int.TryParse(value, out level))
+            {
+                vanillaSkill.SetLevel(level);
+                return true;
+            }
+
+            switch (value)
+            {
+                case "mastered":
+                    if (vanillaSkill.CanGainPrestigeLevels())
+                    {
+                        return true;
+                    }
+
+                    Game1.player.stats.Set(StatKeys.Mastery(vanillaSkill), 1);
+                    Game1.player.stats.Set(
+                        StatKeys.MasteryExp,
+                        MasteryTrackerMenu.getMasteryExpNeededForLevel(MasteryTrackerMenu.getCurrentMasteryLevel() + 1));
+                    this.Handler.Log.I($"Mastered the {vanillaSkill} skill.");
+                    return true;
+                case "unmastered":
+                case "brainfart":
+                    if (!vanillaSkill.CanGainPrestigeLevels())
+                    {
+                        return true;
+                    }
+
+                    Game1.player.stats.Set(StatKeys.Mastery(vanillaSkill), 0);
+                    Game1.player.stats.Set(
+                        StatKeys.MasteryExp,
+                        MasteryTrackerMenu.getMasteryExpNeededForLevel(MasteryTrackerMenu.getCurrentMasteryLevel() - 1));
+                    this.Handler.Log.I($"Unmastered the {vanillaSkill} skill.");
+                    return true;
+            }
+
+            return false;
         }
 
         var customSkill = CustomSkill.Loaded.Values.FirstOrDefault(s =>
             s.StringId.ToLower().Contains(key.ToLowerInvariant()) ||
             s.DisplayName.ToLower().Contains(key.ToLowerInvariant()));
-        if (customSkill is not null && int.TryParse(value, out level))
+        if (customSkill is not null)
         {
-            customSkill.SetLevel(level);
-            return true;
+            if (int.TryParse(value, out level))
+            {
+                customSkill.SetLevel(level);
+                return true;
+            }
+
+            return false;
         }
 
-        switch (args[0].ToLower())
+        switch (key)
         {
             case "limit":
                 this.SetLimitBreak(value);
@@ -277,7 +319,13 @@ internal sealed class SetCommand(CommandHandler handler)
 
             var qid = "(O)" + key;
             var split = values.SplitWithoutAllocation('/');
-            if (!fishCaught.TryAdd(qid, [1, int.Parse(split[4]) + 1, 1]))
+            if (values.Contains("trap") && !fishCaught.TryAdd(qid, [1, int.Parse(split[6]) + 1, 1]))
+            {
+                var caught = fishCaught[qid];
+                caught[1] = int.Parse(split[6]) + 1;
+                fishCaught[qid] = caught;
+            }
+            else if (!fishCaught.TryAdd(qid, [1, int.Parse(split[4]) + 1, 1]))
             {
                 var caught = fishCaught[qid];
                 caught[1] = int.Parse(split[4]) + 1;
@@ -354,13 +402,17 @@ internal sealed class SetCommand(CommandHandler handler)
             return;
         }
 
-        if (!string.IsNullOrEmpty(value) && !int.TryParse(value, out _))
+        var parsed = 0;
+        if (!string.IsNullOrEmpty(value) && !int.TryParse(value, out parsed))
         {
             this.Handler.Log.W($"{value} is not a valid integer value.");
             return;
         }
 
-        Data.Write(Game1.player, DataKeys.EcologistVarietiesForaged, value);
+        Data.Write(
+            Game1.player,
+            DataKeys.EcologistVarietiesForaged,
+            string.IsNullOrEmpty(value) ? value : string.Join(',', Enumerable.Range(0, parsed)));
         this.Handler.Log.I($"Varieties foraged as Ecologist was set to {value}.");
     }
 
@@ -372,13 +424,17 @@ internal sealed class SetCommand(CommandHandler handler)
             return;
         }
 
-        if (!string.IsNullOrEmpty(value) && !int.TryParse(value, out _))
+        var parsed = 0;
+        if (!string.IsNullOrEmpty(value) && !int.TryParse(value, out parsed))
         {
             this.Handler.Log.W($"{value} is not a valid integer value.");
             return;
         }
 
-        Data.Write(Game1.player, DataKeys.GemologistMineralsStudied, value);
+        Data.Write(
+            Game1.player,
+            DataKeys.GemologistMineralsStudied,
+            string.IsNullOrEmpty(value) ? value : string.Join(',', Enumerable.Range(0, parsed)));
         this.Handler.Log.I($"Minerals collected as Gemologist was set to {value}.");
     }
 

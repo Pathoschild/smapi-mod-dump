@@ -6,9 +6,9 @@ mods:
    Crop Growth Adjustments
 
 latest commit:
-   commit 6cd454bf6584c0d11d8cff8f00bdf479b8119f58
+   commit f21a57b53d1c7d3684fbdfdcff2d2290ff269a6e
    Author: Hleb Zhynko <gleb.zhinko@protonmail.com>
-   Date:   Sun Apr 7 18:43:35 2024 -0500
+   Date:   Sun Jun 16 14:38:04 2024 +0200
    
-       fix skip button appearing under bars and prepare for release
+       prepare for release
    

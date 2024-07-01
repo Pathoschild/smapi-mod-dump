@@ -9,6 +9,7 @@
 *************************************************/
 
 using StardewArchipelago.Archipelago;
+using StardewArchipelago.Constants.Vanilla;
 using StardewArchipelago.Items.Mail;
 using StardewValley;
 
@@ -18,13 +19,13 @@ namespace StardewArchipelago.Stardew
     {
         public int Edibility { get; private set; }
         public string Type { get; private set; }
-        public string Category { get; private set; }
+        public int Category { get; private set; }
         public string Misc1 { get; private set; }
         public string Misc2 { get; private set; }
         public string BuffDuration { get; private set; }
 
-        public StardewObject(int id, string name, int sellPrice, int edibility, string type, string category, string displayName, string description, string misc1 = "", string misc2 = "", string buffDuration = "")
-        : base(id, name, sellPrice, displayName, description)
+        public StardewObject(string id, string name, int sellPrice, int edibility, string type, int category, string displayName, string description, string misc1 = "", string misc2 = "", string buffDuration = "")
+            : base(id, name, sellPrice, displayName, description)
         {
             Edibility = edibility;
             Type = type;
@@ -39,11 +40,6 @@ namespace StardewArchipelago.Stardew
             return new Object(Id, amount);
         }
 
-        public override Item PrepareForRecovery()
-        {
-            throw new System.NotImplementedException();
-        }
-
         public override void GiveToFarmer(Farmer farmer, int amount = 1)
         {
             var item = PrepareForGivingToFarmer(amount);
@@ -53,6 +49,11 @@ namespace StardewArchipelago.Stardew
         public override LetterAttachment GetAsLetter(ReceivedItem receivedItem, int amount = 1)
         {
             return new LetterItemAttachment(receivedItem, this, amount);
+        }
+
+        public override string GetQualifiedId()
+        {
+            return $"{QualifiedItemIds.OBJECT_QUALIFIER}{Id}";
         }
     }
 }

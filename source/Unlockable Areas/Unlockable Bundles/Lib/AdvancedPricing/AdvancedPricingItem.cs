@@ -24,7 +24,7 @@ namespace Unlockable_Bundles.Lib.AdvancedPricing
 {
     public class AdvancedPricingItem : Item
     {
-        public const string ASSET = "UnlockableBundles/AdvancedPricing";
+        public const string Asset = "UnlockableBundles/AdvancedPricing";
         public const string APTYPEDEFINITION = "(UB.AP)";
         public const string FLAVOREDTYPEDEFINITION = "(UB.Flavored)";
 
@@ -52,7 +52,7 @@ namespace Unlockable_Bundles.Lib.AdvancedPricing
                 ? id.TrimStart()[APTYPEDEFINITION.Length..].Trim()
                 : id.Trim();
 
-            var asset = Helper.GameContent.Load<Dictionary<string, AdvancedPricing>>(ASSET);
+            var asset = Helper.GameContent.Load<Dictionary<string, AdvancedPricing>>(Asset);
 
             if (asset.TryGetValue(cleanedId, out var el))
                 return new AdvancedPricingItem(cleanedId, el, initialStack, quality);

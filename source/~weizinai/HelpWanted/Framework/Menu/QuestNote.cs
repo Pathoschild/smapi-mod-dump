@@ -8,12 +8,12 @@
 **
 *************************************************/
 
-using HelpWanted.Framework.Data;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley.Menus;
+using weizinai.StardewValleyMod.HelpWanted.Framework.Data;
 
-namespace HelpWanted.Framework.Menu;
+namespace weizinai.StardewValleyMod.HelpWanted.Framework.Menu;
 
 internal class QuestNote : ClickableComponent
 {
@@ -21,14 +21,14 @@ internal class QuestNote : ClickableComponent
 
     public QuestNote(QuestData questData, Rectangle bounds) : base(bounds, "")
     {
-        QuestData = questData;
+        this.QuestData = questData;
     }
 
     public void Draw(SpriteBatch spriteBatch)
     {
-        spriteBatch.Draw(QuestData.Pad, bounds, QuestData.PadSource, QuestData.PadColor);
-        spriteBatch.Draw(QuestData.Pin, bounds, QuestData.PinSource, QuestData.PinColor);
-        spriteBatch.Draw(QuestData.Icon, new Vector2(bounds.X + QuestData.IconOffset.X, bounds.Y + QuestData.IconOffset.Y), QuestData.IconSource, QuestData.IconColor,
-            0, Vector2.Zero, QuestData.IconScale, SpriteEffects.None, 0);
+        spriteBatch.Draw(this.QuestData.Pad, this.bounds, this.QuestData.PadSource, this.QuestData.PadColor);
+        spriteBatch.Draw(this.QuestData.Pin, this.bounds, this.QuestData.PinSource, this.QuestData.PinColor);
+        spriteBatch.Draw(this.QuestData.Icon, new Vector2(this.bounds.X + this.QuestData.IconOffset.X, this.bounds.Y + this.QuestData.IconOffset.Y), this.QuestData.IconSource, this.QuestData.IconColor,
+            0, Vector2.Zero, this.QuestData.IconScale, SpriteEffects.None, 0);
     }
 }

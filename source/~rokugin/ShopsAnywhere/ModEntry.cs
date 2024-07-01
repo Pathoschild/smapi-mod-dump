@@ -32,14 +32,23 @@ namespace ShopsAnywhere {
             helper.Events.Display.RenderedActiveMenu += OnRenderedActiveMenu;
             helper.Events.Content.AssetRequested += static (_, e) => AssetManager.OnAssetRequested(e);
             helper.Events.Content.AssetsInvalidated += static (_, e) => AssetManager.Reset(e.NamesWithoutLocale);
-            helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
+
+            helper.Events.Input.ButtonsChanged += OnButtonsChanged;
+        }
+
+        private void OnButtonsChanged(object? sender, ButtonsChangedEventArgs e) {
+            if (!Context.IsWorldReady) return;
+            
+            if (Keys.ToggleShopTest.JustPressed()) {
+                return;
+            }
         }
 
         private void OnButtonPressed(object? sender, ButtonPressedEventArgs e) {
             if (!Context.IsWorldReady) return;
 
             if (IsInventoryPage() && e.Button == SButton.MouseLeft &&
-                    advShopButton.containsPoint(Game1.getMouseX(Game1.uiMode), Game1.getMouseY(Game1.uiMode))) {
+                    advShopButton!.containsPoint(Game1.getMouseX(Game1.uiMode), Game1.getMouseY(Game1.uiMode))) {
                 Utility.TryOpenShopMenu(Game1.shop_adventurersGuild, (string?)null);
                 Helper.Input.Suppress(e.Button);
             }
@@ -54,25 +63,14 @@ namespace ShopsAnywhere {
                     sourceRect: Rectangle.Empty,
                     scale: 1f
                     );
-                //advShopButton.bounds =
-                //    new Rectangle(Game1.activeClickableMenu.xPositionOnScreen + config.AdvShopButtonOffsetX,
-                //    Game1.activeClickableMenu.yPositionOnScreen + config.AdvShopButtonOffsetY, AssetManager.advShopTexture.Width, AssetManager.advShopTexture.Height);
                 advShopButton.draw(e.SpriteBatch);
-                GameMenu activeMenu = Game1.activeClickableMenu as GameMenu;
-                activeMenu.drawMouse(e.SpriteBatch);
-
+                
                 if (advShopButton.containsPoint(Game1.getMousePosition().X, Game1.getMousePosition().Y)) {
                     if (Game1.content.GetCurrentLanguage() == LocalizedContentManager.LanguageCode.en) {
-                        IClickableMenu.drawHoverText(e.SpriteBatch, "Open Adventurer's Guild Shop", Game1.smallFont);
+                        IClickableMenu.drawHoverText(e.SpriteBatch, Helper.Translation.Get("shops-button.name"), Game1.smallFont);
                     }
                 }
             }
-        }
-
-        private void OnSaveLoaded(object? sender, SaveLoadedEventArgs e) {
-            advShopButton = new ClickableTextureComponent(
-                new Rectangle(config.AdvShopButtonOffsetY, config.AdvShopButtonOffsetY, AssetManager.advShopTexture.Width, AssetManager.advShopTexture.Height),
-                AssetManager.advShopTexture, new Rectangle(0, 0, AssetManager.advShopTexture.Width, AssetManager.advShopTexture.Height), 1f, false);
         }
 
         private void OnGameLaunched(object? sender, GameLaunchedEventArgs e) {
@@ -92,23 +90,25 @@ namespace ShopsAnywhere {
 
             configMenu.AddKeybindList(
                 mod: ModManifest,
-                name: () => "Toggle Shop",
-                tooltip: () => "Buttons to toggle shop.",
+                name: () => "Test Buttons",
+                tooltip: () => "Buttons to trigger test functionality. Default: PgUp",
                 getValue: () => config.Controls.ToggleShopTest,
                 setValue: value => config.Controls.ToggleShopTest = value
                 );
-            configMenu.AddSectionTitle(ModManifest, () => "Adventurer's Shop Button");
+            configMenu.AddSectionTitle(ModManifest, () => Helper.Translation.Get("shops-button-config.name"));
             configMenu.AddNumberOption(
                 ModManifest,
                 () => (int)config.AdvShopButtonOffsetX,
                 value => config.AdvShopButtonOffsetX = value,
-                () => "Offset X"
+                () => Helper.Translation.Get("x-offset.name"),
+                () => Helper.Translation.Get("x-offset.tooltip")
                 );
             configMenu.AddNumberOption(
                 ModManifest,
                 () => (int)config.AdvShopButtonOffsetY,
                 value => config.AdvShopButtonOffsetY = value,
-                () => "Offset Y"
+                () => Helper.Translation.Get("y-offset.name"),
+                () => Helper.Translation.Get("y-offset.tooltip")
                 );
         }
 

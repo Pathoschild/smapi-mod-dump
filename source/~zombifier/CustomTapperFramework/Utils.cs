@@ -19,7 +19,7 @@ using StardewValley.TerrainFeatures;
 using StardewValley.Extensions;
 
 
-namespace CustomTapperFramework;
+namespace Selph.StardewMods.MachineTerrainFramework;
 
 using SObject = StardewValley.Object;
 

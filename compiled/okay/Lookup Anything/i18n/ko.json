@@ -2,6 +2,10 @@
     /*********
     ** Generic translations 기본 번역
     *********/
+    // language info
+    "generic.list-separator": ", ", // text between listed values (like ", " in "A, B, C")
+    "generic.line-wrap-on": "",     // characters after which we can line-wrap text if needed, even if there's no space
+
     // date names
     "generic.now": "지금 수확 가능",
     "generic.tomorrow": "내일",
@@ -9,7 +13,6 @@
 
     // generic values
     "generic.unknown": "알 수 없음",
-    "generic.list-separator": ", ", // text between listed values (like ", " in "A, B, C")
 
     // generic field values 기본적 필드 값들
     "generic.percent": "{{percent}}%",
@@ -46,6 +49,9 @@
     "quality.silver": "은",
     "quality.gold": "금",
     "quality.iridium": "이리듐",
+
+    // item names shown in recipes
+    "item.wild-seeds": "Wild Seeds (Any)", // TODO
 
     // NPC friendship 우정관계
     "friendship-status.friendly": "친근함",
@@ -124,30 +130,36 @@
     "location.islandWest.ocean": "진저섬 서쪽 (바다)",
 
     "location.fish-area": "{{locationName}} ({{areaName}})",
-    "location.unknown-fish-area": "{{locationName}} (낚시 장소 {{id}})",
+    "location.unknown-fish-area": "{{locationName}} ({{id}})",
 
 
     /*********
     ** Conditions & context tags
     *********/
-    // TODO
-    "condition-or-context-tag.negate": "{{value}} 없음",
+    "condition-or-context-tag.negate": "{{value}}가 아님",
 
-    "condition.item-type.input": "input item",
-    "condition.item-type.target": "target item",
+    "condition.day-of-month": "on specific days ({{days}})", // TODO
+    "condition.day-of-month.even": "even days", // TODO
+    "condition.day-of-month.odd": "odd days", // TODO
 
-    "condition.item-context-tag": "{{item}} has context tag {{tags}}",
-    "condition.item-context-tags": "{{item}} has context tags {{tags}}",
+    "condition.item-type.input": "넣는 아이템",
+    "condition.item-type.target": "타겟 아이템",
+
+    "condition.raw-context-tag": "context tag \"{{tag}}\"", // TODO
+    "condition.raw-condition": "query \"{{tag}}\"", // TODO
+
+    "condition.item-context-tag": "{{item}}이 {{tags}} 태그",
+    "condition.item-context-tags": "{{item}}이 {{tags}} 태그",
     "condition.item-context-tag.value": "'{{tag}}'", // the format of each context tag in the list (each context tag isn't translated)
 
-    "condition.item-edibility.edible": "{{item}} is edible",
-    "condition.item-edibility.min": "{{item}} has edibility of {{min}} or more",
-    "condition.item-edibility.range": "{{item}} has edibility of {{min}} to {{max}}",
+    "condition.item-edibility.edible": "{{item}}은 식용 가능",
+    "condition.item-edibility.min": "{{item}}은 {{min}}개 또는 그 이상 식용 가능",
+    "condition.item-edibility.range": "{{item}}은 {{min}}-{{max}}개 식용 가능",
 
     "context-tag.bone": "뼈 (아무거나)",
     "context-tag.egg": "알 (아무거나)",
     "context-tag.large-egg": "큰 알 (아무거나)",
-    "context-tag.preserved-item": "preserved {{name}}", // TODO
+    "context-tag.preserved-item": "보존된 {{name}}",
 
 
     /*********
@@ -665,17 +677,16 @@
     "config.force-full-screen.desc": "메뉴가 창 중앙이 아닌 항상 전체 화면이어야 하는지 여부. 이 기능은 주로 데이터 마이닝 필드를 볼 때 유용합니다.",
 
     // progression mode
-    // TODO
     "config.title.progression": "진행 모드",
 
-    "config.progression.show-unknown-gift-tastes.name": "Show unknown gift tastes",
-    "config.progression.show-unknown-gift-tastes.desc": "Whether to show gift tastes you haven't learned about in-game yet (e.g. from dialogue text or experimenting).",
+    "config.progression.show-unknown-gift-tastes.name": "모르는 선물 취향 보기",
+    "config.progression.show-unknown-gift-tastes.desc": "게임 내에서 아직 알지 못한 선물 취향을 표시할지 여부(예: 대화 텍스트 또는 실험을 통해).",
 
-    "config.progression.show-unknown-recipes.name": "Show unknown recipes",
-    "config.progression.show-unknown-recipes.desc": "Whether to show recipes you haven't learned in-game yet.",
+    "config.progression.show-unknown-recipes.name": "모르는 레시피 보기",
+    "config.progression.show-unknown-recipes.desc": "게임 내에서 아직 배우지 않은 레시피를 표시할지 여부.",
 
-    "config.progression.show-puzzle-solutions.name": "Show puzzle solutions",
-    "config.progression.show-puzzle-solutions.desc": "Whether to show puzzle solutions.",
+    "config.progression.show-puzzle-solutions.name": "퍼즐 해답 보기",
+    "config.progression.show-puzzle-solutions.desc": "퍼즐 해답 표시 여부.",
 
     // gift tastes
     "config.title.gift-tastes": "선물 취향",

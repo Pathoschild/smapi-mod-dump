@@ -10,7 +10,6 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using StardewDruid.Data;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.BellsAndWhistles;
@@ -21,7 +20,7 @@ namespace StardewDruid.Character
 {
     public class Actor : StardewDruid.Character.Character
     {
-        new public CharacterData.characters characterType = CharacterData.characters.disembodied;
+        new public CharacterHandle.characters characterType = CharacterHandle.characters.disembodied;
 
         public bool drawSlave;
 
@@ -30,7 +29,7 @@ namespace StardewDruid.Character
 
         }
 
-        public Actor(Data.CharacterData.characters type)
+        public Actor(CharacterHandle.characters type)
           : base(type)
         {
         }
@@ -127,7 +126,9 @@ namespace StardewDruid.Character
                         }
                         else
                         {
-                            textAboveHeadAlpha = Math.Max(0f, textAboveHeadAlpha - 0.04f);
+                            float newAlpha = textAboveHeadAlpha - 0.04f;
+
+                            textAboveHeadAlpha = newAlpha < 0f ? 0f : newAlpha;
                         }
                     }
                 }

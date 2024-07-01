@@ -16,7 +16,7 @@
       "Entries": {
         "newHat": "{{i18n:hatreactions.newHat}}",
         "404": "{{i18n:hatreactions.404}}",
-        // vanilla hats
+        // 1.5 hats
         "SV.CowboyHat": "{{i18n:hatreactions.SV.CowboyHat}}",
         "SV.BowlerHat": "{{i18n:hatreactions.SV.BowlerHat}}",
         "SV.TopHat": "{{i18n:hatreactions.SV.TopHat}}",
@@ -109,8 +109,33 @@
         "SV.TigerHat": "{{i18n:hatreactions.SV.TigerHat}}",
         "SV.???": "{{i18n:hatreactions.SV.???}}",
         "SV.WarriorHelmet": "{{i18n:hatreactions.SV.WarriorHelmet}}",
-        // json assets hats
-        "JA.DeerAntlerFall": "{{i18n:hatreactions.JA.DeerAntlerFall}}",
+        // 1.6 hats
+        "SV.AbigailsBow": "{{i18n:hatreactions.SV.AbigailsBow}}",
+        "SV.TricornHat": "{{i18n:hatreactions.SV.TricornHat}}",
+        "SV.JojaCap": "{{i18n:hatreactions.SV.JojaCap}}",
+        "SV.LaurelWreathCrown": "{{i18n:hatreactions.SV.LaurelWreathCrown}}",
+        "SV.GilsHat": "{{i18n:hatreactions.SV.GilsHat}}",
+        "SV.BlueBow": "{{i18n:hatreactions.SV.BlueBow}}",
+        "SV.DarkVelvetBow": "{{i18n:hatreactions.SV.DarkVelvetBow}}",
+        "SV.MummyMask": "{{i18n:hatreactions.SV.MummyMask}}",
+        "SV.BucketHat": "{{i18n:hatreactions.SV.BucketHat}}",
+        "SV.SquidHat": "{{i18n:hatreactions.SV.SquidHat}}",
+        "SV.SportsCap": "{{i18n:hatreactions.SV.SportsCap}}",
+        "SV.RedFez": "{{i18n:hatreactions.SV.RedFez}}",
+        "SV.RaccoonHat": "{{i18n:hatreactions.SV.RaccoonHat}}",
+        // steel/gold/iridium pans omitted here; they use the copper pan line
+        "SV.MysteryHat": "{{i18n:hatreactions.SV.MysteryHat}}",
+        "SV.DarkBallcap": "{{i18n:hatreactions.SV.DarkBallcap}}",
+        "SV.LeprechaunHat": "{{i18n:hatreactions.SV.LeprechaunHat}}",
+        "SV.JunimoHat": "{{i18n:hatreactions.SV.JunimoHat}}",
+        "SV.PaperHat": "{{i18n:hatreactions.SV.PaperHat}}",
+        "SV.PageboyCap": "{{i18n:hatreactions.SV.PageboyCap}}",
+        "SV.JesterHat": "{{i18n:hatreactions.SV.JesterHat}}",
+        "SV.BlueRibbon": "{{i18n:hatreactions.SV.BlueRibbon}}",
+        "SV.GovernorsHat": "{{i18n:hatreactions.SV.GovernorsHat}}",
+        "SV.WhiteBow": "{{i18n:hatreactions.SV.WhiteBow}}",
+        "SV.SpaceHelmet": "{{i18n:hatreactions.SV.SpaceHelmet}}",
+        "SV.InfinityCrown": "{{i18n:hatreactions.SV.InfinityCrown}}",
         // fashion sense hats
         "FS.PC.Hats/Hat/FlamboyantHat": "{{i18n:hatreactions.FS.PC.Hats/Hat/FlamboyantHat}}",
 

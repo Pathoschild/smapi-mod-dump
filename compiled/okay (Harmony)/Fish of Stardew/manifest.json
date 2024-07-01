@@ -1,0 +1,20 @@
+{
+  "Name": "Fish of Stardew",
+  "Author": "AztecViper",
+  "Version": "3.1.1",
+  "Description": "Description",
+  "UniqueID": "aztecviper.fishOfStardewMod",
+  "EntryDll": "FishOfStardewMod.dll",
+  "MinimumApiVersion": "4.0.0-alpha",
+  "UpdateKeys": [ "nexus:???" ],
+  "Dependencies": [
+    {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "IsRequired": false
+    },
+    {
+      "UniqueID": "PeacefulEnd.CustomCompanions",
+      "IsRequired": false
+    }
+  ]
+}

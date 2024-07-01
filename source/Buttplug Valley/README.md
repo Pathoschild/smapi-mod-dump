@@ -24,8 +24,9 @@ This mod allows you to connect your Buttplug.io compatible toys to Stardew Valle
 * `I` - Disconnect Toy and stop all vibrations
 * `K` - Reconnect Toy
 ## Features
+Features in bold are new in the latest release!
 * Vibrations on taking damage (Scales with health)
-* Vibrations on fully cutting down trees
+* Vibrations on **hitting trees, felling trees** and breaking the tree stump
 * Vibrations on picking up fish, crops and milk. (Scales with quality)
 * Vibrations on day end and start.
 * Vibrations on fully breaking rocks.
@@ -33,10 +34,14 @@ This mod allows you to connect your Buttplug.io compatible toys to Stardew Valle
 * Vibrations on killing enemies. Scales with the amount of enemies killed at once.
 * Scaling vibrations with the amount of stones broken at once.
 * Vibrations in the arcade machine games.
-* **Vibrations on collecting foraging items!**
-* **Vibrations on Horse Riding!**
-* **Vibrations on opening dialogue boxes!** (Mailbox, TV, talking to people etc.)
-* **Anti Timeout feature, to keep your toys from disconnecting!**
+* Vibrations on collecting foraging items!
+* Vibrations on Horse Riding! **Now synced to horse movement!**
+* Vibrations on opening dialogue boxes! (Mailbox, TV, talking to people etc.)
+* Anti Timeout feature, to keep your toys from disconnecting!
+* **Xtardew Valley, Dark Club and RainsInteractionMod integration! (Thanks to Darkstar for making this happen!)**
+* **Vibrations on using the hoe and watering can! (Scales with tool power)**
+* **Vibrations on cutting grass!**
+* **Vibrations on kissing your partner (Thx to Darkstar for this!)**
 * Customizable vibration strength and toggles for each feature
   * Requires the [Generic Mod Config Menu Mod](https://www.moddrop.com/stardew-valley/mods/771692-generic-mod-config-menu)
     * Can also be found on [Nexus Mods](https://www.nexusmods.com/stardewvalley/mods/5098)

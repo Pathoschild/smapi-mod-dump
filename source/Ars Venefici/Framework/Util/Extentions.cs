@@ -53,22 +53,22 @@ namespace ArsVenefici.Framework.Util
 
         public static int GetCurrentMana(this Farmer player)
         {
-            return ModEntry.Mana.GetMana(player);
+            return ModEntry.ManaBarApi.GetMana(player);
         }
 
         public static void AddMana(this Farmer player, int amt)
         {
-            ModEntry.Mana.AddMana(player, amt);
+            ModEntry.ManaBarApi.AddMana(player, amt);
         }
 
         public static int GetMaxMana(this Farmer player)
         {
-            return ModEntry.Mana.GetMaxMana(player);
+            return ModEntry.ManaBarApi.GetMaxMana(player);
         }
 
         public static void SetMaxMana(this Farmer player, int newCap)
         {
-            ModEntry.Mana.SetMaxMana(player, newCap);
+            ModEntry.ManaBarApi.SetMaxMana(player, newCap);
         }
 
         /// <summary>Get a self-updating cached view of the player's magic metadata.</summary>

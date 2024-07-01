@@ -9,8 +9,8 @@
 *************************************************/
 
 using AchtuurCore.Extensions;
+using AchtuurCore.Framework.Borders;
 using HarmonyLib;
-using HoverLabels.Drawing;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Objects;
@@ -68,6 +68,6 @@ internal class IndoorPotLabel : ObjectLabel
         ResetBorders();
         SObject harvestedItem = hoverPotCrop.programColored.Value ? new ColoredObject(hoverPotCrop.indexOfHarvest.Value, 1, hoverPotCrop.tintColor.Value) : new SObject(hoverPotCrop.indexOfHarvest.Value, 1, false, -1, 0);
         string title = $"{hoverObject.DisplayName} ({harvestedItem.DisplayName})";
-        AddBorder(new TitleLabelText(title));
+        AddBorder(new TitleLabel(title));
     }
 }

@@ -15,8 +15,8 @@ namespace WildTreeTweaks
 
         public bool EnableMod { get; set; } = true; // enable the mod
         public bool OnlyOnFarm { get; set; } = false; // only overwrite farm trees (done)
-        public bool GrowInWinter { get; set; } = true; // just like FTT, grow in winter -- patched in Tree.TryGetData
-        public bool GrowNearTrees { get; set; } = true; // true = growth is NOT blocked by adjacent trees -- patched by Tree.IsGrowthBlockedByNearbyTree
+        public bool GrowInWinter { get; set; } = false; // just like FTT, grow in winter -- patched in Tree.TryGetData
+        public bool GrowNearTrees { get; set; } = false; // true = growth is NOT blocked by adjacent trees -- patched by Tree.IsGrowthBlockedByNearbyTree
         public bool MossFromMature { get; set; } = true; // whether they can grow moss from maturity (growthStage 4) or default (growthStage 14)
         public float Health { get; set; } = 10f; // start health -- patched by Tree constructor
         public float WoodMultiplier { get; set; } = 1f; // multiply wood output -- patched by Tree.tickUpdate && ModEntry.performTreeFall (in methods)

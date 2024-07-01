@@ -8,14 +8,14 @@
 **
 *************************************************/
 
-using LazyMod.Framework.Automation;
-using LazyMod.Framework.Config;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
+using weizinai.StardewValleyMod.LazyMod.Automation;
+using weizinai.StardewValleyMod.LazyMod.Framework.Config;
 
-namespace LazyMod.Framework;
+namespace weizinai.StardewValleyMod.LazyMod.Framework;
 
 internal class AutomationManger
 {
@@ -36,35 +36,35 @@ internal class AutomationManger
     {
         // 初始化
         this.config = config;
-        ticksPerAction = config.Cooldown;
-        InitAutomates();
+        this.ticksPerAction = config.Cooldown;
+        this.InitAutomates();
         // 注册事件
-        helper.Events.GameLoop.DayStarted += OnDayStarted;
-        helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
-        helper.Events.GameLoop.DayEnding += OnDayEnding;
-        helper.Events.Input.ButtonsChanged += OnButtonChanged;
+        helper.Events.GameLoop.DayStarted += this.OnDayStarted;
+        helper.Events.GameLoop.UpdateTicked += this.OnUpdateTicked;
+        helper.Events.GameLoop.DayEnding += this.OnDayEnding;
+        helper.Events.Input.ButtonsChanged += this.OnButtonChanged;
     }
 
     private void OnDayStarted(object? sender, DayStartedEventArgs dayStartedEventArgs)
     {
-        if (config.AutoOpenAnimalDoor) AutoAnimal.AutoToggleAnimalDoor(true);
+        if (this.config.AutoOpenAnimalDoor) AutoAnimal.AutoToggleAnimalDoor(true);
     }
 
     private void OnUpdateTicked(object? sender, UpdateTickedEventArgs updateTickedEventArgs)
     {
-        if (!modEnable || !UpdateCooldown()) return;
+        if (!this.modEnable || !this.UpdateCooldown()) return;
 
-        (automations[4] as AutoFishing)!.AutoMenuFunction();
+        (this.automations[4] as AutoFishing)!.AutoMenuFunction();
 
-        UpdateAutomate();
+        this.UpdateAutomate();
     }
 
     private bool UpdateCooldown()
     {
-        skippedActionTicks++;
-        if (skippedActionTicks < ticksPerAction) return false;
+        this.skippedActionTicks++;
+        if (this.skippedActionTicks < this.ticksPerAction) return false;
 
-        skippedActionTicks = 0;
+        this.skippedActionTicks = 0;
         return true;
     }
 
@@ -72,70 +72,70 @@ internal class AutomationManger
     {
         if (!Context.IsPlayerFree) return;
 
-        location = Game1.currentLocation;
-        player = Game1.player;
-        tool = player?.CurrentTool;
-        item = player?.CurrentItem;
+        this.location = Game1.currentLocation;
+        this.player = Game1.player;
+        this.tool = this.player?.CurrentTool;
+        this.item = this.player?.CurrentItem;
 
-        if (location is null || player is null) return;
+        if (this.location is null || this.player is null) return;
 
-        tileCache.Clear();
-        foreach (var automate in automations) automate.AutoDoFunction(location, player, tool, item);
-        tileCache.Clear();
+        this.tileCache.Clear();
+        foreach (var automate in this.automations) automate.AutoDoFunction(this.location, this.player, this.tool, this.item);
+        this.tileCache.Clear();
     }
 
     private void OnDayEnding(object? sender, DayEndingEventArgs dayEndingEventArgs)
     {
-        if (config.AutoOpenAnimalDoor) AutoAnimal.AutoToggleAnimalDoor(false);
+        if (this.config.AutoOpenAnimalDoor) AutoAnimal.AutoToggleAnimalDoor(false);
     }
 
     private void OnButtonChanged(object? sender, ButtonsChangedEventArgs e)
     {
-        if (config.ToggleModStateKeybind.JustPressed() && Context.IsPlayerFree)
+        if (this.config.ToggleModStateKeybind.JustPressed() && Context.IsPlayerFree)
         {
-            var message = modEnable ? new HUDMessage(I18n.Message_ModDisable()) : new HUDMessage(I18n.Message_ModEnable());
+            var message = this.modEnable ? new HUDMessage(I18n.Message_ModDisable()) : new HUDMessage(I18n.Message_ModEnable());
             message.noIcon = true;
             Game1.addHUDMessage(message);
-            modEnable = !modEnable;
+            this.modEnable = !this.modEnable;
         }
     }
 
     private void InitAutomates()
     {
-        automations.AddRange(new Automate[]
+        this.automations.AddRange(new Automate[]
         {
-            new AutoFarming(config, GetTileGrid),
-            new AutoAnimal(config, GetTileGrid),
-            new AutoMining(config, GetTileGrid),
-            new AutoForaging(config, GetTileGrid),
-            new AutoFishing(config, GetTileGrid),
-            new AutoFood(config, GetTileGrid),
-            new AutoOther(config, GetTileGrid)
+            new AutoFarming(this.config, this.GetTileGrid),
+            new AutoAnimal(this.config, this.GetTileGrid),
+            new AutoMining(this.config, this.GetTileGrid),
+            new AutoForaging(this.config, this.GetTileGrid),
+            new AutoFishing(this.config, this.GetTileGrid),
+            new AutoFood(this.config, this.GetTileGrid),
+            new AutoOther(this.config, this.GetTileGrid)
         });
     }
 
     public void UpdateConfig(ModConfig newConfig)
     {
-        foreach (var automation in automations)
+        foreach (var automation in this.automations)
         {
             automation.UpdateConfig(newConfig);
         }
 
-        config = newConfig;
-        ticksPerAction = config.Cooldown;
+        this.config = newConfig;
+        this.ticksPerAction = this.config.Cooldown;
     }
 
     private List<Vector2> GetTileGrid(int range)
     {
-        if (tileCache.TryGetValue(range, out var cache))
+        if (this.tileCache.TryGetValue(range, out var cache))
             return cache;
 
-        var origin = player!.Tile;
+        var origin = this.player!.Tile;
         var grid = new List<Vector2>();
         for (var x = -range; x <= range; x++)
             for (var y = -range; y <= range; y++)
                 grid.Add(new Vector2(origin.X + x, origin.Y + y));
-        tileCache.Add(range, grid);
+        this.tileCache.Add(range, grid);
         return grid;
     }
 }

@@ -16,6 +16,14 @@ namespace LetsMoveIt
 {
     internal class Mod1
     {
+        /// <summary>Get the local tile with local offset.</summary>
+        /// <param name="tile">Tile</param>
+        /// <param name="x">Offset X</param>
+        /// <param name="y">Offset Y</param>
+        public static Vector2 LocalTile(Vector2 tile, float x = 0, float y = 0)
+        {
+            return Game1.GlobalToLocal(new Vector2(x, y) + tile * 64);
+        }
         /// <summary>Get the local cursor tile with local offset.</summary>
         /// <param name="x">Offset X</param>
         /// <param name="y">Offset Y</param>

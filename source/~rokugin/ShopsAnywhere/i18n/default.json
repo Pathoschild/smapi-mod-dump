@@ -1,0 +1,18 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/rokugin/StardewMods
+**
+*************************************************/
+
+{
+  "shops-button-config.name": "Shops Menu Button",
+  "x-offset.name": "X Offset",
+  "x-offset.tooltip": "Pixel X offset. Default: -48",
+  "y-offset.name": "Y Offset",
+  "y-offset.tooltip": "Pixel Y offset. Default: 555",
+  "shops-button.name": "Shops"
+}

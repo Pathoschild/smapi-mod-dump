@@ -16,6 +16,16 @@ Core mod required for most of my other mods, available on [Nexus Mods](https://w
 
 
 # Changelog
+
+## 1.3.0
+* Internal rework of particles
+
+## 1.2.4
+* New/Changed
+  * Added extra drawing stuff
+  * Added lights to particles
+
+
 ## 1.2.3
 * New/Changed
   * Added borders from Hoverlabels here

@@ -44,12 +44,11 @@ namespace Pathoschild.Stardew.DataLayers.Layers
         {
             const string layerId = "Buildable";
 
-            this.Legend = new[]
-            {
+            this.Legend = [
                 this.Buildable = new LegendEntry(I18n.Keys.Buildable_Buildable, colors.Get(layerId, "Buildable", Color.Green)),
                 this.Occupied = new LegendEntry(I18n.Keys.Buildable_Occupied, colors.Get(layerId, "Occupied", Color.Orange)),
                 this.NonBuildable = new LegendEntry(I18n.Keys.Buildable_NotBuildable, colors.Get(layerId, "NotBuildable", Color.Red))
-            };
+            ];
         }
 
         /// <summary>Get the updated data layer tiles.</summary>
@@ -62,11 +61,10 @@ namespace Pathoschild.Stardew.DataLayers.Layers
             TileData[] tiles = this.GetTiles(location, visibleTiles).ToArray();
             TileData[] buildableTiles = tiles.Where(p => p.Type.Id == this.Buildable.Id).ToArray();
 
-            return new[]
-            {
+            return [
                 new TileGroup(buildableTiles, outerBorderColor: this.Buildable.Color),
                 new TileGroup(tiles.Except(buildableTiles))
-            };
+            ];
         }
 
 

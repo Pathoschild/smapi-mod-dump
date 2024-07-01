@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/LonerAxl/Stardew_HarvestCalendar
+   Git: https://github.com/LonerAxl/Stardew_HarvestCalendar.git
+
+mods:
+   Harvest Calendar
+
+latest commit:
+   commit d8792101abf276106879878bbb820a6d64a7a172
+   Author: Axl <czha220@student.monash.edu>
+   Date:   Sun Jun 23 00:26:12 2024 +0800
+   
+       update readme
+   

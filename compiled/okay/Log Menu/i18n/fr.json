@@ -1,0 +1,14 @@
+{
+  "config.start-from-bottom.name": "Commencer par le bas",
+  "config.start-from-bottom.tooltip": "Indique si les messages doivent être affichés en bas ou en haut lors de l'ouverture du menu Journal.",
+  "config.oldest-to-newest.name": "Du plus ancien au plus récent",
+  "config.oldest-to-newest.tooltip": "Indique si les messages du menu Journal doivent être affichés du plus ancien (en haut) au plus récent (en bas) ou vice-versa.",
+  "config.non-npc-dialogue.name": "Dialogue sans PNJ",
+  "config.non-npc-dialogue.tooltip": "Indique s'il faut inclure le dialogue d'interaction avec des objets, des meubles, etc.",
+  "config.toggle-hud-messages.name": "Messages d’affichage",
+  "config.toggle-hud-messages.tooltip": "S'il faut inclure les messages d’affichage du HUD (par exemple, « Nouvelle entrée de journal »). N'inclut pas les messages HUD provenant de la collecte d'objets.",
+  "config.log-limit.name": "Lignes de dialogue maximales",
+  "config.log-limit.tooltip": "Nombre maximum de lignes de dialogue à afficher dans le menu.",
+  "config.log-menu-button.name": "Raccourci d’ouverture",
+  "config.log-menu-button.tooltip": "Touche sur laquelle appuyer pour ouvrir le menu du journal de Log Menu."
+}

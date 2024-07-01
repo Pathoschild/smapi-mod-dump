@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Custom Farm Loader",
   "Author": "DeLiXx",
-  "Version": "2.1.2",
+  "Version": "2.1.3",
   "Description": "Improves farm related UI, loads custom farms, manages farm specific features and fixes vanilla bugs.",
   "UniqueID": "DeLiXx.Custom_Farm_Loader",
   "EntryDll": "Custom Farm Loader.dll",

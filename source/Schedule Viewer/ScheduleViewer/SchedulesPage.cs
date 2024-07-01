@@ -18,7 +18,6 @@ using StardewValley.Quests;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace ScheduleViewer
 {
@@ -59,8 +58,6 @@ namespace ScheduleViewer
 
         private readonly Texture2D icons = ModEntry.ModHelper.ModContent.Load<Texture2D>("assets/Icons.png");
 
-        public Friendship emptyFriendship = new();
-
         /// <summary>LookupAnything</summary>
         public NPC hoveredNpc;
 
@@ -69,7 +66,7 @@ namespace ScheduleViewer
             : base(Game1.uiViewport.Width / 2 - (800 + IClickableMenu.borderWidth * 2) / 2, Game1.uiViewport.Height / 2 - (600 + IClickableMenu.borderWidth * 2) / 2, 800 + 36 + IClickableMenu.borderWidth * 2, 600 + IClickableMenu.borderWidth * 2, showUpperRightCloseButton: true)
         {
             // filter npcs
-            IEnumerable<KeyValuePair<string, Schedule.NPCSchedule>> filteredSchedules = Schedule.GetSchedules(ModEntry.Config.OnlyShowSocializableNPCs, ModEntry.Config.OnlyShowMetNPCs);
+            IEnumerable<KeyValuePair<string, Schedule.NPCSchedule>> filteredSchedules = Schedule.GetSchedules(new(ModEntry.Config.IgnoredNPCs, ModEntry.Config.OnlyShowSocializableNPCs, ModEntry.Config.OnlyShowMetNPCs));
             // sort npcs
             filteredSchedules = ModEntry.Config.NPCSortOrder switch
             {
@@ -86,14 +83,13 @@ namespace ScheduleViewer
             int itemIndex = 0;
             int lastQuestIndex = -1;
             Rectangle spriteBounds = new(base.xPositionOnScreen + IClickableMenu.borderWidth + 4, base.yPositionOnScreen + IClickableMenu.borderWidth + spriteSize / 2, 260, spriteSize);
-            Regex nameRegex = new($"-{ModEntry.ModHelper.ModRegistry.ModID}-\\d");
             foreach (var item in filteredSchedules)
             {
                 // if not host then need to get sprite info
                 if (item.Value.NPC == null)
                 {
                     // clear out extra count details from name (see Schedule.cs:241)
-                    NPC npc = Game1.getCharacterFromName(nameRegex.Replace(item.Key, ""));
+                    NPC npc = Game1.getCharacterFromName(Schedule.GetNameFromScheduleKey(item.Key));
                     item.Value.NPC = npc;
                 }
                 // update CanAccess variable
@@ -486,13 +482,24 @@ namespace ScheduleViewer
             // draw sprite
             sprite.draw(b);
 
+            // draw quest icon
+            this.questIcons[i]?.draw(b);
+
+            // draw talked to icon
+            Game1.player.friendshipData.TryGetValue(npc?.Name, out Friendship friendship);
+            if (friendship != null && friendship.TalkedToToday)
+            {
+                b.Draw(Game1.mouseCursors2, new Rectangle(sprite.bounds.Right - 36, sprite.bounds.Bottom + 4, 26, 22), new Rectangle(180, 175, 13, 11), Color.White);
+            } 
+            else
+            {
+                b.Draw(icons, new Rectangle(sprite.bounds.Right - 34, sprite.bounds.Bottom + 4, 26, 22), new Rectangle(2, 60, 13, 11), Color.White);
+            }
+
             // draw name
             float lineHeight = Game1.smallFont.MeasureString("W").Y;
             float russianOffsetY = ((LocalizedContentManager.CurrentLanguageCode == LocalizedContentManager.LanguageCode.ru || LocalizedContentManager.CurrentLanguageCode == LocalizedContentManager.LanguageCode.ko) ? ((0f - lineHeight) / 2f) : 0f);
             b.DrawString(Game1.dialogueFont, displayName, new Vector2((float)(base.xPositionOnScreen + IClickableMenu.borderWidth * 3 / 2 + 64 - 20 + 96) - Game1.dialogueFont.MeasureString(displayName).X / 2f, (float)(sprite.bounds.Y + 48) + russianOffsetY - 20), Game1.textColor);
-
-            // draw quest icon
-            this.questIcons[i]?.draw(b);
 
             int x = sprite.bounds.Right + partitionSize;
             int y = sprite.bounds.Y - 4;

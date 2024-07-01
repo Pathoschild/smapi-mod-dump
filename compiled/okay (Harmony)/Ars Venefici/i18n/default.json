@@ -12,17 +12,20 @@
 	"config.open_spellbook_key.name": "Open Spell Book Button",
 	"config.open_spellbook_key.tooltip": "Press Shift and this button to open the spell book.",
 
-	"config.move_spell_lable_key.name": "Move Spell Lable Button",
-	"config.move_spell_lable_key.tooltip": "Press Shift and this button to move the spell lable.",
+	"config.spell_toggle_key.name": "Spell Toggle Button",
+	"config.spell_toggle_key.tooltip": "The button to toggle spell casting on or off. Press Shift and this button to move the spell lable.",
 
 	"config.next_spell_key.name": "Next Spell Button",
-	"config.next_spell_key.tooltip": "The button to move to the next spell.",
+	"config.next_spell_key.tooltip": "The button to move to the next spell. Press Shift and this button to move to the next shape group on the selected spell.",
 
 	"config.previous_spell_key.name": "Previous Spell Button",
-	"config.previous_spell_key.tooltip": "The button to move to the previous spell.",
+	"config.previous_spell_key.tooltip": "The button to move to the previous spell. Press Shift and this button to move to the previous shape group on the selected spell.",
 
 	"config.cast_spell_key.name": "Cast Spell Button",
 	"config.cast_spell_key.tooltip": "The button to cast the current spell.",
+
+	"config.open_tutorial_text_key.name": "Open Tutorial Text Button",
+	"config.open_tutorial_text_key.tooltip": "The button to open a menu showing the text from the tutorial.",
 
 	/*********
 	** Spell Parts
@@ -42,6 +45,9 @@
 
 	"spellpart.aoe.name": "Area of Effect",
 	"spellpart.aoe.description": "Will cast the spell in an area around the place where it's triggered. This shape must be placed last.",
+
+	"spellpart.zone.name": "Zone",
+	"spellpart.zone.description": "Makes a 'zone' of the spell cast. This shape must be placed last. This shape will continue ticking the spell effect it was attached to.",
 
 
 	"spellpart.dig.name": "Dig",
@@ -74,8 +80,14 @@
 	"spellpart.life_drain.name": "Life Drain",
 	"spellpart.life_drain.description": "Damages the target and heals you based on the damage dealt.",
 
+	"spellpart.life_tap.name": "Life Tap",
+	"spellpart.life_tap.description": "Damages the target and restores your mana based on the damage dealt.",
+
 	"spellpart.physical_damage.name": "Physical Damage",
 	"spellpart.physical_damage.description": "Damages the target.",
+
+	"spellpart.haste.name": "Haste",
+	"spellpart.haste.description": "Increases the player's speed'.",
 
 
 	"spellpart.damage.name": "Damage",
@@ -96,32 +108,110 @@
 	"spellpart.healing.name": "Healing",
 	"spellpart.healing.description": "Strengthens the potency of healing components.",
 
+	"spellpart.duration.name": "Duration",
+	"spellpart.duration.description": "Adds additional time to Zone spells.",
+
+	"spellpart.mining_power.name": "Mining Power",
+	"spellpart.mining_power.description": "Adds +1 axe/pickaxe upgrade to Dig spells.",
+
+	/*********
+	** Buffs/Debuffs
+	*********/
+
+	"debuff.grow_sickness.name": "Grow Sickness",
+
+	/*********
+	** Spell Cast Warnings
+	*********/
+
+	"world.max_grow_spell_cast.message.1": "You tried to cast your grow spell,",
+	"world.max_grow_spell_cast.message.2": "but you feel your strength leaving you.",
+	"world.max_grow_spell_cast.message.3": "That's enough use of the grow component in one day!",
+
+	/*********
+	** UI
+	*********/
+
+	"ui.mana_cost.name": "Mana Cost",
+
+	"ui.spell_label.shape_group.name": "Shape Group",
+
+	"ui.spell_book.source_area.name": "Source Area",
+	"ui.spell_book.shape_group_area.name": "Shape Group Area",
+	"ui.spell_book.spell_grammar_area.name": "Spell Grammar Area",
+
+	"ui.magic_altar.offense_tab.name": "Offense",
+	"ui.magic_altar.defense_tab.name": "Defense",
+	"ui.magic_altar.utility_tab.name": "Utility",
+
+	/*********
+	** Skill/Professions
+	*********/
+
+	"skill.wizardry.name": "Wizardry",
+	"skill.extra_level_up_info.text": "+1 mana regen",
+	"skill.skill_page_hover_text_mana_regen.text": "mana regen",
+
+	"professions.ManaEfficiency1.name": "Mana Effeciency I",
+	"professions.ManaEfficiency1.description": "Total mana cost of spells is reduced by about a third",
+
+	"professions.ManaEfficiency2.name": "Mana Effeciency II",
+	"professions.ManaEfficiency2.description": "Total mana cost of spells is reduced by about half",
+
+	"professions.ManaRegen1.name": "Mana Regen I",
+	"professions.ManaRegen1.description": "+0.5 mana regen per level",
+
+	"professions.ManaRegen2.name": "Mana Regen II",
+	"professions.ManaRegen2.description": "+1 mana regen per level",
+
+	"professions.ManaConservation.name": "Mana Conservation",
+	"professions.ManaConservation.description": "25% chance of spells not costing any mana",
+
+	"professions.ManaCap.name": "Mana Reserve",
+	"professions.ManaCap.description": "+500 max mana",
+
 	/*********
     ** Wizard learn-magic event
     *********/
 
-	"event.wizard.1": "Greetings @.",
-	"event.wizard.2": "I have noticed your strong interest in magic.",
-	"event.wizard.3": "Would you be interested in me showing you how to create spells?",
-	"event.wizard.4": "Very Well. Here is a spell book for you to create spells.",
+	"event.learn_wizardry.wizard_dialogue_1": "Greetings @.",
 
-	"event.message.1": "The wizard gave you a spell book! You will now be able to create spells! Press shift and 'B' to open it.",
+	"event.learn_wizardry.wizard_dialogue_2": "I have noticed your strong interest in magic.",
+	"event.learn_wizardry.wizard_dialogue_3": "Would you be interested in me showing you how to create spells?",
 
-	"event.wizard.5": "The spell book will show you all the different spell parts you can use.",
-	"event.wizard.6": "To create a spells, you will need to place one or multiple shapes, which are squares, into each shape group on the spell page you are on.",
-	"event.wizard.7": "Then you will need to place one or multiple components, which are octagons, into the spell grammar section of the page.",
-	"event.wizard.8": "You can change the way shapes, and components behave with modifiers, which are diamonds.",
-	"event.wizard.9": "Be sure to give your spell a name. Once you have created your spell, you can close your spell book and the spell will be saved.",
-	"event.wizard.10": "Once you have closed your spell book, you can cycle through your list of spells.",
+	"event.learn_wizardry.wizard_dialogue_4": "Very Well. Here is a spell book for you to create spells.",
 
-	"event.message.2": "Use 'Z' and 'X' to move through your list of spells. You can also use shift and 'Z' and shift and 'X' to cycle through a spell's shape groups.",
+	"event.learn_wizardry.message_1": "The wizard gave you a spell book! You will now be able to create spells! Press shift and 'B' to open it.",
 
-	"event.wizard.11": "Once you have the spell you want, you will be able to cast it.",
+	"event.learn_wizardry.wizard_dialogue_5": "The spell book will show you all the different spell parts you can use.",
+	"event.learn_wizardry.wizard_dialogue_6": "But since you are just starting out, you will have no spell parts to use.",
+	"event.learn_wizardry.wizard_dialogue_7": "To learn spell parts, you need to use a magic altar.",
+	"event.learn_wizardry.wizard_dialogue_8": "Here's the recipe for it.",
 
-	"event.message.3": "To cast a spell, press Q.",
-	"event.message.4": "These controls can be adjusted in Ars Veneficus's config file.",
+	"event.learn_wizardry.message_2": "The wizard gave you a magic altar recipe!",
 
-	"event.wizard.12": "Good luck on your magic endeavors.",
+	"event.learn_wizardry.wizard_dialogue_9": "Place the altar in the world and right click. You will be able to see all the spell parts you can learn.",
+	"event.learn_wizardry.wizard_dialogue_10": "Learning these spell parts will require materials so make sure you have them on hand.",
 
-	"event.wizard.abovehead": "WIZARDRY"
+	"event.learn_wizardry.message_3": "Right clicking on the magic altar will open its menu! There are three skill trees: Offense, Defense, and Utility. You can switch between them using the tab buttons at the top of the menu.",
+	"event.learn_wizardry.message_4": "Left click and drag to move the view of the skill tree. Hovering over the spell part icon you want to learn will show a tooltip.",
+	"event.learn_wizardry.message_5": "The tooltip will show you what materials you need and what spell parts you need to have learned already to learn the spell part you want.",
+	"event.learn_wizardry.message_6": "Once you have met the requirements, left click on the spell part icon to learn it! This will consume the materials in your inventory.",
+
+	"event.learn_wizardry.wizard_dialogue_11": "To create a spells, you will need to place one or multiple shapes, which are squares, into each shape group on the spell page you are on.",
+	"event.learn_wizardry.wizard_dialogue_12": "Then you will need to place one or multiple components, which are octagons, into the spell grammar section of the page.",
+	"event.learn_wizardry.wizard_dialogue_13": "You can change the way shapes, and components behave with modifiers, which are diamonds.",
+	"event.learn_wizardry.wizard_dialogue_14": "Be sure to give your spell a name. Once you have created your spell, you can close your spell book and the spell will be saved.",
+	"event.learn_wizardry.wizard_dialogue_15": "Once you have closed your spell book, you can cycle through your list of spells.",
+
+	"event.learn_wizardry.message_7": "Use 'Z' and 'X' to move through your list of spells. You can also use shift and 'Z' and shift and 'X' to cycle through a spell's shape groups.",
+
+	"event.learn_wizardry.wizard_dialogue_16": "Once you have the spell you want, you will be able to cast it.",
+
+	"event.learn_wizardry.message_8": "To cast a spell, press Q.",
+	"event.learn_wizardry.message_9": "The information from this tutorial can be viewed again by pressing 'G'. These controls can be adjusted in Ars Venefici's config file.",
+
+	"event.learn_wizardry.wizard_dialogue_17": "Good luck on your magic endeavors.",
+
+	"event.learn_wizardry.wizard_dialogue_abovehead": "WIZARDRY"
 }

@@ -13,6 +13,11 @@
   "DisplayPlayerName": true,
   "DisplayChestItem": true,
   "DisplayChestItemBorder": true,
+  "DisplayEnchantmentResult": true,
+  "ShowMoreInfoWhenClickCalendarDay": true,
+  "ShowMenuHiddenItemInfo": true,
+  "CalicoJackGameEasier": true,
+  "IslandWestCaveGameEasier": true,
   "MovieTheaterOpenCraneGame": true,
   "SeedMakerBumperHarvest": true,
   "SeedMakerConfig": [
@@ -27,5 +32,8 @@
     7
   ],
   "IncreasePrismaticSlimeChances": true,
-  "WheelSpinGameForceGreen": true
+  "WheelSpinGameForceGreen": true,
+  "MineCartGameEasier": true,
+  "GiantCropEasier": true,
+  "GiantCropChance": 1.0
 }

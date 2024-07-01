@@ -10,6 +10,7 @@
 
 #if COMMON_BCINVENTORY
 
+using System;
 using System.Collections.Generic;
 
 using Microsoft.Xna.Framework;
@@ -143,5 +144,66 @@ public interface IInventoryProvider {
 	int GetActualCapacity(object obj, GameLocation? location, Farmer? who);
 
 }
+
+
+/// <summary>
+/// This is an extension of <see cref="IInventoryProvider"/> that allows you
+/// to implement custom logic that runs before and after an inventory is
+/// used for write operations. You can use this to perform locks or to
+/// synchronize an object.
+/// </summary>
+public interface IEventedInventoryProvider : IInventoryProvider {
+
+	/// <summary>
+	/// The callback method you call when we have either obtained exclusive
+	/// access to the inventory, or doing so has failed for some reason.
+	/// </summary>
+	/// <param name="success">Whether or not we have obtained exclusive access</param>
+	delegate void StartExclusiveCallback(bool success);
+
+	/// <summary>
+	/// This is called when we need exclusive access to an inventory to perform
+	/// write operations. You are expected to either return a boolean, or
+	/// return <c>null</c> and then call <paramref name="callback"/>
+	/// when any logic necessary to obtain write access to the inventory is
+	/// completed, and may call it immediately.
+	///
+	/// If this method returns <c>null</c>, then you MUST call onComplete even
+	/// if the object cannot be obtained for write access.
+	///
+	/// If you are using native NetMutex to control exclusive access, you do
+	/// not need to use these methods and can just use the standard
+	/// <see cref="IInventoryProvider.GetMutex(object, GameLocation?, Farmer?)"/>
+	/// and <see cref="IInventoryProvider.IsMutexRequired(object, GameLocation?, Farmer?)"/>
+	/// methods for exclusive access.
+	/// 
+	/// If you do not call onComplete within 5 seconds, the operation will
+	/// time out and an error will be logged / shown to the user.
+	/// </summary>
+	/// <param name="obj">the object</param>
+	/// <param name="location">the map where the object is</param>
+	/// <param name="who">the player accessing the inventory, or null if no player is involved</param>
+	/// <param name="callback">A callback to call when the object has been
+	/// obtained for write access. Call this with <c>true</c> if the object
+	/// was obtained successfully, or <c>false</c> if it could not be
+	/// obtained successfully.</param>
+	/// <returns>Whether there was an immediate success (<c>true</c>), an
+	/// immediate failure (<c>false</c>), or we should expect the callback
+	/// to be called (<c>null</c>).</returns>
+	bool? StartExclusive(object obj, GameLocation? location, Farmer? who, StartExclusiveCallback callback);
+
+	/// <summary>
+	/// This is called whenever we are done using an inventory exclusively,
+	/// and can be used to perform any necessary cleanup logic and to release
+	/// any locks.
+	/// </summary>
+	/// <param name="obj">the object</param>
+	/// <param name="location">the map where the object is</param>
+	/// <param name="who">the player accessing the inventory, or null if no player is involved</param>
+	void EndExclusive(object obj, GameLocation? location, Farmer? who);
+
+}
+
+
 
 #endif

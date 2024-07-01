@@ -74,7 +74,7 @@ internal class TileShareRangeOverlay : AchtuurCore.Framework.Overlay
 
 
                 // Draw tile and border
-                spriteBatch.DrawLine(screenCoord.X, screenCoord.Y, new Vector2(tileSize * row_length, tileSize), color);
+                spriteBatch.DrawRect(screenCoord.X, screenCoord.Y, new Vector2(tileSize * row_length, tileSize), color);
                 //spriteBatch.DrawLine(screenCoord.X, screenCoord.Y, new Vector2(tileSize, tileSize), color);
 
                 DrawEdgeBordersToOutside(spriteBatch, tile, color * (1f / color_fac), ExpShareRadius, currentTile);
@@ -88,7 +88,7 @@ internal class TileShareRangeOverlay : AchtuurCore.Framework.Overlay
             float screenX = visibleArea.X * Game1.tileSize - Game1.viewport.X;
             float screenY = visibleArea.Y * Game1.tileSize - Game1.viewport.Y;
 
-            spriteBatch.DrawLine(screenX, screenY, tileSize * new Vector2(visibleArea.Width, visibleArea.Height), color);
+            spriteBatch.DrawRect(screenX, screenY, tileSize * new Vector2(visibleArea.Width, visibleArea.Height), color);
         }
 
 
@@ -98,7 +98,7 @@ internal class TileShareRangeOverlay : AchtuurCore.Framework.Overlay
             float screenX = tile.X * Game1.tileSize - Game1.viewport.X;
             float screenY = tile.Y * Game1.tileSize - Game1.viewport.Y;
             Color color = FarmerInRangeColor * color_fac;
-            spriteBatch.DrawLine(screenX + tileGap, screenY + tileGap, new Vector2(tileSize - tileGap * 2, tileSize - tileGap * 2), color);
+            spriteBatch.DrawRect(screenX + tileGap, screenY + tileGap, new Vector2(tileSize - tileGap * 2, tileSize - tileGap * 2), color);
             DrawEdgeBorders(spriteBatch, tile, color * (1f / color_fac));
         }
     }

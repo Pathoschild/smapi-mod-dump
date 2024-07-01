@@ -1,0 +1,146 @@
+﻿{
+	"Colors": [
+		// 1: YELLOW
+		{
+			"Main": "FFF798",
+			"Hover": "FFEA61",
+			"Header": "FFE642",
+			"Accent": "603924",
+			"Shadow": "FAC957"
+		},
+		// 2: CHARTREUSE
+		{
+			"Main": "CDFFA1",
+			"Hover": "AFE675",
+			"Header": "AEE65C",
+			"Accent": "415425",
+			"Shadow": "A2D169"
+		},
+		// 3: GREEN
+		{
+			"Main": "A9F5BD",
+			"Hover": "6CEB94",
+			"Header": "45E678",
+			"Accent": "005B29",
+			"Shadow": "60D179"
+		},
+		// 4: AQUAMARINE
+		{
+			"Main": "A6FFDE",
+			"Hover": "67F5C8",
+			"Header": "1DF2BD",
+			"Accent": "084D3E",
+			"Shadow": "52D9B5"
+		},
+		// 5: BLUE
+		{
+			"Main": "AAF2FA",
+			"Hover": "79E6F2",
+			"Header": "5EDDEB",
+			"Accent": "043C6C",
+			"Shadow": "5AC8E0"
+		},
+		// 6: INDIGO
+		{
+			"Main": "BACFFF",
+			"Hover": "A5BAFA",
+			"Header": "91ABFA",
+			"Accent": "0D1E80",
+			"Shadow": "89A2FA"
+		},
+		// 7: PURPLE
+		{
+			"Main": "D2C2FF",
+			"Hover": "CAAFFA",
+			"Header": "BB94F4",
+			"Accent": "391F6B",
+			"Shadow": "B493F5"
+		},
+		// 8: PINK
+		{
+			"Main": "F2CEF3",
+			"Hover": "F3B3F5",
+			"Header": "EFA8F0",
+			"Accent": "4F2049",
+			"Shadow": "F39DF5"
+		},
+		// 9: ROSE
+		{
+			"Main": "F7C5D7",
+			"Hover": "F3AFCC",
+			"Header": "ED89BA",
+			"Accent": "80032F",
+			"Shadow": "F097B2"
+		},
+		// 10: CHERRY
+		{
+			"Main": "FFBDBD",
+			"Hover": "FFA8A8",
+			"Header": "FF8080",
+			"Accent": "800303",
+			"Shadow": "FF8A8A"
+		},
+		// 11: GREY
+		{
+			"Main": "D3D5DE",
+			"Hover": "BABAC9",
+			"Header": "AAAAB9",
+			"Accent": "343349",
+			"Shadow": "A9A8BF"
+		},
+		// 12: COMMANDO
+		{
+			"Main": "C3D4A7",
+			"Hover": "A5BF95",
+			"Header": "98B389",
+			"Accent": "2A2E1F",
+			"Shadow": "9CA37F",
+			"Padding": "799962"
+		},
+		// 13: MINT CREAM
+		{
+			"Main": "FDFFE9",
+			"Hover": "C8F7E1",
+			"Header": "AFEDD0",
+			"Accent": "0E4137",
+			"Shadow": "96D9B5",
+			"Padding": "92E5B6"
+		},
+		// 14: PEACH CREAM
+		{
+			"Main": "FDFFE9",
+			"Hover": "FFDEB9",
+			"Header": "FFD5A7",
+			"Accent": "4D1D0F",
+			"Shadow": "FFBE85",
+			"Padding": "FFB882"
+		},
+		// 15: STRAWBERRY CREAM
+		{
+			"Main": "FDFFE9",
+			"Hover": "FFDEE1",
+			"Header": "FFD5D9",
+			"Accent": "570A30",
+			"Shadow": "F9BED1",
+			"Padding": "FFB8C9"
+		},
+		// 16: UBE CREAM
+		{
+			"Main": "FDFFE9",
+			"Hover": "E8E3FF",
+			"Header": "D0C9F0",
+			"Accent": "2D0852",
+			"Shadow": "C8B8FF",
+			"Padding": "B7A8E6"
+		},
+		// 17: BLURPLE
+		{
+			"Main": "C7E8FF",
+			"Hover": "CCC4F5",
+			"Header": "9EBDFF",
+			"Accent": "4E2770",
+			"Shadow": "A6A2F5",
+			"Padding": "CFB3FF"
+		}
+	]
+}

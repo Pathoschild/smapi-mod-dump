@@ -60,6 +60,9 @@ Note: if you accidentally close the game while you were editing a language file,
 the download button will still work.
 
 ## Changes
+#### 0.3:
+* French and Vietnamese translations.
+
 #### 0.2:
 * Fix bug with not parsing escaped quotes in strings correctly.
 * Localization support: it can now translate itself.
@@ -72,6 +75,7 @@ the download button will still work.
 Stuff that may or may not be added in a future release. Let me know if you're 
 particularly interested in one of these.
 
+* Option to add new entries.
 * Filter lines (error/untranslated/search query)
 * Metadata like translation author name, update date, SMAPI & mod version.
 * An in-game button to open the editor.

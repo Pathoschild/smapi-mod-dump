@@ -9,7 +9,6 @@
 *************************************************/
 
 using System;
-using Newtonsoft.Json.Linq;
 
 namespace ContentPatcher.Framework.Patches.EditData
 {

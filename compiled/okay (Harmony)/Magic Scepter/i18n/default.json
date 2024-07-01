@@ -41,6 +41,11 @@
   "settings-menu.option.reset-keybinds.message": "Keybinds has been reset",
 
   "teleport-menu-settings.title": "Teleport Menu Settings",
+  "teleport-menu-settings.play-sound": "Play sound",
+  "teleport-menu-settings.theme": "Theme",
+  "teleport-menu-settings.theme.options.default": "Default",
+  "teleport-menu-settings.theme.options.vintage": "Vintage",
+  "teleport-menu-settings.theme.options.witchy": "Witchy",
   "teleport-menu-settings.radius": "Radius",
   "teleport-menu-settings.scale": "Scale",
   "teleport-menu-settings.selected-scale": "Selected scale",
@@ -62,7 +67,7 @@
   "teleport-scroll.east-scarp-farm": "Meadow Farm",
   "teleport-scroll.downtown-zuzu": "Downtown Zuzu",
   "teleport-scroll.visit-mount-vapius": "Mount Vapius",
-  "teleport-scroll.Enchanted-grave": "Enchanted Grave",
+  "teleport-scroll.enchanted-grove": "Enchanted Grove",
   "teleport-scroll.mini-obelisk": "Mini-Obelisk",
   "teleport-scroll.pelican-town-obelisk": "Pelican Town"
 }

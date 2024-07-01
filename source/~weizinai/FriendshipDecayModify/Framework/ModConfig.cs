@@ -11,7 +11,7 @@
 using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
 
-namespace FriendshipDecayModify.Framework;
+namespace weizinai.StardewValleyMod.FriendshipDecayModify.Framework;
 
 internal class ModConfig
 {

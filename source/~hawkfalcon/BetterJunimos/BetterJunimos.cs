@@ -131,7 +131,9 @@ namespace BetterJunimos {
             replacements.Add("areThereMatureCropsWithinRadius", junimoHutType, typeof(PatchSearchAroundHut));
 
             // replacements for hardcoded max junimos
+            replacements.Add("dayUpdate", junimoHutType, typeof(ReplaceJunimoHutdayUpdate));
             replacements.Add("Update", junimoHutType, typeof(ReplaceJunimoHutUpdate));
+            replacements.Add("updateWhenFarmNotCurrentLocation", junimoHutType, typeof(ReplaceJunimoHutupdateWhenFarmNotCurrentLocation));
             replacements.Add("getUnusedJunimoNumber", junimoHutType, typeof(ReplaceJunimoHutNumber));
             replacements.Add("performTenMinuteAction", junimoHutType, typeof(ReplaceJunimoTimerNumber));
 
@@ -264,7 +266,8 @@ namespace BetterJunimos {
                 Util.Payments.JunimoPaymentsToday.Clear();
                 Util.Payments.WereJunimosPaidToday = false;
             }
-
+            Monitor.Log($"On day starter",
+                        LogLevel.Debug);
             var huts = Util.GetAllHuts();
             
             // tag each hut chest so later we can tell whether a GrabMenu close is for a Junimo chest or some other chest 

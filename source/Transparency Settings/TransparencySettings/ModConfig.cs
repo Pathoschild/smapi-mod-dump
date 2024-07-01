@@ -29,6 +29,11 @@ namespace TransparencySettings
             BelowPlayerOnly = false, //looks a bit weird otherwise
             MinimumOpacity = 0.3f //helps with overlapping textures
         };
+        public ObjectSettings CropSettings = new ObjectSettings()
+        {
+            Enable = false,
+            BelowPlayerOnly = false //looks a bit weird otherwise
+        };
         public ObjectSettings ObjectSettings = new ObjectSettings()
         {
             Enable = false

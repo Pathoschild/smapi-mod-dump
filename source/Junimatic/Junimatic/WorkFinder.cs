@@ -16,6 +16,7 @@ using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
 
+using static NermNermNerm.Stardew.LocalizeFromSource.SdvLocalize;
 
 namespace NermNermNerm.Junimatic
 {
@@ -49,7 +50,7 @@ namespace NermNermNerm.Junimatic
 
         private void GameLoop_DayStarted(object? sender, StardewModdingAPI.Events.DayStartedEventArgs e)
         {
-            this.LogTrace("WorkFinder.OnDayStarted unleashed the junimos");
+            this.LogTrace($"WorkFinder.OnDayStarted unleashed the junimos");
             this.isDayStarted = true;
         }
 
@@ -58,18 +59,18 @@ namespace NermNermNerm.Junimatic
             this.isDayStarted = false;
             if (!Game1.IsMasterGame)
             {
-                this.LogTrace("WorkFinder.OnDayEnding - not doing anything because this is not the master game.");
+                this.LogTrace($"WorkFinder.OnDayEnding - not doing anything because this is not the master game.");
                 return;
             }
 
-            foreach (var location in Game1.locations)
+            foreach (var location in this.GetAllJunimoFriendlyLocations())
             {
                 foreach (var junimo in location.characters.OfType<JunimoShuffler>().ToArray())
                 {
                     junimo.OnDayEnding(location);
                 }
             }
-            this.LogTrace("WorkFinder.OnDayEnding - not doing anything because this is not the master game.");
+            this.LogTrace($"WorkFinder.OnDayEnding - not doing anything because this is not the master game.");
         }
 
         // 10 minutes in SDV takes 7.17 seconds of real time.  So our setting of 3 means
@@ -91,7 +92,7 @@ namespace NermNermNerm.Junimatic
 
             if (!this.isDayStarted)
             {
-                this.LogTrace("Canceling OnSecondUpdateTicked processing because the day hasn't started yet.");
+                this.LogTrace($"Canceling OnSecondUpdateTicked processing because the day hasn't started yet.");
                 return;
             }
 
@@ -129,18 +130,7 @@ namespace NermNermNerm.Junimatic
                 }
             }
 
-            // Junimos only work on the farm or in farm buildings.
-            var allJunimoFriendlyLocations =
-                Game1.getFarm().buildings
-                    .Select(b => b.indoors.Value)
-                    .Where(l => l is not null).Select(l => l!)
-                    .ToList();
-            allJunimoFriendlyLocations.Add(Game1.getFarm());
-            allJunimoFriendlyLocations.AddRange(
-                new string[] { "FarmCave", "IslandWest", "Cellar", "FarmHouse", "IslandFarmHouse", "Greenhouse" }
-                .Select(name => Game1.getLocationFromName(name))
-                .Where(l => l is not null));
-
+            var allJunimoFriendlyLocations = this.GetAllJunimoFriendlyLocations();
             foreach (var location in allJunimoFriendlyLocations)
             {
                 foreach (var animatedJunimo in location.characters.OfType<JunimoShuffler>())
@@ -199,6 +189,29 @@ namespace NermNermNerm.Junimatic
                     }
                 }
             }
+        }
+
+        private List<GameLocation> GetAllJunimoFriendlyLocations()
+        {
+            List<GameLocation> allJunimoFriendlyLocations = Game1.getFarm().buildings
+                        .Select(b => b.indoors.Value)
+                        .Where(l => l is not null).Select(l => l!)
+                        .ToList();
+            if (ModEntry.Config.AllowAllLocations)
+            {
+                allJunimoFriendlyLocations.AddRange(Game1.locations);
+            }
+            else
+            {
+                allJunimoFriendlyLocations.Add(Game1.getFarm());
+                // using I() rather than a [nostrict] over the whole thing because I think all this needs to get moved out to a config setting.
+                allJunimoFriendlyLocations.AddRange(
+                    new string[] { "FarmCave", "IslandWest", I("Cellar"), "FarmHouse", "IslandFarmHouse", I("Greenhouse"),
+                        "Custom_GrandpasShed", "Custom_GrandpasShedGreenhouse", "Custom_ForestWest" } // <- SVE locations
+                    .Select(name => Game1.getLocationFromName(name))
+                    .Where(l => l is not null));
+            }
+            return allJunimoFriendlyLocations;
         }
 
         private Dictionary<JunimoType, int> GetNumUnlockedJunimos()
@@ -334,6 +347,30 @@ namespace NermNermNerm.Junimatic
                             else if (!isWalkable)
                             {
                                 checkedForWorkTiles.Add(adjacentTile);
+                            }
+                        }
+
+                        if (location.IsOutdoors)
+                        {
+                            foreach (var direction in crabPotReachableDirections)
+                            {
+                                var adjacentTile = reachableTile + direction;
+                                if (checkedForWorkTiles.Contains(adjacentTile))
+                                {
+                                    continue;
+                                }
+
+                                map.GetCrabPotAt(adjacentTile, reachableTile, out var machine);
+                                if (machine is not null)
+                                {
+                                    foreach (JunimoType junimoType in Enum.GetValues<JunimoType>())
+                                    {
+                                        if (machine.IsCompatibleWithJunimo(junimoType))
+                                        {
+                                            machines[junimoType].Add(machine);
+                                        }
+                                    }
+                                }
                             }
                         }
 

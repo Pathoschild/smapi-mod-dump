@@ -10,7 +10,7 @@
 
 using StardewValley;
 
-namespace Common.UI;
+namespace weizinai.StardewValleyMod.Common.UI;
 
 public class RootElement : Container
 {

@@ -55,6 +55,8 @@
 
   "Note.ShakeWalnutBushes": "These walnuts are meant to be end game content and difficult to find. Enabling this option does trivialize this content to some degree.",
 
+  "Option.ElevateDebugLogs.Name": "Elevate Debug Logs",
+  "Option.ElevateDebugLogs.Tooltip": "Whether or not debug logging should be elevated to the SMAPI console",
   "Option.FruitsReadyToShake.Name": "Minimum Fruits Ready to Shake",
   "Option.FruitsReadyToShake.Tooltip": "Minimum amount of fruits a Fruit Tree should have ready before the AutoForager shakes the tree.",
   "Option.IgnoreMushroomLogTrees.Name": "Skip Moss-Covered Trees near{{whitespace}}Mushroom Logs?",
@@ -93,9 +95,11 @@
   "Reward.TappedTree": "Tree Byproducts",
   "Reward.TeaLeaves": "Tea Leaves",
 
+  "Section.Advanced.Text": "Advanced",
   "Section.Bushes.Text": "Bush Toggles",
   "Section.FruitTrees.Text": "Fruit Tree Toggles",
   "Section.General.Text": "General Options",
+  "Section.TogglePages.Text": "Categorized Toggles",
   "Section.WildTree.Text": "Wild Tree Toggles",
 
   "State.Activated": "ACTIVATED",

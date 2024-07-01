@@ -46,6 +46,14 @@ This mod features some custom tokens for content pack creators that can tell you
 
 # Changelog
 
+## 1.4.1
+* Fix possible null exception in `GetMovespeedMultiplier()`
+
+## 1.4.0
+* Internal refactor
+* Exp is now gained every while walking, instead of when releasing movement button
+* Exp now takes into account bound movement buttons, instead of hardcoding default bindings.
+
 ## 1.3.0
 * Updated to Stardew Valley 1.6.3
 

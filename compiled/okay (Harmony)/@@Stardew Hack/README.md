@@ -28,6 +28,9 @@ This library is used by the following mods:
 Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 
 ## Changes
+#### 7.3:
+* French and Polish translations.
+
 #### 7.0:
 * Updated for Stardew Valley 1.6
 * Localization support.

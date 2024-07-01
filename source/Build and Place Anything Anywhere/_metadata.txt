@@ -6,9 +6,9 @@ mods:
    Build and Place Anything Anywhere
 
 latest commit:
-   commit 59106b7ef3faa9daa67128ad596d4ba35f5922dd
+   commit ce85dc9eee1aee2f2d616db8a9dbe5a670bb9ebd
    Author: Smoked Fish <espy.jacob@gmail.com>
-   Date:   Wed May 29 10:41:38 2024 -0700
+   Date:   Thu Jun 13 05:55:19 2024 -0700
    
-       formatting
+       Configs to decide what can grow for all seasons
    

@@ -11,7 +11,7 @@
 {
   "Name": "Mobile Catalogues Continued",
   "Author": "JoXW, aedenthorn",
-  "Version": "1.0.1",
+  "Version": "1.0.2",
   "Description": "Online shopping for your mobile phone.",
   "UniqueID": "JoXW.MobileCatalogues",
   "EntryDll": "MobileCatalogues.dll",

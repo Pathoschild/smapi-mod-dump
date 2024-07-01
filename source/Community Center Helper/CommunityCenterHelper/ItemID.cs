@@ -113,8 +113,10 @@ namespace CommunityCenterHelper
         public const string IT_VegetableMedley = "200";
         public const string IT_CompleteBreakfast = "201";
         public const string IT_FriedCalamari = "202";
+        public const string IT_StrangeBun = "203";
         public const string IT_FriedMushroom = "205";
         public const string IT_Pizza = "206";
+        public const string IT_BeanHotpot = "207";
         public const string IT_GlazedYams = "208";
         public const string IT_Hashbrowns = "210";
         public const string IT_Pancakes = "211";
@@ -125,9 +127,11 @@ namespace CommunityCenterHelper
         public const string IT_Bread = "216";
         public const string IT_TomKhaSoup = "218";
         public const string IT_TroutSoup = "219";
+        public const string IT_ChocolateCake = "220";
         public const string IT_PinkCake = "221";
         public const string IT_Cookies = "223";
         public const string IT_Spaghetti = "224";
+        public const string IT_FriedEel = "225";
         public const string IT_SpicyEel = "226";
         public const string IT_Sashimi = "227";
         public const string IT_MakiRoll = "228";
@@ -145,6 +149,7 @@ namespace CommunityCenterHelper
         public const string IT_SurvivalBurger = "241";
         public const string IT_MinersTreat = "243";
         public const string IT_RootsPlatter = "244";
+        public const string IT_Sugar = "245";
         public const string IT_WheatFlour = "246";
         public const string IT_Oil = "247";
         public const string IT_Garlic = "248";
@@ -333,7 +338,11 @@ namespace CommunityCenterHelper
         public const string IT_MutantCarp = "682";
         public const string IT_BugMeat = "684";
         public const string IT_Bait = "685";
+        public const string IT_DressedSpinner = "687";
         public const string IT_WarpTotemFarm = "688";
+        public const string IT_TreasureHunter = "693";
+        public const string IT_TrapBobber = "694";
+        public const string IT_CorkBobber = "695";
         public const string IT_Sturgeon = "698";
         public const string IT_TigerTrout = "699";
         

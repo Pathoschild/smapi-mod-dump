@@ -15,6 +15,8 @@ using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Objects;
 
+using static NermNermNerm.Stardew.LocalizeFromSource.SdvLocalize;
+
 namespace NermNermNerm.Stardew.QuestableTractor
 {
     public class RestoreTractorQuestController
@@ -55,13 +57,13 @@ namespace NermNermNerm.Stardew.QuestableTractor
             }
         }
 
-        public record EngineRequirement(string itemId, string displayName, int quantity);
+        public record EngineRequirement(string itemId, int quantity);
         public static readonly IReadOnlyCollection<EngineRequirement> engineRequirements = new EngineRequirement[]
         {
-            new EngineRequirement(ObjectIds.BustedEngine, "the engine", 1),
-            new EngineRequirement("92", "20 sap", 20),
-            new EngineRequirement("770", "5 mixed seeds", 5),
-            new EngineRequirement("62", "an aquamarine", 1),
+            new EngineRequirement(ObjectIds.BustedEngine, 1),
+            new EngineRequirement("92" /* sap */, 20),
+            new EngineRequirement("770" /* mixed seeds */, 5),
+            new EngineRequirement("62" /* aquamarine */, 1),
         };
 
         protected override string ModDataKey => ModDataKeys.MainQuestStatus;

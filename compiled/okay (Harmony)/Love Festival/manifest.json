@@ -1,7 +1,7 @@
 {
   "Name": "Love Festival",
   "Author": "AvalonMFX",
-  "Version": "1.4.0",
+  "Version": "1.4.2",
   "Description": "Adds a Love Festival to the game",
   "UniqueID": "AvalonMFX.LoveFestival",
   "EntryDll": "LoveFestival.dll",

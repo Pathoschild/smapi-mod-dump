@@ -8,7 +8,6 @@
 **
 *************************************************/
 
-using System;
 using StardewValley;
 using SObject = StardewValley.Object;
 
@@ -20,6 +19,9 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Models
         /*********
         ** Accessors
         *********/
+        /// <summary>The recipe type.</summary>
+        public RecipeType RecipeType { get; }
+
         /// <summary>The unique item ID or comma-separated context tags that can be used for this ingredient slot, or <c>null</c> if it's fully based on <see cref="InputContextTags"/>.</summary>
         public string? InputId { get; }
 
@@ -40,15 +42,17 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Models
         ** Public methods
         *********/
         /// <summary>Construct an instance.</summary>
+        /// <param name="recipeType">The recipe type.</param>
         /// <param name="inputId">The unique item ID that can be used for this ingredient slot.</param>
         /// <param name="count">The number required.</param>
         /// <param name="inputContextTags">The context tags which must be matched for this ingredient slot.</param>
         /// <param name="preserveType">The <see cref="SObject.preserve"/> value to match (or <c>null</c> to ignore it).</param>
         /// <param name="preservedItemId">The <see cref="SObject.preservedParentSheetIndex"/> value to match (or <c>null</c> to ignore it).</param>
-        public RecipeIngredientModel(string? inputId, int count, string[]? inputContextTags = null, SObject.PreserveType? preserveType = null, string? preservedItemId = null)
+        public RecipeIngredientModel(RecipeType recipeType, string? inputId, int count, string[]? inputContextTags = null, SObject.PreserveType? preserveType = null, string? preservedItemId = null)
         {
+            this.RecipeType = recipeType;
             this.InputId = inputId;
-            this.InputContextTags = inputContextTags ?? Array.Empty<string>();
+            this.InputContextTags = inputContextTags ?? [];
             this.Count = count;
             this.PreserveType = preserveType;
             this.PreservedItemId = preservedItemId;
@@ -70,6 +74,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Models
                     || this.InputId == item.Category.ToString()
                     || this.InputId == item.ItemId
                     || this.InputId == item.QualifiedItemId
+                    || (this.RecipeType == RecipeType.Crafting && CraftingRecipe.ItemMatchesForCrafting(item, this.InputId)) // special cases like -777 for any wild seed
                 )
                 && (
                     this.InputContextTags.Length == 0

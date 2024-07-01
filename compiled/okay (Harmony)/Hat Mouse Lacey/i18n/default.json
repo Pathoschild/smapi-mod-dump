@@ -1,14 +1,22 @@
 {
-	"gmcm.contentsection.text": "Content",
-	"gmcm.alwaysadopt.tooltip": "If set, Lacey will always adopt children with the farmer, no matter the farmer's gender. If unset, Lacey can get pregnant with a male farmer.",
-	"gmcm.dtf.tooltip": "Enables some suggestive dialogue lines. Unset to keep it G-rated.",
+  "gmcm.contentsection.text": "Content",
+  "gmcm.alwaysadopt.tooltip": "If set, Lacey will always adopt children with the farmer, no matter the farmer's gender. If unset, Lacey can get pregnant with a male farmer.",
+  "gmcm.dtf.tooltip": "Enables some suggestive dialogue lines. Unset to keep it G-rated.",
 
-	"gmcm.appearancesection.text": "Appearance",
-	"gmcm.recolorpalette.tooltip": "Choose which recolor mod to match (for outdoor assets). 'Auto' attempts to detect which palette to use; if you get the wrong result, choose your preference here.",
-	"gmcm.interiorpalette.tooltip": "Choose which recolor mod to match (for indoor assets). 'Auto' attempts to detect which palette to use; if you get the wrong result, choose your preference here.",
-	"gmcm.matchretexture.tooltip": "Choose which building retexture mod to match (for the mouse house). 'Auto' attempts to detect which mod to match; if you get the wrong result, choose your preference here.",
+  "gmcm.appearancesection.text": "Appearance",
+  "gmcm.recolorpalette.tooltip": "Choose which recolor mod to match (for outdoor assets). 'Auto' attempts to detect which palette to use; if you get the wrong result, choose your preference here.",
+  "gmcm.interiorpalette.tooltip": "Choose which recolor mod to match (for indoor assets). 'Auto' attempts to detect which palette to use; if you get the wrong result, choose your preference here.",
+  "gmcm.matchretexture.tooltip": "Choose which building retexture mod to match (for the mouse house). 'Auto' attempts to detect which mod to match; if you get the wrong result, choose your preference here.",
 
-	"gmcm.outfitssection.text": "Outfits",
-	"gmcm.seasonaloutfits.tooltip": "If set, Lacey will wear different outfits in the Summer and Fall.",
-	"gmcm.weddingattire.tooltip": "Choose what Lacey will wear to her wedding."
+  "gmcm.outfitssection.text": "Outfits",
+  "gmcm.seasonaloutfits.tooltip": "If set, Lacey will wear different outfits in the Summer and Fall.",
+  "gmcm.weddingattire.tooltip": "Choose what Lacey will wear to her wedding.",
+
+  "hatreactions.menu.ShopChoice": "Hat Shop",
+  "hatreactions.menu.RegistryChoice": "Registry",
+  "hatreactions.menu.CancelChoice": "Never mind",
+  "hatreactions.menu.HatRegistry": "Hat Registry: @",
+  "hatreactions.menu.NotYetShown": "Not yet shown.",
+
+  "EOF": ""
 }

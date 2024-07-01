@@ -79,7 +79,7 @@
 
     /* fruit tree */
     "label_fruittree_name": "{{fruit_name}} Tree",
-    "label_fruittree_amount": "{{fruit_name}} (x{{number}}) ready!",
+    "label_fruittree_amount": "x{{number}} ready!",
     "label_fruittree_grow": "Fully grown in {{n_days}} days",
 
     /* node */

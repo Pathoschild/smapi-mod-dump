@@ -6,9 +6,12 @@ mods:
    Stardew Access
 
 latest commit:
-   commit 35d876eda511c5a98e13badce909f348018d0e7d
-   Author: GitHub Actions [Bot] <>
-   Date:   Thu May 23 20:51:46 2024 +0000
+   commit e72db0751bce008e49463e1fb2daaf17f73034fd
+   Author: Mohammad Shoaib Khan <khanshoaibpers@outlook.com>
+   Date:   Tue Jun 25 18:52:17 2024 +0530
    
-       :memo: Add changelogs from #358 to latest.md
+       fix: Fix empty chest slots speaking as locked slot
+       
+       Also fixed repeatedly playing of invalid sound in inventories introduced
+       in prevous PR.
    

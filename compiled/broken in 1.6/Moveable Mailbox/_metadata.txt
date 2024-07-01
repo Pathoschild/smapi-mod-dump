@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7834
-IDs: aedenthorn.MoveableMailbox
-update keys: Nexus:7834, GitHub:aedenthorn/StardewValleyMods

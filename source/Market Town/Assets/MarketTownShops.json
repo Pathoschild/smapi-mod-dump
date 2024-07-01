@@ -1,0 +1,140 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/congha22/foodstore
+**
+*************************************************/
+
+{
+  // ******** THIS IS THE LIST OF AVAILABLE ITEM IN SHOP *********
+
+
+  // YOU CAN CUSTOMIZE YOUR SHOP STOCK BY ADDING OR REMOVING VALUE
+
+  // TO ADD ITEM, GET THE ITEM ID AND ADD IT TO THE LIST
+  //      For example: "(O)200", "(F)FancyHousePlant3", "(O)Custom_Mod_Item"
+  // TO ADD ALL ITEMS IN A CATEGORY, USING THE CATEGORY ID
+  //      For example: use "CATEGORYKEY-7" to add all cooking item 
+
+
+  // ITEM ID and CATEGORY ID can be get by enabling CONFIG "GET ITEMS ID?" under tab "ADVANCE"
+  // After enable the CONFIG, a file named _items_by_category.json will be added in the game folder ( .../StardewValley/_items_by_category.json ) 
+  //      which are the folder ABOVE the Mods folder
+
+
+  "MarketTown.ITEM_BLACK_LIST": [ // BLACKLIST: ITEM FROM THIS LIST WILL NEVER BE ADDED IN ANY SHOP, EVEN IF IT IS ADDED IN ANY OTHER LIST
+                "CATEGORYKEY-999", "(O)107","(O)114","(O)122","(O)124","(O)125","(O)159","(O)161","(O)162","(O)163","(O)165","(O)166","(O)168","(O)266","(O)275","(O)289","(O)30",
+                "(O)305","(O)326","(O)337","(O)341","(O)347","(O)417","(O)433","(O)434","(O)437","(O)439","(O)446","(O)454","(O)485","(O)499","(O)519","(O)520","(O)521","(O)522",
+                "(O)523","(O)524","(O)525","(O)526","(O)527","(O)528","(O)529","(O)530","(O)531","(O)532","(O)579","(O)580","(O)581","(O)582","(O)583","(O)584","(O)585",
+                "(O)590","(O)680","(O)682","(O)69","(O)698","(O)73","(O)742","(O)768","(O)769","(O)775","(O)788","(O)79","(O)790","(O)791","(O)791","(O)795","(O)796","(O)798",
+                "(O)799","(O)80","(O)800","(O)801","(O)820","(O)821","(O)822","(O)823","(O)824","(O)825","(O)826","(O)827","(O)828","(O)839","(O)842","(O)851","(O)857",
+                "(O)858","(O)859","(O)860","(O)861","(O)862","(O)863","(O)864","(O)865","(O)866","(O)867","(O)870","(O)872","(O)880","(O)886","(O)887","(O)888","(O)889",
+                "(O)890","(O)892","(O)896","(O)897","(O)898","(O)899","(O)900","(O)901","(O)902","(O)909","(O)910","(O)911","(O)915","(O)917","(O)922","(O)923","(O)924",
+                "(O)925","(O)926","(O)927","(O)928","(O)93","(O)930","(O)94","(O)CalicoEgg","(O)FarAwayStone","(O)Goby","(O)GoldCoin","(O)GoldenAnimalCracker",
+                "(O)GoldenBobber","(O)GoldenMysteryBox","(O)MT.Objects.MarketLicense","(O)MT.Objects.MuseumLicense","(O)MT.Objects.RestaurantLicense","(O)MysteryBox",
+                "(O)MysticSyrup","(O)MysticTreeSeed","(O)PrizeTicket","(O)PurpleBook","(O)SeedSpot","(O)SkillBook_0","(O)SkillBook_1","(O)SkillBook_2","(O)SkillBook_3",
+                "(O)SkillBook_4","(O)SonarBobber","(O)StardropTea","(O)TentKit","(O)TreasureTotem","(O)TroutDerbyTag",
+
+                "(BC)85","(BC)86","(BC)87",
+                "(BC)96", "(BC)98","(BC)101","(BC)110", "(BC)116","(BC)118","(BC)119","(BC)120","(BC)121","(BC)122","(BC)123","(BC)124","(BC)125","(BC)126","(BC)127","(BC)128","(BC)130","(BC)136","(BC)137",
+                "(BC)138","(BC)139","(BC)140","(BC)141","(BC)143","(BC)144","(BC)145","(BC)146","(BC)154","(BC)155","(BC)156","(BC)158","(BC)159","(BC)160","(BC)161","(BC)162",
+                "(BC)164","(BC)165","(BC)167","(BC)174","(BC)175",
+                "(BC)182","(BC)209","(BC)21","(BC)211","(BC)214","(BC)216","(BC)219","(BC)231","(BC)238","(BC)239","(BC)246","(BC)247","(BC)248","(BC)254","(BC)265","(BC)278",
+                "(BC)280","(BC)33","(BC)34","(BC)70","(BC)81","(BC)82","(BC)Anvil","(BC)MiniForge","(BC)StatueOfBlessings","(BC)StatueOfTheDwarfKing","(O)533","(O)534","(O)852",
+
+                "(W)32", "(W)33", "(W)34", "(W)49", "(W)53", "(W)66",
+
+                "(F)1301","(F)1302","(F)1303",
+
+                // d5a1lamdtd.MarketTown
+                "(O)MT.Objects.MarketLicense", "(O)MT.Objects.RestaurantLicense", "(O)MT.Objects.MuseumLicense", "(O)MT.Objects.InviteLetter",  "(O)MT.Objects.CustomerNote"
+  ],
+
+
+
+  "MarketTown.bluemoonShop": ["CATEGORYKEY-75","CATEGORYKEY-26", "(O)599", "(O)621", "(O)645", "(O)322", "(O)323", "(O)324", "(O)325", "(O)368", "(O)370", "(O)805"],  // artisan + vegetables   // PREFER: ARTISAN, VEGETABLES, FLOWER                
+  
+  "MarketTown.clintShop": ["CATEGORYKEY-15", "CATEGORYKEY-28", "(W)0", "(W)1" , "(W)5", "(W)6" , "(W)11", "(W)12", "(T)Axe", "(T)Hoe", "(T)Pickaxe", "(T)WateringCan"
+                             , "(O)535", "(O)537", "(O)537" , "(O)749", "(F)1298", "(F)1299"],  // metal resource + monster loot     // PREFER: ORE, BAR, GEMS
+
+  "MarketTown.emeraldShop": [ "CATEGORYKEY-81", "CATEGORYKEY-19", "CATEGORYKEY-24"],  // forage + fertilizer + misc     // PREFER: MINERAL, GEMS
+
+  "MarketTown.emilyShop": [], // all pants and shirts added in code       // PREFER: CLOTHES, HAT,BOOTS
+
+  "MarketTown.evelynShop": ["CATEGORYKEY-19","CATEGORYKEY-74", "(O)199", "(O)200", "(O)201", "(O)204", "(O)211", "(O)216", "(O)223", "(O)236", "(O)608", "(O)609", "(O)610"], // fertilizer + seeds      // PREFER: FLOWER, VEGETABLES, SEEDS
+
+  "MarketTown.fairhavenShop": ["CATEGORYKEY-79", "CATEGORYKEY-17", "CATEGORYKEY-27"], // fruit + rare crop + syrup  // PREFER: FRUITS, VEGETABLES, FLOWER
+
+  "MarketTown.fishShop": [ "CATEGORYKEY-4",  "CATEGORYKEY-22"],  // fish + bobber       // PREFER: FISH, BAIT, TACKLE, FURNITURE
+
+  "MarketTown.guntherShop": ["CATEGORYKEY-12", "CATEGORYKEY0"],   // mineral + artifact   // PREFER: ARTIFACT, MINERAL
+
+  "MarketTown.haleyShop": ["CATEGORYKEY-80", "CATEGORYKEY-79"],  // flower + fruit     // PREFER: FLOWER, CLOTHES
+
+  "MarketTown.harveyShop": [ "CATEGORYKEY-5",  "CATEGORYKEY-6", "CATEGORYKEY-17" , "(O)349", "(O)351", "(O)395", "(O)403", "(O)TentKit", "(O)167"
+                               , "(O)350", "(O)614", "(O)DriedFruit", "(O)DriedMushrooms","(O)SkillBook_0", "(O)SkillBook_2","(O)SkillBook_1",
+                            "(O)SkillBook_3", "(O)SkillBook_4"  ],   // egg + milk + rare crop   // PREFER: FOOD, ENERGY
+
+  "MarketTown.hatsShop": ["CATEGORYKEY-95"],   // hat      // PREFER: HAT, CLOTHES
+
+  "MarketTown.heapsShop": ["CATEGORYKEY-80", "CATEGORYKEY-19", "(O)628", "(O)629", "(O)630", "(O)631", "(O)632", "(O)633", "(O)306", "(O)307"],  // flower + fertilizer      // PREFER: FERTILIZER, VEGETABLE, MISC
+
+  "MarketTown.jodiShop": [ "CATEGORYKEY-81",  "CATEGORYKEY-75" , "(O)218", "(O)219", "(O)241", "(O)242", "(O)243", "(O)728", "(O)732", "(O)225", "(O)226"],   // forage + vegetable      // PREFER: FOOD, FRUIT
+
+  "MarketTown.jvShop": [ "CATEGORYKEY-5",  "CATEGORYKEY-6", "CATEGORYKEY-20",  "CATEGORYKEY-81", "(O)220", "(O)221", "(O)350", "(O)233", "(O)234", "(O)238", "(O)612"],    // egg + milk + trash + forage       // PREFER: FORAGE, FLOWER, SWEET
+
+  "MarketTown.labShop": [ "CATEGORYKEY-9",  "CATEGORYKEY-8"], // crafting + big craftable         // PREFER: MACHINE, CRAFTING
+
+  "MarketTown.leahShop": [ "(F)0","(F)1120","(F)1122","(F)1124","(F)1126","(F)1128","(F)1130","(F)1132","(F)1134","(F)1136","(F)1138","(F)1140","(F)12","(F)1216",
+                           "(F)1218","(F)1220","(F)1222","(F)1224","(F)1226","(F)1228","(F)128","(F)1280","(F)1283","(F)1285","(F)1287","(F)1289","(F)1291",
+                           "(F)1292","(F)1293","(F)1294","(F)1295","(F)1296","(F)1297","(F)1298","(F)1299","(F)1300","(F)1306","(F)1307","(F)1308","(F)1309",
+                           "(F)131","(F)134","(F)1362","(F)1363","(F)1364","(F)1365","(F)1366","(F)1367","(F)1368","(F)1369","(F)1371","(F)1373","(F)1375","(F)1376",
+                           "(F)1377","(F)1378","(F)1379","(F)1380","(F)1381","(F)1382","(F)1383","(F)1384","(F)1385","(F)1386","(F)1387","(F)1388","(F)1389",
+                           "(F)1390","(F)1391","(F)1393","(F)1395","(F)1397","(F)1399","(F)1400","(F)1401","(F)1402","(F)1443","(F)1445","(F)1447","(F)1449","(F)1451",
+                           "(F)1456","(F)1461","(F)1466","(F)1468","(F)1471","(F)15","(F)1539","(F)1541","(F)1543","(F)1545","(F)1547","(F)1550","(F)1552","(F)1554",
+                           "(F)1557","(F)1559","(F)1561","(F)1563","(F)1565","(F)1567","(F)1600","(F)1601","(F)1602","(F)1603","(F)1604","(F)1605","(F)1606",
+                           "(F)1607","(F)1609","(F)1612","(F)1684","(F)1687","(F)1692","(F)1744","(F)1745","(F)1747","(F)1748","(F)1749","(F)1751","(F)1753",
+                           "(F)1755","(F)1758","(F)1760","(F)1761","(F)1762","(F)1763","(F)1764","(F)1777","(F)1792","(F)1794","(F)18","(F)1802","(F)1811","(F)1812",
+                           "(F)1814","(F)1817","(F)1818","(F)1819","(F)1820","(F)1821","(F)1838","(F)1840","(F)1842","(F)1844","(F)1846","(F)1848","(F)1850",
+                           "(F)1852","(F)1854","(F)1866","(F)1900","(F)1902","(F)1907","(F)1909","(F)1914","(F)1915","(F)1916","(F)192","(F)1952","(F)1953","(F)1954",
+                           "(F)1955","(F)1956","(F)1957","(F)1958","(F)1959","(F)1960","(F)1961","(F)1964","(F)197","(F)1971","(F)1974","(F)1975","(F)1978","(F)202",
+                           "(F)207","(F)21","(F)212","(F)2304","(F)2312","(F)2322","(F)2326","(F)2329","(F)2331","(F)2393","(F)24","(F)2400","(F)2414","(F)2418",
+                           "(F)2419","(F)2421","(F)2423","(F)2425","(F)2427","(F)2488","(F)2496","(F)2502","(F)2508","(F)2514","(F)2584","(F)2624","(F)2625","(F)2626",
+                           "(F)2627","(F)2628","(F)2629","(F)2630","(F)2631","(F)2632","(F)2633","(F)2634","(F)2635","(F)2636","(F)2653","(F)2654","(F)2655","(F)27",
+                           "(F)2720","(F)2730","(F)2732","(F)2734","(F)2736","(F)2738","(F)2740","(F)2742","(F)2748","(F)2750","(F)2784","(F)2790","(F)2794","(F)2798",
+                           "(F)2802","(F)2812","(F)2814","(F)2870","(F)2875","(F)288","(F)294","(F)3","(F)30","(F)300","(F)306","(F)31","(F)312","(F)416","(F)424",
+                           "(F)432","(F)440","(F)512","(F)520","(F)528","(F)536","(F)6","(F)64","(F)67","(F)70","(F)704","(F)709","(F)714","(F)719","(F)724","(F)727",
+                           "(F)73","(F)76","(F)79","(F)82","(F)85","(F)88","(F)9","(F)91","(F)94","(F)95","(F)DecorativeDoor1","(F)DecorativeDoor2","(F)DecorativeDoor3",
+                           "(F)DecorativeDoor4","(F)DecorativeDoor5","(F)DecorativeDoor6","(F)FancyHousePlant1","(F)FancyHousePlant2","(F)FancyHousePlant3",
+                           "(F)FancyHousePlant4","(F)FancyHousePlant5","(F)FancyTree1","(F)FancyTree2","(F)FancyTree3"],         // PREFER: FURNITURE
+
+  "MarketTown.linusShop": [ "CATEGORYKEY-81",  "CATEGORYKEY-20",  "CATEGORYKEY-74", "(O)227", "(O)137", "(O)140", "(O)141", "(O)142", "(O)685", "(O)774", "(O)330", "(O)388", "(O)390", "(O)771"],  // forage + trash + seeds     // PREFER: FORAGE, FRUIT, FISH    
+
+  "MarketTown.marnieShop": [ "CATEGORYKEY-5",  "CATEGORYKEY-6",  "CATEGORYKEY-18", "(O)178", "(T)MilkPail", "(T)Shears", "(F)CatTree", "(F)DarkCatTree", "(F)BirdHouse", "(F)Doghouse", "(F)DarkDoghouse"],   // egg + milk + animal loots    // PREFER: ANIMAL, MISC, CROP
+
+  "MarketTown.pikaShop": ["CATEGORYKEY-7"],  // food       // PREFER: FOOD
+
+  "MarketTown.primeShop": [ "CATEGORYKEY-23", "CATEGORYKEY-26", "(O)245", "(O)246", "(O)247", "(O)772"],  // fertilizer + artisan      // PREFER: MISC
+
+  "MarketTown.quillShop": [ "CATEGORYKEY-21",  "CATEGORYKEY-22", "CATEGORYKEY-23", "(F)BookStack", "(F)SmallBookStack", "(F)LargeBookStack","(F)PurpleBook","(F)BlueBook","(F)YellowBook","(F)RedBook",
+                            "(F)GreenBook","(F)BrownBook","(F)FallenPurpleBook","(F)FallenBlueBook","(F)FallenYellowBook","(F)FallenRedBook","(F)FallenGreenBook","(F)FallenBrownBook","(F)SmallBookPile","(F)BookPile","(F)LargeBookPile"],   // bait + bobber + beach loots    // PREFER: FISH, BEACH FORAGE
+
+  "MarketTown.roboshackShop": [  "CATEGORYKEY-15", "CATEGORYKEY-16"], // resource + metal resource   // PREFER: TECH, BAR
+
+  "MarketTown.rockShop": [ "CATEGORYKEY-96", "(F)CashRegister", "(F)DecorativeJojaDoor", "(F)GrayJojaBookcase", "(F)GrayJojaCoffeeTable", "(F)GrayJojaCushion", "(F)GrayJojaDresser", "(F)GrayJojaEndTable", "(F)JojaBookcase", "(F)JojaChair", "(F)JPainting",
+                            "(F)JojaCoffeeTable", "(F)JojaColaCans", "(F)JojaColaFridge", "(F)JojaColaOrnament", "(F)JojaCouch", "(F)JojaCrate", "(F)JojaCushion", "(F)JojaDresser", "(F)JojaEndTable", "(F)JojaFireplace", "(F)JojaHQPainting",
+                            "(F)JojaLamp", "(F)JojaRug", "(F)JojaShoppingCart", "(F)JojaStool", "(F)JojaVault", "(F)JojaTable", "(F)LargeJojaCrate", "(F)LargeJojaRug", "(F)MorrisPortrait", "(F)PlasticPlant", "(F)PlasticSapling",
+                            "(F)SmallJojaRug", "(F)SquareJojaRug", "(F)StackedJojaCrates", "(O)167", "(H)JojaCap", "(F)JojaBed", "(F)JojaColaTeaTable", "(F)JojaColaPainting"],  // ring       // PREFER: DECOR, FRUIT, FURNITURE
+
+  "MarketTown.saloonShop": ["CATEGORYKEY-7"],  // food     // PREFER: FOOD
+
+  "MarketTown.serrupShop": ["CATEGORYKEY-26"],    // artisan   // PREFER: ARTISAN
+
+  "MarketTown.teaShop": [ "CATEGORYKEY-75",  "CATEGORYKEY-74", "(O)614", "(S)1287", "(O)StardropTea"],   // vegetable + seeds       // PREFER: VEGETABLE, SEED
+
+  "MarketTown.weaponsShop": [ "CATEGORYKEY-98",  "CATEGORYKEY-97"]   // weapon, boots    // PREFER: WEAPON, MONSTER
+
+}

@@ -1,0 +1,19 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/TheMightyAmondee/WeatherTotems
+**
+*************************************************/
+
+{
+    "TheMightyAmondee.WeatherTotems/SunTotemUse": "Les nuages s’évanouissent de l’horizon…",
+    "TheMightyAmondee.WeatherTotems/WindTotemUse": "Une légère brise vous traverse…",
+    "TheMightyAmondee.WeatherTotems/SnowTotemUse": "L’air devient plus froid autour de vous…",
+    "TheMightyAmondee.WeatherTotems/ThunderTotemUse": "Un frisson électrique remplit l’air…",
+    "TheMightyAmondee.WeatherTotems/GreenRainTotemUse": "La nature murmure à vos oreilles…",
+    "TheMightyAmondee.WeatherTotems/Error": "Ce totem ne fonctionnera pas ici",
+    "TheMightyAmondee.WeatherTotems/ErrorFestival": "Il y a un festival demain !"
+  }

@@ -9,8 +9,10 @@
 *************************************************/
 
 using StardewArchipelago.Archipelago;
+using StardewArchipelago.Constants.Vanilla;
 using StardewArchipelago.Items.Mail;
 using StardewValley;
+using StardewValley.Objects;
 
 namespace StardewArchipelago.Stardew
 {
@@ -20,8 +22,8 @@ namespace StardewArchipelago.Stardew
         public int AddedImmunity { get; }
         public int ColorIndex { get; }
 
-        public StardewBoots(int id, string name, int sellPrice, string description, int addedDefense, int addedImmunity, int colorIndex, string displayName)
-        : base(id, name, sellPrice, displayName, description)
+        public StardewBoots(string id, string name, int sellPrice, string description, int addedDefense, int addedImmunity, int colorIndex, string displayName)
+            : base(id, name, sellPrice, displayName, description)
         {
             AddedDefense = addedDefense;
             AddedImmunity = addedImmunity;
@@ -30,12 +32,7 @@ namespace StardewArchipelago.Stardew
 
         public override Item PrepareForGivingToFarmer(int amount = 1)
         {
-            return new StardewValley.Objects.Boots(Id);
-        }
-
-        public override Item PrepareForRecovery()
-        {
-            return new BootsToRecover(Id);
+            return new Boots(Id);
         }
 
         public override void GiveToFarmer(Farmer farmer, int amount = 1)
@@ -47,6 +44,11 @@ namespace StardewArchipelago.Stardew
         public override LetterAttachment GetAsLetter(ReceivedItem receivedItem, int amount = 1)
         {
             return new LetterActionAttachment(receivedItem, LetterActionsKeys.GiveSpecificBoots, Id.ToString());
+        }
+
+        public override string GetQualifiedId()
+        {
+            return $"{QualifiedItemIds.BOOTS_QUALIFIER}{Id}";
         }
     }
 }

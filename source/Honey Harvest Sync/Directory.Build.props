@@ -15,10 +15,16 @@
     <ManifestSchema>false</ManifestSchema>
     <MinimumApiVersion_Behavior>Update</MinimumApiVersion_Behavior>
     <Version_AppendConfiguration>false</Version_AppendConfiguration>
+    <MinimumGameVersion_Behavior>UpdateFull</MinimumGameVersion_Behavior>
+    <ManifestWarningsAsErrors Condition="$(Configuration) == 'Release'">true</ManifestWarningsAsErrors>
   </PropertyGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+  	<!-- Copy 'LICENSE' file into all build dirs, and therefore copy it into all generated mod ZIPs -->
+    <Exec Command="xcopy /y &quot;$(ProjectDir)..\LICENSE&quot; &quot;$(OutDir)&quot;" />
+  </Target>
   <ItemGroup>
     <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1"/>
-    <PackageReference Include="Leclair.Stardew.ModManifestBuilder" Version="2.1.0"/>
+    <PackageReference Include="Leclair.Stardew.ModManifestBuilder" Version="2.3.1"/>
   </ItemGroup>
   <ItemGroup>
     <Using Include="StardewValley"/>

@@ -12,7 +12,7 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewArchipelago.Archipelago;
-using StardewArchipelago.Stardew;
+using StardewArchipelago.Stardew.Ids.Vanilla;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;
@@ -72,7 +72,7 @@ namespace StardewArchipelago.Locations.GingerIsland.Boat
                     __result = true;
                     return false; // don't run original logic
                 }
-                
+
                 return true; // run original logic
             }
             catch (Exception ex)
@@ -125,7 +125,7 @@ namespace StardewArchipelago.Locations.GingerIsland.Boat
 
         private static void PurchaseBoatTicket(BoatTunnel __instance)
         {
-            var ticketPrice = __instance.GetTicketPrice();
+            var ticketPrice = __instance.TicketPrice;
             if (Game1.player.Money >= ticketPrice)
             {
                 Game1.player.Money -= ticketPrice;
@@ -139,7 +139,7 @@ namespace StardewArchipelago.Locations.GingerIsland.Boat
 
         private static void DonateBatteries()
         {
-            Game1.player.removeItemsFromInventory(StardewId.BATTERY_PACK, 5);
+            Game1.player.Items.ReduceId(ObjectIds.BATTERY_PACK, 5);
             DelayedAction.playSoundAfterDelay("openBox", 600);
             Game1.addMailForTomorrow(MAIL_FIXED_BOAT_TICKET_MACHINE, true, true);
             _locationChecker.AddCheckedLocation(AP_TICKET_MACHINE);
@@ -147,7 +147,7 @@ namespace StardewArchipelago.Locations.GingerIsland.Boat
 
         private static void DonateHardwood()
         {
-            Game1.player.removeItemsFromInventory(StardewId.HARDWOOD, 200);
+            Game1.player.Items.ReduceId(ObjectIds.HARDWOOD, 200);
             DelayedAction.playSoundAfterDelay("Ship", 600);
             Game1.addMailForTomorrow(MAIL_FIXED_BOAT_HULL, true, true);
             _locationChecker.AddCheckedLocation(AP_BOAT_HULL);
@@ -155,7 +155,7 @@ namespace StardewArchipelago.Locations.GingerIsland.Boat
 
         private static void DonateIridium()
         {
-            Game1.player.removeItemsFromInventory(StardewId.IRIDIUM_BAR, 5);
+            Game1.player.Items.ReduceId(ObjectIds.IRIDIUM_BAR, 5);
             DelayedAction.playSoundAfterDelay("clank", 600);
             DelayedAction.playSoundAfterDelay("clank", 1200);
             DelayedAction.playSoundAfterDelay("clank", 1800);
@@ -171,7 +171,7 @@ namespace StardewArchipelago.Locations.GingerIsland.Boat
                 Game1.addMailForTomorrow(MAIL_FIXED_BOAT_TICKET_MACHINE, true, true);
             }
 
-            if (!ticketMachineFixed && player.hasItemInInventory(StardewId.BATTERY_PACK, 5))
+            if (!ticketMachineFixed && player.Items.ContainsId(ObjectIds.BATTERY_PACK, 5))
             {
                 __instance.createQuestionDialogue(Game1.content.LoadString("Strings\\Locations:BoatTunnel_DonateBatteries"),
                     __instance.createYesNoResponses(), "WillyBoatDonateBatteries");
@@ -190,7 +190,7 @@ namespace StardewArchipelago.Locations.GingerIsland.Boat
                 Game1.drawObjectDialogue(Game1.content.LoadString("Strings\\Locations:BoatTunnel_DonateBatteriesHint"));
                 return;
             }
-            
+
             // Maybe could hint where the boat repair is?
         }
 
@@ -205,14 +205,14 @@ namespace StardewArchipelago.Locations.GingerIsland.Boat
             if (Game1.content.GetCurrentLanguage() == LocalizedContentManager.LanguageCode.es)
             {
                 __instance.createQuestionDialogueWithCustomWidth(
-                    Game1.content.LoadString("Strings\\Locations:BoatTunnel_BuyTicket",
-                        __instance.GetTicketPrice()), __instance.createYesNoResponses(), "Boat");
+                    Game1.content.LoadString("Strings\\Locations:BuyTicket",
+                        __instance.TicketPrice), __instance.createYesNoResponses(), "Boat");
                 return;
             }
 
             __instance.createQuestionDialogue(
-                Game1.content.LoadString("Strings\\Locations:BoatTunnel_BuyTicket",
-                    __instance.GetTicketPrice()), __instance.createYesNoResponses(), "Boat");
+                Game1.content.LoadString("Strings\\Locations:BuyTicket",
+                    __instance.TicketPrice), __instance.createYesNoResponses(), "Boat");
         }
 
         private static void InteractWithHull(BoatTunnel __instance, Farmer player)
@@ -227,14 +227,14 @@ namespace StardewArchipelago.Locations.GingerIsland.Boat
                 return;
             }
 
-            if (player.hasItemInInventory(StardewId.HARDWOOD, 200))
+            if (player.Items.ContainsId(ObjectIds.HARDWOOD, 200))
             {
                 __instance.createQuestionDialogue(
                     Game1.content.LoadString("Strings\\Locations:BoatTunnel_DonateHardwood"),
                     __instance.createYesNoResponses(), "WillyBoatDonateHardwood");
                 return;
             }
-            
+
             Game1.drawObjectDialogue(Game1.content.LoadString("Strings\\Locations:BoatTunnel_DonateHardwoodHint"));
         }
 
@@ -250,7 +250,7 @@ namespace StardewArchipelago.Locations.GingerIsland.Boat
                 return;
             }
 
-            if (player.hasItemInInventory(StardewId.IRIDIUM_BAR, 5))
+            if (player.Items.ContainsId(ObjectIds.IRIDIUM_BAR, 5))
             {
                 __instance.createQuestionDialogue(
                     Game1.content.LoadString("Strings\\Locations:BoatTunnel_DonateIridium"),

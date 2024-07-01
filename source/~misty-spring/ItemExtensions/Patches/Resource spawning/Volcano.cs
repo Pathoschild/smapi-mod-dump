@@ -109,6 +109,9 @@ internal class VolcanoPatches
                 MinutesUntilReady = ModEntry.Ores[id].Health
             };
 
+#if DEBUG
+            Log($"Spawning {ore.DisplayName}...");
+#endif
             //replace & break to avoid re-setting. no need to check ladder because it's the dungeon
             volcano.Objects[stone.TileLocation] = ore;
         }

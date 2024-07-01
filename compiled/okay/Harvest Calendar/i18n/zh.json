@@ -1,0 +1,40 @@
+{
+  "ToggleMod": "启用模组",
+  "ToggleMod.Desccription": "开启/关闭模组",
+
+  "IconSize": "图标大小",
+  "IconSize.Desccription": "设置显示在日历上的图标大小",
+  "IconSize.Small": "小",
+  "IconSize.Medium": "中",
+  "IconSize.Large": "大",
+  "IconSize.XLarge": "特大",
+
+  "IconPositionX": "图标水平位置",
+  "IconPositionX.Description": "设置图标的位置，0为左1为右",
+
+  "IconPositionY": "图标垂直位置",
+  "IconPositionY.Description": "设置图标的位置，0为上1为下",
+
+  "ToggleBlackList": "开启黑名单菜单快捷键",
+  "ToggleBlackList.Description": "打开黑名单菜单的快捷键",
+
+  "BlacklistCropKeybind": "在黑名单中添加/移除作物快捷键",
+  "BlacklistCropKeybind.Description": "将指针选中的作物添加到黑名单/从黑名单移除的快捷键",
+
+  "ToggleCalendarDayDetail": "开启日历详细菜单快捷键",
+  "ToggleCalendarDayDetail.Description": "在日历中打开每日详细菜单",
+
+  "UI.CropBlackList.NoItems": "黑名单中没有作物",
+  "UI.CropBlackList.Title": "作物黑名单",
+  "UI.CalendarDayDetail.Title": "今日收获",
+  "UI.CropBlackList.Confirm.Remove": "确认要将 {{itemName}} 移出黑名单?",
+  "UI.Remove.Notification": "已将 {{itemName}} 移出黑名单",
+  "UI.Add.Notification": "已将 {{itemName}} 加入至黑名单",
+
+  "Greenhouse": "温室",
+  "IslandWest": "姜岛西部"
+
+
+
+
+}

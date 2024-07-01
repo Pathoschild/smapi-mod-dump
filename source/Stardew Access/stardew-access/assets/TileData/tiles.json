@@ -769,15 +769,6 @@
       "Category": "interactables"
     }
   ],
-  "Farm": [
-    {
-      "NameOrTranslationKey": "static_tile-farm-lumber_pile",
-      "X": [60, 61],
-      "Y": [14],
-      "Category": "decor",
-      "Conditions": ["HasQuest:5"]
-    }
-  ],
   "FarmHouse": [
     {
       "NameOrTranslationKey": "static_tile-farmhouse-cellar_door",

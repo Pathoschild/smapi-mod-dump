@@ -25,10 +25,10 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
         private readonly bool IsBounded;
 
         /// <summary>The tokens which the values use.</summary>
-        private readonly MutableInvariantSet TokensUsed = new();
+        private readonly MutableInvariantSet TokensUsed = [];
 
         /// <summary>The allowed root values (or <c>null</c> if any value is allowed).</summary>
-        private MutableInvariantSet? AllowedRootValues = new();
+        private MutableInvariantSet? AllowedRootValues = [];
 
         /// <summary>The current values.</summary>
         private IInvariantSet Values = InvariantSets.Empty;

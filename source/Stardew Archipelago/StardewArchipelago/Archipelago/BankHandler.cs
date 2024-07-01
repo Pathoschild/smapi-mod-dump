@@ -94,7 +94,7 @@ namespace StardewArchipelago.Archipelago
         private void HandleResetCommand()
         {
 #if RELEASE
-    return;
+            return;
 #endif
             var bankingKey = string.Format(BANKING_TEAM_KEY, _archipelago.GetTeam());
             _archipelago.SetBigIntegerDataStorage(Scope.Global, bankingKey, 0);

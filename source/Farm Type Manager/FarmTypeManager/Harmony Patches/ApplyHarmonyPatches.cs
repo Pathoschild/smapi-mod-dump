@@ -25,8 +25,9 @@ namespace FarmTypeManager
 
             //apply all patches
             HarmonyPatch_DisableFurniturePickup.ApplyPatch(harmony);
-            HarmonyPatch_FrogEggImmunity.ApplyPatch(harmony);
+            HarmonyPatch_InstantKillImmunity.ApplyPatch(harmony);
             HarmonyPatch_OptimizeMonsterCode.ApplyPatch(harmony);
+            HarmonyPatch_StunImmunity.ApplyPatch(harmony);
             HarmonyPatch_ToggleExtraLoot.ApplyPatch(harmony);
             HarmonyPatch_UpdateCursorOverPlacedItem.ApplyPatch(harmony);
         }

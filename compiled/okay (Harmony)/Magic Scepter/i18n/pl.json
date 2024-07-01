@@ -41,6 +41,11 @@
   "settings-menu.option.reset-keybinds.message": "Skróty zostały zresetowane",
 
   "teleport-menu-settings.title": "Ustawienia menu teleportacji",
+  "teleport-menu-settings.play-sound": "Odtwórz dźwięk",
+  "teleport-menu-settings.theme": "Motyw",
+  "teleport-menu-settings.theme.options.default": "Domyślny",
+  "teleport-menu-settings.theme.options.vintage": "Retro",
+  "teleport-menu-settings.theme.options.witchy": "Czarodziejski",
   "teleport-menu-settings.radius": "Promień",
   "teleport-menu-settings.scale": "Skala",
   "teleport-menu-settings.selected-scale": "Skala zaznaczonego zwoju",

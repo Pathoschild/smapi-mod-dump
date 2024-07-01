@@ -26,10 +26,17 @@ Please report bugs on [GitHub](https://github.com/spacechase0/BiggerBackpack/iss
 To remove the mod, first run `player_setbackpacksize 36` in the SMAPI console and safe your game. 
 
 ## Changes
-#### 7.0:
+#### 7.3:
+* Polish translation.
+
+#### 7.2:
+* Korean translation.
+
+#### 7.1:
+* Updated for Stardew Valley 1.6
+* Fix community center UI for non-English users.
 * Localization support.
 * Russian & Ukrainian translation.
-* Fix community center UI for non-English users.
 
 #### 6.0:
 * Compatibility with upcoming SMAPI 4.0.

@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/focustense/StardewRadialMenu
+   Git: https://github.com/focustense/StardewRadialMenu.git
+
+mods:
+   Radial Menu
+
+latest commit:
+   commit b275162d248f9c7d37d46e59c0bb0d945e127695
+   Author: focustense <focustense@protonmail.com>
+   Date:   Sun Jun 23 12:21:38 2024 -0400
+   
+       Update changelog for 0.1.6 release.
+   

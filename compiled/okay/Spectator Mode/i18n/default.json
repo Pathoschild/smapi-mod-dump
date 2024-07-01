@@ -1,0 +1,26 @@
+{
+    // Spectator Mode
+    "Config.SpectatorModeTitle.Name": "Spectator Mode",
+    "UI.SpectatorMode.Title": "Spectating {{name}}",
+    "Config.SpectateLocationKeybind.Name": "Spectate Location Keybind",
+    "UI.SpectateLocation.Fail": "{{locationName}} doesn't exist.",
+    "UI.SpectateLocation.Success": "{{locationName}} exists, start spectating.",
+
+    "Config.SpectatePlayerKeybind.Name": "Spectate Player Keybind",
+    "UI.SpectatePlayer.Fail": "{{playerName}} doesn't exist.",
+    "UI.SpectatePlayer.Success": "{{playerName}} exists, start spectating.",
+    "UI.NoPlayerOnline": "No Player Online",
+
+    "Config.ToggleStateKeybind.Name": "Toggle State Keybind",
+
+    "Config.MoveSpeed.Name": "Move Speed",
+    "Config.MoveThreshold.Name": "Move Threshold",
+
+    // Rotate Player
+    "Config.RotatePlayerTitle.Name": "Rotate Player",
+    "Config.RotatePlayerKeybind.Name": "Rotate Player Keybind",
+    "Config.RotationInterval.Name": "Rotation Interval",
+    "UI.StartRotatePlayer": "Start Rotate Player",
+    "UI.StopRotatePlayer": "Stop Rotate Player"
+
+}

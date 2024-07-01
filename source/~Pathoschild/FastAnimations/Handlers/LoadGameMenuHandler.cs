@@ -16,7 +16,7 @@ namespace Pathoschild.Stardew.FastAnimations.Handlers
 {
     /// <summary>Handles the load game menu animations.</summary>
     /// <remarks>See game logic in <see cref="LoadGameMenu"/>.</remarks>
-    internal class LoadGameMenuHandler : BaseAnimationHandler
+    internal sealed class LoadGameMenuHandler : BaseAnimationHandler
     {
         /*********
         ** Public methods
@@ -26,23 +26,17 @@ namespace Pathoschild.Stardew.FastAnimations.Handlers
             : base(multiplier) { }
 
         /// <inheritdoc />
-        public override bool IsEnabled(int playerAnimationID)
+        public override bool TryApply(int playerAnimationId)
         {
             return
                 Game1.activeClickableMenu is TitleMenu
-                && TitleMenu.subMenu is LoadGameMenu loadGameMenu
-                && loadGameMenu.timerToLoad > 0;
-        }
+                && TitleMenu.subMenu is LoadGameMenu { timerToLoad: > 0 } loadMenu
+                && this.ApplySkipsWhile(() =>
+                {
+                    loadMenu.update(Game1.currentGameTime);
 
-        /// <inheritdoc />
-        public override void Update(int playerAnimationID)
-        {
-            LoadGameMenu menu = (LoadGameMenu)TitleMenu.subMenu;
-
-            this.ApplySkips(
-                run: () => menu.update(Game1.currentGameTime),
-                until: () => menu.timerToLoad <= 0
-            );
+                    return loadMenu.timerToLoad > 0;
+                });
         }
     }
 }

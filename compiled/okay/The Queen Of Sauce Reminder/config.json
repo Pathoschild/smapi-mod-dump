@@ -1,4 +1,5 @@
 {
   "EnableWednesdayReminder": true,
-  "EnableSundayReminder": true
+  "EnableSundayReminder": true,
+  "RemindOnlyUnknownRecipes": false
 }

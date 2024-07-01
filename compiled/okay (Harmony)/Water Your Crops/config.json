@@ -1,0 +1,12 @@
+{
+  "EnableMod": true,
+  "OnlyWaterCan": true,
+  "IndicatorColor": {
+    "B": 193,
+    "G": 182,
+    "R": 255,
+    "A": 255
+  },
+  "IndicatorOpacity": 1.0,
+  "Debug": false
+}

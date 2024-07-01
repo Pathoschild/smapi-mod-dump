@@ -16,6 +16,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using StardewModdingAPI;
+using StardewValley.Menus;
+using static StardewValley.Menus.LoadGameMenu;
 
 namespace SkinToneLoader.Framework
 {
@@ -62,14 +64,20 @@ namespace SkinToneLoader.Framework
         /// </summary>
         /// <param name="skinIndex">The skin index</param>
         /// <returns>a new Config Model Object</returns>
-        public static SkinToneConfigModel ReadCharacterLayout(ModEntry entry, Farmer farmer)
+        public static SkinToneConfigModel ReadCharacterLayout(SaveFileSlot saveFileSlot, ModEntry entry, Farmer farmer)
         {
-            string localConfigPath = Path.Combine("Saves", $"{new DirectoryInfo(farmer.slotName)}_SkinToneConfig.json");
+            SkinToneConfigModel model = null;
 
-            SkinToneConfigModel model = entry.Helper.Data.ReadJsonFile<SkinToneConfigModel>(localConfigPath);
+            if (farmer != null)
+            {
+                string localConfigPath = Path.Combine("Saves", $"{new DirectoryInfo(farmer.slotName)}_SkinToneConfig.json");
 
-            if (model == null)
-                model = CreateNewConfigForSave(entry, localConfigPath, new DirectoryInfo(farmer.slotName).Name);
+                model = entry.Helper.Data.ReadJsonFile<SkinToneConfigModel>(localConfigPath);
+
+                if (model == null)
+                    model = CreateNewConfigForSave(entry, localConfigPath, new DirectoryInfo(farmer.slotName).Name);
+            }
+            
 
             return model;
         }

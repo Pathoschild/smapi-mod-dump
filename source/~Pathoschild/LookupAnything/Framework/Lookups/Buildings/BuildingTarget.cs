@@ -29,15 +29,15 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Buildings
         /// <summary>Spritesheet areas to treat as part of the sprite even if they're transparent, indexed by <see cref="Building.buildingType"/> value.</summary>
         private static readonly IDictionary<string, Rectangle[]> SpriteCollisionOverrides = new Dictionary<string, Rectangle[]>
         {
-            ["Barn"] = new[] { new Rectangle(48, 90, 32, 22) }, // animal door
-            ["Big Barn"] = new[] { new Rectangle(64, 90, 32, 22) }, // animal door
-            ["Deluxe Barn"] = new[] { new Rectangle(64, 90, 32, 22) }, // animal door
+            ["Barn"] = [new Rectangle(48, 90, 32, 22)], // animal door
+            ["Big Barn"] = [new Rectangle(64, 90, 32, 22)], // animal door
+            ["Deluxe Barn"] = [new Rectangle(64, 90, 32, 22)], // animal door
 
-            ["Coop"] = new[] { new Rectangle(33, 97, 14, 15) },
-            ["Big Coop"] = new[] { new Rectangle(33, 97, 14, 15) },
-            ["Deluxe Coop"] = new[] { new Rectangle(33, 97, 14, 15) },
+            ["Coop"] = [new Rectangle(33, 97, 14, 15)],
+            ["Big Coop"] = [new Rectangle(33, 97, 14, 15)],
+            ["Deluxe Coop"] = [new Rectangle(33, 97, 14, 15)],
 
-            ["Fish Pond"] = new[] { new Rectangle(12, 12, 56, 56) }
+            ["Fish Pond"] = [new Rectangle(12, 12, 56, 56)]
         };
 
 

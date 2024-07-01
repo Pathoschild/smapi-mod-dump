@@ -58,6 +58,7 @@
     "config.machines.fruit-tree": "Дерево (Фруктове)",
     "config.machines.trash-can": "Смітник",
     "config.machines.wild-tree": "Дерево (Дике)",
+    "config.machines.feed-hopper": "Годівниця для корму і силосна вежа",
 
     // special settings for individual machines
     "config.machines.wild-tree.collect-moss.name": "Збирати мох",

@@ -13,5 +13,9 @@
   "ClientMode": false,
   "EarlyDeluxe": false,
   "LargeVariants": false,
-  "OpenMenu": "None"
+  "OpenMenu": "None",
+  "UiSkin": "Auto",
+  "EasierTrashCatalogue": true,
+  "Magnify": false,
+  "MagnifyScale": 2.0
 }

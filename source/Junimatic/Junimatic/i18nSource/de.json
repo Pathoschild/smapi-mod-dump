@@ -1,0 +1,88 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/NermNermNerm/Junimatic
+**
+*************************************************/
+
+// Do not manually edit this file!
+// Instead, collect updates to the translation files distributed with your package and
+// use the tooling to merge the changes like this:
+//
+// msbuild /target:IngestTranslations /p:TranslatedFile=<path-to-file>.json;TranslationAuthor=<author-id>
+//
+// Where 'author-id' is '<platform>:<moniker>' where '<platform>' is something like 'nexus' or 'github' and
+// '<id>' is the identity of the person who supplied the translations on that platform.
+{
+  "translations": [
+    {
+      "source": "a strange faintly glowing orb",
+      "translation": "eine seltsame, schwach leuchtende Kugel",
+      "author": "automation:google",
+      "ingestionDate": "2024-06-20T22:48:16.8005867-07:00"
+    },
+    {
+      "source": "It looks vaguely magical. It\u0027s quite hard and smooth.",
+      "translation": "Es sieht irgendwie magisch aus. Es ist ziemlich hart und glatt.",
+      "author": "automation:google",
+      "ingestionDate": "2024-06-20T22:48:16.8005867-07:00"
+    },
+    {
+      "source": "My dear boy...^My beloved grand-daughter...#$b#I am sorry to come to you like this, but I had to thank you for rescuing my dear Junimo friend.#$b#He protected me at a time when my darkest enemy was my own failing mind.#$b#In better days, he helped me with my smelters and other mine-related machines.  He will help you too; he really enjoys watching the glow of the fires!#$b#I rest much easier now knowing that my friend is safe.  I am so proud of you...",
+      "translation": "Mein lieber Junge...^Meine geliebte Enkelin...#$b#Es tut mir leid, so zu dir zu kommen, aber ich musste dir dafür danken, dass du meinen lieben Junimo-Freund gerettet hast.#$b#Er hat mich beschützt Eine Zeit, in der mein eigener schwacher Verstand mein größter Feind war.#$b#In besseren Tagen half er mir mit meinen Schmelzöfen und anderen Minenmaschinen.  Er wird Ihnen auch helfen; Er genießt es wirklich, den Schein der Feuer zu beobachten!#$b#Jetzt, da ich weiß, dass mein Freund in Sicherheit ist, ruhe ich viel besser.  Ich bin so stolz auf dich...",
+      "author": "automation:google",
+      "ingestionDate": "2024-06-20T22:48:16.8005867-07:00"
+    },
+    {
+      "source": "What have you brought for me this time?",
+      "translation": "Was hast du mir dieses Mal mitgebracht?",
+      "author": "automation:google",
+      "ingestionDate": "2024-06-20T22:48:16.8005867-07:00"
+    },
+    {
+      "source": "Hm..  Yes...#$b#Junimos are harmless, but they are not defenseless.  When this one was overwhelmed by the slime, it bound itself into a protective stasis and went into a sort of torpor.#$b#If we return this to the Junimo\u0027s world, they will be able to care for this one.",
+      "translation": "Hm... Ja...#$b#Junimos sind harmlos, aber nicht wehrlos.  Als dieser vom Schleim überwältigt wurde, verfiel er in eine schützende Stase und verfiel in eine Art Erstarrung.#$b#Wenn wir dies in die Welt der Junimo zurückbringen, können sie sich um diesen kümmern.",
+      "author": "automation:google",
+      "ingestionDate": "2024-06-20T22:48:16.8005867-07:00"
+    },
+    {
+      "source": "I shall, using my immense powers, transport this one back to the Junimo realm!",
+      "translation": "Ich werde ihn mit meinen immensen Kräften zurück in das Junimo-Reich transportieren!",
+      "author": "automation:google",
+      "ingestionDate": "2024-06-20T22:48:16.8005867-07:00"
+    },
+    {
+      "source": "There.  Done.",
+      "translation": "Dort.  Erledigt.",
+      "author": "automation:google",
+      "ingestionDate": "2024-06-20T22:48:16.8005867-07:00"
+    },
+    {
+      "source": "Yes.  Done.  It\u0027s safely back to the Junimo realm and you should get about your business.",
+      "translation": "Ja.  Erledigt.  Sie sind sicher zurück im Junimo-Reich und Sie sollten sich an Ihr Geschäft machen.",
+      "author": "automation:google",
+      "ingestionDate": "2024-06-20T22:48:16.8005867-07:00"
+    },
+    {
+      "source": "That\u0027s it...#$b#Really...#$b#I think.",
+      "translation": "Das ist es...#$b#Wirklich...#$b#Ich denke.",
+      "author": "automation:google",
+      "ingestionDate": "2024-06-20T22:48:16.8005867-07:00"
+    },
+    {
+      "source": "Investigate the strange glowing thing you found inside a big slime.",
+      "translation": "Untersuchen Sie das seltsam leuchtende Ding, das Sie in einem großen Schleim gefunden haben.",
+      "author": "automation:google",
+      "ingestionDate": "2024-06-20T22:48:16.8005867-07:00"
+    },
+    {
+      "source": "The Strange Orb",
+      "translation": "Die seltsame Kugel",
+      "author": "automation:google",
+      "ingestionDate": "2024-06-20T22:48:16.8005867-07:00"
+    }
+  ]
+}

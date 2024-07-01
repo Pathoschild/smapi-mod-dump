@@ -40,7 +40,7 @@ namespace ArsVenefici.Framework.Spells.Components
 
             if (target.GetCharacter() is Farmer living) 
             {
-                float healing = helper.GetModifiedStat(2, new SpellPartStats(SpellPartStatType.HEALING), modifiers, spell, caster, target, index);
+                float healing = helper.GetModifiedStat(15, new SpellPartStats(SpellPartStatType.HEALING), modifiers, spell, caster, target, index);
 
                 //if (living.isInvertedHealAndHarm())
                 //{

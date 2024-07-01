@@ -23,7 +23,7 @@ namespace ContentPatcher.Framework
         ** Fields
         *********/
         /// <summary>The underlying values.</summary>
-        private readonly HashSet<IContextual> ValuesImpl = new();
+        private readonly HashSet<IContextual> ValuesImpl = [];
 
 
         /*********

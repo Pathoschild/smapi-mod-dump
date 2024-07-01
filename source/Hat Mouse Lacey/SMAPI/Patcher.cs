@@ -70,7 +70,7 @@ namespace ichortower_HatMouseLacey
             NPC Lacey = Game1.currentLocation.isCharacterAtTile(tileLocation);
             if (Lacey != null && Lacey.Name.Equals(HML.LaceyInternalName) &&
                     !Lacey.isSleeping.Value) {
-                string hatstr = LCHatString.GetCurrentHatString(who);
+                string hatstr = LCHatString.HatIdCollapse(LCHatString.GetCurrentHatString(who));
                 if (hatstr != null && !LCModData.HasShownHat(hatstr)) {
                     Game1.mouseCursor = Game1.cursor_talk;
                     __result = true;
@@ -191,12 +191,12 @@ namespace ichortower_HatMouseLacey
             if (who.isRidingHorse()) {
                 return true;
             }
-            string hatstr = LCHatString.GetCurrentHatString(who);
+            string hatstr = LCHatString.HatIdCollapse(LCHatString.GetCurrentHatString(who));
             if (hatstr is null || LCModData.HasShownHat(hatstr)) {
                 return true;
             }
             string hatkey = hatstr.Replace(" ", "").Replace("'", "").Replace("|", ".");
-            string asset = $"Strings\\{HML.CPId}_HatReactions";
+            string asset = LCHatString.ReactionsAsset;
 
             Dialogue freshHat = Dialogue.FromTranslation(__instance,
                     $"{asset}:newHat");
@@ -213,23 +213,23 @@ namespace ichortower_HatMouseLacey
                 int turntime = 500;
                 who.freezePause = 4*turntime+800;
                 DelayedAction[] anims = new DelayedAction[5] {
-                        new (turntime, turn),
-                        new (2*turntime, turn),
-                        new (3*turntime, turn),
-                        new (4*turntime, turn),
-                        new (4*turntime+600, delegate {
-                            Dialogue reaction = Dialogue.TryGetDialogue(__instance,
-                                    $"{asset}:{hatkey}");
-                            if (reaction is null) {
-                                reaction = Dialogue.FromTranslation(__instance,
-                                    $"{asset}:404");
-                            }
-                            __instance.CurrentDialogue.Push(reaction);
-                            Game1.drawDialogue(__instance);
-                            Game1.player.changeFriendship(10, __instance);
-                            who.completeQuest($"{HML.QuestPrefix}HatReactions");
-                            LCModData.AddShownHat(hatstr);
-                        })
+                    new (turntime, turn),
+                    new (2*turntime, turn),
+                    new (3*turntime, turn),
+                    new (4*turntime, turn),
+                    new (4*turntime+600, delegate {
+                        Dialogue reaction = Dialogue.TryGetDialogue(__instance,
+                                $"{asset}:{hatkey}");
+                        if (reaction is null) {
+                            reaction = Dialogue.FromTranslation(__instance,
+                                $"{asset}:404");
+                        }
+                        __instance.CurrentDialogue.Push(reaction);
+                        Game1.drawDialogue(__instance);
+                        Game1.player.changeFriendship(10, __instance);
+                        who.completeQuest($"{HML.QuestPrefix}HatReactions");
+                        LCModData.AddShownHat(hatstr);
+                    })
                 };
                 foreach (var a in anims) {
                     Game1.delayedActions.Add(a);

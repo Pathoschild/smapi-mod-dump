@@ -14,6 +14,7 @@ using Microsoft.Xna.Framework;
 using Pathoschild.Stardew.Automate;
 using Sickhead.Engine.Util;
 using StardewModdingAPI;
+using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,6 +39,10 @@ internal class MachineGroupAutomatePatch : GenericPatcher
         try
         {
             if (!Context.IsWorldReady || __instance == null)
+                return;
+
+            // don't run for farmhands
+            if (Game1.IsMultiplayer && !Game1.IsMasterGame)
                 return;
 
 

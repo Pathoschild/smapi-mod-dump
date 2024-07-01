@@ -8,9 +8,9 @@ mods:
    Tillable Ground
 
 latest commit:
-   commit 4fbee8893e50ae662e255f8db8ecaaa3ff5c9a44
+   commit 04ea4623ec5944a4c22319ffadb88feb2d122357
    Author: hawkfalcon <contact@hawkfalcon.com>
-   Date:   Thu May 16 21:11:05 2024 -0700
+   Date:   Wed Jun 5 20:25:57 2024 -0700
    
-       Merge pull request #57 from goingcrazy1st/master
+       Merge pull request #62 from nanypoco/CP-i18n
    

@@ -56,7 +56,7 @@ namespace MobilePhone
             ModEntry.runningApp = Helper.ModRegistry.ModID;
             CreateCallableList();
             listHeight = Config.ContactMarginY + (int)Math.Ceiling(callableList.Count / (float)ModEntry.gridWidth) * (Config.ContactHeight + Config.ContactMarginY);
-            Helper.Events.Display.RenderedWorld += Display_RenderedWorld;
+            PhoneVisuals.OnAfterRenderScreen += Display_RenderedWorld;
             Helper.Events.Input.ButtonPressed += Input_ButtonPressed;
             Helper.Events.Input.MouseWheelScrolled += Input_MouseWheelScrolled;
         }
@@ -118,7 +118,7 @@ namespace MobilePhone
             callableList.Clear();
             string[] blackList = Config.CallBlockList.Length > 0 ? Config.CallBlockList.Split(',') : null;
             string[] whiteList = Config.CallAllowList.Length > 0 ? Config.CallAllowList.Split(',') : null;
-            var npcDict = Helper.GameContent.Load<Dictionary<string, CustomNPCData>>(ModEntry.npcDictPath);
+            Dictionary<string, CustomNPCData> npcDict = PhoneUtils.LoadNPCDict();
 
             foreach(var kvp in Game1.player.friendshipData.Pairs)
             {
@@ -129,10 +129,14 @@ namespace MobilePhone
                         if (!npcDict.TryGetValue(kvp.Key, out var data))
                         {
                             if (kvp.Value.Points < Config.MinPointsToCall)
+                            {
                                 continue;
+                            }
                         }
                         else if (!data.canCall || data.minPointsToCall > kvp.Value.Points)
+                        {
                             continue;
+                        }
                         Monitor.Log($"Adding {kvp.Key} to callable list");
                         NPC npc = Game1.getCharacterFromName(kvp.Key);
                         Texture2D portrait = npc.Sprite.Texture;
@@ -160,20 +164,23 @@ namespace MobilePhone
             {
                 ModEntry.appRunning = false;
                 ModEntry.phoneAppRunning = false;
-                Helper.Events.Display.RenderedWorld -= Display_RenderedWorld;
+                PhoneVisuals.OnAfterRenderScreen -= Display_RenderedWorld;
                 Helper.Events.Input.ButtonPressed -= Input_ButtonPressed;
                 Helper.Events.Input.MouseWheelScrolled -= Input_MouseWheelScrolled;
                 return;
             }
+
+            float ratio = Game1.options.zoomLevel != 1f ? 1f : 1f / Game1.options.uiScale;
             Vector2 screenPos = PhoneUtils.GetScreenPosition();
             Vector2 screenSize = PhoneUtils.GetScreenSize();
-            Rectangle headerRect = new Rectangle((int)screenPos.X, (int)screenPos.Y, (int)screenSize.X, Config.AppHeaderHeight);
+            Rectangle headerRect = PhoneUtils.ScaleRect(screenPos.X, screenPos.Y, screenSize.X, Config.AppHeaderHeight, ratio);
             Point mousePos = Game1.getMousePosition();
+            Vector2 scaledMousePos = mousePos.ToVector2() * ratio;
 
             if (Helper.Input.IsSuppressed(SButton.MouseLeft))
             {
                 int dy = mousePos.Y - lastMousePositionY;
-                if (Math.Abs(dy) > 0 && ModEntry.screenRect.Contains(mousePos))
+                if (Math.Abs(dy) > 0 && PhoneUtils.ScaleRect(ModEntry.screenRect, ratio).Contains(scaledMousePos))
                 {
                     dragging = true;
                 }
@@ -193,9 +200,9 @@ namespace MobilePhone
                 }
                 else
                 {
-                    if (headerRect.Contains(mousePos))
+                    if (headerRect.Contains(scaledMousePos))
                     {
-                        if (new Rectangle((int)screenPos.X + (int)screenSize.X - Config.AppHeaderHeight, (int)screenPos.Y, Config.AppHeaderHeight, Config.AppHeaderHeight).Contains(mousePos))
+                        if (PhoneUtils.ScaleRect(screenPos.X + screenSize.X - Config.AppHeaderHeight, screenPos.Y, Config.AppHeaderHeight, Config.AppHeaderHeight, ratio).Contains(scaledMousePos))
                         {
                             PhoneUtils.ToggleApp(false);
                         }
@@ -205,8 +212,7 @@ namespace MobilePhone
                         for (int i = 0; i < callableList.Count; i++)
                         {
                             Vector2 pos = GetNPCPos(i);
-                            Rectangle r = new Rectangle((int)pos.X, (int)pos.Y, Config.ContactWidth, Config.ContactHeight);
-                            if (r.Contains(mousePos))
+                            if (PhoneUtils.ScaleRect(pos.X, pos.Y, Config.ContactWidth, Config.ContactHeight, ratio).Contains(scaledMousePos))
                             {
                                 Monitor.Log($"calling {callableList[i].npc.Name}");
                                 //PhoneUtils.PlayRingTone();
@@ -219,15 +225,16 @@ namespace MobilePhone
 
             lastMousePositionY = Game1.getMouseY();
             int startListY = (int)screenPos.Y + Config.AppHeaderHeight;
-            e.SpriteBatch.Draw(ModEntry.phoneBookTexture, screenPos, Color.White);
+            e.SpriteBatch.Draw(ModEntry.phoneBookTexture, PhoneUtils.ScaleRect(screenPos.X, screenPos.Y, screenSize.X, screenSize.Y, ratio), Color.White);
 
             if(yOffset < 0)
             {
-                e.SpriteBatch.Draw(ModEntry.upArrowTexture, ModEntry.upArrowPosition, Color.White);
+                e.SpriteBatch.Draw(ModEntry.upArrowTexture, PhoneUtils.ScaleRect(ModEntry.upArrowPosition.X, ModEntry.upArrowPosition.Y, ModEntry.upArrowTexture.Width, ModEntry.upArrowTexture.Height, ratio), Color.White);
             }
+
             if (yOffset > PhoneUtils.GetScreenSize().Y - Config.AppHeaderHeight - listHeight)
             {
-                e.SpriteBatch.Draw(ModEntry.downArrowTexture, ModEntry.downArrowPosition, Color.White);
+                e.SpriteBatch.Draw(ModEntry.downArrowTexture, PhoneUtils.ScaleRect(ModEntry.downArrowPosition.X, ModEntry.downArrowPosition.Y, ModEntry.downArrowTexture.Width, ModEntry.downArrowTexture.Height, ratio), Color.White);
             }
 
             int screenBottom = (int)(screenPos.Y + screenSize.Y);
@@ -239,6 +246,7 @@ namespace MobilePhone
                 {
                     continue;
                 }
+
                 Rectangle sourceRect = r;
                 int cutTop = 0;
                 int cutBottom = 0;
@@ -253,16 +261,19 @@ namespace MobilePhone
                     cutBottom = (int)Math.Round((screenBottom - r.Height * 2 - (int)npcPos.Y) / 2f);
                     sourceRect = new Rectangle(r.X, r.Y, r.Width, r.Height + cutBottom);
                 }
+
                 int alpha = callableList[i].npc.CurrentDialogue.Any() && !callableList[i].npc.isSleeping.Value ? 255 : Config.UncallableNPCAlpha;
-                e.SpriteBatch.Draw(callableList[i].portrait, npcPos + new Vector2((Config.ContactWidth - 32) / 2f,0), sourceRect, new Color(255,255,255,alpha), 0, Vector2.Zero, 2, SpriteEffects.None, 0.86f);
+                e.SpriteBatch.Draw(callableList[i].portrait, (npcPos + new Vector2((Config.ContactWidth - 32) / 2f, 0)) * ratio, sourceRect, new Color(255,255,255,alpha), 0, Vector2.Zero, 2f * ratio, SpriteEffects.None, 0.86f);
                 if(Config.ShowNamesInPhoneBook && npcPos.Y < screenBottom - Config.ContactHeight - callableList[i].nameSize.Y * 0.4f + 6)
-                    e.SpriteBatch.DrawString(Game1.dialogueFont, callableList[i].name, GetNPCPos(i) + new Vector2(Config.ContactWidth / 2f - callableList[i].nameSize.X * 0.2f, Config.ContactHeight - 6 ), Color.Black, 0, Vector2.Zero, 0.4f, SpriteEffects.None, 0.86f);
+                {
+                    e.SpriteBatch.DrawString(Game1.dialogueFont, callableList[i].name, (GetNPCPos(i) + new Vector2(Config.ContactWidth / 2f - callableList[i].nameSize.X * 0.2f, Config.ContactHeight - 6)) * ratio, Color.Black, 0, Vector2.Zero, 0.4f * ratio, SpriteEffects.None, 0.86f);
+                }
             }
             e.SpriteBatch.Draw(ModEntry.phoneBookHeaderTexture, headerRect, Color.White);
             string headerText = Helper.Translation.Get("phone-book");
             Vector2 headerTextSize = Game1.dialogueFont.MeasureString(headerText) * Config.HeaderTextScale;
-            e.SpriteBatch.DrawString(Game1.dialogueFont, headerText, screenPos + new Vector2(screenSize.X / 2f - headerTextSize.X / 2f, Config.AppHeaderHeight / 2f - headerTextSize.Y / 2f ), Config.PhoneBookHeaderTextColor, 0, Vector2.Zero, Config.HeaderTextScale, SpriteEffects.None, 0.86f);
-            e.SpriteBatch.DrawString(Game1.dialogueFont, "x", screenPos + new Vector2(screenSize.X - Config.AppHeaderHeight / 2f - Game1.dialogueFont.MeasureString("x").X * Config.HeaderTextScale / 2f, Config.AppHeaderHeight / 2f - headerTextSize.Y / 2f), Config.PhoneBookHeaderTextColor, 0, Vector2.Zero, Config.HeaderTextScale, SpriteEffects.None, 0.86f);
+            e.SpriteBatch.DrawString(Game1.dialogueFont, headerText, (screenPos + new Vector2(screenSize.X / 2f - headerTextSize.X / 2f, Config.AppHeaderHeight / 2f - headerTextSize.Y / 2f)) * ratio, Config.PhoneBookHeaderTextColor, 0, Vector2.Zero, Config.HeaderTextScale * ratio, SpriteEffects.None, 0.86f);
+            e.SpriteBatch.DrawString(Game1.dialogueFont, "x", (screenPos + new Vector2(screenSize.X - Config.AppHeaderHeight / 2f - Game1.dialogueFont.MeasureString("x").X * Config.HeaderTextScale / 2f, Config.AppHeaderHeight / 2f - headerTextSize.Y / 2f)) * ratio, Config.PhoneBookHeaderTextColor, 0, Vector2.Zero, Config.HeaderTextScale * ratio, SpriteEffects.None, 0.86f);
         }
 
         private static Vector2 GetNPCPos(int i)
@@ -272,6 +283,7 @@ namespace MobilePhone
 
             return new Vector2(x, y + yOffset);
         }
+
         public static void ReceiveRandomCall()
         {
             CreateCallableList();

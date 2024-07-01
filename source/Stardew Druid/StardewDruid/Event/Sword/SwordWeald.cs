@@ -72,16 +72,16 @@ namespace StardewDruid.Event.Sword
 
                     narrators = new()
                     {
-                        [0] = new("Rustling in the woodland", Microsoft.Xna.Framework.Color.LightGreen),
-                        [1] = new("Whispers on the wind", Microsoft.Xna.Framework.Color.LightBlue),
-                        [2] = new("Sighs of the earth", Microsoft.Xna.Framework.Color.LightCyan),
+                        [0] = "Rustling in the woodland",
+                        [1] = "Whispers on the wind",
+                        [2] = "Sighs of the earth",
                     };
 
                     AddActor(0,origin + new Vector2(-192, -32));
                     AddActor(1,origin + new Vector2(128, -96));
                     AddActor(2,origin + new Vector2(-64, -180));
 
-                    DialogueCue(0,"something treads the old paths");
+                    DialogueCue(0,"Something treads the old paths");
 
                     CastVoice(1, "!");
 
@@ -91,13 +91,13 @@ namespace StardewDruid.Event.Sword
 
                 case 4:
 
-                    DialogueCue(2,"aye, a mortal");
+                    DialogueCue(2,"Aye, a mortal");
 
                     break;
 
                 case 7:
 
-                    DialogueCue(1,"sent by the gardener");
+                    DialogueCue(1,"Sent by the gardener");
 
                     break;
 
@@ -151,8 +151,6 @@ namespace StardewDruid.Event.Sword
                 case 303:
 
                     eventComplete = true;
-
-                    expireEarly = true;
 
                     break;
 

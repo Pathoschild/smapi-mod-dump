@@ -13,7 +13,7 @@ using StardewValley;
 using StardewValley.TerrainFeatures;
 using Pathoschild.Stardew.Automate;
 
-namespace CustomTapperFramework;
+namespace Selph.StardewMods.MachineTerrainFramework;
 
 // Turns the tile of a resource clump with a tapper on it into connectors.
 class ResourceClumpConnector : IAutomatable {

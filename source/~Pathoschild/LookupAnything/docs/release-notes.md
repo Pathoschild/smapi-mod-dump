@@ -9,8 +9,35 @@ for queries and analysis.**
 [← back to readme](README.md)
 
 # Release notes
-## Upcoming release
+## 1.45.1
+Released 30 June 2024 for SMAPI 4.0.7 or later.
+
+* Fixed lists missing comma separators in some cases.
+
+## 1.45.0
+Released 29 June 2024 for SMAPI 4.0.7 or later.
+
+* Added integration with Bush Bloom Mod (thanks to Mushymato!).
+* Added human-readable text for `DAY_OF_MONTH` conditions (thanks to Mushymato!).
+* Added item context tags to pinned data mining fields.
+* Fixed crafting recipes with 'any wild seeds' ingredients not handled correctly.
+* Fixed some invalid recipe ingredients being hidden; they're now shown as error items.
+* Fixed error looking up broken crops.
+* Fixed lookups for some fish not listing some locations they can spawn in.
+* Fixed search UI listing some wallpaper/flooring items twice.
+* Fixed some Chinese and Japanese text not line-wrapped after 1.44.0.
+* Improved translations. Thanks to DxTea (updated Russian), MakinDay (updated Italian), mitekano23 (updated Japanese), and weizinai (updated Chinese)!
+
+## 1.44.1
+Released 08 June 2024 for SMAPI 4.0.7 or later.
+
+* Raw conditions and context tags are now formatted like _context tag "tag"_ and _query "query"_ to reduce confusion.
 * Fixed search UI not listing dried items, pickled forage, smoked fish, and specific bait.
+* Fixed search UI error if a custom pet type has no display name.
+* Raised minimum versions to SMAPI 4.0.7 and Stardew Valley 1.6.4.  
+  _This avoids errors due to breaking changes in earlier 1.6 patches._
+* Internal refactoring.
+* Improved translations. Thanks to DARKS0UND (updated Korean), MakinDay (updated Italian), mehmetgorkemarslan (updated Turkish), mezen (updated German), and weizinai (updated Chinese)!
 
 ## 1.44.0
 Released 27 May 2024 for SMAPI 4.0.0 or later.

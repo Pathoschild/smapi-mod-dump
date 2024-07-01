@@ -10,7 +10,6 @@
 
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using ContentPatcher.Framework.Tokens;
 using IApiManagedTokenString = ContentPatcher.IManagedTokenString;
 
@@ -70,7 +69,7 @@ namespace ContentPatcher.Framework.Api
         {
             // skip unneeded updates
             if (!this.ShouldUpdate())
-                return Enumerable.Empty<int>();
+                return [];
             this.LastUpdateTick = this.Context.UpdateTick;
 
             // update context
@@ -84,7 +83,7 @@ namespace ContentPatcher.Framework.Api
             // return screen ID if it changed
             return this.Value != oldValue
                 ? new[] { StardewModdingAPI.Context.ScreenId }
-                : Enumerable.Empty<int>();
+                : [];
         }
 
 

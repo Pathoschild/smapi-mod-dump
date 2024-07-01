@@ -33,7 +33,7 @@ namespace Pathoschild.Stardew.Common
         private static readonly Lazy<Texture2D> LazyPixel = new(() =>
         {
             Texture2D pixel = new Texture2D(Game1.graphics.GraphicsDevice, 1, 1);
-            pixel.SetData(new[] { Color.White });
+            pixel.SetData([Color.White]);
             return pixel;
         });
 
@@ -363,7 +363,7 @@ namespace Pathoschild.Stardew.Common
                 return new Vector2(0, 0);
 
             // get word list
-            List<string> words = new List<string>();
+            List<string> words = [];
             foreach (string word in text.Split(' ', StringSplitOptions.RemoveEmptyEntries))
             {
                 // split on newlines

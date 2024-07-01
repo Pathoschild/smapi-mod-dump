@@ -6,9 +6,9 @@ mods:
    Furniture Framework
 
 latest commit:
-   commit 64946b5253cfd3ba2dac3fa78470062ef65f86ec
+   commit a01615e90608ad3bb2ab8dc80fed609f1b9b3ef2
    Author: leroymilo <adriaanboxmail@gmail.com>
-   Date:   Wed May 29 20:57:58 2024 +0900
+   Date:   Thu Jun 13 17:26:08 2024 +0900
    
-       working custom description
+       changed Simple to Single for bed type
    

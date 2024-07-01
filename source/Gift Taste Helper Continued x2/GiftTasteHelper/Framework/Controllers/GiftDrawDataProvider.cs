@@ -141,13 +141,15 @@ namespace GiftTasteHelper.Framework
                 foreach (GiftTaste taste in Enum.GetValues(typeof(GiftTaste)))
                 {
                     if (taste == GiftTaste.MAX)
+                    {
                         continue;
+                    }
 
                     var itemIds = this.GiftDataProvider.GetGifts(npcName, taste, false);
                     var universalItemIds = this.GiftDataProvider.GetUniversalGifts(npcName, taste);
 
-                    npcInfo.Gifts.Add(taste, ItemData.MakeItemsFromIds(itemIds));
-                    npcInfo.UniversalGifts.Add(taste, ItemData.MakeItemsFromIds(universalItemIds));
+                    npcInfo.Gifts.Add(taste, ItemData.MakeItemsFromIds(itemIds).ToArray());
+                    npcInfo.UniversalGifts.Add(taste, ItemData.MakeItemsFromIds(universalItemIds).ToArray());
                 }
 
                 NpcGiftInfo.Add(npcName, npcInfo);

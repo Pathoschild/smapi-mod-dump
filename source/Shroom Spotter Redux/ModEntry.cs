@@ -26,30 +26,76 @@ namespace ShroomSpotter
         public override void Entry(IModHelper helper)
         {
             Config = Helper.ReadConfig<ModConfig>();
-            Helper.Events.Input.ButtonPressed += ButtonPressed;
-            Helper.Events.Display.RenderingActiveMenu += RenderingActiveMenu;
-            Helper.Events.Display.RenderedActiveMenu += RenderedActiveMenu;
+            Helper.Events.Input.ButtonPressed += OnButtonPressed;
+            Helper.Events.Display.RenderingActiveMenu += OnRenderingActiveMenu;
+            Helper.Events.Display.RenderedActiveMenu += OnRenderedActiveMenu;
         }
 
         #region Events
 
-        private void ButtonPressed(object sender, ButtonPressedEventArgs e)
+        private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
-            // Check the pressed button
             if (e.Button != Config.GetShroomLevels) return;
 
-            // Find all shroom levels
+            var shroomLevels = FindShroomLevels(out int daysTilShroom);
+            DisplayShroomMessage(shroomLevels, daysTilShroom);
+        }
+
+        private void OnRenderingActiveMenu(object sender, RenderingActiveMenuEventArgs e)
+        {
+            if (!(Game1.activeClickableMenu is Billboard menu)) return;
+
+            var calendarDays = GetCalendarDays(menu);
+            if (calendarDays == null) return;
+
+            var hoverField = Helper.Reflection.GetField<string>(menu, "hoverText");
+            var hoverText = hoverField.GetValue();
+
+            if (hoverText.ToLower().Contains("shrooms")) return;
+
+            hoverText = UpdateHoverText(hoverText, calendarDays);
+
+            hoverField.SetValue(hoverText);
+        }
+
+        private void OnRenderedActiveMenu(object sender, RenderedActiveMenuEventArgs e)
+        {
+            if (!(Game1.activeClickableMenu is Billboard menu)) return;
+
+            var calendarDays = GetCalendarDays(menu);
+            if (calendarDays == null) return;
+
+            var hoverText = Helper.Reflection.GetField<string>(menu, "hoverText").GetValue();
+            DrawShroomsOnCalendar(calendarDays, e.SpriteBatch);
+
+            IClickableMenu.drawHoverText(e.SpriteBatch, hoverText, Game1.dialogueFont);
+        }
+
+        #endregion
+
+        #region Helper Methods
+
+        private static List<int> FindShroomLevels(out int daysTilShroom)
+        {
             var shroomLevels = new List<int>();
-            var daysTilShroom = -1;
-            while (shroomLevels.Count == 0 && ++daysTilShroom < 50) shroomLevels = GetShroomLayers(daysTilShroom);
+            daysTilShroom = -1;
+
+            while (shroomLevels.Count == 0 && ++daysTilShroom < 50)
+            {
+                shroomLevels = GetShroomLayers(daysTilShroom);
+            }
+
+            return shroomLevels;
+        }
+
+        private static void DisplayShroomMessage(List<int> shroomLevels, int daysTilShroom)
+        {
             if (shroomLevels.Count > 0)
             {
-                if (daysTilShroom == 0)
-                    Game1.showGlobalMessage("Shroom layers will spawn on these mine levels: " +
-                                            string.Join(", ", shroomLevels));
-                else
-                    Game1.showGlobalMessage("Shrooms will spawn in " + daysTilShroom +
-                                            " day(s) on these mine levels: " + string.Join(", ", shroomLevels));
+                string message = daysTilShroom == 0
+                    ? $"Shroom layers will spawn on these mine levels: {string.Join(", ", shroomLevels)}"
+                    : $"Shrooms will spawn in {daysTilShroom} day(s) on these mine levels: {string.Join(", ", shroomLevels)}";
+                Game1.showGlobalMessage(message);
             }
             else
             {
@@ -57,89 +103,63 @@ namespace ShroomSpotter
             }
         }
 
-        private void RenderingActiveMenu(object sender, RenderingActiveMenuEventArgs e)
+        private List<ClickableTextureComponent> GetCalendarDays(Billboard menu)
         {
-            // Only render shrooms on the billboard
-            if (!(Game1.activeClickableMenu is Billboard menu)) return;
+            var calendarDaysField = Helper.Reflection.GetField<List<ClickableTextureComponent>>(menu, nameof(Billboard.calendarDays));
+            return calendarDaysField?.GetValue();
+        }
 
-            // Try to get the calendar field
-            if (!(Helper.Reflection.GetField<List<ClickableTextureComponent>>(menu, nameof(Billboard.calendarDays))
-                ?.GetValue() is List<ClickableTextureComponent> calendarDays)) return;
-
-            // Get the current hover text
-            var hoverField = Helper.Reflection.GetField<string>(menu, "hoverText");
-            var hoverText = hoverField.GetValue();
-
-            // Make sure the current hover text doesn't already have mushroom information
-            if (hoverText.ToLower().Contains("shrooms")) return;
-
-            // Update the hover text
+        private static string UpdateHoverText(string hoverText, List<ClickableTextureComponent> calendarDays)
+        {
             var mouseX = Game1.getMouseX();
             var mouseY = Game1.getMouseY();
-            for (var day = 1; day <= 28; day++)
-            {
-                // Check if the mouse is over the current calendar day
-                var component = calendarDays[day - 1];
-                if (!component.bounds.Contains(mouseX, mouseY)) continue;
+            var day = Game1.dayOfMonth;
 
-                // Add any mushroom text
+            var component = calendarDays[day - 1];
+            if (component.bounds.Contains(mouseX, mouseY))
+            {
                 var shrooms = GetShroomLayers(day - Game1.dayOfMonth);
-                if (hoverText.Length > 0) hoverText += "\n";
-                if (shrooms.Count > 0) hoverText += "Shrooms: " + string.Join(", ", shrooms);
-                else hoverText += "No shrooms";
-                break;
+                hoverText += hoverText.Length > 0 ? "\n" : string.Empty;
+                hoverText += shrooms.Count > 0 ? $"Shrooms: {string.Join(", ", shrooms)}" : "No shrooms";
             }
 
-            hoverField.SetValue(hoverText);
+            return hoverText;
         }
 
-        private void RenderedActiveMenu(object sender, RenderedActiveMenuEventArgs e)
+        private static void DrawShroomsOnCalendar(List<ClickableTextureComponent> calendarDays, SpriteBatch spriteBatch)
         {
-            // Only render shrooms on the billboard
-            if (!(Game1.activeClickableMenu is Billboard menu)) return;
+            var day = Game1.dayOfMonth;
+            var component = calendarDays[day - 1];
+            var shrooms = GetShroomLayers(day - Game1.dayOfMonth);
 
-            // Try to get the calendar field
-            if (!(Helper.Reflection.GetField<List<ClickableTextureComponent>>(menu, nameof(Billboard.calendarDays))
-                ?.GetValue() is List<ClickableTextureComponent> calendarDays)) return;
-
-            // Get the current hover text
-            var hoverText = Helper.Reflection.GetField<string>(menu, "hoverText").GetValue();
-
-            // Draw the shrooms on the calendar
-            for (var day = 1; day <= 28; day++)
+            if (shrooms.Count > 0)
             {
-                var component = calendarDays[day - 1];
-                var shrooms = GetShroomLayers(day - Game1.dayOfMonth);
-
-                // Check if a shroom layer exists on this day
-                if (shrooms.Count <= 0) continue;
-
-                // Draw the shroom
                 var source = GameLocation.getSourceRectForObject(422);
                 var dest = new Vector2(component.bounds.Right - 8f * Game1.pixelZoom, component.bounds.Y);
-                e.SpriteBatch.Draw(Game1.objectSpriteSheet, dest, source, Color.White, 0.0f, Vector2.Zero,
-                    Game1.pixelZoom / 2f, SpriteEffects.None, 1f);
+                spriteBatch.Draw(Game1.objectSpriteSheet, dest, source, Color.White, 0.0f, Vector2.Zero, Game1.pixelZoom / 2f, SpriteEffects.None, 1f);
             }
-
-            // Redraw the hover text so it appears over the mushrooms
-            IClickableMenu.drawHoverText(e.SpriteBatch, hoverText, Game1.dialogueFont);
         }
 
-        #endregion
-
-        private static List<int> GetShroomLayers(int relativeDay)
+        private static List<int> GetShroomLayers(int v)
         {
             var shroomLevels = new List<int>();
+
             for (var mineLevel = 1; mineLevel < 120; mineLevel++)
             {
-                var random = new Random(((int) Game1.stats.DaysPlayed + relativeDay) * mineLevel + 4 * mineLevel +
-                                        (int) Game1.uniqueIDForThisGame / 2);
-                if (random.NextDouble() < 0.3 && mineLevel > 2) random.NextDouble(); // checked vs < 0.3 again
-                random.NextDouble(); // checked vs < 0.15
-                if (random.NextDouble() < 0.035 && mineLevel > 80 && mineLevel % 5 != 0) shroomLevels.Add(mineLevel);
+                var random = Utility.CreateDaySaveRandom(Game1.stats.DaysPlayed, mineLevel, 4 * mineLevel);
+
+                if (random.NextDouble() < 0.3 && mineLevel > 2) random.NextDouble();
+                random.NextDouble();
+
+                if (random.NextDouble() < 0.035 && mineLevel > 80 && mineLevel % 5 != 0)
+                {
+                    shroomLevels.Add(mineLevel);
+                }
             }
 
             return shroomLevels;
         }
+
+        #endregion
     }
 }

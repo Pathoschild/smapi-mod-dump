@@ -19,7 +19,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SObject = StardewValley.Object;
 using StardewValley.Objects;
-using HoverLabels.Drawing;
+using AchtuurCore.Framework.Borders;
 
 namespace HoverLabels.Labels.Objects;
 internal class ObjectLabel : BaseLabel
@@ -41,7 +41,7 @@ internal class ObjectLabel : BaseLabel
         if (hoverObject is null)
             return;
 
-        AddBorder(new TitleLabelText(hoverObject.DisplayName));
+        AddBorder(new TitleLabel(hoverObject.DisplayName));
     }
 
     /// <summary>
@@ -52,7 +52,7 @@ internal class ObjectLabel : BaseLabel
     public override bool ShouldGenerateLabel(Vector2 cursorTile)
     {
         SObject sobj = GetCursorObject(cursorTile);
-        return sobj is not null;
+        return sobj is not null && sobj.ItemId != "-1";
     }
 
     public override void SetCursorTile(Vector2 cursorTile)

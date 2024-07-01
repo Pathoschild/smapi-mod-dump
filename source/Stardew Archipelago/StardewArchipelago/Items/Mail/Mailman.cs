@@ -9,7 +9,6 @@
 *************************************************/
 
 using System;
-using System.Collections.Generic;
 using StardewArchipelago.Serialization;
 using StardewValley;
 
@@ -17,7 +16,7 @@ namespace StardewArchipelago.Items.Mail
 {
     public class Mailman
     {
-        private static readonly Random _random = new Random();
+        private static readonly Random _random = new();
         private bool _sendForTomorrow = true;
 
         private ArchipelagoStateDto _state;
@@ -27,7 +26,7 @@ namespace StardewArchipelago.Items.Mail
             _state = state;
             foreach (var (mailKey, mailContent) in _state.LettersGenerated)
             {
-                var mailData = Game1.content.Load<Dictionary<string, string>>("Data\\mail");
+                var mailData = DataLoader.Mail(Game1.content);
                 mailData[mailKey] = mailContent;
             }
         }
@@ -85,7 +84,7 @@ namespace StardewArchipelago.Items.Mail
         public void GenerateMail(string mailKey, string mailContent)
         {
             mailContent = mailContent.Replace("<3", "<");
-            var mailData = Game1.content.Load<Dictionary<string, string>>("Data\\mail");
+            var mailData = DataLoader.Mail(Game1.content);
             mailData[mailKey] = mailContent;
             if (_state.LettersGenerated.ContainsKey(mailKey))
             {
@@ -132,7 +131,9 @@ namespace StardewArchipelago.Items.Mail
 
         private string GetRandomApMailString()
         {
-            var chosenString = ApMailStrings[_random.Next(0, ApMailStrings.Length)];
+            var chosenString = ModEntry.Instance.Config.DisableLetterTemplates ?
+                ApConciseMailString:
+                ApMailStrings[_random.Next(0, ApMailStrings.Length)];
             chosenString += "{3}[#]Archipelago Item"; // Argument {3} is the embed
             return chosenString;
         }
@@ -164,7 +165,8 @@ namespace StardewArchipelago.Items.Mail
         // 1: Sender Name
         // 2: Sender Game
         // 3: Embed
-        private static readonly string[] ApGiftStrings = {
+        private static readonly string[] ApGiftStrings =
+        {
             "It's dangerous to go alone. Take this!^^    -{1} from {2}",
             "Hopefully, this {0} will convince you to leave the Burger King...^^    -{1} from {2}",
             "Here you go!^^    -{1} from {2}",
@@ -183,12 +185,15 @@ namespace StardewArchipelago.Items.Mail
             "I know you've been trying hard to win over a partner for the Flower Dance. This {0} is sure to win over your crush. I just know they'll love it.^^    -{1} from {2}",
         };
 
+        private const string ApConciseMailString = "{0} from {1} at {2}.";
+
         // 0: Item
         // 1: Sender
         // 2: Location
         // 3: Embed
         // 4: Farm Name
-        private readonly string[] ApMailStrings = {
+        private readonly string[] ApMailStrings =
+        {
             "Hey @, I was at {2}, minding my own business, and there I found a {0}.^I thought you would make better use of it than I ever could.^^    -{1}",
             "I found a {0} in {2}.^Enjoy!^^    -{1}",
             "There was a {0} in my {2}.^Do you think you can make it useful?^^    -{1}",
@@ -245,8 +250,8 @@ namespace StardewArchipelago.Items.Mail
 			"Are you still looking for your Community Center?  Have you checked in Aginah's cave?  In the meantime, have this {0}.",
 			"{1} was piloted to find your {0}. That means it is important, right?",
 			"{1} was piloted to find your {0}. I think it might have been a mistake.",
-			"Hey, at least this isn't an Emblem for Sonic^^    -{1}",
-			"Hey, at least this isn't a Coin Bundle for DLCQuest^^    -{1}",
+            "Hey, at least this isn't an Emblem for Sonic^^    -{1}^^({0})",
+            "Hey, at least this isn't a Coin Bundle for DLCQuest^^    -{1}^^({0})",
 			"My original letter wasn't safe for streaming, so you're getting this one instead. Here's your {0}.^^    -{1}",
 			"Hope you can add this {0} to your power suit like we can here on Zebes^^    -{1}",
 			"Don't worry I didn't forget your birthday, I got you {0}, I hope you love it.^^    -{1}",

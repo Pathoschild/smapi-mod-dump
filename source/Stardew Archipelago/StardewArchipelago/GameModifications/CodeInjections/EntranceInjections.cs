@@ -9,11 +9,13 @@
 *************************************************/
 
 using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using StardewArchipelago.Archipelago;
 using StardewArchipelago.GameModifications.EntranceRandomizer;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.GameData;
 
 namespace StardewArchipelago.GameModifications.CodeInjections
 {
@@ -48,6 +50,18 @@ namespace StardewArchipelago.GameModifications.CodeInjections
                 }
 
                 locationRequest.Name = replacedWarp.LocationRequest.Name;
+
+
+                foreach (var activePassiveFestival in Game1.netWorldState.Value.ActivePassiveFestivals)
+                {
+                    if (Utility.TryGetPassiveFestivalData(activePassiveFestival, out var data) &&
+                        Game1.dayOfMonth >= data.StartDay && Game1.dayOfMonth <= data.EndDay && data.Season == Game1.season &&
+                        data.MapReplacements != null && data.MapReplacements.TryGetValue(locationRequest.Name, out var name))
+                    {
+                        locationRequest.Name = name;
+                    }
+                }
+
                 locationRequest.Location = replacedWarp.LocationRequest.Location;
                 locationRequest.IsStructure = replacedWarp.LocationRequest.IsStructure;
                 tileX = replacedWarp.TileX;
@@ -60,7 +74,7 @@ namespace StardewArchipelago.GameModifications.CodeInjections
             }
             catch (Exception ex)
             {
-                _monitor.Log($"Failed in {nameof(PerformWarpFarmer_EntranceRandomization_Prefix)}:\n{ex}", LogLevel.Error);
+                _monitor.Log($"Failed in {nameof(PerformWarpFarmer_EntranceRandomization_Prefix)} going from {Game1.currentLocation.Name} to {locationRequest.Name}:{Environment.NewLine}\t{ex}", LogLevel.Error);
                 return true; // run original logic
             }
         }
@@ -86,7 +100,7 @@ namespace StardewArchipelago.GameModifications.CodeInjections
             }
 
             if (!locationRequest.Location.Name.StartsWith("BathHouse_", StringComparison.OrdinalIgnoreCase) ||
-                 !locationRequest.Location.Name.EndsWith("Locker", StringComparison.OrdinalIgnoreCase))
+                !locationRequest.Location.Name.EndsWith("Locker", StringComparison.OrdinalIgnoreCase))
             {
                 return false;
             }

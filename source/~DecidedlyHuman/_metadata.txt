@@ -14,9 +14,9 @@ mods:
    Zoom Per Map
 
 latest commit:
-   commit 6d97b78182d28f6a5df96df2f6b4996de234d165
-   Author: Alan <contact@decidedlyhuman.co.uk>
-   Date:   Wed May 8 18:52:39 2024 +0100
+   commit 76f6688c5b6791bf1321b2b2c75368b8d4f6f19d
+   Author: Alan Davison <contact@decidedlyhuman.co.uk>
+   Date:   Thu May 30 16:05:44 2024 +0100
    
-       SB: Fixed an issue with picking up furniture.
+       SLN: Fix up run configurations from Linux use.
    

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7814
-IDs: aedenthorn.ModThis
-update keys: Nexus:7814, GitHub:aedenthorn/StardewValleyMods

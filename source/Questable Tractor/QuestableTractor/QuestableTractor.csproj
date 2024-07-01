@@ -2,12 +2,10 @@
   <PropertyGroup>
     <Version>4.16.5</Version>
     <RootNamespace>NermNermNerm.Stardew.QuestableTractor</RootNamespace>
-
-    <TranslationClassBuilder_AddGetByKey>true</TranslationClassBuilder_AddGetByKey>
     <EnableHarmony>true</EnableHarmony>
+    <IgnoreModFilePatterns>\.edits\.json$,new-language-template\.json$</IgnoreModFilePatterns>
   </PropertyGroup>
-
   <ItemGroup>
-    <PackageReference Include="Pathoschild.Stardew.ModTranslationClassBuilder" Version="2.0.1" />
+    <PackageReference Include="NermNermNerm.Stardew.LocalizeFromSource" Version="1.2.10" />
   </ItemGroup>
 </Project>

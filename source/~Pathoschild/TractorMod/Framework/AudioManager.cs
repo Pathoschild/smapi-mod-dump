@@ -193,7 +193,7 @@ namespace Pathoschild.Stardew.TractorMod.Framework
             data[id] = new AudioCueData
             {
                 Id = id,
-                FilePaths = new(1) { path },
+                FilePaths = [path],
                 Category = "Sound",
                 Looped = loop,
                 StreamedVorbis = true

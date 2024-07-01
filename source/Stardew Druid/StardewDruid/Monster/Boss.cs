@@ -26,13 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography;
-using System.Threading;
-using System.Threading.Channels;
-using static StardewDruid.Cast.SpellHandle;
-using static StardewValley.Menus.CharacterCustomization;
-using static StardewValley.Minigames.TargetGame;
+
 
 namespace StardewDruid.Monster
 {
@@ -57,11 +51,11 @@ namespace StardewDruid.Monster
         public int baseMode;
         public int baseJuice;
         public int basePulp;
+        public int threat;
         public NetInt netMode = new NetInt(0);
         public NetBool netPosturing = new NetBool(false);
 
         public NetInt netScheme = new(0);
-        public List<IconData.schemes> schemeColors = new();
         public Dictionary<int, List<Rectangle>> schemeFrames = new();
 
         public enum difficulty
@@ -74,12 +68,6 @@ namespace StardewDruid.Monster
             thief,
         }
 
-        public enum schemes
-        {
-            none,
-            special
-        }
-
         public enum temperment
         {
 
@@ -89,6 +77,7 @@ namespace StardewDruid.Monster
             odd,
             random,
             ranged,
+            group,
 
         }
 
@@ -102,7 +91,14 @@ namespace StardewDruid.Monster
         public int idleFrame;
         public NetBool netAlert = new NetBool(false);
 
+        public NetBool netWoundedActive = new NetBool(false);
+        public Dictionary<int, List<Rectangle>> woundedFrames = new();
+        public bool setWounded;
+
         // ============================= Follow behaviour
+
+        public Vector2 pushVector;
+        public int pushTimer;
 
         public Vector2 followIncrement;
         public int followTimer;
@@ -121,7 +117,6 @@ namespace StardewDruid.Monster
         public Vector2 setPosition;
         public int stationaryTimer;
 
-        public int abilities;
         public bool cooldownActive;
         public int cooldownTimer;
         public int cooldownInterval;
@@ -136,11 +131,10 @@ namespace StardewDruid.Monster
 
         // ============================= Sweep
 
+        public bool sweepSet;
         public int sweepFrame;
         public int sweepTimer;
-        public bool sweepSet;
         public NetBool netSweepActive = new NetBool(false);
-        public Texture2D sweepTexture;
         public Dictionary<int, List<Rectangle>> sweepFrames = new();
         public int sweepInterval;
         public Vector2 sweepIncrement;
@@ -150,11 +144,11 @@ namespace StardewDruid.Monster
 
         public NetBool netFlightActive = new NetBool(false);
         public NetBool netSmashActive = new NetBool(false);
-        public Texture2D flightTexture;
         public Dictionary<int, List<Rectangle>> flightFrames = new();
         public bool smashSet;
         public Dictionary<int, List<Rectangle>> smashFrames = new();
 
+        public bool flightSet;
         public int flightFrame; // current animation frame of flight
         public int flightTimer; // current tick of flight
         public int flightInterval; // flight timer intervals to adjust frame speed
@@ -173,20 +167,20 @@ namespace StardewDruid.Monster
 
         // ============================= Special attack
 
+        public bool specialSet;
         public int specialFrame;
         public int specialTimer;
         public NetBool netSpecialActive = new NetBool(false);
-        public Texture2D specialTexture;
         public Dictionary<int, List<Rectangle>> specialFrames = new();
         public Dictionary<int, List<Rectangle>> channelFrames = new();
         //public int specialThreshold;
         public int specialCeiling;
         public int specialFloor;
         public int specialInterval;
-        public IconData.schemes specialScheme;
 
         // ============================= Barrage attack
 
+        public bool channelSet;
         public NetBool netChannelActive = new NetBool(false);
         public int channelCeiling;
         public int channelFloor;
@@ -211,6 +205,7 @@ namespace StardewDruid.Monster
             objectsToDrop.Clear();
             breather.Value = false;
             hideShadow.Value = true;
+            DamageToFarmer = 0;
 
             //=================== reconfigurable fields
 
@@ -219,6 +214,7 @@ namespace StardewDruid.Monster
             baseMode = 2;
             baseJuice = 4;
             basePulp = 25;
+            cooldownInterval = 180;
 
             LoadOut();
 
@@ -235,13 +231,15 @@ namespace StardewDruid.Monster
             NetFields.AddField(realName, "realName");
             NetFields.AddField(netMode, "netMode");
             NetFields.AddField(netPosturing, "netPosturing");
+            NetFields.AddField(netHaltActive, "netHaltActive");
             NetFields.AddField(netDirection, "netDirection");
             NetFields.AddField(netAlternative, "netAlternative");
             NetFields.AddField(netFlightActive, "netFlightActive");
             NetFields.AddField(netFlightProgress, "netFlightProgress");
             NetFields.AddField(netSpecialActive, "netSpecialActive");
             NetFields.AddField(netChannelActive, "netChannelActive");
-            NetFields.AddField(netSweepActive, "newSweepActive");
+            NetFields.AddField(netSweepActive, "netSweepActive");
+            NetFields.AddField(netWoundedActive, "netWoundedActive");
             NetFields.AddField(netScheme, "netScheme");
 
         }
@@ -251,9 +249,18 @@ namespace StardewDruid.Monster
 
             Vector2 position = Position;
 
-            int netScale = netMode.Value > 5 ? netMode.Value - 4 : netMode.Value;
+            int netScale = (int)GetScale();
 
-            return new Rectangle((int)position.X - 8 - netScale * 4, (int)position.Y - 32 - flightHeight - netScale * 8, 80 + netScale * 4, 96 + netScale * 8);
+            Rectangle box =  new((int)position.X - 8 - netScale * 4, (int)position.Y - 32 - netScale * 8, 80 + netScale * 4, 96 + netScale * 8);
+
+            if(netFlightActive.Value || netSmashActive.Value)
+            {
+
+                box.Y -= flightHeight;
+
+            }
+
+            return box;
 
         }
 
@@ -261,6 +268,8 @@ namespace StardewDruid.Monster
         {
 
             netMode.Set(mode);
+
+            DamageToFarmer = 0;
 
             switch (mode)
             {
@@ -271,11 +280,7 @@ namespace StardewDruid.Monster
 
                     Health = MaxHealth;
 
-                    DamageToFarmer = Math.Max(baseJuice*2, Math.Min(baseJuice*8, combatModifier * 1));
-
                     tempermentActive = temperment.aggressive;
-
-                    abilities = 1;
 
                     experienceGained.Set(10);
 
@@ -283,15 +288,11 @@ namespace StardewDruid.Monster
 
                 case 1: // slightly bigger
 
-                    MaxHealth = combatModifier * basePulp * 2;
+                    MaxHealth = combatModifier * basePulp * 3;
 
                     Health = MaxHealth;
 
-                    DamageToFarmer = Math.Max(baseJuice*3, Math.Min(baseJuice*10, combatModifier * 2));
-
                     tempermentActive = temperment.cautious;
-
-                    abilities = 2;
 
                     experienceGained.Set(20);
 
@@ -304,11 +305,7 @@ namespace StardewDruid.Monster
 
                     Health = MaxHealth;
 
-                    DamageToFarmer = Math.Max(baseJuice * 5, Math.Min(baseJuice * 10, combatModifier * 3));
-
                     tempermentActive = temperment.cautious;
-
-                    abilities = 2;
 
                     experienceGained.Set(50);
 
@@ -320,11 +317,7 @@ namespace StardewDruid.Monster
 
                     Health = MaxHealth;
 
-                    DamageToFarmer = Math.Max(baseJuice * 8, Math.Min(baseJuice * 15, combatModifier * 5));
-
                     tempermentActive = temperment.aggressive;
-
-                    abilities = 3;
 
                     experienceGained.Set(100);
 
@@ -336,35 +329,66 @@ namespace StardewDruid.Monster
 
                     Health = MaxHealth;
 
-                    DamageToFarmer = Math.Max(baseJuice * 10, Math.Min(baseJuice * 20, combatModifier * 5));
-
                     tempermentActive = temperment.aggressive;
-
-                    abilities = 3;
 
                     experienceGained.Set(200);
 
                     break;
 
-                case 5: // chase mode
+            }
 
-                    MaxHealth = combatModifier * basePulp * 8;
+            GetThreat();
 
-                    Health = MaxHealth;
+        }
 
-                    DamageToFarmer = Math.Max(baseJuice * 5, Math.Min(baseJuice * 10, combatModifier * 3));
+        public virtual int GetThreat()
+        {
 
-                    cooldownTimer = 180;
+            switch (netMode.Value)
+            {
 
-                    cooldownActive = true;
+                case 0: // small mode
 
-                    tempermentActive = temperment.coward;
+                    threat = Math.Max(baseJuice * 2, (int)((float)combatModifier * 0.6f));
 
-                    abilities = 2;
+                    break;
+
+                case 1: // slightly bigger
+
+                    threat = Math.Max(baseJuice * 3, (int)((float)combatModifier * 0.8f));
+
+                    break;
+
+                default:
+                case 2: // multiple bosses
+
+                    threat = Math.Max(baseJuice * 4, combatModifier);
+
+                    break;
+
+                case 3: // single boss
+
+                    threat = Math.Max(baseJuice * 6, (int)(combatModifier * 1.2f));
+
+                    break;
+
+                case 4: // hard boss
+
+                    threat = Math.Max(baseJuice * 8, (int)(combatModifier * 1.6f));
+
+                    break;
+
+                case 5: // mega boss
+
+                    threat = Math.Max(baseJuice * 10, (int)(combatModifier * 2f));
 
                     break;
 
             }
+
+            threat = Math.Min(threat, (Game1.player.maxHealth / 2));
+
+            return threat;
 
         }
 
@@ -435,19 +459,9 @@ namespace StardewDruid.Monster
 
             flightPeak = 192;
 
-            //flightCeiling = 3;
-
-            //flightFloor = 0;
-
-            //flightLast = 2;
-
-            flightTexture = characterTexture;
-
             flightFrames = walkFrames;
 
             flightDefault = 2;
-
-            smashSet = false;
 
             smashFrames = flightFrames;
 
@@ -455,10 +469,6 @@ namespace StardewDruid.Monster
 
         public virtual void BaseSpecial()
         {
-
-            abilities = 2;
-
-            cooldownInterval = 180;
 
             specialCeiling = 6;
 
@@ -468,33 +478,22 @@ namespace StardewDruid.Monster
 
             channelFloor = 1;
 
-            //reachThreshold = 64;
-
-            //safeThreshold = 544;
-
-            //sweepThreshold = 192;
-
-            //specialThreshold = 512;
-
-            //barrageThreshold = 768;
-
             specialInterval = 12;
-
-            specialScheme = IconData.schemes.fire;
-
-            specialTexture = characterTexture;
 
             specialFrames = walkFrames;
 
             channelFrames = walkFrames;
 
-            sweepSet = false;
-
             sweepInterval = 12;
 
-            sweepTexture = characterTexture;
-
             sweepFrames = walkFrames;
+
+        }
+
+        public virtual float GetScale()
+        {
+
+            return 1 + netMode.Value;
 
         }
 
@@ -519,14 +518,9 @@ namespace StardewDruid.Monster
 
         public override void drawAboveAlwaysFrontLayer(SpriteBatch b)
         {
-
-            if (textAboveHeadTimer <= 0 || textAboveHead == null)
-            {
-                return;
-            }
             Vector2 localPosition = getLocalPosition(Game1.viewport);
 
-            SpriteText.drawStringWithScrollCenteredAt(b, textAboveHead, (int)localPosition.X + (int)overHead.X, (int)localPosition.Y + (int)overHead.Y, "", textAboveHeadAlpha, textAboveHeadColor, 1, (float)(Tile.Y * 64 / 10000.0 + 1.0 / 1000.0 + Tile.X / 10000.0), false);
+            DrawTextAboveHead(b,localPosition);
 
         }
 
@@ -541,6 +535,18 @@ namespace StardewDruid.Monster
                 b.Draw(Game1.emoteSpriteSheet, localPosition, new Rectangle?(new Rectangle(CurrentEmoteIndex * 16 % Game1.emoteSpriteSheet.Width, CurrentEmoteIndex * 16 / Game1.emoteSpriteSheet.Width * 16, 16, 16)), Color.White, 0.0f, Vector2.Zero, 4f, 0, drawLayer);
 
             }
+
+        }
+
+        public virtual void DrawTextAboveHead(SpriteBatch b, Vector2 localPosition)
+        {
+
+            if (textAboveHeadTimer <= 0 || textAboveHead == null)
+            {
+                return;
+            }
+
+            SpriteText.drawStringWithScrollCenteredAt(b, textAboveHead, (int)localPosition.X + (int)overHead.X, (int)localPosition.Y + (int)overHead.Y, "", textAboveHeadAlpha, textAboveHeadColor, 1, (float)(Tile.Y * 64 / 10000.0 + 1.0 / 1000.0 + Tile.X / 10000.0), false);
 
         }
 
@@ -588,6 +594,41 @@ namespace StardewDruid.Monster
 
         }
 
+        public virtual SpellHandle.effects IsCursable(SpellHandle.effects effect = SpellHandle.effects.knock)
+        {
+
+            if(effect == SpellHandle.effects.morph)
+            {
+
+                return SpellHandle.effects.blind;
+
+            }
+
+            if (effect == SpellHandle.effects.daze)
+            {
+
+                return SpellHandle.effects.blind;
+
+            }
+
+            if (effect == SpellHandle.effects.knock)
+            {
+
+                return SpellHandle.effects.blind;
+
+            }
+
+            if (netMode.Value >= 3)
+            {
+
+                return SpellHandle.effects.blind;
+
+            }
+
+            return effect;
+
+        }
+        
         //=================== overriden base fields
 
         public override List<Item> getExtraDropItems()
@@ -597,24 +638,10 @@ namespace StardewDruid.Monster
         
         }
 
-        public override void onDealContactDamage(Farmer who)
-        {
-
-            if (who.health + who.buffs.Defense - DamageToFarmer < 15)
-            {
-
-                who.health = DamageToFarmer - who.buffs.Defense + 15;
-
-                Mod.instance.CriticalCondition();
-
-            }
-
-        }
-
         public override int takeDamage(int damage, int xTrajectory, int yTrajectory, bool isBomb, double addedPrecision, Farmer who)
         {
 
-            if (netPosturing.Value)
+            if (netPosturing.Value || netWoundedActive.Value)
             {
                 
                 if (netChannelActive.Value)
@@ -646,25 +673,41 @@ namespace StardewDruid.Monster
 
             }
 
-            damage = Math.Max(1, damage);
+            damage = damage < 1 ? 1 : damage;
 
             Health -= damage;
+
+            if (ValidPush())
+            {
+
+                pushVector = new(xTrajectory, yTrajectory);
+
+                pushTimer = 4;
+
+            }
 
             if (Health <= 0)
             {
 
-                Microsoft.Xna.Framework.Rectangle box = GetBoundingBox();
+                if (setWounded)
+                {
 
-                SpellHandle death = new(new(box.Center.X,box.Top), 128, IconData.impacts.death, new());
+                    ResetActives();
 
-                Mod.instance.spellRegister.Add(death);
+                    netWoundedActive.Set(true);
+
+                    return damage;
+
+                }
+
+                deathIsNoEscape();
 
             }
 
-            if (talkTimer < (int)Game1.currentGameTime.TotalGameTime.TotalSeconds)
+            if (talkTimer < (int)Game1.currentGameTime.TotalGameTime.TotalSeconds && textAboveHeadTimer <= 0)
             {
 
-                DialogueData.DisplayText(this, 3, 0, realName.Value);
+                DialogueData.DisplayText(this, 3, 0);
 
                 talkTimer = (int)Game1.currentGameTime.TotalGameTime.TotalSeconds + 6;
 
@@ -674,16 +717,61 @@ namespace StardewDruid.Monster
 
         }
 
+        public virtual void deathIsNoEscape()
+        {
+
+            Microsoft.Xna.Framework.Rectangle box = GetBoundingBox();
+
+            SpellHandle death = new(new(box.Center.X, box.Top), 64 + (64* (int)GetScale()), IconData.impacts.death, new());
+
+            Mod.instance.spellRegister.Add(death);
+
+        }
+
         public override void shedChunks(int number, float scale)
         {
 
             float size = 2f;
 
-            if (walkFrames[0][0].Width > 32) { size += 1f; }
+            if(walkFrames.Count > 0)
+            {
+
+                if (walkFrames[0][0].Width > 32) { size += 1f; }
+
+            }
 
             Mod.instance.iconData.ImpactIndicator(currentLocation, Position, IconData.impacts.flashbang, size, new() { frame = 2, interval = 50, });
 
         }
+
+        public override bool isInvincible()
+        {
+
+            if (netChannelActive.Value)
+            {
+
+                return false;
+
+            }
+
+            if (netPosturing.Value)
+            {
+
+                return true;
+
+            }
+
+            if(invincibleCountdown > 0)
+            {
+
+                return true;
+
+            }
+
+            return false;
+
+        }
+
 
         //=================== behaviour methods
 
@@ -762,14 +850,18 @@ namespace StardewDruid.Monster
             {
 
                 netFlightActive.Set(false);
-
+                
+                netFlightProgress.Set(0);
+            
             }
 
             if (netSmashActive.Value)
             {
 
                 netSmashActive.Set(false);
-
+                
+                netFlightProgress.Set(0);
+            
             }
 
             flightTimer = 0;
@@ -902,7 +994,7 @@ namespace StardewDruid.Monster
         public virtual void TalkSmack()
         {
 
-            if (talkTimer > (int)Game1.currentGameTime.TotalGameTime.TotalSeconds)
+            if (talkTimer > (int)Game1.currentGameTime.TotalGameTime.TotalSeconds || textAboveHeadTimer > 0)
             {
                 return;
             }
@@ -919,7 +1011,7 @@ namespace StardewDruid.Monster
                 talk = 3;
             }
 
-            DialogueData.DisplayText(this, 1, talk, realName.Value);
+            DialogueData.DisplayText(this, 1, talk);
 
             talkTimer = (int)Game1.currentGameTime.TotalGameTime.TotalSeconds + 6;
 
@@ -927,6 +1019,13 @@ namespace StardewDruid.Monster
 
         public virtual bool baseupdate(GameTime time, GameLocation location)
         {
+            
+            if (localMonster)
+            {
+
+                currentLocation = location;
+
+            }
 
             if (!location.farmers.Any())
             {
@@ -970,11 +1069,19 @@ namespace StardewDruid.Monster
                     textAboveHeadTimer -= time.ElapsedGameTime.Milliseconds;
 
                     if (textAboveHeadTimer > 500)
+                    {
 
                         textAboveHeadAlpha = Math.Min(1f, textAboveHeadAlpha + 0.1f);
 
+                    }
                     else
-                        textAboveHeadAlpha = Math.Max(0.0f, textAboveHeadAlpha - 0.04f);
+                    {
+
+                        float newAlpha = textAboveHeadAlpha - 0.04f;
+
+                        textAboveHeadAlpha = newAlpha < 0f ? 0f : newAlpha;
+
+                    }
 
                 }
 
@@ -988,8 +1095,6 @@ namespace StardewDruid.Monster
 
             if (localMonster)
             {
-
-                currentLocation = location;
 
                 if (stunTime.Value > 0)
                 {
@@ -1037,6 +1142,13 @@ namespace StardewDruid.Monster
                 return;
 
             };
+
+            if (netWoundedActive.Value)
+            {
+
+                return;
+
+            }
 
             if (!localMonster)
             {
@@ -1091,6 +1203,8 @@ namespace StardewDruid.Monster
                 UpdateHalt();
 
             }
+
+            UpdatePush();
 
             UpdateWalk();
 
@@ -1244,7 +1358,7 @@ namespace StardewDruid.Monster
 
                     hoverFrame++;
 
-                    if (hoverFrame >= idleFrames[0].Count)
+                    if (hoverFrame >= IdleCount())
                     {
 
                         hoverFrame = 0;
@@ -1271,7 +1385,7 @@ namespace StardewDruid.Monster
 
                     walkFrame++;
 
-                    if (walkFrame >= walkFrames[0].Count)
+                    if (walkFrame >= WalkCount())
                     {
 
                         walkFrame = 1;
@@ -1330,7 +1444,46 @@ namespace StardewDruid.Monster
         public float WalkSpeed()
         {
 
-            return gait;
+            return gait + (0.25f * (GetScale() - 1));
+
+        }
+
+        public virtual bool ValidPush()
+        {
+
+            if(netMode.Value <= 2)
+            {
+
+                return true;
+
+            }
+
+            return false;
+
+        }
+
+        public void UpdatePush()
+        {
+
+            if(pushVector != Vector2.Zero)
+            {
+
+                if(pushTimer <= 0)
+                {
+
+                    pushVector = Vector2.Zero;
+
+                    return;
+
+                }
+
+                Vector2 increment = pushVector * (0.1f * pushTimer);
+
+                Position += increment;
+
+                pushTimer--;
+
+            }
 
         }
 
@@ -1354,7 +1507,7 @@ namespace StardewDruid.Monster
 
                     hoverFrame++;
 
-                    if (hoverFrame >= idleFrames[0].Count)
+                    if (hoverFrame >= IdleCount())
                     {
 
                         hoverFrame = 0;
@@ -1399,7 +1552,7 @@ namespace StardewDruid.Monster
 
             walkFrame++;
 
-            int right = 1 + ((walkFrames[0].Count - 1) / 2);
+            int right = 1 + ((WalkCount() - 1) / 2);
 
             if (walkSwitch)
             {
@@ -1425,7 +1578,7 @@ namespace StardewDruid.Monster
 
             }
 
-            if (walkFrame >= walkFrames[0].Count)
+            if (walkFrame >= WalkCount())
             {
 
                 walkFrame = 1;
@@ -1454,7 +1607,7 @@ namespace StardewDruid.Monster
 
                 Position += sweepIncrement;
 
-                if (sweepTimer == sweepInterval)
+                if (sweepTimer == sweepInterval * 2)
                 {
 
                     ConnectSweep();
@@ -1466,7 +1619,7 @@ namespace StardewDruid.Monster
 
                     sweepFrame++;
 
-                    if (sweepFrame == sweepFrames[0].Count)
+                    if (sweepFrame == SweepCount())
                     {
 
                         sweepFrame = 0;
@@ -1509,7 +1662,7 @@ namespace StardewDruid.Monster
                 if (netFlightActive.Value)
                 {
 
-                    if (flightTimer + (flightSegment * flightFrames[0].Count) <= flightTotal)
+                    if (flightTimer + (flightSegment * FlightCount()) <= flightTotal)
                     {
 
                         if (netFlightProgress.Value != 1)
@@ -1523,7 +1676,7 @@ namespace StardewDruid.Monster
 
                     }
 
-                    if (flightTimer <= (flightSegment * flightFrames[8].Count))
+                    if (flightTimer <= (flightSegment * FlightCount(2)))
                     {
 
                         if (netFlightProgress.Value != 2)
@@ -1542,7 +1695,7 @@ namespace StardewDruid.Monster
                 if (netSmashActive.Value)
                 {
 
-                    if (flightTimer + (flightSegment * smashFrames[0].Count) <= flightTotal)
+                    if (flightTimer + (flightSegment * SmashCount()) <= flightTotal)
                     {
 
                         if (netFlightProgress.Value != 1)
@@ -1556,7 +1709,7 @@ namespace StardewDruid.Monster
 
                     }
 
-                    if (flightTimer <= (flightSegment * smashFrames[8].Count))
+                    if (flightTimer <= (flightSegment * SmashCount(2)))
                     {
 
                         if (netFlightProgress.Value != 2)
@@ -1683,14 +1836,14 @@ namespace StardewDruid.Monster
 
         }
 
-        public void SetCooldown(int factor = 1)
+        public void SetCooldown(float factor = 1f)
         {
 
             cooldownActive = true;
 
-            int netScale = netMode.Value > 5 ? netMode.Value - 4 : netMode.Value;
+            float netScale = GetScale();
 
-            cooldownTimer = (int)((cooldownInterval + new Random().NextDouble() * cooldownInterval) * (1 - 0.1 * netScale) * factor);
+            cooldownTimer = (int)(((float)cooldownInterval + (float)(new Random().NextDouble() * cooldownInterval)) * (1f - 0.1f * netScale) * factor);
 
         }
 
@@ -1714,6 +1867,8 @@ namespace StardewDruid.Monster
             }
 
         }
+
+        //=================== behaviour control
 
         public virtual bool ChangeBehaviour()
         {
@@ -1782,7 +1937,31 @@ namespace StardewDruid.Monster
 
             Random random = new Random();
 
-            List<Farmer> targets = ModUtility.FarmerProximity(currentLocation, new() { Position, }, 20 * 64);
+            List<Vector2> targets = new();
+
+            List<Farmer> farmers = ModUtility.FarmerProximity(currentLocation, new() { Position, }, 20 * 64);
+
+            if (farmers.Count > 0)
+            {
+                
+                targets.Add(farmers.First().Position);
+
+            }
+
+            if(tempermentActive == temperment.group)
+            {
+
+                List<StardewDruid.Character.Character> characters = ModUtility.CompanionProximity(currentLocation, new() { Position, }, 20 * 64);
+
+                if (characters.Count > 0)
+                {
+
+                    targets.Add(characters.First().Position);
+
+                }
+
+            }
+
 
             if (targets.Count == 0)
             {
@@ -1793,13 +1972,13 @@ namespace StardewDruid.Monster
 
             }
 
-            Farmer farmer = targets.First();
+            Vector2 target = targets[Mod.instance.randomIndex.Next(targets.Count)];
 
-            float threshold = Vector2.Distance(Position, farmer.Position);
+            float threshold = Vector2.Distance(Position, target);
 
             ResetActives();
 
-            SetDirection(farmer.Position);
+            SetDirection(target);
 
             if (!cooldownActive)
             {
@@ -1807,46 +1986,55 @@ namespace StardewDruid.Monster
                 if (threshold > 256)
                 {
 
-                    if (abilities > 2)
+                    if (channelSet)
                     {
                         
-                        if(threshold <= 768 && Mod.instance.randomIndex.Next(2) == 0)
+                        if(threshold <= 576 + (96 * GetScale()) && Mod.instance.randomIndex.Next(2) == 0)
                         {
+                            
+                            if (PerformChannel(target))
+                            {
 
-                            PerformBarrage(farmer.Position);
+                                return;
 
-                            return;
+                            };
 
                         }
 
                     }
 
-                    if(abilities > 1)
+                    if(specialSet)
                     {
                         
-                        if (threshold <= 512 && Mod.instance.randomIndex.Next(2) == 0)
+                        if (threshold <= 384 + (64 * GetScale()) && Mod.instance.randomIndex.Next(2) == 0)
                         {
 
-                            PerformSpecial(farmer.Position);
+                            if (PerformSpecial(target))
+                            {
 
-                            return;
+                                return;
+
+                            }
 
                         }
 
                     }
 
-                    if (Mod.instance.randomIndex.Next(2) == 0)
+                    if (Mod.instance.randomIndex.Next(2) == 0 && flightSet)
                     {
 
-                        PerformFlight(farmer.Position);
+                        if(PerformFlight(target))
+                        {
 
-                        return;
+                            return;
+
+                        }
 
                     }
 
                 }
 
-                if (threshold <= 128)
+                if (threshold <= 128 + (32 * GetScale()) && sweepSet)
                 {
 
                     if (PerformSweep())
@@ -1860,11 +2048,11 @@ namespace StardewDruid.Monster
 
             }
 
-            ChooseMovement(threshold, farmer.Position);
+            ChooseMovement(threshold, target);
 
         }
 
-        public void ChooseMovement(float threshold, Vector2 position)
+        public virtual void ChooseMovement(float threshold, Vector2 position)
         {
 
             switch (tempermentActive)
@@ -2027,9 +2215,9 @@ namespace StardewDruid.Monster
 
                 SetDirection(targetFarmer);
 
-                sweepTimer = sweepInterval * sweepFrames[0].Count;
+                sweepTimer = sweepInterval * SweepCount();
 
-                SetCooldown(1);
+                SetCooldown(0.5f);
 
                 sweepIncrement = new((targetFarmer.X - Position.X) / sweepTimer, (targetFarmer.Y - Position.Y) / sweepTimer);
 
@@ -2046,13 +2234,18 @@ namespace StardewDruid.Monster
         public virtual void ConnectSweep()
         {
 
-            List<Farmer> targets = ModUtility.FarmerProximity(currentLocation, new() { Position, }, 128f);
+            List<Farmer> targets = ModUtility.FarmerProximity(currentLocation, new() { Position, }, 96 + (32 * GetScale()));
 
-            ModUtility.DamageFarmers(targets, (int)(damageToFarmer.Value * 1.5), this, true);
+            if(targets.Count > 0)
+            {
+
+                ModUtility.DamageFarmers(targets, (int)((float)GetThreat()*0.65f), this, true);
+
+            }
 
         }
 
-        public virtual void PerformFlight(Vector2 target, int flightType = -1)
+        public virtual bool PerformFlight(Vector2 target, int flightType = -1)
         {
 
             bool smash = false;
@@ -2140,7 +2333,7 @@ namespace StardewDruid.Monster
                     else
                     {
 
-                        return;
+                        return false;
 
                     }
 
@@ -2167,7 +2360,7 @@ namespace StardewDruid.Monster
                     else
                     {
 
-                        return;
+                        return false;
 
                     }
 
@@ -2218,11 +2411,11 @@ namespace StardewDruid.Monster
             if (!smash)
             {
 
-                pathRequirement = flightFrames[0].Count + flightFrames[4].Count + flightFrames[8].Count;
+                pathRequirement = FlightCount(3); 
             }
             else
             {
-                pathRequirement = smashFrames[0].Count + smashFrames[4].Count + smashFrames[8].Count;
+                pathRequirement = SmashCount(3);
 
             }
 
@@ -2234,6 +2427,8 @@ namespace StardewDruid.Monster
                 flightSegment = Math.Max(6,pathSqueeze);
 
             }
+
+            return true;
 
         }
 
@@ -2323,26 +2518,18 @@ namespace StardewDruid.Monster
 
         }
 
-        public virtual void PerformSpecial(Vector2 target)
+        public virtual bool PerformSpecial(Vector2 target)
         {
 
             specialTimer = (specialCeiling + 1) * specialInterval;
 
             netSpecialActive.Set(true);
 
-            SetCooldown(1);
+            SetCooldown(1f);
 
-            SpellHandle fireball = new(currentLocation, target, GetBoundingBox().Center.ToVector2(), 128, DamageToFarmer);
+            TalkSmack();
 
-            fireball.type = spells.missile;
-
-            fireball.scheme = specialScheme;
-
-            fireball.display = IconData.impacts.impact;
-
-            fireball.boss = this;
-
-            Mod.instance.spellRegister.Add(fireball);
+            return true;
 
         }
 
@@ -2353,7 +2540,7 @@ namespace StardewDruid.Monster
 
             followIncrement = ModUtility.PathFactor(Position, target);
 
-            followTimer = (walkFrames[0].Count -1) * walkInterval;
+            followTimer = (WalkCount() -1) * walkInterval;
 
             if (Vector2.Distance(Position,target) <= 32)
             {
@@ -2415,50 +2602,141 @@ namespace StardewDruid.Monster
 
             int key = new Random().Next(dictionary.Count);
 
-            Vector2 target = new(dictionary[key].X * 128f, dictionary[key].Y * 128);//Vector2.op_Multiply(dictionary[key], 128f);
+            Vector2 target = Position + new Vector2(dictionary[key].X * 128f, dictionary[key].Y * 128);//Vector2.op_Multiply(dictionary[key], 128f);
 
             PerformFollow(target);
 
         }
 
-        public virtual void PerformBarrage(Vector2 target)
+        public virtual bool PerformChannel(Vector2 target)
         {
 
             specialTimer = (specialCeiling + 1) * specialInterval * 2;
 
             netChannelActive.Set(true);
 
-            SetCooldown(2);
+            SetCooldown(2f);
 
-            int offset = Mod.instance.randomIndex.Next(2);
+            return true;
 
-            for (int k = 0; k < 8; k += 2)
+        }
+
+        //=================== frame offsets
+
+        public virtual int WalkCount()
+        {
+
+            return walkFrames[0].Count;
+
+        }        
+        
+        public virtual int IdleCount()
+        {
+
+            return idleFrames[0].Count;
+
+        }        
+        
+        public virtual int SweepCount()
+        {
+
+            return sweepFrames[0].Count;
+
+        }        
+        
+        public virtual int FlightCount(int segment = 0)
+        {
+
+            switch (segment)
             {
+                default:
+                case 0: return flightFrames[0].Count;
 
-                List<Vector2> castSelection = ModUtility.GetTilesWithinRadius(currentLocation, ModUtility.PositionToTile(target), 3, true, k+offset);
+                case 1: return flightFrames[4].Count;
+                
+                case 2: return flightFrames[8].Count;
 
-                if(castSelection.Count == 0)
-                {
+                case 3: return flightFrames[0].Count + flightFrames[4].Count + flightFrames[8].Count;
+            
+            }
 
-                    continue;
+        }
 
-                }
+        public virtual int SmashCount(int segment = 0)
+        {
 
-                Vector2 impact = castSelection[Mod.instance.randomIndex.Next(castSelection.Count)] * 64;
+            switch (segment)
+            {
+                default:
+                case 0: return smashFrames[0].Count;
 
-                SpellHandle missile = new(currentLocation, impact, impact, 256, DamageToFarmer);
+                case 1: return smashFrames[4].Count;
 
-                missile.type = spells.orbital;
+                case 2: return smashFrames[8].Count;
 
-                missile.display = IconData.impacts.impact;
-
-                missile.scheme = specialScheme;
-
-                missile.boss = this;
-
-                Mod.instance.spellRegister.Add(missile);
+                case 3: return smashFrames[0].Count + smashFrames[4].Count + smashFrames[8].Count;
 
             }
+
+        }
+
+        public virtual Vector2 CastPosition()
+        {
+
+            Vector2 castAt = Position + new Vector2(32, 32);
+
+            switch (netDirection.Value)
+            {
+
+                case 0:
+
+                    castAt.Y -= 96;
+
+                    if (netAlternative.Value == 1)
+                    {
+
+                        castAt.X += 96;
+
+                        break;
+                    }
+
+                    castAt.X -= 96;
+
+                    break;
+
+                case 1:
+
+                    castAt.Y -= 32;
+
+                    castAt.X += 96;
+
+                    break;
+
+                case 2:
+
+                    if(netAlternative.Value == 1)
+                    {
+
+                        castAt.X += 96;
+
+                        break;
+                    }
+
+                    castAt.X -= 96;
+
+                    break;
+
+                case 3:
+
+                    castAt.Y -= 32;
+
+                    castAt.X -= 96;
+
+                    break;
+
+            }
+
+            return castAt;
 
         }
 

@@ -1,0 +1,22 @@
+﻿{
+  "Name": "Longer Seasons",
+  "Author": "aedenthorn, FlyingTNT",
+  "Version": "1.1.1",
+  "Description": "Lets you change the number of days in a month and number of months in a season.",
+  "UniqueID": "FlyingTNT.LongerSeasons",
+  "EntryDll": "LongerSeasons.dll",
+  "MinimumApiVersion": "4.0.7",
+  "ModUpdater": {
+    "Repository": "StardewValleyMods",
+    "User": "FlyingTNT",
+    "Directory": "_releases",
+    "ModFolder": "LongerSeasons"
+  },
+  "UpdateKeys": [ "Nexus:25164" ],
+  "Dependencies": [
+    {
+      "UniqueID": "Platonymous.ModUpdater",
+      "IsRequired": false
+    }
+  ]
+}

@@ -151,7 +151,7 @@
     "config.harvest-giant-crops.tooltip": "รวมถึงเป็นการตัดพืชผลยักษ์",
 
     "config.harvest-crops.name": "เก็บเกี่ยวพืชผล",
-    "config.Harvest Crops.tooltip": "รวมถึงเป็นการเก็บเกี่ยวพืชผล",
+    "config.harvest-crops.tooltip": "รวมถึงเป็นการเก็บเกี่ยวพืชผล",
 
     "config.harvest-flowers.name": "เก็บเกี่ยวดอกไม้",
     "config.harvest-flowers.tooltip": "รวมถึงเป็นการเก็บเกี่ยวดอกไม้",
@@ -222,8 +222,8 @@
     /****
     ** Melee
     ****/
-    "config.Attack-monsters.name": "โจมตีมอนเตอร์",
-    "config.Attack-monsters.tooltip": "รวมถึงโจมตีมอนสเตอร์ (สิ่งนี้มีกำลังมากเกินไปเนื่องจากความเร็วของเครื่องมือรถแทรกเตอร์)",
+    "config.attack-monsters.name": "โจมตีมอนเตอร์",
+    "config.attack-monsters.tooltip": "รวมถึงโจมตีมอนสเตอร์ (สิ่งนี้มีกำลังมากเกินไปเนื่องจากความเร็วของเครื่องมือรถแทรกเตอร์)",
 
 
     /****

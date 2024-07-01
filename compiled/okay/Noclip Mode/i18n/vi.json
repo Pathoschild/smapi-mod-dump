@@ -1,0 +1,21 @@
+﻿{
+    /*********
+    ** In-game messages
+    *********/
+    "enabled-message": "Đã bật chế độ noclip; nhấn lại phím {{button}} để tắt chế độ này.",
+    "disabled-message": "Đã tắt chế độ noclip; nhấn lại phím {{button}} để bật chế độ này.",
+
+
+    /*********
+    ** Generic Mod Config Menu UI
+    *********/
+    "config.title.general-options": "Tuỳ chỉnh chung",
+    "config.enabled-message.name": "Hiển thị thông báo đã bật",
+    "config.enabled-message.desc": "Có hiển thị thông báo ở dưới góc màn hình khi bạn bật chế độ noclip không.",
+    "config.disabled-message.name": "Hiển thị thông báo đã tắt",
+    "config.disabled-message.desc": "Có hiển thị thông báo ở dưới góc màn hình khi bạn tắt chế độ noclip không.",
+
+    "config.title.controls": "Điều khiển",
+    "config.toggle-key.name": "Phím tắt",
+    "config.toggle-key.desc": "Phím tắt dùng để bật hoặc tắt chế độ noclip trong trò chơi."
+}

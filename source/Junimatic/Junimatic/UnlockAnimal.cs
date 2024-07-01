@@ -8,14 +8,13 @@
 **
 *************************************************/
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
-using StardewValley.GameData.BigCraftables;
-using StardewValley.GameData.Objects;
+
+using static NermNermNerm.Stardew.LocalizeFromSource.SdvLocalize;
 
 namespace NermNermNerm.Junimatic
 {
@@ -41,12 +40,12 @@ namespace NermNermNerm.Junimatic
             {
                 var farmAnimals = Game1.getFarm().animals;
                 bool hasEnoughAnimals = farmAnimals.Length >= 6;
-                bool hasEnoughChickens = farmAnimals.Values.Count(a => a.type.Value.EndsWith(" Chicken")) >= 2;
+                bool hasEnoughChickens = farmAnimals.Values.Count(a => a.type.Value.EndsWith(I(" Chicken"))) >= 2;
                 return hasEnoughAnimals && hasEnoughChickens;
             });
         }
 
-        public bool IsUnlocked => Game1.MasterPlayer.eventsSeen.Contains(AnimalJunimoDreamEvent);
+        public bool IsUnlocked => ModEntry.Config.EnableWithoutQuests || Game1.MasterPlayer.eventsSeen.Contains(AnimalJunimoDreamEvent);
 
         private void OnAssetRequested(object? sender, AssetRequestedEventArgs e)
         {
@@ -70,17 +69,18 @@ namespace NermNermNerm.Junimatic
 
         private void EditForestEvents(IDictionary<string,string> eventData)
         {
-            eventData[$"{LostJunimoDiscoveryEvent}/H/sawEvent {MarnieSeesChickenJunimoEvent}/time 600 1900"]
-                = $@"sadpiano/
+            eventData[IF($"{LostJunimoDiscoveryEvent}/H/sawEvent {MarnieSeesChickenJunimoEvent}/time 600 1900")]
+                = SdvEvent($@"sadpiano/
 -2000 -2000/
 farmer 90 60 2 Junimo 95 72 3/
 removeQuest {CollectLostChickenQuest}/
 addQuest {RescueCindersnapJunimoQuest}/
 {ModEntry.SetJunimoColorEventCommand} Gold/
 skippable/
+makeInvisible 89 60 3 15/
 viewport 90 69 true/
 move farmer 0 3 2/
-move farmer 0 3 2 true/
+move farmer 0 3 2 true/ 
 advancedMove Junimo false -5 0/
 animate Junimo false true 100 8 8 9 10 11 11 10 9/
 pause 1500/
@@ -110,13 +110,14 @@ speed Junimo 7/
 advancedMove Junimo false 5 0/
 pause 1500/
 message ""Maybe a Junimo Portal would help it find its way home.""/
-end/";
-            eventData[$"{DropPortalForJunimoEvent}/H/sawEvent {LostJunimoDiscoveryEvent}/time 600 1900/i (BC){UnlockPortal.JunimoPortal}"]
-    = $@"sadpiano/
+end/");
+            eventData[IF($"{DropPortalForJunimoEvent}/H/sawEvent {LostJunimoDiscoveryEvent}/time 600 1900/i (BC){UnlockPortal.JunimoPortal}")]
+    = SdvEvent($@"sadpiano/
 -2000 -2000/
 farmer 90 60 2 Junimo 89 72 3 Marnie 87 48 2/
 removeQuest {RescueCindersnapJunimoQuest}/
 skippable/
+makeInvisible 86 48 6 27/
 viewport 90 69 true/
 {ModEntry.SetJunimoColorEventCommand} Gold/
 animate Junimo false true 100 8 8 9 10 11 11 10 9/
@@ -179,17 +180,19 @@ advancedMove Marnie false 1 0/
 advancedMove farmer false 0 -3/
 pause 2000/
 faceDirection farmer 3/
-speak Marnie ""That wasn't a chicken...  was it?$2#$b#Your grandfather had some little houses like that on his farm.  He said they were for his 'helpers'.  But as he declined, he was prone to say, well, a lot of stuff....$2#$b#I suppose I caught a glimpe of them from time to time, but, well...  I think I'm more comfortable not seeing them.$3#$b#You say they're good creatures?  Well...  Okay.  *Something* was sure keeping that farm in trim when your Grandad was declining.$2#$b#I suppose everybody needs a little magic in their lives from time to time.$0""/
+speak Marnie ""That wasn't a chicken...  was it?$2#$b#Your grandfather had some little houses like that on his farm.  He said they were for his 'helpers'.  But as he declined, he was prone to say, well, a lot of stuff....$2#$b#I suppose I caught a glimpse of them from time to time, but, well...  I think I'm more comfortable not seeing them.$3#$b#You say they're good creatures?  Well...  Okay.  *Something* was sure keeping that farm in trim when your Grandad was declining.$2#$b#I suppose everybody needs a little magic in their lives from time to time.$0""/
 pause 1000/
-end fade/";
+end fade/");
         }
 
         private void EditFarmHouseEvents(IDictionary<string, string> eventData)
         {
-            eventData[$"{AnimalJunimoDreamEvent}/H/sawEvent {DropPortalForJunimoEvent}/time 600 620"]
-                = $@"communityCenter/
+            (int modDeltaX, int modDeltaY) = this.mod.IsRunningSve ? (0, 7) : (0, 0);
+
+            eventData[IF($"{AnimalJunimoDreamEvent}/H/sawEvent {DropPortalForJunimoEvent}/time 600 620")]
+                = SdvEvent($@"communityCenter/
 -2000 -2000/
-farmer 29 14 3 Junimo 26 14 1/
+farmer {29+modDeltaX} {14+modDeltaY} 3 Junimo {26+modDeltaX} {14+modDeltaY} 1/
 {ModEntry.SetJunimoColorEventCommand} PapayaWhip/
 skippable/
 changeLocation Woods/
@@ -204,13 +207,13 @@ pause 3000/
 animate Junimo true true 100 28 29 30 31/
 spriteText 4 ""I like animals and the wonderful things you can make with their help...""/
 fade/
-end bed";
+end bed");
         }
 
         private void EditFarmEvents(IDictionary<string, string> eventData)
         {
-            eventData[$"{MarnieSeesChickenJunimoEvent}/H/{StartAnimalJunimoEventCriteria}/sawEvent {UnlockPortal.JunimoPortalDiscoveryEvent}/time 600 930/weather sunny"]
-                = $@"continue/
+            eventData[IF($"{MarnieSeesChickenJunimoEvent}/H/{StartAnimalJunimoEventCriteria}/sawEvent {UnlockPortal.JunimoPortalDiscoveryEvent}/time 600 930/weather sunny")]
+                = SdvEvent($@"continue/
 64 15/
 farmer 64 15 2 Marnie 65 16 0/
 pause 1000/
@@ -227,13 +230,13 @@ speak Marnie ""Oof! I need to be getting back! Anyway, I hope you can wrangle it
 pause 200/
 globalFade/
 viewport -1000 -1000/
-end";
+end");
         }
 
         private void EditQuests(IDictionary<string, string> data)
         {
-            data[CollectLostChickenQuest] = "Basic/Chicken Round-Up/Marnie thinks one of your chickens has escaped  the forest south of her farm; you should investigate./Enter the Cindersnap Forest during the day./null/-1/0/-1/false";
-            data[RescueCindersnapJunimoQuest] = "Basic/Help the Junimo Go Home/Help the Junimo in the Cindersnap Forest get home./Enter the Cindersnap Forest during the day with a Junimo Portal in your inventory./null/-1/0/-1/false";
+            data[CollectLostChickenQuest] = SdvQuest("Basic/Chicken Round-Up/Marnie thinks one of your chickens has escaped and is in the forest south of her farm; you should investigate./Enter the Cindersnap Forest during the day./null/-1/0/-1/false");
+            data[RescueCindersnapJunimoQuest] = SdvQuest("Basic/Help the Junimo Go Home/Help the Junimo in the Cindersnap Forest get home./Enter the Cindersnap Forest during the day with a Junimo Portal in your inventory./null/-1/0/-1/false");
         }
 
         public void WriteToLog(string message, LogLevel level, bool isOnceOnly)

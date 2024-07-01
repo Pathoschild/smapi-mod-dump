@@ -1,0 +1,16 @@
+{
+  // Basic
+  "LineSprinkler.DisplayName": "Arroseur linéaire",
+  "LineSprinkler.Description": "Arrose les 4 carreaux en ligne droite chaque matin.",
+  // Quality
+  "QualityLineSprinkler.DisplayName": "Arroseur linéaire de qualité",
+  "QualityLineSprinkler.Description": "Arrose les 8 carreaux en ligne droite chaque matin.",
+  // Iridium
+  "IridiumLineSprinkler.DisplayName": "Arroseur linéaire en iridium",
+  "IridiumLineSprinkler.Description": "Arrose les 24 carreaux en ligne droite chaque matin.",
+
+  // Config
+  "Controls": "Contrôles",
+  "RotateSprinklerKeybind": "Rotation de l'arroseur",
+  "RotateSprinklerKeybind.Tooltip": "Appuyer sur cette touche en tenant un arroseur ou en survolant avec la souris un arroseur déjà placé le pivotera de 90° vers la droite."
+}

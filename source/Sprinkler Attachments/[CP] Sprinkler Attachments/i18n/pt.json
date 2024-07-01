@@ -1,0 +1,18 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Mushymato/StardewMods
+**
+*************************************************/
+
+// credit to Sxdic on nexusmods
+{
+    // objects
+    "object.SeedSpreader.DisplayName": "Dispersor de sementes",
+    "object.SeedSpreader.Description": "Coloque em um aspersor e abasteça-o com sementes para plantar durante a noite.",
+    "object.3in1Nozzle.DisplayName": "Bocal 3 em 1",
+    "object.3in1Nozzle.Description": "Coloque em um aspersor para aumentar o alcance de irrigação, abasteça-o com sementes e fertilizante para plantar durante a noite."
+}

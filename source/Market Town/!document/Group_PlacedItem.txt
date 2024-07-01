@@ -9,6 +9,8 @@
 *************************************************/
 
 -102:Book
+-100:Cloths
+-95: Hats
 -81: Forage
 -80: Flower
 -79: Fruit
@@ -34,3 +36,6 @@
 -4:	 Fish
 -2:	 Gem (Aquamine, Earth cyrstal)
  0:  Artifacts
+
+
+ Gift taste: hate -> love 6 4 8 2 0

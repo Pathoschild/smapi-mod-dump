@@ -39,7 +39,7 @@ namespace StardewArchipelago.Locations.GingerIsland.Parrots
         {
             _islandLocation = (IslandHut)Game1.getLocationFromName("IslandHut");
         }
-        
+
         public void ReplaceParrots()
         {
             _islandLocation.parrotUpgradePerches.Clear();
@@ -48,7 +48,7 @@ namespace StardewArchipelago.Locations.GingerIsland.Parrots
 
         private static void AddLeoParrot(IslandLocation islandLocation)
         {
-            islandLocation.parrotUpgradePerches.Add(new ParrotUpgradePerchArchipelago(AP_LEO_PARROT, _archipelago, islandLocation, new Point(7, 6), new Microsoft.Xna.Framework.Rectangle(-1000, -1000, 1, 1), 1, BefriendLeoParrot, IsLeoParrotBefriended, "Hut"));
+            islandLocation.parrotUpgradePerches.Add(new ParrotUpgradePerchArchipelago(AP_LEO_PARROT, _archipelago, islandLocation, new Point(7, 6), new Rectangle(-1000, -1000, 1, 1), 1, BefriendLeoParrot, IsLeoParrotBefriended, "Hut"));
         }
 
         private static void BefriendLeoParrot()

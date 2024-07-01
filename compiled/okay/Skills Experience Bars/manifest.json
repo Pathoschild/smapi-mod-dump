@@ -1,0 +1,10 @@
+{
+  "Name": "SkillsExpBars",
+  "Author": "Muuaji",
+  "Version": "1.0.1", // fixed locally
+  "Description": "exp bars for skills",
+  "UniqueID": "Muuaji.SkillsExpBars",
+  "EntryDll": "SkillsExpBars.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": []
+}

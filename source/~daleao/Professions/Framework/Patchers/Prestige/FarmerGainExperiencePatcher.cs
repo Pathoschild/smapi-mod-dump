@@ -15,6 +15,7 @@ namespace DaLion.Professions.Framework.Patchers.Prestige;
 using System.Reflection;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
+using Shared.Extensions;
 using StardewValley.Menus;
 
 #endregion using directives
@@ -37,12 +38,12 @@ internal sealed class FarmerGainExperiencePatcher : HarmonyPatcher
     [HarmonyPriority(Priority.First)]
     private static bool FarmerGainExperiencePrefix(Farmer __instance, int which, ref int howMuch)
     {
-        if (!ShouldEnableSkillReset && !ShouldEnablePrestigeLevels)
+        if ((!ShouldEnableSkillReset && !ShouldEnablePrestigeLevels) || which == Farmer.luckSkill)
         {
             return true; // run original logic
         }
 
-        if (which == Farmer.luckSkill || howMuch <= 0)
+        if (howMuch <= 0)
         {
             return false; // don't run original logic
         }
@@ -58,7 +59,7 @@ internal sealed class FarmerGainExperiencePatcher : HarmonyPatcher
             var skill = Skill.FromValue(which);
             howMuch = Math.Max((int)(howMuch * skill.BaseExperienceMultiplier * ((ISkill)skill).BonusExperienceMultiplier), 1);
             if (((skill.CurrentLevel == 10 && !skill.CanGainPrestigeLevels()) || skill.CurrentLevel == 20) &&
-                Skill.List.All(s => __instance.professions.Intersect(((ISkill)s).TierTwoProfessionIds).Any()))
+                Skill.List.All(s => s.CurrentLevel >= 10))
             {
                 var old = MasteryTrackerMenu.getCurrentMasteryLevel();
                 Game1.stats.Increment("MasteryExp", howMuch);

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/25267
+IDs: tomokisan.customBlessingsFramework
+update keys: Nexus:25267

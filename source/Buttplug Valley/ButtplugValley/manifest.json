@@ -11,7 +11,7 @@
 {
   "Name": "ButtplugValley",
   "Author": "Salty",
-  "Version": "1.2.2",
+  "Version": "1.3.0",
   "Description": "Buttplug.IO integration for Stardew Valley",
   "UniqueID": "Salty.ButtplugValley",
   "EntryDll": "ButtplugValley.dll",

@@ -12,7 +12,9 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using StardewModdingAPI;
+using StardewModdingAPI.Utilities;
 using StardewValley;
+using StardewValley.BellsAndWhistles;
 using StardewValley.Menus;
 using DeluxeJournal.Menus.Components;
 
@@ -23,31 +25,44 @@ namespace DeluxeJournal.Menus
     /// <summary>Notes page.</summary>
     public class NotesPage : PageBase
     {
+        private static readonly PerScreen<int> ScrollAmountPerScreen = new();
+
         public readonly ClickableComponent gamepadCursorArea;
 
         private readonly MultilineTextBox _textBox;
+        private readonly NotesOverlay? _overlay;
+        private readonly ButtonComponent _trashButton;
+        private readonly ButtonComponent _promptYesButton;
+        private readonly ButtonComponent _promptNoButton;
 
         private int _totalTimeSeconds;
         private int _saveTimeSeconds;
         private bool _dirty;
+        private bool _promptActive;
+        private int _promptChoice;
 
-        public NotesPage(Rectangle bounds, Texture2D tabTexture, ITranslationHelper translation)
-            : this("notes", translation.Get("ui.tab.notes"), bounds.X, bounds.Y, bounds.Width, bounds.Height, tabTexture, new Rectangle(32, 0, 16, 16))
+        public NotesPage(string name, Rectangle bounds, Texture2D tabTexture, ITranslationHelper translation, string rawText)
+            : this(name, translation.Get("ui.tab.notes"), bounds.X, bounds.Y, bounds.Width, bounds.Height, tabTexture, new Rectangle(32, 0, 16, 16), rawText)
         {
         }
 
-        public NotesPage(string name, string title, int x, int y, int width, int height, Texture2D tabTexture, Rectangle tabSourceRect)
+        public NotesPage(string name, string title, int x, int y, int width, int height, Texture2D tabTexture, Rectangle tabSourceRect, string rawText)
             : base(name, title, x, y, width, height, tabTexture, tabSourceRect)
         {
+            _overlay = Game1.onScreenMenus.Where(menu => menu is NotesOverlay).FirstOrDefault() as NotesOverlay;
+
             _textBox = new MultilineTextBox(
-                new Rectangle(xPositionOnScreen + 30, yPositionOnScreen + 32, width - 60, height - 64),
+                new Rectangle(xPositionOnScreen + 32, yPositionOnScreen + 32, width - 64, height - 64),
                 null,
                 null,
                 Game1.dialogueFont,
                 Game1.textColor)
             {
-                RawText = DeluxeJournalMod.Instance?.GetNotes() ?? ""
+                RawText = rawText
             };
+
+            _textBox.ScrollComponent.ScrollAmount = ScrollAmountPerScreen.Value;
+            _textBox.ScrollComponent.OnScroll += (self) => ScrollAmountPerScreen.Value = self.ScrollAmount;
 
             gamepadCursorArea = new ClickableComponent(new Rectangle(_textBox.Bounds.Right - 16, _textBox.Bounds.Bottom - 16, 16, 16), "")
             {
@@ -55,11 +70,62 @@ namespace DeluxeJournal.Menus
                 leftNeighborID = CUSTOM_SNAP_BEHAVIOR,
                 fullyImmutable = true
             };
+
+            string promptYes = Game1.content.LoadString("Strings\\Lexicon:QuestionDialogue_Yes");
+            string promptNo = Game1.content.LoadString("Strings\\Lexicon:QuestionDialogue_No");
+            int promptButtonWidth = Math.Max(SpriteText.getWidthOfString(promptYes), SpriteText.getWidthOfString(promptNo)) + 64;
+            int promptButtonHeight = Math.Max(SpriteText.getHeightOfString(promptYes), SpriteText.getHeightOfString(promptNo)) + 12;
+
+            _trashButton = new ButtonComponent(
+                new(x + width - 20, y + 44, 48, 48),
+                DeluxeJournalMod.UiTexture!,
+                new(66, 82, 12, 12),
+                4f)
+            {
+                SoundCueName = "trashcanlid",
+                OnClick = delegate
+                {
+                    _promptActive = true;
+                    _promptChoice = 0;
+                }
+            };
+
+            _promptYesButton = new ButtonComponent(
+                new(x + (width - promptButtonWidth) / 2, y + (height - promptButtonHeight) / 2, promptButtonWidth, promptButtonHeight),
+                DeluxeJournalMod.UiTexture!,
+                new(87, 55, 9, 9),
+                4f)
+            {
+                hoverText = promptYes,
+                Value = 1,
+                SoundCueName = "trashcan",
+                OnClick = delegate
+                {
+                    _textBox.RawText = string.Empty;
+                    _promptActive = false;
+                    Save(true);
+                }
+            };
+
+            _promptNoButton = new ButtonComponent(
+                new(x + (width - promptButtonWidth) / 2, y + (height + promptButtonHeight) / 2, promptButtonWidth, promptButtonHeight),
+                DeluxeJournalMod.UiTexture!,
+                new(87, 55, 9, 9),
+                4f)
+            {
+                hoverText = promptNo,
+                Value = 2,
+                SoundCueName = "breathout",
+                OnClick = (_, _) => _promptActive = false
+            };
+
+            exitFunction = () => Save();
         }
 
         public override void OnHidden()
         {
             Save();
+            _promptActive = false;
             _textBox.Selected = false;
         }
 
@@ -68,10 +134,9 @@ namespace DeluxeJournal.Menus
             return _textBox.Selected;
         }
 
-        public override bool readyToClose()
+        public override bool isWithinBounds(int x, int y)
         {
-            Save();
-            return base.readyToClose();
+            return x >= xPositionOnScreen && x < xPositionOnScreen + width + 48 && y >= yPositionOnScreen && y < yPositionOnScreen + height;
         }
 
         protected override void customSnapBehavior(int direction, int oldRegion, int oldID)
@@ -90,6 +155,11 @@ namespace DeluxeJournal.Menus
 
         public override void receiveGamePadButton(Buttons b)
         {
+            if (_promptActive)
+            {
+                _promptNoButton.SimulateLeftClick();
+            }
+
             switch (b)
             {
                 case Buttons.B:
@@ -100,16 +170,43 @@ namespace DeluxeJournal.Menus
 
         public override void receiveLeftClick(int x, int y, bool playSound = true)
         {
+            if (_promptActive)
+            {
+                if (_promptNoButton.containsPoint(x, y))
+                {
+                    _promptNoButton.ReceiveLeftClick(x, y, playSound);
+                }
+                else if (_promptYesButton.containsPoint(x, y))
+                {
+                    _promptYesButton.ReceiveLeftClick(x, y, playSound);
+                }
+                else if (!isWithinBounds(x, y))
+                {
+                    ExitJournalMenu(playSound);
+                }
+
+                return;
+            }
+
             _textBox.ReceiveLeftClick(x, y, playSound);
 
-            if (!Game1.options.SnappyMenus && _textBox.Bounds.Contains(x, y))
+            if (_trashButton.containsPoint(x, y))
+            {
+                _textBox.Selected = false;
+                _trashButton.ReceiveLeftClick(x, y, playSound);
+            }
+            else if (!Game1.options.SnappyMenus && _textBox.Bounds.Contains(x, y))
             {
                 _textBox.Selected = true;
                 _textBox.MoveCaretToPoint(x, y);
             }
-            else
+            else if (_textBox.Selected)
             {
                 _textBox.Selected = false;
+            }
+            else if (!isWithinBounds(x, y))
+            {
+                ExitJournalMenu(playSound);
             }
         }
 
@@ -138,6 +235,16 @@ namespace DeluxeJournal.Menus
 
         public override void receiveKeyPress(Keys key)
         {
+            if (_promptActive)
+            {
+                if (key == Keys.Escape)
+                {
+                    _promptNoButton.SimulateLeftClick();
+                }
+
+                return;
+            }
+
             if (_textBox.Selected)
             {
                 if (Game1.options.SnappyMenus && !overrideSnappyMenuCursorMovementBan())
@@ -156,6 +263,7 @@ namespace DeluxeJournal.Menus
             if (key == Keys.Escape)
             {
                 _textBox.Selected = false;
+                ExitJournalMenu();
             }
         }
 
@@ -180,7 +288,29 @@ namespace DeluxeJournal.Menus
         public override void performHoverAction(int x, int y)
         {
             base.performHoverAction(x, y);
+
+            if (_promptActive)
+            {
+                int promptChoice = 0;
+
+                if (_promptYesButton.containsPoint(x, y))
+                {
+                    promptChoice = _promptYesButton.Value;
+                }
+                else if (_promptNoButton.containsPoint(x, y))
+                {
+                    promptChoice = _promptNoButton.Value;
+                }
+
+                if (promptChoice != _promptChoice)
+                {
+                    _promptChoice = promptChoice;
+                    Game1.playSound("Cowboy_gunshot");
+                }
+            }
+
             _textBox.TryHover(x, y);
+            _trashButton.tryHover(x, y, 0.5f);
         }
 
         public override void update(GameTime time)
@@ -196,22 +326,53 @@ namespace DeluxeJournal.Menus
 
         public override void draw(SpriteBatch b)
         {
-            for (int y = _textBox.Font.LineSpacing; y < _textBox.Bounds.Height; y += _textBox.Font.LineSpacing)
+            if (!_promptActive)
             {
-                b.Draw(Game1.staminaRect,
-                    new Rectangle(_textBox.Bounds.X + 4, _textBox.Bounds.Y + y, _textBox.Bounds.Width - 8, 2),
-                    Game1.textShadowColor * 0.5f);
+                for (int y = _textBox.Font.LineSpacing; y < _textBox.Bounds.Height; y += _textBox.Font.LineSpacing)
+                {
+                    b.Draw(Game1.staminaRect,
+                        new Rectangle(_textBox.Bounds.X + 4, _textBox.Bounds.Y + y, _textBox.Bounds.Width - 8, 2),
+                        Game1.textShadowColor * 0.5f);
+                }
+
+                _textBox.Draw(b);
+            }
+            else
+            {
+                Point textCenter = new(xPositionOnScreen + width / 2, yPositionOnScreen + (height - _promptYesButton.bounds.Height * 3) / 2);
+                SpriteText.drawStringHorizontallyCenteredAt(b, Game1.content.LoadString("Strings\\UI:AnimalQuery_ConfirmSell"), textCenter.X, textCenter.Y);
+                SpriteText.drawStringHorizontallyCenteredAt(b, _promptYesButton.hoverText, textCenter.X, _promptYesButton.bounds.Y + 8, alpha: _promptChoice == _promptYesButton.Value ? 1f : 0.6f);
+                SpriteText.drawStringHorizontallyCenteredAt(b, _promptNoButton.hoverText, textCenter.X, _promptNoButton.bounds.Y + 8, alpha: _promptChoice == _promptNoButton.Value ? 1f : 0.6f);
+
+                if (_promptChoice > 0)
+                {
+                    ButtonComponent choiceButton = _promptChoice == _promptYesButton.Value ? _promptYesButton : _promptNoButton;
+
+                    drawTextureBox(b,
+                        choiceButton.texture,
+                        choiceButton.sourceRect,
+                        choiceButton.bounds.X,
+                        choiceButton.bounds.Y,
+                        choiceButton.bounds.Width,
+                        choiceButton.bounds.Height,
+                        Color.White,
+                        choiceButton.scale,
+                        false);
+                }
             }
 
-            _textBox.Draw(b);
+            _trashButton.draw(b);
         }
 
-        private void Save()
+        private void Save(bool forced = false)
         {
-            if (_dirty)
+            if (forced || _dirty)
             {
+                string rawText = _textBox.RawText;
+
+                DeluxeJournalMod.Instance?.SaveNotes(rawText);
+                _overlay?.UpdateText(rawText);
                 _dirty = false;
-                DeluxeJournalMod.Instance?.SaveNotes(_textBox.RawText);
             }
         }
     }

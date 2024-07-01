@@ -21,16 +21,16 @@ namespace ContentPatcher.Framework
         ** Fields
         *********/
         /// <summary>The backing field for <see cref="InvalidTokens"/>.</summary>
-        private readonly MutableInvariantSet InvalidTokensImpl = new();
+        private readonly MutableInvariantSet InvalidTokensImpl = [];
 
         /// <summary>The backing field for <see cref="UnreadyTokens"/>.</summary>
-        private readonly MutableInvariantSet UnreadyTokensImpl = new();
+        private readonly MutableInvariantSet UnreadyTokensImpl = [];
 
         /// <summary>The backing field for <see cref="UnavailableModTokens"/>.</summary>
-        private readonly MutableInvariantSet UnavailableModTokensImpl = new();
+        private readonly MutableInvariantSet UnavailableModTokensImpl = [];
 
         /// <summary>The backing field for <see cref="Errors"/>.</summary>
-        private readonly MutableInvariantSet ErrorsImpl = new();
+        private readonly MutableInvariantSet ErrorsImpl = [];
 
 
         /*********

@@ -8,14 +8,14 @@
 **
 *************************************************/
 
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using HarmonyLib;
 using StardewValley;
 using StardewValley.GameData.Tools;
 using StardewValley.Tools;
+
+using static NermNermNerm.Stardew.LocalizeFromSource.SdvLocalize;
 
 namespace NermNermNerm.Stardew.QuestableTractor
 {
@@ -42,7 +42,7 @@ namespace NermNermNerm.Stardew.QuestableTractor
         {
             if (!this.IsStarted)
             {
-                Game1.addHUDMessage(new HUDMessage("Whoah, I snagged onto something big down there, but this line's nowhere near strong enough to yank it up!", HUDMessage.newQuest_type));
+                Game1.addHUDMessage(new HUDMessage(L("Whoah, I snagged onto something big down there, but this line's nowhere near strong enough to yank it up!"), HUDMessage.newQuest_type));
                 this.CreateQuestNew(player);
                 Game1.playSound("questcomplete"); // Note documentation suggests its for quest complete and "journal update".  That's what we are using it for.
             }
@@ -68,10 +68,10 @@ namespace NermNermNerm.Stardew.QuestableTractor
                 chanceOfHookingWaterer = 0;
             }
 
-            this.LogTrace(FormattableString.Invariant($"Chance of hooking the starter for Waterer: {chanceOfHookingWaterer:P0}"));
+            this.LogTrace($"Chance of hooking the starter for Waterer: {chanceOfHookingWaterer:P0}");
             if (!hasPatchBeenInstalled && chanceOfHookingWaterer > 0)
             {
-                this.LogTrace("Applying harmony patch to Farm.getFish");
+                this.LogTrace($"Applying harmony patch to Farm.getFish");
                 var getFishMethod = typeof(Farm).GetMethod("getFish");
                 BorrowHarpoonQuestController.instance = this; // Harmony doesn't support creating prefixes with instance methods...  Faking it.
                 this.Mod.Harmony.Patch(getFishMethod, prefix: new HarmonyMethod(typeof(BorrowHarpoonQuestController), nameof(Prefix_GetFish)));
@@ -165,7 +165,7 @@ namespace NermNermNerm.Stardew.QuestableTractor
                 return null;
             }
 
-            this.LogTrace("Intercepted a call to Farm.GetFish");
+            this.LogTrace($"Intercepted a call to Farm.GetFish");
 
             var borrowHarpoonQuest = FakeQuest.GetFakeQuestByType<BorrowHarpoonQuest>(Game1.player);
             if (Game1.player.CurrentTool?.QualifiedItemId == HarpoonToolQiid)
@@ -173,7 +173,7 @@ namespace NermNermNerm.Stardew.QuestableTractor
                 if (borrowHarpoonQuest is null)
                 {
                     // Shouldn't be possible, but if it happens...
-                    this.LogError("BorrowHarpoon quest was not open when player used harpoon");
+                    this.LogError($"BorrowHarpoon quest was not open when player used harpoon");
                     return null;
                 }
 
@@ -190,9 +190,9 @@ namespace NermNermNerm.Stardew.QuestableTractor
                     Game1.playSound("clank");
                     string message = new string[]
                     {
-                        "Aaahhh! ! I had it!",
-                        "Nope...  nothing",
-                        "Ooohhh!  So close!"
+                        L("Aaahhh! ! I had it!"),
+                        L("Nope...  nothing"),
+                        L("Ooohhh!  So close!")
                     }[Game1.random.Next(3)];
                     Game1.addHUDMessage(new HUDMessage(message) { noIcon = true });
 
@@ -208,7 +208,7 @@ namespace NermNermNerm.Stardew.QuestableTractor
                 }
                 else if (borrowHarpoonQuest is not null && borrowHarpoonQuest.State == BorrowHarpoonQuestState.CatchTheBigOne && Game1.random.NextDouble() < .25) // prolly indicates the user goofed and is still using the regular rod
                 {
-                    Game1.addHUDMessage(new HUDMessage("Dang! Snapped a line on that waterer again!  Perhaps switching rods to Willy's Harpoon would help.") { noIcon = true });
+                    Game1.addHUDMessage(new HUDMessage(L("Dang! Snapped a line on that waterer again!  Perhaps switching rods to Willy's Harpoon would help.")) { noIcon = true });
                     return ItemRegistry.Create(TrashItemQualifiedId);
                 }
                 else
@@ -225,11 +225,11 @@ namespace NermNermNerm.Stardew.QuestableTractor
             data[HarpoonToolId] = new ToolData
             {
                 ClassName = "FishingRod",
-                Name = "Harpoon",
+                Name = I("Harpoon"),
                 AttachmentSlots = 0,
                 SalePrice = 0,
-                DisplayName = "Great Grandpappy's Harpoon",
-                Description = "Willy's Great Grandpappy used this to hunt whales back in the day.",
+                DisplayName = L("Great Grandpappy's Harpoon"),
+                Description = L("Willy's Great Grandpappy used this to hunt whales back in the day."),
                 Texture = ModEntry.SpritesPseudoPath,
                 SpriteIndex = 19,
                 MenuSpriteIndex = -1,

@@ -9,10 +9,12 @@
 *************************************************/
 
 using ArsVenefici.Framework.Interfaces.Spells;
+using ArsVenefici.Framework.Skill;
 using ArsVenefici.Framework.Spells;
 using ArsVenefici.Framework.Util;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using StardewValley;
 using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
@@ -174,7 +176,8 @@ namespace ArsVenefici.Framework.GUI.DragNDrop
             //        .filter(e->ArsMagicaAPI.get().getSkillHelper().knows(Objects.requireNonNull(Minecraft.getInstance().player), e.getId()))
             //        .toList();
 
-            return modEntry.spellPartManager.spellParts.Values.ToList();
+            //return modEntry.spellPartManager.spellParts.Values.ToList();
+            return modEntry.spellPartManager.spellParts.Values.Where(e => SpellPartSkillHelper.Instance().Knows(modEntry, Game1.player, e.GetId())).ToList();
         }
 
         public void SetCurrentOffset(int value)

@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using System.Collections.Generic;
 using System.Linq;
 using StardewValley;
 using StardewValley.Locations;
@@ -17,12 +18,11 @@ namespace StardewArchipelago.Items
 {
     public class ToolUpgrader
     {
-
         public Tool UpgradeToolInEntireWorld(string toolGenericName)
         {
             var player = Game1.player;
             var toolName = toolGenericName.Replace(" ", "_");
-            if (TryUpgradeToolInInventory(player, toolName, out var upgradedTool))
+            if (TryUpgradeToolInFarmer(player, toolName, out var upgradedTool))
             {
                 return upgradedTool;
             }
@@ -40,12 +40,23 @@ namespace StardewArchipelago.Items
             return null;
         }
 
-        private static bool TryUpgradeToolInInventory(Farmer player, string toolName, out Tool upgradedTool)
+        private bool TryUpgradeToolInFarmer(Farmer player, string toolName, out Tool upgradedTool)
         {
-            foreach (var playerItem in player.Items)
+            if (TryUpgradeToolInInventory(player.Items, toolName, out upgradedTool))
             {
-                if (TryUpgradeCorrectTool(toolName, playerItem, out upgradedTool))
+                return true;
+            }
+
+            return TryUpgradeHat(player, toolName, out upgradedTool);
+        }
+
+        private bool TryUpgradeToolInInventory(IList<Item> inventory, string toolName, out Tool upgradedTool)
+        {
+            for (var i = 0; i < inventory.Count; i++)
+            {
+                if (TryUpgradeCorrectTool(toolName, inventory[i], out upgradedTool))
                 {
+                    inventory[i] = upgradedTool;
                     return true;
                 }
             }
@@ -54,7 +65,27 @@ namespace StardewArchipelago.Items
             return false;
         }
 
-        private static bool TryUpgradeToolInChests(string toolName, out Tool upgradedTool)
+        private bool TryUpgradeHat(Farmer player, string toolName, out Tool upgradedTool)
+        {
+            var currentHat = player.hat?.Value;
+            upgradedTool = null;
+            if (currentHat == null)
+            {
+                return false;
+            }
+
+            var hatInHand = Utility.PerformSpecialItemGrabReplacement(currentHat);
+            if (TryUpgradeCorrectTool(toolName, hatInHand, out upgradedTool))
+            {
+                var upgradedHat = Utility.PerformSpecialItemPlaceReplacement(upgradedTool);
+                player.Equip((Hat)upgradedHat, player.hat);
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool TryUpgradeToolInChests(string toolName, out Tool upgradedTool)
         {
             var locations = Game1.locations.ToList();
 
@@ -76,64 +107,25 @@ namespace StardewArchipelago.Items
                         continue;
                     }
 
-                    foreach (var chestItem in chest.items)
+                    if (TryUpgradeToolInInventory(chest.Items, toolName, out upgradedTool))
                     {
-                        if (TryUpgradeCorrectTool(toolName, chestItem, out upgradedTool))
-                        {
-                            return true;
-                        }
+                        return true;
                     }
-                }
-            }
-
-            foreach (var junimoChestItem in Game1.player.team.junimoChest)
-            {
-                if (TryUpgradeCorrectTool(toolName, junimoChestItem, out upgradedTool))
-                {
-                    return true;
-                }
-            }
-
-            foreach (var junimoChestItem in Game1.player.team.junimoChest)
-            {
-                if (TryUpgradeCorrectTool(toolName, junimoChestItem, out upgradedTool))
-                {
-                    return true;
                 }
             }
 
 
             if (Game1.getLocationFromName("FarmHouse") is FarmHouse farmHouse)
             {
-                foreach (var fridgeItem in farmHouse.fridge.Value.items)
+                if (TryUpgradeToolInInventory(farmHouse.GetFridge(false).Items, toolName, out upgradedTool))
                 {
-                    if (TryUpgradeCorrectTool(toolName, fridgeItem, out upgradedTool))
-                    {
-                        return true;
-                    }
+                    return true;
                 }
             }
 
             if (Game1.getLocationFromName("IslandFarmHouse") is IslandFarmHouse islandHouse)
             {
-                foreach (var fridgeItem in islandHouse.fridge.Value.items)
-                {
-                    if (TryUpgradeCorrectTool(toolName, fridgeItem, out upgradedTool))
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            upgradedTool = null;
-            return false;
-        }
-
-        private static bool TryUpgradeToolInLostAndFoundBox(Farmer player, string toolName, out Tool upgradedTool)
-        {
-            foreach (var lostAndFoundItem in player.team.returnedDonations)
-            {
-                if (TryUpgradeCorrectTool(toolName, lostAndFoundItem, out upgradedTool))
+                if (TryUpgradeToolInInventory(islandHouse.GetFridge(false).Items, toolName, out upgradedTool))
                 {
                     return true;
                 }
@@ -143,7 +135,18 @@ namespace StardewArchipelago.Items
             return false;
         }
 
-        private static bool TryUpgradeCorrectTool(string toolName, Item item, out Tool upgradedTool)
+        private bool TryUpgradeToolInLostAndFoundBox(Farmer player, string toolName, out Tool upgradedTool)
+        {
+            if (TryUpgradeToolInInventory(player.team.returnedDonations, toolName, out upgradedTool))
+            {
+                return true;
+            }
+
+            upgradedTool = null;
+            return false;
+        }
+
+        private bool TryUpgradeCorrectTool(string toolName, Item item, out Tool upgradedTool)
         {
             if (item is not Tool toolToUpgrade || !toolToUpgrade.Name.Replace(" ", "_").Contains(toolName))
             {
@@ -151,15 +154,22 @@ namespace StardewArchipelago.Items
                 return false;
             }
 
-            if (toolToUpgrade.UpgradeLevel < 4)
+            foreach (var (toolId, toolData) in Game1.toolData)
             {
-                toolToUpgrade.UpgradeLevel++;
+                if (toolData.ConventionalUpgradeFrom == item.QualifiedItemId)
+                {
+                    upgradedTool = CreateTool(toolId);
+                    return true;
+                }
             }
 
-            {
-                upgradedTool = toolToUpgrade;
-                return true;
-            }
+            upgradedTool = null;
+            return false;
+        }
+
+        public Tool CreateTool(string toolName)
+        {
+            return (Tool)ItemRegistry.Create("(T)" + toolName);
         }
     }
 }

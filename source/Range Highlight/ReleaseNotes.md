@@ -9,6 +9,14 @@ for queries and analysis.**
 
 # Release Notes
 
+## Version 4.2.1
+
+### User-visible Changes
+
+* Updated Chinese translation from GitHub user chguw
+* Update tooltip text for bomb ranges to reflect changes in SDV 1.6
+* Remove "holes" in mega-bomb range that were fixed in SDV 1.6
+
 ## Version 4.2.0
 
 ### User-visible Changes

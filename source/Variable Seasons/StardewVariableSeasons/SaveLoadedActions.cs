@@ -25,6 +25,8 @@ namespace StardewVariableSeasons
         
         public static void OnSaveLoaded(IMonitor monitor, IModHelper helper, object sender, SaveLoadedEventArgs e)
         {
+            if (!Game1.IsMasterGame) return;
+            
             try
             {
                 _nextSeasonChange = helper.Data.ReadSaveData<ModData>("next-season-change");

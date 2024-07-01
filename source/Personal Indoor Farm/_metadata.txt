@@ -6,9 +6,9 @@ mods:
    Personal Indoor Farm
 
 latest commit:
-   commit 47896df4b47acc1e88129f94963d731d4a21bb79
+   commit f442c1665fca30fec935a3d2031a245b7c25c0a8
    Author: DeLiXx <fake122344@gmail.com>
-   Date:   Fri May 10 18:38:08 2024 +0200
+   Date:   Sat Jun 29 09:20:11 2024 +0200
    
-       updated to 1.0.5
+       Added owner name to display name & added 4th possible upgrade level
    

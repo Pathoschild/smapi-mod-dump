@@ -152,7 +152,7 @@
     "config.harvest-giant-crops.tooltip": "Будет срубать гигантский урожай (гигантскую тыкву, дыню и цветную капусту).",
 
     "config.harvest-crops.name": "Сбор урожая",
-    "config.Harvest Crops.tooltip": "Будет собирать урожай.",
+    "config.harvest-crops.tooltip": "Будет собирать урожай.",
 
     "config.harvest-flowers.name": "Сбор цветов",
     "config.harvest-flowers.tooltip": "Будет собирать цветы.",
@@ -223,8 +223,8 @@
     /****
     ** Melee
     ****/
-    "config.Attack-monsters.name": "Атака по монстрам",
-    "config.Attack-monsters.tooltip": "При включении будет нападать на монстров (данная функция зависит от настройки скорости трактора).",
+    "config.attack-monsters.name": "Атака по монстрам",
+    "config.attack-monsters.tooltip": "При включении будет нападать на монстров (данная функция зависит от настройки скорости трактора).",
 
 
     /****

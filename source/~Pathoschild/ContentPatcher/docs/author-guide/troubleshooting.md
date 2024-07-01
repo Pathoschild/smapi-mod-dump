@@ -114,11 +114,12 @@ Example Content Pack:
 
 You can specify these arguments in any order (e.g. `patch summary "LemonEx.HobbitHouse" "Another.Content.Pack" full`):
 
-argument            | effect
-:------------------ | :-----
-`"content pack ID"` | One or more content pack IDs for which to show data. If omitted, all content packs will be shown.
-`full`              | Don't truncate very long token values.
-`unsorted`          | Don't sort the values for display. This is mainly useful for checking the real order for `valueAt`.
+argument              | effect
+:-------------------- | :-----
+`"<content pack ID>"` | One or more content pack IDs for which to show data. If omitted, all content packs will be shown.
+`asset "<asset>"`     | Only list changes to a given asset. This filters by base asset name, so `Data/furniture` would also show edits to `Data/furniture.fr-FR`. You can list multiple assets by repeating the flag (e.g. `asset Data/Crops asset Data/Objects`).
+`full`                | Don't truncate very long token values.
+`unsorted`            | Don't sort the values for display. This is mainly useful for checking the real order for `valueAt`.
 
 ### `update`
 `patch update` immediately updates Content Patcher's condition context and rechecks all patches.

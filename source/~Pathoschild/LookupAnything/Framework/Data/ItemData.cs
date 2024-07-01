@@ -25,7 +25,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Data
         public ObjectContext Context { get; set; } = ObjectContext.Any;
 
         /// <summary>The qualified item IDs for this object.</summary>
-        public HashSet<string> QualifiedId { get; set; } = new();
+        public HashSet<string> QualifiedId { get; set; } = [];
 
         /****
         ** Overrides

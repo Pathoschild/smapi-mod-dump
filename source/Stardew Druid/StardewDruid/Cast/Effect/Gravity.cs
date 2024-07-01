@@ -34,7 +34,9 @@ namespace StardewDruid.Cast.Effect
         public Gravity()
         {
 
-            expireTime = Game1.currentGameTime.TotalGameTime.TotalSeconds + 5;
+
+            activeLimit = 5;
+
 
         }
 
@@ -48,7 +50,9 @@ namespace StardewDruid.Cast.Effect
 
             gravityWells.Add(tile, new(location, tile, timer, radius));
 
-            expireTime = Game1.currentGameTime.TotalGameTime.TotalSeconds + timer;
+
+            activeLimit = eventCounter + timer;
+
 
         }
 
@@ -73,19 +77,42 @@ namespace StardewDruid.Cast.Effect
 
                 Vector2 gravityCenter = gravityWell.Value.tile * 64;
 
-                List<StardewValley.Monsters.Monster> victims = ModUtility.MonsterProximity(gravityWell.Value.location, new() { gravityCenter, }, gravityWell.Value.radius);
+                List<StardewValley.Monsters.Monster> victims = ModUtility.MonsterProximity(gravityWell.Value.location, new() { gravityCenter, }, gravityWell.Value.radius, true);
 
                 foreach(StardewValley.Monsters.Monster victim in victims)
                 {
 
-                    if(procced.Contains(victim)) { continue; }
-
-                    if(victim.stunTime.Value <= 0)
-                    {
-                        victim.stunTime.Set(1000);
+                    if(procced.Contains(victim)) 
+                    { 
+                        
+                        continue; 
+                    
                     }
 
-                    victim.Position = ModUtility.PathMovement(victim.Position, gravityCenter, 7);
+                    procced.Add(victim);
+
+                    if (victim.xVelocity > 0 || victim.yVelocity > 0)
+                    {
+                        
+                        continue;
+
+                    }
+
+                    if (victim.stunTime.Value <= 0)
+                    {
+                        
+                        victim.stunTime.Set(1000);
+                    
+                    }
+
+                    Vector2 attemptPosition = ModUtility.PathMovement(victim.Position, gravityCenter, 7);
+
+                    if(ModUtility.TileAccessibility(location,ModUtility.PositionToTile(attemptPosition)) == 0 || victim.isGlider.Value)
+                    {
+
+                        victim.Position = attemptPosition;
+
+                    }
 
                 }
 

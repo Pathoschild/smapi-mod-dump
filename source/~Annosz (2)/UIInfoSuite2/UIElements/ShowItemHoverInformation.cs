@@ -18,7 +18,6 @@ using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Menus;
 using StardewValley.Tools;
-using UIInfoSuite2.Compatibility;
 using UIInfoSuite2.Infrastructure;
 using UIInfoSuite2.Infrastructure.Extensions;
 using UIInfoSuite2.Infrastructure.Helpers;
@@ -175,7 +174,6 @@ internal class ShowItemHoverInformation : IDisposable
           requiredBundleName = bundleDisplayData.Name;
 
           // TODO cache these colors so we're not doing it every time
-
           bundleColor = BundleHelper.GetRealColorFromIndex(bundleDisplayData.Id)?.Desaturate(0.35f);
         }
       }

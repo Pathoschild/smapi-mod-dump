@@ -45,14 +45,15 @@ namespace ContentPatcher.Framework.Commands.Commands
         /// <inheritdoc />
         public override string GetDescription()
         {
-            return @"
+            return
+                """
                 patch parse
-                   usage: patch parse ""value"" [compact]
-                   Parses the given token string and shows the result. For example, `patch parse ""assets/{{Season}}.png"" will show a value like ""assets/Spring.png"". If present, 'compact' returns less details.
+                   usage: patch parse "value" [compact]
+                   Parses the given token string and shows the result. For example, `patch parse "assets/{{Season}}.png" will show a value like "assets/Spring.png". If present, 'compact' returns less details.
 
-                patch parse ""value"" ""content -pack.id"" [compact]
-                   Parses the given token string and shows the result, using tokens available to the specified content pack (using the ID from the content pack's manifest.json). For example, `patch parse ""assets/{{CustomToken}}.png"" ""Pathoschild.ExampleContentPack"". If present, 'compact' returns less details.
-            ";
+                patch parse "value" "content -pack.id" [compact]
+                   Parses the given token string and shows the result, using tokens available to the specified content pack (using the ID from the content pack's manifest.json). For example, `patch parse "assets/{{CustomToken}}.png" "Pathoschild.ExampleContentPack". If present, 'compact' returns less details.
+                """;
         }
 
         /// <inheritdoc />

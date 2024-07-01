@@ -28,14 +28,19 @@ namespace Unlockable_Bundles.Lib
         private List<KeyValuePair<int, int>> Sequence = new List<KeyValuePair<int, int>>();  //ImageIndex, Tempo
         private int BaseWidth;
         private int BaseHeight;
+        private int MaxLoops;
+        private int CurrentLoop;
 
-        public AnimatedTexture(Texture2D texture, string animation, int baseWidth, int baseHeight)
+        public Vector2 Position; //Helps with ui animations
+        public AnimatedTexture(Texture2D texture, string animation, int baseWidth, int baseHeight, int maxLoops = 0)
         {
             Texture = texture;
             Animation = animation;
             BaseWidth = baseWidth;
             BaseHeight = baseHeight;
             resetFrames();
+
+            MaxLoops = maxLoops;
         }
 
         public Rectangle getOffsetRectangle() => getOffsetRectangle(ref Frame, Sequence, Texture, BaseWidth, BaseHeight);
@@ -80,26 +85,33 @@ namespace Unlockable_Bundles.Lib
             }
         }
 
-        public void update(GameTime time) => update(time, ref LastUpdatedTick, ref Timer, ref Frame, Sequence);
-        public static void update(GameTime time, ref long lastUpdatedTick, ref long timer, ref int frame, List<KeyValuePair<int, int>> sequence)
+        public bool update(GameTime time) => update(time, ref LastUpdatedTick, ref Timer, ref Frame, Sequence, ref MaxLoops, ref CurrentLoop);
+        public static bool update(GameTime time, ref long lastUpdatedTick, ref long timer, ref int frame, List<KeyValuePair<int, int>> sequence, ref int maxLoops, ref int currentLoop)
         {
             if (time.TotalGameTime.Ticks == lastUpdatedTick)
-                return;
+                return true;
+
             lastUpdatedTick = time.TotalGameTime.Ticks;
 
             if (sequence.Count == 0)
-                return;
+                return true;
 
             if (timer > 0)
                 timer -= time.ElapsedGameTime.Milliseconds;
 
             if (timer <= 0) {
                 frame++;
-                if (frame >= sequence.Count)
+                if (frame >= sequence.Count) {
                     frame = 0;
+                    if (maxLoops > 0)
+                        currentLoop++;
+                }
+                    
 
                 timer = sequence.ElementAt(frame).Value;
             }
+
+            return currentLoop < maxLoops;
         }
     }
 }

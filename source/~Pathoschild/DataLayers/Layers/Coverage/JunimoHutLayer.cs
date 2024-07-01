@@ -8,7 +8,6 @@
 **
 *************************************************/
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -54,11 +53,10 @@ namespace Pathoschild.Stardew.DataLayers.Layers.Coverage
 
             this.Mods = mods;
             this.SelectedColor = colors.Get(layerId, "Selected", Color.Blue);
-            this.Legend = new[]
-            {
+            this.Legend = [
                 this.Covered = new LegendEntry(I18n.Keys.JunimoHuts_CanHarvest, colors.Get(layerId, "Covered", Color.Green)),
                 this.NotCovered = new LegendEntry(I18n.Keys.JunimoHuts_CannotHarvest, colors.Get(layerId, "NotCovered", Color.Red))
-            };
+            ];
         }
 
         /// <summary>Get the updated data layer tiles.</summary>
@@ -69,14 +67,14 @@ namespace Pathoschild.Stardew.DataLayers.Layers.Coverage
         public override TileGroup[] Update(GameLocation location, in Rectangle visibleArea, in Vector2[] visibleTiles, in Vector2 cursorTile)
         {
             if (!location.IsBuildableLocation())
-                return Array.Empty<TileGroup>();
+                return [];
 
             // get Junimo huts
             Rectangle searchArea = visibleArea;
             JunimoHut[] huts =
                 (
                     from JunimoHut hut in location.buildings.OfType<JunimoHut>()
-                    where new Rectangle(hut.tileX + 1, hut.tileY + 1, hut.cropHarvestRadius, hut.cropHarvestRadius).Intersects(searchArea) // range centered on hut door
+                    where new Rectangle(hut.tileX.Value + 1, hut.tileY.Value + 1, hut.cropHarvestRadius, hut.cropHarvestRadius).Intersects(searchArea) // range centered on hut door
                     select hut
                 )
                 .ToArray();

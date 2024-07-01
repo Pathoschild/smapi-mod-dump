@@ -1,10 +1,10 @@
 ﻿{
   "Name": "PerfectTrinkets",
   "Author": "season",
-  "Version": "0.0.3",
-  "Description": "The Anvil will get the Perfect Trinkets.",
+  "Version": "0.0.4",
+  "Description": "Anvil will get perfect Trinkets, Weapon will get perfect Innate Enchantments.(for SDV1.6.4+)",
   "UniqueID": "season.PerfectTrinkets",
   "EntryDll": "PerfectTrinkets.dll",
-  "MinimumApiVersion": "4.0.0",
+  "MinimumApiVersion": "4.0.7",
   "UpdateKeys": [ "Nexus:22358" ]
 }

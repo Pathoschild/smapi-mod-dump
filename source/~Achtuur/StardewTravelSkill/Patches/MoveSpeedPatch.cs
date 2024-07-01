@@ -33,7 +33,7 @@ internal class MoveSpeedPatch : GenericPatcher
     {
         try
         {
-            if (ModEntry.MovementButtonHeld() && Game1.player.canMove)
+            if (ModEntry.IsWalking() && Game1.player.canMove)
             {
                 __result *= ModEntry.GetMovespeedMultiplier();
             }

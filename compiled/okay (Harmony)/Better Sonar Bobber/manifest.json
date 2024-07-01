@@ -1,0 +1,9 @@
+﻿{
+  "Name": "Better Sonar Bobber",
+  "Author": "Spiderbuttons",
+  "Version": "1.1.2",
+  "Description": "The sonar bobber will now show you the fish before you start reeling it in and give you extra time to react.",
+  "UniqueID": "Spiderbuttons.BetterSonarBobber",
+  "EntryDll": "BetterSonarBobber.dll",
+  "UpdateKeys": [ "Nexus:24837" ]
+}

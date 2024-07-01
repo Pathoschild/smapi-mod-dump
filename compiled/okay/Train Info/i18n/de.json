@@ -1,0 +1,8 @@
+{
+  "config.option.notification_time.name": "Zug morgen Benachrichtigungszeit",
+  "config.option.notification_time.description": "Wann wird die Meldung angezeigt, dass morgen ein Zug kommt",
+  "list_title": "Inhalt des Zuges",
+  "train_today": "Heute wird ein Zug durch Stardew Valley fahren, und zwar um {{time}}",
+  "train_tomorrow": "Morgen wird ein Zug durch Stardew Valley fahren, und zwar um {{time}}",
+  "empty_train": "Nichts"
+}

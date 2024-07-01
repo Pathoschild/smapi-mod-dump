@@ -73,9 +73,36 @@ public class SCIntegration : BaseAPIIntegration<IApi, ModEntry>, IRecipeProvider
 			Assembly = builder;
 			Module = module;
 
-			ProxyMan = new ProxyManager<Nothing>(module, new ProxyManagerConfiguration<Nothing>(
-				proxyObjectInterfaceMarking: ProxyObjectInterfaceMarking.MarkerWithProperty
-			));
+			// Find the constructor we want.
+			ConstructorInfo? ctor = null;
+			foreach (var constructor in typeof(ProxyManagerConfiguration<Nothing>).GetConstructors()) {
+				foreach (var parm in constructor.GetParameters()) {
+					if (parm.ParameterType == typeof(ProxyObjectInterfaceMarking)) {
+						ctor = constructor;
+						break;
+					}
+				}
+				if (ctor != null)
+					break;
+			}
+
+			if (ctor == null)
+				throw new ArgumentNullException("unable to find ProxyManagerConfiguration constructor");
+
+			var parms = ctor.GetParameters();
+			object?[] parameters = new object?[parms.Length];
+
+			for (int i = 0; i < parms.Length; i++) {
+				var parm = parms[i];
+				if (parm.Name == "proxyObjectInterfaceMarking" && parm.ParameterType == typeof(ProxyObjectInterfaceMarking))
+					parameters[i] = ProxyObjectInterfaceMarking.MarkerWithProperty;
+				else
+					parameters[i] = parm.DefaultValue;
+			}
+
+			var config = (ProxyManagerConfiguration<Nothing>) Activator.CreateInstance(typeof(ProxyManagerConfiguration<Nothing>), parameters)!;
+			ProxyMan = new ProxyManager<Nothing>(module, config);
+
 		} catch (Exception ex) {
 			Log($"Unable to set up Pintail-based proxying of SpaceCore internals.", StardewModdingAPI.LogLevel.Warn, ex);
 		}

@@ -34,13 +34,15 @@ namespace PersonalIndoorFarm.Lib
 
         private static bool ProcessAction(string[] args, TriggerActionContext context, out string error)
         {
+            if(!ArgUtility.TryGet(args, 1, out var buffId, out error))
+
             error = null;
 
             var location = Game1.currentLocation;
             if (location.NameOrUniqueName?.StartsWith(PersonalFarm.BaseLocationKey) == false)
                 return true;
 
-            if (!location.modData.ContainsKey(PersonalFarm.OwnerKey) || location.modData[PersonalFarm.OwnerKey] != Game1.player.UniqueMultiplayerID.ToString())
+            if (!PersonalFarm.isOwner(location, Game1.player))
                 return true;
 
             PersonalFarm.setInitialDayAndSeason(location);

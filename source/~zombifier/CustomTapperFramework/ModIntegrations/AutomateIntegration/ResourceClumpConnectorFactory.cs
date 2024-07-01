@@ -15,7 +15,7 @@ using StardewValley.TerrainFeatures;
 using Pathoschild.Stardew.Automate;
 using SObject = StardewValley.Object;
 
-namespace CustomTapperFramework;
+namespace Selph.StardewMods.MachineTerrainFramework;
 public class ResourceClumpConnectorFactory : IAutomationFactory
 {
   public IAutomatable GetFor(SObject obj, GameLocation location, in Vector2 tile) {

@@ -47,7 +47,7 @@ namespace DeluxeJournal.Menus
 
         public AddTaskMenu(ITranslationHelper translation) : base(0, 0, 612, 64)
         {
-            if (DeluxeJournalMod.Instance?.Config is not Config config)
+            if (DeluxeJournalMod.Config is not Config config)
             {
                 throw new InvalidOperationException("AddTaskMenu created before mod entry.");
             }
@@ -94,7 +94,7 @@ namespace DeluxeJournal.Menus
             {
                 myID = 102,
                 downNeighborID = SNAP_AUTOMATIC,
-                leftNeighborID = SNAP_AUTOMATIC
+                leftNeighborID = 0
             };
 
             okButton = new ClickableTextureComponent(
@@ -105,6 +105,7 @@ namespace DeluxeJournal.Menus
             {
                 myID = 103,
                 upNeighborID = 0,
+                rightNeighborID = 102,
                 leftNeighborID = SNAP_AUTOMATIC
             };
 
@@ -168,6 +169,11 @@ namespace DeluxeJournal.Menus
         {
             currentlySnappedComponent = textBoxCC;
             snapCursorToCurrentSnappedComponent();
+        }
+
+        public override bool IsAutomaticSnapValid(int direction, ClickableComponent a, ClickableComponent b)
+        {
+            return base.IsAutomaticSnapValid(direction, a, b) && (b != smartOkButton || _taskParser.MatchFound());
         }
 
         public override void receiveGamePadButton(Buttons b)

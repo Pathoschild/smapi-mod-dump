@@ -46,8 +46,11 @@ namespace StardewValleyTodo.Helpers {
         }
 
         public static BundleParsedValue ParseValue(string raw) {
-            // Animal/BO 16 1/186 1 0 182 1 0 174 1 0 438 1 0 440 1 0 442 1 0/4/5//Животный
+            // Animal/BO 16 1 /186 1 0 182 1 0 174 1 0 438 1 0 440 1 0 442 1 0/4/5//Животный
+            // Name/Reward/Components/Color/?Size (all ingredients if empty)/?Localized name
             var parts = raw.Split('/');
+            var size = parts.Length >= 5 ? parts[4] : "";
+            var localizedName = parts.Length == 7 ? parts[6] : parts[0];
 
             return new BundleParsedValue(
                 // Animal
@@ -56,8 +59,8 @@ namespace StardewValleyTodo.Helpers {
                 parts[1],
                 // 186 1 0 182 1 0 174 1 0 438 1 0 440 1 0 442 1 0
                 parts[2],
-                parts[4] == "" ? 0 : int.Parse(parts[4]),
-                parts[6]
+                size == "" ? 0 : int.Parse(size),
+                localizedName
             );
         }
     }

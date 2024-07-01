@@ -33,14 +33,18 @@ namespace DeluxeJournal.Menus
         private const int LabelWidth = 256;
         private const int VerticalSpacing = 64;
         private const int BottomGap = 32;
+        private const int InnerBorderToEdge = 32;
 
-        private const int ParameterTextBoxId = 1000;
-        private const int ParameterDropDownId = 1100;
-        private const int ParameterIconId = 900;
+        private const int ParameterId = 900;
+        private const int ParameterChildId = 1000;
+        private const int ParameterIconId = 1100;
+        private const int ColorButtonId = 500;
 
-        public readonly ClickableTextureComponent backButton;
-        public readonly ClickableTextureComponent cancelButton;
-        public readonly ClickableTextureComponent okButton;
+        public readonly ButtonComponent backButton;
+        public readonly ButtonComponent cancelButton;
+        public readonly ButtonComponent okButton;
+        public readonly ButtonComponent headerButton;
+        public readonly ButtonComponent expandColorsButton;
 
         public readonly ClickableComponent nameTextBoxCC;
         public readonly ClickableComponent customRenewTextBoxCC;
@@ -48,31 +52,36 @@ namespace DeluxeJournal.Menus
         public readonly DropDownComponent weekdaysDropDown;
         public readonly DropDownComponent seasonsDropDown;
         public readonly DropDownComponent daysDropDown;
-        public readonly List<ClickableComponent> parameterTextBoxCCs;
         public readonly List<ClickableComponent> typeIcons;
 
         private readonly SideScrollingTextBox _nameTextBox;
         private readonly SideScrollingTextBox _customRenewTextBox;
-        private readonly IList<TaskParameterTextBox> _parameterTextBoxes;
-        private readonly IDictionary<int, TaskParameterDropDown> _parameterDropDowns;
+        private readonly IList<ITaskParameterComponent> _parameters;
+        private readonly IDictionary<int, ITaskParameterComponent> _childParameters;
         private readonly IDictionary<int, SmartIconComponent> _parameterIcons;
 
         private readonly ITranslationHelper _translation;
         private readonly Texture2D _textBoxTexture;
-        private readonly Rectangle _fixedContentBounds;
         private readonly ITask? _task;
+        private readonly int _typeIconsWidth;
+        private readonly int _typeIconsHeight;
 
         private Task.TaskFactory? _taskFactory;
         private DropDownComponent? _activeDropDown;
-        private string _selectedTaskID;
+        private TaskParameterButtons? _colorButtons;
+        private Rectangle _sharedContentBounds;
+        private string _selectedTaskId;
         private string _hoverText;
+        private int _hoverId;
+
+        private static bool CollapsedColorButtons { get; set; } = true;
 
         public TaskOptionsMenu(ITask task, ITranslationHelper translation) : this(translation)
         {
             _task = task;
-            _selectedTaskID = task.ID;
+            _selectedTaskId = task.ID;
             _taskFactory = TaskRegistry.CreateFactoryInstance(task.ID);
-            _taskFactory.Initialize(task, translation);
+            _taskFactory.Initialize(task);
 
             _nameTextBox.Text = task.Name;
             renewPeriodDropDown.SelectedOption = (int)_task.RenewPeriod;
@@ -92,55 +101,57 @@ namespace DeluxeJournal.Menus
                 }
             }
 
-            SetupParameters();
+            SelectTask(_selectedTaskId);
         }
 
-        public TaskOptionsMenu(string taskName, TaskParser taskParser, ITranslationHelper translation)
-            : this(translation)
+        public TaskOptionsMenu(string taskName, TaskParser taskParser, ITranslationHelper translation) : this(translation)
         {
-            _selectedTaskID = taskParser.ID;
+            _selectedTaskId = taskParser.ID;
             _taskFactory = taskParser.Factory;
             _nameTextBox.Text = taskName;
 
-            SetupParameters();
+            SelectTask(_selectedTaskId);
         }
 
         private TaskOptionsMenu(ITranslationHelper translation) : base(0, 0, 928, 576)
         {
-            xPositionOnScreen = (Game1.uiViewport.Width / 2) - (width / 2);
-            yPositionOnScreen = (Game1.uiViewport.Height / 2) - (height / 2);
-
+            xPositionOnScreen = (Game1.uiViewport.Width - width) / 2;
+            yPositionOnScreen = ((Game1.uiViewport.Height - height) / 2) - 48;
+            
             _translation = translation;
             _textBoxTexture = Game1.content.Load<Texture2D>("LooseSprites\\textBox");
             _activeDropDown = null;
             _taskFactory = null;
             _task = null;
-            _selectedTaskID = TaskTypes.Basic;
+            _selectedTaskId = TaskTypes.Basic;
             _hoverText = string.Empty;
+            _hoverId = -1;
+            exitFunction = OnExit;
 
-            _fixedContentBounds = default;
-            _fixedContentBounds.X = xPositionOnScreen + spaceToClearSideBorder + 28;
-            _fixedContentBounds.Y = yPositionOnScreen + spaceToClearTopBorder + 16;
-            _fixedContentBounds.Width = width - (_fixedContentBounds.X - xPositionOnScreen) * 2;
+            _sharedContentBounds = default;
+            _sharedContentBounds.X = xPositionOnScreen + spaceToClearSideBorder + 28;
+            _sharedContentBounds.Y = yPositionOnScreen + spaceToClearTopBorder + 16;
+            _sharedContentBounds.Width = width - (_sharedContentBounds.X - xPositionOnScreen) * 2;
+            _sharedContentBounds.Height = VerticalSpacing * 3 + 20;
+            _typeIconsWidth = (_sharedContentBounds.Width - LabelWidth) / 64 * 64;
 
-            _parameterIcons = new Dictionary<int, SmartIconComponent>();
-            _parameterDropDowns = new Dictionary<int, TaskParameterDropDown>();
-            _parameterTextBoxes = new List<TaskParameterTextBox>();
-            parameterTextBoxCCs = new List<ClickableComponent>();
             typeIcons = new List<ClickableComponent>();
+            _parameters = new List<ITaskParameterComponent>();
+            _parameterIcons = new Dictionary<int, SmartIconComponent>();
+            _childParameters = new Dictionary<int, ITaskParameterComponent>();
 
             _nameTextBox = new SideScrollingTextBox(_textBoxTexture, null, Game1.smallFont, Game1.textColor)
             {
-                X = _fixedContentBounds.X + LabelWidth,
-                Y = _fixedContentBounds.Y,
-                Width = _fixedContentBounds.Width - LabelWidth
+                X = _sharedContentBounds.X + LabelWidth,
+                Y = _sharedContentBounds.Y,
+                Width = _sharedContentBounds.Width - LabelWidth - 40
             };
 
             nameTextBoxCC = new ClickableComponent(_nameTextBox.Bounds, string.Empty)
             {
                 myID = 100,
                 downNeighborID = 101,
-                rightNeighborID = SNAP_AUTOMATIC,
+                rightNeighborID = 108,
                 leftNeighborID = SNAP_AUTOMATIC,
                 fullyImmutable = true
             };
@@ -226,7 +237,7 @@ namespace DeluxeJournal.Menus
             {
                 X = weekdaysDropDown.bounds.X,
                 Y = weekdaysDropDown.bounds.Y,
-                Width = _fixedContentBounds.Width + _fixedContentBounds.X - weekdaysDropDown.bounds.X,
+                Width = _sharedContentBounds.Right - weekdaysDropDown.bounds.X,
                 numbersOnly = true
             };
 
@@ -245,8 +256,13 @@ namespace DeluxeJournal.Menus
 
             foreach (string id in TaskRegistry.Keys)
             {
-                iconBounds.X = _fixedContentBounds.X + LabelWidth + 12 + (offset % 576);
-                iconBounds.Y = _fixedContentBounds.Y + 20 + VerticalSpacing * (2 + (offset / 576));
+                if (id == TaskTypes.Header)
+                {
+                    continue;
+                }
+
+                iconBounds.X = _sharedContentBounds.X + LabelWidth + 12 + (offset % _typeIconsWidth);
+                iconBounds.Y = _sharedContentBounds.Bottom + VerticalSpacing * (offset / _typeIconsWidth);
 
                 typeIcons.Add(new ClickableComponent(iconBounds, id)
                 {
@@ -262,11 +278,12 @@ namespace DeluxeJournal.Menus
                 snapId++;
             }
 
-            _fixedContentBounds.Height = typeIcons.Last().bounds.Y + VerticalSpacing + 4 - _fixedContentBounds.Y;
-            height = _fixedContentBounds.Bottom + BottomGap - xPositionOnScreen;
+            _typeIconsHeight = typeIcons.Last().bounds.Y + VerticalSpacing + 4 - _sharedContentBounds.Bottom;
+            _sharedContentBounds.Height += _typeIconsHeight;
+            height = _sharedContentBounds.Bottom + BottomGap - xPositionOnScreen;
 
-            backButton = new ClickableTextureComponent(
-                new Rectangle(xPositionOnScreen - 64, _fixedContentBounds.Y + 12, 64, 32),
+            backButton = new ButtonComponent(
+                new Rectangle(xPositionOnScreen - 64, _sharedContentBounds.Y + 12, 64, 32),
                 Game1.mouseCursors,
                 new Rectangle(352, 495, 12, 11),
                 4f)
@@ -277,21 +294,22 @@ namespace DeluxeJournal.Menus
                 fullyImmutable = true
             };
 
-            cancelButton = new ClickableTextureComponent(
-                new Rectangle(xPositionOnScreen + width - 12, _fixedContentBounds.Y, 64, 64),
-                DeluxeJournalMod.UiTexture,
+            cancelButton = new ButtonComponent(
+                new Rectangle(xPositionOnScreen + width - 12, _sharedContentBounds.Y, 64, 64),
+                DeluxeJournalMod.UiTexture!,
                 new Rectangle(0, 80, 16, 16),
                 4f)
             {
                 myID = 106,
-                downNeighborID = 107,
+                downNeighborID = 109,
                 leftNeighborID = nameTextBoxCC.myID,
-                fullyImmutable = true
+                fullyImmutable = true,
+                hoverText = translation.Get("ui.tasks.new.cancelbutton.hover")
             };
 
-            okButton = new ClickableTextureComponent(
+            okButton = new ButtonComponent(
                 new Rectangle(xPositionOnScreen + width - 100, yPositionOnScreen + height - 4, 64, 64),
-                DeluxeJournalMod.UiTexture,
+                DeluxeJournalMod.UiTexture!,
                 new Rectangle(32, 80, 16, 16),
                 4f)
             {
@@ -301,22 +319,71 @@ namespace DeluxeJournal.Menus
                 fullyImmutable = true
             };
 
-            Game1.playSound("shwip");
+            headerButton = new ButtonComponent(
+                new Rectangle(_sharedContentBounds.Right - 44, _sharedContentBounds.Y, 44, 48),
+                DeluxeJournalMod.UiTexture!,
+                new Rectangle(16, 52, 11, 12),
+                4f)
+            {
+                myID = 108,
+                downNeighborID = renewPeriodDropDown.myID,
+                rightNeighborID = SNAP_AUTOMATIC,
+                leftNeighborID = nameTextBoxCC.myID,
+                fullyImmutable = true,
+                hoverText = translation.Get("task.header"),
+                SoundCueName = "drumkit6"
+            };
 
-            exitFunction = OnExit;
+            expandColorsButton = new ButtonComponent(
+                new(xPositionOnScreen + width - spaceToClearSideBorder + 8, _sharedContentBounds.Y + VerticalSpacing * 2, 32, 48),
+                DeluxeJournalMod.UiTexture!,
+                new(64, 51, 8, 12),
+                4f,
+                true)
+            {
+                myID = 109,
+                downNeighborID = okButton.myID,
+                upNeighborID = cancelButton.myID,
+                leftNeighborID = SNAP_AUTOMATIC,
+                downNeighborImmutable = true,
+                upNeighborImmutable = true,
+                ShadowIntensity = 0.2f
+            };
+
+            Game1.playSound("shwip");
         }
 
         public void RecalculateBounds()
         {
-            height = _fixedContentBounds.Bottom + BottomGap - yPositionOnScreen;
+            _sharedContentBounds.Height = _typeIconsHeight + VerticalSpacing * 2 + 20;
+
+            if (_colorButtons != null)
+            {
+                _colorButtons.Collapsed = CollapsedColorButtons;
+                _sharedContentBounds.Height += (_colorButtons.bounds.Height + VerticalSpacing - 1) / VerticalSpacing * VerticalSpacing;
+            }
+
+            for (int i = 0; i < typeIcons.Count; i++)
+            {
+                typeIcons[i].bounds.Y = _sharedContentBounds.Bottom - _typeIconsHeight + i * 64 / _typeIconsWidth * VerticalSpacing;
+            }
+
+            height = _sharedContentBounds.Bottom + BottomGap - yPositionOnScreen;
 
             if (_taskFactory != null)
             {
-                foreach (TaskParameter parameter in _taskFactory.GetParameters())
+                for (int i = 0; i < _parameters.Count; i++)
                 {
-                    if (!parameter.Attribute.Hidden && string.IsNullOrEmpty(parameter.Attribute.Parent))
+                    var parameter = _parameters[i];
+
+                    height += VerticalSpacing;
+                    parameter.ClickableComponent.bounds.Y = _sharedContentBounds.Bottom + VerticalSpacing * i;
+                    parameter.RecalculateBounds();
+                    
+                    if (_childParameters.TryGetValue(i, out var child))
                     {
-                        height += VerticalSpacing;
+                        child.ClickableComponent.bounds.Y = parameter.ClickableComponent.bounds.Y;
+                        child.RecalculateBounds();
                     }
                 }
             }
@@ -356,7 +423,7 @@ namespace DeluxeJournal.Menus
 
             if (_task != null)
             {
-                if (DeluxeJournalMod.Instance?.TaskManager is TaskManager taskManager)
+                if (DeluxeJournalMod.TaskManager is TaskManager taskManager)
                 {
                     IList<ITask> tasks = taskManager.Tasks;
                     int index = tasks.IndexOf(_task);
@@ -384,10 +451,29 @@ namespace DeluxeJournal.Menus
             }
         }
 
+        public void ToggleColorButtons()
+        {
+            CollapsedColorButtons = !CollapsedColorButtons;
+            RecalculateBounds();
+        }
+
         public void SelectTask(string id)
         {
-            _selectedTaskID = id;
-            _taskFactory = TaskRegistry.CreateFactoryInstance(id);
+            bool renewable = id != TaskTypes.Header;
+
+            if (_selectedTaskId != id)
+            {
+                int colorIndex = _taskFactory?.ColorIndex ?? 0;
+
+                _selectedTaskId = id;
+                _taskFactory = TaskRegistry.CreateFactoryInstance(id);
+                _taskFactory.ColorIndex = colorIndex;
+            }
+
+            renewPeriodDropDown.Active = renewable;
+            weekdaysDropDown.Active = renewable;
+            seasonsDropDown.Active = renewable;
+            daysDropDown.Active = renewable;
 
             SetupParameters();
         }
@@ -395,9 +481,9 @@ namespace DeluxeJournal.Menus
         private void SetupParameters()
         {
             _parameterIcons.Clear();
-            _parameterTextBoxes.Clear();
-            _parameterDropDowns.Clear();
-            parameterTextBoxCCs.Clear();
+            _parameters.Clear();
+            _childParameters.Clear();
+            _colorButtons = null;
 
             if (_taskFactory != null)
             {
@@ -406,6 +492,11 @@ namespace DeluxeJournal.Menus
                 for (int i = 0, j = 0; i < parameters.Count; i++)
                 {
                     TaskParameter parameter = parameters[i];
+                    Rectangle parameterBounds = new Rectangle(
+                        _sharedContentBounds.X + LabelWidth,
+                        _sharedContentBounds.Bottom + VerticalSpacing * j,
+                        _sharedContentBounds.Width - LabelWidth,
+                        _textBoxTexture.Height);
 
                     if (parameter.Attribute.Hidden)
                     {
@@ -413,32 +504,35 @@ namespace DeluxeJournal.Menus
                     }
                     else if (parameter.Attribute.Parent is string parentName)
                     {
-                        for (int k = 0; k < i; k++)
+                        for (int k = 0; k < _parameters.Count; k++)
                         {
-                            TaskParameter parentParameter = parameters[k];
+                            TaskParameter parentParameter = _parameters[k].Parameter;
 
                             if (parentParameter.Attribute.Name == parentName)
                             {
-                                TaskParameterTextBox parentTextBox = _parameterTextBoxes[k];
-                                ClickableComponent parentTextBoxCC = parameterTextBoxCCs[k];
-                                Rectangle dropDownBounds = new Rectangle(parentTextBox.X + parentTextBox.Width - 120, parentTextBox.Y, 120, 44);
+                                if (_parameters[k] is not TaskParameterTextBox parentTextBox || parameter.Attribute.InputType != TaskParameterInputType.DropDown)
+                                {
+                                    break;
+                                }
 
-                                parentTextBox.Width = _fixedContentBounds.Width - LabelWidth - dropDownBounds.Width + 4;
+                                ClickableComponent parentTextBoxCC = parentTextBox.ClickableComponent;
+                                Rectangle dropDownBounds = new Rectangle(parentTextBox.X + parentTextBox.Width - 120, parentTextBox.Y, 120, 44);
+                                parentTextBox.Width = _sharedContentBounds.Width - LabelWidth - dropDownBounds.Width + 4;
                                 parentTextBoxCC.bounds.Width = parentTextBox.Width;
 
                                 if (parameter.Attribute.Tag == TaskParameterTag.Quality && DeluxeJournalMod.UiTexture is Texture2D uiTexture)
                                 {
                                     KeyValuePair<Texture2D, Rectangle>[] options = new KeyValuePair<Texture2D, Rectangle>[]
                                     {
-                                        new(uiTexture, new Rectangle(96, 80, 8, 8)),
+                                        new(uiTexture, new Rectangle(112, 80, 8, 8)),
                                         new(Game1.mouseCursors, new Rectangle(338, 400, 8, 8)),
                                         new(Game1.mouseCursors, new Rectangle(346, 400, 8, 8)),
                                         new(Game1.mouseCursors, new Rectangle(346, 392, 8, 8))
                                     };
 
-                                    _parameterDropDowns.Add(k, new TaskParameterDropDown(parameter, options, dropDownBounds)
+                                    _childParameters.Add(k, new TaskParameterDropDown(parameter, options, dropDownBounds)
                                     {
-                                        myID = ParameterDropDownId + k,
+                                        myID = ParameterChildId + k,
                                         upNeighborID = parentTextBoxCC.upNeighborID,
                                         downNeighborID = parentTextBoxCC.downNeighborID,
                                         rightNeighborID = parentTextBoxCC.rightNeighborID,
@@ -446,61 +540,91 @@ namespace DeluxeJournal.Menus
                                         fullyImmutable = true
                                     });
 
-                                    parentTextBoxCC.rightNeighborID = ParameterDropDownId + k;
+                                    parentTextBoxCC.rightNeighborID = ParameterChildId + k;
                                 }
                                 break;
                             }
                         }
                         continue;
                     }
-
-                    Rectangle textBoxBounds = new Rectangle(
-                        _fixedContentBounds.X + LabelWidth,
-                        _fixedContentBounds.Bottom + VerticalSpacing * j,
-                        _fixedContentBounds.Width - LabelWidth,
-                        _textBoxTexture.Height);
-                    Rectangle iconBounds = new Rectangle(textBoxBounds.X - 60, textBoxBounds.Y - 4, 56, 56);
-
-                    TaskParameterTextBox textBox = new TaskParameterTextBox(parameter, _taskFactory, _textBoxTexture, null, Game1.smallFont, Game1.textColor, _translation)
+                    else if (parameter.Attribute.InputType == TaskParameterInputType.ColorButtons)
                     {
-                        X = textBoxBounds.X,
-                        Y = textBoxBounds.Y,
-                        Width = textBoxBounds.Width,
-                        Label = _translation.Get("ui.tasks.parameter." + parameter.Attribute.Name).Default(parameter.Attribute.Name),
-                        numbersOnly = parameter.Type == typeof(int)
-                    };
+                        List<ButtonComponent> buttons = new();
+                        parameterBounds.X += 16;
+                        parameterBounds.Y = _sharedContentBounds.Y + VerticalSpacing * 2;
 
-                    _parameterTextBoxes.Add(textBox);
-                    parameterTextBoxCCs.Add(new ClickableComponent(textBoxBounds, "")
-                    {
-                        myID = ParameterTextBoxId + j,
-                        upNeighborID = j == 0 ? CUSTOM_SNAP_BEHAVIOR : ParameterTextBoxId + j - 1,
-                        downNeighborID = ParameterTextBoxId + j + 1,
-                        rightNeighborID = cancelButton.myID,
-                        leftNeighborID = CUSTOM_SNAP_BEHAVIOR,
-                        fullyImmutable = true
-                    });
+                        for (int k = 0; k < DeluxeJournalMod.ColorSchemas.Count; k++)
+                        {
+                            buttons.Add(new ColorButtonComponent(k.ToString(), new(0, 0, 48, 48), k)
+                            {
+                                myID = ColorButtonId + k,
+                                fullyImmutable = true
+                            });
+                        }
 
-                    SmartIconFlags mask = _taskFactory.EnabledSmartIcons & parameter.Attribute.Tag switch
-                    {
-                        TaskParameterTag.ItemList => SmartIconFlags.Item,
-                        TaskParameterTag.Building => SmartIconFlags.Building,
-                        TaskParameterTag.FarmAnimalList => SmartIconFlags.Animal,
-                        TaskParameterTag.NpcName => SmartIconFlags.Npc,
-                        _ => SmartIconFlags.None
-                    };
+                        _colorButtons = new TaskParameterButtons(parameter, buttons, parameterBounds, 16, CollapsedColorButtons)
+                        {
+                            upNeighborID = SNAP_AUTOMATIC,
+                            downNeighborID = CUSTOM_SNAP_BEHAVIOR,
+                            rightNeighborID = cancelButton.myID,
+                            leftNeighborID = backButton.myID,
+                            fullyImmutable = true,
+                            Label = _translation.Get("ui.tasks.parameter.color").Default(parameter.Attribute.Name)
+                        };
 
-                    if (mask != SmartIconFlags.None)
+                        continue;
+                    }
+                    else if (parameter.Attribute.InputType == TaskParameterInputType.TextBox)
                     {
-                        _parameterIcons.Add(j, new SmartIconComponent(iconBounds, textBox.TaskParser, ParameterIconId + j, mask, 1, false));
+                        Rectangle iconBounds = new Rectangle(parameterBounds.X - 60, parameterBounds.Y - 4, 56, 56);
+
+                        ClickableComponent textBoxCC = new(parameterBounds, parameter.Attribute.Name)
+                        {
+                            myID = ParameterId + j,
+                            upNeighborID = j == 0 ? CUSTOM_SNAP_BEHAVIOR : ParameterId + j - 1,
+                            downNeighborID = ParameterId + j + 1,
+                            rightNeighborID = cancelButton.myID,
+                            leftNeighborID = CUSTOM_SNAP_BEHAVIOR,
+                            fullyImmutable = true
+                        };
+
+                        TaskParameterTextBox textBox = new TaskParameterTextBox(parameter, _taskFactory, textBoxCC, _textBoxTexture, null, Game1.smallFont, Game1.textColor, _translation)
+                        {
+                            X = parameterBounds.X,
+                            Y = parameterBounds.Y,
+                            Width = parameterBounds.Width,
+                            Label = _translation.Get("ui.tasks.parameter." + parameter.Attribute.Name).Default(parameter.Attribute.Name),
+                            numbersOnly = parameter.Type == typeof(int)
+                        };
+
+                        SmartIconFlags mask = _taskFactory.EnabledSmartIcons & parameter.Attribute.Tag switch
+                        {
+                            TaskParameterTag.ItemList => SmartIconFlags.Item,
+                            TaskParameterTag.Building => SmartIconFlags.Building,
+                            TaskParameterTag.FarmAnimalList => SmartIconFlags.Animal,
+                            TaskParameterTag.NpcName => SmartIconFlags.Npc,
+                            _ => SmartIconFlags.None
+                        };
+
+                        if (mask != SmartIconFlags.None)
+                        {
+                            _parameterIcons.Add(j, new SmartIconComponent(iconBounds, textBox.Parser, ParameterIconId + j, mask, 1, false));
+                        }
+
+                        _parameters.Add(textBox);
                     }
 
                     j++;
                 }
 
-                if (parameterTextBoxCCs.LastOrDefault() is ClickableComponent parameterTextBoxCC)
+                if (_parameters.LastOrDefault() is ITaskParameterComponent lastParameter)
                 {
-                    parameterTextBoxCC.downNeighborID = okButton.myID;
+                    lastParameter.ClickableComponent.downNeighborID = okButton.myID;
+
+                    if (lastParameter is TaskParameterButtons parameterButtons)
+                    {
+                        parameterButtons.RemapButtonNeighbors();
+                    }
                 }
             }
 
@@ -508,56 +632,42 @@ namespace DeluxeJournal.Menus
             populateClickableComponentList();
         }
 
-        private void OnExit()
-        {
-            Game1.keyboardDispatcher.Subscriber = null;
-
-            if (Game1.options.SnappyMenus)
-            {
-                Game1.activeClickableMenu?.snapToDefaultClickableComponent();
-            }
-        }
-
         protected override void customSnapBehavior(int direction, int oldRegion, int oldID)
         {
             switch (direction)
             {
                 case Game1.up:
-                    if (oldID == okButton.myID && parameterTextBoxCCs.Count > 0)
+                    if (oldID == okButton.myID && _parameters.Count > 0)
                     {
-                        currentlySnappedComponent = parameterTextBoxCCs.Last();
+                        currentlySnappedComponent = _parameters.Last().GetClickableComponents().First();
                     }
                     else
                     {
-                        currentlySnappedComponent = GetSelectedTypeIcon(_selectedTaskID);
+                        currentlySnappedComponent = GetSelectedTypeIcon(_selectedTaskId);
                     }
                     break;
                 case Game1.down:
                     if (oldID >= 0 && oldID < typeIcons.Count)
                     {
-                        currentlySnappedComponent = parameterTextBoxCCs.Count > 0 ? parameterTextBoxCCs.First() : okButton;
+                        currentlySnappedComponent = _parameters.Count > 0 ? _parameters.First().GetClickableComponents().First() : okButton;
                     }
                     else
                     {
-                        currentlySnappedComponent = GetSelectedTypeIcon(_selectedTaskID);
+                        currentlySnappedComponent = GetSelectedTypeIcon(_selectedTaskId);
                     }
                     break;
                 case Game1.left:
-                    if (oldID >= ParameterTextBoxId && oldID < ParameterTextBoxId + _parameterTextBoxes.Count)
+                    if (oldID >= ParameterId && oldID < ParameterId + _parameters.Count
+                        && getComponentWithID(oldID - (ParameterId - ParameterIconId)) is ClickableComponent icon)
                     {
-                        if (getComponentWithID(oldID - (ParameterTextBoxId - ParameterIconId)) is ClickableComponent icon)
-                        {
-                            currentlySnappedComponent = icon;
-                        }
-                        else
-                        {
-                            currentlySnappedComponent = backButton;
-                        }
+                        currentlySnappedComponent = icon;
+                    }
+                    else
+                    {
+                        currentlySnappedComponent = backButton;
                     }
                     break;
             }
-
-            snapCursorToCurrentSnappedComponent();
         }
 
         public ClickableComponent? GetSelectedTypeIcon(string name)
@@ -582,9 +692,9 @@ namespace DeluxeJournal.Menus
                 allClickableComponents.AddRange(icon.GetClickableComponents());
             }
 
-            foreach (var dropDown in _parameterDropDowns.Values)
+            foreach (var parameter in _parameters.Concat(_childParameters.Values))
             {
-                allClickableComponents.Add(dropDown);
+                allClickableComponents.AddRange(parameter.GetClickableComponents());
             }
         }
 
@@ -593,10 +703,10 @@ namespace DeluxeJournal.Menus
             base.snapCursorToCurrentSnappedComponent();
 
             if (currentlySnappedComponent is ClickableComponent cc
-                && cc.myID >= ParameterTextBoxId
-                && cc.myID < ParameterTextBoxId + _parameterTextBoxes.Count)
+                && cc.myID >= ParameterId
+                && cc.myID < ParameterId + _parameters.Count)
             {
-                _parameterTextBoxes[cc.myID - ParameterTextBoxId].FillWithParsedText();
+                (_parameters[cc.myID - ParameterId] as TaskParameterTextBox)?.FillWithParsedText();
             }
         }
 
@@ -641,6 +751,16 @@ namespace DeluxeJournal.Menus
             {
                 ApplyChangesAndExit(playSound);
             }
+            else if (headerButton.containsPoint(x, y))
+            {
+                headerButton.ReceiveLeftClick(x, y, playSound);
+                SelectTask(_selectedTaskId == TaskTypes.Header ? TaskTypes.Basic : TaskTypes.Header);
+            }
+            else if (expandColorsButton.containsPoint(x, y))
+            {
+                expandColorsButton.ReceiveLeftClick(x, y, playSound);
+                ToggleColorButtons();
+            }
             else if (nameTextBoxCC.containsPoint(x, y))
             {
                 _nameTextBox.SelectMe();
@@ -671,33 +791,49 @@ namespace DeluxeJournal.Menus
                 _customRenewTextBox.SelectMe();
                 _customRenewTextBox.ForceUpdate();
             }
+            else if (_colorButtons?.containsPoint(x, y) == true)
+            {
+                _colorButtons.ReceiveLeftClick(x, y);
+            }
             else
             {
                 for (int i = 0; i < typeIcons.Count; i++)
                 {
                     if (typeIcons[i].containsPoint(x, y))
                     {
+                        if (playSound)
+                        {
+                            Game1.playSound("drumkit6");
+                        }
+
                         SelectTask(typeIcons[i].name);
                         return;
                     }
                 }
 
-                for (int i = 0; i < _parameterTextBoxes.Count; i++)
+                for (int i = 0; i < _parameters.Count; i++)
                 {
-                    TaskParameterTextBox textBox = _parameterTextBoxes[i];
+                    ITaskParameterComponent parameter = _parameters[i];
 
-                    if (textBox.ContainsPoint(x, y))
+                    if (parameter.ClickableComponent.containsPoint(x, y))
                     {
-                        textBox.SelectMe();
-                        textBox.ForceUpdate();
-                        return;
+                        parameter.ReceiveLeftClick(x, y);
                     }
-                    else if (_parameterDropDowns.TryGetValue(i, out var dropDown) && dropDown.containsPoint(x, y))
+                    else if (_childParameters.TryGetValue(i, out var child) && child.ClickableComponent.containsPoint(x, y))
                     {
-                        dropDown.ReceiveLeftClick(x, y);
-                        _activeDropDown = dropDown;
-                        return;
+                        child.ReceiveLeftClick(x, y);
+
+                        if (child is TaskParameterDropDown dropDown)
+                        {
+                            _activeDropDown = dropDown;
+                        }
                     }
+                    else
+                    {
+                        continue;
+                    }
+
+                    return;
                 }
             }
         }
@@ -762,7 +898,7 @@ namespace DeluxeJournal.Menus
                 return false;
             }
 
-            TextBox selectTextBox = _nameTextBox;
+            TextBox? selectTextBox = _nameTextBox;
 
             if (_nameTextBox.Selected)
             {
@@ -770,28 +906,28 @@ namespace DeluxeJournal.Menus
                 {
                     selectTextBox = _customRenewTextBox;
                 }
-                else if (_parameterTextBoxes.Count > 0)
+                else if (_parameters.Count > 0)
                 {
-                    selectTextBox = _parameterTextBoxes.First();
+                    selectTextBox = _parameters.FirstOrDefault(parameter => parameter is TextBox) as TextBox;
                 }
             }
             else if (_customRenewTextBox.Selected)
             {
-                selectTextBox = _parameterTextBoxes.Count > 0 ? _parameterTextBoxes.First() : _nameTextBox;
+                selectTextBox = _parameters.FirstOrDefault(parameter => parameter is TextBox) as TextBox;
             }
-            else if (_parameterTextBoxes.Count > 0)
+            else if (_parameters.Count > 0)
             {
-                for (int i = 0; i < _parameterTextBoxes.Count; i++)
+                for (int i = 0; i < _parameters.Count; i++)
                 {
-                    if (_parameterTextBoxes[i].Selected)
+                    if (_parameters[i] is TaskParameterTextBox textBox && textBox.Selected)
                     {
-                        if (completeParameterText && _parameterTextBoxes[i].FillWithParsedText())
+                        if (completeParameterText && textBox.FillWithParsedText())
                         {
                             return false;
                         }
-                        else if (i + 1 < _parameterTextBoxes.Count)
+                        else if (_parameters.Skip(i + 1).FirstOrDefault(parameter => parameter is TextBox) is TextBox nextTextBox)
                         {
-                            selectTextBox = _parameterTextBoxes[i + 1];
+                            selectTextBox = nextTextBox;
                         }
 
                         break;
@@ -799,7 +935,7 @@ namespace DeluxeJournal.Menus
                 }
             }
 
-            if (!selectTextBox.Selected)
+            if (selectTextBox?.Selected == false)
             {
                 selectTextBox.SelectMe();
             }
@@ -818,10 +954,21 @@ namespace DeluxeJournal.Menus
         public override void performHoverAction(int x, int y)
         {
             _hoverText = string.Empty;
+            _hoverId = -1;
+
+            if (_activeDropDown != null)
+            {
+                return;
+            }
 
             if (cancelButton.containsPoint(x, y))
             {
-                _hoverText = _translation.Get("ui.tasks.new.cancelbutton.hover");
+                _hoverText = cancelButton.hoverText;
+            }
+            else if (headerButton.containsPoint(x, y))
+            {
+                _hoverText = headerButton.hoverText;
+                _hoverId = headerButton.myID;
             }
             else
             {
@@ -833,46 +980,70 @@ namespace DeluxeJournal.Menus
                         break;
                     }
                 }
+            }
 
-                if (_taskFactory != null && string.IsNullOrEmpty(_hoverText))
+            if (_taskFactory != null)
+            {
+                bool foundHoverText = !string.IsNullOrEmpty(_hoverText);
+
+                for (int i = 0; i < _parameters.Count; i++)
                 {
-                    for (int i = 0; i < _parameterTextBoxes.Count; i++)
+                    _parameters[i].TryHover(x, y);
+
+                    if (!foundHoverText)
                     {
                         if (_parameterIcons.TryGetValue(i, out var icon) && icon.TryGetHoverText(x, y, _translation, out string hoverText))
                         {
                             _hoverText = hoverText;
-                            break;
                         }
-                        else if (_parameterDropDowns.TryGetValue(i, out var dropDown) && dropDown.containsPoint(x, y))
+                        else if (_childParameters.TryGetValue(i, out var child) && child.ClickableComponent.containsPoint(x, y))
                         {
-                            _hoverText = _translation.Get("ui.tasks.parameter." + dropDown.TaskParameter.Attribute.Name);
-                            break;
+                            _hoverText = _translation.Get("ui.tasks.parameter." + child.Parameter.Attribute.Name);
                         }
+                        else
+                        {
+                            continue;
+                        }
+
+                        foundHoverText = true;
                     }
                 }
             }
 
+            _colorButtons?.TryHover(x, y);
             backButton.tryHover(x, y, 0.2f);
             cancelButton.tryHover(x, y, 0.2f);
             okButton.tryHover(x, y);
+            expandColorsButton.tryHover(x, y, 0.14f);
         }
 
         public override void draw(SpriteBatch b)
         {
             b.Draw(Game1.fadeToBlackRect, Game1.graphics.GraphicsDevice.Viewport.Bounds, Color.Black * 0.75f);
             SpriteText.drawStringWithScrollCenteredAt(b, _translation.Get("ui.tasks.options"), xPositionOnScreen + width / 2, yPositionOnScreen + 16);
-
             Game1.drawDialogueBox(xPositionOnScreen, yPositionOnScreen, width, height, false, true);
-            drawHorizontalPartition(b, yPositionOnScreen + 212);
+            drawHorizontalPartition(b, _sharedContentBounds.Bottom - _typeIconsHeight - 48);
 
-            DrawLabel(b, _translation.Get("ui.tasks.options.type"), _fixedContentBounds.Y + (VerticalSpacing * 2) + 24, Game1.textColor);
+            if (DeluxeJournalMod.ColorSchemas.Count > 9)
+            {
+                DrawRightButtonBox(b, new(expandColorsButton.bounds.X - 8, expandColorsButton.bounds.Y - InnerBorderToEdge - 12, InnerBorderToEdge + 44, VerticalSpacing + InnerBorderToEdge * 2 + 8), Color.White);
+                expandColorsButton.draw(b, Color.White, 0.88f, CollapsedColorButtons ? 0 : 1);
+            }
+
+            DrawLabel(b, _translation.Get("ui.tasks.options.type"), _sharedContentBounds.Bottom - _typeIconsHeight + 4, Game1.textColor);
 
             for (int i = 0; i < typeIcons.Count; i++)
             {
                 TaskRegistry.GetTaskIcon(typeIcons[i].name).DrawIcon(b,
                     typeIcons[i].bounds,
-                    typeIcons[i].name == _selectedTaskID ? Color.White : Color.DimGray,
+                    typeIcons[i].name == _selectedTaskId ? Color.White : Color.DimGray,
                     drawShadow: true);
+            }
+
+            if (_colorButtons is TaskParameterButtons colorButtons)
+            {
+                DrawLabel(b, colorButtons.Label, colorButtons.bounds.Y, Game1.textColor);
+                colorButtons.Draw(b);
             }
 
             backButton.draw(b);
@@ -881,19 +1052,18 @@ namespace DeluxeJournal.Menus
 
             if (_taskFactory != null)
             {
-                for (int i = _parameterTextBoxes.Count - 1; i >= 0; i--)
+                for (int i = _parameters.Count - 1; i >= 0; i--)
                 {
-                    TaskParameterTextBox parameterTextBox = _parameterTextBoxes[i];
-                    TaskParameter parameter = parameterTextBox.TaskParameter;
+                    ITaskParameterComponent parameter = _parameters[i];
                     int quality = 0;
 
-                    DrawLabel(b, parameterTextBox.Label, parameterTextBox.Y, parameter.IsValid() ? Game1.textColor : Color.DarkRed);
+                    DrawLabel(b, parameter.Label, parameter.ClickableComponent.bounds.Y, parameter.Parameter.IsValid() ? Game1.textColor : Color.DarkRed);
 
-                    if (_parameterDropDowns.TryGetValue(i, out var dropDown))
+                    if (_childParameters.TryGetValue(i, out var child))
                     {
-                        dropDown.Draw(b);
+                        child.Draw(b);
 
-                        if (dropDown.TaskParameter.Value is int value)
+                        if (child.Parameter.Attribute.Tag == TaskParameterTag.Quality && child.Parameter.Value is int value)
                         {
                             quality = value;
                         }
@@ -901,17 +1071,23 @@ namespace DeluxeJournal.Menus
 
                     if (_parameterIcons.TryGetValue(i, out var icon))
                     {
-                        icon.Draw(b, parameter.IsValid() ? Color.White : Color.Gray * 0.8f, quality, false, true);
+                        icon.Draw(b, parameter.Parameter.IsValid() ? Color.White : Color.Gray * 0.8f, quality, false, true);
                     }
 
-                    parameterTextBox.Draw(b);
+                    parameter.Draw(b);
                 }
             }
 
-            DrawLabel(b, _translation.Get("ui.tasks.options.name"), _nameTextBox.Y, _nameTextBox.Text.Trim().Length > 0 ? Game1.textColor : Color.DarkRed);
-            _nameTextBox.Draw(b);
-
             Period renewPeriod = (Period)renewPeriodDropDown.SelectedOption;
+            bool isHeader = _selectedTaskId == TaskTypes.Header;
+
+            DrawLabel(b,
+                isHeader ? headerButton.hoverText : _translation.Get("ui.tasks.options.name"),
+                _nameTextBox.Y,
+                _nameTextBox.Text.TrimEnd().Length > 0 ? Game1.textColor : Color.DarkRed);
+            _nameTextBox.Draw(b);
+            headerButton.draw(b, Color.White, 0.88f, (isHeader || _hoverId == headerButton.myID) ? 1 : 0);
+
             weekdaysDropDown.visible = renewPeriod == Period.Weekly;
             seasonsDropDown.visible = renewPeriod == Period.Annually;
             daysDropDown.visible = renewPeriod == Period.Monthly || renewPeriod == Period.Annually;
@@ -951,7 +1127,23 @@ namespace DeluxeJournal.Menus
 
         private void DrawLabel(SpriteBatch b, string name, int yPos, Color color)
         {
-            Utility.drawTextWithShadow(b, name, Game1.dialogueFont, new Vector2(_fixedContentBounds.X, yPos), color);
+            Utility.drawTextWithShadow(b, name, Game1.dialogueFont, new Vector2(_sharedContentBounds.X, yPos), color);
+        }
+
+        private static void DrawRightButtonBox(SpriteBatch b, Rectangle boxBounds, Color color)
+        {
+            Rectangle fillBounds = new(boxBounds.X, boxBounds.Y + InnerBorderToEdge, boxBounds.Width - InnerBorderToEdge, boxBounds.Height - InnerBorderToEdge * 2);
+
+            b.Draw(Game1.menuTexture, fillBounds, new(64, 160, 32, 32), color);
+            b.Draw(Game1.menuTexture, new Rectangle(boxBounds.Right - 64, boxBounds.Y, 64, 64), new(192, 0, 64, 64), color);
+            b.Draw(Game1.menuTexture, new Rectangle(boxBounds.Right - 64, boxBounds.Bottom - 72, 64, 8), new(192, 128, 64, 8), color);
+            b.Draw(Game1.menuTexture, new Rectangle(boxBounds.Right - 64, boxBounds.Bottom - 64, 64, 64), new(192, 192, 64, 64), color);
+            b.Draw(Game1.menuTexture, new Rectangle(boxBounds.X, boxBounds.Y, boxBounds.Width - 64, 64), new(128, 0, 12, 64), color);
+            b.Draw(Game1.menuTexture, new Rectangle(boxBounds.X, boxBounds.Bottom - 64, boxBounds.Width - 64, 64), new(128, 192, 12, 64), color);
+            b.Draw(Game1.menuTexture, new Rectangle(boxBounds.X - InnerBorderToEdge, boxBounds.Y + 12, 32, 24), new(0, 84, 32, 24), color);
+            b.Draw(Game1.menuTexture, new Rectangle(fillBounds.X, boxBounds.Y + 20, 12, 12), new(32, 92, 12, 12), color);
+            b.Draw(Game1.menuTexture, new Rectangle(boxBounds.X - InnerBorderToEdge, boxBounds.Bottom - 36, 32, 24), new(0, 84, 32, 24), color);
+            b.Draw(Game1.menuTexture, new Rectangle(fillBounds.X, boxBounds.Bottom - 32, 12, 12), new(32, 88, 12, 12), color);
         }
 
         private void ApplyChangesAndExit(bool playSound = true)
@@ -976,6 +1168,16 @@ namespace DeluxeJournal.Menus
             for (IClickableMenu parent = GetParentMenu(); parent != null; parent = parent.GetParentMenu())
             {
                 parent.GetChildMenu().exitThisMenuNoSound();
+            }
+        }
+
+        private void OnExit()
+        {
+            Game1.keyboardDispatcher.Subscriber = null;
+
+            if (Game1.options.SnappyMenus)
+            {
+                Game1.activeClickableMenu?.snapToDefaultClickableComponent();
             }
         }
     }

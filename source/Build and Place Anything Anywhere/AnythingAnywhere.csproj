@@ -2,11 +2,11 @@
 
   <!-- Project properties -->
   <PropertyGroup>
-    <EnableHarmony>true</EnableHarmony>
-    <CommonPatches>true</CommonPatches>
+    <Common>ALL</Common>
   </PropertyGroup>
   
   <!-- Import Common targets -->
-  <Import Project="Framework\Common\common.targets" />
+  <Import Project="$(MOD_UTILITIES)\Common\common.targets" Condition="'$(GITHUB_ACTIONS)' != 'true'" />
+  <Import Project="$(MSBuildThisFileDirectory)Common/common.targets" Condition="'$(GITHUB_ACTIONS)' == 'true'" />
   
 </Project>

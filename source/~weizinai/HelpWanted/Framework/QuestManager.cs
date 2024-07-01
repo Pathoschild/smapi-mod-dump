@@ -8,10 +8,8 @@
 **
 *************************************************/
 
-using Common;
+using weizinai.StardewValleyMod.Common.Log;
 using HarmonyLib;
-using HelpWanted.Framework.Data;
-using HelpWanted.Patches;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -19,8 +17,10 @@ using StardewValley;
 using StardewValley.Extensions;
 using StardewValley.Locations;
 using StardewValley.Quests;
+using weizinai.StardewValleyMod.HelpWanted.Framework.Data;
+using weizinai.StardewValleyMod.HelpWanted.Patcher;
 
-namespace HelpWanted.Framework;
+namespace weizinai.StardewValleyMod.HelpWanted.Framework;
 
 internal class QuestManager
 {
@@ -41,9 +41,9 @@ internal class QuestManager
         // 初始化
         this.helper = helper;
         this.config = config;
-        appearanceManager = new AppearanceManager(helper, config);
+        this.appearanceManager = new AppearanceManager(helper, config);
         // 注册事件
-        helper.Events.Content.AssetRequested += OnAssetRequested;
+        helper.Events.Content.AssetRequested += this.OnAssetRequested;
     }
 
     private void OnAssetRequested(object? sender, AssetRequestedEventArgs e)
@@ -54,23 +54,23 @@ internal class QuestManager
 
     public void InitVanillaQuestList()
     {
-        if (!CheckDayAvailable()) return;
+        if (!this.CheckDayAvailable()) return;
 
         Log.Info("Begin generating today's daily quests.");
         ItemDeliveryQuestPatcher.Init();
         VanillaQuestList.Clear();
-        var quest = GetVanillaQuest();
+        var quest = this.GetVanillaQuest();
         var tries = 0;
         var npcNames = new HashSet<string>();
-        for (var i = 0; i < config.MaxQuests; i++)
+        for (var i = 0; i < this.config.MaxQuests; i++)
         {
             if (quest is null) break;
-            var npc = GetNpcFromQuest(quest);
+            var npc = this.GetNpcFromQuest(quest);
             if (npc is not null)
             {
                 Log.Trace($"第{i + 1}个任务: {quest.questTitle} - {npc.Name}");
 
-                if (!CheckNPCAvailable(npcNames, npc))
+                if (!this.CheckNPCAvailable(npcNames, npc))
                 {
                     tries++;
                     if (tries > 100)
@@ -78,17 +78,17 @@ internal class QuestManager
                     else
                         i--;
 
-                    quest = GetVanillaQuest();
+                    quest = this.GetVanillaQuest();
                     continue;
                 }
 
                 tries = 0;
                 npcNames.Add(npc.Name);
-                VanillaQuestList.Add(GetQuestData(npc, quest));
+                VanillaQuestList.Add(this.GetQuestData(npc, quest));
                 Log.Trace("成功添加一个任务到原版任务列表");
             }
 
-            quest = GetVanillaQuest();
+            quest = this.GetVanillaQuest();
         }
 
         Log.Info("End generating today's daily quests.");
@@ -98,24 +98,24 @@ internal class QuestManager
     {
         Log.Info("Begin generating today's daily quests of RSV.");
         RSVQuestList.Clear();
-        var quest = GetRSVQuest();
-        for (var i = 0; i < config.MaxRSVQuests; i++)
+        var quest = this.GetRSVQuest();
+        for (var i = 0; i < this.config.MaxRSVQuests; i++)
         {
             if (quest is null)
             {
-                quest = GetRSVQuest();
+                quest = this.GetRSVQuest();
                 continue;
             }
 
-            var npc = GetNpcFromQuest(quest);
+            var npc = this.GetNpcFromQuest(quest);
             if (npc is not null)
             {
                 Log.Trace($"第{i + 1}个任务: {quest.questTitle} - {npc.Name}");
-                RSVQuestList.Add(GetQuestData(npc, quest));
+                RSVQuestList.Add(this.GetQuestData(npc, quest));
                 Log.Trace("成功添加一个任务到RSV任务列表");
             }
 
-            quest = GetRSVQuest();
+            quest = this.GetRSVQuest();
         }
 
         Log.Info("End generating today's daily quests of RSV.");
@@ -123,8 +123,8 @@ internal class QuestManager
 
     private void InitCustomQuestData()
     {
-        rawCustomQuestData = helper.GameContent.Load<Dictionary<string, QuestJsonData>>(CustomQuestDataPath);
-        foreach (var (id, questData) in rawCustomQuestData)
+        this.rawCustomQuestData = this.helper.GameContent.Load<Dictionary<string, QuestJsonData>>(CustomQuestDataPath);
+        foreach (var (id, questData) in this.rawCustomQuestData)
         {
             if (!GameStateQuery.CheckConditions(questData.Condition)) continue;
             
@@ -159,19 +159,19 @@ internal class QuestManager
 
     private bool CheckDayAvailable()
     {
-        if (Game1.stats.DaysPlayed <= 1 && !config.QuestFirstDay)
+        if (Game1.stats.DaysPlayed <= 1 && !this.config.QuestFirstDay)
         {
             Log.Info("Today is the first day of the game, no daily quests are generated.");
             return false;
         }
 
-        if ((Utility.isFestivalDay() || Utility.isFestivalDay(Game1.dayOfMonth + 1, Game1.season)) && !config.QuestFestival)
+        if ((Utility.isFestivalDay() || Utility.isFestivalDay(Game1.dayOfMonth + 1, Game1.season)) && !this.config.QuestFestival)
         {
             Log.Info("Today or tomorrow is the festival day, no daily quests are generated.");
             return false;
         }
 
-        if (Game1.random.NextDouble() >= config.DailyQuestChance)
+        if (Game1.random.NextDouble() >= this.config.DailyQuestChance)
         {
             Log.Trace("No daily quests are generated.");
             return false;
@@ -182,9 +182,9 @@ internal class QuestManager
 
     private bool CheckNPCAvailable(HashSet<string> npcNames, NPC npc)
     {
-        var oneQuestPerVillager = config.OneQuestPerVillager && npcNames.Contains(npc.Name);
-        var excludeMaxHeartsNPC = config.ExcludeMaxHeartsNPC && Game1.player.tryGetFriendshipLevelForNPC(npc.Name) >= Utility.GetMaximumHeartsForCharacter(npc) * 250;
-        var excludeNPCList = config.ExcludeNPCList.Contains(npc.Name);
+        var oneQuestPerVillager = this.config.OneQuestPerVillager && npcNames.Contains(npc.Name);
+        var excludeMaxHeartsNPC = this.config.ExcludeMaxHeartsNPC && Game1.player.tryGetFriendshipLevelForNPC(npc.Name) >= Utility.GetMaximumHeartsForCharacter(npc) * 250;
+        var excludeNPCList = this.config.ExcludeNPCList.Contains(npc.Name);
 
         var available = !oneQuestPerVillager && !excludeMaxHeartsNPC && !excludeNPCList;
 
@@ -200,18 +200,18 @@ internal class QuestManager
 
     private QuestData GetQuestData(NPC npc, Quest quest)
     {
-        var questType = GetQuestType(quest);
-        var padTexture = appearanceManager.GetPadTexture(npc.Name, questType.ToString());
+        var questType = this.GetQuestType(quest);
+        var padTexture = this.appearanceManager.GetPadTexture(npc.Name, questType.ToString());
         var padTextureSource = new Rectangle(0, 0, 64, 64);
-        var padColor = appearanceManager.GetRandomColor();
-        var pinTexture = appearanceManager.GetPinTexture(npc.Name, questType.ToString());
+        var padColor = this.appearanceManager.GetRandomColor();
+        var pinTexture = this.appearanceManager.GetPinTexture(npc.Name, questType.ToString());
         var pinTextureSource = new Rectangle(0, 0, 64, 64);
-        var pinColor = appearanceManager.GetRandomColor();
+        var pinColor = this.appearanceManager.GetRandomColor();
         var icon = npc.Portrait;
-        var iconColor = new Color(config.PortraitTintR, config.PortraitTintB, config.PortraitTintB, config.PortraitTintA);
+        var iconColor = new Color(this.config.PortraitTintR, this.config.PortraitTintB, this.config.PortraitTintB, this.config.PortraitTintA);
         var iconSource = new Rectangle(0, 0, 64, 64);
-        var iconScale = config.PortraitScale;
-        var iconOffset = new Point(config.PortraitOffsetX, config.PortraitOffsetY);
+        var iconScale = this.config.PortraitScale;
+        var iconOffset = new Point(this.config.PortraitOffsetX, this.config.PortraitOffsetY);
         return new QuestData(padTexture, padTextureSource, padColor, pinTexture, pinTextureSource, pinColor,
             icon, iconSource, iconColor, iconScale, iconOffset, quest);
     }
@@ -224,16 +224,16 @@ internal class QuestManager
         var slayMonsterQuest = MineShaft.lowestLevelReached > 0 && Game1.stats.DaysPlayed > 5U;
         var questTypes = new List<(float weight, Func<Quest> createQuest)>
         {
-            (config.ResourceCollectionWeight, () => new ResourceCollectionQuest()),
-            (slayMonsterQuest ? config.SlayMonstersWeight : 0, () => new SlayMonsterQuest()),
-            (config.FishingWeight, () => new FishingQuest()),
-            (config.ItemDeliveryWeight, () => new ItemDeliveryQuest())
+            (this.config.ResourceCollectionWeight, () => new ResourceCollectionQuest()),
+            (slayMonsterQuest ? this.config.SlayMonstersWeight : 0, () => new SlayMonsterQuest()),
+            (this.config.FishingWeight, () => new FishingQuest()),
+            (this.config.ItemDeliveryWeight, () => new ItemDeliveryQuest())
         };
         var currentWeight = 0f;
-        var totalWeight = config.ResourceCollectionWeight + (slayMonsterQuest ? config.SlayMonstersWeight : 0) + config.FishingWeight + config.ItemDeliveryWeight;
+        var totalWeight = this.config.ResourceCollectionWeight + (slayMonsterQuest ? this.config.SlayMonstersWeight : 0) + this.config.FishingWeight + this.config.ItemDeliveryWeight;
         foreach (var (weight, createQuest) in questTypes)
         {
-            Log.Trace($"{GetQuestType(createQuest())}的权重为{weight}");
+            Log.Trace($"{this.GetQuestType(createQuest())}的权重为{weight}");
             currentWeight += weight;
             if (randomDouble < currentWeight / totalWeight)
             {
@@ -249,14 +249,14 @@ internal class QuestManager
             return null;
         }
 
-        quest.daysLeft.Value = config.QuestDays;
+        quest.daysLeft.Value = this.config.QuestDays;
         quest.dailyQuest.Value = true;
         quest.accepted.Value = true;
         quest.canBeCancelled.Value = true;
         AccessTools.FieldRefAccess<Quest, Random>(quest, "random") = Game1.random;
         quest.reloadDescription();
         quest.reloadObjective();
-        Log.Trace($"成功获取一个原版{GetQuestType(quest)}任务");
+        Log.Trace($"成功获取一个原版{this.GetQuestType(quest)}任务");
         return quest;
     }
 

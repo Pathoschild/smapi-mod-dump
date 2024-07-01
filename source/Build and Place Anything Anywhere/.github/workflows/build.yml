@@ -23,13 +23,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     
-    # Step 1: Checkout the repository and its submodules
-    - name: Checkout Submodule
+    # Step 1: Checkout the repository
+    - name: Checkout Repository
       uses: actions/checkout@v4.1.5
-      with: 
-        submodules: true
 
-    # Step 2: Set environment variables
+    # Step 2: Checkout Common
+    - name: Checkout or Restore Common Project
+      run: git clone https://github.com/Smoked-Fish/Common.git Common
+
+    # Step 3: Set environment variables
     - name: Set Environment Variables
       run: |
         # Extract variables from manifest.json
@@ -39,11 +41,11 @@ jobs:
         # Fetch the latest tag from the reference assemblies repository
         echo "REFASM_TAG=$(curl -s 'https://api.github.com/repos/Smoked-Fish/mod-reference-assemblies/tags' | jq -r '.[0].name')" >> $GITHUB_ENV
         
-        # Set up GamePath
+        # Set up Targets
         echo "GamePath=$GITHUB_WORKSPACE/GamePath" >> "$GITHUB_ENV"
-        echo "<Project><PropertyGroup><GamePath>$GITHUB_WORKSPACE/GamePath</GamePath></PropertyGroup></Project>" > "$HOME/stardewvalley.targets"
-        
-    # Step 3: Cache NuGet packages
+        echo "<Project><PropertyGroup><GamePath>$GITHUB_WORKSPACE/GamePath</GamePath></PropertyGroup></Project>" > "$HOME/stardewvalley.targets"        
+      
+    # Step 4: Cache NuGet packages
     - name: Cache NuGet
       id: cache-nuget
       uses: actions/cache@v4.0.2
@@ -53,7 +55,7 @@ jobs:
           ${{ github.workspace }}/obj
         key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
 
-    # Step 4: Cache reference assemblies
+    # Step 5: Cache reference assemblies
     - name: Restore Reference Assemblies
       id: cache-refasm
       uses: actions/cache@v4.0.2
@@ -61,13 +63,13 @@ jobs:
         path: GamePath
         key: ${{ runner.os }}-mod-reference-${{ env.REFASM_TAG }}
 
-    # Step 5: Set up .NET
+    # Step 6: Set up .NET
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 6.0.x
 
-    # Step 6: Check out the reference assemblies if not cached
+    # Step 7: Check out the reference assemblies if not cached
     - name: Setup game and SMAPI
       if: steps.cache-refasm.outputs.cache-hit != 'true'
       uses: actions/checkout@v4
@@ -77,22 +79,22 @@ jobs:
         ref: refs/tags/${{ env.REFASM_TAG }}
         path: GamePath
         
-    # Step 7: Restore NuGet dependencies if not cached
+    # Step 8: Restore NuGet dependencies if not cached
     - name: Restore dependencies
       if: steps.cache-nuget.outputs.cache-hit != 'true'
       run: dotnet restore
 
-    # Step 8: Build the project
+    # Step 9: Build the project
     - name: Build
       run: dotnet build --no-restore --configuration Release
 
-    # Step 9: Unzip the mod for artifact upload
+    # Step 10: Unzip the mod for artifact upload
     - name: Unzip mod
       run: |
         MOD_ZIP_PATH="${{ github.workspace }}/bin/Release/${{ env.MOD_NAME }} ${{ env.MOD_VERSION }}.zip"
         unzip "$MOD_ZIP_PATH" -d Mod
 
-    # Step 10: Upload the mod as an artifact
+    # Step 11: Upload the mod as an artifact
     - name: Upload Artifact
       uses: actions/upload-artifact@v4.3.3
       with:

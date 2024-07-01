@@ -1,0 +1,897 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DaLion.Enchantments</name>
+    </assembly>
+    <members>
+        <member name="T:DaLion.Enchantments.Commands.AddEnchantmentsCommand">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Enchantments.Commands.AddEnchantmentsCommand"/> class.</summary>
+            <param name="handler">The <see cref="T:DaLion.Shared.Commands.CommandHandler"/> instance that handles this command.</param>
+        </member>
+        <member name="M:DaLion.Enchantments.Commands.AddEnchantmentsCommand.#ctor(DaLion.Shared.Commands.CommandHandler)">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Enchantments.Commands.AddEnchantmentsCommand"/> class.</summary>
+            <param name="handler">The <see cref="T:DaLion.Shared.Commands.CommandHandler"/> instance that handles this command.</param>
+        </member>
+        <member name="P:DaLion.Enchantments.Commands.AddEnchantmentsCommand.Triggers">
+            <inheritdoc />
+        </member>
+        <member name="P:DaLion.Enchantments.Commands.AddEnchantmentsCommand.Documentation">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Enchantments.Commands.AddEnchantmentsCommand.CallbackImpl(System.String,System.String[])">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Enchantments.Commands.AddEnchantmentsCommand.GetUsage">
+            <inheritdoc />
+        </member>
+        <member name="T:DaLion.Enchantments.Commands.FullyEnergizedCommand">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Enchantments.Commands.FullyEnergizedCommand"/> class.</summary>
+            <param name="handler">The <see cref="T:DaLion.Shared.Commands.CommandHandler"/> instance that handles this command.</param>
+        </member>
+        <member name="M:DaLion.Enchantments.Commands.FullyEnergizedCommand.#ctor(DaLion.Shared.Commands.CommandHandler)">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Enchantments.Commands.FullyEnergizedCommand"/> class.</summary>
+            <param name="handler">The <see cref="T:DaLion.Shared.Commands.CommandHandler"/> instance that handles this command.</param>
+        </member>
+        <member name="P:DaLion.Enchantments.Commands.FullyEnergizedCommand.Triggers">
+            <inheritdoc />
+        </member>
+        <member name="P:DaLion.Enchantments.Commands.FullyEnergizedCommand.Documentation">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Enchantments.Commands.FullyEnergizedCommand.CallbackImpl(System.String,System.String[])">
+            <inheritdoc />
+        </member>
+        <member name="T:DaLion.Enchantments.Commands.OverHealCommand">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Enchantments.Commands.OverHealCommand"/> class.</summary>
+            <param name="handler">The <see cref="T:DaLion.Shared.Commands.CommandHandler"/> instance that handles this command.</param>
+        </member>
+        <member name="M:DaLion.Enchantments.Commands.OverHealCommand.#ctor(DaLion.Shared.Commands.CommandHandler)">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Enchantments.Commands.OverHealCommand"/> class.</summary>
+            <param name="handler">The <see cref="T:DaLion.Shared.Commands.CommandHandler"/> instance that handles this command.</param>
+        </member>
+        <member name="P:DaLion.Enchantments.Commands.OverHealCommand.Triggers">
+            <inheritdoc />
+        </member>
+        <member name="P:DaLion.Enchantments.Commands.OverHealCommand.Documentation">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Enchantments.Commands.OverHealCommand.CallbackImpl(System.String,System.String[])">
+            <inheritdoc />
+        </member>
+        <member name="T:DaLion.Enchantments.Commands.RemoveEnchantmentsCommand">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Enchantments.Commands.RemoveEnchantmentsCommand"/> class.</summary>
+            <param name="handler">The <see cref="T:DaLion.Shared.Commands.CommandHandler"/> instance that handles this command.</param>
+        </member>
+        <member name="M:DaLion.Enchantments.Commands.RemoveEnchantmentsCommand.#ctor(DaLion.Shared.Commands.CommandHandler)">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Enchantments.Commands.RemoveEnchantmentsCommand"/> class.</summary>
+            <param name="handler">The <see cref="T:DaLion.Shared.Commands.CommandHandler"/> instance that handles this command.</param>
+        </member>
+        <member name="P:DaLion.Enchantments.Commands.RemoveEnchantmentsCommand.Triggers">
+            <inheritdoc />
+        </member>
+        <member name="P:DaLion.Enchantments.Commands.RemoveEnchantmentsCommand.Documentation">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Enchantments.Commands.RemoveEnchantmentsCommand.CallbackImpl(System.String,System.String[])">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Enchantments.Commands.RemoveEnchantmentsCommand.GetUsage">
+            <inheritdoc />
+        </member>
+        <member name="T:DaLion.Enchantments.Commands.WabbajackCommand">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Enchantments.Commands.WabbajackCommand"/> class.</summary>
+            <param name="handler">The <see cref="T:DaLion.Shared.Commands.CommandHandler"/> instance that handles this command.</param>
+        </member>
+        <member name="M:DaLion.Enchantments.Commands.WabbajackCommand.#ctor(DaLion.Shared.Commands.CommandHandler)">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Enchantments.Commands.WabbajackCommand"/> class.</summary>
+            <param name="handler">The <see cref="T:DaLion.Shared.Commands.CommandHandler"/> instance that handles this command.</param>
+        </member>
+        <member name="P:DaLion.Enchantments.Commands.WabbajackCommand.Triggers">
+            <inheritdoc />
+        </member>
+        <member name="P:DaLion.Enchantments.Commands.WabbajackCommand.Documentation">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Enchantments.Commands.WabbajackCommand.CallbackImpl(System.String,System.String[])">
+            <inheritdoc />
+        </member>
+        <member name="T:DaLion.Enchantments.EnchantmentsApi">
+            <summary>The <see cref="T:DaLion.Enchantments.EnchantmentsMod"/> API implementation.</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.EnchantmentsApi.CreateQuincyProjectile(StardewValley.Farmer,Microsoft.Xna.Framework.Vector2,System.Single,System.Single,System.Single,System.Single)">
+            <inheritdoc />
+        </member>
+        <member name="T:DaLion.Enchantments.EnchantmentsConfig">
+            <summary>Config schema for the Ponds mod.</summary>
+        </member>
+        <member name="T:DaLion.Enchantments.EnchantmentsConfig.SocketStyle">
+            <summary>The style used to draw forged gemstones.</summary>
+        </member>
+        <member name="F:DaLion.Enchantments.EnchantmentsConfig.SocketStyle.None">
+            <summary>None. Keep vanilla style.</summary>
+        </member>
+        <member name="F:DaLion.Enchantments.EnchantmentsConfig.SocketStyle.Diamond">
+            <summary>A diamond-shaped icon.</summary>
+        </member>
+        <member name="F:DaLion.Enchantments.EnchantmentsConfig.SocketStyle.Round">
+            <summary>A more rounded icon.</summary>
+        </member>
+        <member name="F:DaLion.Enchantments.EnchantmentsConfig.SocketStyle.Iridium">
+            <summary>Shaped like an iridium ore.</summary>
+        </member>
+        <member name="T:DaLion.Enchantments.EnchantmentsConfig.SocketPosition">
+            <summary>The position of the forged gemstones.</summary>
+        </member>
+        <member name="F:DaLion.Enchantments.EnchantmentsConfig.SocketPosition.Standard">
+            <summary>The normal position, immediately above the item's description.</summary>
+        </member>
+        <member name="F:DaLion.Enchantments.EnchantmentsConfig.SocketPosition.AboveSeparator">
+            <summary>Above the horizontal separator, immediately below the item's name and level.</summary>
+        </member>
+        <member name="P:DaLion.Enchantments.EnchantmentsConfig.GemstoneSocketStyle">
+            <summary>Gets the style of the sprite used to represent gemstone sockets in tooltips.</summary>
+        </member>
+        <member name="P:DaLion.Enchantments.EnchantmentsConfig.GemstoneSocketPosition">
+            <summary>Gets the relative position where forge gemstone sockets should be drawn.</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.EnchantmentsConfigMenu.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Enchantments.EnchantmentsConfigMenu"/> class.</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.EnchantmentsConfigMenu.BuildMenu">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Enchantments.EnchantmentsConfigMenu.ResetConfig">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Enchantments.EnchantmentsConfigMenu.SaveAndApply">
+            <inheritdoc />
+        </member>
+        <member name="T:DaLion.Enchantments.EnchantmentsMod">
+            <summary>The mod entry point.</summary>
+        </member>
+        <member name="P:DaLion.Enchantments.EnchantmentsMod.Instance">
+            <summary>Gets the static <see cref="T:DaLion.Enchantments.EnchantmentsMod"/> instance.</summary>
+        </member>
+        <member name="P:DaLion.Enchantments.EnchantmentsMod.Config">
+            <summary>Gets or sets the <see cref="T:DaLion.Enchantments.EnchantmentsConfig"/> instance.</summary>
+        </member>
+        <member name="P:DaLion.Enchantments.EnchantmentsMod.Data">
+            <summary>Gets the <see cref="T:DaLion.Shared.Data.ModDataManager"/> instance.</summary>
+        </member>
+        <member name="P:DaLion.Enchantments.EnchantmentsMod.EventManager">
+            <summary>Gets the <see cref="T:DaLion.Shared.Events.EventManager"/> instance.</summary>
+        </member>
+        <member name="P:DaLion.Enchantments.EnchantmentsMod.Broadcaster">
+            <summary>Gets the <see cref="P:DaLion.Enchantments.EnchantmentsMod.Broadcaster"/> instance.</summary>
+        </member>
+        <member name="P:DaLion.Enchantments.EnchantmentsMod.Log">
+            <summary>Gets the <see cref="T:DaLion.Shared.Logger"/> instance.</summary>
+        </member>
+        <member name="P:DaLion.Enchantments.EnchantmentsMod.ModHelper">
+            <summary>Gets the <see cref="T:StardewModdingAPI.IModHelper"/> API.</summary>
+        </member>
+        <member name="P:DaLion.Enchantments.EnchantmentsMod.Manifest">
+            <summary>Gets the <see cref="T:StardewModdingAPI.IManifest"/> API.</summary>
+        </member>
+        <member name="P:DaLion.Enchantments.EnchantmentsMod.UniqueId">
+            <summary>Gets the unique ID for this mod.</summary>
+        </member>
+        <member name="P:DaLion.Enchantments.EnchantmentsMod._I18n">
+            <summary>Gets the <see cref="T:StardewModdingAPI.ITranslationHelper"/> API.</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.EnchantmentsMod.Entry(StardewModdingAPI.IModHelper)">
+            <summary>The mod entry point, called after the mod is first loaded.</summary>
+            <param name="helper">Provides simplified APIs for writing mods.</param>
+        </member>
+        <member name="M:DaLion.Enchantments.EnchantmentsMod.GetApi">
+            <inheritdoc />
+        </member>
+        <member name="T:DaLion.Enchantments.Framework.Animations.ShieldAnimation">
+            <summary>The animated shield that accompanies the <see cref="T:StardewValley.Enchantments.VampiricEnchantment"/>.</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Animations.ShieldAnimation.#ctor(StardewValley.Farmer)">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Enchantments.Framework.Animations.ShieldAnimation"/> class.</summary>
+            <param name="who">The <see cref="T:StardewValley.Farmer"/> instance with the shield.</param>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Animations.ShieldAnimation.update(Microsoft.Xna.Framework.GameTime)">
+            <inheritdoc />
+        </member>
+        <member name="T:DaLion.Enchantments.Framework.Enchantments.CarvingEnchantment">
+            <summary>
+                Attacks on-hit reduce enemy defense by 1 point (continuing below zero). Armored enemies (i.e., Armored Bugs and shelled Rock Crabs)
+                lose their armor when their defense is reduced to zero.
+            </summary>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Enchantments.CarvingEnchantment.GetName">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Enchantments.CarvingEnchantment._OnDealDamage(StardewValley.Monsters.Monster,StardewValley.GameLocation,StardewValley.Farmer,System.Int32@)">
+            <inheritdoc />
+        </member>
+        <member name="T:DaLion.Enchantments.Framework.Enchantments.ChillingEnchantment">
+            <summary>Progressively chill enemies on hit for 2 seconds, freezing after stacking 3 times.</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Enchantments.ChillingEnchantment.GetName">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Enchantments.ChillingEnchantment._OnDealDamage(StardewValley.Monsters.Monster,StardewValley.GameLocation,StardewValley.Farmer,System.Int32@)">
+            <inheritdoc />
+        </member>
+        <member name="T:DaLion.Enchantments.Framework.Enchantments.CleavingEnchantment">
+            <summary>Attacks on-hit spread 60% - 20% (based on distance) of the damage to other enemies within 3 tiles.</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Enchantments.CleavingEnchantment.GetName">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Enchantments.CleavingEnchantment._OnDealDamage(StardewValley.Monsters.Monster,StardewValley.GameLocation,StardewValley.Farmer,System.Int32@)">
+            <inheritdoc />
+        </member>
+        <member name="T:DaLion.Enchantments.Framework.Enchantments.EnergizedMeleeEnchantment">
+            <summary>
+                Moving and attacking generates energy, up to 100 stacks. At maximum stacks, the next attack causes a powerful electric discharge which
+                deals heavy damage in a large area.
+            </summary>
+            <remarks>4 charges per hit + 1 charge per 3 tiles traveled.</remarks>
+        </member>
+        <member name="F:DaLion.Enchantments.Framework.Enchantments.EnergizedMeleeEnchantment.MaxEnergy">
+            <summary>The amount of energy stacks when fully charged.</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Enchantments.EnergizedMeleeEnchantment.Finalize">
+            <summary>Finalizes an instance of the <see cref="T:DaLion.Enchantments.Framework.Enchantments.EnergizedMeleeEnchantment"/> class.</summary>
+        </member>
+        <member name="P:DaLion.Enchantments.Framework.Enchantments.EnergizedMeleeEnchantment.Energy">
+            <summary>Gets or sets the current number of energy stacks.</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Enchantments.EnergizedMeleeEnchantment.GetName">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Enchantments.EnergizedMeleeEnchantment.Update(System.UInt32)">
+            <summary>Updates the instance state.</summary>
+            <param name="ticks">The number of ticks elapsed since the game started, including the current tick.</param>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Enchantments.EnergizedMeleeEnchantment._OnDealDamage(StardewValley.Monsters.Monster,StardewValley.GameLocation,StardewValley.Farmer,System.Int32@)">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Enchantments.EnergizedMeleeEnchantment._OnEquip(StardewValley.Farmer)">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Enchantments.EnergizedMeleeEnchantment._OnUnequip(StardewValley.Farmer)">
+            <inheritdoc />
+        </member>
+        <member name="T:DaLion.Enchantments.Framework.Enchantments.EnergizedSlingshotEnchantment">
+            <summary>
+                Moving and attacking generates energy, up to 100 stacks. At maximum stacks, the next shot carries an electric charge,
+                which discharges dealing area heavy damage when it hits an enemy.
+            </summary>
+            <remarks>6 charges per hit + 1 charge per 3 tiles traveled.</remarks>
+        </member>
+        <member name="F:DaLion.Enchantments.Framework.Enchantments.EnergizedSlingshotEnchantment.MaxEnergy">
+            <summary>The amount of energy stacks when fully charged.</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Enchantments.EnergizedSlingshotEnchantment.Finalize">
+            <summary>Finalizes an instance of the <see cref="T:DaLion.Enchantments.Framework.Enchantments.EnergizedSlingshotEnchantment"/> class.</summary>
+        </member>
+        <member name="P:DaLion.Enchantments.Framework.Enchantments.EnergizedSlingshotEnchantment.Energy">
+            <summary>Gets or sets the current number of energy stacks.</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Enchantments.EnergizedSlingshotEnchantment.GetName">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Enchantments.EnergizedSlingshotEnchantment.Update(System.UInt32)">
+            <summary>Updates the instance state.</summary>
+            <param name="ticks">The number of ticks elapsed since the game started, including the current tick.</param>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Enchantments.EnergizedSlingshotEnchantment._OnEquip(StardewValley.Farmer)">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Enchantments.EnergizedSlingshotEnchantment._OnUnequip(StardewValley.Farmer)">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Enchantments.EnergizedSlingshotEnchantment._OnFire(StardewValley.Tools.Slingshot,StardewValley.Projectiles.BasicProjectile,StardewValley.GameLocation,StardewValley.Farmer)">
+            <inheritdoc />
+        </member>
+        <member name="T:DaLion.Enchantments.Framework.Enchantments.ExplosiveEnchantment">
+            <summary>
+                Absorbs and stores energy from enemy hits (before mitigation). The next special move releases
+                twice the accumulated energy as an explosion.
+            </summary>
+        </member>
+        <member name="F:DaLion.Enchantments.Framework.Enchantments.ExplosiveEnchantment.MaxAccumulation">
+            <summary>The highest amount of damage that can be accumulated.</summary>
+        </member>
+        <member name="F:DaLion.Enchantments.Framework.Enchantments.ExplosiveEnchantment.AccumulationStep">
+            <summary>The amount of damage accumulation required to increase the explosion radius by 1 tile.</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Enchantments.ExplosiveEnchantment.Finalize">
+            <summary>Finalizes an instance of the <see cref="T:DaLion.Enchantments.Framework.Enchantments.ExplosiveEnchantment"/> class.</summary>
+        </member>
+        <member name="P:DaLion.Enchantments.Framework.Enchantments.ExplosiveEnchantment.MaxRadius">
+            <summary>Gets the largest possible explosion radius.</summary>
+        </member>
+        <member name="P:DaLion.Enchantments.Framework.Enchantments.ExplosiveEnchantment.Accumulated">
+            <summary>Gets or sets the total accumulated damage.</summary>
+        </member>
+        <member name="P:DaLion.Enchantments.Framework.Enchantments.ExplosiveEnchantment.ExplosionRadius">
+            <summary>Gets the current radius of the would-be explosion.</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Enchantments.ExplosiveEnchantment.GetName">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Enchantments.ExplosiveEnchantment.Update">
+            <summary>Updates the instance state.</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Enchantments.ExplosiveEnchantment.Explode(StardewValley.Tools.MeleeWeapon)">
+            <summary>Release stored energy.</summary>
+            <param name="weapon">The <see cref="T:StardewValley.Tools.MeleeWeapon"/> with this enchantment.</param>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Enchantments.ExplosiveEnchantment._OnUnequip(StardewValley.Farmer)">
+            <inheritdoc />
+        </member>
+        <member name="T:DaLion.Enchantments.Framework.Enchantments.MammoniteEnchantment">
+            <summary>
+                Attacks that would leave an enemy below 10% max health immediately execute the enemy, converting the remaining health into gold.
+                Consecutive takedowns without taking damage increase the health threshold by 1%.
+            </summary>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Enchantments.MammoniteEnchantment.GetName">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Enchantments.MammoniteEnchantment._OnDealDamage(StardewValley.Monsters.Monster,StardewValley.GameLocation,StardewValley.Farmer,System.Int32@)">
+            <inheritdoc />
+        </member>
+        <member name="T:DaLion.Enchantments.Framework.Enchantments.QuincyEnchantment">
+            <summary>Fire an energy projectile when ammunition is not equipped. The projectile is stronger the lower the firer's HP.</summary>
+            <remarks>
+                The quincy projectile has zero knockback and cannot crit, but scales in size and damage with Desperado's
+                overcharge.
+            </remarks>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Enchantments.QuincyEnchantment.GetName">
+            <inheritdoc />
+        </member>
+        <member name="T:DaLion.Enchantments.Framework.Enchantments.RunaanEnchantment">
+            <summary>Summons 2 "echoes" of the fired projectile. The echoes automatically aim at the nearest enemy after a short delay.</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Enchantments.RunaanEnchantment.GetName">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Enchantments.RunaanEnchantment._OnFire(StardewValley.Tools.Slingshot,StardewValley.Projectiles.BasicProjectile,StardewValley.GameLocation,StardewValley.Farmer)">
+            <inheritdoc />
+        </member>
+        <member name="T:DaLion.Enchantments.Framework.Enchantments.StabbingEnchantment">
+            <summary>Replaces the defensive parry special move with a stabbing lunge attack.</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Enchantments.StabbingEnchantment.CanApplyTo(StardewValley.Item)">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Enchantments.StabbingEnchantment.GetName">
+            <inheritdoc />
+        </member>
+        <member name="T:DaLion.Enchantments.Framework.Enchantments.SteadfastEnchantment">
+            <summary>Cannot crit. Converts critical strike chance and power into raw damage.</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Enchantments.SteadfastEnchantment.GetName">
+            <inheritdoc />
+        </member>
+        <member name="T:DaLion.Enchantments.Framework.Enchantments.SunburstEnchantment">
+            <summary>
+                Attacks fire a short-range beam of solar energy. Prevents mummies from resurrecting.
+            </summary>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Enchantments.SunburstEnchantment.GetName">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Enchantments.SunburstEnchantment._OnDealDamage(StardewValley.Monsters.Monster,StardewValley.GameLocation,StardewValley.Farmer,System.Int32@)">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Enchantments.SunburstEnchantment._OnSwing(StardewValley.Tools.MeleeWeapon,StardewValley.Farmer)">
+            <inheritdoc />
+        </member>
+        <member name="T:DaLion.Enchantments.Framework.Enchantments.VampiricEnchantment">
+            <summary>
+                Attacks on-hit heal for 10% of damage dealt. Excess healing is converted into a shield for up
+                to 20% of (the player's) max health, which slowly decays after not dealing or taking damage for 15s.
+            </summary>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Enchantments.VampiricEnchantment.GetName">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Enchantments.VampiricEnchantment._OnMonsterSlay(StardewValley.Monsters.Monster,StardewValley.GameLocation,StardewValley.Farmer)">
+            <inheritdoc />
+        </member>
+        <member name="T:DaLion.Enchantments.Framework.Enchantments.WabbajackEnchantment">
+            <summary>Causes random unpredictable effects.</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Enchantments.WabbajackEnchantment.GetName">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Enchantments.WabbajackEnchantment._OnDealDamage(StardewValley.Monsters.Monster,StardewValley.GameLocation,StardewValley.Farmer,System.Int32@)">
+            <inheritdoc />
+        </member>
+        <member name="T:DaLion.Enchantments.Framework.Events.EnchantmentsAssetRequestedEvent">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Enchantments.Framework.Events.EnchantmentsAssetRequestedEvent"/> class.</summary>
+            <param name="manager">The <see cref="T:DaLion.Shared.Events.EventManager"/> instance that manages this event.</param>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Events.EnchantmentsAssetRequestedEvent.#ctor(DaLion.Shared.Events.EventManager)">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Enchantments.Framework.Events.EnchantmentsAssetRequestedEvent"/> class.</summary>
+            <param name="manager">The <see cref="T:DaLion.Shared.Events.EventManager"/> instance that manages this event.</param>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Events.EnchantmentsAssetRequestedEvent.Initialize">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Events.EnchantmentsAssetRequestedEvent.EditBuffsIconsTileSheet(StardewModdingAPI.IAssetData)">
+            <summary>Patches buffs icons with energized and explosive buff icons.</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Events.EnchantmentsAssetRequestedEvent.EditProjectilesTileSheet(StardewModdingAPI.IAssetData)">
+            <summary>Patches in quincy projectiles.</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Events.EnchantmentsAssetRequestedEvent.ProvideGemSockets">
+            <summary>Provides the correct gemstone socket texture path.</summary>
+        </member>
+        <member name="T:DaLion.Enchantments.Framework.Events.EnchantmentsAssetsInvalidatedEvent">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Enchantments.Framework.Events.EnchantmentsAssetsInvalidatedEvent"/> class.</summary>
+            <param name="manager">The <see cref="T:DaLion.Shared.Events.EventManager"/> instance that manages this event.</param>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Events.EnchantmentsAssetsInvalidatedEvent.#ctor(DaLion.Shared.Events.EventManager)">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Enchantments.Framework.Events.EnchantmentsAssetsInvalidatedEvent"/> class.</summary>
+            <param name="manager">The <see cref="T:DaLion.Shared.Events.EventManager"/> instance that manages this event.</param>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Events.EnchantmentsAssetsInvalidatedEvent.OnAssetsInvalidatedImpl(System.Object,StardewModdingAPI.Events.AssetsInvalidatedEventArgs)">
+            <inheritdoc />
+        </member>
+        <member name="T:DaLion.Enchantments.Framework.Events.EnchantmentsDayEndingEvent">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Enchantments.Framework.Events.EnchantmentsDayEndingEvent"/> class.</summary>
+            <param name="manager">The <see cref="T:DaLion.Shared.Events.EventManager"/> instance that manages this event.</param>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Events.EnchantmentsDayEndingEvent.#ctor(DaLion.Shared.Events.EventManager)">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Enchantments.Framework.Events.EnchantmentsDayEndingEvent"/> class.</summary>
+            <param name="manager">The <see cref="T:DaLion.Shared.Events.EventManager"/> instance that manages this event.</param>
+        </member>
+        <member name="P:DaLion.Enchantments.Framework.Events.EnchantmentsDayEndingEvent.IsEnabled">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Events.EnchantmentsDayEndingEvent.OnDayEndingImpl(System.Object,StardewModdingAPI.Events.DayEndingEventArgs)">
+            <inheritdoc />
+        </member>
+        <member name="T:DaLion.Enchantments.Framework.Events.EnchantmentsGameLaunchedEvent">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Enchantments.Framework.Events.EnchantmentsGameLaunchedEvent"/> class.</summary>
+            <param name="manager">The <see cref="T:DaLion.Shared.Events.EventManager"/> instance that manages this event.</param>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Events.EnchantmentsGameLaunchedEvent.#ctor(DaLion.Shared.Events.EventManager)">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Enchantments.Framework.Events.EnchantmentsGameLaunchedEvent"/> class.</summary>
+            <param name="manager">The <see cref="T:DaLion.Shared.Events.EventManager"/> instance that manages this event.</param>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Events.EnchantmentsGameLaunchedEvent.OnGameLaunchedImpl(System.Object,StardewModdingAPI.Events.GameLaunchedEventArgs)">
+            <inheritdoc />
+        </member>
+        <member name="T:DaLion.Enchantments.Framework.Events.EnchantmentsReturnedToTitleEvent">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Enchantments.Framework.Events.EnchantmentsReturnedToTitleEvent"/> class.</summary>
+            <param name="manager">The <see cref="T:DaLion.Shared.Events.EventManager"/> instance that manages this event.</param>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Events.EnchantmentsReturnedToTitleEvent.#ctor(DaLion.Shared.Events.EventManager)">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Enchantments.Framework.Events.EnchantmentsReturnedToTitleEvent"/> class.</summary>
+            <param name="manager">The <see cref="T:DaLion.Shared.Events.EventManager"/> instance that manages this event.</param>
+        </member>
+        <member name="P:DaLion.Enchantments.Framework.Events.EnchantmentsReturnedToTitleEvent.IsEnabled">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Events.EnchantmentsReturnedToTitleEvent.OnReturnedToTitleImpl(System.Object,StardewModdingAPI.Events.ReturnedToTitleEventArgs)">
+            <inheritdoc />
+        </member>
+        <member name="T:DaLion.Enchantments.Framework.Events.EnergizedUpdateTickedEvent">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Enchantments.Framework.Events.EnergizedUpdateTickedEvent"/> class.</summary>
+            <param name="manager">The <see cref="T:DaLion.Shared.Events.EventManager"/> instance that manages this event.</param>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Events.EnergizedUpdateTickedEvent.#ctor(DaLion.Shared.Events.EventManager)">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Enchantments.Framework.Events.EnergizedUpdateTickedEvent"/> class.</summary>
+            <param name="manager">The <see cref="T:DaLion.Shared.Events.EventManager"/> instance that manages this event.</param>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Events.EnergizedUpdateTickedEvent.OnEnabled">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Events.EnergizedUpdateTickedEvent.OnDisabled">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Events.EnergizedUpdateTickedEvent.OnUpdateTickedImpl(System.Object,StardewModdingAPI.Events.UpdateTickedEventArgs)">
+            <inheritdoc />
+        </member>
+        <member name="T:DaLion.Enchantments.Framework.Events.ExplosiveUpdateTickedEvent">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Enchantments.Framework.Events.ExplosiveUpdateTickedEvent"/> class.</summary>
+            <param name="manager">The <see cref="T:DaLion.Shared.Events.EventManager"/> instance that manages this event.</param>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Events.ExplosiveUpdateTickedEvent.#ctor(DaLion.Shared.Events.EventManager)">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Enchantments.Framework.Events.ExplosiveUpdateTickedEvent"/> class.</summary>
+            <param name="manager">The <see cref="T:DaLion.Shared.Events.EventManager"/> instance that manages this event.</param>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Events.ExplosiveUpdateTickedEvent.OnEnabled">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Events.ExplosiveUpdateTickedEvent.OnDisabled">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Events.ExplosiveUpdateTickedEvent.OnUpdateTickedImpl(System.Object,StardewModdingAPI.Events.UpdateTickedEventArgs)">
+            <inheritdoc />
+        </member>
+        <member name="T:DaLion.Enchantments.Framework.Events.ShieldAnimationRenderedWorldEvent">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Enchantments.Framework.Events.ShieldAnimationRenderedWorldEvent"/> class.</summary>
+            <param name="manager">The <see cref="T:DaLion.Shared.Events.EventManager"/> instance that manages this event.</param>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Events.ShieldAnimationRenderedWorldEvent.#ctor(DaLion.Shared.Events.EventManager)">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Enchantments.Framework.Events.ShieldAnimationRenderedWorldEvent"/> class.</summary>
+            <param name="manager">The <see cref="T:DaLion.Shared.Events.EventManager"/> instance that manages this event.</param>
+        </member>
+        <member name="P:DaLion.Enchantments.Framework.Events.ShieldAnimationRenderedWorldEvent.IsEnabled">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Events.ShieldAnimationRenderedWorldEvent.OnRenderedWorldImpl(System.Object,StardewModdingAPI.Events.RenderedWorldEventArgs)">
+            <inheritdoc />
+        </member>
+        <member name="T:DaLion.Enchantments.Framework.Events.ShieldAnimationUpdateTickedEvent">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Enchantments.Framework.Events.ShieldAnimationUpdateTickedEvent"/> class.</summary>
+            <param name="manager">The <see cref="T:DaLion.Shared.Events.EventManager"/> instance that manages this event.</param>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Events.ShieldAnimationUpdateTickedEvent.#ctor(DaLion.Shared.Events.EventManager)">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Enchantments.Framework.Events.ShieldAnimationUpdateTickedEvent"/> class.</summary>
+            <param name="manager">The <see cref="T:DaLion.Shared.Events.EventManager"/> instance that manages this event.</param>
+        </member>
+        <member name="P:DaLion.Enchantments.Framework.Events.ShieldAnimationUpdateTickedEvent.IsEnabled">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Events.ShieldAnimationUpdateTickedEvent.OnUpdateTickedImpl(System.Object,StardewModdingAPI.Events.UpdateTickedEventArgs)">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Events.StabbingSwordSpecialUpdateTickingEvent.OnEnabled">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Events.StabbingSwordSpecialUpdateTickingEvent.OnDisabled">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Events.StabbingSwordSpecialUpdateTickingEvent.OnUpdateTickingImpl(System.Object,StardewModdingAPI.Events.UpdateTickingEventArgs)">
+            <inheritdoc />
+        </member>
+        <member name="T:DaLion.Enchantments.Framework.Events.VampiricUpdateTickedEvent">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Enchantments.Framework.Events.VampiricUpdateTickedEvent"/> class.</summary>
+            <param name="manager">The <see cref="T:DaLion.Shared.Events.EventManager"/> instance that manages this event.</param>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Events.VampiricUpdateTickedEvent.#ctor(DaLion.Shared.Events.EventManager)">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Enchantments.Framework.Events.VampiricUpdateTickedEvent"/> class.</summary>
+            <param name="manager">The <see cref="T:DaLion.Shared.Events.EventManager"/> instance that manages this event.</param>
+        </member>
+        <member name="P:DaLion.Enchantments.Framework.Events.VampiricUpdateTickedEvent.IsEnabled">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Events.VampiricUpdateTickedEvent.OnUpdateTickedImpl(System.Object,StardewModdingAPI.Events.UpdateTickedEventArgs)">
+            <inheritdoc />
+        </member>
+        <member name="T:DaLion.Enchantments.Framework.Extensions.MeleeWeaponExtensions">
+            <summary>Extensions for the <see cref="T:StardewValley.Farmer"/> class.</summary>
+        </member>
+        <member name="T:DaLion.Enchantments.Framework.Integrations.SpaceCoreIntegration">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Enchantments.Framework.Integrations.SpaceCoreIntegration"/> class.</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Integrations.SpaceCoreIntegration.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Enchantments.Framework.Integrations.SpaceCoreIntegration"/> class.</summary>
+        </member>
+        <member name="P:DaLion.Enchantments.Framework.Integrations.SpaceCoreIntegration.Api">
+            <summary>Gets the SpaceCore API.</summary>>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Integrations.SpaceCoreIntegration.RegisterImpl">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Patchers.BaseEnchantmentGetAvailableEnchantmentsPatcher.#ctor(DaLion.Shared.Harmony.Harmonizer)">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Enchantments.Framework.Patchers.BaseEnchantmentGetAvailableEnchantmentsPatcher"/> class.</summary>
+            <param name="harmonizer">The <see cref="T:DaLion.Shared.Harmony.Harmonizer"/> instance that manages this patcher.</param>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Patchers.BaseEnchantmentGetAvailableEnchantmentsPatcher.BaseEnchantmentGetAvailableEnchantmentsTranspiler(System.Collections.Generic.IEnumerable{HarmonyLib.CodeInstruction},System.Reflection.Emit.ILGenerator,System.Reflection.MethodBase)">
+            <summary>Out with the old and in with the new enchants.</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Patchers.BasicProjectileBehaviorOnCollisionWithMonsterPatcher.#ctor(DaLion.Shared.Harmony.Harmonizer)">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Enchantments.Framework.Patchers.BasicProjectileBehaviorOnCollisionWithMonsterPatcher"/> class.</summary>
+            <param name="harmonizer">The <see cref="T:DaLion.Shared.Harmony.Harmonizer"/> instance that manages this patcher.</param>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Patchers.BasicProjectileBehaviorOnCollisionWithMonsterPatcher.BasicProjectileBehaviorOnCollisionWithMonsterPrefix(StardewValley.Projectiles.BasicProjectile,StardewValley.NPC,StardewValley.GameLocation)">
+            <summary>Do thunder strike.</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Patchers.FarmerTakeDamagePatcher.#ctor(DaLion.Shared.Harmony.Harmonizer)">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Enchantments.Framework.Patchers.FarmerTakeDamagePatcher"/> class.</summary>
+            <param name="harmonizer">The <see cref="T:DaLion.Shared.Harmony.Harmonizer"/> instance that manages this patcher.</param>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Patchers.FarmerTakeDamagePatcher.FarmerTakeDamageTranspiler(System.Collections.Generic.IEnumerable{HarmonyLib.CodeInstruction},System.Reflection.MethodBase)">
+            <summary>Trigger damage taken effects.</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Patchers.Game1DrawHudPatcher.#ctor(DaLion.Shared.Harmony.Harmonizer)">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Enchantments.Framework.Patchers.Game1DrawHudPatcher"/> class.</summary>
+            <param name="harmonizer">The <see cref="T:DaLion.Shared.Harmony.Harmonizer"/> instance that manages this patcher.</param>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Patchers.Game1DrawHudPatcher.Game1DrawHUDTranspiler(System.Collections.Generic.IEnumerable{HarmonyLib.CodeInstruction},System.Reflection.MethodBase)">
+            <summary>Patch draw over-healed health.</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Patchers.GameLocationDamageMonsterPatcher.#ctor(DaLion.Shared.Harmony.Harmonizer)">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Enchantments.Framework.Patchers.GameLocationDamageMonsterPatcher"/> class.</summary>
+            <param name="harmonizer">The <see cref="T:DaLion.Shared.Harmony.Harmonizer"/> instance that manages this patcher.</param>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Patchers.GameLocationDamageMonsterPatcher.GameLocationDamageMonsterPrefix(System.Int32@,System.Int32@,System.Single@,StardewValley.Farmer)">
+            <summary>Steadfast enchantment crit. to damage conversion.</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Patchers.IClickableMenuDrawHoverTextPatcher.#ctor(DaLion.Shared.Harmony.Harmonizer)">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Enchantments.Framework.Patchers.IClickableMenuDrawHoverTextPatcher"/> class.</summary>
+            <param name="harmonizer">The <see cref="T:DaLion.Shared.Harmony.Harmonizer"/> instance that manages this patcher.</param>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Patchers.IClickableMenuDrawHoverTextPatcher.IClickableMenuDrawHoverTextTranspiler(System.Collections.Generic.IEnumerable{HarmonyLib.CodeInstruction},System.Reflection.Emit.ILGenerator,System.Reflection.MethodBase)">
+            <summary>Replaces "Forged" text with socket icons.</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Patchers.MeleeWeaponAnimateSpecialMovePatcher.#ctor(DaLion.Shared.Harmony.Harmonizer)">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Enchantments.Framework.Patchers.MeleeWeaponAnimateSpecialMovePatcher"/> class.</summary>
+            <param name="harmonizer">The <see cref="T:DaLion.Shared.Harmony.Harmonizer"/> instance that manages this patcher.</param>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Patchers.MeleeWeaponAnimateSpecialMovePatcher.MeleeWeaponAnimateSpecalMovePrefix(StardewValley.Tools.MeleeWeapon,StardewValley.Farmer@,StardewValley.Farmer)">
+            <summary>Trigger Stabbing Sword lunge.</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Patchers.MeleeWeaponDoAnimateSpecialMovePatcher.#ctor(DaLion.Shared.Harmony.Harmonizer)">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Enchantments.Framework.Patchers.MeleeWeaponDoAnimateSpecialMovePatcher"/> class.</summary>
+            <param name="harmonizer">The <see cref="T:DaLion.Shared.Harmony.Harmonizer"/> instance that manages this patcher.</param>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Patchers.MeleeWeaponDoAnimateSpecialMovePatcher.MeleeWeaponDoAnimateSpecialMovePostfix(StardewValley.Tools.MeleeWeapon)">
+            <summary>Disposes certain enchantments.</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Patchers.MeleeWeaponDoDamagePatcher.#ctor(DaLion.Shared.Harmony.Harmonizer)">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Enchantments.Framework.Patchers.MeleeWeaponDoDamagePatcher"/> class.</summary>
+            <param name="harmonizer">The <see cref="T:DaLion.Shared.Harmony.Harmonizer"/> instance that manages this patcher.</param>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Patchers.MeleeWeaponDoDamagePatcher.MeleeWeaponDoDamageTranspiler(System.Collections.Generic.IEnumerable{HarmonyLib.CodeInstruction},System.Reflection.MethodBase)">
+            <summary>Override `special = false` for stabby lunge.</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Patchers.MeleeWeaponDrawDuringUsePatcher.#ctor(DaLion.Shared.Harmony.Harmonizer)">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Enchantments.Framework.Patchers.MeleeWeaponDrawDuringUsePatcher"/> class.</summary>
+            <param name="harmonizer">The <see cref="T:DaLion.Shared.Harmony.Harmonizer"/> instance that manages this patcher.</param>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Patchers.MeleeWeaponDrawDuringUsePatcher.MeleeWeaponDrawDuringUsePrefix(Microsoft.Xna.Framework.Vector2,System.Int32,System.Int32,Microsoft.Xna.Framework.Graphics.SpriteBatch,Microsoft.Xna.Framework.Vector2,StardewValley.Farmer,System.String,System.Int32,System.Boolean)">
+            <summary>Draw during stabby lunge.</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Patchers.MeleeWeaponDrawInMenuPatcher.#ctor(DaLion.Shared.Harmony.Harmonizer)">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Enchantments.Framework.Patchers.MeleeWeaponDrawInMenuPatcher"/> class.</summary>
+            <param name="harmonizer">The <see cref="T:DaLion.Shared.Harmony.Harmonizer"/> instance that manages this patcher.</param>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Patchers.MeleeWeaponDrawInMenuPatcher.MeleeWeaponDrawInMenuTranspiler(System.Collections.Generic.IEnumerable{HarmonyLib.CodeInstruction},System.Reflection.Emit.ILGenerator,System.Reflection.MethodBase)">
+            <summary>Draw Stabbing Sword cooldown.</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Patchers.MeleeWeaponGetAreaOfEffectPatcher.#ctor(DaLion.Shared.Harmony.Harmonizer)">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Enchantments.Framework.Patchers.MeleeWeaponGetAreaOfEffectPatcher"/> class.</summary>
+            <param name="harmonizer">The <see cref="T:DaLion.Shared.Harmony.Harmonizer"/> instance that manages this patcher.</param>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Patchers.MeleeWeaponGetAreaOfEffectPatcher.MeleeWeaponGetAreaOfEffectPrefix(StardewValley.Tools.MeleeWeapon,Microsoft.Xna.Framework.Rectangle@,System.Int32,System.Int32,System.Int32,Microsoft.Xna.Framework.Vector2@,Microsoft.Xna.Framework.Vector2@,Microsoft.Xna.Framework.Rectangle)">
+            <summary>Fix stabby lunge hitbox.</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Patchers.MummyTakeDamagePatcher.#ctor(DaLion.Shared.Harmony.Harmonizer)">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Enchantments.Framework.Patchers.MummyTakeDamagePatcher"/> class.</summary>
+            <param name="harmonizer">The <see cref="T:DaLion.Shared.Harmony.Harmonizer"/> instance that manages this patcher.</param>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Patchers.MummyTakeDamagePatcher.MummyTakeDamageTranspiler(System.Collections.Generic.IEnumerable{HarmonyLib.CodeInstruction},System.Reflection.Emit.ILGenerator,System.Reflection.MethodBase)">
+            <summary>Crusader effect for Sunburst enchantment.</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Patchers.ProjectileDrawPatcher.#ctor(DaLion.Shared.Harmony.Harmonizer)">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Enchantments.Framework.Patchers.ProjectileDrawPatcher"/> class.</summary>
+            <param name="harmonizer">The <see cref="T:DaLion.Shared.Harmony.Harmonizer"/> instance that manages this patcher.</param>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Patchers.ProjectileDrawPatcher.ProjectileDrawPostfix(StardewValley.Projectiles.Projectile,System.Nullable{System.Single},Microsoft.Xna.Framework.Graphics.SpriteBatch)">
+            <summary>Draw plasma effect.</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Patchers.SlingshotPerformFirePatcher.#ctor(DaLion.Shared.Harmony.Harmonizer)">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Enchantments.Framework.Patchers.SlingshotPerformFirePatcher"/> class.</summary>
+            <param name="harmonizer">The <see cref="T:DaLion.Shared.Harmony.Harmonizer"/> instance that manages this patcher.</param>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Patchers.SlingshotPerformFirePatcher.SlingshotPerformFirePrefix(StardewValley.Tools.Slingshot,System.Boolean@,StardewValley.GameLocation,StardewValley.Farmer)">
+            <summary>Do Quincy shot.</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Patchers.ToolGetExtraSpaceNeededForTooltipSpecialIconsPatcher.#ctor(DaLion.Shared.Harmony.Harmonizer)">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Enchantments.Framework.Patchers.ToolGetExtraSpaceNeededForTooltipSpecialIconsPatcher"/> class.</summary>
+            <param name="harmonizer">The <see cref="T:DaLion.Shared.Harmony.Harmonizer"/> instance that manages this patcher.</param>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Patchers.ToolGetExtraSpaceNeededForTooltipSpecialIconsPatcher.ToolGetExtraSpaceNeededForTooltipSpecialIconsPostfix(StardewValley.Tool,Microsoft.Xna.Framework.Point@)">
+            <summary>Fix enchanted Slingshot tooltip box height.</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Patchers.ToolRemoveEnchantmentPatcher.#ctor(DaLion.Shared.Harmony.Harmonizer)">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Enchantments.Framework.Patchers.ToolRemoveEnchantmentPatcher"/> class.</summary>
+            <param name="harmonizer">The <see cref="T:DaLion.Shared.Harmony.Harmonizer"/> instance that manages this patcher.</param>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Patchers.ToolRemoveEnchantmentPatcher.ToolRemoveEnchantmentPostifx(StardewValley.Enchantments.BaseEnchantment)">
+            <summary>Disposes certain enchantments.</summary>
+        </member>
+        <member name="T:DaLion.Enchantments.Framework.Projectiles.QuincyProjectile">
+            <summary>An energy projectile fired by a <see cref="T:StardewValley.Tools.Slingshot"/> which has the <see cref="T:DaLion.Enchantments.Framework.Enchantments.QuincyEnchantment"/>.</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Projectiles.QuincyProjectile.#ctor(StardewValley.Farmer,Microsoft.Xna.Framework.Vector2,System.Single,System.Single,System.Single,System.Single)">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Enchantments.Framework.Projectiles.QuincyProjectile"/> class.</summary>
+            <param name="firer">The <see cref="T:StardewValley.Farmer"/> who fired this projectile.</param>
+            <param name="startingPosition">The projectile's starting position.</param>
+            <param name="xVelocity">The projectile's starting velocity in the horizontal direction.</param>
+            <param name="yVelocity">The projectile's starting velocity in the vertical direction.</param>
+            <param name="rotationVelocity">The projectile's starting rotational velocity.</param>
+            <param name="scale">The projectile's starting scale.</param>
+        </member>
+        <member name="T:DaLion.Enchantments.Framework.Projectiles.RunaanProjectile">
+            <summary>An echo of a <see cref="T:StardewValley.Projectiles.BasicProjectile"/> fired by a <see cref="T:StardewValley.Tools.Slingshot"/> enchanted with <see cref="T:DaLion.Enchantments.Framework.Enchantments.RunaanEnchantment"/>.</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Projectiles.RunaanProjectile.#ctor(StardewValley.Projectiles.BasicProjectile,Microsoft.Xna.Framework.Vector2,StardewValley.GameLocation,StardewValley.Farmer)">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Enchantments.Framework.Projectiles.RunaanProjectile"/> class.</summary>
+            <param name="original">The original <see cref="T:StardewValley.Projectiles.BasicProjectile"/> that will be echoed.</param>
+            <param name="startingPosition">The projectile's starting position.</param>
+            <param name="location">The <see cref="T:StardewValley.GameLocation"/>.</param>
+            <param name="firer">The <see cref="T:StardewValley.Farmer"/> who fired the shot.</param>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Projectiles.RunaanProjectile.update(Microsoft.Xna.Framework.GameTime,StardewValley.GameLocation)">
+            <inheritdoc />
+        </member>
+        <member name="T:DaLion.Enchantments.Framework.Projectiles.SunburstProjectile">
+            <summary>A sunlight projectile fired by a <see cref="T:StardewValley.Tools.MeleeWeapon"/> which has the <see cref="T:DaLion.Enchantments.Framework.Enchantments.SunburstEnchantment"/>.</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Projectiles.SunburstProjectile.#ctor(StardewValley.Farmer,StardewValley.Tools.MeleeWeapon,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,System.Single)">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Enchantments.Framework.Projectiles.SunburstProjectile"/> class.</summary>
+            <param name="firer">The <see cref="T:StardewValley.Farmer"/> who fired this projectile.</param>
+            <param name="weapon">The <see cref="T:StardewValley.Tools.MeleeWeapon"/> from which this projectile was fired.</param>
+            <param name="origin">The projectile's starting position.</param>
+            <param name="velocity">The projectile's starting velocity.</param>
+            <param name="rotationVelocity">The projectile's starting rotational velocity.</param>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.Projectiles.SunburstProjectile.behaviorOnCollisionWithMonster(StardewValley.NPC,StardewValley.GameLocation)">
+            <inheritdoc />
+        </member>
+        <member name="T:DaLion.Enchantments.Framework.SoundBox">
+            <summary>Wrapper for a single custom <see cref="T:Microsoft.Xna.Framework.Audio.SoundEffect"/> that can be played through the game's <see cref="T:Microsoft.Xna.Framework.Audio.SoundBank"/>.</summary>
+        </member>
+        <member name="F:DaLion.Enchantments.Framework.SoundBox.ChillingShot">
+            <summary>The <see cref="T:DaLion.Enchantments.Framework.SoundBox"/> played by <see cref="T:DaLion.Enchantments.Framework.Enchantments.ChillingEnchantment"/>.</summary>
+        </member>
+        <member name="F:DaLion.Enchantments.Framework.SoundBox.PlasmaShot">
+            <summary>The <see cref="T:DaLion.Enchantments.Framework.SoundBox"/> played by <see cref="T:DaLion.Enchantments.Framework.Enchantments.EnergizedSlingshotEnchantment"/>.</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.SoundBox.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Enchantments.Framework.SoundBox"/> class.</summary>
+            <param name="name">The sound effect name.</param>
+        </member>
+        <member name="P:DaLion.Enchantments.Framework.SoundBox.Name">
+            <summary>Gets the name of the effect.</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.SoundBox.PlayLocal(StardewValley.GameLocation,System.Nullable{Microsoft.Xna.Framework.Vector2},System.Nullable{System.Int32})">
+            <summary>Play a game sound for the local player.</summary>
+            <param name="location">The location in which the sound is playing, if applicable.</param>
+            <param name="position">The tile position from which the sound is playing, or <see langword="null"/> if it's playing throughout the location. Ignored in location is <see langword="null"/>.</param>
+            <param name="pitch">The pitch modifier to apply, or <see langword="null"/> for the default pitch.</param>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.SoundBox.PlayAll(StardewValley.GameLocation,System.Nullable{Microsoft.Xna.Framework.Vector2},System.Nullable{System.Int32})">
+            <summary>Play a game sound for all players who can hear it.</summary>
+            <param name="location">The location in which the sound is playing.</param>
+            <param name="position">The tile position from which the sound is playing, or <c>null</c> if it's playing throughout the location.</param>
+            <param name="pitch">The pitch modifier to apply, or <c>null</c> for the default pitch.</param>
+        </member>
+        <member name="M:DaLion.Enchantments.Framework.SoundBox.PlayAfterDelay(System.Int32,StardewValley.GameLocation,System.Nullable{Microsoft.Xna.Framework.Vector2},System.Int32)">
+            <summary>Plays the corresponding <see cref="T:Microsoft.Xna.Framework.Audio.SoundEffect"/> after the specified delay.</summary>
+            <param name="delay">The desired delay, in milliseconds.</param>
+            <param name="location">The location in which the sound is playing, if applicable.</param>
+            <param name="position">The tile position from which the sound is playing, or <see langword="null"/> if it's playing throughout the location.</param>
+            <param name="pitch">The pitch modifier to apply, or -1 for the default pitch.</param>
+        </member>
+        <member name="T:DaLion.Enchantments.IEnchantmentsApi">
+            <summary>The public interface for the Taxes mod API.</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.IEnchantmentsApi.CreateQuincyProjectile(StardewValley.Farmer,Microsoft.Xna.Framework.Vector2,System.Single,System.Single,System.Single,System.Single)">
+            <summary>Creates a new instance of <see cref="T:DaLion.Enchantments.Framework.Projectiles.QuincyProjectile"/>.</summary>
+            <param name="firer">The <see cref="T:StardewValley.Farmer"/> who fired this projectile.</param>
+            <param name="startingPosition">The projectile's starting position.</param>
+            <param name="xVelocity">The projectile's starting velocity in the horizontal direction.</param>
+            <param name="yVelocity">The projectile's starting velocity in the vertical direction.</param>
+            <param name="rotationVelocity">The projectile's starting rotational velocity.</param>
+            <param name="scale">The projectile's starting scale.</param>
+            <returns>The amount of income tax due in gold, along with total income, business expenses, eligible deductions and total taxable amount (in that order).</returns>
+        </member>
+        <member name="T:DaLion.Enchantments.I18n">
+            <summary>Get translations from the mod's <c>i18n</c> folder.</summary>
+            <remarks>This is auto-generated from the <c>i18n/default.json</c> file when the project is compiled.</remarks>
+        </member>
+        <member name="F:DaLion.Enchantments.I18n.Translations">
+            <summary>The mod's translation helper.</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.I18n.Init(StardewModdingAPI.ITranslationHelper)">
+            <summary>Construct an instance.</summary>
+            <param name="translations">The mod's translation helper.</param>
+        </member>
+        <member name="M:DaLion.Enchantments.I18n.Enchantments_Carving_Name">
+            <summary>Get a translation equivalent to "Carving".</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.I18n.Enchantments_Cleaving_Name">
+            <summary>Get a translation equivalent to "Cleaving".</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.I18n.Enchantments_Energized_Name">
+            <summary>Get a translation equivalent to "Shocking".</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.I18n.Enchantments_Energized_Desc(System.Object)">
+            <summary>Get a translation equivalent to "Energy accumulated: {{counter}}".</summary>
+            <param name="counter">The value to inject for the <c>{{counter}}</c> token.</param>
+        </member>
+        <member name="M:DaLion.Enchantments.I18n.Enchantments_Explosive_Name">
+            <summary>Get a translation equivalent to "Blasting".</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.I18n.Enchantments_Explosive_Desc(System.Object)">
+            <summary>Get a translation equivalent to "Blast radius: {{counter}}".</summary>
+            <param name="counter">The value to inject for the <c>{{counter}}</c> token.</param>
+        </member>
+        <member name="M:DaLion.Enchantments.I18n.Enchantments_Mammonite_Name">
+            <summary>Get a translation equivalent to "Mammonite".</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.I18n.Enchantments_Stabbing_Name">
+            <summary>Get a translation equivalent to "Piercing".</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.I18n.Enchantments_Steadfast_Name">
+            <summary>Get a translation equivalent to "Steadfast".</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.I18n.Enchantments_Sunburst_Name">
+            <summary>Get a translation equivalent to "Sunburst".</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.I18n.Enchantments_Vampiric_Name">
+            <summary>Get a translation equivalent to "Vampiric".</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.I18n.Enchantments_Wabbajack_Name">
+            <summary>Get a translation equivalent to "Wabbajack".</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.I18n.Enchantments_Chilling_Name">
+            <summary>Get a translation equivalent to "Chilling".</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.I18n.Enchantments_Quincy_Name">
+            <summary>Get a translation equivalent to "Quincy".</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.I18n.Enchantments_Runaan_Name">
+            <summary>Get a translation equivalent to "Reverberant".</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.I18n.Gmcm_GemstoneSocketStyle_Title">
+            <summary>Get a translation equivalent to "Gemstone Socket Style".</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.I18n.Gmcm_GemstoneSocketStyle_Desc">
+            <summary>Get a translation equivalent to "Replaces the generic vanilla "Forged" text in weapon tooltips with actual gemstone socket icons in various styles.".</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.I18n.Gmcm_SocketStyle_Diamond">
+            <summary>Get a translation equivalent to "Diamond".</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.I18n.Gmcm_SocketStyle_Round">
+            <summary>Get a translation equivalent to "Round".</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.I18n.Gmcm_SocketStyle_Iridium">
+            <summary>Get a translation equivalent to "Iridium".</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.I18n.Gmcm_GemstoneSocketPosition_Title">
+            <summary>Get a translation equivalent to "Gemstone Socket Position".</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.I18n.Gmcm_GemstoneSocketPosition_Desc">
+            <summary>Get a translation equivalent to "Determines the relative position where gemstones sockets should be drawn, if enabled.".</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.I18n.Gmcm_SocketPosition_Standard">
+            <summary>Get a translation equivalent to "Standard".</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.I18n.Gmcm_SocketPosition_AboveSeparator">
+            <summary>Get a translation equivalent to "Above Separator".</summary>
+        </member>
+        <member name="M:DaLion.Enchantments.I18n.GetByKey(System.String,System.Object)">
+            <summary>Get a translation by its key.</summary>
+            <param name="key">The translation key.</param>
+            <param name="tokens">An object containing token key/value pairs. This can be an anonymous object (like <c>new { value = 42, name = "Cranberries" }</c>), a dictionary, or a class instance.</param>
+        </member>
+        <member name="T:NetEscapades.EnumGenerators.EnumExtensionsAttribute">
+            <summary>
+            Add to enums to indicate that extension methods should be generated for the type
+            </summary>
+        </member>
+        <member name="P:NetEscapades.EnumGenerators.EnumExtensionsAttribute.ExtensionClassNamespace">
+            <summary>
+            The namespace to generate the extension class.
+            If not provided the namespace of the enum will be used
+            </summary>
+        </member>
+        <member name="P:NetEscapades.EnumGenerators.EnumExtensionsAttribute.ExtensionClassName">
+            <summary>
+            The name to use for the extension class.
+            If not provided, the enum name with "Extensions" will be used.
+            For example for an Enum called StatusCodes, the default name
+            will be StatusCodesExtensions
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -2,9 +2,9 @@ This repository contains all SMAPI mods in the [SMAPI compatibility list](https:
 It's used to update that page, find mods using specific APIs, etc.
 
 ## Mod stats
-* Last updated 2024-05-30 (SMAPI 4.0.8 and Stardew Valley 1.6.8).
-* 2697 mods in the SMAPI compatibility list.
-* 1779 mods (66%) have a source code repo, with 1021 (57%) in a multi-mod repo and 758 (43%) in a single-mod repo.
+* Last updated 2024-07-01 (SMAPI 4.0.8 and Stardew Valley 1.6.8).
+* 2788 mods in the SMAPI compatibility list.
+* 1814 mods (65%) have a source code repo, with 1033 (57%) in a multi-mod repo and 781 (43%) in a single-mod repo.
 
 ## What's in this repository
 ### `compiled`
@@ -27,6 +27,7 @@ The `compiled` folder has the latest download for each mod, grouped into a few c
   --- | ------
   [Battle Royalley](https://www.nexusmods.com/stardewvalley/mods/9891)      | disables single-player and blocks other mods
   [Betwitched](https://www.nexusmods.com/stardewvalley/mods/10172)          | prevents loading a save without a Twitch username + auth token configured
+  [Hardcore Mode](https://www.nexusmods.com/stardewvalley/mods/25376)       | deletes your save if you have a wiki tab open
   [Instant Load](https://www.nexusmods.com/stardewvalley/mods/16253)        | instantly loads a save
   [MobileUI Android](https://www.nexusmods.com/stardewvalley/mods/17652)    | only works on Android
   [Please Fix Error](https://www.nexusmods.com/stardewvalley/mods/6492)     | spams fake errors

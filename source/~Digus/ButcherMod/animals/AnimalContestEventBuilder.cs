@@ -769,9 +769,9 @@ namespace AnimalHusbandryMod.animals
 
         private static string GenerateKey(int id, SDate date)
         {
-            string key = "{0}/z {1}/u {2}/t {3}";
+            string key = "{0}/Season {1}/u {2}/t {3}";
 
-            string seasons = String.Join(" ",Seasons.Where(s => s != date.SeasonKey).ToArray());
+            string seasons = date.SeasonKey;
             string day = date.Day.ToString();
             string time = "600 1000";
             return String.Format(key, id, seasons, day, time);

@@ -10,6 +10,7 @@
 
 #if COMMON_BCINVENTORY
 
+using System;
 using System.Collections.Generic;
 
 using Microsoft.Xna.Framework;
@@ -48,6 +49,18 @@ public readonly struct WorkingInventory : IBCInventory {
 	public bool IsItemValid(Item item) => Provider.IsItemValid(Object, Location, Player, item);
 	public void CleanInventory() => Provider.CleanInventory(Object, Location, Player);
 	public int GetActualCapacity() => Provider.GetActualCapacity(Object, Location, Player);
+
+	public bool? StartExclusive(IEventedInventoryProvider.StartExclusiveCallback callback) {
+		if (Provider is IEventedInventoryProvider eip)
+			return eip.StartExclusive(Object, Location, Player, callback);
+		else
+			return true;
+	}
+
+	public void EndExclusive() {
+		if (Provider is IEventedInventoryProvider eip)
+			eip.EndExclusive(Object, Location, Player);
+	}
 }
 
 #endif

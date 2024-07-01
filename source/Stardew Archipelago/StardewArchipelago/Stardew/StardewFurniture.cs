@@ -11,8 +11,10 @@
 using System;
 using Microsoft.Xna.Framework;
 using StardewArchipelago.Archipelago;
+using StardewArchipelago.Constants.Vanilla;
 using StardewArchipelago.Items.Mail;
 using StardewValley;
+using StardewValley.Objects;
 
 namespace StardewArchipelago.Stardew
 {
@@ -35,9 +37,11 @@ namespace StardewArchipelago.Stardew
         public bool IsFishTank => Type.Equals(TYPE_FISHTANK, StringComparison.OrdinalIgnoreCase);
 
         public bool IsTV => Type.Contains(TYPE_TV, StringComparison.OrdinalIgnoreCase) ||
-                             Name.Contains(TYPE_TV, StringComparison.OrdinalIgnoreCase);
+                            Name.Contains(TYPE_TV, StringComparison.OrdinalIgnoreCase);
 
-        public StardewFurniture(int id, string name, string type, string tilesheetSize, string boundingBoxSize, string rotations, string price, string displayName, string placementRestriction): base(id, name, 0, displayName, "")
+        public bool IsLupiniPainting => int.TryParse(Id, out var numericId) && numericId % 2 == 0 && numericId >= 1838 && numericId <= 1854;
+
+        public StardewFurniture(string id, string name, string type, string tilesheetSize, string boundingBoxSize, string rotations, string price, string displayName, string placementRestriction) : base(id, name, 0, displayName, "")
         {
             Type = type;
             TilesheetSize = tilesheetSize;
@@ -50,25 +54,20 @@ namespace StardewArchipelago.Stardew
         {
             if (IsBed)
             {
-                return new StardewValley.Objects.BedFurniture(Id, Vector2.Zero);
+                return new BedFurniture(Id, Vector2.Zero);
             }
 
             if (IsFishTank)
             {
-                return new StardewValley.Objects.FishTankFurniture(Id, Vector2.Zero);
+                return new FishTankFurniture(Id, Vector2.Zero);
             }
 
             if (IsTV)
             {
-                return new StardewValley.Objects.TV(Id, Vector2.Zero);
+                return new TV(Id, Vector2.Zero);
             }
 
-            return new StardewValley.Objects.Furniture(Id, Vector2.Zero);
-        }
-
-        public override Item PrepareForRecovery()
-        {
-            throw new NotImplementedException();
+            return new Furniture(Id, Vector2.Zero);
         }
 
         public override void GiveToFarmer(Farmer farmer, int amount = 1)
@@ -93,8 +92,13 @@ namespace StardewArchipelago.Stardew
             {
                 return new LetterActionAttachment(receivedItem, LetterActionsKeys.GiveTV, Id.ToString());
             }
-            
+
             return new LetterActionAttachment(receivedItem, LetterActionsKeys.GiveFurniture, Id.ToString());
+        }
+
+        public override string GetQualifiedId()
+        {
+            return $"{QualifiedItemIds.FURNITURE_QUALIFIER}{Id}";
         }
     }
 }

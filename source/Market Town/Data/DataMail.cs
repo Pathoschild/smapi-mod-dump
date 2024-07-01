@@ -22,12 +22,19 @@ using StardewValley.Buildings;
 namespace MarketTown.Data;
 class MailData
 {
+    public int TotalVisitorVisited { get; set; } = 0;
+
+    public int FestivalEarning { get; set; } = 0;
 
     public int TotalEarning { get; set; }
     public int SellMoney { get; set; } = 0;
     public string SellList { get; set; } = "";
 
     public int TodayCustomerInteraction = 0;
+
+    public int TotalCustomerNote { get; set; } = 0;
+    public int TotalCustomerNoteYes { get; set; } = 0;
+    public int TotalCustomerNoteNo { get; set; } = 0;
 
     public int TodayMuseumVisitor { get; set; } = 0;
     public int TodayMuseumEarning { get; set; } = 0;
@@ -148,11 +155,41 @@ internal class MailLoader
             }
         );
 
+        // Island info
+        MailRepository.SaveLetter(
+            new Letter(
+                "MT.IslandInfo",
+                modHelper.Translation.Get("foodstore.letter.islandinfo"),
+                (l) => !Game1.player.mailReceived.Contains("MT.IslandInfo") && (model.TotalVisitorVisited >= 50 || !modHelper.ReadConfig<ModConfig>().IslandProgress),
+                delegate (Letter l)
+                {
+                    ((NetHashSet<string>)(object)Game1.player.mailReceived).Add(l.Id);
+                })
+            {
+                Title = "Paradise Island tip",
+                LetterTexture = letterTexture
+            }
+        );
+
+        // Island bedroom open
+        MailRepository.SaveLetter(
+            new Letter(
+                "MT.IslandBedroom",
+                modHelper.Translation.Get("foodstore.letter.islandbedroom"),
+                (l) => !Game1.player.mailReceived.Contains("MT.IslandBedroom") && (model.TotalVisitorVisited >= 200 || !modHelper.ReadConfig<ModConfig>().IslandProgress),
+                delegate (Letter l)
+                {
+                    ((NetHashSet<string>)(object)Game1.player.mailReceived).Add(l.Id);
+                })
+            {
+                Title = "Bedroom opened on Paradise island",
+                LetterTexture = letterTexture
+            }
+        );
 
 
         // Dynamic Letter --------------------------------------------------------------
         string categoryCountsString = GetCategoryCountsString(model, modHelper);
-
 
 
         // Daily Log letter
@@ -161,7 +198,8 @@ internal class MailLoader
                 "MT.SellLogMail",
                 modHelper.Translation.Get("foodstore.mailtotal",
                 new { totalEarning = model.TotalEarning, sellMoney = model.SellMoney, todayCustomerInteraction = model.TodayCustomerInteraction })
-                                    + modHelper.Translation.Get("foodstore.todaymuseumvisitor", new { todayMMuseumVisitor = model.TodayMuseumVisitor, todayMuseumEarning = model.TodayMuseumEarning }) + model.SellList,
+                                    + modHelper.Translation.Get("foodstore.todaymuseumvisitor", new { todayMMuseumVisitor = model.TodayMuseumVisitor, todayMuseumEarning = model.TodayMuseumEarning })
+                                    + model.SellList,
                 (l) => model.SellMoney != 0 || model.TodayMuseumVisitor != 0)
             {
                 LetterTexture = letterTexture
@@ -184,6 +222,7 @@ internal class MailLoader
     {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.Append(modHelper.Translation.Get("foodstore.weeklytotallog", new { totalEarning = model.TotalEarning }));
+        stringBuilder.Append(modHelper.Translation.Get("foodstore.weeklycustomerreview", new { total = model.TotalCustomerNote, pos = model.TotalCustomerNoteYes, neg = model.TotalCustomerNoteNo }));
 
         stringBuilder.Append(modHelper.Translation.Get("foodstore.forage", new { model.TotalForageSold }));
         stringBuilder.Append(modHelper.Translation.Get("foodstore.flower", new { model.TotalFlowerSold }));

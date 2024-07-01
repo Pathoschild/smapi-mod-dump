@@ -106,11 +106,9 @@ namespace StardewArchipelago.Archipelago
 
                 valid = false;
                 errorMessage += $"{Environment.NewLine}\tMod: {requirement.ContentPatcherMod}, expected version: {requirement.ContentPatcherVersion}, current Version: {existingVersion}";
-
             }
 
             return valid;
-
         }
 
         private static bool IsModActiveAndCorrectVersion(List<IModInfo> loadedModData, string desiredModName, string desiredVersion, out string existingVersion)

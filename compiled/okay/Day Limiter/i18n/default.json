@@ -1,0 +1,9 @@
+{
+  "Message_FinalDay": "This is your final day! The game will exit after saving tomorrow morning.",
+  "Message_ShutDown": "Day limit reached! Closing the game...",
+  "GMCM_Option_DaysPlayed": "Days played",
+  "GMCM_Option_DaysRemaining": "Days remaining",
+  "GMCM_Option_ModEnabled_Name": "Day Limit Enabled",
+  "GMCM_Option_DayLimitCount_Name": "Day Limit",
+  "GMCM_Option_ExitToTitle_Name": "Exit to Title"
+}

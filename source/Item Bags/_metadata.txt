@@ -6,9 +6,9 @@ mods:
    Item Bags
 
 latest commit:
-   commit 0597e434162499b8c7032ece29426cf98cba6d26
+   commit 280232f08c9300988c000f3422341c75ee65780e
    Author: Kevin Augustino <kevinaugustino@hotmail.com>
-   Date:   Thu May 16 07:22:57 2024 -0400
+   Date:   Fri Jun 14 22:57:00 2024 -0400
    
-       Fix OmniBag description
+       Disallow autofilling of combined machines into bags.
    

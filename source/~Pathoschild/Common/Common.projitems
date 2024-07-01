@@ -13,6 +13,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Commands\GenericCommandHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Integrations\BetterSprinklersPlus\BetterSprinklersPlusIntegration.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Integrations\BetterSprinklersPlus\IBetterSprinklersPlusApi.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integrations\BushBloomMod\BushBloomModIntegration.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integrations\BushBloomMod\IBushBloomModApi.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Integrations\CustomBush\CustomBushIntegration.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Integrations\CustomBush\ICustomBush.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Integrations\CustomBush\ICustomBushApi.cs" />

@@ -1,0 +1,178 @@
+﻿{
+    "coordinates": [
+        {
+            "displayName": "Custom_Ridgeside_Ridge/RidgeForest",
+            "teleportName": "Custom_Ridgeside_RidgeForest",
+            "x": 80,
+            "y": 132
+        },
+        {
+            "displayName": "Custom_Ridgeside_Ridge/Ridge",
+            "teleportName": "Custom_Ridgeside_Ridge",
+            "x": 18,
+            "y": 11
+        },
+        {
+            "displayName": "Custom_Ridgeside_RidgeFalls/RidgeFalls",
+            "teleportName": "Custom_Ridgeside_RidgeFalls",
+            "x": 39,
+            "y": 23
+        },
+        {
+            "displayName": "Custom_Ridgeside_RidgesideVillage/BloomingHillFarm",
+            "teleportName": "Custom_Ridgeside_RidgesideVillage",
+            "x": 22,
+            "y": 23
+        },
+        {
+            "displayName": "Custom_Ridgeside_RidgesideVillage/BloomingHillFarmChickenCoop",
+            "teleportName": "Custom_Ridgeside_RidgesideVillage",
+            "x": 47,
+            "y": 35
+        },
+        {
+            "displayName": "Custom_Ridgeside_RidgesideVillage/Heaps",
+            "teleportName": "Custom_Ridgeside_RidgesideVillage",
+            "x": 76,
+            "y": 20
+        },
+        {
+            "displayName": "Custom_Ridgeside_RidgesideVillage/Daniels",
+            "teleportName": "Custom_Ridgeside_RidgesideVillage",
+            "x": 83,
+            "y": 20
+        },
+        {
+            "displayName": "Custom_Ridgeside_RidgesideVillage/LogCabinHotel",
+            "teleportName": "Custom_Ridgeside_RidgesideVillage",
+            "x": 114,
+            "y": 24
+        },
+        {
+            "displayName": "Custom_Ridgeside_RidgesideVillage/OddJobs",
+            "teleportName": "Custom_Ridgeside_RidgesideVillage",
+            "x": 133,
+            "y": 24
+        },
+        {
+            "displayName": "Custom_Ridgeside_RidgesideVillage/Pickens",
+            "teleportName": "Custom_Ridgeside_RidgesideVillage",
+            "x": 89,
+            "y": 28
+        },
+        {
+            "displayName": "Custom_Ridgeside_RSVCliff/CableCar",
+            "teleportName": "Custom_Ridgeside_RSVCliff",
+            "x": 39,
+            "y": 19
+        },
+        {
+            "displayName": "Custom_Ridgeside_RSVCliff/Electrician",
+            "teleportName": "Custom_Ridgeside_RSVCliff",
+            "x": 46,
+            "y": 32
+        },
+        {
+            "displayName": "Custom_Ridgeside_RSVTheHike/Hike",
+            "teleportName": "Custom_Ridgeside_RSVTheHike",
+            "x": 76,
+            "y": 26
+        },
+        {
+            "displayName": "Custom_Ridgeside_RidgesideVillage/Starbound",
+            "teleportName": "Custom_Ridgeside_RidgesideVillage",
+            "x": 74,
+            "y": 43
+        },
+        {
+            "displayName": "Custom_Ridgeside_RidgesideVillage/Pikas",
+            "teleportName": "Custom_Ridgeside_RidgesideVillage",
+            "x": 97,
+            "y": 42
+        },
+        {
+            "displayName": "Custom_Ridgeside_RidgesideVillage/VillageOffice",
+            "teleportName": "Custom_Ridgeside_RidgesideVillage",
+            "x": 114,
+            "y": 42
+        },
+        {
+            "displayName": "Custom_Ridgeside_RidgesideVillage/Clinic",
+            "teleportName": "Custom_Ridgeside_RidgesideVillage",
+            "x": 135,
+            "y": 37
+        },
+        {
+            "displayName": "Custom_Ridgeside_RidgesideVillage/Kobayashi",
+            "teleportName": "Custom_Ridgeside_RidgesideVillage",
+            "x": 130,
+            "y": 46
+        },
+        {
+            "displayName": "Custom_Ridgeside_RidgesideVillage/Amethyne",
+            "teleportName": "Custom_Ridgeside_RidgesideVillage",
+            "x": 129,
+            "y": 72
+        },
+        {
+            "displayName": "Custom_Ridgeside_RidgesideVillage/Yojeong",
+            "teleportName": "Custom_Ridgeside_RidgesideVillage",
+            "x": 105,
+            "y": 63
+        },
+        {
+            "displayName": "Custom_Ridgeside_RidgesideVillage/CommunityGreenhouse",
+            "teleportName": "Custom_Ridgeside_RidgesideVillage",
+            "x": 96,
+            "y": 75
+        },
+        {
+            "displayName": "Custom_Ridgeside_RidgesideVillage/Akina",
+            "teleportName": "Custom_Ridgeside_RidgesideVillage",
+            "x": 75,
+            "y": 60
+        },
+        {
+            "displayName": "Custom_Ridgeside_RidgesideVillage/Rivera",
+            "teleportName": "Custom_Ridgeside_RidgesideVillage",
+            "x": 78,
+            "y": 73
+        },
+        {
+            "displayName": "Custom_Ridgeside_RidgesideVillage/LolaShed",
+            "teleportName": "Custom_Ridgeside_RidgesideVillage",
+            "x": 7,
+            "y": 48
+        },
+        {
+            "displayName": "Custom_Ridgeside_RidgesideVillage/Bladebane",
+            "teleportName": "Custom_Ridgeside_RidgesideVillage",
+            "x": 11,
+            "y": 66
+        },
+        {
+            "displayName": "Custom_Ridgeside_RidgesideVillage/Nightingale",
+            "teleportName": "Custom_Ridgeside_RidgesideVillage",
+            "x": 20,
+            "y": 103
+        },
+        {
+            "displayName": "Custom_Ridgeside_RidgesideVillage/Lidens",
+            "teleportName": "Custom_Ridgeside_RidgesideVillage",
+            "x": 20,
+            "y": 101
+        },
+        {
+            "displayName": "Custom_Ridgeside_RidgesideVillage/WaterResearch",
+            "teleportName": "Custom_Ridgeside_RidgesideVillage",
+            "x": 142,
+            "y": 113
+        },
+        {
+            "displayName": "Custom_Ridgeside_Ridge/NinjaHouse",
+            "teleportName":"Custom_Ridgeside_Ridge",
+            "x": 89,
+            "y": 22
+        }
+    ]
+}

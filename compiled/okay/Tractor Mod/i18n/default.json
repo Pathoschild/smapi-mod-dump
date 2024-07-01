@@ -137,7 +137,7 @@
     "config.harvest-giant-crops.tooltip": "Whether to cut giant crops.",
 
     "config.harvest-crops.name": "Harvest Crops",
-    "config.Harvest Crops.tooltip": "Whether to harvest crops.",
+    "config.harvest-crops.tooltip": "Whether to harvest crops.",
 
     "config.harvest-flowers.name": "Harvest Flowers",
     "config.harvest-flowers.tooltip": "Whether to harvest flowers.",
@@ -207,8 +207,8 @@
     /****
     ** Melee
     ****/
-    "config.Attack-monsters.name": "Attack Monsters",
-    "config.Attack-monsters.tooltip": "Whether to attack monsters. (This is massively overpowered due to the tractor tool speed.)",
+    "config.attack-monsters.name": "Attack Monsters",
+    "config.attack-monsters.tooltip": "Whether to attack monsters. (This is massively overpowered due to the tractor tool speed.)",
 
 
     /****

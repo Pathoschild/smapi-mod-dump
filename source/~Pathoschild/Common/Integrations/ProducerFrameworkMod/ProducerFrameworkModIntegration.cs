@@ -77,7 +77,7 @@ namespace Pathoschild.Stardew.Common.Integrations.ProducerFrameworkMod
         {
             try
             {
-                string? inputId = (string)raw["InputKey"];
+                string? inputId = (string?)raw["InputKey"];
                 string machineId = (string)raw["MachineID"]!;
                 ProducerFrameworkIngredient[] ingredients = ((List<Dictionary<string, object?>>)raw["Ingredients"]!).Select(this.ReadIngredient).ToArray();
                 string?[] exceptIngredients = ((List<Dictionary<string, object?>>)raw["ExceptIngredients"]!).Select(this.ReadIngredient).Select(p => p.InputId).ToArray();
@@ -115,7 +115,7 @@ namespace Pathoschild.Stardew.Common.Integrations.ProducerFrameworkMod
         /// <param name="raw">The raw ingredient model.</param>
         private ProducerFrameworkIngredient ReadIngredient(IDictionary<string, object?> raw)
         {
-            string? id = (string)raw["ID"];
+            string? id = (string?)raw["ID"];
             int count = raw.TryGetValue("Count", out object? rawCount) && rawCount != null
                 ? (int)rawCount
                 : 1;

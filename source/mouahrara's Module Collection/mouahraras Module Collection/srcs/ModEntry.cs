@@ -34,9 +34,11 @@ namespace mouahrarasModuleCollection
 			Harmony harmony = new(ModManifest.UniqueID);
 
 			// Apply sections
-			TweaksAndFeaturesSection.Apply(harmony);
-			AdditionsSection.Apply(harmony);
-			OverhaulsSection.Apply(harmony);
+			ArcadeGamesSection.Apply(harmony);
+			MachinesSection.Apply(harmony);
+			ShopsSection.Apply(harmony);
+			UserInterfaceSection.Apply(harmony);
+			OtherSection.Apply(harmony);
 
 			// Subscribe to events
 			Helper.Events.GameLoop.GameLaunched += GameLaunchedHandler.Apply;

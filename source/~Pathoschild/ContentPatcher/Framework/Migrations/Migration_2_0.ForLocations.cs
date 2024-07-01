@@ -50,7 +50,7 @@ namespace ContentPatcher.Framework.Migrations
             private const string AssetName = "Data/Locations";
 
             /// <summary>The valid season values.</summary>
-            private readonly Season[] ValidSeasons = new[] { Season.Spring, Season.Summer, Season.Fall, Season.Winter };
+            private readonly Season[] ValidSeasons = [Season.Spring, Season.Summer, Season.Fall, Season.Winter];
 
             /// <summary>The backing cache for <see cref="ParseEffectiveSeasons"/>.</summary>
             private readonly Dictionary<string, IReadOnlySet<Season>?> ParseSeasonsCache = new();

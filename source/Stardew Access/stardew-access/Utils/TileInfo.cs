@@ -22,7 +22,6 @@ using StardewValley.Monsters;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
 using StardewValley.TokenizableStrings;
-using StardewValley.Util;
 
 namespace stardew_access.Utils;
 
@@ -794,9 +793,11 @@ public class TileInfo
             });
             toReturn.category = CATEGORY.Doors;
         }
-        else if (correctNameAndCategory.name != null && !obj.ItemId.Contains("GreenRainWeeds"))
+        else if (correctNameAndCategory.name != null)
         {
-            correctNameAndCategory.name = MainClass.Config.ReadTileDebug ? $"{correctNameAndCategory.name} (DisplayName: {obj.DisplayName})" : correctNameAndCategory.name;
+            correctNameAndCategory.name = MainClass.Config.ReadTileDebug
+                ? $"{correctNameAndCategory.name} (DisplayName: {obj.DisplayName})"
+                : correctNameAndCategory.name;
             toReturn = correctNameAndCategory;
         }
         /*else if (obj.name.Equals("stone", StringComparison.OrdinalIgnoreCase))
@@ -823,6 +824,8 @@ public class TileInfo
         {
             if (!string.IsNullOrEmpty(obj.QualifiedItemId))
                 toReturn.name = $"{toReturn.name} ({obj.QualifiedItemId})";
+
+            // TODO Internationalize this...
             Farmer farmerOwner = Game1.getFarmerMaybeOffline(obj.owner.Value);
             string ownerName;
             if (farmerOwner == null)

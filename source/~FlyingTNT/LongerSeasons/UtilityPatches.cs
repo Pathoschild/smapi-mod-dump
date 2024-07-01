@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using Common.Utilities;
 using HarmonyLib;
 using StardewModdingAPI;
 using System.Collections.Generic;
@@ -22,9 +23,10 @@ namespace LongerSeasons
 
         private static void Utility_getSeasonNameFromNumber_Postfix(ref string __result)
         {
+            // Check IsWorldReady b/c the month is stored in the save file, and so we don't know it until the world is ready (basically save is loaded)
             if(Config.MonthsPerSeason > 1 && Context.IsWorldReady)
             {
-                __result += $" {(SHelper.Data.ReadSaveData<SeasonMonth>(context.GetType().Namespace) ?? new SeasonMonth()).month}";
+                __result += $" {CurrentSeasonMonth}";
             }
         }
         public static IEnumerable<CodeInstruction> Utility_getDateStringFor_Transpiler(IEnumerable<CodeInstruction> instructions)
@@ -36,12 +38,31 @@ namespace LongerSeasons
             {
                 if (codes[i].opcode == OpCodes.Ldc_I4_S && (sbyte)codes[i].operand == 28)
                 {
-                    SMonitor.Log($"Changing days per month to {Config.DaysPerMonth}");
-                    codes[i] = new CodeInstruction(OpCodes.Ldc_I4, Config.DaysPerMonth);
+                    SMonitor.Log($"Changing days per month");
+                    codes[i].opcode = OpCodes.Call;
+                    codes[i].operand = AccessTools.Method(typeof(Utilities), nameof(Utilities.GetDaysPerMonth));
                 }
             }
 
             return codes.AsEnumerable();
         }
+
+        /// <summary>
+        /// Increases the number of bookseller days in extended months by just repeating the bookseller every 28 days.
+        /// </summary>
+        public static void Utility_getDaysOfBooksellerThisSeason_Postfix(ref List<int> __result)
+        {
+            if (Config.DaysPerMonth <= 28 || !Config.ExtendBerry)
+                return;
+
+            for(int i = 0; i < __result.Count; i++)
+            {
+                if (__result[i] + 28 <= Config.DaysPerMonth)
+                {
+                    __result.Add(__result[i] + 28);
+                }
+            }
+        }
+
     }
 }

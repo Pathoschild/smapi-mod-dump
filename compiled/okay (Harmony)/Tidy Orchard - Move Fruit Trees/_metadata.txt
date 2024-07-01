@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/25054
+IDs: huan.tidy_orchard_move_fruit_trees
+update keys: Nexus:25054, GitHub:huancz/SDV-TidyOrchard

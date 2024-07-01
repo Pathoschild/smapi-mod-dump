@@ -3,7 +3,7 @@
   <PropertyGroup>
     <AssemblyName>Internationalization</AssemblyName>
     <RootNamespace>Internationalization</RootNamespace>
-    <Version>0.2</Version>
+    <Version>0.3</Version>
     <TargetFramework>net6.0</TargetFramework>
     <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
     <CheckEolTargetFramework>false</CheckEolTargetFramework>
@@ -17,15 +17,8 @@
   <ItemGroup>
     <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
     <PackageReference Include="Pathoschild.Stardew.ModTranslationClassBuilder" Version="2.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="README.md" CopyToOutputDirectory="PreserveNewest" />
     <None Update="Static\*" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
-
-  <Target Name="Translation Summary">
-		
-	</Target>
 	
 </Project>

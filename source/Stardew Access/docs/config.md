@@ -23,10 +23,10 @@ You can edit the config with any text editor of your choice. It is **strongly** 
 - [Object Tracker Configs](#object-tracker-configs)
 - [Radar Configs](#radar-configs)
 - [Menu Keys Configs](#menu-keys-configs)
-    - [Common Keys](#common-keys)
-    - [Character Creation Menu (New Game Menu) Keys](#character-creation-menu-new-game-menu-keys)
-    - [Junimo Note or Community Center Menu Keys](#junimo-note-or-community-center-menu-keys)
-    - [Chat Menu Configs](#chat-menu-configs)
+  - [Common Keys](#common-keys)
+  - [Character Creation Menu (New Game Menu) Keys](#character-creation-menu-new-game-menu-keys)
+  - [Junimo Note or Community Center Menu Keys](#junimo-note-or-community-center-menu-keys)
+  - [Chat Menu Configs](#chat-menu-configs)
 - [Fishing Mini-Game Configs](#fishing-mini-game-configs)
 - [Narration & Verbosity Configs](#narration--verbosity-configs)
 - [miscellaneous Configs](#miscellaneous-configs)
@@ -42,15 +42,15 @@ Once you have found the Stardew Valley installation directory, navigate to the f
 `%StardewValleyDir%` represents your Stardew Valley installation path. Below are the most common directories where Stardew Valley is installed:
 
 - Windows
-    - Steam: `C:\Program Files (x86)\Steam\steamapps\common\Stardew Valley`
-    - Xbox App: `C:\Program Files\ModifiableWindowsApps\Stardew Valley`
-    - GOG: `C:\Program Files (x86)\GOG Galaxy\Games\Stardew Valley`
+  - Steam: `C:\Program Files (x86)\Steam\steamapps\common\Stardew Valley`
+  - Xbox App: `C:\Program Files\ModifiableWindowsApps\Stardew Valley`
+  - GOG: `C:\Program Files (x86)\GOG Galaxy\Games\Stardew Valley`
 - Mac OS
-    - Steam: `~/Library/Application Support/Steam/SteamApps/common/Stardew Valley/Contents/MacOS`
-    - GOG: `/Applications/Stardew Valley.app/Contents/MacOS`
+  - Steam: `~/Library/Application Support/Steam/SteamApps/common/Stardew Valley/Contents/MacOS`
+  - GOG: `/Applications/Stardew Valley.app/Contents/MacOS`
 - Linux
-    - GOG: `~/GOGGames/StardewValley/game`
-    - Steam: `~/.local/share/Steam/steamapps/common/Stardew Valley`
+  - GOG: `~/GOGGames/StardewValley/game`
+  - Steam: `~/.local/share/Steam/steamapps/common/Stardew Valley`
 
 ## More Info About JSON:
 
@@ -66,12 +66,12 @@ Once you have found the Stardew Valley installation directory, navigate to the f
 - [TextEdit – Mac OS, iOS](https://apps.apple.com/us/app/textedit/id1070883678)
 - [nano – Linux](https://www.nano-editor.org- [Json Editor Online - Web](https://jsoneditoronline.org/)
 
-For a full list of key names,  refer to the [Key Bindings List](https://stardewvalleywiki.com/Modding:Player_Guide/Key_Bindings#Button_codes).
+For a full list of key names, refer to the [Key Bindings List](https://stardewvalleywiki.com/Modding:Player_Guide/Key_Bindings#Button_codes).
 
 ## Mouse Sim Keys Config
 
 | Name                   | Default Value       | Description                                 |
-|------------------------|---------------------|---------------------------------------------|
+| ---------------------- | ------------------- | ------------------------------------------- |
 | LeftClickMainKey       | LeftControl + Enter | Primary key to simulate mouse left click    |
 | RightClickMainKey      | LeftShift + Enter   | Primary key to simulate mouse right click   |
 | LeftClickAlternateKey  | OemOpenBrackets     | Secondary key to simulate mouse left click  |
@@ -79,82 +79,83 @@ For a full list of key names,  refer to the [Key Bindings List](https://stardewv
 
 ## Read Tile Configs
 
-| Name                     | Default Value | Description                                             |
-|--------------------------|---------------|---------------------------------------------------------|
-| ReadTile                 | true          | Toggle `Read Tile` feature                             |
-| ReadTileKey              | J             | Speak the contents of the tile the player is facing  |
-| ReadTileDebug | false | Sets whether extra debug info is included when reading tile info |
-| ReadStandingTileKey      | LeftAlt + J   | speak the contents of the tile player is standing on |
-| ReadFlooring             | false         | toggle reading floorings                               |
-| WateredToggle            | true          | toggle speaking watered or unwatered for crops         |
-| ReadTileIndexes          | false         | toggle speaking tile indexes with other info           |
-| ReadHoedDirtInMineShafts | false         | toggle speaking hoed dirt (soil) in mine shafts        |
+| Name                       | Default Value | Description                                                                                       |
+| -------------------------- | ------------- | ------------------------------------------------------------------------------------------------- |
+| ReadTile                   | true          | Toggle `Read Tile` feature                                                                        |
+| ReadTileKey                | J             | Speak the contents of the tile the player is facing                                               |
+| ReadTileDebug              | false         | Sets whether extra debug info is included when reading tile info                                  |
+| ReadStandingTileKey        | LeftAlt + J   | Speak the contents of the tile player is standing on                                              |
+| ReadFlooring               | false         | Toggle reading floorings                                                                          |
+| DisableDescriptiveFlooring | false         | Toggle reading descriptive names for flooring or generice ones (pathway/flooring/stepping stone). |
+| WateredToggle              | true          | Toggle speaking watered or unwatered for crops                                                    |
+| ReadTileIndexes            | false         | Toggle speaking tile indexes with other info                                                      |
+| ReadHoedDirtInMineShafts   | false         | Toggle speaking hoed dirt (soil) in mine shafts                                                   |
 
 ## Tile Viewer Configs
 
-| Name                              | Default Value       | Description                                                                                                 |
-|-----------------------------------|---------------------|-------------------------------------------------------------------------------------------------------------|
-| ToggleRelativeCursorLockKey       | L                   | Toggles relative cursor lock                      |
-| AutoWalkToTileKey                 | LeftControl + Enter | Auto walk to focused tile                                                                                       |
-| OpenTileInfoMenuKey               | LeftShift + Enter   | Opens the Tile Info menu for the focused tile                                                               |
-| TileCursorUpKey                   | Up                  | Move the tile cursor one tile up                                                                                 |
-| TileCursorRightKey                | Right               | Move the tile cursor one tile right                                                                              |
-| TileCursorDownKey                 | Down                | Move the tile cursor one tile down                                                                               |
-| TileCursorLeftKey                 | Left                | Move the tile cursor one tile left                                                                               |
-| TileCursorPreciseUpKey            | LeftShift + Up      | Move the tile cursor up by a specified pixel value                                                         |
-| TileCursorPreciseRightKey         | LeftShift + Right   | Move the tile cursor right by a specified pixel value                                                      |
-| TileCursorPreciseDownKey          | LeftShift + Down    | Move the tile cursor down by a specified pixel value                                                       |
-| TileCursorPreciseLeftKey          | LeftShift + Left    | Move the tile cursor left by a specified pixel value                                                       |
-| LimitTileCursorToScreen           | false               | Toggles the ability to move the tile cursor beyond the portion of the map that is visible on screen                                                  |
-| TileCursorPreciseMovementDistance | 8                   | Specifies how many pixels the cursor should move when using precision tile cursor movement |
+| Name                              | Default Value       | Description                                                                                         |
+| --------------------------------- | ------------------- | --------------------------------------------------------------------------------------------------- |
+| ToggleRelativeCursorLockKey       | L                   | Toggles relative cursor lock                                                                        |
+| AutoWalkToTileKey                 | LeftControl + Enter | Auto walk to focused tile                                                                           |
+| OpenTileInfoMenuKey               | LeftShift + Enter   | Opens the Tile Info menu for the focused tile                                                       |
+| TileCursorUpKey                   | Up                  | Move the tile cursor one tile up                                                                    |
+| TileCursorRightKey                | Right               | Move the tile cursor one tile right                                                                 |
+| TileCursorDownKey                 | Down                | Move the tile cursor one tile down                                                                  |
+| TileCursorLeftKey                 | Left                | Move the tile cursor one tile left                                                                  |
+| TileCursorPreciseUpKey            | LeftShift + Up      | Move the tile cursor up by a specified pixel value                                                  |
+| TileCursorPreciseRightKey         | LeftShift + Right   | Move the tile cursor right by a specified pixel value                                               |
+| TileCursorPreciseDownKey          | LeftShift + Down    | Move the tile cursor down by a specified pixel value                                                |
+| TileCursorPreciseLeftKey          | LeftShift + Left    | Move the tile cursor left by a specified pixel value                                                |
+| LimitTileCursorToScreen           | false               | Toggles the ability to move the tile cursor beyond the portion of the map that is visible on screen |
+| TileCursorPreciseMovementDistance | 8                   | Specifies how many pixels the cursor should move when using precision tile cursor movement          |
 
 ## Grid Movement Configs
 
-| Name                                  | Default Value | Description                                         |
-|---------------------------------------|---------------|-----------------------------------------------------|
-| GridMovementActive                    | true          | Enable or disable grid movement            |
-| ToggleGridMovementKey                 | I             | Toggle grid movement                               |
-| GridMovementOverrideKey               | LeftControl   | Disable Grid Movement while held                    |
-| GridMovementSpeed                     | 100           | Player movement speed (percentage)              |
-| GridMovementTilesPerStep              | 1             | Tiles moved per step                               |
+| Name                                  | Default Value | Description                                          |
+| ------------------------------------- | ------------- | ---------------------------------------------------- |
+| GridMovementActive                    | true          | Enable or disable grid movement                      |
+| ToggleGridMovementKey                 | I             | Toggle grid movement                                 |
+| GridMovementOverrideKey               | LeftControl   | Disable Grid Movement while held                     |
+| GridMovementSpeed                     | 100           | Player movement speed (percentage)                   |
+| GridMovementTilesPerStep              | 1             | Tiles moved per step                                 |
 | GridMovementDelayAfterDirectionChange | 250           | Movement delay after changing the player's direction |
 
 ## Object Tracker Configs
 
-| Name                             | Default Value          | Description                                                   |
-|----------------------------------|------------------------|---------------------------------------------------------------|
-| OTCycleUpCategory                | LeftControl + PageUp   | Cycle Up Category                                             |
-| OTCycleDownCategory              | LeftControl + PageDown | Cycle Down Category                                           |
-| OTCycleUpObject                  | PageUp                 | Cycle Up Object                                               |
-| OTCycleDownObject                | PageDown               | Cycle Down Object                                             |
-| OTMoveToSelectedObject           | LeftControl + Home     | Move to the currently selected object                        |
-| OTReadSelectedObject             | Home                   | Read info about the currently selected object                |
-| OTReadSelectedObjectTileLocation | End                    | Read info about the currently selected objects tile location |
-| OTCancelAutoWalking              | Escape                 | Manually stop Auto Walking                                   |
-| OTSwitchSortingMode              | OemTilde               | Toggle between proximity and alphabetical sorting                      |
-| OTSortByProximity                | true                   | Sets whether proximity sorting mode starts enabled       |
-| OTAutoRefreshing                 | true                   |   Sets whether the object tracker auto-refreshes                                                            |
-| OTWrapLists                      | false                  |      Sets whether object tracker lists wrap around when the first or last item is reached                                                         |
-| OTFavorite1 | LeftAlt + D1, RightAlt + D1 | Set object tracker favorite slot 1 |
-| OTFavorite2 | LeftAlt + D2, RightAlt + D2 | Set object tracker favorite slot 2 |
-| OTFavorite3 | LeftAlt + D3, RightAlt + D3 | Set object tracker favorite slot 3 |
-| OTFavorite4 | LeftAlt + D4, RightAlt + D4 | Set object tracker favorite slot 4 |
-| OTFavorite5 | LeftAlt + D5, RightAlt + D5 | Set object tracker favorite slot 5 |
-| OTFavorite6 | LeftAlt + D16 RightAlt + D6 | Set object tracker favorite slot 6 |
-| OTFavorite7 | LeftAlt + D7, RightAlt + D7 | Set object tracker favorite slot 7 |
-| OTFavorite8 | LeftAlt + D8, RightAlt + D8 | Set object tracker favorite slot 8 |
-| OTFavorite9 | LeftAlt + D9, RightAlt + D9 | Set object tracker favorite slot 9 |
-| OTFavorite10 | LeftAlt + D0, RightAlt + D0 | Set object tracker favorite slot 10 |
-| OTFavoriteDecreaseStack | LeftAlt + OemMinus, RightAlt + OemMinus | Browse the previous stack of object tracker favorites |
-| OTFavoriteIncreaseStack | LeftAlt + OemPlus, RightAlt + OemPlus | Next stack of object tracker favorites |
-| OTFavoriteSaveCoordinatesToggle | LeftAlt + OemTilde, RightAlt + OemTilde | Toggle the ability to save coordinates to object tracker favorites |
-| OTFavoriteSaveDefault | LeftAlt + Back, RightAlt + Back | todo |
+| Name                             | Default Value                           | Description                                                                          |
+| -------------------------------- | --------------------------------------- | ------------------------------------------------------------------------------------ |
+| OTCycleUpCategory                | LeftControl + PageUp                    | Cycle Up Category                                                                    |
+| OTCycleDownCategory              | LeftControl + PageDown                  | Cycle Down Category                                                                  |
+| OTCycleUpObject                  | PageUp                                  | Cycle Up Object                                                                      |
+| OTCycleDownObject                | PageDown                                | Cycle Down Object                                                                    |
+| OTMoveToSelectedObject           | LeftControl + Home                      | Move to the currently selected object                                                |
+| OTReadSelectedObject             | Home                                    | Read info about the currently selected object                                        |
+| OTReadSelectedObjectTileLocation | End                                     | Read info about the currently selected objects tile location                         |
+| OTCancelAutoWalking              | Escape                                  | Manually stop Auto Walking                                                           |
+| OTSwitchSortingMode              | OemTilde                                | Toggle between proximity and alphabetical sorting                                    |
+| OTSortByProximity                | true                                    | Sets whether proximity sorting mode starts enabled                                   |
+| OTAutoRefreshing                 | true                                    | Sets whether the object tracker auto-refreshes                                       |
+| OTWrapLists                      | false                                   | Sets whether object tracker lists wrap around when the first or last item is reached |
+| OTFavorite1                      | LeftAlt + D1, RightAlt + D1             | Set object tracker favorite slot 1                                                   |
+| OTFavorite2                      | LeftAlt + D2, RightAlt + D2             | Set object tracker favorite slot 2                                                   |
+| OTFavorite3                      | LeftAlt + D3, RightAlt + D3             | Set object tracker favorite slot 3                                                   |
+| OTFavorite4                      | LeftAlt + D4, RightAlt + D4             | Set object tracker favorite slot 4                                                   |
+| OTFavorite5                      | LeftAlt + D5, RightAlt + D5             | Set object tracker favorite slot 5                                                   |
+| OTFavorite6                      | LeftAlt + D16 RightAlt + D6             | Set object tracker favorite slot 6                                                   |
+| OTFavorite7                      | LeftAlt + D7, RightAlt + D7             | Set object tracker favorite slot 7                                                   |
+| OTFavorite8                      | LeftAlt + D8, RightAlt + D8             | Set object tracker favorite slot 8                                                   |
+| OTFavorite9                      | LeftAlt + D9, RightAlt + D9             | Set object tracker favorite slot 9                                                   |
+| OTFavorite10                     | LeftAlt + D0, RightAlt + D0             | Set object tracker favorite slot 10                                                  |
+| OTFavoriteDecreaseStack          | LeftAlt + OemMinus, RightAlt + OemMinus | Browse the previous stack of object tracker favorites                                |
+| OTFavoriteIncreaseStack          | LeftAlt + OemPlus, RightAlt + OemPlus   | Next stack of object tracker favorites                                               |
+| OTFavoriteSaveCoordinatesToggle  | LeftAlt + OemTilde, RightAlt + OemTilde | Toggle the ability to save coordinates to object tracker favorites                   |
+| OTFavoriteSaveDefault            | LeftAlt + Back, RightAlt + Back         | todo                                                                                 |
 
 ## Radar Configs
 
 | Name             | Default Value | Description                                |
-|------------------|---------------|--------------------------------------------|
-| Radar            | false         | Toggle Radar                       |
+| ---------------- | ------------- | ------------------------------------------ |
+| Radar            | false         | Toggle Radar                               |
 | RadarStereoSound | true          | Set whether stereo sound is used for radar |
 
 ## Menu Keys Configs
@@ -165,29 +166,29 @@ For a full list of key names,  refer to the [Key Bindings List](https://stardewv
 
 ### Common Keys
 
-| Name                                 | Default Value | Description                                                                                   |
-|--------------------------------------|---------------|-----------------------------------------------------------------------------------------------|
-| PrimaryInfoKey                       | C             | Used to speak additional info on many menus. More info available here: [Primary Info Key](keybindings.md#primary-info-key)   |
-| SnapToFirstInventorySlotKey          | I             | Snaps to the first slot in the player's inventory      |
-| SnapToFirstSecondaryInventorySlotKey | LeftShift + I | Snaps to the first slot in the secondary inventory, such as a chest  |
-| CraftingMenuCycleThroughRecipesKey   | C             | Cycle through available recipes in the crafting menu                                                   |
+| Name                                 | Default Value | Description                                                                                                                |
+| ------------------------------------ | ------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| PrimaryInfoKey                       | C             | Used to speak additional info on many menus. More info available here: [Primary Info Key](keybindings.md#primary-info-key) |
+| SnapToFirstInventorySlotKey          | I             | Snaps to the first slot in the player's inventory                                                                          |
+| SnapToFirstSecondaryInventorySlotKey | LeftShift + I | Snaps to the first slot in the secondary inventory, such as a chest                                                        |
+| CraftingMenuCycleThroughRecipesKey   | C             | Cycle through available recipes in the crafting menu                                                                       |
 
 ### Character Creation Menu (New Game Menu) Keys
 
-| Name                                        | Default Value       | Description                                |
-|---------------------------------------------|---------------------|--------------------------------------------|
-| CharacterCreationMenuNextKey                | Right               | Go to next element                         |
-| CharacterCreationMenuPreviousKey            | Left                | Go to previous element                     |
+| Name                                        | Default Value       | Description                                  |
+| ------------------------------------------- | ------------------- | -------------------------------------------- |
+| CharacterCreationMenuNextKey                | Right               | Go to next element                           |
+| CharacterCreationMenuPreviousKey            | Left                | Go to previous element                       |
 | CharacterCreationMenuDesignToggleKey        | LeftControl + Space | Toggle displaying character creation options |
-| CharacterCreationMenuSliderIncreaseKey      | Up                  | Increase the slider value by 1             |
-| CharacterCreationMenuSliderLargeIncreaseKey | PageUp              | Increase the slider value by 10            |
-| CharacterCreationMenuSliderDecreaseKey      | Down                | Decrease the slider value by 1             |
-| CharacterCreationMenuSliderLargeDecreaseKey | PageDown            | Decrease the slider value by 10            |
+| CharacterCreationMenuSliderIncreaseKey      | Up                  | Increase the slider value by 1               |
+| CharacterCreationMenuSliderLargeIncreaseKey | PageUp              | Increase the slider value by 10              |
+| CharacterCreationMenuSliderDecreaseKey      | Down                | Decrease the slider value by 1               |
+| CharacterCreationMenuSliderLargeDecreaseKey | PageDown            | Decrease the slider value by 10              |
 
 ### Junimo Note or Community Center Menu Keys
 
 | Name                              | Default Value | Description                                                  |
-|-----------------------------------|---------------|--------------------------------------------------------------|
+| --------------------------------- | ------------- | ------------------------------------------------------------ |
 | BundleMenuIngredientsKey          | I             | Cycle through the ingredients in the current selected bundle |
 | BundleMenuInventoryItemsKey       | C             | Cycle through the items in the player's inventory            |
 | BundleMenuPurchaseButtonKey       | P             | Move the mouse cursor to purchase button                     |
@@ -197,54 +198,54 @@ For a full list of key names,  refer to the [Key Bindings List](https://stardewv
 ### Chat Menu Configs
 
 | Name                | Default Value | Description                |
-|---------------------|---------------|----------------------------|
+| ------------------- | ------------- | -------------------------- |
 | ChatMenuNextKey     | PageUp        | Read previous chat message |
 | ChatMenuPreviousKey | PageDown      | Read next chat message     |
 
 ## Fishing Mini-Game Configs
 
 | Name                     | Default Value | Description                                                                                                                                                                                                                                                                                                            |
-|--------------------------|---------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ------------------------ | ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | MaximumFishingDifficulty | 999           | Every fish have a difficulty value which varies from around 0 to 150. You can use this to limit the maximum difficulty any fish can have.                                                                                                                                                                              |
 | FixFishingMotionType     | 999           | You can fix what motion type every fish has, by default every fish has a fixed motion type like for squid it's sinker, walleye it's smooth, etc. You can use a value between 0 to 4 to fix the motion. 0 indicates mixed motion type, 1 indicates art, 2 indicates smooth, 3 indicates sinker and 4 indicates floater. |
 
 ## Narration & Verbosity Configs
 
-| Name                       | Default Value | Description                                                                  |
-|----------------------------|---------------|------------------------------------------------------------------------------|
-| RepeatLastTextKey | LeftAlt + Space, RightAlt + Space | Repeat the last phrase that was narrated |
-| HealthNStaminaKey          | H             | Narrate health and stamina.                                                  |
-| HealthNStaminaInPercentage | true          | Whether to speak health and stamina in percentage or the actual value        |
-| List PositionKey           | K             | Narrate player position.                                                     |
-| List LocationKey           | LeftAlt + K   | Narrate current location name.                                               |
-| List MoneyKey              | R             | Narrate the money the player has currently.                                  |
-| List TimeNSeasonKey        | Q             | Narrate the time of day, day and date and season                             |
-| Use24HourFormat | false | Switch time narration between 12-hour and 24-hour |
-| VerboseCoordinates         | true          | Whether to speak 'X:' and 'Y:' along with co-ordinates or not                |
-| SnapMouse                  | true          | Toggles the snap mouse feature                                               |
-| Warning                    | true          | Toggles the warnings feature                                                 |
-| TTS                        | true          | Toggles the screen reader/tts.                                               |
-| TrackDroppedItems          | true          | Toggles detecting the dropped items.                                         |
-| DisableInventoryVerbosity  | false         | If enabled, does not speaks 'not usable here' and 'donatable' in inventories |
-| DisableBushVerbosity       | false         | If enabled, does not speak bush type or size; only harvestable.              |
-| MacSpeechRate              | 220           | Sets speech rate for the Mac TTS.                                            |
-| DisableDescriptiveDebris | false | Sets whether items such as sticks and stones have more detailed descriptions |
-| DisableColorfulSlime | false | Sets whether slime color is read |
-| ExtraColors | false | Sets whether the full list of colors is used for color description. [Full color list in this repository](https://github.com/meodai/color-names) |
-| DisableInventoryFluentPluralization | false | Sets whether inventory items are pluralized when spoken |
+| Name                                | Default Value                     | Description                                                                                                                                     |
+| ----------------------------------- | --------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| RepeatLastTextKey                   | LeftAlt + Space, RightAlt + Space | Repeat the last phrase that was narrated                                                                                                        |
+| HealthNStaminaKey                   | H                                 | Narrate health and stamina.                                                                                                                     |
+| HealthNStaminaInPercentage          | true                              | Whether to speak health and stamina in percentage or the actual value                                                                           |
+| List PositionKey                    | K                                 | Narrate player position.                                                                                                                        |
+| List LocationKey                    | LeftAlt + K                       | Narrate current location name.                                                                                                                  |
+| List MoneyKey                       | R                                 | Narrate the money the player has currently.                                                                                                     |
+| List TimeNSeasonKey                 | Q                                 | Narrate the time of day, day and date and season                                                                                                |
+| Use24HourFormat                     | false                             | Switch time narration between 12-hour and 24-hour                                                                                               |
+| VerboseCoordinates                  | true                              | Whether to speak 'X:' and 'Y:' along with co-ordinates or not                                                                                   |
+| SnapMouse                           | true                              | Toggles the snap mouse feature                                                                                                                  |
+| Warning                             | true                              | Toggles the warnings feature                                                                                                                    |
+| TTS                                 | true                              | Toggles the screen reader/tts.                                                                                                                  |
+| TrackDroppedItems                   | true                              | Toggles detecting the dropped items.                                                                                                            |
+| DisableInventoryVerbosity           | false                             | If enabled, does not speaks 'not usable here' and 'donatable' in inventories                                                                    |
+| DisableBushVerbosity                | false                             | If enabled, does not speak bush type or size; only harvestable.                                                                                 |
+| MacSpeechRate                       | 220                               | Sets speech rate for the Mac TTS.                                                                                                               |
+| DisableDescriptiveDebris            | false                             | Sets whether items such as sticks and stones have more detailed descriptions                                                                    |
+| DisableColorfulSlime                | false                             | Sets whether slime color is read                                                                                                                |
+| ExtraColors                         | false                             | Sets whether the full list of colors is used for color description. [Full color list in this repository](https://github.com/meodai/color-names) |
+| DisableInventoryFluentPluralization | false                             | Sets whether inventory items are pluralized when spoken                                                                                         |
 
 ## miscellaneous Configs
 
-| Name                       | Default Value | Description                                                                  |
-|----------------------------|---------------|------------------------------------------------------------------------------|
-| YouveGotMailSound | true | Sets playing a sound when there is new mail in your mailbox |
-| EnableCheats | false | Sets whether Stardew Access enables debug mode on startup |
+| Name              | Default Value | Description                                                 |
+| ----------------- | ------------- | ----------------------------------------------------------- |
+| YouveGotMailSound | true          | Sets playing a sound when there is new mail in your mailbox |
+| EnableCheats      | false         | Sets whether Stardew Access enables debug mode on startup   |
 
 ## Default Config
 
-This config is current as of [Beta Release v1.4.0-beta.4](https://github.com/khanshoaib3/stardew-access/releases/tag/v1.6.0-beta.4)
+This config is current as of [Beta Release v1.6.0-beta.4](https://github.com/khanshoaib3/stardew-access/releases/tag/v1.6.0-beta.4)
 
-~~~json
+```json
 {
   "LeftClickMainKey": "LeftControl + Enter",
   "RightClickMainKey": "LeftShift + Enter",
@@ -256,6 +257,7 @@ This config is current as of [Beta Release v1.4.0-beta.4](https://github.com/kha
   "ReadTileKey": "J",
   "ReadStandingTileKey": "LeftAlt + J",
   "ReadFlooring": false,
+  "DisableDescriptiveFlooring": false,
   "WateredToggle": true,
   "ReadTileDebug": false,
   "ReadHoedDirtInMineShafts": false,
@@ -335,6 +337,11 @@ This config is current as of [Beta Release v1.4.0-beta.4](https://github.com/kha
   "SnapMouse": true,
   "Warning": true,
   "TTS": true,
+  "AutoReadCharacterBubbles": true,
+  "AutoReadCharacterDialog": true,
+  "AutoReadQuestionDialog": true,
+  "AutoReadBasicDialog": true,
+  "ManualReadDialogKey": "R",
   "TrackDroppedItems": true,
   "DisableInventoryVerbosity": false,
   "DisableBushVerbosity": false,
@@ -348,7 +355,8 @@ This config is current as of [Beta Release v1.4.0-beta.4](https://github.com/kha
   "MaximumFishingDifficulty": 999,
   "FixFishingMotionType": 999,
   "Use24HourFormat": false
-}~~~
+}
+```
 
 ## Other Pages
 

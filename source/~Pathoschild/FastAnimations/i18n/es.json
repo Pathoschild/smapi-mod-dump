@@ -78,6 +78,12 @@
     "config.casino-slots.name": "Tragamonedas del casino",
     "config.casino-slots.tooltip": "La rapidez con la que giran las tragamonedas del casino. Por defecto {{defaultValue}}x.",
 
+    "config.event.name": "Event cutscene", // TODO
+    "config.event.tooltip": "How fast event cutscenes play. Default {{defaultValue}}x, suggested {{suggestedValue}}x.", // TODO
+
+    "config.fade.name": "Fade", // TODO
+    "config.fade.tooltip": "How fast the screen fades to black and fades back in. Default {{defaultValue}}x.", // TODO
+
     "config.fishing-treasure.name": "Fishing treasure chest", // TODO
     "config.fishing-treasure.tooltip": "How fast you open a fishing treasure chest. Default {{defaultValue}}x.", // TODO
 
@@ -87,8 +93,14 @@
     "config.open-chest.name": "Open chest", // TODO
     "config.open-chest.tooltip": "How fast you open chests. Default {{defaultValue}}x.", // TODO
 
+    "config.parrot-express.name": "Parrot express", // TODO
+    "config.parrot-express.tooltip": "How fast the parrot express runs. Default {{defaultValue}}x.", // TODO
+
     "config.prize-ticket-machine.name": "Prize ticket machine", // TODO
     "config.prize-ticket-machine.tooltip": "How fast Lewis' prize ticket machine accepts a ticket and produces an item. Default {{defaultValue}}x.", // TODO
+
+    "config.tailor.name": "Tailor", // TODO
+    "config.tailor.tooltip": "How fast the sewing machine works. Default {{defaultValue}}x.", // TODO
 
     "config.tree-fall.name": "Caída de árboles",
     "config.tree-fall.tooltip": "La rapidez con la que caen los árboles después de cortarlos. Por defecto {{defaultValue}}x, sugerencia {{suggestedValue}}x.",
@@ -100,6 +112,12 @@
     ** 'UI Animation Speeds' section
     ****/
     "config.ui-speeds": "Velocidad de animación de la interfaz de usuario",
+
+    "config.dialogue-typing.name": "Dialogue typing", // TODO
+    "config.dialogue-typing.tooltip": "How fast text appears in dialogue boxes. Default {{defaultValue}}x", // TODO
+
+    "config.open-dialogue-box.name": "Open dialogue box", // TODO
+    "config.open-dialogue-box.tooltip": "How fast dialogue boxes open. Default {{defaultValue}}x.", // TODO
 
     "config.title-menu.name": "Transiciones del menú de título",
     "config.title-menu.tooltip": "La rapidez con la que el menú de títulos pasa de una pantalla a otra. Por defecto {{defaultValue}}x.",

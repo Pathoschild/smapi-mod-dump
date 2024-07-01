@@ -1,0 +1,32 @@
+{
+  "EggListsExclusions": [
+    "cockwhite, cockbrown, cockblue, cockvoid, cockgold",
+    "ExampleAnimalKey1",
+    "ExampleAnimalKey2",
+    "ExampleAnimalKey3",
+    "OR",
+    "ExampleAnimalKey1, ExampleAnimalKey2, ExampleAnimalKey3"
+  ],
+  "BirthTextExclusions": [
+    "ExampleAnimalKey1",
+    "ExampleAnimalKey2",
+    "ExampleAnimalKey3",
+    "OR",
+    "ExampleAnimalKey1, ExampleAnimalKey2, ExampleAnimalKey3"
+  ],
+  "ClonedEggsExclusionList": [
+    "cockwhite, cockbrown, cockblue, cockvoid, cockgold",
+    "ExampleAnimalKey1",
+    "ExampleAnimalKey2",
+    "ExampleAnimalKey3",
+    "OR",
+    "ExampleAnimalKey1, ExampleAnimalKey2, ExampleAnimalKey3"
+  ],
+  "ClonedEggsExclusionListEggs": [
+    "437",
+    "439",
+    "857",
+    "680",
+    "413"
+  ]
+}

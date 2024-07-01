@@ -47,17 +47,22 @@ namespace ArsVenefici.Framework.Spells.Components
 
             Torch torch = new Torch();
 
-            gameLocation.objects.Add(tile.GetVector(), torch);
-            torch.initializeLightSource(tile.GetVector());
-
-            torch.Fragility = 1;
-
-            if (player != null)
+            if(!gameLocation.objects.ContainsKey(tile.GetVector()))
             {
-                Game1.playSound("woodyStep");
+                gameLocation.objects.Add(tile.GetVector(), torch);
+                torch.initializeLightSource(tile.GetVector());
+
+                torch.Fragility = 1;
+
+                if (player != null)
+                {
+                    Game1.playSound("woodyStep");
+                }
+
+                return new SpellCastResult(SpellCastResultType.SUCCESS);
             }
 
-            return new SpellCastResult(SpellCastResultType.SUCCESS);
+            return new SpellCastResult(SpellCastResultType.EFFECT_FAILED);
         }
 
         public override SpellCastResult Invoke(ModEntry modEntry, ISpell spell, IEntity caster, GameLocation gameLocation, List<ISpellModifier> modifiers, TerrainFeatureHitResult target, int index, int ticksUsed)
@@ -69,17 +74,22 @@ namespace ArsVenefici.Framework.Spells.Components
 
             Torch torch = new Torch();
 
-            gameLocation.objects.Add(tile.GetVector(), torch);
-            torch.initializeLightSource(tile.GetVector());
-
-            torch.Fragility = 1;
-
-            if (player != null)
+            if (!gameLocation.objects.ContainsKey(tile.GetVector()))
             {
-                Game1.playSound("woodyStep");
+                gameLocation.objects.Add(tile.GetVector(), torch);
+                torch.initializeLightSource(tile.GetVector());
+
+                torch.Fragility = 1;
+
+                if (player != null)
+                {
+                    Game1.playSound("woodyStep");
+                }
+
+                return new SpellCastResult(SpellCastResultType.SUCCESS);
             }
 
-            return new SpellCastResult(SpellCastResultType.SUCCESS);
+            return new SpellCastResult(SpellCastResultType.EFFECT_FAILED);
         }
 
         private int GetUnusedLightSourceId(GameLocation location)
@@ -94,7 +104,7 @@ namespace ArsVenefici.Framework.Spells.Components
 
         public override int ManaCost()
         {
-            return 60;
+            return 7;
         }
     }
 }

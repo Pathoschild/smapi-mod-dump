@@ -1,7 +1,7 @@
 {
   "Name": "Upgraded Casks",
   "Author": "CyanFire",
-  "Version": "1.4.0",
+  "Version": "1.7.0",
   "Description": "Extra code for Upgraded Casks",
   "UniqueID": "CF.UpgradedCasks",
   "EntryDll": "UpgradedCasks.dll",

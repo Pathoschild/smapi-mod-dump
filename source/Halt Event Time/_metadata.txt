@@ -6,9 +6,9 @@ mods:
    Halt Event Time
 
 latest commit:
-   commit 2d5445113a10dc6aeb591a0337ea59b15642243a
+   commit 49c3e4e959a89449ddfdfecce850065bb9a05011
    Author: chawol <chawolbaka@hotmail.com>
-   Date:   Wed May 4 00:27:02 2022 +0800
+   Date:   Sat Jun 22 19:46:03 2024 +0800
    
        Update SMAPI
    

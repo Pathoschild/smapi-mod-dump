@@ -11,7 +11,7 @@
 {
     "Name": "Range Highlight",
     "Author": "Jamie Taylor",
-    "Version": "4.2.0",
+    "Version": "4.2.1",
     "Description": "Highlights ranges for scarecrows, sprinklers, etc.",
     "UniqueID": "jltaylor-us.RangeHighlight",
     "EntryDll": "RangeHighlight.dll",

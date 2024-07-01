@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/24710
+IDs: chiccen.WaterYourCrops
+update keys: Nexus:24710, GitHub:chiccenFL/StardewValleyMods

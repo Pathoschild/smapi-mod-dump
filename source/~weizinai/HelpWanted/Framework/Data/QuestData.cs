@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley.Quests;
 
-namespace HelpWanted.Framework.Data;
+namespace weizinai.StardewValleyMod.HelpWanted.Framework.Data;
 
 internal class QuestData
 {
@@ -32,17 +32,17 @@ internal class QuestData
     public QuestData(Texture2D pad, Rectangle padSource, Color padColor, Texture2D pin, Rectangle pinSource, Color pinColor,
         Texture2D icon, Rectangle iconSource, Color iconColor, float iconScale, Point iconOffset, Quest quest)
     {
-        Pad = pad;
-        PadSource = padSource;
-        PadColor = padColor;
-        Pin = pin;
-        PinSource = pinSource;
-        PinColor = pinColor;
-        Icon = icon;
-        IconSource = iconSource;
-        IconColor = iconColor;
-        IconScale = iconScale;
-        IconOffset = iconOffset;
-        Quest = quest;
+        this.Pad = pad;
+        this.PadSource = padSource;
+        this.PadColor = padColor;
+        this.Pin = pin;
+        this.PinSource = pinSource;
+        this.PinColor = pinColor;
+        this.Icon = icon;
+        this.IconSource = iconSource;
+        this.IconColor = iconColor;
+        this.IconScale = iconScale;
+        this.IconOffset = iconOffset;
+        this.Quest = quest;
     }
 }

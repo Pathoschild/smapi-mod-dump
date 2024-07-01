@@ -159,10 +159,6 @@ static_tile-elliott_house-piano_key_2 = Piano Key 2
 static_tile-elliott_house-piano_key_3 = Piano Key 3
 static_tile-elliott_house-piano_key_4 = Piano Key 4
 
-# Farm
-
-static_tile-farm-lumber_pile = Lumber Pile
-
 # FarmHouse
 
 static_tile-farmhouse-cellar_door = cellar

@@ -1,0 +1,8 @@
+{
+  "config.option.notification_time.name": "Heure de notification de train",
+  "config.option.notification_time.description": "À quelle heure afficher la notification qu’un train arrive le lendemain",
+  "list_title": "Contenu du train",
+  "train_today": "Un train passe à travers Stardew Valley aujourd’hui à {{time}}.",
+  "train_tomorrow": "Un train passera demain à travers Stardew Valley, vers {{time}}!",
+  "empty_train": "aucun"
+}

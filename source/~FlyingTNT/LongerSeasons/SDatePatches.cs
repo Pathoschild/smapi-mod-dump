@@ -20,8 +20,6 @@ namespace LongerSeasons
     /// <summary>The mod entry point.</summary>
     public partial class ModEntry
     {
-
-
         public static IEnumerable<CodeInstruction> SDate_Transpiler(IEnumerable<CodeInstruction> instructions)
         {
             SMonitor.Log($"Transpiling SDate()");
@@ -33,7 +31,7 @@ namespace LongerSeasons
                 if (codes[i].opcode == OpCodes.Ldarg_1 && codes[i+1].opcode == OpCodes.Ldarg_0 && codes[i+2].opcode == OpCodes.Ldfld && ((FieldInfo)codes[i + 2].operand).Name == "DaysInSeason")
                 {
                     SMonitor.Log($"Avoiding SMAPI {((FieldInfo)codes[i + 2].operand).Name} {Config.DaysPerMonth}");
-                    codes[i + 1] = new CodeInstruction(OpCodes.Ldc_I4, Config.DaysPerMonth);
+                    codes[i + 1] = CodeInstruction.Call(typeof(Utilities), nameof(Utilities.GetDaysPerMonth));
                     outCodes.Add(codes[i++]);
                     outCodes.Add(codes[i++]);
                     i++;

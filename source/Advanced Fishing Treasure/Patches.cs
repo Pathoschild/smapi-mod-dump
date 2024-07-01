@@ -9,21 +9,15 @@
 *************************************************/
 
 
-using System.Collections;
-using System.Collections.Immutable;
-using System.Runtime.CompilerServices;
-using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Extensions;
 using StardewValley.GameData.BigCraftables;
-using StardewValley.GameData.Machines;
 using StardewValley.GameData.Objects;
 using StardewValley.GameData.Pants;
 using StardewValley.GameData.Shirts;
 using StardewValley.GameData.Tools;
 using StardewValley.GameData.Weapons;
-using StardewValley.Internal;
 using StardewValley.ItemTypeDefinitions;
 using StardewValley.Menus;
 using StardewValley.Objects;
@@ -50,6 +44,19 @@ public class Patches
         
         public static void Postfix(int remainingFish, FishingRod __instance)
         {
+            int vanillaRoll = ModEntry.Config.VanillaMultiplier;
+            int moddedRoll = ModEntry.Config.ModdedMultiplier;
+            int priceMax = ModEntry.Config.PriceMax;
+            int prize = ModEntry.Config.MoneyPrize;
+
+            if (__instance.goldenTreasure)
+            {
+                vanillaRoll += ModEntry.Config.GoldBonusRolls;
+                moddedRoll += ModEntry.Config.GoldBonusRolls;
+                priceMax *= ModEntry.Config.GoldPriceMaxMult;
+                prize *= ModEntry.Config.GoldPrizeMult;
+            }
+            
             if (!ModEntry.Config.ModEnabled)
             {
                 return;
@@ -63,7 +70,7 @@ public class Patches
             
             List<Item> vanillaLoot = new();
 
-            for (int i = 0; i < ModEntry.Config.VanillaMultiplier; i++)
+            for (int i = 0; i < vanillaRoll; i++)
             {
                 vanillaLoot = vanillaLoot.Concat(ModEntry.GetVanillaGrabMenu(__instance, remainingFish)).ToList();
             }
@@ -117,13 +124,14 @@ public class Patches
                     { "Eggs", "-5" },
                     { "Fish", "-4" },
                     { "Gems", "-2" },
+                    { "Artifacts", "Arch" },
                     { "Special", "0" }
                 };
                 List<int> Chances = new()
                 {
                     ModEntry.Config.ExpBooksChance * (ModEntry.Config.IncludeExpBooks ? 1 : 0),
                     ModEntry.Config.SkillBooksChance * (ModEntry.Config.IncludeSkillBooks ? 1 : 0),
-                    ModEntry.Config.RingsChance * (ModEntry.Config.IncludeRings ? 1 : 0),
+                    //ModEntry.Config.RingsChance * (ModEntry.Config.IncludeRings ? 1 : 0),
                     ModEntry.Config.GreensChance * (ModEntry.Config.IncludeGreens ? 1 : 0),
                     ModEntry.Config.FlowersChance * (ModEntry.Config.IncludeFlowers ? 1 : 0),
                     ModEntry.Config.FruitChance * (ModEntry.Config.IncludeFruit ? 1 : 0),
@@ -149,23 +157,44 @@ public class Patches
                     ModEntry.Config.EggsChance * (ModEntry.Config.IncludeEggs ? 1 : 0),
                     ModEntry.Config.FishChance * (ModEntry.Config.IncludeFish ? 1 : 0),
                     ModEntry.Config.GemsChance * (ModEntry.Config.IncludeGems ? 1 : 0),
+                    ModEntry.Config.ArtifactsChance * (ModEntry.Config.IncludeArtifacts ? 1 : 0),
                     ModEntry.Config.SpecialChance * (ModEntry.Config.IncludeSpecial ? 1 : 0),
                 };
 
-                for (int i = 0; i < ModEntry.Config.ModdedMultiplier; i++)
+                for (int i = 0; i < moddedRoll; i++)
                 {
                     foreach (var ind in Enumerable.Range(0, Chances.Count - 1))
                     {
                         if (rnd.Next(0, 100) < Chances[ind])
                         {
-                            string newId = rnd.ChooseFrom(ModEntry.CachedItems[CategoryIds.Values.ToList()[ind]]).id;
+                            string newId;
+                            
+                            if (CategoryIds.Values.ToList()[ind] == "Arch")
+                            {
+                                newId = rnd.ChooseFrom(ModEntry.CachedItems["Arch"]).id;
+                                modInventory.Add(new Object(newId, 1));
+                                continue;
+                            }
+                            
+                            newId = rnd.ChooseFrom(ModEntry.CachedItems[CategoryIds.Values.ToList()[ind]]).id;
                             modInventory.Add(new Object(newId, 1));
                         }
                     }
                 }
 
-                for (int i = 0; i < ModEntry.Config.ModdedMultiplier; i++)
+                for (int i = 0; i < moddedRoll; i++)
                 {
+                    if (ModEntry.Config.IncludeRings)
+                    {
+                        if (rnd.Next(0, 100) < ModEntry.Config.RingsChance)
+                        {
+                            List<ModEntry.IdItemPair> idata = ModEntry.CachedItems["-96"];
+                            IList<string> ikeys = idata.Select(v => v.id).ToList();
+                            
+                            categoryInventory.Add(ItemRegistry.Create("(R)" + rnd.ChooseFrom(ikeys), 1));
+                        }
+                    }
+                    
                     if (ModEntry.Config.IncludeBigCraft)
                     {
                         if (rnd.Next(0, 100) < ModEntry.Config.BigCraftChance)
@@ -240,7 +269,7 @@ public class Patches
                         }
                         catch (Exception e)
                         {
-                            ModEntry._log.Log("Failed to load a category item", LogLevel.Trace);
+                            ModEntry._log.Log("Failed to load a category item", LogLevel.Debug);
                         }
                     }
                 }
@@ -261,6 +290,9 @@ public class Patches
             {
                 inventory = inventory.Where(v => !ModEntry.Blacklisted.Contains(v.QualifiedItemId)).ToList();
             }
+            
+            // null guard
+            inventory.Where(v => v != null).ToList();
             
             /* Patch for:
              [SmokedFish] DONE y
@@ -292,7 +324,11 @@ public class Patches
 
                     if (cItem.QualifiedItemId == "(O)SpecificBait")
                     {
-                        Object flavor = new Object(rnd.ChooseFrom(ModEntry.CachedItems["-4"].Where(v => !v.obj.ContextTags.Contains("fish_crab_pot")).ToList()).id, 1);
+                        Object flavor = new Object(rnd.ChooseFrom(ModEntry.CachedItems["-4"]
+                            .Where(v => !v.obj.ContextTags.Contains("fish_crab_pot"))
+                            .ToList())
+                            .id
+                            , 1);
                         Item newItem = new ObjectDataDefinition().CreateFlavoredBait(flavor);
 
                         newItem.Stack = cItem.Stack;
@@ -441,11 +477,11 @@ public class Patches
             // Wine  , Pale Ale, Beer  , Mead  , Cheese, Goat Cheese
             // (O)348, (O)303  , (O)346, (O)459, (O)424, (O)426
 
-            inventory = inventory.Where(v => ModEntry.Config.PriceMin <= v.sellToStorePrice() / v.Stack && (v.sellToStorePrice() / v.Stack <= ModEntry.Config.PriceMax || ModEntry.Config.PriceMax <= -1)).ToList();
+            inventory = inventory.Where(v => ModEntry.Config.PriceMin <= v.sellToStorePrice() / v.Stack && (v.sellToStorePrice() / v.Stack <= priceMax || priceMax <= -1)).ToList();
 
             ItemGrabMenu itemMenu = new ItemGrabMenu(inventory, ItemGrabMenu.source_fishingChest).setEssential(true);
             
-            Game1.player.Money += ModEntry.Config.MoneyPrize;
+            Game1.player.Money += prize;
             
             Game1.activeClickableMenu = itemMenu;
         }

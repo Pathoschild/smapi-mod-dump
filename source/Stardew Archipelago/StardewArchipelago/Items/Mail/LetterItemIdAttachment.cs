@@ -14,12 +14,12 @@ namespace StardewArchipelago.Items.Mail
 {
     public class LetterItemIdAttachment : LetterAttachment
     {
-        public int ItemId { get; private set; }
+        public string ItemId { get; private set; }
         public int AttachmentAmount { get; private set; }
 
         protected override bool IsEmptyLetter => false;
 
-        public LetterItemIdAttachment(ReceivedItem apItem, int itemId, int attachmentAmount = 1) : base(apItem)
+        public LetterItemIdAttachment(ReceivedItem apItem, string itemId, int attachmentAmount = 1) : base(apItem)
         {
             ItemId = itemId;
             AttachmentAmount = attachmentAmount;

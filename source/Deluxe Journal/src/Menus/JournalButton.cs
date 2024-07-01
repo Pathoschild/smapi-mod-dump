@@ -42,11 +42,6 @@ namespace DeluxeJournal.Menus
             }
         }
 
-        public override void receiveRightClick(int x, int y, bool playSound = true)
-        {
-            UpdatePosition();
-        }
-
         public override void performHoverAction(int x, int y)
         {
             if (!Game1.player.hasVisibleQuests && taskButton.containsPoint(x, y))
@@ -63,7 +58,18 @@ namespace DeluxeJournal.Menus
         {
             if (!Game1.player.hasVisibleQuests)
             {
-                UpdatePosition();
+                Vector2 position = new Vector2(Game1.uiViewport.Width - 88, 248);
+
+                if (Game1.isOutdoorMapSmallerThanViewport())
+                {
+                    position.X = Math.Min(position.X, Game1.currentLocation.map.Layers[0].LayerWidth * 64 - Game1.uiViewport.X - 88);
+                }
+
+                Utility.makeSafe(ref position, width, height);
+                xPositionOnScreen = (int)position.X;
+                yPositionOnScreen = (int)position.Y;
+                taskButton.bounds = new Rectangle(xPositionOnScreen, yPositionOnScreen, width, height);
+
                 taskButton.draw(b);
 
                 if (_hoverText.Length > 0 && isWithinBounds(Game1.getOldMouseX(), Game1.getOldMouseY()))
@@ -71,21 +77,6 @@ namespace DeluxeJournal.Menus
                     drawHoverText(b, _hoverText, Game1.dialogueFont);
                 }
             }
-        }
-
-        private void UpdatePosition()
-        {
-            Vector2 position = new Vector2(Game1.uiViewport.Width - 88, 248);
-
-            if (Game1.isOutdoorMapSmallerThanViewport())
-            {
-                position.X = Math.Min(position.X, Game1.currentLocation.map.Layers[0].LayerWidth * 64 - Game1.uiViewport.X - 88);
-            }
-
-            Utility.makeSafe(ref position, width, height);
-            xPositionOnScreen = (int)position.X;
-            yPositionOnScreen = (int)position.Y;
-            taskButton.bounds = new Rectangle(xPositionOnScreen, yPositionOnScreen, width, height);
         }
     }
 }

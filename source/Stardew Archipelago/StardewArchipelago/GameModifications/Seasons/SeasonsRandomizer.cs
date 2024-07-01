@@ -38,7 +38,7 @@ namespace StardewArchipelago.GameModifications.Seasons
             _archipelago = archipelago;
             _state = state;
         }
-        
+
         public string GetFirstSeason()
         {
             return GetUnlockedSeasons()[0];
@@ -78,22 +78,24 @@ namespace StardewArchipelago.GameModifications.Seasons
         {
             Game1.currentSeason = season.ToLower();
             Game1.setGraphicsForSeason();
-            Utility.ForAllLocations(l => l.seasonUpdate(Game1.GetSeasonForLocation(l)));
+            Utility.ForEachLocation(location =>
+            {
+                location.seasonUpdate();
+                return true;
+            });
         }
 
-        // private static void newSeason()
-        public static bool NewSeason_UsePredefinedChoice_Prefix()
+        // private static void OnNewSeason()
+        public static bool OnNewSeason_UsePredefinedChoice_Prefix()
         {
             try
             {
                 SetSeason(_state.SeasonsOrder.Last());
-                Game1.dayOfMonth = 1;
-                Game1.addKentIfNecessary();
                 return false; // don't run original logic
             }
             catch (Exception ex)
             {
-                _monitor.Log($"Failed in {nameof(NewSeason_UsePredefinedChoice_Prefix)}:\n{ex}", LogLevel.Error);
+                _monitor.Log($"Failed in {nameof(OnNewSeason_UsePredefinedChoice_Prefix)}:\n{ex}", LogLevel.Error);
                 return true; // run original logic
             }
         }
@@ -208,28 +210,27 @@ namespace StardewArchipelago.GameModifications.Seasons
             }
         }
 
-        // public static int getWeatherModificationsForDate(WorldDate date, int default_weather)
-        public static bool GetWeatherModificationsForDate_UseCorrectDates_Prefix(WorldDate date, int default_weather,
-            ref int __result)
+        // public static string getWeatherModificationsForDate(WorldDate date, string default_weather)
+        public static bool GetWeatherModificationsForDate_UseCorrectDates_Prefix(WorldDate date, string default_weather, ref string __result)
         {
             try
             {
-                var chosenWeather = (Weather) default_weather;
-                int num = date.TotalDays - Game1.Date.TotalDays;
-                var currentSeason = Game1.currentSeason;
-                if (date.DayOfMonth == 1 || (long)Game1.stats.DaysPlayed + (long)num <= 4L)
+                var chosenWeather = default_weather;
+                var num = date.TotalDays - Game1.Date.TotalDays;
+                var currentSeason = Game1.season;
+                if (date.DayOfMonth == 1 || Game1.stats.DaysPlayed + num <= 4L)
                 {
-                    chosenWeather = Weather.Sunny;
+                    chosenWeather = Weather.Sun;
                 }
 
-                if ((long)Game1.stats.DaysPlayed + (long)num == 3L)
+                if (Game1.stats.DaysPlayed + num == 3L)
                 {
                     chosenWeather = Weather.Rain;
                 }
 
-                if (currentSeason.Equals("summer") && date.DayOfMonth % 13 == 0)
+                if (currentSeason == Season.Summer && date.DayOfMonth % 13 == 0)
                 {
-                    chosenWeather = Weather.Lightning;
+                    chosenWeather = Weather.Storm;
                 }
 
                 if (Utility.isFestivalDay(date.DayOfMonth, currentSeason))
@@ -237,12 +238,25 @@ namespace StardewArchipelago.GameModifications.Seasons
                     chosenWeather = Weather.Festival;
                 }
 
-                if (currentSeason.Equals("winter") && date.DayOfMonth >= 14 && date.DayOfMonth <= 16)
+                foreach (var passiveFestivalData in DataLoader.PassiveFestivals(Game1.content).Values)
                 {
-                    chosenWeather = Weather.Sunny;
+                    if (date.DayOfMonth < passiveFestivalData.StartDay || date.DayOfMonth > passiveFestivalData.EndDay || date.Season != passiveFestivalData.Season ||
+                        !GameStateQuery.CheckConditions(passiveFestivalData.Condition) || passiveFestivalData.MapReplacements == null)
+                    {
+                        continue;
+                    }
+                    foreach (var key in passiveFestivalData.MapReplacements.Keys)
+                    {
+                        var locationFromName = Game1.getLocationFromName(key);
+                        if (locationFromName != null && locationFromName.InValleyContext())
+                        {
+                            chosenWeather = Weather.Sun;
+                            break;
+                        }
+                    }
                 }
 
-                __result = (int)chosenWeather;
+                __result = chosenWeather;
                 return false; // don't run original logic
             }
             catch (Exception ex)
@@ -254,23 +268,23 @@ namespace StardewArchipelago.GameModifications.Seasons
 
         private static readonly Dictionary<string, string> _alternateMailKeys = new()
         {
-            {"spring_2_1", "year_1_day_2"},
-            {"spring_6_2", "spring_6_1"},
-            {"spring_15_2", "spring_16_1"},
-            {"spring_21_2", "spring_21_1"},
-            {"summer_3_1", "year_1_day_31"},
-            {"summer_6_2", "summer_6_1"},
-            {"summer_21_2", "summer_21_1"},
-            {"fall_6_2", "fall_6_1"},
-            {"fall_19_2", "fall_20_1"},
-            {"winter_5_2", "winter_5_1"},
-            {"winter_13_2", "winter_13_1"},
-            {"winter_19_2", "winter_19_1"},
+            { "spring_2_1", "year_1_day_2" },
+            { "spring_6_2", "spring_6_1" },
+            { "spring_15_2", "spring_16_1" },
+            { "spring_21_2", "spring_21_1" },
+            { "summer_3_1", "year_1_day_31" },
+            { "summer_6_2", "summer_6_1" },
+            { "summer_21_2", "summer_21_1" },
+            { "fall_6_2", "fall_6_1" },
+            { "fall_19_2", "fall_20_1" },
+            { "winter_5_2", "winter_5_1" },
+            { "winter_13_2", "winter_13_1" },
+            { "winter_19_2", "winter_19_1" },
         };
 
         public static void ChangeMailKeysBasedOnSeasonsToDaysElapsed()
         {
-            var mailData = Game1.content.Load<Dictionary<string, string>>("Data\\mail");
+            var mailData = DataLoader.Mail(Game1.content);
             foreach (var originalKey in _alternateMailKeys.Keys)
             {
                 if (mailData.ContainsKey(originalKey))
@@ -283,7 +297,7 @@ namespace StardewArchipelago.GameModifications.Seasons
 
         public static void ResetMailKeys()
         {
-            var mailData = Game1.content.Load<Dictionary<string, string>>("Data\\mail");
+            var mailData = DataLoader.Mail(Game1.content);
             foreach (var modifiedKey in _alternateMailKeys.Values)
             {
                 if (mailData.ContainsKey(modifiedKey))
@@ -298,7 +312,7 @@ namespace StardewArchipelago.GameModifications.Seasons
         public static void SendMailHardcodedForToday()
         {
             GetVanillaValues(out var totalDays, out var year, out var seasonNumber, out var _);
-            var mailData = Game1.content.Load<Dictionary<string, string>>("Data\\mail");
+            var mailData = DataLoader.Mail(Game1.content);
             SendMailForCurrentDateSpecificYear(year, Game1.currentSeason, mailData);
             SendMailForCurrentTotalDaysElapsed(year, mailData);
         }
@@ -369,19 +383,16 @@ namespace StardewArchipelago.GameModifications.Seasons
             year = (totalDays / 112);
             var daysThisYear = totalDays - (year * 112);
             seasonNumber = daysThisYear / 28;
-            seasonName = SeasonsRandomizer.ValidSeasons[seasonNumber];
+            seasonName = ValidSeasons[seasonNumber];
             year = year + 1;
         }
-    }
 
-    public enum Weather
-    {
-        Sunny = 0,
-        Rain = 1,
-        Debris = 2,
-        Lightning = 3,
-        Festival = 4,
-        Snow = 5,
-        Wedding = 6,
+        private static class Weather
+        {
+            public const string Sun = "Sun";
+            public const string Rain = "Rain";
+            public const string Storm = "Storm";
+            public const string Festival = "Festival";
+        }
     }
 }

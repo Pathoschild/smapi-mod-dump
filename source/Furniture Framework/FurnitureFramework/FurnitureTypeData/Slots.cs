@@ -37,6 +37,8 @@ namespace FurnitureFramework
 			bool draw_shadow = true;
 			Vector2 shadow_offset = Vector2.Zero;
 
+			public readonly Point max_size = new Point(1);
+
 			Color debug_color = ModEntry.get_config().slot_debug_default_color;
 			static Texture2D debug_texture;
 
@@ -78,6 +80,9 @@ namespace FurnitureFramework
 					debug_color = new(c_color.R, c_color.G, c_color.B);
 				}
 
+				// Parsing optional max size
+				JsonParser.try_parse(slot_obj.GetValue("Max Size"), ref max_size);
+
 				is_valid = true;
 			}
 
@@ -93,7 +98,7 @@ namespace FurnitureFramework
 			)
 			{
 				Vector2 draw_pos = pos;
-				draw_pos.X += area.Center.X * 4 - 32;	// Horizontally centered
+				draw_pos.X += area.Center.X * 4;	// Horizontally centered
 				draw_pos.Y += area.Bottom * 4;			// Vertically bottom aligned
 				draw_pos += offset * 4;
 
@@ -103,7 +108,13 @@ namespace FurnitureFramework
 
 				if (obj is Furniture furn)
 				{
-					draw_pos.Y -= furn.sourceRect.Height * 4;
+					Point source_rect_size;
+					if (FurniturePack.try_get_type(furn, out FurnitureType? type))
+						source_rect_size = type.get_source_rect_size(furn.currentRotation.Value);
+					else source_rect_size = furn.sourceRect.Value.Size;
+					
+					draw_pos.X -= source_rect_size.X * 2;
+					draw_pos.Y -= source_rect_size.Y * 4;
 
 					furn.drawAtNonTileSpot(
 						sprite_batch, draw_pos,
@@ -113,6 +124,7 @@ namespace FurnitureFramework
 					return;
 				}
 				
+				draw_pos.X -= 32;
 				draw_pos.Y -= 64;
 				
 				if (draw_shadow)
@@ -268,6 +280,11 @@ namespace FurnitureFramework
 			}
 			
 			return -1;
+		}
+
+		public Point get_max_size(int rot, int index)
+		{
+			return slots[rot][index].max_size;
 		}
 
 		public int get_count(int rot)

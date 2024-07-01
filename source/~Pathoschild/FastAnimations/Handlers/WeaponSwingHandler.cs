@@ -15,7 +15,7 @@ using StardewValley.Tools;
 namespace Pathoschild.Stardew.FastAnimations.Handlers
 {
     /// <summary>Handles the tool swinging animation.</summary>
-    internal class WeaponSwingHandler : BaseAnimationHandler
+    internal sealed class WeaponSwingHandler : BaseAnimationHandler
     {
         /*********
         ** Public methods
@@ -25,18 +25,13 @@ namespace Pathoschild.Stardew.FastAnimations.Handlers
             : base(multiplier) { }
 
         /// <inheritdoc />
-        public override bool IsEnabled(int playerAnimationID)
+        public override bool TryApply(int playerAnimationId)
         {
             return
                 Game1.player.UsingTool
                 && Game1.player.CurrentTool is MeleeWeapon weapon
-                && !weapon.isScythe();
-        }
-
-        /// <inheritdoc />
-        public override void Update(int playerAnimationID)
-        {
-            this.SpeedUpPlayer(until: () => !Game1.player.UsingTool);
+                && !weapon.isScythe()
+                && this.SpeedUpPlayer(until: () => !Game1.player.UsingTool);
         }
     }
 }

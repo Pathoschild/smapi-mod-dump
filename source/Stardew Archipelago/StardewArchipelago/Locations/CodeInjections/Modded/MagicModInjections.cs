@@ -9,14 +9,18 @@
 *************************************************/
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Archipelago.MultiClient.Net.Models;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using StardewModdingAPI;
-using StardewValley.Menus;
 using StardewArchipelago.Archipelago;
+using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Locations;
+using StardewValley.Menus;
+using StardewValley.Objects;
+using StardewValley.TerrainFeatures;
+using StardewValley.Tools;
 
 namespace StardewArchipelago.Locations.CodeInjections.Modded
 {
@@ -59,7 +63,6 @@ namespace StardewArchipelago.Locations.CodeInjections.Modded
         private static IModHelper _helper;
         private static ArchipelagoClient _archipelago;
         private static LocationChecker _locationChecker;
-        private static ShopReplacer _shopReplacer;
         private static ShopMenu _lastShopMenuUpdated = null;
 
         private static readonly Dictionary<ShopIdentification, PricedItem[]> craftsanityRecipes = new()
@@ -68,13 +71,12 @@ namespace StardewArchipelago.Locations.CodeInjections.Modded
         };
 
 
-        public static void Initialize(IMonitor monitor, IModHelper modHelper, ArchipelagoClient archipelago, LocationChecker locationChecker, ShopReplacer shopReplacer)
+        public static void Initialize(IMonitor monitor, IModHelper modHelper, ArchipelagoClient archipelago, LocationChecker locationChecker)
         {
             _monitor = monitor;
             _helper = modHelper;
             _archipelago = archipelago;
             _locationChecker = locationChecker;
-            _shopReplacer = shopReplacer;
         }
 
         // internal class AnalyzeSpell : Spell
@@ -120,13 +122,12 @@ namespace StardewArchipelago.Locations.CodeInjections.Modded
                 _monitor.Log($"Failed in {nameof(OnCast_AnalyzeGivesLocations_Prefix)}:\n{ex}", LogLevel.Error);
                 return true; //Run original logic
             }
-
         }
 
 
         private static void ReplaceCraftsanityRecipes(ShopMenu shopMenu, Hint[] myActiveHints)
         {
-            if (!_archipelago.SlotData.Craftsanity.HasFlag(Craftsanity.All))
+            if (_archipelago.SlotData.Craftsanity != Craftsanity.All)
             {
                 return;
             }
@@ -140,7 +141,9 @@ namespace StardewArchipelago.Locations.CodeInjections.Modded
 
                 foreach (var recipe in recipes)
                 {
-                    _shopReplacer.PlaceShopRecipeCheck(shopMenu.itemPriceAndStock, $"{recipe.ItemName} Recipe", recipe.ItemName, myActiveHints, recipe.Price);
+
+                    throw new Exception($"{nameof(MagicModInjections)}.{nameof(ReplaceCraftsanityRecipes)} attempted to use the now removed ShopReplacer. It needs to be updated for 1.6");
+                    // _shopReplacer.PlaceShopRecipeCheck(shopMenu.itemPriceAndStock, $"{recipe.ItemName} Recipe", recipe.ItemName, myActiveHints, recipe.Price);
                 }
             }
         }
@@ -174,7 +177,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Modded
 
         private static void RemoveGuildRecipesFromPhone(ShopMenu shopMenu)
         {
-            if (shopMenu.storeContext == "AdventureGuild")
+            if (shopMenu.ShopId == "AdventureShop")
             {
                 return;
             }
@@ -192,14 +195,14 @@ namespace StardewArchipelago.Locations.CodeInjections.Modded
         {
             if (player.CurrentTool != null)
             {
-                if (player.CurrentTool is StardewValley.Tools.Axe || player.CurrentTool is StardewValley.Tools.Pickaxe)
+                if (player.CurrentTool is Axe || player.CurrentTool is Pickaxe)
                     spellsLearned.Add(ANALYZE_CLEARDEBRIS_AP_LOCATION);
-                else if (player.CurrentTool is StardewValley.Tools.Hoe)
+                else if (player.CurrentTool is Hoe)
                     spellsLearned.Add(ANALYZE_TILL_AP_LOCATION);
-                else if (player.CurrentTool is StardewValley.Tools.WateringCan)
+                else if (player.CurrentTool is WateringCan)
                     spellsLearned.Add(ANALYZE_WATER_AP_LOCATION);
             }
-            else if (player.CurrentItem is StardewValley.Objects.Boots)
+            else if (player.CurrentItem is Boots)
             {
                 spellsLearned.Add(ANALYZE_EVAC_AP_LOCATION);
             }
@@ -207,7 +210,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Modded
             {
                 if (!player.ActiveObject.bigCraftable.Value)
                 {
-                    int index = player.ActiveObject.ParentSheetIndex;
+                    var index = player.ActiveObject.ParentSheetIndex;
                     if (index == COFFEE)
                         spellsLearned.Add(ANALYZE_HASTE_AP_LOCATION);
                     else if (index == LIFE_ELIXIR)
@@ -226,7 +229,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Modded
         {
             var tilePos = new Vector2(targetX / Game1.tileSize, targetY / Game1.tileSize);
             if (player.currentLocation.terrainFeatures.ContainsKey(tilePos) &&
-                player.currentLocation.terrainFeatures[tilePos] is StardewValley.TerrainFeatures.HoeDirt hoeDirt)
+                player.currentLocation.terrainFeatures[tilePos] is HoeDirt hoeDirt)
             {
                 if (hoeDirt.crop != null)
                     spellsLearned.Add(ANALYZE_TENDRILS_AP_LOCATION);
@@ -240,17 +243,16 @@ namespace StardewArchipelago.Locations.CodeInjections.Modded
                 foreach (var clump in player.currentLocation.resourceClumps)
                 {
                     if (clump.parentSheetIndex.Value == CROP_TILE &&
-                        new Rectangle((int)clump.tile.Value.X, (int)clump.tile.Value.Y, clump.width.Value, clump.height.Value).Contains((int)tilePos.X, (int)tilePos.Y))
+                        new Rectangle((int)clump.Tile.X, (int)clump.Tile.Y, clump.width.Value, clump.height.Value).Contains((int)tilePos.X, (int)tilePos.Y))
                         spellsLearned.Add(ANALYZE_METEOR_AP_LOCATION);
                 }
             }
 
             if (player.currentLocation.doesTileHaveProperty((int)tilePos.X, (int)tilePos.Y, "Action", "Buildings") == "EvilShrineLeft")
                 spellsLearned.Add(ANALYZE_LUCKSTEAL_AP_LOCATION);
-            if (player.currentLocation is StardewValley.Locations.MineShaft mineShaft && mineShaft.mineLevel == 100 &&
+            if (player.currentLocation is MineShaft mineShaft && mineShaft.mineLevel == 100 &&
                 mineShaft.waterTiles[(int)tilePos.X, (int)tilePos.Y])
                 spellsLearned.Add(ANALYZE_BLOODMANA_AP_LOCATION);
-
         }
 
         private static void CheckTotalCheckLocations()

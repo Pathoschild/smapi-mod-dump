@@ -40,7 +40,7 @@ namespace ContentPatcher.Framework
         private readonly IMonitor Monitor;
 
         /// <summary>The content packs whose configuration changed.</summary>
-        private readonly HashSet<LoadedContentPack> QueuedForConfigUpdates = new();
+        private readonly HashSet<LoadedContentPack> QueuedForConfigUpdates = [];
 
         /// <summary>Whether the next tick is the first one for the current screen.</summary>
         private bool IsFirstTick = true;
@@ -354,7 +354,7 @@ namespace ContentPatcher.Framework
                     this.PatchLoader.LoadPatches(
                         contentPack: current,
                         rawPatches: content.Changes,
-                        rootIndexPath: new[] { current.Index },
+                        rootIndexPath: [current.Index],
                         path: current.LogPath,
                         parentPatch: null
                     );
@@ -401,7 +401,7 @@ namespace ContentPatcher.Framework
             this.PatchLoader.LoadPatches(
                 contentPack: contentPack,
                 rawPatches: contentPack.Content.Changes,
-                rootIndexPath: new[] { contentPack.Index },
+                rootIndexPath: [contentPack.Index],
                 path: contentPack.LogPath,
                 parentPatch: null
             );

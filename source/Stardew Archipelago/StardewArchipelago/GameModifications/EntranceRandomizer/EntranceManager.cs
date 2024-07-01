@@ -81,22 +81,24 @@ namespace StardewArchipelago.GameModifications.EntranceRandomizer
                 return;
             }
 
-            foreach (var (locationName, locationAlias)  in _modEntranceManager.GetModLocationAliases(slotData))
+            foreach (var (locationName, locationAlias) in _modEntranceManager.GetModLocationAliases(slotData))
             {
                 _locationAliases[locationName] = locationAlias;
             }
-
+            FixInitialEntranceDataGivenMod(slotData.Mods);
             foreach (var (originalEntrance, replacementEntrance) in slotData.ModifiedEntrances)
             {
                 RegisterRandomizedEntrance(originalEntrance, replacementEntrance);
             }
 
-            if (slotData.EntranceRandomization == EntranceRandomization.PelicanTown || slotData.EntranceRandomization == EntranceRandomization.NonProgression)
+            if (slotData.EntranceRandomization == EntranceRandomization.PelicanTown || 
+                slotData.EntranceRandomization == EntranceRandomization.NonProgression || 
+                slotData.EntranceRandomization == EntranceRandomization.BuildingsWithoutHouse)
             {
                 return;
             }
 
-            AddFarmhouseToModifiedEntrances();
+            AddFarmhouseToModifiedEntrances(slotData);
 
             if (slotData.EntranceRandomization == EntranceRandomization.Chaos)
             {
@@ -106,7 +108,7 @@ namespace StardewArchipelago.GameModifications.EntranceRandomizer
             SwapFarmhouseEntranceWithAnotherEmptyAreaEntrance(slotData);
         }
 
-        private void AddFarmhouseToModifiedEntrances()
+        private void AddFarmhouseToModifiedEntrances(SlotData slotData)
         {
             var farmhouseToFarm = ReverseKey(FARM_TO_FARMHOUSE);
             ModifiedEntrances.Add(FARM_TO_FARMHOUSE, FARM_TO_FARMHOUSE);
@@ -120,11 +122,11 @@ namespace StardewArchipelago.GameModifications.EntranceRandomizer
             var random = new Random(int.Parse(slotData.Seed));
             var chosenEntrance = "";
             var replacementIsOutside = false;
-            
+
             while (!replacementIsOutside)
             {
                 chosenEntrance = ModifiedEntrances.Keys.ToArray()[random.Next(ModifiedEntrances.Keys.Count)];
-                var barredEntranceRule = !chosenEntrance.Contains("67|17")  &&  !chosenEntrance.Contains("SpriteSpring");
+                var barredEntranceRule = !chosenEntrance.Contains("67|17") && !chosenEntrance.Contains("SpriteSpring");
                 replacementIsOutside = outsideAreas.Contains(chosenEntrance.Split(TRANSITIONAL_STRING)[0]) && barredEntranceRule; // 67|17 is Quarry Mine
             }
 
@@ -135,12 +137,31 @@ namespace StardewArchipelago.GameModifications.EntranceRandomizer
         {
             if (slotData.Mods.HasMod(ModNames.SVE))
             {
-                yield return "Custom_ForestWest"; 
+                yield return "Custom_ForestWest";
                 yield return "Custom_BlueMoonVineyard";
             }
             if (slotData.Mods.HasMod(ModNames.BOARDING_HOUSE))
             {
                 yield return "Custom_BoardingHouse_BackwoodsPlateau";
+            }
+        }
+
+        private void FixInitialEntranceDataGivenMod(ModsManager modManager)
+        {
+            foreach (var (mod, aliases) in ModEntranceManager.AlteredMapNamesFromVanilla)
+            {
+                if (!modManager.HasMod(mod))
+                {
+                    return;
+                }
+                foreach (var (name, updatedName) in aliases)
+                {
+                    if (!_locationAliases.TryGetValue(name, out var _))
+                    {
+                        continue;
+                    }
+                    _locationAliases[name] = updatedName;
+                }
             }
         }
 
@@ -189,8 +210,8 @@ namespace StardewArchipelago.GameModifications.EntranceRandomizer
                 _monitor.Log($"Tried to find warp from {currentLocationName} but found none.  Giving default warp.", LogLevel.Trace);
                 return false;
             }
-            
-            var correctDesiredWarpName =_equivalentAreas.GetCorrectEquivalentEntrance(desiredWarpName);
+
+            var correctDesiredWarpName = _equivalentAreas.GetCorrectEquivalentEntrance(desiredWarpName);
 
             if (_checkedEntrancesToday.Contains(correctDesiredWarpName))
             {
@@ -251,7 +272,7 @@ namespace StardewArchipelago.GameModifications.EntranceRandomizer
         private static List<string> GetKeys(string currentLocationName, string locationRequestName,
             Point targetPosition)
         {
-            var currentPosition = Game1.player.getTileLocationPoint();
+            var currentPosition = Game1.player.TilePoint;
             var currentPositions = new List<Point>();
             var targetPositions = new List<Point>();
             for (var x = -1; x <= 1; x++)
@@ -324,7 +345,6 @@ namespace StardewArchipelago.GameModifications.EntranceRandomizer
             }
 
             var modifiedString = TurnAliased(TurnAliased(key, _locationAliases, false), _locationsSingleWordAliases, true);
-            //modifiedString = ModTurnAliased(key, modifiedString);
             return modifiedString;
         }
 
@@ -337,7 +357,7 @@ namespace StardewArchipelago.GameModifications.EntranceRandomizer
                 var customizedNewString = newString;
                 if (customizedNewString.Contains("{0}"))
                 {
-                    customizedNewString = string.Format(newString, Game1.player.isMale ? "Mens" : "Womens");
+                    customizedNewString = string.Format(newString, Game1.player.Gender == Gender.Male ? "Mens" : "Womens");
                 }
 
                 if (singleWord)
@@ -384,9 +404,9 @@ namespace StardewArchipelago.GameModifications.EntranceRandomizer
             { "Adventurer's Guild", "AdventureGuild" },
             { "Willy's Fish Shop", "FishShop" },
             { "Museum", "ArchaeologyHouse" },
-            { "Wizard Basement", "WizardHouseBasement"},
+            { "Wizard Basement", "WizardHouseBasement" },
             { "The Mines", "Mine|18|13" }, // 54 4 Mine 18 13
-            { "Quarry Mine Entrance", "Mine|67|17" },  // 103 15 Mine 67 17
+            { "Quarry Mine Entrance", "Mine|67|17" }, // 103 15 Mine 67 17
             { "Quarry", "Mountain" },
             { "Shipwreck", "CaptainRoom" },
             { "Gourmand Cave", "IslandFarmcave" },
@@ -406,9 +426,9 @@ namespace StardewArchipelago.GameModifications.EntranceRandomizer
             { "Volcano Entrance", "VolcanoDungeon0|31|53" },
             { "Volcano River", "VolcanoDungeon0|6|49" },
             { "Secret Beach", "IslandNorth|12|31" },
-            { "Professor Snail Cave", "IslandNorthCave1"},
+            { "Professor Snail Cave", "IslandNorthCave1" },
             { "Qi Walnut Room", "QiNutRoom" },
-            { "Mutant Bug Lair", "BugLand"},
+            { "Mutant Bug Lair", "BugLand" },
         };
 
         private Dictionary<string, string> _locationsSingleWordAliases = new()
@@ -417,11 +437,7 @@ namespace StardewArchipelago.GameModifications.EntranceRandomizer
             { " ", "" },
         };
 
-        private static readonly Dictionary<string, Dictionary<string,string>> _modifiedAliases = new()
-        {
-            { "Stardew Valley Expanded", new(){{"WizardHouseBasement", "Custom_WizardBasement"}}
-            }
-        };
+
     }
 
     public enum FacingDirection

@@ -28,64 +28,8 @@ namespace BZP_Allergies.HarmonyPatches
         {
             harmony.Patch(
                 original: AccessTools.Method(typeof(StardewValley.Object), "readBook"),
-                transpiler: new HarmonyMethod(typeof(SkillBook_Patches), nameof(ReadBook_Transpiler)),
                 postfix: new HarmonyMethod(typeof(SkillBook_Patches), nameof(ReadBook_Postfix))
             );
-        }
-
-        public static IEnumerable<CodeInstruction> ReadBook_Transpiler(IEnumerable<CodeInstruction> instructions)
-        {
-            // find the first DelayedAction.functionAfterDelay that comes after the ldstr "Strings\\1_6_Strings:QoS_Cookbook"
-            bool done = false;
-            bool foundStr = false;
-            MethodInfo delayedAction = AccessTools.Method(typeof(DelayedAction), nameof(DelayedAction.functionAfterDelay));
-
-            List<CodeInstruction> inputCodes = new(instructions);
-            List<CodeInstruction> codes = new();
-
-            for (int i = 0; i < inputCodes.Count; i++)
-            {
-                CodeInstruction instr = inputCodes[i];
-                if (instr.opcode == OpCodes.Ldstr && instr.operand is string str && str == "Strings\\1_6_Strings:QoS_Cookbook")
-                {
-                    foundStr = true;
-                }
-
-                if (!done && foundStr && instr.opcode == OpCodes.Call && instr.operand is MethodInfo mi && mi == delayedAction)
-                {
-                    // pop the args for the delayed action
-                    for (int j = 0; j < 2; j++) codes.Add(new CodeInstruction(OpCodes.Pop));
-
-                    // replace the delayed action with my method
-                    codes.Add(new CodeInstruction(OpCodes.Ldarg_0));
-                    FieldInfo finfo = AccessTools.Field(typeof(Item), nameof(Item.itemId));
-                    codes.Add(new CodeInstruction(OpCodes.Ldfld, finfo));
-
-                    MethodInfo opImplicit = AccessTools.Method(typeof(Netcode.NetString), "op_Implicit");  // some weird netstsring thing idk
-                    codes.Add(new CodeInstruction(OpCodes.Call, opImplicit));
-
-                    MethodInfo mine = AccessTools.Method(typeof(SkillBook_Patches), nameof(ConditionallyRenderLearnedPower));
-                    codes.Add(new CodeInstruction(OpCodes.Call, mine));
-
-                    // skip over the "pop" for the delayed action's unused return
-                    i++;
-                    done = true;
-                }
-                else codes.Add(instr);
-            }
-
-            return codes.AsEnumerable();
-        }
-
-        public static void ConditionallyRenderLearnedPower(string bookId)
-        {
-            if (bookId == Constants.AllergyTeachBookId || bookId == Constants.AllergyCookbookId) return;
-
-            // original vanilla code
-            DelayedAction.functionAfterDelay(delegate
-            {
-                Game1.showGlobalMessage(Game1.content.LoadString("Strings\\1_6_Strings:LearnedANewPower"));
-            }, 1000);
         }
 
         public static void ReadBook_Postfix(ref StardewValley.Object __instance)

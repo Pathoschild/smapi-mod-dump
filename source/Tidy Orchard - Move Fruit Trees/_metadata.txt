@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/huancz/SDV-TidyOrchard
+   Git: https://github.com/huancz/SDV-TidyOrchard.git
+
+mods:
+   Tidy Orchard - Move Fruit Trees
+
+latest commit:
+   commit 456b040b215e98a04a2bac87ee76525a8fa3f253
+   Author: huan <huancz@gmail.com>
+   Date:   Wed Jun 12 00:07:09 2024 +0200
+   
+       v1.0.1 bugfix - digging up young trees gives duplicate sapling
+   

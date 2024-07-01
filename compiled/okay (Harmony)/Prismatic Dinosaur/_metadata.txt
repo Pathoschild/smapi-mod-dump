@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/25342
+IDs: JollyLlama.PrismaticDinosaurMonster
+update keys: GitHub:Jolly-Alpaca/PrismaticDinosaur, Nexus:25342

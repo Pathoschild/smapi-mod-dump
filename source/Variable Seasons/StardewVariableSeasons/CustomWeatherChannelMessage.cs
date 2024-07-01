@@ -21,9 +21,7 @@ namespace StardewVariableSeasons
     {
         private static string GetWeatherMessage()
         {
-            var changeDate = ModEntry.ChangeDate;
-
-            var message = changeDate switch
+            var message = ModEntry.ChangeDate switch
             {
                 22 or 23 =>
                     $"And we're looking at an abnormally short {Game1.currentSeason} this year, make sure you remember to harvest early!",

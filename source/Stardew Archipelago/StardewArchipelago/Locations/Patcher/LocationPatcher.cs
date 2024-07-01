@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using HarmonyLib;
 using StardewArchipelago.Archipelago;
+using StardewArchipelago.Bundles;
 using StardewArchipelago.GameModifications;
 using StardewArchipelago.GameModifications.Modded;
 using StardewArchipelago.Locations.CodeInjections.Initializers;
@@ -26,14 +27,16 @@ namespace StardewArchipelago.Locations.Patcher
     {
         private List<ILocationPatcher> _patchers;
 
-        public LocationPatcher(IMonitor monitor, IModHelper modHelper, Harmony harmony, ArchipelagoClient archipelago, ArchipelagoStateDto state, LocationChecker locationChecker, StardewItemManager itemManager, WeaponsManager weaponsManager, ShopStockGenerator shopStockGenerator, JunimoShopGenerator junimoShopGenerator, Friends friends)
+        public LocationPatcher(IMonitor monitor, IModHelper modHelper, ModConfig config, Harmony harmony, ArchipelagoClient archipelago, ArchipelagoStateDto state,
+            LocationChecker locationChecker, StardewItemManager itemManager, WeaponsManager weaponsManager, BundlesManager bundlesManager,
+            SeedShopStockModifier seedShopStockModifier, Friends friends)
         {
-            CodeInjectionInitializer.Initialize(monitor, modHelper, archipelago, state, locationChecker, itemManager, weaponsManager, shopStockGenerator, junimoShopGenerator, friends);
+            CodeInjectionInitializer.Initialize(monitor, modHelper, config, archipelago, state, locationChecker, itemManager, weaponsManager, bundlesManager, seedShopStockModifier, friends);
             _patchers = new List<ILocationPatcher>();
-            _patchers.Add(new VanillaLocationPatcher(monitor, modHelper, harmony, archipelago, locationChecker));
+            _patchers.Add(new VanillaLocationPatcher(monitor, modHelper, harmony, archipelago, locationChecker, itemManager));
             if (archipelago.SlotData.Mods.IsModded)
             {
-                _patchers.Add(new ModLocationPatcher(harmony, modHelper, archipelago));
+                _patchers.Add(new ModLocationPatcher(harmony, monitor, modHelper, archipelago, itemManager));
             }
         }
 
@@ -45,5 +48,12 @@ namespace StardewArchipelago.Locations.Patcher
             }
         }
 
+        public void CleanEvents()
+        {
+            foreach (var patcher in _patchers)
+            {
+                patcher.CleanEvents();
+            }
+        }
     }
 }

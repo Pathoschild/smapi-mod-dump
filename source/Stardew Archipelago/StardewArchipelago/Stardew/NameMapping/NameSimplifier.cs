@@ -10,8 +10,8 @@
 
 using System.Collections.Generic;
 using System.Globalization;
+using StardewArchipelago.Constants.Vanilla;
 using StardewValley;
-using Object = StardewValley.Object;
 
 namespace StardewArchipelago.Stardew.NameMapping
 {
@@ -19,15 +19,19 @@ namespace StardewArchipelago.Stardew.NameMapping
     {
         public NameSimplifier()
         {
-
         }
 
         public string GetSimplifiedName(Item item)
         {
             var name = item.Name;
-            if (_renamedItems.ContainsKey(item.ParentSheetIndex))
+            if (item is Object && _renamedObjects.ContainsKey(item.QualifiedItemId))
             {
-                name = _renamedItems[item.ParentSheetIndex];
+                name = _renamedObjects[item.QualifiedItemId];
+            }
+
+            if (PowerBooks.BookIdsToNames.ContainsKey(item.ItemId))
+            {
+                name = PowerBooks.BookIdsToNames[item.ItemId];
             }
 
             foreach (var (oldChar, newChar) in _simplifiedChars)
@@ -35,9 +39,9 @@ namespace StardewArchipelago.Stardew.NameMapping
                 name = name.Replace(oldChar, newChar);
             }
 
-            if (name.Contains("moonslime.excavation."))
+            if (name.Contains("moonslime.Archaeology."))
             {
-                TextInfo ti = CultureInfo.CurrentCulture.TextInfo;
+                var ti = CultureInfo.CurrentCulture.TextInfo;
                 var displayName = ti.ToTitleCase(item.DisplayName);
                 if (name.Contains("strange_doll_green"))
                 {
@@ -79,19 +83,30 @@ namespace StardewArchipelago.Stardew.NameMapping
                         return "Roe";
                     case Object.PreserveType.AgedRoe:
                         return "Aged Roe";
+                    case Object.PreserveType.DriedFruit:
+                        return "Dried Fruit";
+                    case Object.PreserveType.DriedMushroom:
+                        return "Dried Mushrooms";
+                    case Object.PreserveType.SmokedFish:
+                        return "Smoked Fish";
+                    case Object.PreserveType.Bait:
+                        return "Targeted Bait";
                 }
             }
 
             return name;
         }
 
-        private static readonly Dictionary<int, string> _renamedItems = new()
+        private static readonly Dictionary<string, string> _renamedObjects = new()
         {
-            { 126, "Strange Doll (Green)"},
-            { 180, "Egg (Brown)" },
-            { 182, "Large Egg (Brown)" },
-            { 438, "Large Goat Milk" },
-            { 223, "Cookies" },
+            { QualifiedItemIds.STRANGE_DOLL_GREEN, "Strange Doll (Green)" },
+            { QualifiedItemIds.BROWN_EGG, "Egg (Brown)" },
+            { QualifiedItemIds.LARGE_BROWN_EGG, "Large Egg (Brown)" },
+            { QualifiedItemIds.LARGE_GOAT_MILK, "Large Goat Milk" },
+            { QualifiedItemIds.COOKIES, "Cookies" },
+            { QualifiedItemIds.DRIED_FRUIT, "Dried Fruit" },
+            { QualifiedItemIds.DRIED_MUSHROOMS, "Dried Mushrooms" },
+            { QualifiedItemIds.SMOKED_FISH, "Smoked Fish" },
         };
 
         private static readonly List<string> _simplifiedNames = new()
@@ -103,8 +118,8 @@ namespace StardewArchipelago.Stardew.NameMapping
 
         private static readonly Dictionary<string, string> _simplifiedChars = new()
         {
-            {"ñ", "n"},
-            {"Ñ", "N"},
+            { "ñ", "n" },
+            { "Ñ", "N" },
         };
     }
 }

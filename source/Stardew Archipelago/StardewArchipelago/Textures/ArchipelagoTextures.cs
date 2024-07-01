@@ -10,7 +10,6 @@
 
 using System;
 using System.IO;
-using System.Threading;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 
@@ -29,7 +28,7 @@ namespace StardewArchipelago.Textures
         public const string ICON_SET_CUSTOM = "Custom";
         public const string ICON_SET_ORIGINAL = "Original";
 
-        public static readonly string[] ValidLogos = { COLOR, WHITE, BLUE, BLACK, RED, PLEADING };
+        public static readonly string[] ValidLogos = { COLOR, WHITE, BLACK, RED, PLEADING };
 
         public static Texture2D GetArchipelagoLogo(IMonitor monitor, IModHelper modHelper, int size, string color, string preferredIconSet = null)
         {
@@ -37,7 +36,7 @@ namespace StardewArchipelago.Textures
             preferredIconSet = GetChosenIconSet(preferredIconSet);
             var fileName = $"{size}x{size} {color} icon.png";
             var relativePathToTexture = Path.Combine(archipelagoFolder, preferredIconSet, fileName);
-            var texture = TexturesLoader.GetTexture(monitor, modHelper, relativePathToTexture);
+            var texture = TexturesLoader.GetTexture(monitor, modHelper, relativePathToTexture, LogLevel.Trace);
             if (texture == null)
             {
                 // Let's try to get the icon from the other set
@@ -54,9 +53,31 @@ namespace StardewArchipelago.Textures
             return texture;
         }
 
+        public static Texture2D GetArchipelagoBush(IMonitor monitor, IModHelper modHelper, string preferredIconSet = null)
+        {
+            var archipelagoFolder = "Archipelago";
+            preferredIconSet = GetChosenIconSet(preferredIconSet);
+            var fileName = $"walnut-bush.png";
+            var relativePathToTexture = Path.Combine(archipelagoFolder, preferredIconSet, fileName);
+            var texture = TexturesLoader.GetTexture(monitor, modHelper, relativePathToTexture, LogLevel.Trace);
+            if (texture == null)
+            {
+                // Let's try to get the icon from the other set
+                preferredIconSet = GetOtherIconSet(preferredIconSet);
+                relativePathToTexture = Path.Combine(archipelagoFolder, preferredIconSet, fileName);
+                texture = TexturesLoader.GetTexture(monitor, modHelper, relativePathToTexture);
+                if (texture == null)
+                {
+                    throw new InvalidOperationException($"Could not find texture {fileName}");
+                }
+            }
+
+            return texture;
+        }
+
         private static string GetPreferredIconSet()
         {
-            return ModEntry.Instance.Config.UseCustomArchipelagoIcons? ICON_SET_CUSTOM : ICON_SET_ORIGINAL;
+            return ModEntry.Instance.Config.UseCustomArchipelagoIcons ? ICON_SET_CUSTOM : ICON_SET_ORIGINAL;
         }
 
         private static string GetChosenIconSet(string iconSet)

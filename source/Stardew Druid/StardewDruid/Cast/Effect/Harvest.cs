@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Timers;
 
 namespace StardewDruid.Cast.Effect
 {
@@ -46,7 +47,9 @@ namespace StardewDruid.Cast.Effect
 
             harvesters.Add(tile, new(location, tile));
 
-            expireTime += Game1.currentGameTime.TotalGameTime.TotalSeconds + 8;
+
+            activeLimit = eventCounter + 8;
+
 
         }
 
@@ -82,6 +85,8 @@ namespace StardewDruid.Cast.Effect
 
                 }
 
+                List<HoeDirt> hoeDirts = new();
+
                 foreach (Vector2 tileVector in tileVectors)
                 {
 
@@ -91,27 +96,69 @@ namespace StardewDruid.Cast.Effect
                         if (toHarvest.Value.location.terrainFeatures[tileVector] is HoeDirt hoeDirt)
                         {
 
-                            if (hoeDirt.crop != null)
+                            hoeDirts.Add(hoeDirt);
+
+                        }
+
+                    }
+
+                    if (toHarvest.Value.location.objects.ContainsKey(tileVector))
+                    {
+
+                        if (toHarvest.Value.location.objects[tileVector] is IndoorPot indoorPot)
+                        {
+
+                            if(indoorPot.hoeDirt.Value != null)
                             {
-                                if (
-                                    hoeDirt.crop.currentPhase.Value >= hoeDirt.crop.phaseDays.Count - 1 &&
-                                    (!hoeDirt.crop.fullyGrown.Value || hoeDirt.crop.dayOfCurrentPhase.Value <= 0)
-                                    && !hoeDirt.crop.dead.Value
-                                    && hoeDirt.crop.indexOfHarvest.Value != null)
+                                hoeDirts.Add(indoorPot.hoeDirt.Value);
+
+                            }
+
+                            if(indoorPot.bush.Value != null)
+                            {
+
+                                if(indoorPot.bush.Value.size.Value == 3)
                                 {
-
-                                    List<StardewValley.Object> extracts = ModUtility.ExtractCrop(hoeDirt, hoeDirt.crop, tileVector);
-
-                                    foreach (StardewValley.Object extract in extracts)
+                                    
+                                    if (indoorPot.bush.Value.shakeTimer == 0)
                                     {
- 
-                                        ThrowHandle throwObject = new(tileVector * 64,toHarvest.Value.tile*64, extract);
-
-                                        throwObject.register();
+                                        
+                                        indoorPot.bush.Value.shake(tileVector, doEvenIfStillShaking: false);
 
                                     }
 
                                 }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+                foreach(HoeDirt hoeDirt in hoeDirts)
+                {
+
+                    if (hoeDirt.crop != null)
+                    {
+                        if (
+                            hoeDirt.crop.currentPhase.Value >= hoeDirt.crop.phaseDays.Count - 1 &&
+                            (!hoeDirt.crop.fullyGrown.Value || hoeDirt.crop.dayOfCurrentPhase.Value <= 0)
+                            && !hoeDirt.crop.dead.Value
+                            && hoeDirt.crop.indexOfHarvest.Value != null)
+                        {
+
+                            List<StardewValley.Object> extracts = ModUtility.ExtractCrop(hoeDirt, hoeDirt.crop, hoeDirt.Tile);
+
+                            foreach (StardewValley.Object extract in extracts)
+                            {
+
+                                ThrowHandle throwObject = new(hoeDirt.Tile * 64, toHarvest.Value.tile * 64, extract);
+
+                                throwObject.pocket = true;
+
+                                throwObject.register();
 
                             }
 

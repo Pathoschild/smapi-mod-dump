@@ -58,7 +58,7 @@ namespace ContentPatcher.Framework.Migrations
         public AggregateMigration(ISemanticVersion version, IMigration[] migrations)
         {
             this.Version = version;
-            this.ValidVersions = new HashSet<string>(migrations.Select(p => p.Version.ToString()));
+            this.ValidVersions = [..migrations.Select(p => p.Version.ToString())];
             this.LatestVersion = migrations.Last().Version.ToString();
             this.Migrations = migrations.Where(m => m.Version.IsNewerThan(version)).ToArray();
             this.RuntimeMigrations = this.Migrations.OfType<IRuntimeMigration>().ToArray();

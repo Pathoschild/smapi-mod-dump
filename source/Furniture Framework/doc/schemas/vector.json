@@ -15,5 +15,6 @@
 		"X": {"type": "number"},
 		"Y": {"type": "number"}
 	},
-	"required": [ "X", "Y" ]
+	"required": [ "X", "Y" ],
+	"additionalProperties": false
 }

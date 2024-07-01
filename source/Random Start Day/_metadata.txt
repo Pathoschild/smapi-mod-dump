@@ -6,10 +6,9 @@ mods:
    Random Start Day
 
 latest commit:
-   commit 6cdfd65a45339a58047824c6f11ae768d6a6ad49
+   commit 968aa98ff264eb17fe420afebc1ab97446a9f19e
    Author: idermailer <idermailer@gmail.com>
-   Date:   Mon May 20 02:05:34 2024 +0900
+   Date:   Fri Jun 14 19:23:58 2024 +0900
    
-       - 2.1.0
-       many changes. please see changelogs on Nexus mods page.
+       2.2.1
    

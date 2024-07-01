@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/24623
+IDs: Adradis.LimitedHarvests
+update keys: Nexus:24623, GitHub:Adradis/StardewMods

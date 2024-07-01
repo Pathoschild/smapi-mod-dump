@@ -1,6 +1,7 @@
 {
   "EnableMod": true,
   "VanillaLootChance": 0,
+  "AlwaysIncludeGeodes": true,
   "ChanceForTreasureChest": 15,
   "MaxItems": 5,
   "ItemsBaseMaxValue": 100,

@@ -21,6 +21,8 @@ using StardewValley;
 using StardewValley.Characters;
 using StardewValley.GameData.Objects;
 
+using static NermNermNerm.Stardew.LocalizeFromSource.SdvLocalize;
+
 namespace NermNermNerm.Junimatic
 {
     public class ModEntry
@@ -43,11 +45,20 @@ namespace NermNermNerm.Junimatic
 
         public static ModEntry Instance = null!;
 
+        public static ModConfig Config = null!;
+        public ModConfigMenu ConfigMenu = new ModConfigMenu();
+
         public ModEntry() { }
 
         public override void Entry(IModHelper helper)
         {
             Instance = this;
+
+            Initialize(this);
+            this.Helper.Events.Content.LocaleChanged += (_, _) => this.Helper.GameContent.InvalidateCache("Data/Objects");
+
+            Config = this.Helper.ReadConfig<ModConfig>();
+            this.ConfigMenu.Entry(this);
 
             this.CropMachineHelperQuest.Entry(this);
             this.UnlockPortalQuest.Entry(this);
@@ -62,6 +73,8 @@ namespace NermNermNerm.Junimatic
 
             Event.RegisterCommand(SetJunimoColorEventCommand, this.SetJunimoColor);
         }
+
+        public bool IsRunningSve => this.Helper.ModRegistry.IsLoaded("FlashShifter.SVECode");
 
         private void SetJunimoColor(Event @event, string[] split, EventContext context)
         {
@@ -93,7 +106,7 @@ namespace NermNermNerm.Junimatic
                     return;
                 }
 
-                var property = typeof(Junimo).GetField("color", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
+                var property = typeof(Junimo).GetField(I("color"), BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
                 if (property is null)
                 {
                     this.LogError($"{SetJunimoColorEventCommand} can't set color because the game code is changed and the 'color' field is not there anymore.");
@@ -151,12 +164,12 @@ namespace NermNermNerm.Junimatic
                 Name = itemId,
                 DisplayName = displayName,
                 Description = description,
-                Type = "Quest",
+                Type = I("Quest"),
                 Category = -999,
                 Price = 0,
                 Texture = ModEntry.OneTileSpritesPseudoPath,
                 SpriteIndex = spriteIndex,
-                ContextTags = new() { "not_giftable", "not_placeable", "prevent_loss_on_death" },
+                ContextTags = new() { I("not_giftable"), I("not_placeable"), I("prevent_loss_on_death") },
             };
         }
     }

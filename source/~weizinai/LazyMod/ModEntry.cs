@@ -8,14 +8,15 @@
 **
 *************************************************/
 
-using Common;
-using LazyMod.Framework;
-using LazyMod.Framework.Config;
-using LazyMod.Framework.Hud;
+using weizinai.StardewValleyMod.Common.Log;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using weizinai.StardewValleyMod.LazyMod.Framework;
+using weizinai.StardewValleyMod.LazyMod.Framework.Config;
+using weizinai.StardewValleyMod.LazyMod.Framework.Hud;
+using weizinai.StardewValleyMod.LazyMod.Framework.Integration;
 
-namespace LazyMod;
+namespace weizinai.StardewValleyMod.LazyMod;
 
 internal class ModEntry : Mod
 {
@@ -26,71 +27,54 @@ internal class ModEntry : Mod
     public override void Entry(IModHelper helper)
     {
         // 初始化
-        Log.Init(Monitor);
+        Log.Init(this.Monitor);
         I18n.Init(helper.Translation);
         try
         {
-            config = helper.ReadConfig<ModConfig>();
+            this.config = helper.ReadConfig<ModConfig>();
         }
         catch (Exception)
         {
             helper.WriteConfig(new ModConfig());
-            config = helper.ReadConfig<ModConfig>();
+            this.config = helper.ReadConfig<ModConfig>();
             Log.Info("Read config.json file failed and was automatically fixed. Please reset the features you want to turn on.");
         }
-        automationManger = new AutomationManger(helper, config);
+
+        this.automationManger = new AutomationManger(helper, this.config);
 
         // 注册事件
-        helper.Events.Display.RenderedHud += OnRenderedHud;
-        helper.Events.GameLoop.GameLaunched += OnGameLaunched;
-        helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
-
-        // 迁移
-        Migrate();
+        helper.Events.Display.RenderedHud += this.OnRenderedHud;
+        helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
+        helper.Events.GameLoop.UpdateTicked += this.OnUpdateTicked;
     }
 
     private void OnUpdateTicked(object? sender, UpdateTickedEventArgs e)
     {
-        miningHud.Update();
+        this.miningHud.Update();
     }
 
     private void OnRenderedHud(object? sender, RenderedHudEventArgs e)
     {
-        miningHud.Draw(e.SpriteBatch);
+        this.miningHud.Draw(e.SpriteBatch);
     }
 
     private void OnGameLaunched(object? sender, GameLaunchedEventArgs e)
     {
-        miningHud = new MiningHud(Helper, config);
+        this.miningHud = new MiningHud(this.Helper, this.config);
         
-        new GenericModConfigMenuIntegrationForLazyMod(
-            Helper,
-            ModManifest,
-            () => config,
+        new GenericModConfigMenuIntegrationForLazyMod(this.Helper, this.ModManifest,
+            () => this.config,
             () =>
             {
-                config = new ModConfig();
-                UpdateConfig();
+                this.config = new ModConfig();
+                this.UpdateConfig();
             },
-            () => Helper.WriteConfig(config)
+            () => this.Helper.WriteConfig(this.config)
         ).Register();
     }
 
     private void UpdateConfig()
     {
-        automationManger.UpdateConfig(config);
-    }
-
-    private void Migrate()
-    {
-        // 1.0.8
-        config.ChopOakTree.TryAdd(3, false);
-        config.ChopMapleTree.TryAdd(3, false);
-        config.ChopPineTree.TryAdd(3, false);
-        config.ChopMahoganyTree.TryAdd(3, false);
-        config.ChopPalmTree.TryAdd(3, false);
-        config.ChopMushroomTree.TryAdd(3, false);
-        config.ChopGreenRainTree.TryAdd(3, false);
-        config.ChopMysticTree.TryAdd(3, false);
+        this.automationManger.UpdateConfig(this.config);
     }
 }

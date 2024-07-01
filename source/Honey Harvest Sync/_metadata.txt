@@ -6,9 +6,9 @@ mods:
    Honey Harvest Sync
 
 latest commit:
-   commit ca631ee0059d00c53a8d0929be56f14b67e457e5
+   commit ceacbfe12f3324ee38bec9574be9cc97d9a30f49
    Author: voltaek <7809420+voltaek@users.noreply.github.com>
-   Date:   Mon Apr 1 00:17:25 2024 -0400
+   Date:   Fri Jun 14 19:32:53 2024 -0400
    
-       Merge branch 'fix-null-dirt-error'
+       Merge branch 'next'
    

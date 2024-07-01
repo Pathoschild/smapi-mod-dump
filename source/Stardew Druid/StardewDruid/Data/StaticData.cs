@@ -29,13 +29,15 @@ namespace StardewDruid.Data
 
         public Dictionary<string, QuestProgress> progress;
 
-        public Dictionary<CharacterData.characters, Character.Character.mode> characters;
+        public Dictionary<CharacterHandle.characters, Character.Character.mode> characters;
 
-        public Dictionary<CharacterData.characters, List<ItemData>> chests;
+        public Dictionary<CharacterHandle.characters, List<ItemData>> chests;
 
         public Dictionary<int,Rite.rites> attunement;
 
         public Dictionary<HerbalData.herbals, int> herbalism;
+
+        public Dictionary<HerbalData.herbals, int> potions;
 
         public Dictionary<string, int> reliquary;
 
@@ -61,6 +63,8 @@ namespace StardewDruid.Data
             attunement = new();
 
             herbalism = new();
+
+            potions = new();
 
             reliquary = new();
 

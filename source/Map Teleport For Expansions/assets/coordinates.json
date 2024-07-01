@@ -1,0 +1,371 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/kesesek/StardewValleyMapTeleport
+**
+*************************************************/
+
+{
+    "coordinates": [
+        {
+            "displayName": "Backwoods/Default",
+            "teleportName": "Backwoods",
+            "label": "边远森林",
+            "x": 22,
+            "y": 16
+        },
+        {
+            "displayName": "Beach/ElliottCabin",
+            "teleportName": "Beach",
+            "label": "艾利欧特小屋",
+            "x": 49,
+            "y": 11
+        },
+        {
+            "displayName": "Beach/LonelyStone",
+            "teleportName": "Beach",
+            "label": "孤独的石头",
+            "x": 12,
+            "y": 23
+        },
+        {
+            "displayName": "Beach/FishShop",
+            "teleportName": "Beach",
+            "label": "鱼店",
+            "x": 30,
+            "y": 34
+        },
+        {
+            "displayName": "BusStop/Default",
+            "teleportName": "BusStop",
+            "label": "巴士站",
+            "x": 22,
+            "y": 11
+        },
+        {
+            "displayName": "Desert/Default",
+            "teleportName": "Desert",
+            "label": "沙漠",
+            "x": 6,
+            "y": 52
+        },
+        {
+            "displayName": "Farm/Default",
+            "teleportName": "Farm",
+            "label": "家",
+            "x": 64,
+            "y": 17
+        },
+        {
+            "displayName": "Forest/MarnieRanch",
+            "teleportName": "Forest",
+            "label": "玛妮的牧场",
+            "x": 90,
+            "y": 16
+        },
+        {
+            "displayName": "Forest/LeahCottage",
+            "teleportName": "Forest",
+            "label": "莉亚的农舍",
+            "x": 104,
+            "y": 33
+        },
+        {
+            "displayName": "Forest/WizardTower",
+            "teleportName": "Forest",
+            "label": "法师塔",
+            "x": 5,
+            "y": 27
+        },
+        {
+            "displayName": "Forest/AbandonedHouse",
+            "teleportName": "Forest",
+            "label": "废弃的屋子",
+            "x": 34,
+            "y": 96
+        },
+        {
+            "displayName": "Forest/SewerPipe",
+            "teleportName": "Forest",
+            "label": "下水管道",
+            "x": 94,
+            "y": 100
+        },
+        {
+            "displayName": "Mountain/AdventureGuild",
+            "teleportName": "Mountain",
+            "label": "冒险公会",
+            "x": 76,
+            "y": 9
+        },
+        {
+            "displayName": "Mountain/Carpenter",
+            "teleportName": "Mountain",
+            "label": "木匠的商店",
+            "x": 12,
+            "y": 26
+        },
+        {
+            "displayName": "Mountain/Mines",
+            "teleportName": "Mine",
+            "label": "矿井",
+            "x": 18,
+            "y": 9
+        },
+        {
+            "displayName": "Mountain/Quarry",
+            "teleportName": "Mountain",
+            "label": "采石场",
+            "x": 127,
+            "y": 11
+        },
+        {
+            "displayName": "Mountain/Tent",
+            "teleportName": "Mountain",
+            "label": "帐篷",
+            "x": 29,
+            "y": 8
+        },
+        {
+            "displayName": "Railroad/Railroad",
+            "teleportName": "Railroad",
+            "label": "铁路",
+            "x": 29,
+            "y": 45
+        },
+        {
+            "displayName": "Railroad/Spa",
+            "teleportName": "Railroad",
+            "label": "温泉",
+            "x": 10,
+            "y": 57
+        },
+        {
+            "displayName": "SecretWoods/Default",
+            "teleportName": "Woods",
+            "label": "秘密森林",
+            "x": 8,
+            "y": 9
+        },
+        {
+            "displayName": "Town/AlexHouse",
+            "teleportName": "Town",
+            "label": "河间大道",
+            "x": 57,
+            "y": 64
+        },
+        {
+            "displayName": "Town/Blacksmith",
+            "teleportName": "Town",
+            "label": "铁匠",
+            "x": 94,
+            "y": 82
+        },
+        {
+            "displayName": "Town/CommunityCenter",
+            "teleportName": "Town",
+            "label": "社区中心",
+            "x": 53,
+            "y": 20
+        },
+        {
+            "displayName": "Town/Graveyard",
+            "teleportName": "Town",
+            "label": "墓园",
+            "x": 47,
+            "y": 90
+        },
+        {
+            "displayName": "Town/HaleyHouse",
+            "teleportName": "Town",
+            "label": "2柳巷",
+            "x": 20,
+            "y": 89
+        },
+        {
+            "displayName": "Town/Hospital",
+            "teleportName": "Town",
+            "label": "诊所",
+            "x": 36,
+            "y": 56
+        },
+        {
+            "displayName": "Town/JojaMart",
+            "teleportName": "Town",
+            "label": "Joja超市",
+            "x": 95,
+            "y": 51
+        },
+        {
+            "displayName": "Town/JojaMart",
+            "teleportName": "Town",
+            "label": "Joja超市",
+            "x": 95,
+            "y": 51
+        },
+        {
+            "displayName": "Town/MovieTheater",
+            "teleportName": "Town",
+            "label": "电影院",
+            "x": 95,
+            "y": 51
+        },
+        {
+            "displayName": "Town/ManorHouse",
+            "teleportName": "Town",
+            "label": "镇长的庄园",
+            "x": 58,
+            "y": 86
+        },
+        {
+            "displayName": "Town/Museum",
+            "teleportName": "Town",
+            "label": "博物馆和图书馆",
+            "x": 101,
+            "y": 90
+        },
+        {
+            "displayName": "Town/PamHouse",
+            "teleportName": "Town",
+            "label": "拖车",
+            "x": 72,
+            "y": 69
+        },
+        {
+            "displayName": "Town/PierreStore",
+            "teleportName": "Town",
+            "label": "皮埃尔的杂货店",
+            "x": 43,
+            "y": 57
+        },
+        {
+            "displayName": "Town/Saloon",
+            "teleportName": "Town",
+            "label": "星之果实酒吧",
+            "x": 45,
+            "y": 71
+        },
+        {
+            "displayName": "Town/SamHouse",
+            "teleportName": "Town",
+            "label": "1柳巷",
+            "x": 10,
+            "y": 86
+        },
+        {
+            "displayName": "Town/Sewer",
+            "teleportName": "Town",
+            "label": "下水道",
+            "x": 35,
+            "y": 97
+        },
+        {
+            "displayName": "Town/TownSquare",
+            "teleportName": "Town",
+            "label": "小镇广场",
+            "x": 29,
+            "y": 67
+        },
+        {
+            "displayName": "GingerIsland/Default",
+            "teleportName": "IslandSouth",
+            "label": "姜岛",
+            "x": 21,
+            "y": 43
+        },
+        {
+            "displayName": "South/Dock",
+            "teleportName": "IslandSouth",
+            "label": "威利的船",
+            "x": 21,
+            "y": 43
+        },
+        {
+            "displayName": "South/Resort",
+            "teleportName": "IslandSouth",
+            "label": "度假村",
+            "x": 18,
+            "y": 24
+        },
+        {
+            "displayName": "North/Trader",
+            "teleportName": "IslandNorth",
+            "label": "姜岛商人",
+            "x": 36,
+            "y": 72
+        },
+        {
+            "displayName": "North/FieldOffice",
+            "teleportName": "IslandNorth",
+            "label": "办事处",
+            "x": 46,
+            "y": 47
+        },
+        {
+            "displayName": "North/DigSite",
+            "teleportName": "IslandNorth",
+            "label": "挖掘场",
+            "x": 16,
+            "y": 51
+        },
+        {
+            "displayName": "North/Volcano",
+            "teleportName": "IslandNorth",
+            "label": "火山",
+            "x": 40,
+            "y": 24
+        },
+        {
+            "displayName": "East/JungleHut",
+            "teleportName": "IslandEast",
+            "label": "丛林树屋",
+            "x": 22,
+            "y": 30
+        },
+        {
+            "displayName": "SouthEast/PirateCove",
+            "teleportName": "IslandSouthEast",
+            "label": "海盗湾",
+            "x": 25,
+            "y": 21
+        },
+        {
+            "displayName": "West/House",
+            "teleportName": "IslandWest",
+            "label": "姜岛农舍",
+            "x": 77,
+            "y": 40
+        },
+        {
+            "displayName": "West/Shipwreck",
+            "teleportName": "IslandWest",
+            "label": "沉船",
+            "x": 68,
+            "y": 84
+        },
+        {
+            "displayName": "West/TigerSlimeGrove",
+            "teleportName": "IslandWest",
+            "label": "老虎史莱姆树林",
+            "x": 38,
+            "y": 38
+        },
+        {
+            "displayName": "West/BirdieShack",
+            "teleportName": "IslandWest",
+            "label": "贝啼的小屋",
+            "x": 24,
+            "y": 56
+        },
+        {
+            "displayName": "West/QiWalnutRoom",
+            "teleportName": "IslandWest",
+            "label": "齐先生的核桃房",
+            "x": 20,
+            "y": 23
+        }
+    ]
+}

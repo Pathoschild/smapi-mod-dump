@@ -6,9 +6,9 @@ mods:
    BarleyZP's Allergies
 
 latest commit:
-   commit e73e9d599fc53b90a1d232653479585894da5058
+   commit 9688d0692ba2c2619e7536aca4f78a0a05d56109
    Author: Cara Lisy <lisyce@gmail.com>
-   Date:   Thu May 23 18:08:52 2024 -0700
+   Date:   Sat Jun 15 20:50:50 2024 -0700
    
-       bzpa release notes
+       misc python scripts
    

@@ -10,12 +10,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Xna.Framework;
 using StardewArchipelago.Archipelago;
 using StardewModdingAPI;
 using StardewValley;
-using StardewValley.Menus;
 
 namespace StardewArchipelago.Locations.Festival
 {
@@ -25,25 +22,23 @@ namespace StardewArchipelago.Locations.Festival
         private static IModHelper _modHelper;
         private static ArchipelagoClient _archipelago;
         private static LocationChecker _locationChecker;
-        private static ShopReplacer _shopReplacer;
 
-        public static void Initialize(IMonitor monitor, IModHelper modHelper, ArchipelagoClient archipelago, LocationChecker locationChecker, ShopReplacer shopReplacer)
+        public static void Initialize(IMonitor monitor, IModHelper modHelper, ArchipelagoClient archipelago, LocationChecker locationChecker)
         {
             _monitor = monitor;
             _modHelper = modHelper;
             _archipelago = archipelago;
             _locationChecker = locationChecker;
-            _shopReplacer = shopReplacer;
         }
 
-        // public virtual void command_awardFestivalPrize(GameLocation location, GameTime time, string[] split)
-        public static bool AwardFestivalPrize_FishingCompetition_Prefix(Event __instance, GameLocation location, GameTime time, string[] split)
+        // public static void AwardFestivalPrize(Event @event, string[] args, EventContext context)
+        public static bool AwardFestivalPrize_FishingCompetition_Prefix(Event @event, string[] args, EventContext context)
         {
             try
             {
-                var festivalWinnersField = _modHelper.Reflection.GetField<HashSet<long>>(__instance, "festivalWinners");
+                var festivalWinnersField = _modHelper.Reflection.GetField<HashSet<long>>(@event, "festivalWinners");
                 var festivalWinners = festivalWinnersField.GetValue();
-                var festivalDataField = _modHelper.Reflection.GetField<Dictionary<string, string>>(__instance, "festivalData");
+                var festivalDataField = _modHelper.Reflection.GetField<Dictionary<string, string>>(@event, "festivalData");
                 var festivalData = festivalDataField.GetValue();
 
                 if (festivalWinners == null || festivalData == null)
@@ -66,7 +61,7 @@ namespace StardewArchipelago.Locations.Festival
                 }
 
                 Game1.player.mailReceived.Add("Ice Festival");
-                __instance.CurrentCommand += 2;
+                @event.CurrentCommand += 2;
 
                 return false; // don't run original logic
             }
@@ -74,35 +69,6 @@ namespace StardewArchipelago.Locations.Festival
             {
                 _monitor.Log($"Failed in {nameof(AwardFestivalPrize_FishingCompetition_Prefix)}:\n{ex}", LogLevel.Error);
                 return true; // run original logic
-            }
-        }
-
-        private static ShopMenu _lastShopMenuUpdated = null;
-        // public override void update(GameTime time)
-        public static void Update_HandleRarecrow4FirstTimeOnly_Postfix(ShopMenu __instance, GameTime time)
-        {
-            try
-            {
-                // We only run this once for each menu
-                if (_lastShopMenuUpdated == __instance)
-                {
-                    return;
-                }
-
-                _lastShopMenuUpdated = __instance;
-                var myActiveHints = _archipelago.GetMyActiveHints();
-                foreach (var salableItem in __instance.itemPriceAndStock.Keys.ToArray())
-                {
-                    _shopReplacer.ReplaceShopItem(__instance.itemPriceAndStock, salableItem, FestivalLocationNames.RARECROW_4, item => _shopReplacer.IsRarecrow(item, 4), myActiveHints);
-                }
-
-                __instance.forSale = __instance.itemPriceAndStock.Keys.ToList();
-                return;
-            }
-            catch (Exception ex)
-            {
-                _monitor.Log($"Failed in {nameof(Update_HandleRarecrow4FirstTimeOnly_Postfix)}:\n{ex}", LogLevel.Error);
-                return;
             }
         }
     }

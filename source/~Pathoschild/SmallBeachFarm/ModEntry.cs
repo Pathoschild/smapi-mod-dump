@@ -55,22 +55,9 @@ namespace Pathoschild.Stardew.SmallBeachFarm
             I18n.Init(helper.Translation);
             CommonHelper.RemoveObsoleteFiles(this, "SmallBeachFarm.pdb"); // removed in 2.4.7
 
-            // read config
+            // read config & data
             this.Config = this.Helper.ReadConfig<ModConfig>();
-
-            // read data
-            ModData? data = this.Helper.Data.ReadJsonFile<ModData>("assets/data.json");
-            this.Data = data ?? new ModData();
-            {
-                string dataPath = Path.Combine(this.Helper.DirectoryPath, "assets", "data.json");
-                if (data == null || !File.Exists(dataPath))
-                {
-                    this.Monitor.Log("The mod's 'assets/data.json' file is missing, so this mod can't work correctly. Please reinstall the mod to fix this.", LogLevel.Error);
-                    return;
-                }
-                if (CommonHelper.GetFileHash(dataPath) != ModEntry.DataFileHash)
-                    this.Monitor.Log("Found edits to 'assets/data.json'.");
-            }
+            this.Data = this.LoadModData();
 
             // hook events
             helper.Events.Content.AssetRequested += this.OnAssetRequested;
@@ -134,7 +121,7 @@ namespace Pathoschild.Stardew.SmallBeachFarm
             }
 
             // add farm location data
-            else if (e.NameWithoutLocale.IsEquivalentTo("Data/Locations"))
+            else if (e.NameWithoutLocale.IsEquivalentTo("Data/Locations") && this.Data.LocationData != null)
             {
                 e.Edit(editor =>
                 {
@@ -250,6 +237,30 @@ namespace Pathoschild.Stardew.SmallBeachFarm
                 Game1.whichModFarm?.Id == this.ModManifest.UniqueID
                 && location?.Name == "Farm"
                 && location is Farm;
+        }
+
+        /// <summary>Load the mod data from the <c>assets/data.json</c> file.</summary>
+        private ModData LoadModData()
+        {
+            ModData? data = this.Helper.Data.ReadJsonFile<ModData>("assets/data.json");
+
+            string dataPath = Path.Combine(this.Helper.DirectoryPath, "assets", "data.json");
+            if (data == null || !File.Exists(dataPath))
+            {
+                this.Monitor.Log("The mod's 'assets/data.json' file is missing, so this mod can't work correctly. Please reinstall the mod to fix this.", LogLevel.Error);
+                return new();
+            }
+
+            if (CommonHelper.GetFileHash(dataPath) != ModEntry.DataFileHash)
+                this.Monitor.Log("Found edits to 'assets/data.json'.");
+
+            if (data.LocationData is null)
+            {
+                this.Monitor.Log("The mod's 'assets/data.json' file has invalid location data, so this mod can't work correctly. Please reinstall the mod to fix this.", LogLevel.Error);
+                data.LocationData = null;
+            }
+
+            return data;
         }
     }
 }

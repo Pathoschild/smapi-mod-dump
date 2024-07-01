@@ -9,9 +9,11 @@ mods:
    Toggle Items Framework
 
 latest commit:
-   commit 5647c030260404dde03059b46cd46a4de51b25af
-   Author: zombifier <zombify.25@gmail.com>
-   Date:   Mon May 27 15:20:07 2024 -0400
+   commit fbcc85eac4593ab569c3e339143b63b8de3bdefb
+   Author: Khoi Doan <zombify.25@gmail.com>
+   Date:   Wed Jun 26 01:00:55 2024 -0400
    
-       tiny clarification
+       Merge pull request #2 from CaranudLapin/patch-1
+       
+       Create fr.json (Toggle items)
    

@@ -18,6 +18,7 @@ using Shockah.Kokoro;
 using Shockah.Kokoro.GMCM;
 using Shockah.Kokoro.Stardew;
 using Shockah.Kokoro.UI;
+using Shockah.XPDisplay.WalkOfLife;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
@@ -105,7 +106,7 @@ namespace Shockah.XPDisplay
 
 		private void OnGameLaunched(object? sender, GameLaunchedEventArgs e)
 		{
-			IsWalkOfLifeInstalled = Helper.ModRegistry.IsLoaded("DaLion.ImmersiveProfessions");
+			IsWalkOfLifeInstalled = Helper.ModRegistry.IsLoaded("DaLion.Professions");
 			IsMargoInstalled = Helper.ModRegistry.IsLoaded("DaLion.Overhaul");
 			var harmony = new Harmony(ModManifest.UniqueID);
 			//Harmony.DEBUG = true;
@@ -113,7 +114,7 @@ namespace Shockah.XPDisplay
 			harmony.TryPatch(
 				monitor: Monitor,
 				original: () => AccessTools.Method(typeof(Farmer), nameof(Farmer.gainExperience)),
-				prefix: new HarmonyMethod(typeof(XPDisplay), nameof(Farmer_gainExperience_Prefix))
+				prefix: new HarmonyMethod(typeof(XPDisplay), nameof(Farmer_gainExperience_Prefix)) { before = new[] { "DaLion.Professions" } }
 			);
 			harmony.TryPatch(
 				monitor: Monitor,
@@ -158,7 +159,7 @@ namespace Shockah.XPDisplay
 
 				if (!Config.ToolbarSkillBar.IsEnabled)
 					continue;
-				if (Config.ToolbarSkillBar.ExcludeSkillsAtMaxLevel && baseLevel >= skill.MaxLevel)
+				if (Config.ToolbarSkillBar.ExcludeSkillsAtMaxLevel && baseLevel >= getMaxSkillLevel(skill))
 					continue;
 
 				float xpChangedDuration = Instance.Config.ToolbarSkillBar.XPChangedDurationInSeconds;
@@ -188,7 +189,7 @@ namespace Shockah.XPDisplay
 			if (Config.ToolbarSkillBar.AlwaysShowCurrentTool)
 			{
 				var skill = GetSkillForItem(Game1.player.CurrentItem);
-				if (skill is not null && skill.GetBaseLevel(Game1.player) >= skill.MaxLevel && Config.ToolbarSkillBar.ExcludeSkillsAtMaxLevel)
+				if (skill is not null && skill.GetBaseLevel(Game1.player) >= getMaxSkillLevel(skill) && Config.ToolbarSkillBar.ExcludeSkillsAtMaxLevel)
 					skill = null;
 				if (skill is not null)
 					Instance.ToolbarCurrentPermanentSkill.Value = skill;
@@ -211,7 +212,7 @@ namespace Shockah.XPDisplay
 				if (!Config.ToolbarSkillBar.AlwaysShowCurrentTool && Config.ToolbarSkillBar.ToolSwitchDurationInSeconds > 0f)
 				{
 					var skill = GetSkillForItem(Game1.player.CurrentItem);
-					if (skill is not null && (!Config.ToolbarSkillBar.ExcludeSkillsAtMaxLevel || skill.GetBaseLevel(Game1.player) < skill.MaxLevel) && !Config.ToolbarSkillBar.SkillsToExcludeOnToolSwitch.Contains(skill.UniqueID))
+					if (skill is not null && (!Config.ToolbarSkillBar.ExcludeSkillsAtMaxLevel || skill.GetBaseLevel(Game1.player) < getMaxSkillLevel(skill)) && !Config.ToolbarSkillBar.SkillsToExcludeOnToolSwitch.Contains(skill.UniqueID))
 					{
 						Instance.ToolbarCurrentTemporarySkill.Value = skill;
 						Instance.ToolbarCurrentTemporarySkillDuration.Value = Config.ToolbarSkillBar.ToolSwitchDurationInSeconds;
@@ -447,7 +448,7 @@ namespace Shockah.XPDisplay
 				Rectangle obtainedBarTextureRectangle;
 				Rectangle unobtainedBarTextureRectangle;
 
-				void UpdateExtendedLevelTextures(int level)
+				void UpdateExtendedLevelTextures(int level, ISkill skill)
 				{
 					obtainedBarTexture = Game1.mouseCursors;
 					unobtainedBarTexture = Game1.mouseCursors;
@@ -456,14 +457,14 @@ namespace Shockah.XPDisplay
 
 					if (level >= 10 && level > levelIndex + 10)
 					{
-						if (Instance.IsWalkOfLifeInstalled && WalkOfLifeBridge.IsPrestigeEnabled())
+						if (Instance.IsWalkOfLifeInstalled && WalkOfLifeBridge.IsPrestigeEnabled(skill))
 							(obtainedBarTexture, obtainedBarTextureRectangle) = isBigLevel ? WalkOfLifeBridge.GetExtendedBigBar()!.Value : WalkOfLifeBridge.GetExtendedSmallBar()!.Value;
 						else if (Instance.IsMargoInstalled && MargoBridge.IsPrestigeEnabled())
 							(obtainedBarTexture, obtainedBarTextureRectangle) = isBigLevel ? MargoBridge.GetExtendedBigBar()!.Value : MargoBridge.GetExtendedSmallBar()!.Value;
 					}
 				}
 
-				UpdateExtendedLevelTextures(buffedLevel);
+				UpdateExtendedLevelTextures(buffedLevel, skill);
 
 				var backgroundBarTexture = buffedLevel > levelIndex ? obtainedBarTexture : unobtainedBarTexture;
 				var backgroundBarTextureRectangle = buffedLevel > levelIndex ? obtainedBarTextureRectangle : unobtainedBarTextureRectangle;
@@ -476,7 +477,7 @@ namespace Shockah.XPDisplay
 				if (buffedLevel % 10 != levelIndex)
 					continue;
 
-				UpdateExtendedLevelTextures(buffedLevel + 1);
+				UpdateExtendedLevelTextures(buffedLevel + 1, skill);
 
 				Vector2 partialBarPosition;
 				Rectangle partialBarTextureRectangle;
@@ -515,7 +516,7 @@ namespace Shockah.XPDisplay
 				bool isModifiedSkill = buffedLevel != currentLevel;
 
 				Color textColor = Color.SandyBrown;
-				if (currentLevel == 20 && ((Instance.IsWalkOfLifeInstalled && WalkOfLifeBridge.IsPrestigeEnabled()) || (Instance.IsMargoInstalled && MargoBridge.IsPrestigeEnabled())))
+				if (currentLevel == 20 && ((Instance.IsWalkOfLifeInstalled && WalkOfLifeBridge.IsPrestigeEnabled(skill)) || (Instance.IsMargoInstalled && MargoBridge.IsPrestigeEnabled())))
 					textColor = Color.Cornsilk;
 				if (isModifiedSkill)
 					textColor = Color.LightGreen;
@@ -571,7 +572,7 @@ namespace Shockah.XPDisplay
 			if (Instance.Config.ToolbarSkillBar.ToolUseDurationInSeconds > 0f)
 			{
 				var skill = Instance.GetSkillForItem(Game1.player.CurrentItem);
-				if (skill is not null && (!Instance.Config.ToolbarSkillBar.ExcludeSkillsAtMaxLevel || skill.GetBaseLevel(Game1.player) < skill.MaxLevel) && !Instance.Config.ToolbarSkillBar.SkillsToExcludeOnToolUse.Contains(skill.UniqueID))
+				if (skill is not null && (!Instance.Config.ToolbarSkillBar.ExcludeSkillsAtMaxLevel || skill.GetBaseLevel(Game1.player) < getMaxSkillLevel(skill)) && !Instance.Config.ToolbarSkillBar.SkillsToExcludeOnToolUse.Contains(skill.UniqueID))
 				{
 					Instance.ToolbarCurrentTemporarySkill.Value = skill;
 					Instance.ToolbarCurrentTemporarySkillDuration.Value = Instance.Config.ToolbarSkillBar.ToolUseDurationInSeconds;
@@ -816,7 +817,7 @@ namespace Shockah.XPDisplay
 
 			if (buffedLevel >= 10)
 			{
-				if (Instance.IsWalkOfLifeInstalled && WalkOfLifeBridge.IsPrestigeEnabled())
+				if (Instance.IsWalkOfLifeInstalled && WalkOfLifeBridge.IsPrestigeEnabled(skill))
 					(barTexture, barTextureRectangle) = isBigLevel ? WalkOfLifeBridge.GetExtendedBigBar()!.Value : WalkOfLifeBridge.GetExtendedSmallBar()!.Value;
 				else if (Instance.IsMargoInstalled && MargoBridge.IsPrestigeEnabled())
 					(barTexture, barTextureRectangle) = isBigLevel ? MargoBridge.GetExtendedBigBar()!.Value : MargoBridge.GetExtendedSmallBar()!.Value;
@@ -898,6 +899,12 @@ namespace Shockah.XPDisplay
 			}
 			SkillBarCorners.Clear();
 			SkillBarHoverExclusions.Clear();
+		}
+
+		public static int getMaxSkillLevel(ISkill skill)
+		{
+			int maxLevel = WalkOfLifeBridge.IsPrestigeEnabled(skill) ? 20 : skill.MaxLevel;
+			return maxLevel;
 		}
 	}
 }

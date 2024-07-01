@@ -52,7 +52,7 @@ namespace Pathoschild.Stardew.TractorMod.Framework
         private readonly Func<Texture2D?> GetBuffIconTexture;
 
         /// <summary>The tractor attachments to apply.</summary>
-        private IAttachment[] Attachments = Array.Empty<IAttachment>();
+        private IAttachment[] Attachments = [];
 
         /// <summary>The attachment cooldowns in ticks for each rate-limited attachment.</summary>
         private Dictionary<IAttachment, int> AttachmentCooldowns = new();

@@ -79,7 +79,7 @@ namespace Unlockable_Bundles.Lib
             } else
                 __instance.organizeButton.upNeighborID = OverviewButtonId;
 
-            BundleOverviewButton = new ClickableTextureComponent("", new Rectangle(pos.X, pos.Y, 64, 64), "", "Bundle Overview", BundleOverviewIcon, new Rectangle(0, 0, 61, 56), 1f) {
+            BundleOverviewButton = new ClickableTextureComponent("", new Rectangle(pos.X, pos.Y, 64, 64), "", Helper.Translation.Get("ub_overview_button"), BundleOverviewIcon, new Rectangle(0, 0, 61, 56), 1f) {
                 myID = OverviewButtonId,
                 leftNeighborID = leftNeighborID,
                 downNeighborID = downNeighborID
@@ -97,7 +97,7 @@ namespace Unlockable_Bundles.Lib
         {
             BundleOverviewButton.tryHover(x, y);
             if (BundleOverviewButton.containsPoint(x, y))
-                __instance.hoverText = "Bundle Overview";
+                __instance.hoverText = Helper.Translation.Get("ub_overview_button");
         }
 
         public static bool receiveLeftClick_Prefix(int x, int y, bool playSound, InventoryPage __instance)

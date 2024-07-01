@@ -55,12 +55,12 @@ namespace DeluxeJournal.Framework.Events
 
             if (Game1.getLocationFromName(message.LocationName) is not GameLocation location)
             {
-                throw new ArgumentException(string.Format("No GameLocation with name '{0}'.", message.LocationName));
+                throw new InvalidOperationException(string.Format("No GameLocation with name '{0}'.", message.LocationName));
             }
             
             if (location.getBuildingAt(tile) is not Building building)
             {
-                throw new ArgumentException(string.Format("No building found at location '{0}' on tile ({1},{2}).", message.LocationName, tile.X, tile.Y));
+                throw new InvalidOperationException(string.Format("No building found at location '{0}' on tile ({1},{2}).", message.LocationName, tile.X, tile.Y));
             }
 
             return new BuildingConstructedEventArgs(location, building, message.IsUpgrade);

@@ -30,13 +30,13 @@ namespace Pathoschild.Stardew.Automate.Framework
         private readonly IMonitor Monitor;
 
         /// <summary>The machines in the group.</summary>
-        private readonly HashSet<IMachine> Machines = new();
+        private readonly HashSet<IMachine> Machines = [];
 
         /// <summary>The containers in the group.</summary>
-        private readonly HashSet<IContainer> Containers = new();
+        private readonly HashSet<IContainer> Containers = [];
 
         /// <summary>The tiles comprising the group.</summary>
-        private readonly HashSet<Vector2> Tiles = new();
+        private readonly HashSet<Vector2> Tiles = [];
 
         /// <summary>Sort machines by priority.</summary>
         private readonly Func<IEnumerable<IMachine>, IEnumerable<IMachine>> SortMachines;

@@ -17,8 +17,8 @@
     "cfg_hud_y_position.desc": "Y position of fishing HUD on screen. (Visible while holding fishing rod)",
     "cfg_hud_columns.name": "HUD Columns",
     "cfg_hud_columns.desc": "Number of columns on the HUD. Play around a bit with this to see what works for you.",
-    "cfg_hide_uncaught_fish.name": "Hide uncaught fish",
+    "cfg_hide_uncaught_fish.name": "Hide Uncaught Fish",
     "cfg_hide_uncaught_fish.desc": "When checked, uncaught fish show up as '???' on the HUD",
-    "cfg_show_fish_name.name": "Show fish names",
+    "cfg_show_fish_name.name": "Show Fish Names",
     "cfg_show_fish_name.desc":  "Whether to show the name of the fish on the HUD"
 }

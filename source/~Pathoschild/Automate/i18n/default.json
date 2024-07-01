@@ -58,6 +58,7 @@
     "config.machines.fruit-tree": "Tree (Fruit Tree)",
     "config.machines.trash-can": "Trash Can",
     "config.machines.wild-tree": "Tree (Wild Tree)",
+    "config.machines.feed-hopper": "Hay Hopper and Silo",
 
     // special settings for individual machines
     "config.machines.wild-tree.collect-moss.name": "Collect Moss",

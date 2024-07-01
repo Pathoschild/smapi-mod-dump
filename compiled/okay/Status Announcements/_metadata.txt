@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/24937
+IDs: Aile72.StatusAnnouncements
+update keys: Nexus:24937

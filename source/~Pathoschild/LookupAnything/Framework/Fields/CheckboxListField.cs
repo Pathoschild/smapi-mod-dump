@@ -135,7 +135,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Fields
         protected CheckboxListField(string label)
             : base(label, hasValue: true)
         {
-            this.Checkboxes = Array.Empty<KeyValuePair<IFormattedText[], bool>>();
+            this.Checkboxes = [];
         }
     }
 }

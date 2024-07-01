@@ -3,5 +3,6 @@
   "ItemScale": 0.42,
   "Transparency": 1.0,
   "DisplayQuality": true,
-  "ShowFirstIfNoneSelected": true
+  "ShowFirstIfNoneSelected": true,
+  "ShowFridgeIcon": false
 }

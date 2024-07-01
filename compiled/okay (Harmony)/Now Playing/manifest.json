@@ -1,7 +1,7 @@
 {
   "Name": "Now Playing",
   "Author": "John Peters (you know, the farmer?)",
-  "Version": "1.4.0",
+  "Version": "1.5.1",
   "Description": "Displays the name of a music track when it starts.",
   "UniqueID": "JohnPeters.NowPlaying",
   "EntryDll": "NowPlaying.dll",

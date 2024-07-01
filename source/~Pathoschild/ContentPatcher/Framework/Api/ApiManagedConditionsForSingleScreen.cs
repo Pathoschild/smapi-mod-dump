@@ -79,7 +79,7 @@ namespace ContentPatcher.Framework.Api
         {
             // skip unneeded updates
             if (!this.ShouldUpdate())
-                return Enumerable.Empty<int>();
+                return [];
             this.LastUpdateTick = this.Context.UpdateTick;
 
             // update context
@@ -93,7 +93,7 @@ namespace ContentPatcher.Framework.Api
             // return screen ID if it changed
             return this.IsMatch != wasMatch
                 ? new[] { StardewModdingAPI.Context.ScreenId }
-                : Enumerable.Empty<int>();
+                : [];
         }
 
         /// <inheritdoc />

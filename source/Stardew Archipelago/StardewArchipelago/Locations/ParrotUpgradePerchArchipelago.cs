@@ -14,6 +14,7 @@ using StardewArchipelago.Archipelago;
 using StardewValley;
 using StardewValley.BellsAndWhistles;
 using xTile.Dimensions;
+using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 namespace StardewArchipelago.Locations
 {
@@ -23,7 +24,7 @@ namespace StardewArchipelago.Locations
         public string ApLocationName { get; }
 
         public ParrotUpgradePerchArchipelago(string apLocationName, ArchipelagoClient archipelago,
-            GameLocation location, Point tile_position, Microsoft.Xna.Framework.Rectangle upgrade_rectangle,
+            GameLocation location, Point tile_position, Rectangle upgrade_rectangle,
             int required_nuts, Action apply_upgrade, Func<bool> update_completion_status, string upgrade_name = "", string required_mail = "")
             : base(location, tile_position, upgrade_rectangle, required_nuts, apply_upgrade, update_completion_status, upgrade_name, required_mail)
         {
@@ -53,7 +54,7 @@ namespace StardewArchipelago.Locations
                     Game1.playSound("parrot_squawk");
                 }
 
-                if (Game1.netWorldState.Value.GoldenWalnuts.Value >= requiredNuts.Value)
+                if (Game1.netWorldState.Value.GoldenWalnuts >= requiredNuts.Value)
                 {
                     gameLocation.createQuestionDialogue(upgradeMessageFormatted, gameLocation.createYesNoResponses(), "UpgradePerch_" + upgradeName.Value);
                 }
@@ -62,7 +63,7 @@ namespace StardewArchipelago.Locations
                     Game1.drawDialogueNoTyping(upgradeMessageFormatted);
                 }
             }
-            else if (Game1.netWorldState.Value.GoldenWalnuts.Value >= requiredNuts.Value)
+            else if (Game1.netWorldState.Value.GoldenWalnuts >= requiredNuts.Value)
             {
                 AttemptConstruction();
             }

@@ -207,7 +207,7 @@ namespace ContentPatcher.Framework
             // dropdown for single multiple-choice value
             else
             {
-                List<string> choices = new List<string>(field.AllowValues);
+                List<string> choices = [..field.AllowValues];
                 if (field.AllowBlank)
                     choices.Insert(0, "");
 

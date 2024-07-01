@@ -19,7 +19,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SObject = StardewValley.Object;
 using StardewValley.Objects;
-using HoverLabels.Drawing;
+using AchtuurCore.Framework.Borders;
 
 namespace HoverLabels.Labels.Objects;
 internal class MachineLabel : ObjectLabel
@@ -55,7 +55,7 @@ internal class MachineLabel : ObjectLabel
         if (hoverObject.readyForHarvest.Value)
         {
             //display either "yx" (where y is number of items > 2) or ""
-            ItemLabelText itemlabel = new ItemLabelText(processingItem, "Ready");
+            ItemLabel itemlabel = new ItemLabel(processingItem, "Ready");
             AddBorder(itemlabel);
             //if (processingItem.Stack == 1)
             //    Description.Add(I18n.LabelMachineSingleItemReady(processingItem.DisplayName));
@@ -68,7 +68,8 @@ internal class MachineLabel : ObjectLabel
         else
         {
             string duration = GetTimeString(hoverObject.MinutesUntilReady);
-            ItemLabelText itemlabel = new ItemLabelText(processingItem, I18n.LabelMachineReadyIn(duration));
+            ItemLabel itemlabel = new ItemLabel(processingItem, I18n.LabelMachineReadyIn(duration));
+            AddBorder(itemlabel);
             //Description.Add(I18n.LabelMachineCrafting(processingItem.DisplayName));
             //Description.Add(I18n.LabelMachineReadyIn(duration));
         }

@@ -30,7 +30,7 @@ namespace MarketTown
             {
                 if (c.IsVillager)
                 {
-                    CheckOrder(c, Game1.player.currentLocation);
+                    CheckOrder(c, Game1.player.currentLocation, false);
                 }
                 else
                 {
@@ -39,10 +39,11 @@ namespace MarketTown
             }
         }
 
-        private void CheckOrder(NPC npc, GameLocation location)
+        private void CheckOrder(NPC npc, GameLocation location, bool bypass)
         {
             Random rand = new Random();
-            if (npc.modData.TryGetValue(orderKey, out string orderData) && rand.NextDouble() < Config.OrderChance)
+            if (npc.modData.TryGetValue(orderKey, out string orderData) 
+                && (rand.NextDouble() < Config.OrderChance || rand.NextDouble() < Config.OrderChance * 2.5 && location.Name == "Custom_MT_Island_House" || bypass) )
             {
                 //npc.modData.Remove(orderKey);
                 UpdateOrder(npc, JsonConvert.DeserializeObject<DataOrder>(orderData));
@@ -50,7 +51,7 @@ namespace MarketTown
             }
             if (!Game1.NPCGiftTastes.ContainsKey(npc.Name) || npcOrderNumbers.Value.TryGetValue(npc.Name, out int amount) && amount >= Config.MaxNPCOrdersPerNight)
                 return;
-            if (rand.NextDouble() < Config.OrderChance)
+            if (rand.NextDouble() < Config.OrderChance || rand.NextDouble() < Config.OrderChance * 2.5 && location.Name == "Custom_MT_Island_House" || bypass) 
             {
                 StartOrder(npc, location);
             }

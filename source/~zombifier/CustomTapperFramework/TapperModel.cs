@@ -12,7 +12,7 @@ using System;
 using System.Collections.Generic;
 using StardewValley.GameData.WildTrees;
 
-namespace CustomTapperFramework;
+namespace Selph.StardewMods.MachineTerrainFramework;
 
 // Legacy Tapper API Model object
 public class ExtendedTapItemData : WildTreeTapItemData {

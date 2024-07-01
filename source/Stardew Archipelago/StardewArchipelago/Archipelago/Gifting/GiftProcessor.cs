@@ -121,8 +121,8 @@ namespace StardewArchipelago.Archipelago.Gifting
         {
             var singleRecognizedTraits = new Dictionary<string[], Func<int, Dictionary<string, GiftTrait>, ItemAmount>>();
 
-            singleRecognizedTraits.Add(new[] {GiftFlag.Speed}, MakeCoffee);
-            singleRecognizedTraits.Add(new[] {"Fan"}, (amount, _) => ("Ornamental Fan", amount));
+            singleRecognizedTraits.Add(new[] { GiftFlag.Speed }, MakeCoffee);
+            singleRecognizedTraits.Add(new[] { "Fan" }, (amount, _) => ("Ornamental Fan", amount));
 
             _recognizedTraits.Add(1, singleRecognizedTraits);
         }

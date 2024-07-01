@@ -27,7 +27,10 @@
   "config.fertilizer_alpha.title": "肥料透明度",
   "config.fertilizer_alpha.tooltip": "肥料的透明度；默认255；范围0-255",
 
-  
+  "config.debug_mode.title": "调试模式",
+  "config.debug_mode.tooltip": "启用调试输出到控制台",
+
+
   "config.section.speed_fertilizer": "生长激素",
 
   "config.affect_multi_harvest.title": "影响多次收获",

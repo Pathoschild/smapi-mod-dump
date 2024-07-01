@@ -43,7 +43,7 @@
       "Target": "Data/Objects",
       "TargetField": [ "246", "ContextTags" ],
       "Entries": {
-        "#-1": "BarleyZP.BzpAllergies_FlourIngredient"
+        "#-1": "flour_item"
       }
     },
     {
@@ -153,7 +153,7 @@
           "ExcludeFromRandomSale": false,
           "ContextTags": [
             "color_white",
-            "BarleyZP.BzpAllergies_FlourIngredient"
+            "flour_item"
           ]
         },
         "BarleyZP.BzpAllergies_AllergyTeachBook": {
@@ -176,7 +176,8 @@
           "ExcludeFromRandomSale": false,
           "ContextTags": [
             "color_green",
-            "book_item"
+            "book_item",
+            "spu_book_no_message"
           ]
         },
         "BarleyZP.BzpAllergies_AllergyCookbook": {
@@ -199,7 +200,8 @@
           "ExcludeFromRandomSale": false,
           "ContextTags": [
             "color_purple",
-            "book_item"
+            "book_item",
+            "spu_book_no_message"
           ]
         }
       }

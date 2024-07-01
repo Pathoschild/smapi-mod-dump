@@ -1,5 +1,8 @@
 {
   "Username": "",
   "Password": "",
-  "TargetChannel": ""
+  "TargetChannel": "",
+  "IgnoredAccounts": [],
+  "IgnoreCommands": false,
+  "ShowSystemMessages": true
 }

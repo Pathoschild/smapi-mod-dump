@@ -6,9 +6,9 @@ mods:
    Weather Totems Expanded
 
 latest commit:
-   commit 055b3e2bfa7d61b93bee08a0464878205b86d4db
+   commit cfd84b9dd41713bf34f9ec6c1f530809d5602cd5
    Author: Amelie <amelie.parkinson.bates@gmail.com>
-   Date:   Fri May 24 16:36:33 2024 +1000
+   Date:   Sun Jun 16 11:16:42 2024 +1000
    
-       add german translation
+       add French translation file
    

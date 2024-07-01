@@ -1,10 +1,10 @@
 {
   "Name": "FishingTreasureSpawner",
   "Author": "jangofett4",
-  "Version": "1.1.0",
+  "Version": "1.2.0",
   "Description": "Spawns a treasure chest with a hotkey press",
   "UniqueID": "jangofett4.fishingtreasurespawner",
   "EntryDll": "FishingTreasureSpawner.dll",
-  "MinimumApiVersion": "3.0.0",
+  "MinimumApiVersion": "4.0.0",
   "UpdateKeys": []
 }

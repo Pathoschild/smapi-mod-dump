@@ -1,0 +1,4 @@
+{
+  "selph.ExtraAnimalConfig.AddedToSiloMsg": "Added {{count}} pieces of {{displayName}} to the silo.",
+  "selph.ExtraAnimalConfig.SiloCountMsg": "Pieces of {{displayName}}: {{count}}/{{maxCount}}",
+}

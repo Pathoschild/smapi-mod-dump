@@ -1,6 +1,6 @@
 {
   // GUI - Game Menu
-  // "OptionsTabTooltip": "UI Info Suite 2 Options", // TODO
+  "OptionsTabTooltip": "UI Info Suite 2 のオプション",
   //GUI - Billboard
   "Billboard": "掲示板",
   "Calendar": "カレンダー",
@@ -13,6 +13,23 @@
   //Harvest
   "DaysToMature": "日で成熟",
   "ReadyToHarvest": "収穫可能！",
+  "With": "肥料：",
+  "Fertilized": "肥料使用済",
+  "DoesNotProduceThisSeason": "今季は生産しない",
+  //Tree
+  "Tree": "木",
+  "stage": "成長段階：",
+  "Oak": "オークの",
+  "Maple": "カエデの",
+  "Pine": "マツの",
+  "Palm": "ヤシの",
+  "Mushroom": "キノコの",
+  "Mahogany": "マホガニーの",
+  "PalmJungle": "野生のヤシの",
+  "GreenRainType1": "コケむした",
+  "GreenRainType2": "コケむした",
+  "GreenRainType3": "コケむした",
+  "Mystic": "神秘の",
   //Display icons - General
   "TodaysRecipe": "今日のレシピ： ",
   "TravelingMerchantIsInTown": "行商人が町にいる！",
@@ -25,7 +42,7 @@
   "ToolIsFinishedBeingUpgraded": "{0}のアップグレード完了！",
   "NpcBirthday": "{0}の誕生日",
   "RobinBuildingStatus": "ロビンは{0}日で建築を完了します",
-  "RobinHouseUpgradeStatus": "Robin will finish upgrading your house in {0} day(s)", // TODO
+  "RobinHouseUpgradeStatus": "ロビンは{0}日で家をアップグレードします。",
   // Display icons - Foragables
   "CanFindSalmonberry": "今日は茂みでサーモンベリーが見つかります",
   "CanFindBlackberry": "今日は茂みでブラックベリーが見つかります",
@@ -34,14 +51,14 @@
   "DailyLuckValue": "今日の運は{0}です",
   "FeelingLucky": "今日はラッキーな予感！",
   "LuckyButNotTooLucky": "幸運を感じる？感じない？",
-  "NotFeelingLuckyAtAll": "今日は運が味方してくれそうにない...",
-  "MaybeStayHome": "今日は家で安静にしたほうが良いだろう...",
+  "NotFeelingLuckyAtAll": "今日は運が味方してくれそうにない…",
+  "MaybeStayHome": "今日は家で安静にしたほうが良いだろう…",
   "LuckStatus1": "今日はラッキーな予感！",
   "LuckStatus2": "今日は少しラッキーかも？",
   "LuckStatus3": "幸運を感じる？感じない？",
   "LuckStatus4": "今日の運勢はどっちつかず",
-  "LuckStatus5": "今日は運が味方してくれそうにない...",
-  "LuckStatus6": "今日は家で安静にしたほうが良いだろう...",
+  "LuckStatus5": "今日は運が味方してくれそうにない…",
+  "LuckStatus6": "今日は家で安静にしたほうが良いだろう…",
   //Settings - General
   "ShowLevelUpAnimation": "レベルアップアニメーションを表示する",
   "ShowExperienceBar": "経験値バーを表示する",

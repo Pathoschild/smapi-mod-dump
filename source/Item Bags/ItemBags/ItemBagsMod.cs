@@ -8,26 +8,26 @@
 **
 *************************************************/
 
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+
 using ItemBags.Bags;
 using ItemBags.Community_Center;
 using ItemBags.Helpers;
 using ItemBags.Menus;
 using ItemBags.Persistence;
+
+using Leclair.Stardew.BetterCrafting;
+
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
+
 using StardewValley;
 using StardewValley.Menus;
-using StardewValley.Tools;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.Serialization;
-using System.Xml.Serialization;
+
 using static ItemBags.Persistence.BagSizeConfig;
-using Object = StardewValley.Object;
 
 namespace ItemBags
 {
@@ -39,12 +39,13 @@ namespace ItemBags
         internal static LogLevel InfoLogLevel = LogLevel.Trace;
 #endif
 
-        public static Version CurrentVersion = new Version(3, 0, 5); // Last updated 4/1/2024 (Don't forget to update manifest.json)
+        public static Version CurrentVersion = new Version(3, 0, 7); // Last updated 5/31/2024 (Don't forget to update manifest.json)
         public const string ModUniqueId = "SlayerDharok.Item_Bags";
         public const string JAUniqueId = "spacechase0.JsonAssets";
         public const string SpaceCoreUniqueId = "spacechase0.SpaceCore";
         public const string SaveAnywhereUniqueId = "Omegasis.SaveAnywhere";
         public const string EntoaroxFrameworkUniqueId = "Entoarox.EntoaroxFramework";
+        public const string BetterCraftingUniqueId = "leclair.bettercrafting";
 
         internal static ItemBagsMod ModInstance { get; private set; }
         public static IMonitor Logger => ModInstance?.Monitor;
@@ -68,6 +69,8 @@ namespace ItemBags
         public static UserConfig UserConfig { get; internal set; }
         private const string ModdedItemsFilename = "modded_items.json";
         public static ModdedItems ModdedItems { get; private set; }
+
+        internal IBetterCrafting BetterCraftingAPI;
 
         internal static Dictionary<ModdedBag, BagType> TemporaryModdedBagTypes { get; private set; }
 
@@ -121,6 +124,33 @@ namespace ItemBags
                     catch (Exception ex)
                     {
                         Monitor.Log(string.Format("Failed to bind to Save Anywhere's Mod API. Your game may crash while saving with Save Anywhere! Error: {0}", ex.Message), LogLevel.Warn);
+                    }
+                }
+
+                // Add compatibility with Better Crafting
+                if (Helper.ModRegistry.IsLoaded(BetterCraftingUniqueId))
+                {
+                    if (Helper.ModRegistry.Get(BetterCraftingUniqueId).Manifest.Version.IsOlderThan("2.13.0"))
+                    {
+                        Monitor.Log("Better Crafting mod detected. You will not be able to craft using items inside of bags due to an incompatibility with Better Crafting's crafting menu. " +
+                            $"Consider updating Better Crafting to version 2.13.0 or later to remove this incompatibility.");
+                    }
+                    else
+                    {
+                        try
+                        {
+                            BetterCraftingAPI = Helper.ModRegistry.GetApi<IBetterCrafting>(BetterCraftingUniqueId);
+                            if (BetterCraftingAPI != null)
+                            {
+                                BetterCraftingAPI.RegisterInventoryProvider(typeof(ItemBag), new BetterCraftingInventoryProvider());
+                                BetterCraftingAPI.MenuSimplePopulateContainers += BetterCraftingInventoryProvider.PopulateContainers;
+                                BetterCraftingAPI.MenuClosing += BetterCraftingInventoryProvider.MenuClosing;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Monitor.Log($"Failed to bind to Better Crafting's Mod API. You will not be able to craft using items inside of bags. Error: {ex.Message}", LogLevel.Warn);
+                        }
                     }
                 }
 

@@ -21,9 +21,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 72aff0f9b28e809ed167e0dac95a51ca00df5b0d
+   commit 8ef23dfb8ab99792ebc3ad8e2da1a2920797680f
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Wed May 29 01:12:11 2024 -0400
+   Date:   Sun Jun 30 21:39:47 2024 -0400
    
-       fix slingshot not firing when sped up in 'hold and release' mode
+       Merge branch 'develop' into stable
    

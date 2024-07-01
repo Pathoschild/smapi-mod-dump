@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/6586
+IDs: aedenthorn.HereFishy
+update keys: Nexus:6586, UpdateManifest:https://raw.githubusercontent.com/mouahrara/aedenthorn/master/update-manifest.json@HereFishy, GitHub:aedenthorn/StardewValleyMods

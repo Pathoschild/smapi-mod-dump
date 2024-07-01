@@ -8,15 +8,15 @@
 **
 *************************************************/
 
-using AutoBreakGeode.Framework;
-using AutoBreakGeode.Patches;
-using Common.Patch;
+using weizinai.StardewValleyMod.Common.Patcher;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
+using weizinai.StardewValleyMod.AutoBreakGeode.Framework;
+using weizinai.StardewValleyMod.AutoBreakGeode.Patcher;
 
-namespace AutoBreakGeode;
+namespace weizinai.StardewValleyMod.AutoBreakGeode;
 
 internal class ModEntry : Mod
 {
@@ -27,20 +27,20 @@ internal class ModEntry : Mod
     public override void Entry(IModHelper helper)
     {
         // 初始化
-        hasFastAnimation = helper.ModRegistry.IsLoaded("Pathoschild.FastAnimations");
-        config = helper.ReadConfig<ModConfig>();
+        this.hasFastAnimation = helper.ModRegistry.IsLoaded("Pathoschild.FastAnimations");
+        this.config = helper.ReadConfig<ModConfig>();
         I18n.Init(helper.Translation);
         // 注册事件
-        helper.Events.GameLoop.GameLaunched += OnGameLaunched;
-        helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
-        helper.Events.Input.ButtonsChanged += OnButtonChanged;
+        helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
+        helper.Events.GameLoop.UpdateTicked += this.OnUpdateTicked;
+        helper.Events.Input.ButtonsChanged += this.OnButtonChanged;
         // 注册Harmony补丁
-        HarmonyPatcher.Apply(this, new GeodeMenuPatcher(config));
+        HarmonyPatcher.Apply(this, new GeodeMenuPatcher(this.config));
     }
 
     private void OnButtonChanged(object? sender, ButtonsChangedEventArgs e)
     {
-        if (config.AutoBreakGeodeKeybind.JustPressed()) AutoBreakGeode = !AutoBreakGeode;
+        if (this.config.AutoBreakGeodeKeybind.JustPressed()) AutoBreakGeode = !AutoBreakGeode;
     }
 
     private void OnUpdateTicked(object? sender, UpdateTickedEventArgs e)
@@ -57,8 +57,8 @@ internal class ModEntry : Mod
                 }
                 else
                 {
-                    if (!hasFastAnimation)
-                        for (var i = 0; i < config.BreakGeodeSpeed - 1; i++)
+                    if (!this.hasFastAnimation)
+                        for (var i = 0; i < this.config.BreakGeodeSpeed - 1; i++)
                             geodeMenu.update(Game1.currentGameTime);
                 }
 
@@ -77,12 +77,10 @@ internal class ModEntry : Mod
 
     private void OnGameLaunched(object? sender, GameLaunchedEventArgs e)
     {
-        new GenericModConfigMenuIntegrationForAutoBreakGeode(
-            Helper,
-            ModManifest,
-            () => config,
-            () => config = new ModConfig(),
-            () => Helper.WriteConfig(config)
+        new GenericModConfigMenuIntegrationForAutoBreakGeode(this.Helper, this.ModManifest,
+            () => this.config,
+            () => this.config = new ModConfig(),
+            () => this.Helper.WriteConfig(this.config)
         ).Register();
     }
 }

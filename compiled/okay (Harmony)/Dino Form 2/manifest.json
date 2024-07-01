@@ -1,0 +1,16 @@
+{
+  "Name": "Dino Form 2",
+  "Author": "juminos",
+  "Version": "1.1.1",
+  "Description": "Dino Form for 1.6.",
+  "UniqueID": "juminos.DinoForm2",
+  "EntryDll": "DinoForm2.dll",
+  "MinimumApiVersion": "4.0.0",
+  "Dependencies": [
+    {
+      "UniqueID": "juminos.DinoForm2.CP",
+      "IsRequired": true
+    }
+  ],
+  "UpdateKeys": [ "Nexus:24718" ]
+}

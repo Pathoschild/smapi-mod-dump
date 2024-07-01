@@ -9,7 +9,7 @@
   "UniqueID": "HedgehogTechnologies.AutoForager",
   "Name": "Auto Forager",
   "Author": "Jag3Dagster",
-  "Version": "3.6.0",
+  "Version": "3.6.2",
   "Description": "Automatically forage items simply by moving near them.",
   "MinimumApiVersion": "4.0",
   "EntryDll": "AutoForager.dll",

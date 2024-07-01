@@ -27,6 +27,9 @@
   "config.fertilizer_alpha.title": "Dünger Alpha",
   "config.fertilizer_alpha.tooltip": "Transparenz des Dünger-Sprites; Standard 255; Bereich 0-255",
 
+  "config.debug_mode.title": "Debug-Modus",
+  "config.debug_mode.tooltip": "Aktiviere Debug-Ausgabe zur Konsole",
+
 
   "config.section.speed_fertilizer": "Geschwindigkeits Dünger",
   

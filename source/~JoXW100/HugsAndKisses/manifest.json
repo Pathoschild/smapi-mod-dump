@@ -11,7 +11,7 @@
 {
   "Name": "Hugs and Kisses Continued",
   "Author": "JoXW, aedenthorn",
-  "Version": "2.0.2",
+  "Version": "2.0.3",
   "Description": "Hugs and kisses.",
   "UniqueID": "JoXW.HugsAndKisses",
   "EntryDll": "HugsAndKisses.dll",

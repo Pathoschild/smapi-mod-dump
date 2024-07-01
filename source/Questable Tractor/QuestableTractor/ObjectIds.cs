@@ -12,6 +12,8 @@ using System;
 using System.Collections.Generic;
 using StardewValley.GameData.Objects;
 
+using static NermNermNerm.Stardew.LocalizeFromSource.SdvLocalize;
+
 namespace NermNermNerm.Stardew.QuestableTractor
 {
     public static class ObjectIds
@@ -40,7 +42,7 @@ namespace NermNermNerm.Stardew.QuestableTractor
                     Name = id,
                     DisplayName = displayName,
                     Description = description,
-                    Type = "Quest",
+                    Type = I("Quest"),
                     Category = -999,
                     Price = 0,
                     Texture = ModEntry.SpritesPseudoPath,
@@ -50,73 +52,73 @@ namespace NermNermNerm.Stardew.QuestableTractor
             };
             addQuestItem(
                 BustedEngine,
-                "funky looking engine that doesn't work", // TODO: 18n
-                "Sebastian pulled this off of the rusty tractor.  I need to find someone to fix it.", // TODO: 18n
+                L("funky looking engine that doesn't work"),
+                L("Sebastian pulled this off of the rusty tractor.  I need to find someone to fix it."),
                 10);
             addQuestItem(
                 WorkingEngine,
-                "Junimo-powered tractor engine", // TODO: 18n
-                "The engine for the tractor!  I need to find someone to install it.", // TODO: 18n
+                L("Junimo-powered tractor engine"),
+                L("The engine for the tractor!  I need to find someone to install it."),
                 0);
             addQuestItem(
                 BustedScythe,
-                "core of the harvesting attachment for the tractor", // TODO: 18n
-                "This looks like it was a tractor attachment for harvesting crops, but it doesn't seem to be all together.", // TODO: 18n
+                L("core of the harvesting attachment for the tractor"),
+                L("This looks like it was a tractor attachment for harvesting crops, but it doesn't seem to be all together."),
                 12);
             addQuestItem(
                 WorkingScythe,
-                "harvesting attachment for the tractor", // TODO: 18n
-                "Just need to bring this to the tractor garage to be able to use it with the tractor!", // TODO: 18n
+                L("harvesting attachment for the tractor"),
+                L("Just need to bring this to the tractor garage to be able to use it with the tractor!"),
                 2);
             addQuestItem(
                 ScythePart1,
-                "crop shakerlooser", // TODO: 18n
-                "One of the missing parts for the scythe attachment", // TODO: 18n
+                L("crop shakerlooser"),
+                L("One of the missing parts for the scythe attachment"),
                 7);
             addQuestItem(
                 ScythePart2,
-                "shiny sprocket", // TODO: 18n
-                "One of the missing parts for the scythe attachment", // TODO: 18n
+                L("shiny sprocket"),
+                L("One of the missing parts for the scythe attachment"),
                 6);
             addQuestItem(
                 BustedWaterer,
-                "broken watering attachment for the tractor", // TODO: 18n
-                "This looks like it was a tractor attachment for watering crops.  Sure hope somebody can help me get it working again, watering can really be a drag.", // TODO: 18n
+                L("broken watering attachment for the tractor"),
+                L("This looks like it was a tractor attachment for watering crops.  Sure hope somebody can help me get it working again, watering can really be a drag."),
                 20);
             addQuestItem(
                 WorkingWaterer,
-                "watering attachment for the tractor", // TODO: 18n
-                "The watering attachment for the tractor - it needs to be brought back to the tractor garage.", // TODO: 18n
+                L("watering attachment for the tractor"),
+                L("The watering attachment for the tractor - it needs to be brought back to the tractor garage."),
                 1);
             addQuestItem(
                 BustedLoader,
-                "bent up and rusty front-end loader for the tractor", // TODO: 18n
-                "This was the front-end loader attachment (for picking up rocks and sticks), but it's all bent up and rusted through in spots.  It needs to be fixed to be usable.", // TODO: 18n
+                L("bent up and rusty front-end loader for the tractor"),
+                L("This was the front-end loader attachment (for picking up rocks and sticks), but it's all bent up and rusted through in spots.  It needs to be fixed to be usable."),
                 18);
             addQuestItem(
                 WorkingLoader,
-                "front-end loader attachment for my tractor", // TODO: 18n
-                "This will allow me to clear rocks and sticks on my farm.  It needs to go into the tractor garage so I can use it.", // TODO: 18n
+                L("front-end loader attachment for my tractor"),
+                L("This will allow me to clear rocks and sticks on my farm.  It needs to go into the tractor garage so I can use it."),
                 9);
             addQuestItem(
                 AlexesOldShoe,
-                "Alex's old shoes", // TODO: 18n
-                "14EEE, slightly smudged", // TODO: 18n
+                L("Alex's old shoes"),
+                L("14EEE, slightly smudged"),
                 4);
             addQuestItem(
                 DisguisedShoe,
-                "cleverly repackaged pair of shoes", // TODO: 18n
-                "Alex's old shoes, cleverly dyed.  Nobody will ever know.", // TODO: 18n
+                L("cleverly repackaged pair of shoes"),
+                L("Alex's old shoes, cleverly dyed.  Nobody will ever know."),
                 11);
             addQuestItem(
                 BustedSeeder,
-                "broken fertilizer and seeder", // TODO: 18n
-                "The fertilizer and seed spread for the old tractor.  It needs a good bit of fiddling to make work.", // TODO: 18n
+                L("broken fertilizer and seeder"),
+                L("The fertilizer and seed spread for the old tractor.  It needs a good bit of fiddling to make work."),
                 8);
             addQuestItem(
                 WorkingSeeder,
-                "fertilizer and seed Seeder attachment for the tractor", // TODO: 18n
-                "Just needs to be brought back to the garage to use it on the tractor.", // TODO: 18n
+                L("fertilizer and seed Seeder attachment for the tractor"),
+                L("Just needs to be brought back to the garage to use it on the tractor."),
                 14);
         }
     }

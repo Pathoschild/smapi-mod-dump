@@ -1,6 +1,7 @@
 {
   "UseVanillaDoors": true,
   "UseVMVDoors": true,
+  "SinglePlayerMode": false,
   "LockedDoorColor": {
     "B": 0,
     "G": 0,

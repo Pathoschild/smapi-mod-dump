@@ -1,0 +1,10 @@
+{
+  "Name": "CountingSheep",
+  "Author": "calebstein1",
+  "Version": "0.4.0",
+  "Description": "Sleep is important! Make sure you're getting 8 hours or you'll be exhausted in the morning.",
+  "UniqueID": "calebstein1.CountingSheep",
+  "EntryDLL": "CountingSheep.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "GitHub:calebstein1/CountingSheep", "Nexus:25380" ]
+}

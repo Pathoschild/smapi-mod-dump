@@ -90,82 +90,15 @@ The grid layer shows [tile borders](https://stardewvalleywiki.com/Modding:Modder
 useful for planning layouts, calculating fishing distance, etc:
 > ![](screenshots/grid-layer.png)
 
-You can optionally [edit the `config.json` file](#configure) to enable the grid for all layers
-instead:
+You can optionally [edit the settings](#configure) to enable the grid for all layers instead:
 > ![](screenshots/grid-option.png)
 
 ## Configure
-The mod creates a `config.json` file in its mod folder the first time you run it. You can open that
-file in a text editor to configure the mod.
+If you install [Generic Mod Config Menu][], you can click the cog button (⚙) on the title screen
+or the "mod options" button at the bottom of the in-game menu to configure the mod. Hover the
+cursor over a field for details.
 
-These are the available settings:
-
-<table>
-<tr>
-  <th>setting</th>
-  <th>what it affects</th>
-</tr>
-
-<tr>
-  <td><code>Controls</code></td>
-  <td>
-
-The configured controller, keyboard, and mouse buttons (see [key bindings](https://stardewvalleywiki.com/Modding:Key_bindings)).
-The default values are...
-
-* `F2` to toggle the overlay;
-* left CTRL or left controller shoulder for the previous layer;
-* right CTRL or right controller shoulder for the next layer.
-
-You can separate bindings with commas (like `LeftControl, LeftShoulder` for either one), and set
-multi-key bindings with plus signs (like `LeftShift + F2`).
-
-  </td>
-</tr>
-<tr>
-  <td><code>Layers</code></td>
-  <td>
-
-For each data layer, you can configure...
-
-* `Enabled`: whether it should be available in-game.
-* `UpdatesPerSecond`: how often the layer should update. The maximum is 60 per seconds, but can be
-  less than 1 to update less than once per second (or zero to disable the data layer entirely).
-* `UpdateWhenViewChange`: Whether to update when your viewpoint in the game changes, regardless of
-  the `UpdatesPerSecond` value.
-* `ShortcutKey`: While the overlay is open, press this key to switch to this layer (see above notes
-  for `Controls`).
-
-  </td>
-</tr>
-<tr>
-  <td><code>ShowGrid</code></td>
-  <td>
-
-Default `false`. Whether to show a tile grid when a layer is open.
-
-  </td>
-</tr>
-<tr>
-  <td><code>ColorScheme</code></td>
-  <td>
-
-Default `Default`. The color scheme in `assets/colors.json` to use.
-
-`Default` is the only bundled color scheme currently.
-
-  </td>
-</tr>
-<tr>
-  <td><code>CombineOverlappingBorders</code></td>
-  <td>
-
-Default `true`. When two groups of the same color overlap, draw one border around their edges
-instead of their individual borders.
-
-  </td>
-</tr>
-</table>
+> ![](screenshots/generic-config-menu.png)
 
 ## Compatibility
 Data Layers is compatible with Stardew Valley 1.6+ on Linux/macOS/Windows, both single-player and
@@ -196,3 +129,5 @@ The layer data will be exported for the entire current location (not just the vi
 ## See also
 * [Release notes](release-notes.md)
 * [Nexus mod](https://www.nexusmods.com/stardewvalley/mods/1691)
+
+[Generic Mod Config Menu]: https://www.nexusmods.com/stardewvalley/mods/5098

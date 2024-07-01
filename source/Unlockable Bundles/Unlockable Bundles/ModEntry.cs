@@ -52,9 +52,7 @@ namespace Unlockable_Bundles
             API.Main.Initialize();
             Lib.Main.Initialize();
 
-            #if DEBUG
-                DebugLogLevel = LogLevel.Debug;
-            #endif
+            DebugLogLevel = Config.DebugLogging ? LogLevel.Debug : LogLevel.Trace;
         }
 
         public override object GetApi()

@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using FluentAssertions;
 using NUnit.Framework;
 using Pathoschild.Stardew.Common.Utilities;
 
@@ -37,8 +38,8 @@ namespace Pathoschild.Stardew.Tests.Common.CommonTests
             int lastValue = cached.Value;
 
             // assert
-            Assert.AreEqual(1, timesFetched, "The value was fetched more than once.");
-            Assert.AreEqual(lastValue, timesFetched, "The cached value doesn't match the expected value.");
+            timesFetched.Should().Be(1, "the value should only be fetched once");
+            lastValue.Should().Be(timesFetched, "the value should match what we set it to");
         }
 
         /// <summary>Ensure that <see cref="Cached{T}.Value"/> refreshes the value each time the cache key changes.</summary>
@@ -59,10 +60,10 @@ namespace Pathoschild.Stardew.Tests.Common.CommonTests
             int valueC = cached.Value;
 
             // assert
-            Assert.AreEqual(timesFetched, 3, $"The value should have been fetched three times (once per {cached.Value} call).");
-            Assert.AreEqual(valueA, 1, "The first return value should have been 1.");
-            Assert.AreEqual(valueB, 2, "The second return value should have been 2.");
-            Assert.AreEqual(valueC, 3, "The third return value should have been 3.");
+            timesFetched.Should().Be(3, $"the value should have been fetched three times (once per {cached.Value} call)");
+            valueA.Should().Be(1);
+            valueB.Should().Be(2);
+            valueC.Should().Be(3);
         }
     }
 }

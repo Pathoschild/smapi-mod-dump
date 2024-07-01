@@ -50,11 +50,12 @@ namespace Pathoschild.Stardew.Automate.Framework.Commands
         /// <inheritdoc />
         public override string GetDescription()
         {
-            return @"
+            return
+                """
                 automate summary
                    Usage: automate summary
                    Prints a summary of automated machines.
-            ";
+                """;
         }
 
         /// <inheritdoc />

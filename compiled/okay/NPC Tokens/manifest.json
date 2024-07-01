@@ -1,7 +1,7 @@
 {
   "Name": "NPC Tokens",
   "Author": "siliconmodding",
-  "Version": "1.0.1",
+  "Version": "1.0.2",
   "Description": "Custom Content Patcher tokens for NPCs.",
   "UniqueID": "siliconmodding.NPCTokens",
   "EntryDll": "NPCTokens.dll",

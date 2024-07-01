@@ -59,7 +59,7 @@ namespace ContentPatcher.Framework.ConfigModels
         ****/
         /// <summary>The text operations to apply.</summary>
         [JsonProperty(ObjectCreationHandling = ObjectCreationHandling.Auto)]
-        public List<TextOperationConfig?> TextOperations { get; } = new();
+        public List<TextOperationConfig?> TextOperations { get; } = [];
 
         /****
         ** EditImage
@@ -86,11 +86,11 @@ namespace ContentPatcher.Framework.ConfigModels
 
         /// <summary>The records to reorder, if the target is a list asset.</summary>
         [JsonProperty(ObjectCreationHandling = ObjectCreationHandling.Auto)]
-        public List<PatchMoveEntryConfig?> MoveEntries { get; } = new();
+        public List<PatchMoveEntryConfig?> MoveEntries { get; } = [];
 
         /// <summary>The field within the data asset to which edits should be applied, or empty to apply to the root asset.</summary>
         [JsonProperty(ObjectCreationHandling = ObjectCreationHandling.Auto)]
-        public List<string> TargetField { get; } = new();
+        public List<string> TargetField { get; } = [];
 
         /****
         ** EditMap
@@ -101,11 +101,11 @@ namespace ContentPatcher.Framework.ConfigModels
 
         /// <summary>The warps to add to the location.</summary>
         [JsonProperty(ObjectCreationHandling = ObjectCreationHandling.Auto)]
-        public List<string?> AddWarps { get; } = new();
+        public List<string?> AddWarps { get; } = [];
 
         /// <summary>The map tiles to edit.</summary>
         [JsonProperty(ObjectCreationHandling = ObjectCreationHandling.Auto)]
-        public List<PatchMapTileConfig?> MapTiles { get; } = new();
+        public List<PatchMapTileConfig?> MapTiles { get; } = [];
 
 
         /*********

@@ -74,7 +74,7 @@ namespace Pathoschild.Stardew.Common.DataParsers
                     this.DaysToFirstHarvest = (int)(this.DaysToFirstHarvest * 0.9);
             }
             else
-                this.Seasons = Array.Empty<Season>();
+                this.Seasons = [];
         }
 
         /// <summary>Get the date when the crop will next be ready to harvest.</summary>

@@ -193,16 +193,26 @@ namespace ContentPatcher.Framework.Patches.EditData
         /// <summary>Get a function which returns the unique key for an entry, if available.</summary>
         public Func<TValue, string?>? GetAssetKeyFunc()
         {
+            Type type = typeof(TValue);
+
+            // string
+            if (type == typeof(string))
+                return entry => entry as string;
+
+            // simple value type
+            if (type.IsValueType && (type.IsPrimitive || type.IsEnum))
+                return entry => entry?.ToString();
+
             // ID property
             {
-                PropertyInfo? property = typeof(TValue).GetProperty("Id") ?? typeof(TValue).GetProperty("ID");
+                PropertyInfo? property = type.GetProperty("Id") ?? type.GetProperty("ID");
                 if (property?.GetMethod != null)
                     return entry => property.GetValue(entry)?.ToString();
             }
 
             // ID field
             {
-                FieldInfo? field = typeof(TValue).GetField("Id") ?? typeof(TValue).GetField("ID");
+                FieldInfo? field = type.GetField("Id") ?? type.GetField("ID");
                 if (field != null)
                     return entry => field.GetValue(entry)?.ToString();
             }

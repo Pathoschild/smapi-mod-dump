@@ -17,6 +17,8 @@ using StardewValley;
 using StardewValley.Characters;
 using StardewValley.Extensions;
 
+using static NermNermNerm.Stardew.LocalizeFromSource.SdvLocalize;
+
 // Copied from Junimatic
 
 namespace NermNermNerm.Stardew.QuestableTractor
@@ -84,7 +86,7 @@ namespace NermNermNerm.Stardew.QuestableTractor
                 e.Edit(editor =>
                 {
                     IDictionary<string, string> data = editor.AsDictionary<string, string>().Data;
-                    data[PetSawItemConversationKey] = "Pets sometimes have an uncanny ability to spot missing things!$0#$b#Just last week I lost my favorite milking bucket.  I came across it a few days later and my cat, Muffin, was sleeping in it.$1#$b#Well, I guess she didn't exactly find it for me, but at least she knew where it was!$0";
+                    data[PetSawItemConversationKey] = L("Pets sometimes have an uncanny ability to spot missing things!$0#$b#Just last week I lost my favorite milking bucket.  I came across it a few days later and my cat, Muffin, was sleeping in it.$1#$b#Well, I guess she didn't exactly find it for me, but at least she knew where it was!$0");
                 });
             }
             else if (e.NameWithoutLocale.IsEquivalentTo("Characters/Dialogue/Linus"))
@@ -92,7 +94,7 @@ namespace NermNermNerm.Stardew.QuestableTractor
                 e.Edit(editor =>
                 {
                     IDictionary<string, string> data = editor.AsDictionary<string, string>().Data;
-                    data["winter_Sun4"] = @"Do I miss my ""normal"" life on days like this?$2#$b#No, not really.  Except for Jeremy Clarkson...$1#$b#...My pet Schnauzer.  He had an uncanny ability to fetch the thing I wanted before I even knew I wanted it.$0";
+                    data["winter_Sun4"] = L(@"Do I miss my ""normal"" life on days like this?$2#$b#No, not really.  Except for Jeremy Clarkson...$1#$b#...My pet Schnauzer.  He had an uncanny ability to fetch the thing I wanted before I even knew I wanted it.$0");
                 });
             }
         }
@@ -145,7 +147,7 @@ namespace NermNermNerm.Stardew.QuestableTractor
             Vector2 landingTile = nonObscuredTiles.Any() ? Game1.random.Choose(nonObscuredTiles) : Game1.random.Choose(openTiles.ToArray());
             petInScene.Position = landingTile * 64;
 
-            Game1.addHUDMessage(new HUDMessage($"I wonder what {petInScene.Name} has been up to...") { noIcon = true });
+            Game1.addHUDMessage(new HUDMessage(LF($"I wonder what {petInScene.Name} has been up to...")) { noIcon = true });
             Game1.player.activeDialogueEvents[PetSawItemConversationKey] = 30;
         }
 

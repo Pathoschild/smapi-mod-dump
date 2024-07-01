@@ -9,8 +9,31 @@ for queries and analysis.**
 [← back to readme](README.md)
 
 # Release notes
-## Upcoming release
+## 1.13.2
+Released 29 June 2024 for SMAPI 4.0.7 or later.
+
+* Fixed _event cutscene_ freezing events if they have a `pause` command which runs simultaneously with other event commands.
+* Fixed _event cutscene_ causing errors in some cases.
+* Fixed _fade_ causing festivals to not start when arriving via mine cart.
+* Improved translations. Thanks to MakinDay (updated Italian)!
+
+## 1.13.1
+Released 09 June 2024 for SMAPI 4.0.7 or later.
+
+* Fixed 'collection was modified' errors when speeding up some animations in 1.13.0.
+* Improved translations. Thanks to mitekano23 (updated Japanese)!
+
+## 1.13.0
+Released 08 June 2024 for SMAPI 4.0.7 or later.
+
+* Added support for dialogue box, event cutscene, tailoring, parrot express, and screen fade animations (thanks to weizinai!).
 * Fixed slingshot not firing when sped up in 'hold and release' mode.
+* Fixed _use slingshot_ ignored if _swing tool_ is enabled.
+* Fixed issue where enabling _tree falling_ or _open chest_ in-game would only affect the current location when you left and re-entered it.
+* Raised minimum versions to SMAPI 4.0.7 and Stardew Valley 1.6.4.  
+  _This avoids errors due to breaking changes in earlier 1.6 patches._
+* Internal refactoring & optimized performance.
+* Improved translations. Thanks to MakinDay (updated Italian) and mehmetgorkemarslan (updated Turkish)!
 
 ## 1.12.1
 Released 27 May 2024 for SMAPI 4.0.0 or later.

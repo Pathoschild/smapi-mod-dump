@@ -1,0 +1,10 @@
+{
+  "Name": "Sable's Labels",
+  "Author": "SableDnah",
+  "Version": "1.1.4",
+  "Description": "Adds unobtrusive labels to NPCs, Animals and Monsters.",
+  "UniqueID": "SableDnah.SablesLabels",
+  "EntryDll": "SablesLabels.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:24948" ]
+}

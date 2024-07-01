@@ -1,0 +1,15 @@
+urls:
+   web: https://github.com/urbanyeti/stardew-better-ranching
+   Git: https://github.com/urbanyeti/stardew-better-ranching.git
+
+mods:
+   Better Ranching
+   Extra Animal Configs
+
+latest commit:
+   commit 98df011cc231d8ac000111fb701c4726dcaa04de
+   Author: Urbanyeti <urbanski@gmail.com>
+   Date:   Thu May 2 20:54:56 2024 -0700
+   
+       Fix bug preventing items from being picked up
+   

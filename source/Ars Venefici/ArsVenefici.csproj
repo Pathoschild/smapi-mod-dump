@@ -1,0 +1,172 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<EnableModZip>false</EnableModZip>
+		<EnableModDeploy>false</EnableModDeploy>
+		<RootNamespace>ArsVenefici</RootNamespace>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<EnableHarmony>true</EnableHarmony>
+		<GamePath>$(StardewValleyGamePath)</GamePath>
+		<BaseOutputPath></BaseOutputPath>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Remove="assets\json_assets\**" />
+		<Compile Remove="obj\**" />
+		<EmbeddedResource Remove="assets\json_assets\**" />
+		<EmbeddedResource Remove="obj\**" />
+		<None Remove="assets\json_assets\**" />
+		<None Remove="obj\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
+		<Reference Include="SpaceCore" HintPath="$(StardewValleyGamePath)\mods\[A] Core Mods\SpaceCore\SpaceCore.dll" Private="False" />
+		<Reference Include="ContentPatcher" HintPath="$(StardewValleyGamePath)\mods\[A] Core Mods\ContentPatcher\ContentPatcher.dll" Private="False" />
+	</ItemGroup>
+	
+	<ItemGroup>
+		<None Update="assets\farmer\manabg.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="assets\farmer\touch_indicator.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="assets\gui\occulus\defense.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="assets\gui\occulus\offense.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="assets\gui\occulus\utility.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="assets\icon\interface\defense.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="assets\icon\interface\mana_cap_profession_icon.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="assets\icon\interface\mana_conservation_profession_icon.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="assets\icon\interface\mana_effeciency_2_profession_icon.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="assets\icon\interface\mana_effeciency_profession_icon.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="assets\icon\interface\mana_regen_2_profession_icon.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="assets\icon\interface\mana_regen_profession_icon.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="assets\icon\interface\offense.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="assets\icon\interface\utility.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="assets\icon\interface\wizardry_exp_icon.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="assets\icon\interface\wizardry_skill_page_icon.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="assets\icon\spellpart\aoe.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="assets\icon\spellpart\blink.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="assets\icon\spellpart\bounce.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="assets\icon\spellpart\create_water.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="assets\icon\spellpart\damage.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="assets\icon\spellpart\dig.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="assets\icon\spellpart\duration.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="assets\icon\spellpart\etherial_touch.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="assets\icon\spellpart\explosion.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="assets\icon\spellpart\grow.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="assets\icon\spellpart\harvest.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="assets\icon\spellpart\haste.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="assets\icon\spellpart\heal.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="assets\icon\spellpart\healing.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="assets\icon\spellpart\life_drain.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="assets\icon\spellpart\life_tap.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="assets\icon\spellpart\light.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="assets\icon\spellpart\mining_power.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="assets\icon\spellpart\physical_damage.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="assets\icon\spellpart\piercing.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="assets\icon\spellpart\plow.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="assets\icon\spellpart\projectile.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="assets\icon\spellpart\range.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="assets\icon\spellpart\self.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="assets\icon\spellpart\touch.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="assets\icon\spellpart\velocity.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="assets\icon\spellpart\zone.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="assets\projectile\projectile.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="manifest.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+	
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+	  <Exec Command="powershell Remove-Item -Path 'E:\Game Root\Game Materials\Stardew Valley\My Mods\Ars Venefici\bin\Debug\$(TargetFramework)\Ars Venifici.zip' -Recurse -Force&#xD;&#xA;xcopy /s &quot;E:\Game Root\Game Materials\Stardew Valley\My Mods\Ars Venefici\bin\Debug\$(TargetFramework)\assets\*&quot; &quot;E:\Game Root\Game Materials\Stardew Valley\My Mods\Ars Venefici\bin\Debug\$(TargetFramework)\Ars Venifici\ArsVenifici\assets&quot; /y /r&#xD;&#xA;xcopy &quot;E:\Game Root\Game Materials\Stardew Valley\My Mods\Ars Venefici\i18n\*&quot; &quot;E:\Game Root\Game Materials\Stardew Valley\My Mods\Ars Venefici\bin\Debug\$(TargetFramework)\Ars Venifici\ArsVenifici\i18n\&quot; /y /r&#xD;&#xA;xcopy &quot;E:\Game Root\Game Materials\Stardew Valley\My Mods\Ars Venefici\bin\Debug\$(TargetFramework)\ArsVenefici.dll&quot; &quot;E:\Game Root\Game Materials\Stardew Valley\My Mods\Ars Venefici\bin\Debug\$(TargetFramework)\Ars Venifici\ArsVenifici&quot; /y /r&#xD;&#xA;xcopy &quot;E:\Game Root\Game Materials\Stardew Valley\My Mods\Ars Venefici\bin\Debug\$(TargetFramework)\manifest.json&quot; &quot;E:\Game Root\Game Materials\Stardew Valley\My Mods\Ars Venefici\bin\Debug\$(TargetFramework)\Ars Venifici\ArsVenifici&quot; /y /r&#xD;&#xA;powershell Remove-Item -Path 'E:\Game Root\Game Materials\Stardew Valley\My Mods\Ars Venefici\bin\Debug\$(TargetFramework)\Ars Venifici\ArsVenifici\ArsVenefici.deps.json' -Recurse -Force&#xD;&#xA;Bandizip.exe c &quot;E:\Game Root\Game Materials\Stardew Valley\My Mods\Ars Venefici\bin\Debug\$(TargetFramework)\Ars Venifici.zip&quot; &quot;E:\Game Root\Game Materials\Stardew Valley\My Mods\Ars Venefici\bin\Debug\$(TargetFramework)\Ars Venifici&quot;&#xD;&#xA;mkdir &quot;E:\Game Root\Game Apps\Steam Games\steamapps\common\Stardew Valley\Mods\[O] Other Mods\Ars Venifici&quot;&#xD;&#xA;xcopy /s &quot;E:\Game Root\Game Materials\Stardew Valley\My Mods\Ars Venefici\bin\Debug\$(TargetFramework)\Ars Venifici\*&quot; &quot;E:\Game Root\Game Apps\Steam Games\steamapps\common\Stardew Valley\Mods\[O] Other Mods\Ars Venifici&quot; /y /r" />
+	</Target>
+
+</Project>

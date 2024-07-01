@@ -1,7 +1,7 @@
 {
     "Name": "QualityOfCombat",
     "Author": "Aile72",
-    "Version": "1.0.1",
+    "Version": "1.0.2",
     "Description": "Improv quality of combat",
     "UniqueID": "Aile72.QualityOfCombat",
     "EntryDll": "QualityOfCombat.dll",

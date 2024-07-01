@@ -34,13 +34,14 @@ namespace MobileTelevision
             context = this;
             Config = Helper.ReadConfig<ModConfig>();
             if (!Config.EnableMod)
+            {
                 return;
+            }
 
             Helper.Events.GameLoop.GameLaunched += GameLoop_GameLaunched;
-            Helper.Events.Display.RenderedActiveMenu += Display_RenderedActiveMenu;
         }
 
-        private void Display_RenderedActiveMenu(object sender, RenderedActiveMenuEventArgs e)
+        private void Display_Rendered(object sender, RenderedWorldEventArgs e)
         {
             if(tv != null && api.GetPhoneOpened())
             {
@@ -53,10 +54,9 @@ namespace MobileTelevision
             api = Helper.ModRegistry.GetApi<IMobilePhoneApi>("JoXW.MobilePhone");
             if (api != null)
             {
-                Texture2D appIcon;
-                bool success;
-                appIcon = Helper.ModContent.Load<Texture2D>(Path.Combine("assets", "app_icon.png"));
-                success = api.AddApp(Helper.ModRegistry.ModID, Helper.Translation.Get("television"), OpenTelevision, appIcon);
+                api.OnAfterRenderScreen += Display_Rendered;
+                Texture2D appIcon = Helper.ModContent.Load<Texture2D>(Path.Combine("assets", "app_icon.png"));
+                bool success = api.AddApp(Helper.ModRegistry.ModID, Helper.Translation.Get("television"), OpenTelevision, appIcon);
                 Monitor.Log($"loaded app successfully: {success}", LogLevel.Debug);
             }
         }

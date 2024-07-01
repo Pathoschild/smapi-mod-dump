@@ -9,8 +9,7 @@
 *************************************************/
 
 using System.Text;
-using Common.UI;
-using LazyMod.Framework.Config;
+using weizinai.StardewValleyMod.Common.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
@@ -18,9 +17,10 @@ using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Menus;
 using StardewValley.Monsters;
+using weizinai.StardewValleyMod.LazyMod.Framework.Config;
 using SObject = StardewValley.Object;
 
-namespace LazyMod.Framework.Hud;
+namespace weizinai.StardewValleyMod.LazyMod.Framework.Hud;
 
 internal class MiningHud
 {
@@ -32,55 +32,55 @@ internal class MiningHud
 
     public MiningHud(IModHelper helper, ModConfig config)
     {
-        hud = new RootElement();
+        this.hud = new RootElement();
 
         var ladderHud = new CombineImage(Game1.temporaryContent.Load<Texture2D>("Maps/Mines/mine_desert"),
-            new Rectangle(208, 160, 16, 16), GetPosition(0))
+            new Rectangle(208, 160, 16, 16), this.GetPosition(0))
         {
-            CheckHidden = () => !(config.ShowLadderInfo && GetBuildingLayerInfo(173))
+            CheckHidden = () => !(config.ShowLadderInfo && this.GetBuildingLayerInfo(173))
         };
         var shaftHud = new CombineImage(Game1.temporaryContent.Load<Texture2D>("Maps/Mines/mine_desert"),
-            new Rectangle(224, 160, 16, 16), GetPosition(1))
+            new Rectangle(224, 160, 16, 16), this.GetPosition(1))
         {
-            CheckHidden = () => !(config.ShowShaftInfo && GetBuildingLayerInfo(174))
+            CheckHidden = () => !(config.ShowShaftInfo && this.GetBuildingLayerInfo(174))
         };
         var monsterHud = new CombineImage(Game1.temporaryContent.Load<Texture2D>("Characters/Monsters/Green Slime"),
-            new Rectangle(2, 268, 12, 10), GetPosition(2))
+            new Rectangle(2, 268, 12, 10), this.GetPosition(2))
         {
-            CheckHidden = () => !(config.ShowMonsterInfo && GetMonsters().Any()),
+            CheckHidden = () => !(config.ShowMonsterInfo && this.GetMonsters().Any()),
             OnHover = (_, spriteBatch) =>
             {
-                if (!hasGetMonsterInfo)
+                if (!this.hasGetMonsterInfo)
                 {
-                    GetMonsterInfo();
-                    hasGetMonsterInfo = true;
+                    this.GetMonsterInfo();
+                    this.hasGetMonsterInfo = true;
                 }
 
-                var monsterInfoString = GetStringFromDictionary(monsterInfo);
+                var monsterInfoString = this.GetStringFromDictionary(this.monsterInfo);
                 IClickableMenu.drawHoverText(spriteBatch, monsterInfoString, Game1.smallFont);
             },
-            OffHover = _ => hasGetMonsterInfo = false,
+            OffHover = _ => this.hasGetMonsterInfo = false,
             OnLeftClick = () => { helper.Reflection.GetMethod(new AdventureGuild(), nameof(AdventureGuild.showMonsterKillList)).Invoke(); }
         };
         var mineralHud = new CombineImage(Game1.temporaryContent.Load<Texture2D>("TileSheets/tools"),
-            new Rectangle(193, 128, 15, 15), GetPosition(3))
+            new Rectangle(193, 128, 15, 15), this.GetPosition(3))
         {
-            CheckHidden = () => !(config.ShowMineralInfo && GetMinerals().Any()),
+            CheckHidden = () => !(config.ShowMineralInfo && this.GetMinerals().Any()),
             OnHover = (_, spriteBatch) =>
             {
-                if (!hasGetMineralInfo)
+                if (!this.hasGetMineralInfo)
                 {
-                    GetMineralInfo();
-                    hasGetMineralInfo = true;
+                    this.GetMineralInfo();
+                    this.hasGetMineralInfo = true;
                 }
 
-                var mineralInfoString = GetStringFromDictionary(mineralInfo);
+                var mineralInfoString = this.GetStringFromDictionary(this.mineralInfo);
                 IClickableMenu.drawHoverText(spriteBatch, mineralInfoString, Game1.smallFont);
             },
-            OffHover = _ => hasGetMineralInfo = false
+            OffHover = _ => this.hasGetMineralInfo = false
         };
 
-        hud.AddChild(ladderHud, shaftHud, monsterHud, mineralHud);
+        this.hud.AddChild(ladderHud, shaftHud, monsterHud, mineralHud);
     }
 
     public void Update()
@@ -88,18 +88,18 @@ internal class MiningHud
         if (Game1.player.currentLocation is not MineShaft or VolcanoDungeon) return;
 
         var i = 0;
-        foreach (var element in hud.Children.Where(element => !element.IsHidden())) element.LocalPosition = GetPosition(i++);
+        foreach (var element in this.hud.Children.Where(element => !element.IsHidden())) element.LocalPosition = this.GetPosition(i++);
 
-        hud.Update();
-        hud.ReceiveLeftClick();
+        this.hud.Update();
+        this.hud.ReceiveLeftClick();
     }
 
     public void Draw(SpriteBatch spriteBatch)
     {
         if (Game1.player.currentLocation is not MineShaft or VolcanoDungeon) return;
 
-        hud.Draw(spriteBatch);
-        hud.PerformHoverAction(spriteBatch);
+        this.hud.Draw(spriteBatch);
+        this.hud.PerformHoverAction(spriteBatch);
     }
 
     private Vector2 GetPosition(int index)
@@ -132,23 +132,21 @@ internal class MiningHud
 
     private void GetMonsterInfo()
     {
-        var monsters = GetMonsters();
-        monsterInfo.Clear();
+        var monsters = this.GetMonsters();
+        this.monsterInfo.Clear();
         foreach (var monster in monsters)
         {
-            if (!monsterInfo.TryAdd(monster.displayName, 1))
-                monsterInfo[monster.displayName]++;
+            if (!this.monsterInfo.TryAdd(monster.displayName, 1)) this.monsterInfo[monster.displayName]++;
         }
     }
 
     private void GetMineralInfo()
     {
-        var minerals = GetMinerals();
-        mineralInfo.Clear();
+        var minerals = this.GetMinerals();
+        this.mineralInfo.Clear();
         foreach (var mineral in minerals)
         {
-            if (!mineralInfo.TryAdd(mineral.DisplayName, 1))
-                mineralInfo[mineral.DisplayName]++;
+            if (!this.mineralInfo.TryAdd(mineral.DisplayName, 1)) this.mineralInfo[mineral.DisplayName]++;
         }
     }
 

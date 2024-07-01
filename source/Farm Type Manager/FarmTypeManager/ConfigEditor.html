@@ -5,7 +5,7 @@
 		<meta name="author" content="Esca-MMC">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		
-		<title>Farm Type Manager Config Editor v1.21.0</title>
+		<title>Farm Type Manager Config Editor v1.23.0</title>
 		
 		<style>		
 			/* title box */
@@ -618,7 +618,7 @@
 	<body class="preload">
 		<header>
 			<div class="titlebox">
-				<h1>Farm Type Manager<br/>Config Editor<br/><sub>v1.21.0</sub></h1>
+				<h1>Farm Type Manager<br/>Config Editor<br/><sub>v1.23.0</sub></h1>
 				
 				<nav>
 					<button class="titlebox-button" id="load" onclick="document.getElementById('load-input').click();">Load</button>
@@ -1088,7 +1088,7 @@
 							</div>
 							
 							<div class="setting">
-								<label for="Forage-SpawnTiming-SpawnSound" class="clickable">Spawn sound<span class="tooltip">?<span class="tooltiptext">If not blank, players at the location will hear this sound effect when forage spawns.<br/><br/>Use a name from a list of <a href="https://docs.google.com/spreadsheets/d/1CpDrw23peQiq-C7F2FjYOMePaYe0Rc9BwQsj3h6sjyo" target="_blank">Stardew's Sound Bank IDs</a>.<br/><br/>This setting is <b>case-sensitive</b>.</span></span></label>
+								<label for="Forage-SpawnTiming-SpawnSound" class="clickable">Spawn sound<span class="tooltip">?<span class="tooltiptext">If not blank, players at the location will hear this sound effect when forage spawns.<br/><br/>Use a name from <a href="https://www.stardewvalleywiki.com/Modding:Audio#Sound" target="_blank">Stardew's sound bank</a>.<br/><br/>This setting is <b>case-sensitive</b>.</span></span></label>
 								<input type="text" name="Forage-SpawnTiming-SpawnSound" id="Forage-SpawnTiming-SpawnSound" style="width:8em;">
 							</div>
 						</div>
@@ -3934,7 +3934,6 @@
 									<option>Metal Head</option>
 									<option>Hot Head</option>
 									<option>Lava Lurk</option>
-									<option>Leaper</option>
 									<option>Mummy</option>
 									<option>Rock Crab</option>
 									<option>Lava Crab</option>
@@ -3952,6 +3951,7 @@
 									<option>Shadow Sniper</option>
 									<option>Skeleton</option>
 									<option>Skeleton Mage</option>
+									<option>Spider</option>
 									<option>Spiker</option>
 									<option>Squid Kid</option>
 									<input name="Monster-MonsterTypes-MonsterName" id="Monster-MonsterTypes-MonsterName-Custom" style="width:10em; display:none" disabled="disabled" onblur="if(this.value==''){toggleField(this,this.previousSibling);}">
@@ -3988,8 +3988,9 @@
 										<option>Facing direction</option>
 										<option>Segments</option>
 										<option>Spawn weight</option>
-										<option>Instant kill immunity</option>
 										<option>Gender</option>
+										<option>Instant kill immunity</option>
+										<option>Stun immunity</option>
 										
 									</select>
 								</div>
@@ -4227,6 +4228,14 @@
 									</fieldset>
 								</div>
 								
+								<div class="setting" id="Monster-MonsterTypes-Settings-Gender-Div" style="display:none">
+									<fieldset class="border">
+										<legend>Gender<span class="tooltip">?<span class="tooltiptext">Spawns a specific gender of monster, if applicable.<br/><br/>Currently, this only affects small slimes. Male slimes ("M") will spawn with an antenna. Female slimes ("F") will not.</span></span></legend>
+										<input type="text" name="Monster-MonsterTypes-Settings-Gender" id="Monster-MonsterTypes-Settings-Gender" style="width:8em;">
+										<label for="Monster-MonsterTypes-Settings-Gender" class="big-checkbox-label"></label>
+									</fieldset>
+								</div>
+								
 								<div class="setting" id="Monster-MonsterTypes-Settings-InstantKillImmunity-Div" style="display:none">
 									<fieldset class="border">
 										<legend>Instant kill immunity<span class="tooltip">?<span class="tooltiptext">If this is enabled, certain "instant kill" abilities won't affect this monster.<br/><br/>Currently, this prevents the monster being eaten by the Frog Egg trinket.</span></span></legend>
@@ -4235,11 +4244,11 @@
 									</fieldset>
 								</div>
 								
-								<div class="setting" id="Monster-MonsterTypes-Settings-Gender-Div" style="display:none">
+								<div class="setting" id="Monster-MonsterTypes-Settings-StunImmunity-Div" style="display:none">
 									<fieldset class="border">
-										<legend>Gender<span class="tooltip">?<span class="tooltiptext">Spawns a specific gender of monster, if applicable.<br/><br/>Currently, this only affects small slimes. Male slimes ("M") will spawn with an antenna. Female slimes ("F") will not.</span></span></legend>
-										<input type="text" name="Monster-MonsterTypes-Settings-Gender" id="Monster-MonsterTypes-Settings-Gender" style="width:8em;">
-										<label for="Monster-MonsterTypes-Settings-Gender" class="big-checkbox-label"></label>
+										<legend>Stun immunity<span class="tooltip">?<span class="tooltiptext">If this is enabled, certain "stun" abilities won't affect this monster.<br/><br/>Currently, this prevents the monster being frozen by the Ice Rod trinket.</span></span></legend>
+										<input type="checkbox" class="big" name="Monster-MonsterTypes-Settings-StunImmunity" id="Monster-MonsterTypes-Settings-StunImmunity">
+										<label for="Monster-MonsterTypes-Settings-StunImmunity" class="big-checkbox-label"></label>
 									</fieldset>
 								</div>
 								
@@ -8984,12 +8993,12 @@
 			}
 			curr.value = null;
 			
-			curr = document.getElementById("Monster-MonsterTypes-Settings-InstantKillImmunity");
-			if (curr.checked == true)
+			curr = document.getElementById("Monster-MonsterTypes-Settings-SpawnWeight");
+			if (Number.isNaN(parseInt(curr.value)) == false)
 			{
-				settings["InstantKillImmunity"] = true;
+				settings["SpawnWeight"] = parseInt(curr.value);
 			}
-			curr.checked = false;
+			curr.value = null;
 			
 			curr = document.getElementById("Monster-MonsterTypes-Settings-Gender");
 			if (curr.value != null && curr.value != "")
@@ -8998,12 +9007,19 @@
 			}
 			curr.value = null;
 			
-			curr = document.getElementById("Monster-MonsterTypes-Settings-SpawnWeight");
-			if (Number.isNaN(parseInt(curr.value)) == false)
+			curr = document.getElementById("Monster-MonsterTypes-Settings-InstantKillImmunity");
+			if (curr.checked == true)
 			{
-				settings["SpawnWeight"] = parseInt(curr.value);
+				settings["InstantKillImmunity"] = true;
 			}
-			curr.value = null;
+			curr.checked = false;
+			
+			curr = document.getElementById("Monster-MonsterTypes-Settings-StunImmunity");
+			if (curr.checked == true)
+			{
+				settings["StunImmunity"] = true;
+			}
+			curr.checked = false;
 			
 			//create a temporary monsterType object and fill it with monsterName & settings
 			var monsterType = { "MonsterName": monsterName, "Settings": settings };

@@ -13,7 +13,7 @@ using StardewValley.GameData;
 
 namespace Pathoschild.Stardew.Common.Integrations.CustomBush
 {
-    /// <summary>Model used for drops from custom bushes.</summary>
+    /// <summary>An item produced by a Custom Bush bush.</summary>
     public interface ICustomBushDrop : ISpawnItemData
     {
         /// <summary>Gets the specific season when the item can be produced.</summary>

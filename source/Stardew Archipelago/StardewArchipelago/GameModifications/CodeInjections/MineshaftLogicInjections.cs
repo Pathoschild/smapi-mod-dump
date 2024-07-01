@@ -29,11 +29,10 @@ namespace StardewArchipelago.GameModifications.CodeInjections
             {
                 if (__instance.lowestMineLevel.Value < 120 && value > 120)
                 {
-                    return false;// don't run original logic
+                    return false; // don't run original logic
                 }
 
                 return true; // run original logic
-
             }
             catch (Exception ex)
             {

@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using MailFrameworkMod;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Internal;
 using StardewValley.Menus;
 using StardewValley.Tools;
 using static MailServicesMod.ToolUpgradeController;
@@ -65,11 +66,11 @@ namespace MailServicesMod
         {
             try
             {
-                if (!DataLoader.ModConfig.DisableToolShipmentService && Game1.player.mailbox.Count == 0 && Game1.player.CurrentTool is Tool tool)
+                if (!DataLoader.ModConfig.DisableToolShipmentService && Game1.player.mailbox.Count == 0 && Game1.player.CurrentTool is { } tool)
                 {
                     if (Game1.player.toolBeingUpgraded.Value == null)
                     {
-                        if (tool is Axe || tool is Pickaxe || tool is Hoe || tool is WateringCan)
+                        if (!ShopBuilder.GetShopStock("ClintUpgrade").FirstOrDefault(s => ((Tool)s.Key).GetToolData().ConventionalUpgradeFrom == tool.QualifiedItemId).Equals(default(KeyValuePair<ISalable, ItemStockInformation>)))
                         {
                             if (DataLoader.ModConfig.EnableAskToUpgradeTool)
                             {

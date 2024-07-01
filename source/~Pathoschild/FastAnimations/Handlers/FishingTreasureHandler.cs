@@ -19,7 +19,7 @@ namespace Pathoschild.Stardew.FastAnimations.Handlers
 {
     /// <summary>Handles the fishing-treasure-open animation.</summary>
     /// <remarks>See game logic in <see cref="FishingRod.openChestEndFunction"/>.</remarks>
-    internal class FishingTreasureHandler : BaseAnimationHandler
+    internal sealed class FishingTreasureHandler : BaseAnimationHandler
     {
         /*********
         ** Public methods
@@ -29,33 +29,28 @@ namespace Pathoschild.Stardew.FastAnimations.Handlers
             : base(multiplier) { }
 
         /// <inheritdoc />
-        public override bool IsEnabled(int playerAnimationID)
+        public override bool TryApply(int playerAnimationId)
         {
             Farmer player = Game1.player;
 
             return
-                playerAnimationID == 84
-                && player.CurrentTool is FishingRod
-                && this.GetTemporarySprites(player).Any();
-        }
-
-        /// <inheritdoc />
-        public override void Update(int playerAnimationID)
-        {
-            Farmer? player = Game1.player;
-
-            this.ApplySkips(
-                run: () =>
+                playerAnimationId == 84
+                && player.CurrentTool is FishingRod rod
+                && this.GetTemporarySprites(player).Any()
+                && this.ApplySkipsWhile(() =>
                 {
+                    bool applied = false;
+
                     foreach (TemporaryAnimatedSprite sprite in this.GetTemporarySprites(player).ToArray())
                     {
-                        bool done = sprite.update(Game1.currentGameTime);
-                        if (done)
-                            (player.CurrentTool as FishingRod)?.animations.Remove(sprite);
+                        applied = true;
+
+                        if (sprite.update(Game1.currentGameTime)) // done
+                            rod.animations.Remove(sprite);
                     }
-                },
-                until: () => !this.IsEnabled(playerAnimationID)
-            );
+
+                    return applied;
+                });
         }
 
 

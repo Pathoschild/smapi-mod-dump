@@ -142,7 +142,7 @@
     "config.harvest-giant-crops.tooltip": "Se deve cortar colheitas gigantes.",
 
     "config.harvest-crops.name": "Colher Colheitas",
-    "config.Harvest Crops.tooltip": "Se deve colher colheitas.",
+    "config.harvest-crops.tooltip": "Se deve colher colheitas.",
 
     "config.harvest-flowers.name": "Colher Flores",
     "config.harvest-flowers.tooltip": "Se deve colher flores.",
@@ -213,8 +213,8 @@
     /****
     ** Melee
     ****/
-    "config.Attack-monsters.name": "Atacar Monstros",
-    "config.Attack-monsters.tooltip": "Se deve atacar monstros. (Isso é extremamente poderoso devido à velocidade da ferramenta do trator.)",
+    "config.attack-monsters.name": "Atacar Monstros",
+    "config.attack-monsters.tooltip": "Se deve atacar monstros. (Isso é extremamente poderoso devido à velocidade da ferramenta do trator.)",
 
 
     /****

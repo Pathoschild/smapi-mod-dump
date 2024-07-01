@@ -58,6 +58,7 @@
     "config.machines.fruit-tree": "Дерево (Плодовое дерево)",
     "config.machines.trash-can": "Мусорка",
     "config.machines.wild-tree": "Дерево (Дикое Дерево)",
+    "config.machines.feed-hopper": "Кормораздаточный бункер и Силосная башня",
 
     // special settings for individual machines
     "config.machines.wild-tree.collect-moss.name": "Собирать Мох",

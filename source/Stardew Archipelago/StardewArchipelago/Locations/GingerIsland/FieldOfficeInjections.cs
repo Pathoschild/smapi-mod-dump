@@ -9,7 +9,6 @@
 *************************************************/
 
 using System;
-using Microsoft.Xna.Framework;
 using StardewArchipelago.Archipelago;
 using StardewModdingAPI;
 using StardewValley;
@@ -31,27 +30,28 @@ namespace StardewArchipelago.Locations.GingerIsland
             _locationChecker = locationChecker;
         }
 
-        // public virtual void command_addCraftingRecipe(GameLocation location, GameTime time, string[] split)
-        public static bool CommandAddCraftingRecipe_OstrichIncubator_Prefix(Event __instance, GameLocation location, GameTime time, string[] split)
+        // public static void AddCraftingRecipe(Event @event, string[] args, EventContext context)
+        public static bool AddCraftingRecipe_OstrichIncubator_Prefix(Event @event, string[] args, EventContext context)
         {
             try
             {
-                var currentCommand = __instance.CurrentCommand;
-                var currentCommandText = __instance.eventCommands[currentCommand];
-                var recipe = currentCommandText.Substring(currentCommandText.IndexOf(' ') + 1);
+                if (!ArgUtility.TryGetRemainder(args, 1, out var recipe, out _))
+                {
+                    return true; // run original logic
+                }
 
                 if (!recipe.Equals("Ostrich Incubator", StringComparison.OrdinalIgnoreCase))
                 {
                     return true; // run original logic
                 }
-                
+
                 _locationChecker.AddCheckedLocation("Complete Island Field Office");
-                __instance.CurrentCommand++;
+                ++@event.CurrentCommand;
                 return false; // don't run original logic
             }
             catch (Exception ex)
             {
-                _monitor.Log($"Failed in {nameof(CommandAddCraftingRecipe_OstrichIncubator_Prefix)}:\n{ex}", LogLevel.Error);
+                _monitor.Log($"Failed in {nameof(AddCraftingRecipe_OstrichIncubator_Prefix)}:\n{ex}", LogLevel.Error);
                 return true; // run original logic
             }
         }

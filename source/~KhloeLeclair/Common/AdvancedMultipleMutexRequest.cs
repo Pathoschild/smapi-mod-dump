@@ -48,7 +48,13 @@ public class AdvancedMultipleMutexRequest {
 
 	//private FarmerCollection FC;
 
-	public AdvancedMultipleMutexRequest(IEnumerable<NetMutex> mutexes, Action? onSuccess = null, Action? onFailure = null, IModHelper? helper = null, int timeout = 1000) {
+	public AdvancedMultipleMutexRequest(
+		IEnumerable<NetMutex> mutexes,
+		Action? onSuccess = null,
+		Action? onFailure = null,
+		IModHelper? helper = null,
+		int timeout = 1000
+	) {
 		Helper = helper;
 		Timeout = timeout;
 		OnSuccess = onSuccess;

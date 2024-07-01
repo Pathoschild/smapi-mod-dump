@@ -204,6 +204,8 @@ dynamic_tile-mastery_cave-pedestal = {$has_hat ->
     [0] Empty Pedestal
     *[1] Pedestal with a Hat
   }
+dynamic_tile-farm-lumber_pile = Lumber Pile
+
 
 ## Interactable Tiles
 
@@ -488,6 +490,31 @@ direction-south_east = Southeast
 direction-current_tile = Current tile
 
 inventory_util-empty_slot = Empty Slot
+inventory_util-locked_slot = Locked Slot
+
+# Primarily used to distinguish items with same name, like Jungle Decals or Ceiling Leaves purchased in Luau
+inventory_util-special_items-name = {$item_id ->
+    [F_2627] Jungle Decal (luau) 1
+    [F_2628] Jungle Decal (luau) 2
+    [F_2629] Jungle Decal (luau) 3
+    [F_2630] Jungle Decal (luau) 4
+    [F_1817] Ceiling Leaves (luau) 1
+    [F_1818] Ceiling Leaves (luau) 2
+    [F_1819] Ceiling Leaves (luau) 3
+    [F_1820] Ceiling Leaves (flower dance) 1
+    [F_1821] Ceiling Leaves (flower fance) 2
+    [BC_192] Seasonal Plant (flower dance) 1
+    [BC_204] Seasonal Plant (flower dance) 2
+    [BC_184] Seasonal Plant (egg) 1
+    [BC_188] Seasonal Plant (egg) 2
+    [F_1687] Cloud Decal (moonlight) 1
+    [F_1692] Cloud Decal (moonlight) 2
+    [F_2635] Log Panel (winter star) 1
+    [F_2636] Log Panel (winter star) 2
+    *[other] -9999
+  }
+
+inventory_util-enchantments-galaxy_soul = Galaxy Soul ({$progress_in_percentage}% transformed)
 
 common-unknown = Unknown
 

@@ -12,6 +12,10 @@
     /*********
     ** Generic translations
     *********/
+    // language info
+    "generic.list-separator": ", ", // text between listed values (like ", " in "A, B, C")
+    "generic.line-wrap-on": "",     // characters after which we can line-wrap text if needed, even if there's no space
+
     // date names
     "generic.now": "jetzt",
     "generic.tomorrow": "morgen",
@@ -19,7 +23,6 @@
 
     // generic values
     "generic.unknown": "unbekannt",
-    "generic.list-separator": ", ", // text between listed values (like ", " in "A, B, C")
 
     // generic field values
     "generic.percent": "{{percent}}%",
@@ -38,7 +41,7 @@
     "generic.price": "{{price}}g",
     "generic.price-for-quality": "{{price}}g ({{quality}})",
     "generic.price-for-stack": "{{price}}g für einen Stapel von {{count}}",
-    "generic.show-x-results": "show {{count}} results", // TODO
+    "generic.show-x-results": "zeige {{count}} Ergebnisse",
 
     // types
     "type.building": "Gebäude",
@@ -56,6 +59,9 @@
     "quality.silver": "Silber",
     "quality.gold": "Gold",
     "quality.iridium": "Iridium",
+
+    // item names shown in recipes
+    "item.wild-seeds": "Wild Seeds (Any)", // TODO
 
     // NPC friendship
     "friendship-status.friendly": "Freundlich",
@@ -140,24 +146,30 @@
     /*********
     ** Conditions & context tags
     *********/
-    // TODO
-    "condition-or-context-tag.negate": "not {{value}}",
+    "condition-or-context-tag.negate": "nicht {{value}}",
 
-    "condition.item-type.input": "input item",
-    "condition.item-type.target": "target item",
+    "condition.day-of-month": "on specific days ({{days}})", // TODO
+    "condition.day-of-month.even": "even days", // TODO
+    "condition.day-of-month.odd": "odd days", // TODO
 
-    "condition.item-context-tag": "{{item}} has context tag {{tags}}",
-    "condition.item-context-tags": "{{item}} has context tags {{tags}}",
+    "condition.item-type.input": "Eingabe Item",
+    "condition.item-type.target": "Ziel Item",
+
+    "condition.raw-context-tag": "context tag \"{{tag}}\"", // TODO
+    "condition.raw-condition": "query \"{{tag}}\"", // TODO
+
+    "condition.item-context-tag": "{{item}} hat Kontext Tag {{tags}}",
+    "condition.item-context-tags": "{{item}} hat Kontext Tags {{tags}}",
     "condition.item-context-tag.value": "'{{tag}}'", // the format of each context tag in the list (each context tag isn't translated)
 
-    "condition.item-edibility.edible": "{{item}} is edible",
-    "condition.item-edibility.min": "{{item}} has edibility of {{min}} or more",
-    "condition.item-edibility.range": "{{item}} has edibility of {{min}} to {{max}}",
+    "condition.item-edibility.edible": "{{item}} ist essbar",
+    "condition.item-edibility.min": "{{item}} hat Essbarkeit von {{min}} oder mehr",
+    "condition.item-edibility.range": "{{item}} hat Essbarkeit von {{min}} bis {{max}}",
 
-    "context-tag.bone": "any bone",
-    "context-tag.egg": "any egg",
-    "context-tag.large-egg": "any large egg",
-    "context-tag.preserved-item": "preserved {{name}}",
+    "context-tag.bone": "Beliebige Knochen",
+    "context-tag.egg": "Beliebige Eier",
+    "context-tag.large-egg": "Beliebige große Eier",
+    "context-tag.preserved-item": "eingemacht {{name}}",
 
 
     /*********
@@ -339,13 +351,13 @@
     "item.needed-for.gourmet-chef": "\"Gourmetkoch\" Errungenschaft (koche {{recipes}})",
     "item.needed-for.craft-master": "\"Handwerksmeister\" Errungenschaft (stelle {{recipes}} her)",
     "item.needed-for.quests": "aktuelle Aufgaben ({{quests}})",
-    "item.unknown-recipes": "{{count}} unknown recipes", // TODO
+    "item.unknown-recipes": "{{count}} unbekannte Rezepte",
     "item.sells-to.shipping-box": "Versandkiste",
     "item.recipes-for-ingredient.entry": "{{name}} (braucht {{count}})",
     "item.recipes-for-machine.multiple-items": "{{name}} x{{count}}",
-    "item.recipes-for-machine.same-as-input": "[same as input]", // e.g. crystalarium produces same item that was put in // TODO
-    "item.recipes-for-machine.conditions": "[conditions: {{conditions}}]", // TODO
-    "item.recipes-for-machine.too-complex": "Some machine rules are too dynamic to display.", // TODO
+    "item.recipes-for-machine.same-as-input": "[Gleiches wie Eingabe]", // e.g. crystalarium produces same item that was put in
+    "item.recipes-for-machine.conditions": "[Bedingung: {{conditions}}]",
+    "item.recipes-for-machine.too-complex": "Einige Maschinen-Regeln sind zu dynamisch, um sie anzuzeigen.",
     "item.number-owned.summary": "Du besitzt {{count}} davon",
     "item.number-crafted.summary": "Du hast bereits {{count}} davon hergestellt",
 
@@ -588,14 +600,15 @@
     "puzzle.island-mermaid.title": "Meerjungfrauen-Rätsel",
     "puzzle.island-mermaid.solution.intro": "Benutze Flötenblöcke um das Lied der Meerjungfrau vom Nachtmarkt zu spielen. Tonhöhen: (Es ist möglich die Tonhöhe eines Flötenblocks nachzusehen):",
 
+
     /*********
     ** Puzzles > Fern Islands shrine puzzle
     *********/
     // labels
     "puzzle.island-shrine.title": "Edelsteinvogel-Rätsel",
-    "puzzle.island-shrine.solution": "Lege den Edelstein auf den Sockel der vom Edelsteinvogel am passenden Ort bei Regen gelegt wurde. Die Edelsteine sind für jeden Speicherstand zufällig.",
 
     // values
+    "puzzle.island-shrine.solution": "Lege den Edelstein auf den Sockel der vom Edelsteinvogel am passenden Ort bei Regen gelegt wurde. Die Edelsteine sind für jeden Speicherstand zufällig.",
     "puzzle.island-shrine.solution.east": "Osten: {{item}}",
     "puzzle.island-shrine.solution.north": "Norden: {{item}}",
     "puzzle.island-shrine.solution.south": "Süden: {{item}}",
@@ -674,17 +687,16 @@
     "config.force-full-screen.desc": "Legt fest, ob das Menü immer als Vollbild angezeigt werden soll, anstatt in der Mitte des Fensters. Dies ist vor allem bei der Anzeige von Data Mining Feldern nützlich.",
 
     // progression mode
-    // TODO
     "config.title.progression": "Fortschrittsmodus",
 
-    "config.progression.show-unknown-gift-tastes.name": "Show unknown gift tastes",
-    "config.progression.show-unknown-gift-tastes.desc": "Whether to show gift tastes you haven't learned about in-game yet (e.g. from dialogue text or experimenting).",
+    "config.progression.show-unknown-gift-tastes.name": "Unbekannte Geschenke Vorlieben anzeigen",
+    "config.progression.show-unknown-gift-tastes.desc": "Ob Geschenk Vorlieben gezeigt werden sollen, die du im Spiel noch nicht kennengelernt hast (z. B. aus Dialogtexten oder beim Experimentieren).",
 
-    "config.progression.show-unknown-recipes.name": "Show unknown recipes",
-    "config.progression.show-unknown-recipes.desc": "Whether to show recipes you haven't learned in-game yet.",
+    "config.progression.show-unknown-recipes.name": "Unbekannte Rezepte anzeigen",
+    "config.progression.show-unknown-recipes.desc": "Ob Rezepte angezeigt werden sollen, die im Spiel noch nicht erlernt wurden.",
 
-    "config.progression.show-puzzle-solutions.name": "Show puzzle solutions",
-    "config.progression.show-puzzle-solutions.desc": "Whether to show puzzle solutions.",
+    "config.progression.show-puzzle-solutions.name": "Puzzle-Lösungen anzeigen",
+    "config.progression.show-puzzle-solutions.desc": "Ob Puzzle-Lösungen angezeigt werden sollen.",
 
     // gift tastes
     "config.title.gift-tastes": "Geschenke-Geschmäcker",
@@ -706,16 +718,15 @@
     "config.highlight-unrevealed-gift-tastes.desc": "Hervorhebung von Gegenstandsgeschenken, die im NSC-Profil noch nicht offenbart wurden. Wenn diese Option aktiviert ist, werden nicht enthüllte Geschenkvorlieben fett dargestellt.",
 
     // collapse fields
-    // TODO
-    "config.title.collapse-fields": "Collapse large fields",
+    "config.title.collapse-fields": "Große Felder einklappen",
 
-    "config.collapse-fields.enabled.name": "Enabled",
-    "config.collapse-fields.enabled.desc": "Whether to collapse large fields, so the lookup menu will replace the list with a clickable 'show X values' link to expand it.",
+    "config.collapse-fields.enabled.name": "Aktiviert",
+    "config.collapse-fields.enabled.desc": "Ob große Felder eingeklappt werden sollen, so dass das Nachschlagemenü die Liste durch einen anklickbaren Link 'X Werte anzeigen' ersetzt, um sie zu erweitern.",
 
-    "config.collapse-fields.building-recipes.name": "Building lookup: recipes",
-    "config.collapse-fields.item-recipes.name": "Item lookup: recipes",
-    "config.collapse-fields.npc-gift-tastes.name": "NPC lookup: gift tastes",
-    "config.collapse-fields.any.desc": "If the field contains this many values, the lookup menu will replace the list with a clickable 'show X values' link to expand it.",
+    "config.collapse-fields.building-recipes.name": "Suche nach Gebäuden: Rezepte",
+    "config.collapse-fields.item-recipes.name": "Suche nach Artikeln: Rezepte",
+    "config.collapse-fields.npc-gift-tastes.name": "NPC-Suche: Geschenk-Vorlieben",
+    "config.collapse-fields.any.desc": "Wenn das Feld so viele Werte enthält, ersetzt das Nachschlagemenü die Liste durch einen anklickbaren Link 'X Werte anzeigen', um sie zu erweitern.",
 
     // advanced options
     "config.title.advanced-options": "Erweiterte Optionen",

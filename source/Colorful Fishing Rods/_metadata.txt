@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/6480k/colorful-fishing-rods
+   Git: https://github.com/6480k/colorful-fishing-rods.git
+
+mods:
+   Colorful Fishing Rods
+
+latest commit:
+   commit 63305479eb7b8c4bf9427a5c33a099ef79ae9233
+   Author: 6480 <9426544+6480k@users.noreply.github.com>
+   Date:   Mon Jun 17 20:41:23 2024 -0400
+   
+       i dont understand vs
+   

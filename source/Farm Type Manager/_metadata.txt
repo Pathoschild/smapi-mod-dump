@@ -6,9 +6,9 @@ mods:
    Farm Type Manager
 
 latest commit:
-   commit eddd38071dffe0e042e0e85529749b54316dd04a
+   commit d5785d438725f0f81cdff11095e38d04e4b21a6c
    Author: Esca-MMC <esca.mmc@gmail.com>
-   Date:   Sun May 26 01:12:01 2024 -0500
+   Date:   Fri Jun 28 12:17:23 2024 -0500
    
-       Update i18n credits
+       Link to wiki instead of spreadsheet
    

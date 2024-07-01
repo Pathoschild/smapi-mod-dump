@@ -251,7 +251,7 @@ Other than the name, this profession is unchanged from vanilla.
 <font size="2">
 <details>
 
-All foraged items will have the same deterministic quality, providing immediate inventory convenience. However, that quality will initially start out at silver, and gradually progress to iridium as you gather and study new varieties of forage. Unlike vanilla, this perk will also apply to hoed forage (such as Winter Root, Snow Yams and Ginger), Coconuts shaken off of palm trees, and mushrooms produced by Mushroom Boxes, but only if the cave owner (i.e., the host player) has the profession.
+All foraged items will have the same deterministic quality, providing immediate inventory convenience. However, that quality will initially start out at silver, and gradually progress to iridium as you gather and study new varieties of forage. Unlike vanilla, this perk will also apply to hoed forage (such as Winter Root, Snow Yams and Ginger) and shaken fruits from Fruit Trees.
 
 For Bioharmonist, a buff will be chosen at random the first time a forage is consumed after obtaining the profession. From that moment onwards, that particular forage will always afford the same buff, which will be indicated in the item's tooltip.
 </details>
@@ -275,7 +275,13 @@ For Bioharmonist, a buff will be chosen at random the first time a forage is con
 <font size="2">
 <details>
 
-Whenever you are outside there is a chance to trigger a **Scavenger Hunt** minigame; find the hidden buried treasure by following the purple HUD arrows, and dig it up (with a hoe) before the time limit to obtain a reward. Rewards may start out underwheming, but can be improved dramatically by building up a streak. You also gain the ability to hold a mod key (LeftShift by default) to highlight all forageable items currently on-screen, for your convenience. Moreover, you can optionally configure the tracking HUD arrows to not be active all the time, and instead appear only when holding that same mod key.
+Whenever you are outside there is a chance to trigger a **Scavenger Hunt** minigame; find the hidden buried treasure by following the purple HUD arrows, and dig it up (with a hoe) before the time limit to obtain a reward. Rewards may start out underwheming, but can be improved dramatically by building up a streak.
+
+You also gain the ability to hold a mod key (LeftShift by default) to highlight all forageable items currently on-screen, for your convenience. Moreover, you can optionally configure the tracking HUD arrows to not be active all the time, and instead appear only when holding that same mod key.
+
+Pointer colors:
+- **Yellow:** Spawned forage items, blooming berry bushes, ginger, coconuts
+- **Green:** Artifact spots
 </details>
 </font>
 
@@ -421,9 +427,14 @@ For Cavewarden, any items left behind while mining have a 20% chance to spawn ba
 <font size="2">
 <details>
 
-This is the mining-equivalent of Scavenger. All mining nodes and mineral forages off-screen will be tracked with a yellow pointer. Ladders, shafts and panning spots are tracked with a green pointer. While mining, there is a chance to trigger a Prospector Hunt minigame; break stones to trigger a pitched sound cue. Follow the higher pitched cues to find the treasure stone within the time limit and obtain a reward. Rewards may start out underwheming, but can be improved dramatically by building up a streak. For accessibility purposes, enable `UseLegacyProspectorHunt` in the config settings to replace this auditory minigame with a visual minigame of "follow-the-purple-arrow", exactly like the Scavenger Hunt.
+This is the mining-equivalent of Scavenger. Tracks all mining nodes, mineral forages, panning spots, mine ladders and shafts. While mining, there is a chance to trigger a Prospector Hunt minigame; break stones to trigger a pitched sound cue. Follow the higher pitched cues to find the treasure stone within the time limit and obtain a reward. Rewards may start out underwheming, but can be improved dramatically by building up a streak. For accessibility purposes, enable `UseLegacyProspectorHunt` in the config settings to replace this auditory minigame with a visual minigame of "follow-the-purple-arrow", exactly like the Scavenger Hunt.
 
 You also gain the ability to hold a mod key (LeftShift by default) to highlight all forageable items currently on-screen, for your convenience. Moreover, you can optionally configure the tracking HUD arrows to not be active all the time, and instead appear only when holding that same mod key.
+
+Pointer colors:
+- **Orange:** Mining nodes and forage minerals
+- **Blue:** Ladders/shafts, panning spots
+- **Green:** Artifact spots
 </details>
 </font>
 
@@ -533,7 +544,7 @@ Doubles the chance to attract fish normally associated with every bait, as well 
 <!--- Angler --->
 
 <details>
-<summary><img src="./resources/assets/sprites/loose/angler.png"/> <b>Angler (Lv10)</b> - Fish are 0.5% more valuable for every unique max-sized species caught. Fully-expending a tackle causes it's effects to linger on the fishing rod.
+<summary><img src="./resources/assets/sprites/loose/angler.png"/> <b>Angler (Lv10)</b> - Fish are 1% more valuable for every unique max-sized species caught. Fully-expending a tackle causes it's effects to linger on the fishing rod.
 </summary>
 
 <ul>
@@ -545,7 +556,7 @@ Doubles the chance to attract fish normally associated with every bait, as well 
 <font size="2">
 <details>
 
-Unless disabled in the settings, a "MAX" icon will be shown in the Collections menu under each fish which has been caught at max size. A blue icon indicates a regular fish, while a red icon indicates a crab pot fish. Only blue-iconed fish are counted for the perk. Legendary fish are worth 4 regular fish; i.e., 2% bonus to fish sell price. This applies to anything with the `fish_legendary` context tag, which should allow for compatibiltiy with mod-added legendary fish.
+Unless disabled in the settings, a "MAX" icon will be shown in the Collections menu under each fish which has been caught at max size. A blue icon indicates a regular fish, while a red icon indicates a crab pot fish. Only blue-iconed fish are counted for the perk. Legendary fish are worth 5 regular fish; i.e., 5% bonus to fish sell price. This applies to anything with the `fish_legendary` context tag, which should allow for compatibiltiy with mod-added legendary fish. By default, the bonus caps at 100%, but this can be configured.
 
 Lingering tackle effects last for 20 uses, which is half as many as a regular tackle.
 </details>
@@ -618,10 +629,10 @@ All trapped fish can have quality up to gold, which depends on your Fishing leve
 <details>
 
 Each type of bait will also apply its regular fishing effects:
-- **Regular bait:** 25% chance to catch (non-Crab Pot) fish, subject to the same location and season limitations as regular fishing.
-- **Wild bait:** 50% chance to also double the stack.
+- **Wild bait:** (25 + DailyLuck / 2)% chance to double the stack.
 - **Magnet:** Repels all fish (as per its description), but attracts metal items such as resources, artifacts, treasure chests, rings and even some weapons (treasure table is similar to fishing treasure chests).
-- **Magic bait:** Chance to catch higher-level (non-Crab Pot) fish of any location or season.
+- **Magic bait:** Catches non-Crab Pot fish of any location or season.
+- **Deluxe bait:** Quality is boosted by one additional stage.
 
 All baits, with the exception of Magnet, also prevent collecting junk.
 </details>
@@ -697,7 +708,7 @@ Completely unchanged from vanilla.
 <font size="2">
 <details>
 
-**Rage:** Damage +1% and Attack Speed +0.5% per stack, up to 100 stacks. Rage slowly decays after not dealing or taking damage for 20 seconds, increasing to 40 when prestiged. Wildhearts can expend 10 rage to trigger a special move during cooldown.
+**Rage:** Damage +1% and Attack Speed +0.5% per stack, up to 100 stacks. Rage slowly decays after not dealing or taking damage for 15 seconds, increasing to 30 when prestiged. Wildhearts can expend 10 rage to trigger a special move during cooldown.
 </details>
 </font>
 
@@ -968,8 +979,9 @@ Credits to the following code contributors:
 
 Credits to the following translators:
 - ![](https://i.imgur.com/ezVo9Fb.png) [CaranudLapin](https://github.com/CaranudLapin) for French.
-- ![](https://i.imgur.com/Jvsm5YJ.png) [twinklesky6](https://next.nexusmods.com/profile/twinklesky6/about-me?gameId=1303) for Korean.
+- ![](https://i.imgur.com/Jvsm5YJ.png) [twinklesky6](https://next.nexusmods.com/profile/twinklesky6/about-me?gameId=1303) and [whdms2008](https://next.nexusmods.com/profile/whdms2008/about-me?gameId=1303) for Korean.
 - ![](https://i.imgur.com/zuQC9Di.png) [Awassakura](https://next.nexusmods.com/profile/Awassakura/about-me?gameId=1303) for Chinese.
+- ![](https://i.imgur.com/cXhDLc5.png) [darthalex2014](https://forums.nexusmods.com/profile/122957028-darthalex2014/) for Russian.
 
 Special thanks to the following visionaries:
 - [Enai Siaion](https://www.nexusmods.com/skyrimspecialedition/users/3959191) for [Ordinator](https://www.nexusmods.com/skyrimspecialedition/mods/1137)
@@ -1011,6 +1023,15 @@ To consume the API, copy the [API interface](IProfessionsApi.cs) to your project
 ## F.A.Q.
 
 <details>
+<summary><b>Can I add this to an existing save?</b></summary>
+
+A new save is recommended, but not required. You may just miss out on part of the intended experience of progression. If you add this to a very late-game save with Mastered skills, don't be surprised to find those skills recalculated to levels 11-20.
+
+But keep in mind that, in general, you should avoid adding or removing mods to/from existing saves. That's a good way to corrupt your save.
+Choose the mods you want before you start, and stick with that mod list for that save.
+</details>
+
+<details>
 <summary><b>Do Ecologist and Gemologist professions count forages/gems acquired before the profession?</b></summary>
 
 No.
@@ -1045,8 +1066,15 @@ Obviously not.
 <summary><b>What do Legendary Fish produce in Fish Ponds? How long do they take to multiply?</b></summary>
 
 They will produce ores, gems and other valuables fitting to the fish's theme, as well as, obviously, roe.
-With the exception of Angler when placed together with Ms. Angler (requires [Aquarism](../Ponds), they do not reproduce.
+With the exception of Angler when placed together with Ms. Angler, they do not reproduce. The intent is for these ponds to be filled with Extended Family fish.
 </details>
+
+<details>
+<summary><b>Does it work with XYZ mod?</b></summary>
+
+Why don't you try it and let me know.
+</details>
+
 
 <!-- MOD LINKS -->
 [mod:ordinator]: <https://www.nexusmods.com/skyrimspecialedition/mods/1137> "Ordinator"

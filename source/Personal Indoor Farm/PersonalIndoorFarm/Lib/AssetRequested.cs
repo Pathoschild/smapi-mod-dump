@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using xTile;
 using static PersonalIndoorFarm.ModEntry;
 
 namespace PersonalIndoorFarm.Lib
@@ -27,7 +28,9 @@ namespace PersonalIndoorFarm.Lib
     public class AssetRequested
     {
         public const string FarmsAsset = "DLX.PIF/Farms";
+        public const string DoorsAsset = "DLX.PIF/Doors";
         public const string SpriteSheetAsset = "DLX.PIF_SpriteSheet";
+        public const string ShopId = "DLX.PIF.Magician";
         private static Texture2D _SpriteSheetTexture;
         public static Texture2D SpriteSheetTexture { get => _SpriteSheetTexture ??= Helper.GameContent.Load<Texture2D>(SpriteSheetAsset); set => _SpriteSheetTexture = value; }
         public static void Initialize()
@@ -43,6 +46,40 @@ namespace PersonalIndoorFarm.Lib
                     return new Dictionary<string, PersonalFarmModel>() { };
                 }, AssetLoadPriority.Exclusive);
 
+            } else if (e.NameWithoutLocale.IsEquivalentTo(DoorsAsset)) {
+                e.LoadFrom(delegate () {
+                    return new Dictionary<string, DoorAssetModel>() {
+                        { $"{Door.ItemId}_Aether", new(DoorSoundEnum.Door, "Aether")},
+                        { $"{Door.ItemId}_Erebus", new(DoorSoundEnum.Door, "Erebus") },
+                        { $"{Door.ItemId}_Chaos", new(DoorSoundEnum.Door, "Chaos") },
+
+                        { $"{Door.ItemId}_WoodStep_Attic", new(DoorSoundEnum.WoodStep, "WoodStep_Attic") },
+                        { $"{Door.ItemId}_WoodStep_Loft", new(DoorSoundEnum.WoodStep, "WoodStep_Loft") },
+                        { $"{Door.ItemId}_WoodStep_Cellar", new(DoorSoundEnum.WoodStep, "WoodStep_Cellar") },
+
+                        { $"{Door.ItemId}_Spa", new(DoorSoundEnum.Door, "Spa") },
+
+                        //Vanilla
+                        { "DecorativeJojaDoor", new(DoorSoundEnum.Door, "Vanilla.DecorativeJojaDoor") },
+                        { "DecorativeWizardDoor", new(DoorSoundEnum.Door, "Vanilla.DecorativeWizardDoor") },
+                        { "DecorativeJunimoDoor", new(DoorSoundEnum.Door, "Vanilla.DecorativeJunimoDoor") },
+                        { "DecorativeRetroDoor", new(DoorSoundEnum.Door, "Vanilla.DecorativeRetroDoor") },
+                        { "DecorativeDoor1", new(DoorSoundEnum.Door, "Vanilla.DecorativeDoor1") },
+                        { "DecorativeDoor2", new(DoorSoundEnum.Door, "Vanilla.DecorativeDoor2") },
+                        { "DecorativeDoor3", new(DoorSoundEnum.Door, "Vanilla.DecorativeDoor3") },
+                        { "DecorativeDoor4", new(DoorSoundEnum.Door, "Vanilla.DecorativeDoor4") },
+                        { "DecorativeDoor5", new(DoorSoundEnum.Door, "Vanilla.DecorativeDoor5") },
+                        { "DecorativeDoor6", new(DoorSoundEnum.Door, "Vanilla.DecorativeDoor6") },
+                        { "DecorativeOakLadder", new(DoorSoundEnum.Door, "Vanilla.DecorativeOakLadder") },
+                        { "DecorativeWalnutLadder", new(DoorSoundEnum.Door, "Vanilla.DecorativeWalnutLadder") },
+                        { "DecorativeHatch", new(DoorSoundEnum.Door, "Vanilla.DecorativeHatch") },
+
+                        //VMV
+                        { "Lumisteria.MtVapius_FurnitureDeluxeSet_Door01", new() },
+                        { "Lumisteria.MtVapius_FurnitureDarkDeluxeSet_Door01", new() },
+                    };
+                }, AssetLoadPriority.Exclusive);
+
             } else if (e.NameWithoutLocale.IsEquivalentTo(SpriteSheetAsset)) {
                 e.LoadFrom(delegate () {
                     return Helper.ModContent.Load<Texture2D>("assets/SpriteSheet.png");
@@ -56,11 +93,11 @@ namespace PersonalIndoorFarm.Lib
 
                     addDoor(data, "Aether", 1000, "Door1.Name", 0);
                     addDoor(data, "Erebus", 15000, "Door2.Name", 6);
-                    addDoor(data, "Chaos", 40000, "Door3.Name", 7);
+                    addDoor(data, "Chaos", 20000, "Door3.Name", 7);
 
-                    addDoor(data, "Attic", 20000, "DoorAttic.Name", 30, Door.SoundWoodStep, 2);
-                    addDoor(data, "Loft", 20000, "DoorLoft.Name", 32, Door.SoundWoodStep, 2);
-                    addDoor(data, "Cellar", 20000, "DoorCellar.Name", 34, Door.SoundWoodStep, 2);
+                    addDoor(data, "WoodStep_Attic", 20000, "DoorAttic.Name", 30, 2);
+                    addDoor(data, "WoodStep_Loft", 20000, "DoorLoft.Name", 32, 2);
+                    addDoor(data, "WoodStep_Cellar", 20000, "DoorCellar.Name", 34, 2);
 
                     addDoor(data, "Spa", 20000, "DoorSpa.Name", 36);
 
@@ -78,7 +115,7 @@ namespace PersonalIndoorFarm.Lib
                     );
                 });
 
-            } else if(e.NameWithoutLocale.IsEquivalentTo("Strings/Furniture")) {
+            } else if (e.NameWithoutLocale.IsEquivalentTo("Strings/Furniture")) {
                 e.Edit(asset => {
                     var editor = asset.AsDictionary<string, string>();
                     var data = editor.Data;
@@ -183,27 +220,36 @@ namespace PersonalIndoorFarm.Lib
             } else if (e.NameWithoutLocale.IsEquivalentTo("Data/Shops")) {
                 e.Edit(asset => {
                     var editor = asset.AsDictionary<string, ShopData>();
-                    editor.Data["Carpenter"].Items.AddRange(new ShopItemData[] {
-                        new ShopItemData() { Id = $"{Door.QualifiedItemId}_Aether", ItemId = $"{Door.QualifiedItemId}_Aether" },
-                        new ShopItemData() { Id = $"{Door.QualifiedItemId}_Erebus", ItemId = $"{Door.QualifiedItemId}_Erebus" },
-                        new ShopItemData() { Id = $"{Door.QualifiedItemId}_Chaos", ItemId = $"{Door.QualifiedItemId}_Chaos" },
-                        new ShopItemData() { Id = $"{Door.QualifiedItemId}_Attic", ItemId = $"{Door.QualifiedItemId}_{Door.SoundWoodStep}Attic" },
-                        new ShopItemData() { Id = $"{Door.QualifiedItemId}_Loft", ItemId = $"{Door.QualifiedItemId}_{Door.SoundWoodStep}Loft" },
-                        new ShopItemData() { Id = $"{Door.QualifiedItemId}_Cellar", ItemId = $"{Door.QualifiedItemId}_{Door.SoundWoodStep}Cellar" },
-                        new ShopItemData() { Id = $"{Door.QualifiedItemId}_Spa", ItemId = $"{Door.QualifiedItemId}_Spa" },
-                        new ShopItemData() { Id = Painting.QualifiedItemId, ItemId = Painting.QualifiedItemId },
-                        new ShopItemData() { Id = SpaceTimeSynchronizer.QualifiedItemId, ItemId = SpaceTimeSynchronizer.QualifiedItemId },
-                        new ShopItemData() { Id = VoidSeal.QualifiedItemId, ItemId = VoidSeal.QualifiedItemId },
-                        new ShopItemData() { Id = Key.QualifiedItemId, ItemId = Key.QualifiedItemId },
-                    });
+                    editor.Data.Add(ShopId, new() {
+                        Items = new() {
+                        new() { Id = SpaceTimeSynchronizer.QualifiedItemId, ItemId = SpaceTimeSynchronizer.QualifiedItemId },
+                        new() { Id = VoidSeal.QualifiedItemId, ItemId = VoidSeal.QualifiedItemId },
+                        new() { Id = Painting.QualifiedItemId, ItemId = Painting.QualifiedItemId },
+                        new() { Id = Key.QualifiedItemId, ItemId = Key.QualifiedItemId },
 
+                        new() { Id = $"{Door.QualifiedItemId}_Aether", ItemId = $"{Door.QualifiedItemId}_Aether" },
+                        new() { Id = $"{Door.QualifiedItemId}_Erebus", ItemId = $"{Door.QualifiedItemId}_Erebus" },
+                        new() { Id = $"{Door.QualifiedItemId}_Chaos", ItemId = $"{Door.QualifiedItemId}_Chaos" },
+                        new() { Id = $"{Door.QualifiedItemId}_Attic", ItemId = $"{Door.QualifiedItemId}_WoodStep_Attic" },
+                        new() { Id = $"{Door.QualifiedItemId}_Loft", ItemId = $"{Door.QualifiedItemId}_WoodStep_Loft" },
+                        new() { Id = $"{Door.QualifiedItemId}_Cellar", ItemId = $"{Door.QualifiedItemId}_WoodStep_Cellar" },
+                        new() { Id = $"{Door.QualifiedItemId}_Spa", ItemId = $"{Door.QualifiedItemId}_Spa" },
+                    }
+                    });
+                });
+
+            } else if (e.NameWithoutLocale.IsEquivalentTo("Maps/Tunnel")) {
+                e.Edit(asset => {
+                    var editor = asset.AsMap();
+                    var patch = Helper.ModContent.Load<Map>("assets/Shopkeeper.tmx");
+                    editor.PatchMap(patch, null, targetArea: new Microsoft.Xna.Framework.Rectangle(10, 6, 1, 2));
                 });
             }
         }
 
-        public static void addDoor(IDictionary<string, string> data, string name, int price, string translation, int index, string sound = "", int w = 1, int h = 3)
+        public static void addDoor(IDictionary<string, string> data, string name, int price, string translation, int index, int w = 1, int h = 3)
         {
-            data.Add($"{Door.ItemId}_{sound}{name}",
+            data.Add($"{Door.ItemId}_{name}",
                 $"Dimension Door - {name}" + //name
                 "/painting" + //type
                 $"/{w} {h}" + //tilesheet size

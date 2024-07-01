@@ -1,0 +1,10 @@
+{
+  "Name": "Change Horse Sounds",
+  "Author": "CyanFire",
+  "Version": "1.4.4",
+  "Description": "Makes it possible for horse and footstep sounds to exist without issues",
+  "UniqueID": "CF.ChangeHorseSounds",
+  "EntryDll": "ChangeHorseSounds.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": ["Nexus:13428"]
+}

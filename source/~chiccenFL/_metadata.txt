@@ -4,12 +4,13 @@ urls:
 
 mods:
    Garbage Can Tweaks
+   Water Your Crops
    Wild Tree Tweaks
 
 latest commit:
-   commit 46d164a0373cee310680faeb2d824c29840f3f29
+   commit 3124dc8c16e2c815138e623a7be2ab59f1cca495
    Author: Joshua Parks <joshuaparks2018@gmail.com>
-   Date:   Wed May 29 12:44:05 2024 -0400
+   Date:   Sun Jun 30 00:01:06 2024 -0400
    
-       ignore json builder WIP
+       changed some default config values to vanilla
    

@@ -63,7 +63,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework
         public static string For(FriendshipStatus status, bool wasHousemate)
         {
             if (wasHousemate && status == FriendshipStatus.Divorced)
-                return I18n.GetByKey("friendship-status.kicked-out");
+                return I18n.FriendshipStatus_KickedOut();
             return I18n.GetByKey($"friendship-status.{status.ToString().ToLower()}");
         }
 
@@ -156,7 +156,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework
                     return date.ToLocaleString(withYear: date.Year != Game1.year);
                 case TimeSpan span:
                     {
-                        List<string> parts = new List<string>();
+                        List<string> parts = [];
                         if (span.Days > 0)
                             parts.Add(I18n.Generic_Days(span.Days));
                         if (span.Hours > 0)
@@ -183,7 +183,6 @@ namespace Pathoschild.Stardew.LookupAnything.Framework
                             str.AppendLine($"- {pair.Key}: {pair.Value}");
                         return str.ToString().TrimEnd();
                     }
-                    break;
 
                 case SchedulePathDescription schedulePath:
                     return $"{schedulePath.time / 100:00}:{schedulePath.time % 100:00} {schedulePath.targetLocationName} ({schedulePath.targetTile.X}, {schedulePath.targetTile.Y}) {schedulePath.facingDirection} {schedulePath.endOfRouteMessage}";

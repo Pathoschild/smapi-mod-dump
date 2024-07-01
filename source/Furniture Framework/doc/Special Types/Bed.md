@@ -8,12 +8,17 @@ for queries and analysis.**
 
 # How to define a custom Bed?
 
-You'll only need to define one new field for a bed to work:
+You'll only need to define some new fields for a bed to work:
 
 
 ## Bed Spot
 
 The Bed Spot determines where the player will appear when waking up. It is an integer [Vector](https://github.com/Leroymilo/FurnitureFramework/blob/main/doc/Structures/Vector.md) mesured in tiles, starting from the top left of the Bounding Box.
+
+## Bed Type
+
+The bed type can be "Double" or "Single", a simple bed can be placed in the un-upgraded Farmhouse but will not work correctly with spouses in the upgraded Farmhouse, while a double bed cannot be placed in the un-upgraded Farmhouse.  
+You can also use the the bed type "Child" to make a bed that children can sleep into.
 
 ## Other Info
 

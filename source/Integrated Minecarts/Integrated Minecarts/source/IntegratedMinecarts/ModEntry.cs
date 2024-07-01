@@ -30,6 +30,7 @@ namespace IntegratedMinecarts
     {
         internal Harmony? Harmony;
         public ModConfig? Config;
+        public int DestinationsPerPage;
         public static ModEntry Instance { get; private set; }
         /*********
         ** Public methods
@@ -40,50 +41,58 @@ namespace IntegratedMinecarts
         {
             Instance = this;
             Harmony = new Harmony(ModManifest.UniqueID);
-            Config = Helper.ReadConfig<ModConfig>();
+ //           Config = Helper.ReadConfig<ModConfig>();
             helper.Events.Player.Warped += Player_Warped;
-            helper.Events.GameLoop.GameLaunched += GameLoop_GameLaunched;
+ //           helper.Events.GameLoop.GameLaunched += GameLoop_GameLaunched;
+            helper.Events.GameLoop.SaveLoaded += GameLoop_SaveLoaded;
+            helper.Events.Content.AssetsInvalidated += Content_AssetsInvalidated;
             MinecartWarpPatcher.Patch(this);
             MinecartMenuPatcher.Patch(this);
             checkActionPatcher.Patch(this);
+            _ShowPagedResponsesPatcher.Patch(this);
         }
 
-        private void GameLoop_GameLaunched(object? sender, GameLaunchedEventArgs e)
+        private void Content_AssetsInvalidated(object? sender, AssetsInvalidatedEventArgs e)
         {
-            // get ContentPatcher api
-            var api = this.Helper.ModRegistry.GetApi<IContentPatcherAPI>("Pathoschild.ContentPatcher");
-            // get Generic Mod Config Menu's API (if it's installed)
-            var configMenu = this.Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
-            if (configMenu is null)
-                return;
-            // register mod
-            configMenu.Register(
-                mod: this.ModManifest,
-                reset: () => this.Config = new ModConfig(),
-                save: () => this.Helper.WriteConfig(this.Config)
-            );
-            // add some config options
-            CreateGMCMOptions(configMenu);
-            api.RegisterToken(this.ModManifest, "PlayerName", () =>
+            foreach (var item in e.NamesWithoutLocale)
             {
-                // save is loaded
-                if (Context.IsWorldReady)
-                    return new[] { Game1.player.Name };
-
-                // or save is currently loading
-                if (SaveGame.loaded?.player != null)
-                    return new[] { SaveGame.loaded.player.Name };
-
-                // no save loaded (e.g. on the title screen)
-                return null;
-            });
-
+                if (item.IsEquivalentTo("Mods/jibb.minecarts/config"))
+                    {
+                    var tokens = Game1.content.Load<Dictionary<string, string>>("Mods/jibb.minecarts/config");
+                    DestinationsPerPage = Int32.Parse(tokens["DestinationsPerPage"]);
+                }
+            }
         }
 
+        private void GameLoop_SaveLoaded(object? sender, SaveLoadedEventArgs e)
+        {
+            var tokens = Game1.content.Load<Dictionary<string, string>>("Mods/jibb.minecarts/config");
+            DestinationsPerPage = Int32.Parse(tokens["DestinationsPerPage"]);
+        }
+        /* Currently Not needed
+                         private void GameLoop_GameLaunched(object? sender, GameLaunchedEventArgs e)
+                        {
+                        // get ContentPatcher api
+                //            var api = this.Helper.ModRegistry.GetApi<IContentPatcherAPI>("Pathoschild.ContentPatcher");
+                            // get Generic Mod Config Menu's API (if it's installed)
+                           var configMenu = this.Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
+                            if (configMenu is null)
+                                return;
+                            // register mod
+                            configMenu.Register(
+                                mod: this.ModManifest,
+                                reset: () => this.Config = new ModConfig(),
+                                save: () => this.Helper.WriteConfig(this.Config)
+                            );
+                            // add some config options
+                            CreateGMCMOptions(configMenu);
+            }
+         */
         private void Player_Warped(object? sender, WarpedEventArgs e)
         {
             MinecartWarpPatcher.ResetlocationContexts(e.OldLocation, e.NewLocation);
         }
+        /*
         private void CreateGMCMOptions(IGenericModConfigMenuApi configMenu)
         {
             // add some config options
@@ -94,5 +103,6 @@ namespace IntegratedMinecarts
                 setValue: value => this.Config.DestinationsPerPage = value
             );
         }
+        */
     }
 }

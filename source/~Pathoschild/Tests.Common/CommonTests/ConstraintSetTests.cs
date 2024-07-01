@@ -57,7 +57,7 @@ namespace Pathoschild.Stardew.Tests.Common.CommonTests
             bool reAdded = set.AddBound(value);
 
             // assert
-            this.AssertBounds(set, new[] { value }, Array.Empty<T>());
+            this.AssertBounds(set, [value], []);
             added.Should().BeTrue();
             reAdded.Should().BeFalse();
         }
@@ -75,7 +75,7 @@ namespace Pathoschild.Stardew.Tests.Common.CommonTests
             bool reAdded = set.AddBound(value.ToUpper());
 
             // assert
-            this.AssertBounds(set, new[] { value }, Array.Empty<string>());
+            this.AssertBounds(set, [value], []);
             added.Should().BeTrue();
             reAdded.Should().BeFalse();
         }
@@ -93,7 +93,7 @@ namespace Pathoschild.Stardew.Tests.Common.CommonTests
             bool reAdded = set.AddBound(value.ToUpper());
 
             // assert
-            this.AssertBounds(set, new[] { value, value.ToUpper() }, Array.Empty<string>());
+            this.AssertBounds(set, [value, value.ToUpper()], []);
             added.Should().BeTrue();
             reAdded.Should().BeTrue();
         }
@@ -111,7 +111,7 @@ namespace Pathoschild.Stardew.Tests.Common.CommonTests
             bool reAdded = set.AddBound(values);
 
             // assert
-            this.AssertBounds(set, values, Array.Empty<int>());
+            this.AssertBounds(set, values, []);
             added.Should().BeTrue();
             reAdded.Should().BeFalse();
         }
@@ -131,7 +131,7 @@ namespace Pathoschild.Stardew.Tests.Common.CommonTests
             bool reAdded = set.AddBound(input);
 
             // assert
-            this.AssertBounds(set, expected, Array.Empty<string>());
+            this.AssertBounds(set, expected, []);
             added.Should().BeTrue();
             reAdded.Should().BeFalse();
         }
@@ -151,7 +151,7 @@ namespace Pathoschild.Stardew.Tests.Common.CommonTests
             bool reAdded = set.AddBound(input);
 
             // assert
-            this.AssertBounds(set, expected, Array.Empty<string>());
+            this.AssertBounds(set, expected, []);
             added.Should().BeTrue();
             reAdded.Should().BeFalse();
         }
@@ -175,7 +175,7 @@ namespace Pathoschild.Stardew.Tests.Common.CommonTests
             bool reAdded = set.Exclude(value);
 
             // assert
-            this.AssertBounds(set, Array.Empty<T>(), new[] { value });
+            this.AssertBounds(set, [], [value]);
             added.Should().BeTrue();
             reAdded.Should().BeFalse();
         }
@@ -193,7 +193,7 @@ namespace Pathoschild.Stardew.Tests.Common.CommonTests
             bool reAdded = set.Exclude(value.ToUpper());
 
             // assert
-            this.AssertBounds(set, Array.Empty<string>(), new[] { value });
+            this.AssertBounds(set, [], [value]);
             added.Should().BeTrue();
             reAdded.Should().BeFalse();
         }
@@ -211,7 +211,7 @@ namespace Pathoschild.Stardew.Tests.Common.CommonTests
             bool reAdded = set.Exclude(value.ToUpper());
 
             // assert
-            this.AssertBounds(set, Array.Empty<string>(), new[] { value, value.ToUpper() });
+            this.AssertBounds(set, [], [value, value.ToUpper()]);
             added.Should().BeTrue();
             reAdded.Should().BeTrue();
         }
@@ -229,7 +229,7 @@ namespace Pathoschild.Stardew.Tests.Common.CommonTests
             bool reAdded = set.Exclude(values);
 
             // assert
-            this.AssertBounds(set, Array.Empty<int>(), values);
+            this.AssertBounds(set, [], values);
             added.Should().BeTrue();
             reAdded.Should().BeFalse();
         }
@@ -249,7 +249,7 @@ namespace Pathoschild.Stardew.Tests.Common.CommonTests
             bool reAdded = set.Exclude(input);
 
             // assert
-            this.AssertBounds(set, Array.Empty<string>(), expected);
+            this.AssertBounds(set, [], expected);
             added.Should().BeTrue();
             reAdded.Should().BeFalse();
         }
@@ -269,7 +269,7 @@ namespace Pathoschild.Stardew.Tests.Common.CommonTests
             bool reAdded = set.Exclude(restrict);
 
             // assert
-            this.AssertBounds(set, Array.Empty<string>(), exclude);
+            this.AssertBounds(set, [], exclude);
             added.Should().BeTrue();
             reAdded.Should().BeFalse();
         }

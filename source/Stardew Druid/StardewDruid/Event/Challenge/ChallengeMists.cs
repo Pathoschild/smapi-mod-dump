@@ -10,10 +10,12 @@
 
 using Microsoft.Xna.Framework;
 using StardewDruid.Cast;
+using StardewDruid.Character;
 using StardewDruid.Data;
 using StardewDruid.Journal;
 using StardewDruid.Monster;
 using StardewValley;
+using StardewValley.TerrainFeatures;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -25,12 +27,14 @@ namespace StardewDruid.Event.Challenge
 
         public StardewDruid.Monster.DarkShooter bossShooter;
 
-        public StardewDruid.Monster.DarkLeader bossLeader;
+        public StardewDruid.Monster.DarkRogue bossLeader;
 
         public int destructionAverted;
 
         public ChallengeMists()
         {
+
+            activeLimit = 75;
 
             mainEvent = true;
 
@@ -45,7 +49,7 @@ namespace StardewDruid.Event.Challenge
 
             monsterHandle.spawnSchedule = new();
 
-            for (int i = 1; i <= 10; i += 4)
+            for (int i = 1; i <= 12; i++)
             {
 
                 monsterHandle.spawnSchedule.Add(i, new() { new(MonsterHandle.bosses.darkbrute, Boss.temperment.random, Boss.difficulty.medium) });
@@ -56,7 +60,9 @@ namespace StardewDruid.Event.Challenge
 
             monsterHandle.spawnRange = new(9, 9);
 
-            expireTime = Game1.currentGameTime.TotalGameTime.TotalSeconds + 75;
+            EventBar("The Shadow Invasion",0);
+
+            SetTrack("tribal");
 
             eventProximity = 1280;
 
@@ -66,14 +72,18 @@ namespace StardewDruid.Event.Challenge
 
             ModUtility.AnimateHands(Game1.player, Game1.player.FacingDirection, 600);
 
-            if (Mod.instance.trackers.ContainsKey(CharacterData.characters.Effigy))
+            //Mod.instance.iconData.AnimateBolt(location, origin);
+
+            Mod.instance.spellRegister.Add(new(origin, 128, IconData.impacts.puff, new()) { type = SpellHandle.spells.bolt });
+
+            if (Mod.instance.trackers.ContainsKey(CharacterHandle.characters.Effigy))
             {
 
-                voices[3] = Mod.instance.characters[CharacterData.characters.Effigy];
+                voices[3] = Mod.instance.characters[CharacterHandle.characters.Effigy];
 
-                Mod.instance.characters[CharacterData.characters.Effigy].Halt();
+                Mod.instance.characters[CharacterHandle.characters.Effigy].Halt();
 
-                Mod.instance.characters[CharacterData.characters.Effigy].idleTimer = 300;
+                Mod.instance.characters[CharacterHandle.characters.Effigy].idleTimer = 300;
 
             }
 
@@ -122,23 +132,25 @@ namespace StardewDruid.Event.Challenge
 
                 case 2:
 
-                    DarkShooter shooter = new(ModUtility.PositionToTile(origin) - new Vector2(2, 2), Mod.instance.CombatDifficulty());
+                    bossShooter = new(ModUtility.PositionToTile(origin) - new Vector2(2, 2), Mod.instance.CombatDifficulty());
 
-                    shooter.SetMode(2);
+                    bossShooter.SetMode(2);
 
-                    shooter.netPosturing.Set(true);
+                    bossShooter.netPosturing.Set(true);
 
-                    location.characters.Add(shooter);
+                    location.characters.Add(bossShooter);
 
-                    shooter.currentLocation = location;
+                    bossShooter.currentLocation = location;
 
-                    shooter.LookAtFarmer();
+                    bossShooter.LookAtFarmer();
 
-                    shooter.update(Game1.currentGameTime, location);
+                    bossShooter.update(Game1.currentGameTime, location);
 
-                    bossShooter = shooter;
+                    bossShooter.smashSet = false;
 
-                    voices[0] = shooter;
+                    voices[0] = bossShooter;
+
+                    Mod.instance.iconData.ImpactIndicator(location, bossShooter.Position, IconData.impacts.impact, 2f, new() { frame = 4,});
 
                     break;
 
@@ -160,6 +172,16 @@ namespace StardewDruid.Event.Challenge
 
                     voices[1] = brute;
 
+                    EventDisplay bruteBar = Mod.instance.CastDisplay(narrators[1], narrators[1]);
+
+                    bruteBar.boss = brute;
+
+                    bruteBar.type = EventDisplay.displayTypes.bar;
+
+                    bruteBar.colour = Microsoft.Xna.Framework.Color.Red;
+
+                    Mod.instance.iconData.ImpactIndicator(location, brute.Position, IconData.impacts.impact, 2f, new() { frame = 4, });
+
                     break;
 
                 case 6:
@@ -168,7 +190,7 @@ namespace StardewDruid.Event.Challenge
 
                     voices.Remove(1);
 
-                    Mod.instance.CastMessage("Hit the cannoneer to prevent them from firing on the town!");
+                    Mod.instance.CastDisplay("Hit the cannoneer to prevent them from firing on the town!",1);
 
                     RepositionShooter();
 
@@ -226,9 +248,10 @@ namespace StardewDruid.Event.Challenge
 
                     break;
 
+                case 25:
                 case 28:
 
-                    if(monsterHandle.monsterSpawns.Count > 0)
+                    if (monsterHandle.monsterSpawns.Count > 0)
                     {
 
                         voices[1] = monsterHandle.monsterSpawns.First();
@@ -237,11 +260,11 @@ namespace StardewDruid.Event.Challenge
                     else
                     {
 
-                        voices.Remove(1);
+                        cues.Remove(25);
+                        cues.Remove(28);
+                        cues.Remove(31);
 
                     }
-
-                    RepositionShooter();
 
                     break;
 
@@ -272,6 +295,8 @@ namespace StardewDruid.Event.Challenge
                     break;
 
                 case 38:
+                case 40:
+                case 42:
 
 
                     if (monsterHandle.monsterSpawns.Count > 0)
@@ -283,41 +308,26 @@ namespace StardewDruid.Event.Challenge
                     else
                     {
 
-                        voices.Remove(1);
+                        cues.Remove(38);
+                        cues.Remove(40);
+                        cues.Remove(42);
 
                     }
+
                     break;
 
-                case 40:
+                case 41:
 
                     RepositionShooter();
 
                     break;
 
-                case 42:
-
-                    if (monsterHandle.monsterSpawns.Count > 0)
-                    {
-
-                        voices[1] = monsterHandle.monsterSpawns.First();
-
-                    }
-                    else
-                    {
-
-                        voices.Remove(1);
-
-                    }
-
-                    break;
-
-                case 44:
+                case 45:
 
                     PrepareShooter();
 
                     break;
 
-                case 45:
                 case 46:
                 case 47:
 
@@ -333,13 +343,15 @@ namespace StardewDruid.Event.Challenge
 
                 case 50:
 
-                    DarkLeader leader = new(ModUtility.PositionToTile(origin), Mod.instance.CombatDifficulty());
+                    DarkRogue leader = new(ModUtility.PositionToTile(origin), Mod.instance.CombatDifficulty());
 
                     leader.SetMode(2);
 
                     leader.netPosturing.Set(true);
 
                     location.characters.Add(leader);
+
+                    leader.smashSet = false;
 
                     leader.currentLocation = location;
 
@@ -353,7 +365,7 @@ namespace StardewDruid.Event.Challenge
 
                     bossShooter.SetDirection(origin + new Vector2(-128, -64));
 
-                    bossShooter.PerformFlight(origin + new Vector2(-128,-64), 0);
+                    bossShooter.PerformFlight(origin + new Vector2(-128,-64));
 
                     break;
 
@@ -435,22 +447,14 @@ namespace StardewDruid.Event.Challenge
 
                 case 68:
 
-                    expireEarly = true;
-
-                    int friendship = destructionAverted * 50;
-
-                    Mod.instance.CastMessage($"Prevented {destructionAverted} acts of destruction, gained " + friendship + " friendship with town residents", 2);
-
-                    VillagerData.CommunityFriendship("town", friendship);
-
-                    Mod.instance.questHandle.CompleteQuest(eventId);
+                    eventComplete = true;
 
                     break;
 
 
             }
 
-            if (activeCounter % 6 == 0)
+            if (activeCounter % 5 == 0)
             {
 
                 monsterHandle.SpawnInterval();
@@ -466,10 +470,10 @@ namespace StardewDruid.Event.Challenge
 
             List<Vector2> points = new()
             {
-                origin + new Vector2(-9*64,-7*64),
-                origin + new Vector2(6*64,-8*64),
-                origin + new Vector2(10*64,10*64),
-                origin + new Vector2(-7*64,10*64),
+                origin,
+                origin + new Vector2(10*64,1*64),
+                origin + new Vector2(8*64,10*64),
+                origin + new Vector2(-6*64,10*64),
 
             };
 
@@ -497,7 +501,7 @@ namespace StardewDruid.Event.Challenge
 
             bossShooter.specialFrame = 0;
 
-            Mod.instance.iconData.CursorIndicator(location, Game1.player.Position, IconData.cursors.scope, new() { scale = 4f, color = Mod.instance.iconData.schemeColours[IconData.schemes.fire], });
+            Mod.instance.iconData.CursorIndicator(location, Game1.player.Position, IconData.cursors.scope, new() { scale = 4f, scheme = IconData.schemes.ember, });
 
         }
 
@@ -513,7 +517,7 @@ namespace StardewDruid.Event.Challenge
 
                 bossShooter.specialFrame = 0;
 
-                Mod.instance.iconData.CursorIndicator(location, Game1.player.Position, IconData.cursors.scope, new() { scale = 4f, color = Mod.instance.iconData.schemeColours[IconData.schemes.fire], });
+                Mod.instance.iconData.CursorIndicator(location, Game1.player.Position, IconData.cursors.scope, new() { scale = 4f, scheme = IconData.schemes.ember, });
 
             }
 
@@ -525,7 +529,7 @@ namespace StardewDruid.Event.Challenge
             if (bossShooter.netChannelActive.Value && Vector2.Distance(bossShooter.Position,Game1.player.Position) > 128 )
             {
 
-                bossShooter.PerformBarrage(Game1.player.Position);
+                bossShooter.PerformChannel(Game1.player.Position);
 
                 cues[dialogueIndex][0] = Mod.instance.randomIndex.Next(2) == 0 ? "BOOOM" : "FIRE!";
 
@@ -536,6 +540,21 @@ namespace StardewDruid.Event.Challenge
                 destructionAverted++;
 
             }
+
+        }
+
+        public override void EventCompleted()
+        {
+
+            int friendship = 125;
+            
+            friendship += destructionAverted * 25;
+
+            Mod.instance.CastDisplay($"Prevented {destructionAverted} acts of destruction, gained " + friendship + " friendship with town residents", 2);
+
+            VillagerData.CommunityFriendship("town", friendship);
+
+            Mod.instance.questHandle.CompleteQuest(eventId);
 
         }
 

@@ -26,23 +26,24 @@ namespace Unlockable_Bundles.Lib
     {
         public Unlockable Unlockable;
 
-        public const string APPLYPATCH = "ub_applyPatch";
+        public const string APPLYPATCH = "UB_ApplyPatch";
 
         public static void Initialize()
         {
-            RegisterCommand(APPLYPATCH, delegate { ub_applyPatch(); });
+            RegisterCommand(APPLYPATCH, delegate { UB_ApplyPatch(); });
+            //RegisterCommandAlias("ub_applyPatch", APPLYPATCH); //Old command
         }
         public UBEvent(Unlockable unlockable, string eventString, Farmer farmerActor = null) : base(eventString, farmerActor)
         {
             Unlockable = unlockable;
         }
 
-        public static void ub_applyPatch()
+        public static void UB_ApplyPatch()
         {
             if (Game1.CurrentEvent is UBEvent ev)
                 MapPatches.applyUnlockable(ev.Unlockable);
             else
-                Monitor.Log("Event command ub_applyPatch was called outside of the context of Unlockable Bundles.", LogLevel.Warn);
+                Monitor.Log("Event command UB_ApplyPatch was called outside of the context of Unlockable Bundles.", LogLevel.Warn);
 
             Game1.CurrentEvent.CurrentCommand++;
         }

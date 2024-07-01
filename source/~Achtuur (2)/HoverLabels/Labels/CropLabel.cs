@@ -19,9 +19,9 @@ using System.Threading.Tasks;
 using StardewValley.TerrainFeatures;
 using SObject = StardewValley.Object;
 using StardewValley.Objects;
-using HoverLabels.Drawing;
 using StardewValley.Tools;
 using System.Diagnostics.Tracing;
+using AchtuurCore.Framework.Borders;
 
 namespace HoverLabels.Labels;
 internal class CropLabel : BaseLabel
@@ -62,13 +62,13 @@ internal class CropLabel : BaseLabel
     {
         if (hoverCrop is null)
         {
-            TitleLabelText no_crop = new(I18n.LabelCropsNoCrop());
+            TitleLabel no_crop = new(I18n.LabelCropsNoCrop());
             AddBorder(no_crop);
         } 
         else
         {
             SObject harvestedItem = GetCropAsObject(hoverCrop);
-            TitleLabelText crop_name = new(harvestedItem.DisplayName);
+            TitleLabel crop_name = new(harvestedItem.DisplayName);
             AddBorder(crop_name);
         }
 
@@ -79,19 +79,19 @@ internal class CropLabel : BaseLabel
     public static IEnumerable<Border> GenerateCropLabel(Crop crop, HoeDirt hoeDirt)
     {
         Border crop_state = new();
-        crop_state.AddLabelText(GenerateCropStateLabel(crop, hoeDirt));
+        crop_state.AddLabel(GenerateCropStateLabel(crop, hoeDirt));
         yield return crop_state;
 
         Border soil_state = new();
-        if (GenerateFertilizerStateLabel(hoeDirt) is LabelText fertilizer_state)
-            soil_state.AddLabelText(fertilizer_state);
+        if (GenerateFertilizerStateLabel(hoeDirt) is Label fertilizer_state)
+            soil_state.AddLabel(fertilizer_state);
 
-        if (GenerateSoilStateLabel(crop, hoeDirt) is LabelText soil_state_label)
-            soil_state.AddLabelText(soil_state_label);
+        if (GenerateSoilStateLabel(crop, hoeDirt) is Label soil_state_label)
+            soil_state.AddLabel(soil_state_label);
         yield return soil_state;
     }
 
-    private static LabelText GenerateSoilStateLabel(Crop crop, HoeDirt hoeDirt)
+    private static Label GenerateSoilStateLabel(Crop crop, HoeDirt hoeDirt)
     {
         if (crop is null || IsCropFullyGrown(crop))
             return null;
@@ -100,33 +100,33 @@ internal class CropLabel : BaseLabel
         if (watering_can is null)
             watering_can = ItemRegistry.Create("(T)WateringCan");
         if (hoeDirt.state.Value == 0 && !crop.dead.Value)
-            return new ItemLabelText(watering_can, I18n.LabelCropsWaterNeeded());
+            return new ItemLabel(watering_can, I18n.LabelCropsWaterNeeded());
         return null;
     }
 
-    private static LabelText GenerateFertilizerStateLabel(HoeDirt hoeDirt)
+    private static Label GenerateFertilizerStateLabel(HoeDirt hoeDirt)
     {
         if (hoeDirt is null)
             return null;
 
         string fertilizerQID = GetFertilizerQID(hoeDirt.fertilizer.Value);
         if (fertilizerQID.Length > 0)
-            return new ItemLabelText(fertilizerQID);
+            return new ItemLabel(fertilizerQID);
         return null;
     }
 
-    private static LabelText GenerateCropStateLabel(Crop crop, HoeDirt hoeDirt)
+    private static Label GenerateCropStateLabel(Crop crop, HoeDirt hoeDirt)
     {
         if (crop is null || hoeDirt is null)
             return null;
 
         if (IsCropFullyGrown(crop))
         {
-            return new LabelText(I18n.LabelCropsReadyHarvest());
+            return new Label(I18n.LabelCropsReadyHarvest());
         }
         else if (crop.dead.Value)
         {
-            return new LabelText(I18n.LabelCropsDead());
+            return new Label(I18n.LabelCropsDead());
         }
         else // Not fully grown yet
         {
@@ -134,9 +134,9 @@ internal class CropLabel : BaseLabel
             string readyDate = ModEntry.GetDateAfterDays(days);
 
             if (CropCanFullyGrowInTime(crop, hoeDirt))
-                return new LabelText(I18n.LabelCropsGrowTime(days, readyDate));
+                return new Label(I18n.LabelCropsGrowTime(days, readyDate));
             else
-                return new LabelText(I18n.LabelCropsInsufficientTime(readyDate));
+                return new Label(I18n.LabelCropsInsufficientTime(readyDate));
         }
     }
 
@@ -162,9 +162,19 @@ internal class CropLabel : BaseLabel
         if (crop is null)
             return null;
 
-        return crop.programColored.Value 
-            ? new ColoredObject(crop.indexOfHarvest.Value, 1, crop.tintColor.Value) 
-            : new SObject(crop.indexOfHarvest.Value, 1, false, -1, 0);
+        if (crop.programColored is not null && crop.indexOfHarvest.Value is not null && crop.tintColor is not null)
+            return new ColoredObject(crop.indexOfHarvest.Value, 1, crop.tintColor.Value);
+
+        if (crop.whichForageCrop is not null)
+        {
+            switch (crop.whichForageCrop.Value)
+            {
+                case "1": return ItemRegistry.Create<SObject>("399"); // spring onion
+                case "2": return ItemRegistry.Create<SObject>("829"); // ginger
+            }
+        }
+
+        return new SObject(crop.indexOfHarvest.Value, 1, false, -1, 0);
     }
 
     internal static int GetDaysUntilFullyGrown(Crop crop)
@@ -178,6 +188,8 @@ internal class CropLabel : BaseLabel
         // fully grown if current phase is last phase
         else if (currentPhase == crop.phaseDays.Count - 1)
             return 0;
+        else if (currentPhase >= crop.phaseDays.Count)
+            return 0; // out of bounds -> fully grown?
 
         return crop.phaseDays[currentPhase] - dayOfCurrentPhase // days left in current phase
             + crop.phaseDays.Skip(currentPhase + 1) // go to phase after current phase

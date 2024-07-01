@@ -79,6 +79,11 @@ internal class ModConfig
     public Boolean ReadFlooring { get; set; } = false;
 
     /// <summary>
+    /// Toggle reading descriptive names for flooring or generice ones (pathway/flooring/stepping stone).
+    /// </summary>
+    public Boolean DisableDescriptiveFlooring { get; set; } = false;
+
+    /// <summary>
     /// Toggle speaking watered or unwatered for crops.
     /// </summary>
     public Boolean WateredToggle { get; set; } = true;

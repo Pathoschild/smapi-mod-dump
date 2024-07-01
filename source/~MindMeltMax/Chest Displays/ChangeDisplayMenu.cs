@@ -32,31 +32,62 @@ namespace ChestDisplays
         private const int BaseIdInventory = 36000;
         private const int OkButtonId = 35999;
         private const int DisplaySlotId = 69420; //Heh. Funny number
+        private const int NameBoxId = 42069;
 
         private readonly Chest editingChest;
         private ModData? data;
         private ClickableTextureComponent displaySlot;
         private bool finishedInitializing = false;
         private Rectangle entryBackgroundBounds;
+        private TextBox nameBox;
+        private ClickableComponent nameBoxComponent;
 
         private IModHelper _helper => ModEntry.IHelper;
         private IMonitor _monitor => ModEntry.IMonitor;
 
-        public ChangeDisplayMenu(Chest c) : base(i => i is not null, true, menuOffsetHack: 64)
+        public ChangeDisplayMenu(Chest c, string tempText = "") : base(i => i is not null, true, menuOffsetHack: 64)
         {
             editingChest = c;
             data = c.modData.ContainsKey(_helper.ModRegistry.ModID) ? JsonConvert.DeserializeObject<ModData>(c.modData[_helper.ModRegistry.ModID]) : null;
             loadViewComponents();
+            if (!string.IsNullOrWhiteSpace(tempText))
+                nameBox!.Text = tempText;
+            if (string.IsNullOrWhiteSpace(nameBox!.Text))
+            {
+                if (c.modData.TryGetValue("furyx639.BetterChests/StorageName", out string betterChestsName) && !string.IsNullOrWhiteSpace(betterChestsName))
+                    nameBox.Text = betterChestsName;
+                else if (c.modData.TryGetValue("Pathoschild.ChestsAnywhere/Name", out string chestsAnywhereName) && !string.IsNullOrWhiteSpace(chestsAnywhereName))
+                    nameBox.Text = chestsAnywhereName;
+            }
             snapToDefaultClickableComponent();
+        }
+
+        public override void update(GameTime time)
+        {
+            base.update(time);
+            nameBox?.Update();
+        }
+
+        public override void receiveKeyPress(Keys key)
+        {
+            if (Game1.options.menuButton.Contains(new(key)) && nameBox.Selected)
+                return;
+            if (Game1.options.menuButton.Contains(new(key)))
+            {
+                updateModData(Utils.BuildItemFromData(data));
+                exitThisMenu();
+            }
+            else
+                base.receiveKeyPress(key);
         }
 
         public override void snapToDefaultClickableComponent() => currentlySnappedComponent = getComponentWithID(BaseIdInventory);
 
-        public override void gameWindowSizeChanged(Rectangle oldBounds, Rectangle newBounds) => Game1.activeClickableMenu = new ChangeDisplayMenu(editingChest);
+        public override void gameWindowSizeChanged(Rectangle oldBounds, Rectangle newBounds) => Game1.activeClickableMenu = new ChangeDisplayMenu(editingChest, nameBox.Text);
 
         public override void setCurrentlySnappedComponentTo(int id)
         {
-            currentlySnappedComponent = getComponentWithID(id);
+            currentlySnappedComponent = getComponentWithId(id);
             if (currentlySnappedComponent == null)
             {
                 _monitor.Log($"Couldn't snap to component with id : {id}, Snapping to default", LogLevel.Warn);
@@ -118,12 +149,17 @@ namespace ChestDisplays
             }
             else if (displaySlot.bounds.Contains(x, y) && displaySlot.item is not null)
             {
-                editingChest.modData.Remove(_helper.ModRegistry.ModID);
-                data = null;
+                //editingChest.modData.Remove(_helper.ModRegistry.ModID);
+                //data = null;
                 displaySlot.item = null;
-                Utils.updateCache(editingChest);
+                updateModData(null);
+                //Utils.updateCache(editingChest);
             }
-            else if (okButton.bounds.Contains(x, y)) exitThisMenu();
+            else if (okButton.bounds.Contains(x, y))
+            {
+                updateModData(Utils.BuildItemFromData(data));
+                exitThisMenu();
+            }
         }
 
         public override void performHoverAction(int x, int y)
@@ -137,6 +173,8 @@ namespace ChestDisplays
 
             if (displaySlot.containsPoint(x, y))
                 hoveredItem = displaySlot.item;
+
+            nameBox?.Hover(x, y);
 
             base.performHoverAction(x, y);
         }
@@ -158,9 +196,9 @@ namespace ChestDisplays
             if (displaySlot.item is not null)
             {
                 var pos = new Vector2(displaySlot.bounds.X + (displaySlot.bounds.Width / 2) - 32, displaySlot.bounds.Y + (displaySlot.bounds.Height / 2) - 32);
-                Debug.WriteLine($"{displaySlot.bounds.Center.X}:{displaySlot.bounds.Center.Y} - {pos.X}:{pos.Y}");
                 displaySlot.item.drawInMenu(b, pos, .75f, 1f, Utils.GetDepthFromItemType(Utils.getItemType(displaySlot.item), (int)pos.X, (int)pos.Y));
             }
+            nameBox?.Draw(b, false);
 
             if (hoveredItem is not null)
                 drawToolTip(b, hoveredItem.getDescription(), hoveredItem.DisplayName, hoveredItem);
@@ -175,10 +213,28 @@ namespace ChestDisplays
             inventory.showGrayedOutSlots = true;
 
             entryBackgroundBounds = new Rectangle(inventory.xPositionOnScreen + (inventory.width / 2 - 142), inventory.yPositionOnScreen - 344, 344, 344);
-            displaySlot = new(new Rectangle(entryBackgroundBounds.Center.X - 60, entryBackgroundBounds.Center.Y - 24, 120, 120), Game1.menuTexture, new Rectangle(0, 256, 60, 60), 2f)
+            displaySlot = new(new Rectangle(entryBackgroundBounds.Center.X - 60, entryBackgroundBounds.Center.Y - 36, 120, 120), Game1.menuTexture, new Rectangle(0, 256, 60, 60), 2f)
             {
                 item = Utils.BuildItemFromData(data),
-                myID = DisplaySlotId
+                myID = DisplaySlotId,
+                leftNeighborID = -1,
+                rightNeighborID = OkButtonId,
+                upNeighborID = -1,
+                downNeighborID = NameBoxId,
+            };
+            nameBox = new(Game1.content.Load<Texture2D>("LooseSprites\\textBox"), Game1.staminaRect, Game1.smallFont, Game1.textColor)
+            {
+                X = displaySlot.bounds.X - 40,// - (nameBox?.Width ?? 0 - displaySlot.bounds.Width) / 2,
+                Y = displaySlot.bounds.Y + displaySlot.bounds.Height + 4,
+                Text = data?.Name
+            };
+            nameBoxComponent = new(new(nameBox.X, nameBox.Y, nameBox.Width, nameBox.Height), "Gerald")
+            {
+                myID = NameBoxId,
+                leftNeighborID = -1,
+                rightNeighborID = -1,
+                upNeighborID = DisplaySlotId,
+                visible = true,
             };
 
             okButton.myID = OkButtonId;
@@ -193,43 +249,72 @@ namespace ChestDisplays
                     int index = r + (rowLength * c);
                     inventory.inventory[index].myID = BaseIdInventory + index;
 
-                    if (c != 0) inventory.inventory[index].upNeighborID = BaseIdInventory + index - rowLength;
-                    else inventory.inventory[index].upNeighborID = DisplaySlotId;
-                    if (c != (colLength - 1)) inventory.inventory[index].downNeighborID = BaseIdInventory + index + rowLength;
-                    else inventory.inventory[index].downNeighborID = -1;
-                    if (r != 0) inventory.inventory[index].leftNeighborID = BaseIdInventory + index - 1;
-                    else inventory.inventory[index].leftNeighborID = -1;
-                    if (r != (rowLength - 1)) inventory.inventory[index].rightNeighborID = BaseIdInventory + index + 1;
-                    else inventory.inventory[index].rightNeighborID = -1;
+                    if (c != 0) 
+                        inventory.inventory[index].upNeighborID = BaseIdInventory + index - rowLength;
+                    else 
+                        inventory.inventory[index].upNeighborID = NameBoxId;
+
+                    if (c != (colLength - 1)) 
+                        inventory.inventory[index].downNeighborID = BaseIdInventory + index + rowLength;
+                    else 
+                        inventory.inventory[index].downNeighborID = -1;
+
+                    if (r != 0) 
+                        inventory.inventory[index].leftNeighborID = BaseIdInventory + index - 1;
+                    else 
+                        inventory.inventory[index].leftNeighborID = -1;
+
+                    if (r != (rowLength - 1)) 
+                        inventory.inventory[index].rightNeighborID = BaseIdInventory + index + 1;
+                    else 
+                        inventory.inventory[index].rightNeighborID = -1;
 
                     if (r == (rowLength - 1) && c == (colLength - 1))
                     {
-                        inventory.inventory[index].rightNeighborID = okButton.myID;
+                        inventory.inventory[index].rightNeighborID = OkButtonId;
                         okButton.leftNeighborID = inventory.inventory[index].myID;
                     }
 
                     if (c == 0 && r == (rowLength / 2))
-                        displaySlot.downNeighborID = inventory.inventory[index].myID;
+                        nameBoxComponent.downNeighborID = inventory.inventory[index].myID;
                 }
             }
 
-            allClickableComponents = new();
-            allClickableComponents.AddRange(inventory.inventory);
-            allClickableComponents.Add(okButton);
-            allClickableComponents.Add(displaySlot);
+            allClickableComponents =
+            [
+                .. inventory.inventory,
+            ];
         }
 
-        private void updateModData(Item item)
+        private void updateModData(Item? item)
         {
             data = new()
             {
-                ItemId = item.QualifiedItemId,
+                ItemId = item?.QualifiedItemId,
                 Color = item is ColoredObject co ? co.color.Value : null,
-                ItemQuality = item.Quality,
-                UpgradeLevel = item is Tool tu ? tu.UpgradeLevel : -1
+                ItemQuality = item?.Quality ?? -1,
+                UpgradeLevel = item is Tool tu ? tu.UpgradeLevel : -1,
+                Name = nameBox.Text
             };
+            if (string.IsNullOrWhiteSpace(data.ItemId) && string.IsNullOrWhiteSpace(data.Name))
+            {
+                editingChest.modData.Remove(_helper.ModRegistry.ModID);
+                Utils.updateCache(editingChest);
+                return;
+            }
             editingChest.modData[_helper.ModRegistry.ModID] = JsonConvert.SerializeObject(data);
             Utils.updateCache(editingChest);
+        }
+
+        private ClickableComponent? getComponentWithId(int id)
+        {
+            if (id == NameBoxId)
+                return nameBoxComponent;
+            if (id == DisplaySlotId)
+                return displaySlot;
+            if (id == OkButtonId)
+                return okButton;
+            return getComponentWithID(id);
         }
     }
 }

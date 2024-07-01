@@ -16,16 +16,8 @@
   "DisablePerPlayerConfig": false,
   "EnableAskToUpgradeTool": false,
   "PlayerRecoveryConfig": {
-    "-3640699164202973852": {
-      "PlayerName": "x",
-      "DisableRecoveryConfigInGameChanges": false,
-      "EnableRecoveryService": false,
-      "RecoverAllItems": false,
-      "RecoverForFree": false,
-      "DisableClearLostItemsOnRandomRecovery": false
-    },
-    "-1664222855205924372": {
-      "PlayerName": "WTDR131A",
+    "-7053985225246912142": {
+      "PlayerName": "t",
       "DisableRecoveryConfigInGameChanges": false,
       "EnableRecoveryService": false,
       "RecoverAllItems": false,

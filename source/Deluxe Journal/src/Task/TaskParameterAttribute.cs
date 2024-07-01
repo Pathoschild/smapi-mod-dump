@@ -20,6 +20,9 @@ namespace DeluxeJournal.Task
         /// </summary>
         public static class TaskParameterNames
         {
+            /// <summary>Specifies a color type parameter.</summary>
+            public const string Color = "color";
+
             /// <summary>Specifies an item type parameter.</summary>
             public const string Item = "item";
 
@@ -45,6 +48,9 @@ namespace DeluxeJournal.Task
         /// <summary>Parser tags for populating parameter values.</summary>
         public enum TaskParameterTag
         {
+            /// <summary>Task color schema index of type <see cref="int"/>.</summary>
+            ColorIndex,
+
             /// <summary>
             /// A qualified item ID list of type <see cref="IList{T}"/> with generic
             /// type <see cref="string"/>.
@@ -68,6 +74,19 @@ namespace DeluxeJournal.Task
 
             /// <summary>An item quality of type <see cref="int"/>.</summary>
             Quality
+        }
+
+        /// <summary>Input type when modifying the parameter value in the options menu.</summary>
+        public enum TaskParameterInputType
+        {
+            /// <summary>Parse the value from a string.</summary>
+            TextBox,
+
+            /// <summary>Select the value from a set of options in a drop-down list.</summary>
+            DropDown,
+
+            /// <summary>Select the value from a set of buttons displaying a color.</summary>
+            ColorButtons
         }
 
         /// <summary>Constraints on the parameter in the IsValid check.</summary>
@@ -128,6 +147,9 @@ namespace DeluxeJournal.Task
 
         /// <summary>Parser tag for populating parameter values.</summary>
         public TaskParameterTag Tag { get; set; }
+
+        /// <summary>Input type when modifying the parameter value in the options menu.</summary>
+        public TaskParameterInputType InputType { get; set; } = TaskParameterInputType.TextBox;
 
         /// <summary>Is this task required?</summary>
         /// <remarks>If set to <c>false</c>, IsValid is always true.</remarks>

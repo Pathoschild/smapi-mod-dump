@@ -111,7 +111,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Characters
         /// <param name="animal">The farm animal.</param>
         private string GetMoodReason(FarmAnimal animal)
         {
-            List<string> factors = new();
+            List<string> factors = [];
 
             // winter without heat
             if (Game1.IsWinter && Game1.currentLocation.numberOfObjectsWithName(Constant.ItemNames.Heater) <= 0)

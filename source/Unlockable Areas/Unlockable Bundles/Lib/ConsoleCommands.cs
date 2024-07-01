@@ -110,9 +110,24 @@ namespace Unlockable_Bundles.Lib
                 case "warptohost":
                     Helper.Multiplayer.SendMessage("", "DebugWarpToHost", modIDs: new[] { ModManifest.UniqueID });  break;
 
+                case "resetsprkey":
+                    if (args.Length == 1)
+                        Monitor.Log("Missing Key", LogLevel.Error);
+                    else
+                        resetSPRKey(args[1]);
+                    break;
+
                 default:
                     Monitor.Log("Unknown Command: " + args[0], LogLevel.Error); break;
             }
+        }
+
+        private static void resetSPRKey(string key)
+        {
+            if (ModData.Instance.SPRTriggerActionKeys.Remove(key))
+                Monitor.Log("Key: " + key + " removed from memory", LogLevel.Info);
+            else
+                Monitor.Log($"No such key '{key}' in memory", LogLevel.Info);
         }
 
         private static void triggerAction(string[] args)
@@ -139,7 +154,8 @@ namespace Unlockable_Bundles.Lib
                 "QUALITY 0-4        Sets the quality of the currently held item\n" +
                 "CONTEXTTAGS        Prints all context tags of the currently held item. Alt. TAGS\n" +
                 "ITEM ID [AMOUNT]   Adds the specified item to your inventory. Accepts UB specific Syntax\n" +
-                "ACTION ARGS        Executes the specified Triggeraction ARGS"
+                "ACTION ARGS        Executes the specified Triggeraction ARGS\n" +
+                "RESETSPRKEY KEY    Resets the specified key for the TriggerAction SPR"
                     , LogLevel.Info);
 
         private static void addItem(string[] args)
@@ -277,7 +293,7 @@ namespace Unlockable_Bundles.Lib
 
                 if (obj is ShopObject shop) {
                     switch (shop.ShopType) {
-                        case ShopType.CCBundle or ShopType.AltCCBundle or ShopType.Dialogue:
+                        case ShopType.CCBundle or ShopType.Dialogue:
                             Monitor.Log("This bundle type requires its menu to be open to debug purchase", LogLevel.Warn); break;
                         case ShopType.ParrotPerch or ShopType.SpeechBubble:
                             Game1.activeClickableMenu = null;

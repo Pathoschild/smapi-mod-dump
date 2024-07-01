@@ -29,7 +29,7 @@ namespace AnimalsNeedWater.Patching
         {
             if (__instance.home != null &&
                 !((AnimalHouse) __instance.home.indoors.Value).animals.ContainsKey(__instance.myID.Value) &&
-                environment is Farm && !__instance.home.animalDoorOpen.Value) return;
+                environment is not AnimalHouse && !__instance.home.animalDoorOpen.Value) return;
             
             if (__instance.home != null && __instance.home.buildingType.Value.ToLower().Contains("coop"))
             {

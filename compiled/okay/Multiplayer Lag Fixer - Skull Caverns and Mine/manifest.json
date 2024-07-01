@@ -1,0 +1,10 @@
+{
+  "Name": "MultiplayerLagFixer",
+  "Author": "Xoulious",
+  "Version": "1.0.0",
+  "Description": "uses more network and lowers interpolation but makes game less laggy both visually and in combat",
+  "UniqueID": "Xoulious.MultiplayerLagFixer",
+  "EntryDll": "MultiplayerLagFixer.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": []
+}

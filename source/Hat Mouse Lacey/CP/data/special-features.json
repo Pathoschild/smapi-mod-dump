@@ -35,9 +35,15 @@
       "Entries": {
         "{{Lacey}}": {
           "Id": "{{Lacey}}",
-          "Condition": null,
+          "Condition": "IS_EVENT festival_fall16",
           "Portrait": "{{Lacey}}",
           "Dialogues": [
+            {
+              "Id": "Spouse",
+              "Condition": "PLAYER_NPC_RELATIONSHIP Current {{Lacey}} Engaged Married",
+              "Dialogue": "{{i18n:dialogue.fall_16.fair.shopdialogue.spouse}}",
+              "RandomDialogue": null
+            },
             {
               "Id": "Default",
               "Condition": null,
@@ -73,6 +79,32 @@
         "LocationName": "Temp"
       },
       "Update": "OnLocationChange"
+    },
+    {
+      "LogName": "Spouse room hat shop",
+      "Target": "Data/Shops",
+      "Action": "EditData",
+      "TargetField": ["HatMouse", "Owners"],
+      "Entries": {
+        "{{Lacey}}_SpouseRoom": {
+          "Id": "{{Lacey}}_SpouseRoom",
+          "Condition": "PLAYER_NPC_RELATIONSHIP Current {{Lacey}} Married, LOCATION_NAME Here FarmHouse",
+          "Dialogues": [
+            {
+              "Id": "Default",
+              "Condition": null,
+              "Dialogue": "{{i18n:dialogue.spouseroom.shopdialogue}}",
+              "RandomDialogue": null
+            }
+          ],
+          "RandomizeDialogueOnOpen": true,
+          "ClosedMessage": null,
+          "Name": "AnyOrNone"
+        }
+      },
+      "MoveEntries": [
+        {"Id": "{{Lacey}}_SpouseRoom", "ToPosition": "Top"}
+      ]
     }
   ]
 }

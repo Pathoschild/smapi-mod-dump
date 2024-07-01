@@ -1,7 +1,7 @@
 ﻿{
 	"Name": "Ferngill Simple Economy",
 	"Author": "Paul Steele",
-	"Version": "1.4.0",
+	"Version": "1.6.1",
 	"Description": "Adds a simplistic economy to Stardew Valley",
 	"UniqueID": "paulsteele.fse",
 	"EntryDll": "ferngillSimpleEconomy.dll",

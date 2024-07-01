@@ -9,6 +9,24 @@ for queries and analysis.**
 [← back to readme](README.md)
 
 # Release notes
+## 2.2.4
+Released 29 June 2024 for SMAPI 4.0.7 or later.
+
+* Fixed config UI not showing custom machines added through Content Patcher.
+* Fixed crab pots always being assigned to the main player (so they get the XP). This now only happens for unassigned crab pots.
+* Fixed feed hoppers inside buildings no longer collecting hay from chests.
+* Fixed support for modded chests with custom `SpecialChestType` values.
+* Renamed 'Feed Hopper' in config UI to 'Hay Hopper and Silo' for clarity.
+* Improved translations. Thanks to bl205vn (added Vietnamese) and martin66789 (updated Hungarian)!
+
+## 2.2.3
+Released 08 June 2024 for SMAPI 4.0.7 or later.
+
+* Raised minimum versions to SMAPI 4.0.7 and Stardew Valley 1.6.4.  
+  _This avoids errors due to breaking changes in earlier 1.6 patches._
+* Internal refactoring.
+* Improved translations. Thanks to mehmetgorkemarslan (updated Turkish)!
+
 ## 2.2.2
 Released 25 May 2024 for SMAPI 4.0.0 or later.
 

@@ -1,6 +1,6 @@
 {
-  "config.name.HarvestRadius": "一键收获范围",
-  "config.tips.HarvestRadius": "收获半径格数，设置为-1表示全图收获",
+  "config.name.HarvestRadius": "镰刀一键收获范围",
+  "config.tips.HarvestRadius": "挥舞镰刀或武器时收获半径格数(小麦等部分作物只能使用镰刀收获)，设置为-1表示全图收获",
   "config.name.RegrowCropHarvest": "是否收获可连续生长作物",
   "config.name.SingleCropHarvest": "是否收获单次成熟作物",
   "config.name.FlowerHarvest": "是否收获花类作物",
@@ -9,11 +9,11 @@
   "config.name.BushHarvest": "是否收获野莓丛及茶树",
   "config.name.CollectableMachineHarvest": "是否收获采集类机器",
   "config.name.ProcessingMachineHarvest": "是否收获加工类机器",
-  "config.name.DigUpArtifactSpot": "是否挖掘地上斑点",
-  "config.name.WateringCrop": "是否给作物浇水",
+  "config.name.DigUpArtifactSpot": "是否挖掘地上斑点(需要锄头在背包)",
+  "config.name.WateringCrop": "是否给作物浇水(需要水壶在背包)",
   "config.name.StirGarbageCan": "是否翻镇上垃圾桶",
   "config.name.AutoInputKeyAssist": "一键放入的辅助键",
-  "config.tips.AutoInputKeyAssist": "手持作物，按住辅助键，鼠标点击桶即可批量放入",
+  "config.tips.AutoInputKeyAssist": "手持作物，按住辅助键(默认Shift)，鼠标点击桶即可批量放入",
   "config.name.KegAutoInput": "允许一键放入酒桶",
   "config.name.PreservesJarAutoInput": "允许一键放入酱桶",
   "config.name.CaskAutoInput": "允许一键放入地窖木桶",
@@ -22,9 +22,11 @@
   "config.name.AnimalArtisanMachineAutoInput": "允许一键放入动物制品工匠机器",
   "config.tips.AnimalArtisanMachineAutoInput": "包括蛋黄酱机、压酪机、织布机、产油机",
   "config.name.SprinklerAutoInput": "一键在洒水器周围耕种",
-  "config.tips.SprinklerAutoInput": "手持锄头/肥料/种子，按住辅助键，鼠标点击洒水器即可在洒水器范围内耕种",
+  "config.tips.SprinklerAutoInput": "手持锄头/肥料/种子，按住辅助键(默认Shift)，鼠标点击洒水器即可在洒水器范围内耕种",
   "config.name.OtherMachineAutoInput": "允许一键放入其他机器",
   "config.tips.OtherMachineAutoInput": "机器种类可以在config.json中自定义，默认为熔炉、熏鱼机、回收机等",
   "config.name.AllMachineAutoInput": "允许一键放入所有机器",
-  "config.tips.AllMachineAutoInput": "实验功能，如果启用则可以在所有设备上进行批量放入操作"
+  "config.tips.AllMachineAutoInput": "实验功能，如果启用则可以在所有设备上进行批量放入操作",
+  "config.name.AllMachineHarvest": "允许收获所有机器",
+  "config.tips.AllMachineHarvest": "实验功能，如果启用则可以收获所有设备(包括其它MOD中符合标准的扩展设备)"
 }

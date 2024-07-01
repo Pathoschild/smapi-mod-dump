@@ -21,6 +21,7 @@ using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Characters;
+using StardewValley.GameData;
 using StardewValley.Locations;
 using StardewValley.Network;
 
@@ -130,7 +131,7 @@ namespace ContentPatcher.Framework
                 if (this.IsParsed)
                     return new[] { SaveGame.loaded.player }.Concat(SaveGame.loaded.farmhands);
 
-                return Array.Empty<Farmer>();
+                return [];
             });
         }
 
@@ -328,12 +329,11 @@ namespace ContentPatcher.Framework
         {
             return this.GetCached("Contexts", () =>
             {
-                HashSet<string> contexts = new()
-                {
+                HashSet<string> contexts = [
                     LocationContexts.DefaultId,
                     LocationContexts.DesertId,
                     LocationContexts.IslandId
-                };
+                ];
 
                 foreach (GameLocation location in this.GetLocations())
                     contexts.Add(this.GetLocationContext(location));
@@ -385,11 +385,11 @@ namespace ContentPatcher.Framework
             // get world state IDs
             IEnumerable<string> worldStateIds;
             if (this.IsBasicInfoLoaded)
-                worldStateIds = Game1.worldStateIDs ?? Enumerable.Empty<string>();
+                worldStateIds = Game1.worldStateIDs ?? [];
             else if (this.IsParsed)
-                worldStateIds = SaveGame.loaded.worldStateIDs ?? Enumerable.Empty<string>();
+                worldStateIds = SaveGame.loaded.worldStateIDs ?? [];
             else
-                worldStateIds = Enumerable.Empty<string>();
+                worldStateIds = [];
 
             // get flags
             return player
@@ -458,7 +458,7 @@ namespace ContentPatcher.Framework
                 (this.GetLocationFromName(player.homeLocation.Value) as FarmHouse)?.getChildren()
             );
             if (children == null)
-                return Enumerable.Empty<string>();
+                return [];
 
             // get values
             Func<Child, string> filter = type switch
@@ -588,6 +588,34 @@ namespace ContentPatcher.Framework
             return FarmType.Standard.ToString();
         }
 
+        /// <summary>Get the farm's asset name relative to the game's <c>Content/Maps</c> folder.</summary>
+        public string GetFarmMapAssetName()
+        {
+            // loaded
+            if (this.IsBasicInfoLoaded)
+                return Farm.getMapNameFromTypeInt(Game1.whichFarm);
+
+            // loading
+            if (this.IsParsed)
+            {
+                string farmId = SaveGame.loaded.whichFarm;
+
+                // standard type
+                if (Utility.TryParseEnum(farmId, out FarmType farmType) && farmType != FarmType.Custom)
+                    return Farm.getMapNameFromTypeInt((int)farmType);
+
+                // custom type
+                foreach (ModFarmType? entry in DataLoader.AdditionalFarms(Game1.content))
+                {
+                    if (entry?.Id == farmId)
+                        return entry.MapName;
+                }
+            }
+
+            // unknown/default type
+            return "Farm";
+        }
+
         /// <summary>Get whether the community center is complete.</summary>
         /// <remarks>See game logic in <see cref="Town.resetLocalState"/>.</remarks>
         public bool GetIsCommunityCenterComplete()
@@ -660,7 +688,7 @@ namespace ContentPatcher.Framework
                         );
                 }
 
-                return Enumerable.Empty<GameLocation>();
+                return [];
             });
         }
 

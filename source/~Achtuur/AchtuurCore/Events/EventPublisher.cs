@@ -15,12 +15,7 @@ namespace AchtuurCore.Events;
 
 public static class EventPublisher
 {
-    /// <summary>
-    /// This event fires when a player waters an unwatered hoe'd tile.
-    /// </summary>
-    public static event EventHandler<WateringFinishedArgs> FinishedWateringSoil;
-
-    private static void InvokeEvent(EventHandler handler, object sender)
+    internal static void InvokeEvent(EventHandler handler, object sender)
     {
         if (handler is null)
             return;
@@ -38,27 +33,5 @@ public static class EventPublisher
         }
     }
 
-    private static void InvokeEvent<T>(EventHandler<T> handler, object sender, T eventArg)
-    {
-        if (handler is null)
-            return;
-
-        foreach (var handle in handler.GetInvocationList().Cast<EventHandler<T>>())
-        {
-            try
-            {
-                handle.Invoke(sender, eventArg);
-            }
-            catch (Exception e)
-            {
-                ModEntry.Instance.Monitor.Log($"Something went wrong when handling event {handle} ({sender}):\n{e}", StardewModdingAPI.LogLevel.Error);
-            }
-        }
-    }
-
-
-    internal static void InvokeFinishedWateringSoil(object sender, WateringFinishedArgs e)
-    {
-        EventPublisher.InvokeEvent<WateringFinishedArgs>(FinishedWateringSoil, sender, e);
-    }
+    
 }

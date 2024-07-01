@@ -27,8 +27,10 @@
 	"fse.config.MaxPercentage": "Maximum Price Multiplier",
 	"fse.config.MenuTabOffset": "Menu Tab X Offset",
 	"fse.config.EnableMenuTab": "Show Tab In Menu",
+	"fse.config.EnableTooltip": "Show Hover Tooltip",
 	"fse.config.EnableShopDisplay": "Show Preview In Shop",
 	"fse.config.ResetEconomy": "Reset Economy(In game only)",
+	"fse.config.hotkey.openMenu": "Open Forecast",
 	"fse.config.Reset": "Reset",
 	"fse.config.category.header": "Categories in Economy",
 	"fse.config.category.subtitle": "The game must be restarted after this is changed. Names may appear duplicated as that is how the game references them. Check the wiki for specifics."

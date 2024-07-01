@@ -1,0 +1,13 @@
+{
+  "Name": "Fishing Tackle Tooltip",
+  "Author": "BarleyZP",
+  "Version": "1.0.0",
+  "Description": "Provides a specific message when your bait runs out or bobber breaks.",
+  "UniqueID": "BarleyZP.FishingTackleTooltip",
+  "EntryDll": "FishingTackleTooltip.dll",
+  "MinimumApiVersion": "3.8.0",
+  "UpdateKeys": [ "Nexus:24749" ],
+  "Dependencies": [
+    
+  ]
+}

@@ -21,12 +21,14 @@ using StardewValley.Objects;
 namespace FurnitureFramework
 {
 
+	using BedType = BedFurniture.BedType;
+
 	enum SpecialType {
 		None,
 		Dresser,
 		TV,
 		Bed,
-		// FishTank,
+		FishTank,
 		// RandomizedPlant
 	}
 
@@ -85,6 +87,8 @@ namespace FurnitureFramework
 		Vector2 screen_position = Vector2.Zero;
 		float screen_scale = 4;
 		Point bed_spot = new(1);
+		public readonly BedType bed_type = BedType.Double;
+		Rectangle? fish_area = null;
 
 		public readonly string? description;
 
@@ -289,6 +293,17 @@ namespace FurnitureFramework
 
 			List<string> rot_names = parse_rotations(data.GetValue("Rotations"));
 
+
+			if (mod_id == "cranie")
+			{
+				ModEntry.log($"{rotations} rotations");
+				ModEntry.log($"{rot_names.Count} rotation names:");
+				foreach (string name in rot_names)
+				{
+					ModEntry.log($"\t{name}");
+				}
+			}
+
 			#endregion
 
 			#region textures & source rects
@@ -300,9 +315,9 @@ namespace FurnitureFramework
 			token = data.GetValue("Source Rect");
 			List<Rectangle?> n_source_rects = new();
 			if (!JsonParser.try_parse(token, rot_names, ref n_source_rects))
-				throw new InvalidDataException($"Missing or invalid Source Rectangles for Furniture {id}.");
+				throw new InvalidDataException($"Missing or invalid Source Rectangles for Furniture {this.id}.");
 			if (!JsonParser.try_rm_null(n_source_rects, ref source_rects))
-				throw new InvalidDataException($"Missing directional Source Rectangles for Furniture {id}.");
+				throw new InvalidDataException($"Missing directional Source Rectangles for Furniture {this.id}.");
 			
 			for (int i = 0; i < source_rects.Count; i++)
 			{
@@ -390,6 +405,20 @@ namespace FurnitureFramework
 
 			JsonParser.try_parse(data.GetValue("Bed Spot"), ref bed_spot);
 
+			if(JsonParser.try_parse(data.GetValue("Fish Area"), out Rectangle read_fish_area))
+			{
+				fish_area = new Rectangle(
+					read_fish_area.Location * new Point(4),
+					read_fish_area.Size * new Point(4)
+				);
+			}
+
+			bed_type = Enum.Parse<BedType>(JsonParser.parse(data.GetValue("Bed Type"), "Double"));
+			if (!Enum.IsDefined(bed_type)) {
+				bed_type = BedType.Double;
+				ModEntry.log($"Invalid Bed Type at {data.Path}, defaulting to Double.", LogLevel.Warn);
+			}
+
 			#endregion
 		
 			description = JsonParser.parse<string?>(data.GetValue("Description"), null);
@@ -448,9 +477,9 @@ namespace FurnitureFramework
 		{
 			string result = display_name;
 			result += $"/{type}";
-			result += $"/{source_rects[0].Width/16} {source_rects[0].Height/16}";
+			result += $"/{icon_rect.Width/16} {icon_rect.Height/16}";
 			result += $"/-1";	// overwritten by updateRotation
-			result += $"/-1";	// overwritten by updateRotation
+			result += $"/4";	// overwritten by updateRotation
 			result += $"/{price}";
 			result += $"/{placement_rules}";
 			result += $"/{display_name}";
@@ -468,9 +497,16 @@ namespace FurnitureFramework
 		public void rotate(Furniture furniture)
 		{
 			int rot = furniture.currentRotation.Value;
+
+			if (mod_id == "cranie")
+				ModEntry.log($"previous rotation: {rot}");
+			
 			rot = (rot + 1) % rotations;
 
 			if (rot < 0) rot = 0;
+
+			if (mod_id == "cranie")
+				ModEntry.log($"new rotation: {rot}");
 
 			furniture.currentRotation.Value = rot;
 			furniture.updateRotation();
@@ -497,6 +533,11 @@ namespace FurnitureFramework
 
 		#region Drawing
 
+		public Point get_source_rect_size(int rot)
+		{
+			return source_rects[rot].Size;
+		}
+
 		public void drawAtNonTileSpot(
 			Furniture furniture, SpriteBatch sprite_batch,
 			Vector2 position, float depth, float alpha = 1f
@@ -504,7 +545,7 @@ namespace FurnitureFramework
 		{
 			int rot = furniture.currentRotation.Value;
 
-			if (furniture.isTemporarilyInvisible) return;	// taken from game code, no idea what's this property
+			if (furniture.isTemporarilyInvisible) return;	// taken from game code, no idea what this property is
 
 			SpriteEffects effects = SpriteEffects.None;
 			Color color = Color.White * alpha;
@@ -527,11 +568,80 @@ namespace FurnitureFramework
 			);
 		}
 
+		private void draw_fish_tank(FishTankFurniture furniture, SpriteBatch sprite_batch, float alpha)
+		{
+			// Code copied from FishTankFurniture.draw
+
+			for (int i = 0; i < furniture.tankFish.Count; i++)
+			{
+				TankFish tankFish = furniture.tankFish[i];
+				float num = Utility.Lerp(
+					furniture.GetFishSortRegion().Y,
+					furniture.GetFishSortRegion().X,
+					tankFish.zPosition / 20f
+				);
+				num += 1E-07f * i;
+				tankFish.Draw(sprite_batch, alpha, num);
+			}
+
+			for (int j = 0; j < furniture.floorDecorations.Count; j++)
+			{
+				KeyValuePair<Rectangle, Vector2>? pair = furniture.floorDecorations[j];
+				if (pair is not null)
+				{
+					Vector2 pos = pair.Value.Value;
+					Rectangle key = pair.Value.Key;
+					float layerDepth = Utility.Lerp(
+						furniture.GetFishSortRegion().Y,
+						furniture.GetFishSortRegion().X,
+						pos.Y / 20f
+					) - 1E-06f;
+					sprite_batch.Draw(
+						furniture.GetAquariumTexture(),
+						Game1.GlobalToLocal(
+							new Vector2(
+								furniture.GetTankBounds().Left + pos.X * 4f,
+								furniture.GetTankBounds().Bottom - 4 - pos.Y * 4f
+							)
+						),
+						key, Color.White * alpha, 0f,
+						new Vector2(key.Width / 2, key.Height - 4),
+						4f, SpriteEffects.None, layerDepth
+					);
+				}
+			}
+
+			foreach (Vector4 bubble in furniture.bubbles)
+			{
+				float layerDepth2 = Utility.Lerp(
+					furniture.GetFishSortRegion().Y,
+					furniture.GetFishSortRegion().X,
+					bubble.Z / 20f
+				) - 1E-06f;
+				sprite_batch.Draw(
+					furniture.GetAquariumTexture(),
+					Game1.GlobalToLocal(
+						new Vector2(
+							furniture.GetTankBounds().Left + bubble.X,
+							furniture.GetTankBounds().Bottom - 4 - bubble.Y - bubble.Z * 4f
+						)
+					),
+					new Rectangle(0, 240, 16, 16),
+					Color.White * alpha,
+					0f, new Vector2(8f, 8f), 4f * bubble.W,
+					SpriteEffects.None, layerDepth2
+				);
+			}
+		}
+
 		public void draw(Furniture furniture, SpriteBatch sprite_batch, int x, int y, float alpha)
 		{
 			int rot = furniture.currentRotation.Value;
 
-			if (furniture.isTemporarilyInvisible) return;	// taken from game code, no idea what's this property
+			if (furniture.isTemporarilyInvisible) return;	// taken from game code, no idea what this property is
+
+			if (furniture is FishTankFurniture fish_tank)
+				draw_fish_tank(fish_tank, sprite_batch, alpha);
 
 			SpriteEffects effects = SpriteEffects.None;
 			Color color = Color.White * alpha;
@@ -552,7 +662,7 @@ namespace FurnitureFramework
 				source_rect.Location += c_anim_offset;
 			}
 
-			// computing common depth :
+			// computing common depth
 			if (p_type == PlacementType.Rug) depth = 2E-09f + furniture.TileLocation.Y;
 			else
 			{
@@ -840,10 +950,11 @@ namespace FurnitureFramework
 
 			if (obj_inst is Furniture furn)
 			{
+				Point max_size = slots.get_max_size(rot, slot_index);
 				Point size = furn.boundingBox.Value.Size / new Point(64);
-				if (size.X > 1 || size.Y > 1)
+				if (size.X > max_size.X || size.Y > max_size.Y)
 					return false;
-				// cannot place furniture larger than 1x1
+				// cannot place furniture larger than max_size
 			}
 
 			obj_inst.Location = furniture.Location;
@@ -986,6 +1097,35 @@ namespace FurnitureFramework
 			{
 				furniture.modData["FF.checked_bed_tile"] = "false";
 				result = false;
+			}
+		}
+
+		public void GetTankBounds(FishTankFurniture furniture, ref Rectangle result)
+		{
+			int rot = furniture.currentRotation.Value;
+			Rectangle bounding_box = furniture.boundingBox.Value;
+			Rectangle source_rect = source_rects[rot].Clone();
+
+			Point position = new(
+				bounding_box.X,
+				bounding_box.Y - (source_rect.Height * 4 - bounding_box.Height)
+			);
+			Point size = source_rect.Size * new Point(4);
+
+			if (fish_area is null)
+			{
+				result = new Rectangle(
+					position + new Point(4, 64),
+					size - new Point(8, 92)
+				);
+			}
+
+			else
+			{
+				result = new Rectangle(
+					position + fish_area.Value.Location,
+					fish_area.Value.Size
+				);
 			}
 		}
 

@@ -23,7 +23,7 @@ namespace Pathoschild.Stardew.CropsAnytimeAnywhere.Framework
         ** Accessors
         *********/
         /// <summary>The per-location settings.</summary>
-        public IDictionary<string, PerLocationConfig> Locations { get; set; } = new Dictionary<string, PerLocationConfig>
+        public Dictionary<string, PerLocationConfig> Locations { get; set; } = new()
         {
             ["*"] = new(
                 growCrops: true,

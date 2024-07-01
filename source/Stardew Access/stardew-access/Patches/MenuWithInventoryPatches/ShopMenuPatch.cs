@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using System.Text.RegularExpressions;
 using HarmonyLib;
 using stardew_access.Translation;
 using stardew_access.Utils;
@@ -95,7 +96,7 @@ internal class ShopMenuPatch : IPatch
     {
         if (__instance.hoveredItem == null) return;
 
-        string name = __instance.hoveredItem.DisplayName;
+        string name = InventoryUtils.GetNameOfItem(__instance.hoveredItem.DisplayName, __instance.hoveredItem.QualifiedItemId);
         string price = __instance.hoverPrice <= 0 ? ""
             : Translator.Instance.Translate("menu-shop-buy_price_info", new { price = __instance.hoverPrice }, TranslationCategory.Menu);
         string description = __instance.hoveredItem.IsRecipe

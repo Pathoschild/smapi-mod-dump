@@ -1,7 +1,7 @@
 ﻿{
   "Name": "QuickShop",
   "Author": "Enaium",
-  "Version": "1.7.1",
+  "Version": "1.9.0",
   "Description": "Open shop quickly",
   "UniqueID": "Enaium.QuickShop",
   "EntryDll": "QuickShop.dll",
@@ -12,11 +12,12 @@
   "Dependencies": [
     {
       "UniqueID": "Enaium.EnaiumToolKit",
-      "MinimumVersion": "1.5.0"
+      "MinimumVersion": "1.8.0"
     }
   ],
   "Custom": {
     "ModMenu": {
+      "Setting": "QuickShop.Framework.Gui.SettingScreen",
       "Contact": {
         "HomePage": "https://github.com/Enaium-StardewValleyMods/QuickShop",
         "Issues": "https://github.com/Enaium-StardewValleyMods/QuickShop/issues"

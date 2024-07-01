@@ -119,7 +119,6 @@ namespace FarmTypeManager
                     "metal head",
                     "hot head",
                     "lava lurk",
-                    "leaper",
                     "mummy",
                     "rock crab",
                     "lava crab",
@@ -137,6 +136,7 @@ namespace FarmTypeManager
                     "shadow sniper",
                     "skeleton",
                     "skeleton mage",
+                    "spider",
                     "spiker",
                     "squid kid"
                 }

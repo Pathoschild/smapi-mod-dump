@@ -37,7 +37,7 @@ internal sealed class SkillsPagePerformHoverActionPatcher : HarmonyPatcher
     private static void SkillsPagePerformHoverActionPostfix(int x, int y, ref string ___hoverText)
     {
         ___hoverText = Game1.parseText(___hoverText, Game1.smallFont, 500);
-        if (!ShouldEnableSkillReset)
+        if (!ShouldEnableSkillReset || !SkillsPageDrawPatcher.ShouldDrawRibbons)
         {
             return;
         }

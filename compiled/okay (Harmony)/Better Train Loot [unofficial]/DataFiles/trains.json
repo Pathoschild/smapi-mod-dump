@@ -1,0 +1,5528 @@
+{
+  "RANDOM_TRAIN": {
+    "TrainCarID": "RANDOM_TRAIN",
+    "treasureList": [
+      {
+        "Id": "(O)16",
+        "Name": "Wild Horseradish",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)18",
+        "Name": "Daffodil",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)20",
+        "Name": "Leek",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)22",
+        "Name": "Dandelion",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)24",
+        "Name": "Parsnip",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)60",
+        "Name": "Emerald",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)62",
+        "Name": "Aquamarine",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)64",
+        "Name": "Ruby",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)66",
+        "Name": "Amethyst",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)68",
+        "Name": "Topaz",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)70",
+        "Name": "Jade",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)72",
+        "Name": "Diamond",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)78",
+        "Name": "Cave Carrot",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)80",
+        "Name": "Quartz",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)82",
+        "Name": "Fire Quartz",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)84",
+        "Name": "Frozen Tear",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)86",
+        "Name": "Earth Crystal",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)88",
+        "Name": "Coconut",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)90",
+        "Name": "Cactus Fruit",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)92",
+        "Name": "Sap",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)93",
+        "Name": "Torch",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)96",
+        "Name": "Dwarf Scroll I",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)97",
+        "Name": "Dwarf Scroll II",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)98",
+        "Name": "Dwarf Scroll III",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)99",
+        "Name": "Dwarf Scroll IV",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)100",
+        "Name": "Chipped Amphora",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)101",
+        "Name": "Arrowhead",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)103",
+        "Name": "Ancient Doll",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)104",
+        "Name": "Elvish Jewelry",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)105",
+        "Name": "Chewing Stick",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)106",
+        "Name": "Ornamental Fan",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)107",
+        "Name": "Dinosaur Egg",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)108",
+        "Name": "Rare Disc",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)109",
+        "Name": "Ancient Sword",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)110",
+        "Name": "Rusty Spoon",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)111",
+        "Name": "Rusty Spur",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)112",
+        "Name": "Rusty Cog",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)113",
+        "Name": "Chicken Statue",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)114",
+        "Name": "Ancient Seed",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)115",
+        "Name": "Prehistoric Tool",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)116",
+        "Name": "Dried Starfish",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)117",
+        "Name": "Anchor",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)118",
+        "Name": "Glass Shards",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)119",
+        "Name": "Bone Flute",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)120",
+        "Name": "Prehistoric Handaxe",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)121",
+        "Name": "Dwarvish Helm",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)122",
+        "Name": "Dwarf Gadget",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)123",
+        "Name": "Ancient Drum",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)124",
+        "Name": "Golden Mask",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)125",
+        "Name": "Golden Relic",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)126",
+        "Name": "Strange Doll",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)127",
+        "Name": "Strange Doll",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)129",
+        "Name": "Anchovy",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)130",
+        "Name": "Tuna",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)131",
+        "Name": "Sardine",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)132",
+        "Name": "Bream",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)136",
+        "Name": "Largemouth Bass",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)137",
+        "Name": "Smallmouth Bass",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)138",
+        "Name": "Rainbow Trout",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)139",
+        "Name": "Salmon",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)140",
+        "Name": "Walleye",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)141",
+        "Name": "Perch",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)142",
+        "Name": "Carp",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)143",
+        "Name": "Catfish",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)144",
+        "Name": "Pike",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)145",
+        "Name": "Sunfish",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)146",
+        "Name": "Red Mullet",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)147",
+        "Name": "Herring",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)148",
+        "Name": "Eel",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)149",
+        "Name": "Octopus",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)150",
+        "Name": "Red Snapper",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)151",
+        "Name": "Squid",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)152",
+        "Name": "Seaweed",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)153",
+        "Name": "Green Algae",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)154",
+        "Name": "Sea Cucumber",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)155",
+        "Name": "Super Cucumber",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)157",
+        "Name": "White Algae",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)167",
+        "Name": "Joja Cola",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)168",
+        "Name": "Trash",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)169",
+        "Name": "Driftwood",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)170",
+        "Name": "Broken Glasses",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)171",
+        "Name": "Broken CD",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)172",
+        "Name": "Soggy Newspaper",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)174",
+        "Name": "Large White Egg",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)176",
+        "Name": "White Egg",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)178",
+        "Name": "Hay",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)180",
+        "Name": "Brown Egg",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)182",
+        "Name": "Large Brown Egg",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)184",
+        "Name": "Milk",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)186",
+        "Name": "Large Milk",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)188",
+        "Name": "Green Bean",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)190",
+        "Name": "Cauliflower",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)192",
+        "Name": "Potato",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)194",
+        "Name": "Fried Egg",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)195",
+        "Name": "Omelet",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)196",
+        "Name": "Salad",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)197",
+        "Name": "Cheese Cauliflower",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)198",
+        "Name": "Baked Fish",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)199",
+        "Name": "Parsnip Soup",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)200",
+        "Name": "Vegetable Medley",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)201",
+        "Name": "Complete Breakfast",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)202",
+        "Name": "Fried Calamari",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)203",
+        "Name": "Strange Bun",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)204",
+        "Name": "Lucky Lunch",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)205",
+        "Name": "Fried Mushroom",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)206",
+        "Name": "Pizza",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)207",
+        "Name": "Bean Hotpot",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)208",
+        "Name": "Glazed Yams",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)209",
+        "Name": "Carp Surprise",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)210",
+        "Name": "Hashbrowns",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)211",
+        "Name": "Pancakes",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)212",
+        "Name": "Salmon Dinner",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)213",
+        "Name": "Fish Taco",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)214",
+        "Name": "Crispy Bass",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)215",
+        "Name": "Pepper Poppers",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)216",
+        "Name": "Bread",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)218",
+        "Name": "Tom Kha Soup",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)219",
+        "Name": "Trout Soup",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)220",
+        "Name": "Chocolate Cake",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)221",
+        "Name": "Pink Cake",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)222",
+        "Name": "Rhubarb Pie",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)223",
+        "Name": "Cookie",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)224",
+        "Name": "Spaghetti",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)225",
+        "Name": "Fried Eel",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)226",
+        "Name": "Spicy Eel",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)227",
+        "Name": "Sashimi",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)228",
+        "Name": "Maki Roll",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)229",
+        "Name": "Tortilla",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)231",
+        "Name": "Eggplant Parmesan",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)232",
+        "Name": "Rice Pudding",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)233",
+        "Name": "Ice Cream",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)234",
+        "Name": "Blueberry Tart",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)235",
+        "Name": "Autumn's Bounty",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)236",
+        "Name": "Pumpkin Soup",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)237",
+        "Name": "Super Meal",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)238",
+        "Name": "Cranberry Sauce",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)239",
+        "Name": "Stuffing",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)240",
+        "Name": "Farmer's Lunch",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)241",
+        "Name": "Survival Burger",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)242",
+        "Name": "Dish O' The Sea",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)243",
+        "Name": "Miner's Treat",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)244",
+        "Name": "Roots Platter",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)245",
+        "Name": "Sugar",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)246",
+        "Name": "Wheat Flour",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)247",
+        "Name": "Oil",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)248",
+        "Name": "Garlic",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)250",
+        "Name": "Kale",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)252",
+        "Name": "Rhubarb",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)254",
+        "Name": "Melon",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)256",
+        "Name": "Tomato",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)257",
+        "Name": "Morel",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)258",
+        "Name": "Blueberry",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)259",
+        "Name": "Fiddlehead Fern",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)260",
+        "Name": "Hot Pepper",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)262",
+        "Name": "Wheat",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)264",
+        "Name": "Radish",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)266",
+        "Name": "Red Cabbage",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)268",
+        "Name": "Starfruit",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(O)270",
+        "Name": "Corn",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)272",
+        "Name": "Eggplant",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)274",
+        "Name": "Artichoke",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)276",
+        "Name": "Pumpkin",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)278",
+        "Name": "Bok Choy",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)280",
+        "Name": "Yam",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)281",
+        "Name": "Chanterelle",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)282",
+        "Name": "Cranberries",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)283",
+        "Name": "Holly",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)284",
+        "Name": "Beet",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)286",
+        "Name": "Cherry Bomb",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)287",
+        "Name": "Bomb",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)288",
+        "Name": "Mega Bomb",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(O)296",
+        "Name": "Salmonberry",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)297",
+        "Name": "Grass Starter",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)298",
+        "Name": "Hardwood Fence",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)299",
+        "Name": "Amaranth Seeds",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(O)300",
+        "Name": "Amaranth",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)301",
+        "Name": "Grape Starter",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(O)302",
+        "Name": "Hops Starter",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(O)303",
+        "Name": "Pale Ale",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)304",
+        "Name": "Hops",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)306",
+        "Name": "Mayonnaise",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)307",
+        "Name": "Duck Mayonnaise",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)309",
+        "Name": "Acorn",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)310",
+        "Name": "Maple Seed",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)311",
+        "Name": "Pine Cone",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)322",
+        "Name": "Wood Fence",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)323",
+        "Name": "Stone Fence",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)324",
+        "Name": "Iron Fence",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)325",
+        "Name": "Gate",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)330",
+        "Name": "Clay",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)334",
+        "Name": "Copper Bar",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)335",
+        "Name": "Iron Bar",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)336",
+        "Name": "Gold Bar",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)337",
+        "Name": "Iridium Bar",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)338",
+        "Name": "Refined Quartz",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)340",
+        "Name": "Honey",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)342",
+        "Name": "Pickles",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)344",
+        "Name": "Jelly",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)346",
+        "Name": "Beer",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)348",
+        "Name": "Wine",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)349",
+        "Name": "Energy Tonic",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)350",
+        "Name": "Juice",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)351",
+        "Name": "Muscle Remedy",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)368",
+        "Name": "Basic Fertilizer",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)369",
+        "Name": "Quality Fertilizer",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)370",
+        "Name": "Basic Retaining Soil",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)371",
+        "Name": "Quality Retaining Soil",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)372",
+        "Name": "Clam",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)376",
+        "Name": "Poppy",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)378",
+        "Name": "Copper Ore",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)380",
+        "Name": "Iron Ore",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)382",
+        "Name": "Coal",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)384",
+        "Name": "Gold Ore",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)386",
+        "Name": "Iridium Ore",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)388",
+        "Name": "Wood",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)390",
+        "Name": "Stone",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)395",
+        "Name": "Coffee",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)396",
+        "Name": "Spice Berry",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)397",
+        "Name": "Sea Urchin",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)398",
+        "Name": "Grape",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)399",
+        "Name": "Spring Onion",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)400",
+        "Name": "Strawberry",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)402",
+        "Name": "Sweet Pea",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)403",
+        "Name": "Field Snack",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)404",
+        "Name": "Common Mushroom",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)408",
+        "Name": "Hazelnut",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)410",
+        "Name": "Blackberry",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)412",
+        "Name": "Winter Root",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)414",
+        "Name": "Crystal Fruit",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)416",
+        "Name": "Snow Yam",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)418",
+        "Name": "Crocus",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)419",
+        "Name": "Vinegar",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)420",
+        "Name": "Red Mushroom",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)421",
+        "Name": "Sunflower",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)422",
+        "Name": "Purple Mushroom",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)423",
+        "Name": "Rice",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)424",
+        "Name": "Cheese",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)425",
+        "Name": "Fairy Seeds",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)426",
+        "Name": "Goat Cheese",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)427",
+        "Name": "Tulip Bulb",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(O)428",
+        "Name": "Cloth",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)429",
+        "Name": "Jazz Seeds",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(O)430",
+        "Name": "Truffle",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)431",
+        "Name": "Sunflower Seeds",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(O)432",
+        "Name": "Truffle Oil",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)433",
+        "Name": "Coffee Bean",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(O)436",
+        "Name": "Goat Milk",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)438",
+        "Name": "L. Goat Milk",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)441",
+        "Name": "Explosive Ammo",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)442",
+        "Name": "Duck Egg",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)444",
+        "Name": "Duck Feather",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)446",
+        "Name": "Rabbit's Foot",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)453",
+        "Name": "Poppy Seeds",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(O)454",
+        "Name": "Ancient Fruit",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(O)455",
+        "Name": "Spangle Seeds",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(O)456",
+        "Name": "Algae Soup",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)457",
+        "Name": "Pale Broth",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)459",
+        "Name": "Mead",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)465",
+        "Name": "Speed-Gro",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)466",
+        "Name": "Deluxe Speed-Gro",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)472",
+        "Name": "Parsnip Seeds",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(O)473",
+        "Name": "Bean Starter",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(O)474",
+        "Name": "Cauliflower Seeds",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(O)475",
+        "Name": "Potato Seeds",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(O)476",
+        "Name": "Garlic Seeds",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(O)477",
+        "Name": "Kale Seeds",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(O)478",
+        "Name": "Rhubarb Seeds",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(O)479",
+        "Name": "Melon Seeds",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(O)480",
+        "Name": "Tomato Seeds",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(O)481",
+        "Name": "Blueberry Seeds",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(O)482",
+        "Name": "Pepper Seeds",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(O)483",
+        "Name": "Wheat Seeds",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(O)484",
+        "Name": "Radish Seeds",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(O)485",
+        "Name": "Red Cabbage Seeds",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(O)486",
+        "Name": "Starfruit Seeds",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(O)487",
+        "Name": "Corn Seeds",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(O)488",
+        "Name": "Eggplant Seeds",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(O)489",
+        "Name": "Artichoke Seeds",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(O)490",
+        "Name": "Pumpkin Seeds",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(O)491",
+        "Name": "Bok Choy Seeds",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(O)492",
+        "Name": "Yam Seeds",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(O)493",
+        "Name": "Cranberry Seeds",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(O)494",
+        "Name": "Beet Seeds",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(O)495",
+        "Name": "Spring Seeds",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(O)496",
+        "Name": "Summer Seeds",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(O)497",
+        "Name": "Fall Seeds",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(O)498",
+        "Name": "Winter Seeds",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(O)535",
+        "Name": "Geode",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)536",
+        "Name": "Frozen Geode",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)537",
+        "Name": "Magma Geode",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)538",
+        "Name": "Alamite",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)539",
+        "Name": "Bixite",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)540",
+        "Name": "Baryte",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)541",
+        "Name": "Aerinite",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)542",
+        "Name": "Calcite",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)543",
+        "Name": "Dolomite",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)544",
+        "Name": "Esperite",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)545",
+        "Name": "Fluorapatite",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)546",
+        "Name": "Geminite",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)547",
+        "Name": "Helvite",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)548",
+        "Name": "Jamborite",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)549",
+        "Name": "Jagoite",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)550",
+        "Name": "Kyanite",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)551",
+        "Name": "Lunarite",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)552",
+        "Name": "Malachite",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)553",
+        "Name": "Neptunite",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)554",
+        "Name": "Lemon Stone",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)555",
+        "Name": "Nekoite",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)556",
+        "Name": "Orpiment",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)557",
+        "Name": "Petrified Slime",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)558",
+        "Name": "Thunder Egg",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)559",
+        "Name": "Pyrite",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)560",
+        "Name": "Ocean Stone",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)561",
+        "Name": "Ghost Crystal",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)562",
+        "Name": "Tigerseye",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)563",
+        "Name": "Jasper",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)564",
+        "Name": "Opal",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)565",
+        "Name": "Fire Opal",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)566",
+        "Name": "Celestine",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)567",
+        "Name": "Marble",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)568",
+        "Name": "Sandstone",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)569",
+        "Name": "Granite",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)570",
+        "Name": "Basalt",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)571",
+        "Name": "Limestone",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)572",
+        "Name": "Soapstone",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)573",
+        "Name": "Hematite",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)574",
+        "Name": "Mudstone",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)575",
+        "Name": "Obsidian",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)576",
+        "Name": "Slate",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)577",
+        "Name": "Fairy Stone",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)578",
+        "Name": "Star Shards",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)579",
+        "Name": "Prehistoric Scapula",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)580",
+        "Name": "Prehistoric Tibia",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)581",
+        "Name": "Prehistoric Skull",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)582",
+        "Name": "Skeletal Hand",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)583",
+        "Name": "Prehistoric Rib",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)584",
+        "Name": "Prehistoric Vertebra",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)585",
+        "Name": "Skeletal Tail",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)586",
+        "Name": "Nautilus Fossil",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)587",
+        "Name": "Amphibian Fossil",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)588",
+        "Name": "Palm Fossil",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)589",
+        "Name": "Trilobite",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)591",
+        "Name": "Tulip",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)593",
+        "Name": "Summer Spangle",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)595",
+        "Name": "Fairy Rose",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)597",
+        "Name": "Blue Jazz",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)599",
+        "Name": "Sprinkler",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)604",
+        "Name": "Plum Pudding",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)605",
+        "Name": "Artichoke Dip",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)606",
+        "Name": "Stir Fry",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)607",
+        "Name": "Roasted Hazelnuts",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)608",
+        "Name": "Pumpkin Pie",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)609",
+        "Name": "Radish Salad",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)610",
+        "Name": "Fruit Salad",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)611",
+        "Name": "Blackberry Cobbler",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)612",
+        "Name": "Cranberry Candy",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)613",
+        "Name": "Apple",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)618",
+        "Name": "Bruschetta",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)621",
+        "Name": "Quality Sprinkler",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(O)628",
+        "Name": "Cherry Sapling",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(O)629",
+        "Name": "Apricot Sapling",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(O)630",
+        "Name": "Orange Sapling",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(O)631",
+        "Name": "Peach Sapling",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(O)632",
+        "Name": "Pomegranate Sapling",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(O)633",
+        "Name": "Apple Sapling",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(O)634",
+        "Name": "Apricot",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)635",
+        "Name": "Orange",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)636",
+        "Name": "Peach",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)637",
+        "Name": "Pomegranate",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)638",
+        "Name": "Cherry",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)645",
+        "Name": "Iridium Sprinkler",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(O)648",
+        "Name": "Coleslaw",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)649",
+        "Name": "Fiddlehead Risotto",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)651",
+        "Name": "Poppyseed Muffin",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)681",
+        "Name": "Rain Totem",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)684",
+        "Name": "Bug Meat",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)685",
+        "Name": "Bait",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)686",
+        "Name": "Spinner",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)687",
+        "Name": "Dressed Spinner",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)688",
+        "Name": "Warp Totem Farm",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)689",
+        "Name": "Warp Totem Mountains",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)690",
+        "Name": "Warp Totem Beach",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)691",
+        "Name": "Barbed Hook",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)692",
+        "Name": "Lead Bobber",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)693",
+        "Name": "Treasure Hunter",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)694",
+        "Name": "Trap Bobber",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)695",
+        "Name": "Cork Bobber",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)698",
+        "Name": "Sturgeon",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)699",
+        "Name": "Tiger Trout",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)700",
+        "Name": "Bullhead",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)701",
+        "Name": "Tilapia",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)702",
+        "Name": "Chub",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)703",
+        "Name": "Magnet",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)704",
+        "Name": "Dorado",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)705",
+        "Name": "Albacore",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)706",
+        "Name": "Shad",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)707",
+        "Name": "Lingcod",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)708",
+        "Name": "Halibut",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)709",
+        "Name": "Hardwood",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)710",
+        "Name": "Crab Pot",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)715",
+        "Name": "Lobster",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)716",
+        "Name": "Crayfish",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)717",
+        "Name": "Crab",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)718",
+        "Name": "Cockle",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)719",
+        "Name": "Mussel",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)720",
+        "Name": "Shrimp",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)721",
+        "Name": "Snail",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)722",
+        "Name": "Periwinkle",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)723",
+        "Name": "Oyster",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)724",
+        "Name": "Maple Syrup",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)725",
+        "Name": "Oak Resin",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)726",
+        "Name": "Pine Tar",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)727",
+        "Name": "Chowder",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)728",
+        "Name": "Fish Stew",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)729",
+        "Name": "Escargot",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)730",
+        "Name": "Lobster Bisque",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)731",
+        "Name": "Maple Bar",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)732",
+        "Name": "Crab Cakes",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)745",
+        "Name": "Strawberry Seeds",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(O)746",
+        "Name": "Jack-O-Lantern",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)749",
+        "Name": "Omni Geode",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)766",
+        "Name": "Slime",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)767",
+        "Name": "Bat Wing",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)768",
+        "Name": "Solar Essence",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)769",
+        "Name": "Void Essence",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)770",
+        "Name": "Mixed Seeds",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)771",
+        "Name": "Fiber",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)772",
+        "Name": "Oil of Garlic",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)773",
+        "Name": "Life Elixir",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)787",
+        "Name": "Battery Pack",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(O)802",
+        "Name": "Cactus Seeds",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(B)806",
+        "Name": "Leprechaun Shoes",
+        "Enabled": true,
+        "Rarity": "RARE"
+      }
+    ]
+  },
+  "JOJA_TRAIN": {
+    "TrainCarID": "JOJA_TRAIN",
+    "treasureList": [
+      {
+        "Id": "(O)167",
+        "Name": "Joja Cola",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)174",
+        "Name": "Large White Egg",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)176",
+        "Name": "White Egg",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)178",
+        "Name": "Hay",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)180",
+        "Name": "Brown Egg",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)182",
+        "Name": "Large Brown Egg",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)184",
+        "Name": "Milk",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)186",
+        "Name": "Large Milk",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)245",
+        "Name": "Sugar",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)246",
+        "Name": "Wheat Flour",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)247",
+        "Name": "Oil",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)297",
+        "Name": "Grass Starter",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)299",
+        "Name": "Amaranth Seeds",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)301",
+        "Name": "Grape Starter",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)302",
+        "Name": "Hops Starter",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)303",
+        "Name": "Pale Ale",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)306",
+        "Name": "Mayonnaise",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)307",
+        "Name": "Duck Mayonnaise",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)340",
+        "Name": "Honey",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)342",
+        "Name": "Pickles",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)344",
+        "Name": "Jelly",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)346",
+        "Name": "Beer",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)348",
+        "Name": "Wine",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)349",
+        "Name": "Energy Tonic",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)350",
+        "Name": "Juice",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)351",
+        "Name": "Muscle Remedy",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)368",
+        "Name": "Basic Fertilizer",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)369",
+        "Name": "Quality Fertilizer",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)370",
+        "Name": "Basic Retaining Soil",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)371",
+        "Name": "Quality Retaining Soil",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)419",
+        "Name": "Vinegar",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)423",
+        "Name": "Rice",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)424",
+        "Name": "Cheese",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)425",
+        "Name": "Fairy Seeds",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)426",
+        "Name": "Goat Cheese",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)427",
+        "Name": "Tulip Bulb",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)429",
+        "Name": "Jazz Seeds",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)431",
+        "Name": "Sunflower Seeds",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)433",
+        "Name": "Coffee Bean",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)436",
+        "Name": "Goat Milk",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)438",
+        "Name": "L. Goat Milk",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)442",
+        "Name": "Duck Egg",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)453",
+        "Name": "Poppy Seeds",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)455",
+        "Name": "Spangle Seeds",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)459",
+        "Name": "Mead",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)465",
+        "Name": "Speed-Gro",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)466",
+        "Name": "Deluxe Speed-Gro",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)472",
+        "Name": "Parsnip Seeds",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)473",
+        "Name": "Bean Starter",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)474",
+        "Name": "Cauliflower Seeds",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)475",
+        "Name": "Potato Seeds",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)476",
+        "Name": "Garlic Seeds",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)477",
+        "Name": "Kale Seeds",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)478",
+        "Name": "Rhubarb Seeds",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)479",
+        "Name": "Melon Seeds",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)480",
+        "Name": "Tomato Seeds",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)481",
+        "Name": "Blueberry Seeds",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)482",
+        "Name": "Pepper Seeds",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)483",
+        "Name": "Wheat Seeds",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)484",
+        "Name": "Radish Seeds",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)485",
+        "Name": "Red Cabbage Seeds",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)486",
+        "Name": "Starfruit Seeds",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(O)487",
+        "Name": "Corn Seeds",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)488",
+        "Name": "Eggplant Seeds",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)489",
+        "Name": "Artichoke Seeds",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)490",
+        "Name": "Pumpkin Seeds",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)491",
+        "Name": "Bok Choy Seeds",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)492",
+        "Name": "Yam Seeds",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)493",
+        "Name": "Cranberry Seeds",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)494",
+        "Name": "Beet Seeds",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)495",
+        "Name": "Spring Seeds",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)496",
+        "Name": "Summer Seeds",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)497",
+        "Name": "Fall Seeds",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)498",
+        "Name": "Winter Seeds",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)628",
+        "Name": "Cherry Sapling",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)629",
+        "Name": "Apricot Sapling",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)630",
+        "Name": "Orange Sapling",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)631",
+        "Name": "Peach Sapling",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)632",
+        "Name": "Pomegranate Sapling",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)633",
+        "Name": "Apple Sapling",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)724",
+        "Name": "Maple Syrup",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)725",
+        "Name": "Oak Resin",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)726",
+        "Name": "Pine Tar",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)745",
+        "Name": "Strawberry Seeds",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)770",
+        "Name": "Mixed Seeds",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)787",
+        "Name": "Battery Pack",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(O)802",
+        "Name": "Cactus Seeds",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(B)806",
+        "Name": "Leprechaun Shoes",
+        "Enabled": true,
+        "Rarity": "RARE"
+      }
+    ]
+  },
+  "COAL_TRAIN": {
+    "TrainCarID": "COAL_TRAIN",
+    "treasureList": [
+      {
+        "Id": "(O)60",
+        "Name": "Emerald",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)62",
+        "Name": "Aquamarine",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)64",
+        "Name": "Ruby",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)66",
+        "Name": "Amethyst",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)68",
+        "Name": "Topaz",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)70",
+        "Name": "Jade",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)72",
+        "Name": "Diamond",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)74",
+        "Name": "Prismatic Shard",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(O)80",
+        "Name": "Quartz",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)82",
+        "Name": "Fire Quartz",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)84",
+        "Name": "Frozen Tear",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)86",
+        "Name": "Earth Crystal",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)96",
+        "Name": "Dwarf Scroll I",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)97",
+        "Name": "Dwarf Scroll II",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)98",
+        "Name": "Dwarf Scroll III",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)99",
+        "Name": "Dwarf Scroll IV",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)100",
+        "Name": "Chipped Amphora",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)101",
+        "Name": "Arrowhead",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)103",
+        "Name": "Ancient Doll",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)104",
+        "Name": "Elvish Jewelry",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)105",
+        "Name": "Chewing Stick",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)106",
+        "Name": "Ornamental Fan",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)107",
+        "Name": "Dinosaur Egg",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)108",
+        "Name": "Rare Disc",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)109",
+        "Name": "Ancient Sword",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)110",
+        "Name": "Rusty Spoon",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)111",
+        "Name": "Rusty Spur",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)112",
+        "Name": "Rusty Cog",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)113",
+        "Name": "Chicken Statue",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)114",
+        "Name": "Ancient Seed",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)115",
+        "Name": "Prehistoric Tool",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)116",
+        "Name": "Dried Starfish",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)117",
+        "Name": "Anchor",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)118",
+        "Name": "Glass Shards",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)119",
+        "Name": "Bone Flute",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)120",
+        "Name": "Prehistoric Handaxe",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)121",
+        "Name": "Dwarvish Helm",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)122",
+        "Name": "Dwarf Gadget",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)123",
+        "Name": "Ancient Drum",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)124",
+        "Name": "Golden Mask",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)125",
+        "Name": "Golden Relic",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)126",
+        "Name": "Strange Doll",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)127",
+        "Name": "Strange Doll",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)286",
+        "Name": "Cherry Bomb",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)287",
+        "Name": "Bomb",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)288",
+        "Name": "Mega Bomb",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)334",
+        "Name": "Copper Bar",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)335",
+        "Name": "Iron Bar",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)336",
+        "Name": "Gold Bar",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)337",
+        "Name": "Iridium Bar",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)338",
+        "Name": "Refined Quartz",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)378",
+        "Name": "Copper Ore",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)380",
+        "Name": "Iron Ore",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)382",
+        "Name": "Coal",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)384",
+        "Name": "Gold Ore",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)386",
+        "Name": "Iridium Ore",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)390",
+        "Name": "Stone",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)535",
+        "Name": "Geode",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)536",
+        "Name": "Frozen Geode",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)537",
+        "Name": "Magma Geode",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)538",
+        "Name": "Alamite",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)539",
+        "Name": "Bixite",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)540",
+        "Name": "Baryte",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)541",
+        "Name": "Aerinite",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)542",
+        "Name": "Calcite",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)543",
+        "Name": "Dolomite",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)544",
+        "Name": "Esperite",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)545",
+        "Name": "Fluorapatite",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)546",
+        "Name": "Geminite",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)547",
+        "Name": "Helvite",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)548",
+        "Name": "Jamborite",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)549",
+        "Name": "Jagoite",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)550",
+        "Name": "Kyanite",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)551",
+        "Name": "Lunarite",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)552",
+        "Name": "Malachite",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)553",
+        "Name": "Neptunite",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)554",
+        "Name": "Lemon Stone",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)555",
+        "Name": "Nekoite",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)556",
+        "Name": "Orpiment",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)557",
+        "Name": "Petrified Slime",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)558",
+        "Name": "Thunder Egg",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)559",
+        "Name": "Pyrite",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)560",
+        "Name": "Ocean Stone",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)561",
+        "Name": "Ghost Crystal",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)562",
+        "Name": "Tigerseye",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)563",
+        "Name": "Jasper",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)564",
+        "Name": "Opal",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)565",
+        "Name": "Fire Opal",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)566",
+        "Name": "Celestine",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)567",
+        "Name": "Marble",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)568",
+        "Name": "Sandstone",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)569",
+        "Name": "Granite",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)570",
+        "Name": "Basalt",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)571",
+        "Name": "Limestone",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)572",
+        "Name": "Soapstone",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)573",
+        "Name": "Hematite",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)574",
+        "Name": "Mudstone",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)575",
+        "Name": "Obsidian",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)576",
+        "Name": "Slate",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)577",
+        "Name": "Fairy Stone",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)578",
+        "Name": "Star Shards",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)579",
+        "Name": "Prehistoric Scapula",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)580",
+        "Name": "Prehistoric Tibia",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)581",
+        "Name": "Prehistoric Skull",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)582",
+        "Name": "Skeletal Hand",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)583",
+        "Name": "Prehistoric Rib",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)584",
+        "Name": "Prehistoric Vertebra",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)585",
+        "Name": "Skeletal Tail",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)586",
+        "Name": "Nautilus Fossil",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)587",
+        "Name": "Amphibian Fossil",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)588",
+        "Name": "Palm Fossil",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)589",
+        "Name": "Trilobite",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)749",
+        "Name": "Omni Geode",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(B)806",
+        "Name": "Leprechaun Shoes",
+        "Enabled": true,
+        "Rarity": "RARE"
+      }
+    ]
+  },
+  "PASSENGER_TRAIN": {
+    "TrainCarID": "PASSENGER_TRAIN",
+    "treasureList": [
+      {
+        "Id": "(O)16",
+        "Name": "Wild Horseradish",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)18",
+        "Name": "Daffodil",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)20",
+        "Name": "Leek",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)22",
+        "Name": "Dandelion",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)24",
+        "Name": "Parsnip",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)88",
+        "Name": "Coconut",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)90",
+        "Name": "Cactus Fruit",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)174",
+        "Name": "Large White Egg",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)176",
+        "Name": "White Egg",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)180",
+        "Name": "Brown Egg",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)182",
+        "Name": "Large Brown Egg",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)184",
+        "Name": "Milk",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)186",
+        "Name": "Large Milk",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)188",
+        "Name": "Green Bean",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)190",
+        "Name": "Cauliflower",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)192",
+        "Name": "Potato",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)194",
+        "Name": "Fried Egg",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)195",
+        "Name": "Omelet",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)196",
+        "Name": "Salad",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)197",
+        "Name": "Cheese Cauliflower",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)198",
+        "Name": "Baked Fish",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)199",
+        "Name": "Parsnip Soup",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)200",
+        "Name": "Vegetable Medley",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)201",
+        "Name": "Complete Breakfast",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)202",
+        "Name": "Fried Calamari",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)203",
+        "Name": "Strange Bun",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)204",
+        "Name": "Lucky Lunch",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)205",
+        "Name": "Fried Mushroom",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)206",
+        "Name": "Pizza",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)207",
+        "Name": "Bean Hotpot",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)208",
+        "Name": "Glazed Yams",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)209",
+        "Name": "Carp Surprise",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)210",
+        "Name": "Hashbrowns",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)211",
+        "Name": "Pancakes",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)212",
+        "Name": "Salmon Dinner",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)213",
+        "Name": "Fish Taco",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)214",
+        "Name": "Crispy Bass",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)215",
+        "Name": "Pepper Poppers",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)216",
+        "Name": "Bread",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)218",
+        "Name": "Tom Kha Soup",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)219",
+        "Name": "Trout Soup",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)220",
+        "Name": "Chocolate Cake",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)221",
+        "Name": "Pink Cake",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)222",
+        "Name": "Rhubarb Pie",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)223",
+        "Name": "Cookie",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)224",
+        "Name": "Spaghetti",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)225",
+        "Name": "Fried Eel",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)226",
+        "Name": "Spicy Eel",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)227",
+        "Name": "Sashimi",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)228",
+        "Name": "Maki Roll",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)229",
+        "Name": "Tortilla",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)231",
+        "Name": "Eggplant Parmesan",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)232",
+        "Name": "Rice Pudding",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)233",
+        "Name": "Ice Cream",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)234",
+        "Name": "Blueberry Tart",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)235",
+        "Name": "Autumn's Bounty",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)236",
+        "Name": "Pumpkin Soup",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)237",
+        "Name": "Super Meal",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)238",
+        "Name": "Cranberry Sauce",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)239",
+        "Name": "Stuffing",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)240",
+        "Name": "Farmer's Lunch",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)241",
+        "Name": "Survival Burger",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)242",
+        "Name": "Dish O' The Sea",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)243",
+        "Name": "Miner's Treat",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)244",
+        "Name": "Roots Platter",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)248",
+        "Name": "Garlic",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)250",
+        "Name": "Kale",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)252",
+        "Name": "Rhubarb",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)254",
+        "Name": "Melon",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)256",
+        "Name": "Tomato",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)257",
+        "Name": "Morel",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)258",
+        "Name": "Blueberry",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)259",
+        "Name": "Fiddlehead Fern",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)260",
+        "Name": "Hot Pepper",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)262",
+        "Name": "Wheat",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)264",
+        "Name": "Radish",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)266",
+        "Name": "Red Cabbage",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)268",
+        "Name": "Starfruit",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(O)270",
+        "Name": "Corn",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)272",
+        "Name": "Eggplant",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)274",
+        "Name": "Artichoke",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)276",
+        "Name": "Pumpkin",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)278",
+        "Name": "Bok Choy",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)280",
+        "Name": "Yam",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)281",
+        "Name": "Chanterelle",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)282",
+        "Name": "Cranberries",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)283",
+        "Name": "Holly",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)284",
+        "Name": "Beet",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)296",
+        "Name": "Salmonberry",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)300",
+        "Name": "Amaranth",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)303",
+        "Name": "Pale Ale",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)304",
+        "Name": "Hops",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)306",
+        "Name": "Mayonnaise",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)307",
+        "Name": "Duck Mayonnaise",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)340",
+        "Name": "Honey",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)341",
+        "Name": "Tea Set",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)342",
+        "Name": "Pickles",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)344",
+        "Name": "Jelly",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)346",
+        "Name": "Beer",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)348",
+        "Name": "Wine",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)349",
+        "Name": "Energy Tonic",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)350",
+        "Name": "Juice",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)351",
+        "Name": "Muscle Remedy",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)376",
+        "Name": "Poppy",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)395",
+        "Name": "Coffee",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)396",
+        "Name": "Spice Berry",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)398",
+        "Name": "Grape",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)399",
+        "Name": "Spring Onion",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)400",
+        "Name": "Strawberry",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)402",
+        "Name": "Sweet Pea",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)403",
+        "Name": "Field Snack",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)404",
+        "Name": "Common Mushroom",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)408",
+        "Name": "Hazelnut",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)410",
+        "Name": "Blackberry",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)412",
+        "Name": "Winter Root",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)414",
+        "Name": "Crystal Fruit",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)416",
+        "Name": "Snow Yam",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)417",
+        "Name": "Sweet Gem Berry",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(O)418",
+        "Name": "Crocus",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)420",
+        "Name": "Red Mushroom",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)421",
+        "Name": "Sunflower",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)422",
+        "Name": "Purple Mushroom",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)423",
+        "Name": "Rice",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)424",
+        "Name": "Cheese",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)426",
+        "Name": "Goat Cheese",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)428",
+        "Name": "Cloth",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)430",
+        "Name": "Truffle",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)432",
+        "Name": "Truffle Oil",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)436",
+        "Name": "Goat Milk",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)438",
+        "Name": "L. Goat Milk",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)442",
+        "Name": "Duck Egg",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)444",
+        "Name": "Duck Feather",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)446",
+        "Name": "Rabbit's Foot",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)454",
+        "Name": "Ancient Fruit",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(O)456",
+        "Name": "Algae Soup",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)457",
+        "Name": "Pale Broth",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)459",
+        "Name": "Mead",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)591",
+        "Name": "Tulip",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)593",
+        "Name": "Summer Spangle",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)595",
+        "Name": "Fairy Rose",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)597",
+        "Name": "Blue Jazz",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)604",
+        "Name": "Plum Pudding",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)605",
+        "Name": "Artichoke Dip",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)606",
+        "Name": "Stir Fry",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)607",
+        "Name": "Roasted Hazelnuts",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)608",
+        "Name": "Pumpkin Pie",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)609",
+        "Name": "Radish Salad",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)610",
+        "Name": "Fruit Salad",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)611",
+        "Name": "Blackberry Cobbler",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)612",
+        "Name": "Cranberry Candy",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)613",
+        "Name": "Apple",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)618",
+        "Name": "Bruschetta",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)634",
+        "Name": "Apricot",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)635",
+        "Name": "Orange",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)636",
+        "Name": "Peach",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)637",
+        "Name": "Pomegranate",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)638",
+        "Name": "Cherry",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)648",
+        "Name": "Coleslaw",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)649",
+        "Name": "Fiddlehead Risotto",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)651",
+        "Name": "Poppyseed Muffin",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)727",
+        "Name": "Chowder",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)728",
+        "Name": "Fish Stew",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)729",
+        "Name": "Escargot",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)730",
+        "Name": "Lobster Bisque",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)731",
+        "Name": "Maple Bar",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)732",
+        "Name": "Crab Cakes",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)772",
+        "Name": "Oil of Garlic",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)773",
+        "Name": "Life Elixir",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)787",
+        "Name": "Battery Pack",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(O)797",
+        "Name": "Pearl",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(B)806",
+        "Name": "Leprechaun Shoes",
+        "Enabled": true,
+        "Rarity": "RARE"
+      }
+    ]
+  },
+  "PRISON_TRAIN": {
+    "TrainCarID": "PRISON_TRAIN",
+    "treasureList": [
+      {
+        "Id": "(O)92",
+        "Name": "Sap",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)93",
+        "Name": "Torch",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)101",
+        "Name": "Arrowhead",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)105",
+        "Name": "Chewing Stick",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)109",
+        "Name": "Ancient Sword",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)110",
+        "Name": "Rusty Spoon",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)118",
+        "Name": "Glass Shards",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)129",
+        "Name": "Anchovy",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)130",
+        "Name": "Tuna",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)131",
+        "Name": "Sardine",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)132",
+        "Name": "Bream",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)136",
+        "Name": "Largemouth Bass",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)137",
+        "Name": "Smallmouth Bass",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)138",
+        "Name": "Rainbow Trout",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)139",
+        "Name": "Salmon",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)140",
+        "Name": "Walleye",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)141",
+        "Name": "Perch",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)142",
+        "Name": "Carp",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)143",
+        "Name": "Catfish",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)144",
+        "Name": "Pike",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)145",
+        "Name": "Sunfish",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)146",
+        "Name": "Red Mullet",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)147",
+        "Name": "Herring",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)148",
+        "Name": "Eel",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)149",
+        "Name": "Octopus",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)150",
+        "Name": "Red Snapper",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)151",
+        "Name": "Squid",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)154",
+        "Name": "Sea Cucumber",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)155",
+        "Name": "Super Cucumber",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)168",
+        "Name": "Trash",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)169",
+        "Name": "Driftwood",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)170",
+        "Name": "Broken Glasses",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)171",
+        "Name": "Broken CD",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)172",
+        "Name": "Soggy Newspaper",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)286",
+        "Name": "Cherry Bomb",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)287",
+        "Name": "Bomb",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)288",
+        "Name": "Mega Bomb",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)309",
+        "Name": "Acorn",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)310",
+        "Name": "Maple Seed",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)311",
+        "Name": "Pine Cone",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)372",
+        "Name": "Clam",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)397",
+        "Name": "Sea Urchin",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)403",
+        "Name": "Field Snack",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)441",
+        "Name": "Explosive Ammo",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)456",
+        "Name": "Algae Soup",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)457",
+        "Name": "Pale Broth",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)684",
+        "Name": "Bug Meat",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)685",
+        "Name": "Bait",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)698",
+        "Name": "Sturgeon",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)699",
+        "Name": "Tiger Trout",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)700",
+        "Name": "Bullhead",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)701",
+        "Name": "Tilapia",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)702",
+        "Name": "Chub",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)704",
+        "Name": "Dorado",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)705",
+        "Name": "Albacore",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)706",
+        "Name": "Shad",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)707",
+        "Name": "Lingcod",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)708",
+        "Name": "Halibut",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)715",
+        "Name": "Lobster",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)716",
+        "Name": "Crayfish",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)717",
+        "Name": "Crab",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)718",
+        "Name": "Cockle",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)719",
+        "Name": "Mussel",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)720",
+        "Name": "Shrimp",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)721",
+        "Name": "Snail",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)722",
+        "Name": "Periwinkle",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)723",
+        "Name": "Oyster",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)771",
+        "Name": "Fiber",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(B)806",
+        "Name": "Leprechaun Shoes",
+        "Enabled": true,
+        "Rarity": "RARE"
+      }
+    ]
+  },
+  "PRESENT_TRAIN": {
+    "TrainCarID": "PRESENT_TRAIN",
+    "treasureList": [
+      {
+        "Id": "114",
+        "Name": "Ancient Seed",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)347",
+        "Name": "Rare Seed",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)499",
+        "Name": "Ancient Seeds",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)434",
+        "Name": "Stardrop",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(O)166",
+        "Name": "Treasure Chest",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)417",
+        "Name": "Sweet Gem Berry",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)74",
+        "Name": "Prismatic Shard",
+        "Enabled": true,
+        "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": "(O)373",
+        "Name": "Golden Pumpkin",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": "(O)797",
+        "Name": "Pearl",
+        "Enabled": true,
+        "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": "(O)20",
+        "Name": "Leek",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)72",
+        "Name": "Diamond",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)201",
+        "Name": "Complete Breakfast",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)221",
+        "Name": "Pink Cake",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)60",
+        "Name": "Emerald",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)607",
+        "Name": "Roasted Hazelnuts",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)90",
+        "Name": "Cactus Fruit",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)200",
+        "Name": "Vegetable Medley",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)202",
+        "Name": "Fried Calamari",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)213",
+        "Name": "Fish Taco",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)66",
+        "Name": "Amethyst",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)303",
+        "Name": "Pale Ale",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)348",
+        "Name": "Wine",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)715",
+        "Name": "Lobster",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)206",
+        "Name": "Pizza",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)224",
+        "Name": "Spaghetti",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)88",
+        "Name": "Coconut",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)207",
+        "Name": "Bean Hotpot",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)155",
+        "Name": "Super Cucumber",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)196",
+        "Name": "Salad",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)18",
+        "Name": "Daffodil",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)612",
+        "Name": "Cranberry Candy",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)84",
+        "Name": "Frozen Tear",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)214",
+        "Name": "Crispy Bass",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)605",
+        "Name": "Artichoke Dip",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)729",
+        "Name": "Escargot",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)608",
+        "Name": "Pumpkin Pie",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)595",
+        "Name": "Fairy Rose",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)149",
+        "Name": "Octopus",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)308",
+        "Name": "Void Mayonnaise",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)230",
+        "Name": "Red Plate",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(O)222",
+        "Name": "Rhubarb Pie",
+        "Enabled": true,
+        "Rarity": "COMMON"
+      },
+      {
+        "Id": "(B)806",
+        "Name": "Leprechaun Shoes",
+        "Enabled": true,
+        "Rarity": "RARE"
+      }
+    ]
+  }
+}

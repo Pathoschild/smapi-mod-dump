@@ -16,8 +16,8 @@ using System.Text;
 using System.Threading.Tasks;
 using StardewValley;
 using Microsoft.Xna.Framework.Graphics;
-using HoverLabels.Drawing;
 using static System.Net.Mime.MediaTypeNames;
+using AchtuurCore.Framework.Borders;
 
 namespace HoverLabels.Framework;
 internal abstract class BaseLabel : IHoverLabel
@@ -96,14 +96,14 @@ internal abstract class BaseLabel : IHoverLabel
     {
         if (Borders is null)
             Borders = new();
-        AddBorder(new Border(new LabelText(text)));
+        AddBorder(new Border(new Label(text)));
     }
 
     /// <summary>
     /// Creates a new border with a label
     /// </summary>
     /// <param name="label"></param>
-    protected void AddBorder(LabelText label)
+    protected void AddBorder(Label label)
     {
         if (Borders is null)
             Borders = new();
@@ -114,7 +114,7 @@ internal abstract class BaseLabel : IHoverLabel
     ///  Creates a new border with multiple labels
     /// </summary>
     /// <param name="labels"></param>
-    protected void AddBorder(IEnumerable<LabelText> labels)
+    protected void AddBorder(IEnumerable<Label> labels)
     {
         if (Borders is null) 
             Borders = new();
@@ -125,13 +125,13 @@ internal abstract class BaseLabel : IHoverLabel
     /// Append label to the newest border
     /// </summary>
     /// <param name="label"></param>
-    protected void AppendLabelToBorder(LabelText label)
+    protected void AppendLabelToBorder(Label label)
     {
         if (Borders is null)
             Borders = new();
         if (Borders.Count == 0)
             Borders.Add(new Border());
-        Borders.Last().AddLabelText(label);
+        Borders.Last().AddLabel(label);
     }
 
     /// <summary>
@@ -140,6 +140,6 @@ internal abstract class BaseLabel : IHoverLabel
     /// <param name="text"></param>
     protected void AppendLabelToBorder(string text)
     {
-        AppendLabelToBorder(new LabelText(text));
+        AppendLabelToBorder(new Label(text));
     }
 }

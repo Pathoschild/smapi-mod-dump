@@ -41,8 +41,6 @@ Types of labels:
 
 ### New/Changes to existing content
 
-#### ambitious changes
-* Add additional box to label for "show more" types of things.
 * Add option for smaller borders (similar to ones you get when hovering over items in inventory)
 
 #### extra labels
@@ -52,6 +50,17 @@ Types of labels:
 
 * disable label during events?
 * labels with a duration that is longer than a day should show date
+
+## 2.1.1
+* New/Changed updated to support Achtuurcore 1.3.0
+
+## 2.1.0
+* New/Changed
+    *  Now uses AchtuurCore borders (need at least AchtuurCore 1.2.3)
+* Fixes
+  * Fixed ginger label
+  * Fixed giftbox at start of world showing error
+  * Fixed machine showing produce time
 
 ## 2.0.0
 * New/Changed

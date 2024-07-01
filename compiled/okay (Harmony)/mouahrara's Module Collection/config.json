@@ -10,12 +10,15 @@
   "ShopsGeodesAutoProcess": true,
   "ShopsGeodesAutoProcessSpeedMultiplier": 2,
   "MachinesSafeReplacement": true,
-  "OtherFestivalEndTime": true,
-  "OtherFestivalEndTimeAdditionalTime": 200,
+  "UserInterfaceFastScrolling": true,
+  "UserInterfaceFastScrollingMultiplier": 3.0,
+  "UserInterfaceFastScrollingConsistentScrolling": true,
   "UserInterfaceZoom": true,
   "UserInterfaceZoomInKey": "RightTrigger",
   "UserInterfaceZoomOutKey": "LeftTrigger",
   "UserInterfaceZoomMultiplier": 1.0,
-  "UserInterfaceFastScrolling": true,
-  "UserInterfaceFastScrollingMultiplier": 3.0
+  "UserInterfaceZoomMinimumZoomLevel": 0.25,
+  "OtherBetterPorchRepair": true,
+  "OtherFestivalEndTime": true,
+  "OtherFestivalEndTimeAdditionalTime": 200
 }

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/24794
+IDs: MindMeltMax.CAF
+update keys: Nexus:24794, GitHub:MindMeltMax/Stardew-Valley-Mods

@@ -72,7 +72,7 @@ public class SpaceCoreExperiencePatch : BaseExpPatcher
 
         // Get nearby farmer id's
         Farmer[] nearbyFarmers = ModEntry.GetNearbyPlayers()
-            .Where(f => ModEntry.GetActorExpPercentage(ModEntry.Instance.SpaceCoreAPI.GetLevelForCustomSkill(f, skillName), skillName) != 0f) // get all players that would actually receive exp
+            .Where(f => ModEntry.GetActorExpPercentage(farmer, ModEntry.Instance.SpaceCoreAPI.GetLevelForCustomSkill(f, skillName), skillName) != 0f) // get all players that would actually receive exp
             .ToArray();
 
         // If no farmers nearby to share exp with, actor gets all
@@ -81,10 +81,10 @@ public class SpaceCoreExperiencePatch : BaseExpPatcher
 
         // calculate actor exp gain, with rounding
         int level = ModEntry.Instance.SpaceCoreAPI.GetLevelForCustomSkill(farmer, skillName);
-        int actor_exp = GetActorExp(amt, level, skillName);
+        int actor_exp = GetActorExp(farmer, amt, level, skillName);
 
         // Calculate shared exp, with rounding
-        int shared_exp = (int)Math.Round(amt * ModEntry.GetSharedExpPercentage(level, skillName) / nearbyFarmers.Length);
+        int shared_exp = (int)Math.Round(amt * ModEntry.GetSharedExpPercentage(farmer, level, skillName) / nearbyFarmers.Length);
 
         // Send message of this instance of shared exp
         if (shared_exp > 0)

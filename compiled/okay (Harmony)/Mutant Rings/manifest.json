@@ -1,0 +1,16 @@
+{
+
+
+  "UniqueID": "ApryllForever.MutantRings",
+  "Name": "Mutant Rings",
+  "Author": "ApryllForever",
+  "Version": "1.0.3",
+  "Description": "Mutant Rings!!!",
+  "MinimumApiVersion": "3.16.0",
+  "EntryDll": "MutantRings.dll",
+  "UpdateKeys": [ "Nexus: 23849" ]
+
+ 
+
+
+}

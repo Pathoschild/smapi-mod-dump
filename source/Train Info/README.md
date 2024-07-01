@@ -34,5 +34,36 @@ No known mod conflicts
 ## Limitations
 The game doesn't actually determine the number/type of the train cars until it starts passing through the valley (~20 in-game minutes after the global "A train is passing through Stardew Valley" notification) so that's the earliest that I can display the contents of the train.
 
+## Translating the mods
+<!--
+
+    This section is auto-generated using a script, there's no need to edit it manually.
+    https://github.com/Pathoschild/StardewScripts/tree/main/create-translation-summary
+
+-->
+The mods can be translated into any language supported by the game, and SMAPI will automatically
+use the right translations.
+
+Contributions are welcome! See [Modding:Translations](https://stardewvalleywiki.com/Modding:Translations)
+on the wiki for help contributing translations.
+
+(❑ = untranslated, ↻ = partly translated, ✓ = fully translated)
+
+&nbsp;     | Train Info                   | Contributors
+---------- | ---------------------------- | ------------
+Chinese    | [❑](TrainInfo/i18n)
+French     | [✓](TrainInfo/i18n/fr.json) | [Caranud](https://www.nexusmods.com/stardewvalley/users/745980)
+German     | [✓](TrainInfo/i18n/de.json) | [Th3Tob1](https://www.nexusmods.com/users/58067946) 
+Hungarian  | [❑](TrainInfo/i18n)
+Italian    | [❑](TrainInfo/i18n)
+Japanese   | [❑](TrainInfo/i18n)
+Korean     | [❑](TrainInfo/i18n)
+Portuguese | [❑](TrainInfo/i18n)
+Russian    | [❑](TrainInfo/i18n)
+Spanish    | [❑](TrainInfo/i18n)
+Turkish    | [❑](TrainInfo/i18n)
+
+
 ## See also
  * [Nexus Mods](https://www.nexusmods.com/stardewvalley/mods/19305)
+ * [CurseForge](https://www.curseforge.com/stardewvalley/mods/train-info)

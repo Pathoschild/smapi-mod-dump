@@ -8,52 +8,85 @@
 **
 *************************************************/
 
+using MailFrameworkMod;
 using MarketTown;
 using Microsoft.Xna.Framework;
-using Newtonsoft.Json.Linq;
-using StardewModdingAPI;
+using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI.Events;
 using StardewValley;
-using StardewValley.Network;
+using StardewValley.Locations;
 using StardewValley.Pathfinding;
-using StardewValley.TerrainFeatures;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using lv = StardewModdingAPI.LogLevel;
+using xTile.Dimensions;
+using Netcode;
+using StardewValley.Network;
+using xTile.Tiles;
+using xTile;
+using System.Xml.Linq;
+using System.Threading;
+using System.Timers;
 
 namespace MarketTown
 {
     internal class FarmOutside
     {
-        internal static bool NPCinScreen()
+        internal static void PlayerWarp(object sender, WarpedEventArgs e)
         {
-            var x = 0;
-            var y = 0;
-            var farm = Game1.getLocationFromName("Farm");
-            foreach (NPC who in Utility.getAllVillagers())
+            Random random = new Random();
+
+            if (e.NewLocation.Name.Contains("Custom_MT_Island") && (e.OldLocation is Beach || e.OldLocation is BeachNightMarket )
+                || e.OldLocation.Name.Contains("Custom_MT_Island") && (e.NewLocation is Beach || e.NewLocation is BeachNightMarket))
             {
-                if (who.IsVillager && who.currentLocation.Name == "Farm" 
-                    && who.modData.ContainsKey("hapyke.FoodStore/invited") && who.modData["hapyke.FoodStore/invited"] == "true")
+                var letterTexture = ModEntry.Instance.Helper.ModContent.Load<Texture2D>("Assets/LtBG.png");
+                MailRepository.SaveLetter(
+                    new Letter(
+                        "MT.IslandInit",
+                        ModEntry.SHelper.Translation.Get("foodstore.letter.islandinit"),
+                        (Letter l) => !Game1.player.mailReceived.Contains("MT.IslandInit"),
+                        delegate (Letter l)
+                        {
+                            ((NetHashSet<string>)(object)Game1.player.mailReceived).Add(l.Id);
+                        })
+                    {
+                        Title = "Paradise Island",
+                        LetterTexture = letterTexture
+                    }
+                );
+
+                string weather = e.NewLocation.GetWeather().Weather.ToLower();
+
+                switch (weather)
                 {
-                    x = (int)(who.Position.X / 64);
-                    y = (int)(who.Position.Y / 64);
+                    case "rain":
+                        e.Player.Stamina += (float)(e.Player.MaxStamina * random.Next(-25, -15) / 100);
+                        if (!ModEntry.Config.DisableChatAll && !ModEntry.Config.DisableChat) Game1.addHUDMessage(new HUDMessage(ModEntry.SHelper.Translation.Get("foodstore.islandtravel.rain"), HUDMessage.newQuest_type));
+                        break;
+                    case "wind":
+                        e.Player.Stamina += (float)(e.Player.MaxStamina * random.Next(-15, 10) / 100);
+                        if (!ModEntry.Config.DisableChatAll && !ModEntry.Config.DisableChat) Game1.addHUDMessage(new HUDMessage(ModEntry.SHelper.Translation.Get("foodstore.islandtravel.wind"), HUDMessage.newQuest_type));
+                        break;
+                    case "storm":
+                        e.Player.Stamina += (float)(e.Player.MaxStamina * random.Next(-35, -27) / 100);
+                        if (!ModEntry.Config.DisableChatAll && !ModEntry.Config.DisableChat) Game1.addHUDMessage(new HUDMessage(ModEntry.SHelper.Translation.Get("foodstore.islandtravel.storm"), HUDMessage.newQuest_type));
+                        break;
+                    case "greenrain":
+                        e.Player.Stamina += (float)(e.Player.MaxStamina * random.Next(-30, -23) / 100);
+                        if (!ModEntry.Config.DisableChatAll && !ModEntry.Config.DisableChat) Game1.addHUDMessage(new HUDMessage(ModEntry.SHelper.Translation.Get("foodstore.islandtravel.greenrain"), HUDMessage.newQuest_type));
+                        break;
+                    case "snow":
+                        e.Player.Stamina += (float)(e.Player.MaxStamina * random.Next(-25, -20) / 100);
+                        if (!ModEntry.Config.DisableChatAll && !ModEntry.Config.DisableChat) Game1.addHUDMessage(new HUDMessage(ModEntry.SHelper.Translation.Get("foodstore.islandtravel.snow"), HUDMessage.newQuest_type));
+                        break;
+                    default:
+                        e.Player.Stamina += (float)(e.Player.MaxStamina * random.Next(-10, -5) / 100);
+                        if (!ModEntry.Config.DisableChatAll && !ModEntry.Config.DisableChat) Game1.addHUDMessage(new HUDMessage(ModEntry.SHelper.Translation.Get("foodstore.islandtravel.sun"), HUDMessage.newQuest_type));
+                        break;
                 }
             }
 
-
-            //return Utility.isOnScreen(who.Position.ToPoint(), 0, farm);
-            return Utility.isOnScreen(new Point(x, y), 0, farm);
-        }
-
-        internal static void PlayerWarp(object sender, WarpedEventArgs e)
-        {
-            if (e.NewLocation.Name.Contains("Custom_MT_Island"))
-            {
-                Game1.chatBox.addInfoMessage("Let me know what do you think about the map on Nexus page_____. This is Market Paradise Island for ALPHA TESTING. The map likely to change: SHOULD NOT build anything on yet!!!!");
-            }
-
-            var isBusStop = e.NewLocation.Name.Contains("BusStop");
+            var isBusStop = e.OldLocation.Name.Contains("BusStop");
 
             if (isBusStop)
             {
@@ -61,7 +94,7 @@ namespace MarketTown
 
                 foreach (NPC who in Game1.getLocationFromName("BusStop").characters.ToList())
                 {
-                    if (who.Name.Contains("MT.Guest_"))
+                    if (who.temporaryController != null)
                     {
                         npcsToWarp.Add(who);
                     }
@@ -69,14 +102,10 @@ namespace MarketTown
 
                 foreach (NPC npc in npcsToWarp)
                 {
-                    npc.Halt();
+                    if (npc.temporaryController != null ) npc.temporaryController.endBehaviorFunction(npc, npc.currentLocation);
                     npc.temporaryController = null;
-                    npc.controller = null;
-                    npc.ClearSchedule();
-                    Game1.warpCharacter(npc, npc.DefaultMap, npc.DefaultPosition / 64);
                 }
             }
-
 
             if (!e.Player.IsMainPlayer)
             {
@@ -97,8 +126,6 @@ namespace MarketTown
 
             if (isFarm)
             {
-                ModEntry.IsOutside = true;
-
                 door = Game1.getFarm().GetMainFarmHouseEntry();
                 door.X += 3;
                 door.Y += 2; //two more tiles down
@@ -107,8 +134,6 @@ namespace MarketTown
 
             if (isFarmHouse)
             {
-                ModEntry.IsOutside = false;
-
                 var home = Utility.getHomeOfFarmer(Game1.player);
                 door = home.getEntryLocation();
                 door.X += 3;
@@ -139,17 +164,19 @@ namespace MarketTown
             }
         }
 
-        internal static void WalkAround(string who)
+        // UNUSED. Can be use to add dynamic movement for npc, but cause many issue. Use AddRandomSchedule
+        internal static void WalkAround(string who, bool update = false)
         {
-            var c = Game1.getCharacterFromName(who);
-            if (c == null) return;
 
-            var newspot = getRandomOpenPointInFarm(c.currentLocation, Game1.random);
+            var c = Game1.getCharacterFromName(who);
+            if (c == null || !c.IsVillager) return;
+
+            var newspot = getRandomOpenPointInFarm(c, c.currentLocation, update);
 
             try
             {
                 c.controller = null;
-                c.isCharging = true;
+                //c.isCharging = true;
 
                 c.controller = new PathFindController(
                     c,
@@ -161,48 +188,243 @@ namespace MarketTown
             catch { }
         }
 
-
-        internal static Point getRandomOpenPointInFarm(GameLocation location, Random r, int tries = 5, int maxDistance = 15)
+        /// <summary>
+        /// Add schedule to the middle of a schedule and retain the structure.
+        /// Might not work all the time, and does not work if NPC has queued schedule.
+        /// </summary>
+        /// <param name="npc">The NPC to which the schedule will be added.</param>
+        /// <param name="addTime">The time at which the schedule starts, and must be Game1.timeOfDay + 10 </param>
+        /// <param name="addEndLocation">The location where the schedule ends. Should be current NPC location, not tested if not current location</param>
+        /// <param name="addEndX">The X coordinate of the end tile.</param>
+        /// <param name="addEndY">The Y coordinate of the end tile.</param>
+        /// <param name="addEndDirection">The direction the NPC will face at the end location.</param>
+        internal static bool AddRandomSchedule(NPC npc, string addTime, string addEndLocation, string addEndX, string addEndY, string addEndDirection)
         {
-            foreach (NPC who in Utility.getAllVillagers())
+            if (npc.queuedSchedulePaths.Count != 0)  return false; 
+
+            try 
             {
-                if (who.IsVillager && (((who.currentLocation.Name == "Farm" || who.currentLocation.Name == "FarmHouse") && who.modData["hapyke.FoodStore/invited"] == "true") || (who.Name.Contains("MT.Guest_") && !who.currentLocation.Name.Contains("BusStop")) ))
+                var initSche = "";
+                var currentDirection = npc.DirectionsToNewLocation;
+
+                Dictionary<int, SchedulePathDescription> schedule = npc.Schedule;
+                SortedDictionary<int, string> tempSche = new SortedDictionary<int, string>();
+
+                if (schedule != null && schedule.Count > 0)
                 {
-
-                    var map = location.map;
-
-                    Point zero = Point.Zero;
-                    bool CanGetHere = false;
-
-                    for (int i = 0; i < tries; i++)
+                    if (currentDirection == null && !npc.isMoving())
                     {
-                        //we get random position using width and height of map
-                        zero = new Point(r.Next(1, map.Layers[0].LayerWidth - 1), r.Next(1, map.Layers[0].LayerHeight - 1));
+                        string addSche = $"{addTime} {addEndLocation} {addEndX} {addEndY} {addEndDirection}/";
+                        tempSche.Add(Int32.Parse(addTime), addSche);
 
-                        bool isFloorValid = location.isTileOnMap(zero.ToVector2()) && location.isTilePassable(new xTile.Dimensions.Location(zero.X, zero.Y), Game1.viewport) && !location.isWaterTile(zero.X, zero.Y);
-                        bool IsBehindTree = location.isBehindTree(zero.ToVector2());
-                        Warp WarpOrDoor = location.isCollidingWithWarpOrDoor(new Rectangle(zero, new Point(1, 1)));
-
-                        //check that location is clear + not water tile + not behind tree + not a warp
-                        CanGetHere = !location.IsTileBlockedBy(new Vector2(zero.X, zero.Y)) && location.CanItemBePlacedHere(new Vector2(zero.X, zero.Y)) 
-                            && isFloorValid && !IsBehindTree && WarpOrDoor == null;
-
-                        //if the new point is too far away
-                        Point difference = new(Math.Abs(zero.X - (int)who.Position.X), Math.Abs(zero.Y - (int)who.Position.Y));
-                        if (difference.X > maxDistance && difference.Y > maxDistance)
+                        foreach (var piece in schedule)
                         {
-                            CanGetHere = false;
-                        }
+                            SchedulePathDescription description = piece.Value;
 
-                        if (CanGetHere)
-                        {
-                            break;
+                            string time = $"{piece.Key}";
+                            string endLocation = description.targetLocationName;
+                            string endX = $"{description.targetTile.X}";
+                            string endY = $"{description.targetTile.Y}";
+                            string endDirection = $"{description.facingDirection}";
+
+                            if (!tempSche.ContainsKey(piece.Key))
+                            {
+                                tempSche.Add(piece.Key, $"{time} {endLocation} {endX} {endY} {endDirection}/");
+                            }
+                            else
+                            {
+                                int timeModify = 10;
+                                int tried = 0;
+                                while (true && tried < 5)
+                                {
+                                    if (tried == 4) return false;
+                                    if (!tempSche.ContainsKey(piece.Key + timeModify))
+                                    {
+                                        tempSche.Add(ModEntry.ConvertToHour(piece.Key + timeModify), $"{ModEntry.ConvertToHour(piece.Key + timeModify)} {endLocation} {endX} {endY} {endDirection}/");
+                                        break;
+                                    }
+                                    timeModify += 10;
+                                    tried++;
+                                }
+                            }
                         }
                     }
-                    return zero;
+                    // if npc is moving
+                    else if (currentDirection != null)
+                    {
+                        // add current tile BEFORE request
+                        tempSche.Add(Game1.timeOfDay,
+                        $"{Game1.timeOfDay} {npc.currentLocation.NameOrUniqueName} {npc.Tile.X} {npc.Tile.Y} {npc.FacingDirection}/");
+
+                        // add requested schedule
+                        string addSche = $"{addTime} {addEndLocation} {addEndX} {addEndY} {addEndDirection}/";
+                        tempSche.Add(Int32.Parse(addTime), addSche);
+
+                        // re-add current direction AFTER request
+                        string currentDirectionString = 
+                            $"{ModEntry.ConvertToHour(Int32.Parse(addTime) + 10)} {currentDirection.targetLocationName} {currentDirection.targetTile.X} {currentDirection.targetTile.Y} {currentDirection.facingDirection}/";
+                        tempSche.Add(ModEntry.ConvertToHour(Int32.Parse(addTime) + 10), currentDirectionString);
+
+                        foreach (var piece in schedule)
+                        {
+                            if (piece.Value.time == currentDirection.time) continue; // already added
+
+                            SchedulePathDescription description = piece.Value;
+
+                            string time = $"{piece.Key}";
+                            string endLocation = description.targetLocationName;
+                            string endX = $"{description.targetTile.X}";
+                            string endY = $"{description.targetTile.Y}";
+                            string endDirection = $"{description.facingDirection}";
+
+                            if (!tempSche.ContainsKey(piece.Key))
+                            {
+                                tempSche.Add(piece.Key, $"{time} {endLocation} {endX} {endY} {endDirection}/");
+                            }
+                            else
+                            {
+                                int timeModify = 10;
+                                int tried = 0;
+                                while (true && tried < 5)
+                                {
+                                    if (tried == 4) return false;
+                                    if (!tempSche.ContainsKey(piece.Key + timeModify))
+                                    {
+                                        tempSche.Add(ModEntry.ConvertToHour(piece.Key + timeModify), $"{ModEntry.ConvertToHour(piece.Key + timeModify)} {endLocation} {endX} {endY} {endDirection}/");
+                                        break;
+                                    }
+                                    timeModify += 10;
+                                    tried++;
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    // add current tile BEFORE request
+                    tempSche.Add(Game1.timeOfDay,
+                    $"{Game1.timeOfDay} {npc.currentLocation.NameOrUniqueName} {npc.Tile.X} {npc.Tile.Y} {npc.FacingDirection}/");
+
+                    // add requested schedule
+                    string addSche = $"{addTime} {addEndLocation} {addEndX} {addEndY} {addEndDirection}/";
+                    tempSche.Add(Int32.Parse(addTime), addSche);
+
+                    // add current tile AFTER request
+                    tempSche.Add(ModEntry.ConvertToHour(Int32.Parse(addTime) + 10),
+                    $"{ModEntry.ConvertToHour(Int32.Parse(addTime) + 10)} {npc.currentLocation.NameOrUniqueName} {npc.Tile.X} {npc.Tile.Y} {npc.FacingDirection}/");
+                }
+
+                if (tempSche.Any())
+                {
+                    foreach (var x in tempSche)
+                        initSche += x.Value;
+                }
+
+                if (initSche == null || initSche == "") return false;
+
+                ModEntry.ResetErrorNpc(npc);
+                npc.TryLoadSchedule("default", initSche);
+                return true;
+            }
+            catch { 
+                ModEntry.SMonitor.Log($"Error while adding new schedule for {npc.Name}", StardewModdingAPI.LogLevel.Warn);
+                return false;
+            }
+        }
+
+
+
+        /// <summary>Add a random Tile to the Schedule at the next time change (10 minutes).</summary>
+        internal static void AddRandomSchedulePoint(NPC npc, string addTime, string addEndLocation, string addEndX, string addEndY, string addEndDirection)
+        {
+            // initSche is the last of the current schedule, then added the new piece
+            // if schedule is null, initSche will be the current position of NPC
+            var initSche = "";
+            ModEntry.ResetErrorNpc(npc);
+            Dictionary<int, SchedulePathDescription> schedule = npc.Schedule;
+
+            if (schedule != null)
+            {
+                var kvp = schedule.LastOrDefault();
+                SchedulePathDescription description = kvp.Value;
+
+                if (description != null)
+                {
+                    string time = $"{kvp.Key}";
+                    string endLocation = description.targetLocationName;
+                    string endX = $"{description.targetTile.X}";
+                    string endY = $"{description.targetTile.Y}";
+                    string endDirection = $"{description.facingDirection}";
+
+                    initSche += $"{time} {endLocation} {endX} {endY} {endDirection}/";
                 }
             }
-            return Point.Zero;
+            else
+            {
+                initSche += $"{Game1.timeOfDay} {npc.currentLocation.NameOrUniqueName} {npc.Tile.X} {npc.Tile.Y} {npc.FacingDirection}/";
+            }
+
+            initSche += $"{addTime} {addEndLocation} {addEndX} {addEndY} {addEndDirection}/";
+
+            npc.TryLoadSchedule("default", initSche);
+        }
+
+
+        /// <summary>Update the list of 'valid' tile in a location, which can then be selected for NPC schedule.</summary>
+        internal static void UpdateRandomLocationOpenTile(GameLocation location)
+        {
+            List<Vector2> TileBlackList = new List<Vector2> { new Vector2(8, 31), new Vector2(9, 31), new Vector2(8, 32), new Vector2(9, 32), new Vector2(8, 33), new Vector2(9, 33) };
+            try
+            {
+                if (location != null && location.Name == "Custom_MT_Island" && location.isAlwaysActive.Value) return;
+
+                Random r = new Random();
+                var map = location.Map;
+
+                int possibleWidth = map.Layers[0].LayerWidth - 1;
+                int possibleHeight = map.Layers[0].LayerHeight - 1;
+
+                if (!ModEntry.RandomOpenSpot.ContainsKey(location)) ModEntry.RandomOpenSpot[location] = new List<Vector2>();
+                else ModEntry.RandomOpenSpot[location].Clear();
+
+                int count = 0;
+                while (count < 150 && count < possibleWidth * possibleHeight / 1.5
+                        && (count < location.characters.Count * 2 || count < 20 || count < 60 && location.NameOrUniqueName.Contains("Custom_MT_Island")) )
+                {
+                    Vector2 tile = new Vector2(r.Next(1, possibleWidth), r.Next(7, possibleHeight));
+                    if (location.CanItemBePlacedHere(tile) && !TileBlackList.Contains(tile) )
+                    {
+                        ModEntry.RandomOpenSpot[location].Add(tile);
+                        count++;
+                    }
+                }
+                //Console.WriteLine("Updating open tile at " + location.NameOrUniqueName + " for " + count);
+
+            }
+            catch { Console.WriteLine( $"Error while updating open tile at {location.NameOrUniqueName}"); }
+        }
+
+
+        /// <summary>Get a 'valid' tile from this Location.</summary>
+        internal static Point getRandomOpenPointInFarm(NPC who, GameLocation location, bool update, bool bypass = false)
+        {
+            try
+            {
+                if (bypass || who != null && who.IsVillager && location != null
+                    && ( ((who.currentLocation.IsFarm || who.currentLocation.Name == "FarmHouse") && who.modData["hapyke.FoodStore/invited"] == "true")
+                        || (who.Name.Contains("MT.Guest_") && !who.currentLocation.Name.Contains("BusStop"))
+                        || location.NameOrUniqueName.Contains("Custom_MT_Island")
+                        || location.GetParentLocation() != null && location.GetParentLocation().Name == "Custom_MT_Island") ) // ************ check shed name
+                {
+                    if (update) UpdateRandomLocationOpenTile(location);
+
+                    if (ModEntry.RandomOpenSpot.ContainsKey(location))
+                       return ModEntry.RandomOpenSpot[location][Game1.random.Next(ModEntry.RandomOpenSpot[location].Count())].ToPoint();
+                }
+                return Point.Zero;
+            }
+            catch { return Point.Zero; }
         }
     }
 }

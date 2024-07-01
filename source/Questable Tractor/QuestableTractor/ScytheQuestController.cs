@@ -8,11 +8,9 @@
 **
 *************************************************/
 
-using System;
-using System.Linq;
-using StardewModdingAPI;
-using StardewValley;
 using StardewValley.TerrainFeatures;
+
+using static NermNermNerm.Stardew.LocalizeFromSource.SdvLocalize;
 
 namespace NermNermNerm.Stardew.QuestableTractor
 {
@@ -39,7 +37,7 @@ namespace NermNermNerm.Stardew.QuestableTractor
         public override string WorkingAttachmentPartId => ObjectIds.WorkingScythe;
         public override string BrokenAttachmentPartId => ObjectIds.BustedScythe;
         public override string HintTopicConversationKey => ConversationKeys.ScytheNotFound;
-        protected override string QuestCompleteMessage => "Sweet!  You've now got a harvester attachment for your tractor!#$b#HINT: To use it, equip the scythe while on the tractor.";
+        protected override string QuestCompleteMessage => L("Sweet!  You've now got a harvester attachment for your tractor!#$b#HINT: To use it, equip the scythe while on the tractor.");
         protected override string ModDataKey => ModDataKeys.ScytheQuestStatus;
         protected override void HideStarterItemIfNeeded() => base.PlaceBrokenPartUnderClump(ResourceClump.hollowLogIndex);
 

@@ -30,7 +30,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Modded
 
         public bool IsCorrectShop(ShopMenu shop)
         {
-            if (!shop.storeContext.Equals(Context, StringComparison.InvariantCultureIgnoreCase))
+            if (!shop.ShopId.Equals(Context, StringComparison.InvariantCultureIgnoreCase))
             {
                 return false;
             }
@@ -40,7 +40,9 @@ namespace StardewArchipelago.Locations.CodeInjections.Modded
                 return true;
             }
 
-            return shop.portraitPerson.Name.Contains(NpcFilter, StringComparison.InvariantCultureIgnoreCase);
+            // I have no idea how to identify who is tending a shop in 1.6
+            throw new Exception($"{nameof(IsCorrectShop)} is not ready for 1.6");
+            // return shop.portraitPerson.Name.Contains(NpcFilter, StringComparison.InvariantCultureIgnoreCase);
         }
 
         public override int GetHashCode()

@@ -48,7 +48,7 @@ namespace StardewDruid.Cast.Weald
                 explode.sound = SpellHandle.sounds.flameSpellHit;
             }
 
-            explode.display = IconData.impacts.impact;
+            explode.display = IconData.impacts.puff;
 
             explode.indicator = IconData.cursors.weald;
 

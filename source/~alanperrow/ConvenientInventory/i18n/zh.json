@@ -1,0 +1,68 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/alanperrow/StardewModding
+**
+*************************************************/
+
+{
+  "QuickStackButton.hoverText": "快速堆叠到附近的箱子", 
+
+  "ModConfigMenu.Label.QuickStackToNearbyChests": "快速堆叠到附近的箱子",
+
+  "ModConfigMenu.IsEnableQuickStack.Name": "启用快速堆叠?",
+  "ModConfigMenu.IsEnableQuickStack.Desc": "如果启用，将在您的库存菜单中添加\"快速堆叠到附近的箱子\"按钮。按下此按钮将从你的库存物品堆叠到任何附近的箱子，其中包含该物品。",
+
+  "ModConfigMenu.QuickStackRange.Name": "范围",
+  "ModConfigMenu.QuickStackRange.Desc": "玩家需要从多少个方格中寻找附近的箱子。",
+
+  "ModConfigMenu.IsEnableQuickStackHotkey.Name": "支持热键?",
+  "ModConfigMenu.IsEnableQuickStackHotkey.Desc": "如果启用，按下下面指定的任何一个快速堆叠热键将快速堆叠您的物品，甚至在您的库存菜单之外。",
+
+  "ModConfigMenu.QuickStackKeyboardHotkey.Name": "Keybind(键盘)",
+  "ModConfigMenu.QuickStackKeyboardHotkey.Desc": "按此键可以快速堆叠物品。",
+
+  "ModConfigMenu.QuickStackControllerHotkey.Name": "Keybind(控制器)",
+  "ModConfigMenu.QuickStackControllerHotkey.Desc": "按这个按钮可以快速堆叠你的物品。",
+
+  "ModConfigMenu.IsQuickStackIntoBuildingsWithInventories.Name": "快速堆叠成建筑物?",
+  "ModConfigMenu.IsQuickStackIntoBuildingsWithInventories.Desc": "如果启用，附近有库存的建筑(如磨坊或朱尼莫小屋)在快速堆叠时也会被检查。",
+
+  "ModConfigMenu.IsQuickStackOverflowItems.Name": "快速堆栈溢出项?",
+  "ModConfigMenu.IsQuickStackOverflowItems.Desc": "如果启用，快速堆栈将把尽可能多的物品放入包含该物品的箱子中，而不仅仅是一个堆栈。",
+
+  "ModConfigMenu.IsQuickStackIgnoreItemQuality.Name": "快速堆叠忽略项目质量?",
+  "ModConfigMenu.IsQuickStackIgnoreItemQuality.Desc": "如果启用，快速堆叠将物品放入箱子中，其中包含同一物品的一个N Y质量。",
+
+  "ModConfigMenu.IsQuickStackTooltipDrawNearbyChests.Name": "在工具提示中显示附近的箱子?",
+  "ModConfigMenu.IsQuickStackTooltipDrawNearbyChests.Desc": "如果启用，将鼠标悬停在快速堆叠按钮上，将显示附近所有箱子的预览，按距离排序。",
+
+  "ModConfigMenu.Label.FavoriteItems": "收藏",
+
+  "ModConfigMenu.IsEnableFavoriteItems.Name": "启用收藏项?",
+  "ModConfigMenu.IsEnableFavoriteItems.Desc": "如果启用，库存中的物品可以被收藏。收藏的物品在堆积到箱子时将被忽略。它们也将被防止被丢弃或掉落。",
+
+  "ModConfigMenu.FavoriteItemsHighlightTextureChoice.Name": "高亮的风格",
+  "ModConfigMenu.FavoriteItemsHighlightTextureChoice.Desc": "选择你喜欢的纹理样式来突出显示你收藏的物品。",
+  "ModConfigMenu.FavoriteItemsHighlightTextureChoice.Desc-0": "金色虚线",
+  "ModConfigMenu.FavoriteItemsHighlightTextureChoice.Desc-1": "取消金色虚线",
+  "ModConfigMenu.FavoriteItemsHighlightTextureChoice.Desc-2": "金色粗描边",
+  "ModConfigMenu.FavoriteItemsHighlightTextureChoice.Desc-3": "纹理金色镶嵌边框",
+  "ModConfigMenu.FavoriteItemsHighlightTextureChoice.Desc-4": "镶金边",
+  "ModConfigMenu.FavoriteItemsHighlightTextureChoice.Desc-5": "黑色虚线",
+  "ModConfigMenu.FavoriteItemsHighlightTextureChoice.Desc-6": "深色粗边框",
+
+  "ModConfigMenu.FavoriteItemsKeyboardHotkey.Name": "Keybind(键盘)",
+  "ModConfigMenu.FavoriteItemsKeyboardHotkey.Desc": "选择要收藏的物品时，按住此键。",
+
+  "ModConfigMenu.FavoriteItemsControllerHotkey.Name": "Keybind(控制器)",
+  "ModConfigMenu.FavoriteItemsControllerHotkey.Desc": "当选择要收藏的项目时，按住此按钮。",
+
+  "ModConfigMenu.Label.Miscellaneous": "杂项",
+
+  "ModConfigMenu.IsEnableInventoryPageSideWarp.Name": "启用库存光标侧翘曲?",
+  "ModConfigMenu.IsEnableInventoryPageSideWarp.Desc": "如果启用，将控制器的光标移动到库存菜单的任何一侧都会使光标弯曲到另一侧。"
+}

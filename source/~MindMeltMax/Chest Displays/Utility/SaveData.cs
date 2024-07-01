@@ -54,5 +54,7 @@ namespace ChestDisplays.Utility
         public int UpgradeLevel { get; set; }
 
         public Color? Color { get; set; }
+
+        public string Name { get; set; }
     }
 }

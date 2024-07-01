@@ -11,8 +11,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Xna.Framework;
 using StardewArchipelago.Archipelago;
-using StardewArchipelago.Constants;
+using StardewArchipelago.Constants.Locations;
+using StardewArchipelago.Constants.Vanilla;
+using StardewArchipelago.Stardew.Ids.Vanilla;
 using StardewModdingAPI;
 using StardewValley;
 
@@ -33,7 +36,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             _archipelago = archipelago;
             _locationChecker = locationChecker;
 
-            _allRecipes = Game1.content.Load<Dictionary<string, string>>("Data\\CookingRecipes");
+            _allRecipes = DataLoader.CookingRecipes(Game1.content);
         }
 
         // public void grantConversationFriendship(Farmer who, int amount = 20)
@@ -97,8 +100,81 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
 
                 var aliasedRecipeName = GetAliased(recipeName);
 
-                _locationChecker.AddCheckedLocation($"{aliasedRecipeName}{RecipePurchaseInjections.CHEFSANITY_LOCATION_SUFFIX}");
+                _locationChecker.AddCheckedLocation($"{aliasedRecipeName}{Suffix.CHEFSANITY}");
             }
+        }
+
+        // public static void AddCookingRecipe(Event @event, string[] args, EventContext context)
+        public static bool AddCookingRecipe_SkipLearningCookies_Prefix(Event @event, string[] args, EventContext context)
+        {
+            try
+            {
+                if (!@event.eventCommands[@event.CurrentCommand].Contains("Cookies"))
+                {
+                    return true; // run original logic
+                }
+
+                ++@event.CurrentCommand;
+                return false; // don't run original logic
+            }
+            catch (Exception ex)
+            {
+                _monitor.Log($"Failed in {nameof(AddCookingRecipe_SkipLearningCookies_Prefix)}:\n{ex}", LogLevel.Error);
+                return true; // run original logic
+            }
+        }
+
+        // public void skipEvent()
+        public static bool SkipEvent_CookiesRecipe_Prefix(Event __instance)
+        {
+            try
+            {
+                if (__instance.id != EventIds.COOKIES_RECIPE)
+                {
+                    return true; // run original logic
+                }
+
+                SkipCookiesRecipeEventArchipelago(__instance);
+                return false; // don't run original logic
+            }
+            catch (Exception ex)
+            {
+                _monitor.Log($"Failed in {nameof(SkipEvent_CookiesRecipe_Prefix)}:\n{ex}", LogLevel.Error);
+                return true; // run original logic
+            }
+        }
+
+        private static void SkipCookiesRecipeEventArchipelago(Event cookiesEvent)
+        {
+            if (cookiesEvent.playerControlSequence)
+            {
+                cookiesEvent.EndPlayerControlSequence();
+            }
+
+            Game1.playSound("drumkit6");
+
+            var actorPositionsAfterMoveField = _helper.Reflection.GetField<Dictionary<string, Vector3>>(cookiesEvent, "actorPositionsAfterMove");
+            actorPositionsAfterMoveField.GetValue().Clear();
+
+            foreach (var actor in cookiesEvent.actors)
+            {
+                var ignoreStopAnimation = actor.Sprite.ignoreStopAnimation;
+                actor.Sprite.ignoreStopAnimation = true;
+                actor.Halt();
+                actor.Sprite.ignoreStopAnimation = ignoreStopAnimation;
+                cookiesEvent.resetDialogueIfNecessary(actor);
+            }
+
+            cookiesEvent.farmer.Halt();
+            cookiesEvent.farmer.ignoreCollisions = false;
+            Game1.exitActiveMenu();
+            Game1.dialogueUp = false;
+            Game1.dialogueTyping = false;
+            Game1.pauseTime = 0.0f;
+
+            // Game1.player.cookingRecipes.TryAdd("Cookies", 0);
+            _locationChecker.AddCheckedLocation($"Cookies{Suffix.CHEFSANITY}");
+            cookiesEvent.endBehaviors();
         }
 
         private static string GetAliased(string recipeName)

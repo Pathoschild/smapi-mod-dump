@@ -22,9 +22,9 @@ namespace LetsMoveIt.TargetData
         /// <param name="location">The current location.</param>
         /// <param name="tile">The current tile position.</param>
         /// <param name="map">The current map position.</param>
-        public static void Get(GameLocation location, Vector2 tile, Point map)
+        public void Get(GameLocation location, Vector2 tile, Point map)
         {
-            if (Config.EnableMoveEntity)
+            if (Config.EnableMoveEntity && !Config.MultiSelect)
             {
                 foreach (var c in location.characters)
                 {
@@ -36,26 +36,12 @@ namespace LetsMoveIt.TargetData
                         return;
                     }
                 }
-                if (location is Farm farm)
+                foreach (var a in location.animals.Values)
                 {
-                    foreach (var a in farm.animals.Values)
+                    if (a.GetBoundingBox().Contains(map))
                     {
-                        if (a.GetBoundingBox().Contains(map))
-                        {
-                            Set(a, a.currentLocation, tile);
-                            return;
-                        }
-                    }
-                }
-                if (location is AnimalHouse animalHouse)
-                {
-                    foreach (var a in animalHouse.animals.Values)
-                    {
-                        if (a.GetBoundingBox().Contains(map))
-                        {
-                            Set(a, a.currentLocation, tile);
-                            return;
-                        }
+                        Set(a, a.currentLocation, tile);
+                        return;
                     }
                 }
                 if (location is Forest forest)
@@ -64,13 +50,14 @@ namespace LetsMoveIt.TargetData
                     {
                         if (a.GetBoundingBox().Contains(map))
                         {
-                            Set(a, a.currentLocation, tile);
+                            Set(a, a.currentLocation, tile, true);
                             return;
                         }
                     }
                 }
                 if (Game1.player.GetBoundingBox().Contains(map))
                 {
+                    Game1.player.forceCanMove();
                     Set(Game1.player, location, tile);
                     return;
                 }
@@ -176,34 +163,29 @@ namespace LetsMoveIt.TargetData
                 if (building != null)
                 {
                     Vector2 buildingTile = new(building.tileX.Value, building.tileY.Value);
-                    Set(building.buildingType.Value, building, location, tile, tile - buildingTile);
+                    Set(building.buildingType.Value, building, location, buildingTile, tile - buildingTile);
                     return;
                 }
             }
         }
 
         /// <summary>Set target</summary>
-        private static void Set(object obj, GameLocation lastLocation, Vector2 cursorTile, Vector2? offset = null)
+        private void Set(object obj, GameLocation lastLocation, Vector2 cursorTile, Vector2? offset = null)
         {
             Set(null, obj, lastLocation, cursorTile, offset ?? Vector2.Zero);
         }
-        //private static void SetTarget(string? name, object obj, GameLocation lastLocation, Vector2 cursorTile)
-        //{
-        //    SetTarget(name, null, obj, lastLocation, cursorTile, Vector2.Zero);
-        //}
-        //private static void SetTarget(Guid guid, object obj, GameLocation lastLocation, Vector2 cursorTile)
-        //{
-        //    SetTarget(null, guid, obj, lastLocation, cursorTile, Vector2.Zero);
-        //}
-        private static void Set(string? name, object obj, GameLocation lastLocation, Vector2 cursorTile, Vector2 offset)
+        private void Set(object obj, GameLocation lastLocation, Vector2 cursorTile, bool marniesLivestock)
+        {
+            Set(null, obj, lastLocation, cursorTile, Vector2.Zero, marniesLivestock);
+        }
+        private void Set(string? name, object obj, GameLocation lastLocation, Vector2 cursorTile, Vector2 offset, bool marniesLivestock = false)
         {
             Name = name;
+            MarniesLivestock = marniesLivestock;
             TargetObject = obj;
             TargetLocation = lastLocation;
             TilePosition = cursorTile;
             TileOffset = offset;
-            Helper.Input.Suppress(Config.MoveKey);
-            PlaySound();
         }
     }
 }

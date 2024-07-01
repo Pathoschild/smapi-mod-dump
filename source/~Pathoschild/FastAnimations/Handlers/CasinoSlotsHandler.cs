@@ -16,7 +16,7 @@ namespace Pathoschild.Stardew.FastAnimations.Handlers
 {
     /// <summary>Handles the casino slots minigame spin animation.</summary>
     /// <remarks>See game logic in <see cref="Slots"/>.</remarks>
-    internal class CasinoSlotsHandler : BaseAnimationHandler
+    internal sealed class CasinoSlotsHandler : BaseAnimationHandler
     {
         /*********
         ** Public methods
@@ -26,20 +26,16 @@ namespace Pathoschild.Stardew.FastAnimations.Handlers
             : base(multiplier) { }
 
         /// <inheritdoc />
-        public override bool IsEnabled(int playerAnimationID)
+        public override bool TryApply(int playerAnimationId)
         {
-            return Game1.currentMinigame is Slots { spinning: true };
-        }
+            return
+                Game1.currentMinigame is Slots { spinning: true } minigame
+                && this.ApplySkipsWhile(() =>
+                {
+                    minigame.tick(Game1.currentGameTime);
 
-        /// <inheritdoc />
-        public override void Update(int playerAnimationID)
-        {
-            Slots minigame = (Slots)Game1.currentMinigame;
-
-            this.ApplySkips(
-                run: () => minigame.tick(Game1.currentGameTime),
-                until: () => !minigame.spinning
-            );
+                    return minigame.spinning;
+                });
         }
     }
 }

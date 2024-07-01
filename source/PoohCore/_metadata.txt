@@ -6,9 +6,9 @@ mods:
    PoohCore
 
 latest commit:
-   commit a69a57e6f660609819f5079030600329f12f3a0f
-   Author: Pooh <poohnhi@gmail.com>
-   Date:   Tue May 7 23:28:01 2024 +0700
+   commit ff34573ee912f606718cb6e36de4149c157abad4
+   Author: Pooh <39512774+poohnhi@users.noreply.github.com>
+   Date:   Thu Jun 27 17:51:41 2024 +0700
    
-       backup current progress 3
+       Update README.md
    

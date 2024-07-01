@@ -16,7 +16,7 @@ namespace WaterYourCrops
     {
         public bool EnableMod { get; set; } = true;
         public bool OnlyWaterCan { get; set; } = true;
-        public Color IndicatorColor { get; set; } = Color.White;
+        public Color IndicatorColor { get; set; } = Color.LightPink;
         public float IndicatorOpacity { get; set; } = 1f;
         public bool Debug { get; set; } = false;
 

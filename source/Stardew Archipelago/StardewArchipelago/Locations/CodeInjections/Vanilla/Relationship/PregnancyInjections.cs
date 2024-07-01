@@ -94,7 +94,8 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Relationship
                     return true; // run original logic
                 }
 
-                Response[] answerChoices1 = {
+                Response[] answerChoices1 =
+                {
                     new("Yes", Game1.content.LoadString("Strings\\Events:HaveBabyAnswer_Yes")),
                     new("Not", Game1.content.LoadString("Strings\\Events:HaveBabyAnswer_No")),
                 };
@@ -106,7 +107,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Relationship
                 {
                     question = orderBabyQuestion;
                 }
-                else if (npc.Gender == FEMALE)
+                else if (npc.Gender == Gender.Female)
                 {
                     question = npcGiveBirthQuestion;
                 }
@@ -193,7 +194,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Relationship
 
                 // "Baby" => "{0} and {1} welcomed a baby {2} to the family! They named {3} {4}."
                 Game1.morningQueue.Enqueue(() => multiplayer.globalChatInfoMessage("Baby", playerName, spouseName, scoutedItemClassification, pronoun, scoutedItemName));
-                
+
                 // I think the following lines aren't necessary as I have prevented the keyboard dialogue from showing up in the first place. If things break, try uncommenting it.
                 // if (Game1.keyboardDispatcher != null) Game1.keyboardDispatcher.Subscriber = (IKeyboardSubscriber)null;
                 Game1.player.Position = Utility.PointToVector2(Utility.getHomeOfFarmer(Game1.player).GetPlayerBedSpot()) * 64f;

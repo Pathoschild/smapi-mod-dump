@@ -6,9 +6,9 @@ mods:
    Transparency Settings
 
 latest commit:
-   commit 8192b641b05c3b25f588f6d35b3aea2bc41d24d8
+   commit c565dbd08f292472cfcc6296d5db2bae80dd0c27
    Author: Esca-MMC <esca.mmc@gmail.com>
-   Date:   Thu May 23 22:17:19 2024 -0500
+   Date:   Thu May 30 04:08:53 2024 -0500
    
-       Add grass transparency, tweak/comment config class
+       Run code cleanup
    

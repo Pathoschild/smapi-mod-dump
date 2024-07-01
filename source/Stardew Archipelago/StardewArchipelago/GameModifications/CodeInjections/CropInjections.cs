@@ -15,6 +15,7 @@ using StardewArchipelago.Archipelago;
 using StardewArchipelago.Stardew;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.GameData.Crops;
 
 namespace StardewArchipelago.GameModifications.CodeInjections
 {
@@ -37,69 +38,69 @@ namespace StardewArchipelago.GameModifications.CodeInjections
             _archipelago = archipelago;
             _stardewItemManager = stardewItemManager;
         }
-        
-        // public Crop(int seedIndex, int tileX, int tileY)
-        public static bool CropConstructor_WildSeedsBecomesUnlockedCrop_Prefix(Crop __instance, ref int seedIndex, int tileX, int tileY)
+
+        // public static string ResolveSeedId(string yieldItemId, GameLocation location)
+        public static bool ResolveSeedId_WildSeedsBecomesUnlockedCrop_Prefix(string itemId, GameLocation location, ref string __result)
         {
             try
             {
-                if (seedIndex != 770)
+                if (itemId != "770")
                 {
                     return true; // run original logic
                 }
 
-                var randomSeed = GetWeigthedRandomUnlockedCrop(Game1.currentSeason);
-                seedIndex = randomSeed;
-                return true; // run original logic
+                var randomSeed = GetWeigthedRandomUnlockedCrop(Game1.season);
+                __result = randomSeed;
+                return false; // don't run original logic
             }
             catch (Exception ex)
             {
-                _monitor.Log($"Failed in {nameof(CropConstructor_WildSeedsBecomesUnlockedCrop_Prefix)}:\n{ex}", LogLevel.Error);
+                _monitor.Log($"Failed in {nameof(ResolveSeedId_WildSeedsBecomesUnlockedCrop_Prefix)}:\n{ex}", LogLevel.Error);
                 return true; // run original logic
             }
         }
 
-        private static int GetWeigthedRandomUnlockedCrop(string season)
+        private static string GetWeigthedRandomUnlockedCrop(Season season)
         {
             var receivedSeeds = _archipelago.GetAllReceivedItems().Select(x => x.ItemName).Where(x =>
                 (x.EndsWith("Seeds") || x.EndsWith("Starter") || x.EndsWith("Seed") || x.EndsWith("Bean")) &&
                 _stardewItemManager.ItemExists(x));
             var seedItems = receivedSeeds.Select(x => _stardewItemManager.GetItemByName(x).PrepareForGivingToFarmer());
             var location = Game1.currentLocation;
-            var seedsInfo = Game1.content.Load<Dictionary<int, string>>("Data\\Crops");
+            var cropData = DataLoader.Crops(Game1.content);
 
-            var seedsICanPlantHere = seedItems.Where(x => SeedCanBePlantedHere(x, location, season, seedsInfo)).ToList();
+            var seedsICanPlantHere = seedItems.Where(x => SeedCanBePlantedHere(x, location, season, cropData)).ToList();
 
             switch (season)
             {
-                case "spring":
+                case Season.Spring:
                     seedsICanPlantHere.Add(_stardewItemManager.GetItemByName("Spring Seeds").PrepareForGivingToFarmer());
                     break;
-                case "summer":
+                case Season.Summer:
                     seedsICanPlantHere.Add(_stardewItemManager.GetItemByName("Summer Seeds").PrepareForGivingToFarmer());
                     break;
-                case "fall":
+                case Season.Fall:
                     seedsICanPlantHere.Add(_stardewItemManager.GetItemByName("Fall Seeds").PrepareForGivingToFarmer());
                     break;
-                case "winter":
+                case Season.Winter:
                     seedsICanPlantHere.Add(_stardewItemManager.GetItemByName("Winter Seeds").PrepareForGivingToFarmer());
                     break;
             }
 
-            var weightedSeeds = new List<int>();
+            var weightedSeeds = new List<string>();
             foreach (var seed in seedsICanPlantHere)
             {
                 if (_overpoweredSeeds.Contains(seed.Name))
                 {
-                    weightedSeeds.Add(seed.ParentSheetIndex);
+                    weightedSeeds.Add(seed.ItemId);
                 }
-                else if (SeedRegrows(seed, seedsInfo))
+                else if (SeedRegrows(seed, cropData))
                 {
-                    weightedSeeds.AddRange(Enumerable.Repeat(seed.ParentSheetIndex, 10));
+                    weightedSeeds.AddRange(Enumerable.Repeat(seed.ItemId, 10));
                 }
                 else
                 {
-                    weightedSeeds.AddRange(Enumerable.Repeat(seed.ParentSheetIndex, 100));
+                    weightedSeeds.AddRange(Enumerable.Repeat(seed.ItemId, 100));
                 }
             }
 
@@ -108,9 +109,9 @@ namespace StardewArchipelago.GameModifications.CodeInjections
             return randomSeed;
         }
 
-        private static bool SeedCanBePlantedHere(Item x, GameLocation location, string season, Dictionary<int, string> seedsInfo)
+        private static bool SeedCanBePlantedHere(Item x, GameLocation location, Season season, Dictionary<string, CropData> cropData)
         {
-            if (!seedsInfo.ContainsKey(x.ParentSheetIndex))
+            if (!cropData.ContainsKey(x.ItemId))
             {
                 return false;
             }
@@ -120,18 +121,18 @@ namespace StardewArchipelago.GameModifications.CodeInjections
                 return true;
             }
 
-            var seedSeasons = seedsInfo[x.ParentSheetIndex].Split('/')[1].Split(' ');
-            return seedSeasons.Contains(season, StringComparer.CurrentCultureIgnoreCase);
+            var seedSeasons = cropData[x.ItemId].Seasons;
+            return seedSeasons.Contains(season);
         }
 
-        private static bool SeedRegrows(Item x, Dictionary<int, string> seedsInfo)
+        private static bool SeedRegrows(Item x, Dictionary<string, CropData> cropData)
         {
-            if (!seedsInfo.ContainsKey(x.ParentSheetIndex))
+            if (!cropData.ContainsKey(x.ItemId))
             {
                 return false;
             }
 
-            return int.Parse(seedsInfo[x.ParentSheetIndex].Split('/')[4]) != -1;
+            return cropData[x.ItemId].RegrowDays != -1;
         }
     }
 }

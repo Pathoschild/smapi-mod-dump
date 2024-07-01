@@ -52,6 +52,7 @@ namespace MobileCatalogues
             {
                 data[pixel] = Config.BackgroundColor;
             }
+
             texture.SetData(data);
             backgroundTexture = texture;
             texture = new Texture2D(Game1.graphics.GraphicsDevice, (int)screenSize.X, Config.AppRowHeight);
@@ -63,6 +64,7 @@ namespace MobileCatalogues
                 data[pixel] = Config.HighlightColor;
                 data2[pixel] = Config.GreyedColor;
             }
+
             texture.SetData(data);
             texture2.SetData(data2);
             hightlightTexture = texture;
@@ -74,6 +76,7 @@ namespace MobileCatalogues
             {
                 data[pixel] = Config.HeaderColor;
             }
+
             texture.SetData(data);
             headerTexture = texture;
             coinTexture = Helper.ModContent.Load<Texture2D>(Path.Combine("assets", "coin.png"));
@@ -82,21 +85,24 @@ namespace MobileCatalogues
 
         public static void Display_RenderedWorld(object sender, RenderedWorldEventArgs e)
         {
-
             if (api.IsCallingNPC())
+            {
                 return;
+            }
 
             Vector2 screenPos = api.GetScreenPosition();
             Vector2 screenSize = api.GetScreenSize();
             if (!api.GetPhoneOpened() || !api.GetAppRunning() || api.GetRunningApp() != Helper.ModRegistry.ModID)
             {
-                Monitor.Log($"Closing app: phone opened {api.GetPhoneOpened()} app running {api.GetAppRunning()} running app {api.GetRunningApp()}");
+                Monitor.Log($"Closing app: phone opened: {api.GetPhoneOpened()}, app running: {api.GetAppRunning()}, running app: {api.GetRunningApp()}");
                 CataloguesApp.CloseApp();
                 return;
             }
 
             if (!clicking)
+            {
                 dragging = false;
+            }
 
             Point mousePos = Game1.getMousePosition();
             if (clicking)
@@ -143,14 +149,20 @@ namespace MobileCatalogues
                         backPosY = screenPos.Y;
                     }
                     if (posY > screenPos.Y + screenSize.Y - Config.AppRowHeight)
+                    {
                         cutBottom = (int)(posY - screenPos.Y + screenSize.Y - Config.AppRowHeight);
+                    }
                     r = new Rectangle((int)screenPos.X, (int)backPosY, (int)screenSize.X, (int)(Config.AppRowHeight) - cutTop - cutBottom);
                     if (!r.Contains(mousePos))
+                    {
                         e.SpriteBatch.Draw(greyedTexture, r, Color.White);
+                    }
                 }
 
                 if(r.Contains(mousePos))
+                {
                     e.SpriteBatch.Draw(hightlightTexture, r, Color.White);
+                }
 
                 float textHeight = Game1.dialogueFont.MeasureString(a).Y * Config.TextScale;
                 if (posY > screenPos.Y && posY < screenPos.Y + screenSize.Y - Config.AppRowHeight / 2f + textHeight / 2f)
@@ -158,13 +170,14 @@ namespace MobileCatalogues
                     e.SpriteBatch.DrawString(Game1.dialogueFont, a, new Vector2(screenPos.X + Config.MarginX, posY + Config.AppRowHeight / 2f - textHeight / 2f), Config.TextColor, 0f, Vector2.Zero, Config.TextScale, SpriteEffects.None, 0.86f);
                     if (!bought)
                     {
-                        string cost = ""+CataloguesApp.GetCataloguePrice(CataloguesApp.catalogueList[i]);
+                        string cost = CataloguesApp.GetCataloguePrice(CataloguesApp.catalogueList[i]).ToString();
                         Vector2 buySize = Game1.dialogueFont.MeasureString(cost) * Config.TextScale;
                         e.SpriteBatch.DrawString(Game1.dialogueFont, cost, new Vector2(screenPos.X + screenSize.X - buySize.X - Config.AppRowHeight * 3 / 4, posY + Config.AppRowHeight / 2f - buySize.Y / 2f), Config.TextColor, 0f, Vector2.Zero, Config.TextScale, SpriteEffects.None, 0.86f);
                         e.SpriteBatch.Draw(coinTexture, new Rectangle((int)(screenPos.X + screenSize.X - Config.AppRowHeight * 3 / 4f), (int)(posY + Config.AppRowHeight / 4f), (int)(Config.AppRowHeight / 2f), (int)(Config.AppRowHeight / 2f)), Color.White);
                     }
                 }
             }
+
             e.SpriteBatch.Draw(headerTexture, new Rectangle((int)screenPos.X, (int)screenPos.Y, (int)screenSize.X, Config.AppHeaderHeight), Color.White);
             float headerTextHeight = Game1.dialogueFont.MeasureString(Helper.Translation.Get("catalogues")).Y * Config.HeaderTextScale;
             Vector2 xSize = Game1.dialogueFont.MeasureString("x") * Config.HeaderTextScale;

@@ -57,11 +57,10 @@ namespace Pathoschild.Stardew.DataLayers.Layers.Coverage
             // init
             this.Mods = mods;
             this.SelectedColor = colors.Get(layerId, "Selected", Color.Blue);
-            this.Legend = new[]
-            {
+            this.Legend = [
                 this.Wet = new LegendEntry(I18n.Keys.Sprinklers_Covered, colors.Get(layerId, "Covered", Color.Green)),
                 this.Dry = new LegendEntry(I18n.Keys.Sprinklers_DryCrops, colors.Get(layerId, "NotCovered", Color.Red))
-            };
+            ];
 
             // get search radius
             this.SearchRadius = 10;

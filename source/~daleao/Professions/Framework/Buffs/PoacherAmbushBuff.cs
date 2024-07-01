@@ -57,10 +57,6 @@ internal sealed class PoacherAmbushBuff : Buff
             monster.focusedOnFarmers = false;
             switch (monster)
             {
-                case AngryRoger:
-                case Ghost:
-                    ModHelper.Reflection.GetField<bool>(monster, "seenPlayer").SetValue(false);
-                    break;
                 case Bat:
                 case RockGolem:
                     ModHelper.Reflection.GetField<NetBool>(monster, "seenPlayer").GetValue().Value = false;

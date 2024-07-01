@@ -48,6 +48,7 @@
     "config.machines.fruit-tree": "Árvore (Árvore Frutífera)",
     "config.machines.trash-can": "Lata de Lixo",
     "config.machines.wild-tree": "Árvore (Árvore Silvestre)",
+    "config.machines.feed-hopper": "Funil de Alimentação e Silo",
 
     // special settings for individual machines
     "config.machines.wild-tree.collect-moss.name": "Coletar Musgo",

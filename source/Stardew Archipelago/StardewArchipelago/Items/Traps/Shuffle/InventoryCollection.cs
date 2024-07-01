@@ -65,7 +65,7 @@ namespace StardewArchipelago.Items.Traps.Shuffle
 
         public void RemoveInvalidInventories()
         {
-            Inventories.RemoveAll(x => x == null || x.Info == null || x.Content == null || 
+            Inventories.RemoveAll(x => x == null || x.Info == null || x.Content == null ||
                                        !x.Content.Any() || x.Content.All(y => y.Value == null));
         }
 

@@ -8,7 +8,9 @@
 **
 *************************************************/
 
-using AchtuurCore.Framework;
+using AchtuurCore.Framework.Particle;
+using AchtuurCore.Framework.Particle.StartBehaviour;
+using AchtuurCore.Framework.Particle.UpdateBehaviour;
 using AchtuurCore.Patches;
 using AchtuurCore.Utility;
 using HarmonyLib;
@@ -19,9 +21,11 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
+using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static StardewValley.Minigames.TargetGame;
 
 namespace MultiplayerExpShare;
 
@@ -38,7 +42,7 @@ internal class ModEntry : Mod
     /// <summary>
     /// Color used for Fishing exp particle, blue
     /// </summary>
-    internal readonly Color FishingColor = new Color(10, 10, 225);
+    internal readonly Color FishingColor = new Color(15, 80, 255);
     /// <summary>
     /// Color used for Mining exp particle, red
     /// </summary>
@@ -51,6 +55,12 @@ internal class ModEntry : Mod
     internal readonly Vector2 ParticleSize = new Vector2(6f, 6f);
     internal readonly int ParticleTrailLength = 10;
 
+    internal readonly int LargeParticleThreshold = 15;
+    internal readonly int MediumParticleThreshold = 5;
+
+    internal readonly float LargeParticleScale = 2f;
+    internal readonly float MediumParticleScale = 1.5f;
+
 
     internal static ModEntry Instance;
     public ModConfig Config;
@@ -62,6 +72,16 @@ internal class ModEntry : Mod
 
     internal static Dictionary<string, TrailParticle> ShareTrailParticles;
 
+
+    public static bool PlayerHasMastery()
+    {
+        return FarmerHasMastery(Game1.player);
+    }
+
+    public static bool FarmerHasMastery(Farmer farmer)
+    {
+        return farmer.Level >= 25 && MasteryTrackerMenu.getCurrentMasteryLevel() < 5; // this is used in base game code?
+    }
 
     public static Farmer GetFarmerFromMultiplayerID(long id)
     {
@@ -92,26 +112,73 @@ internal class ModEntry : Mod
     public static void SpawnParticles(Farmer origin, Farmer target, string skill_id, int amount)
     {
         // If skill has no valid particle or origin/target not in same location, do not spawn
-        if (!ShareTrailParticles.ContainsKey(skill_id) || target.currentLocation != Game1.player.currentLocation)
+        if (!ShareTrailParticles.ContainsKey(skill_id))
             return;
 
         int n_particles = Math.Max(1, amount / Instance.Config.ExpPerParticle);
+        bool sameLocation = origin.currentLocation == target.currentLocation;
 
-        for (int n = 0; n < n_particles; n++)
+        while(n_particles > 0)
         {
-            SpawnParticle(origin, target, skill_id);
+            float size_multiplier;
+            if (n_particles >= Instance.LargeParticleThreshold)
+            {
+                size_multiplier = Instance.LargeParticleScale;
+                n_particles -= Instance.LargeParticleThreshold;
+            }
+            else if (n_particles >= Instance.MediumParticleThreshold)
+            {
+                size_multiplier = Instance.MediumParticleScale;
+                n_particles -= Instance.MediumParticleThreshold;
+            }
+            else
+            {
+                size_multiplier = 1f;
+                n_particles -= 1;
+            }
+
+            if (sameLocation)
+                SpawnParticleSameLocation(origin, target, skill_id, size_multiplier);
+            else
+                SpawnParticleDifferentLocation(origin, target, skill_id, size_multiplier);
         }
     }
 
-    private static void SpawnParticle(Farmer origin, Farmer target, string skill_id)
+    private static void SpawnParticleDifferentLocation(Farmer origin, Farmer target, string skill_id, float size_multiplier)
+    {
+        TrailParticle particle = new TrailParticle(ShareTrailParticles[skill_id]);
+        particle.SetSize(Instance.ParticleSize * size_multiplier);
+
+        if (origin != Game1.player) // receiving end
+        {
+            particle.AddState<EdgeOfMapStartBehaviour>();
+            particle.AddState<MovementBehaviour>();
+            particle.AddState<OrbitMovementBehaviour>();
+            particle.SetTargetFarmer(target);
+        } 
+        else // transmitting end
+        {
+            particle.SetInitialPosition(Game1.player.Position);
+            particle.AddState<RandomStartBehaviour>();
+            particle.AddState<EscapeMapMovementBehaviour>();
+        }
+
+        particle.Start();
+    }
+
+    private static void SpawnParticleSameLocation(Farmer origin, Farmer target, string skill_id, float size_multiplier)
     {
         // Clone particle from dictionary, so that original remains for further copying
-        TrailParticle Particle = (TrailParticle)ShareTrailParticles[skill_id].Clone();
+        TrailParticle particle = new TrailParticle(ShareTrailParticles[skill_id]);
+        particle.SetSize(Instance.ParticleSize * size_multiplier);
+        particle.AddState<RandomStartBehaviour>();
+        particle.AddState<MovementBehaviour>();
+        particle.AddState<OrbitMovementBehaviour>();
 
         // Set initial position of 
-        Particle.SetInitialPosition(origin.Position);
-        Particle.SetTarget(target);
-        Particle.Start();
+        particle.SetInitialPosition(origin.Position);
+        particle.SetTargetFarmer(target);
+        particle.Start();
     }
 
     /// <summary>
@@ -152,10 +219,6 @@ internal class ModEntry : Mod
         // return all players that are close to the main player
         foreach (Farmer online_farmer in Game1.getOnlineFarmers())
         {
-            // Skip if player is current player
-            if (online_farmer.IsLocalPlayer)
-                continue;
-
             // Add other player to list if they are close enough to main player
             if (FarmerIsNearby(online_farmer))
             {
@@ -169,9 +232,9 @@ internal class ModEntry : Mod
     /// </summary>
     /// <param name="level">Optional, skill level of current skill being evaluated for exp</param>
     /// <returns></returns>
-    public static float GetActorExpPercentage(int level, string skill_id)
+    public static float GetActorExpPercentage(Farmer actor, int level, string skill_id)
     {
-        if (Instance.Config.ShareAllExpAtMaxLevel && level >= Instance.skillMaxLevels.Value[skill_id])
+        if (Instance.Config.ShareAllExpAtMaxLevel && level >= Instance.skillMaxLevels.Value[skill_id] && !FarmerHasMastery(actor))
         {
             return 0f;
         }
@@ -179,14 +242,9 @@ internal class ModEntry : Mod
         return Instance.Config.ExpPercentageToActor;
     }
 
-    public static float GetSharedExpPercentage(int actor_level, string skill_id)
+    public static float GetSharedExpPercentage(Farmer actor, int actor_level, string skill_id)
     {
-        if (Instance.Config.ShareAllExpAtMaxLevel && actor_level >= Instance.skillMaxLevels.Value[skill_id])
-        {
-            return 1f;
-        }
-
-        return 1f - Instance.Config.ExpPercentageToActor;
+        return 1f - GetActorExpPercentage(actor, actor_level, skill_id);
     }
 
     /// <summary>
@@ -317,11 +375,11 @@ internal class ModEntry : Mod
         // Create particles that can be copied
         ShareTrailParticles = new Dictionary<string, TrailParticle>
         {
-            { "Farming", new TrailParticle(Vector2.Zero, Vector2.Zero, ParticleTrailLength, FarmingColor, ParticleSize) },
-            { "Foraging", new TrailParticle(Vector2.Zero, Vector2.Zero, ParticleTrailLength, ForagingColor, ParticleSize) },
-            { "Fishing", new TrailParticle(Vector2.Zero, Vector2.Zero, ParticleTrailLength, FishingColor, ParticleSize) },
-            { "Mining", new TrailParticle(Vector2.Zero, Vector2.Zero, ParticleTrailLength, MiningColor, ParticleSize) },
-            { "Combat", new TrailParticle(Vector2.Zero, Vector2.Zero, ParticleTrailLength, CombatColor, ParticleSize) }
+            { "Farming", new TrailParticle(ParticleTrailLength, FarmingColor, ParticleSize) },
+            { "Foraging", new TrailParticle(ParticleTrailLength, ForagingColor, ParticleSize) },
+            { "Fishing", new TrailParticle(ParticleTrailLength, FishingColor, ParticleSize) },
+            { "Mining", new TrailParticle(ParticleTrailLength, MiningColor, ParticleSize) },
+            { "Combat", new TrailParticle(ParticleTrailLength, CombatColor, ParticleSize) }
         };
 
         // Add trail color and use default size (by not calling method)
@@ -330,12 +388,6 @@ internal class ModEntry : Mod
         ShareTrailParticles["Fishing"].SetTrailColors(new List<Color> { FishingColor, Color.WhiteSmoke, Color.WhiteSmoke });
         ShareTrailParticles["Mining"].SetTrailColors(new List<Color> { MiningColor, Color.WhiteSmoke, Color.WhiteSmoke });
         ShareTrailParticles["Combat"].SetTrailColors(new List<Color> { CombatColor, Color.WhiteSmoke, Color.WhiteSmoke });
-
-        foreach (TrailParticle particle in ShareTrailParticles.Values)
-        {
-            particle.StartBehaviour = ParticleStartBehaviour.Random;
-        }
-
     }
 
     private void OnRenderedWorld(object sender, RenderedWorldEventArgs e)
@@ -353,20 +405,47 @@ internal class ModEntry : Mod
 
         Debug.DebugOnlyExecute(() =>
         {
-            if (e.Button == SButton.R)
+            if (e.Button == SButton.J)
             {
                 // simulate diamond node breaking
                 int n_particles = 150 / Instance.Config.ExpPerParticle;
+                //int n_particles = 1;
 
-                for (int n = 0; n < n_particles; n++)
+                while (n_particles > 0)
                 {
+                    float size_multiplier;
+                    if (n_particles >= Instance.LargeParticleThreshold)
+                    {
+                        size_multiplier = Instance.LargeParticleScale;
+                        n_particles -= Instance.LargeParticleThreshold;
+                    }
+                    else if (n_particles >= Instance.MediumParticleThreshold)
+                    {
+                        size_multiplier = Instance.MediumParticleScale;
+                        n_particles -= Instance.MediumParticleThreshold;
+                    }
+                    else
+                    {
+                        size_multiplier = 1f;
+                        n_particles -= 1;
+                    }
                     // Clone particle from dictionary, so that original remains for further copying
-                    TrailParticle Particle = (TrailParticle)ShareTrailParticles["Farming"].Clone();
-
+                    TrailParticle particle = new TrailParticle(ShareTrailParticles["Farming"]);
+                    particle.SetSize(Instance.ParticleSize * size_multiplier);
+                    //Color color = new Color(15, 80, 255);
+                    //particle.SetColor(color);
+                    //particle.SetTrailColors(new List<Color> { color, Color.WhiteSmoke, Color.WhiteSmoke });
+                    //particle.AddState<MovementBehaviour>();
                     // Set initial position of 
-                    Particle.SetInitialPosition(e.Cursor.AbsolutePixels);
-                    Particle.SetTarget(Game1.player);
-                    Particle.Start();
+                    //particle.SetInitialPosition(e.Cursor.AbsolutePixels);
+                    //particle.SetTargetFarmer(Game1.player);
+
+                    particle.AddState<EdgeOfMapStartBehaviour>();
+                    particle.AddState<MovementBehaviour>();
+                    particle.AddState<OrbitMovementBehaviour>();
+                    particle.SetTargetFarmer(Game1.player);
+
+                    particle.Start();
                 }
             }
         });

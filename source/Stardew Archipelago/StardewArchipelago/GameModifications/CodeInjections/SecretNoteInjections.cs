@@ -10,9 +10,11 @@
 
 using System;
 using StardewArchipelago.Archipelago;
+using StardewArchipelago.Constants.Vanilla;
 using StardewArchipelago.Locations;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Extensions;
 using Object = StardewValley.Object;
 
 namespace StardewArchipelago.GameModifications.CodeInjections
@@ -20,6 +22,7 @@ namespace StardewArchipelago.GameModifications.CodeInjections
     internal class SecretNoteInjections
     {
         private const int MAX_SECRET_NOTES = 25;
+        private const string SECRET_NOTE_ID = "(O)79";
 
         private static IMonitor _monitor;
         private static ArchipelagoClient _archipelago;
@@ -37,36 +40,47 @@ namespace StardewArchipelago.GameModifications.CodeInjections
         {
             try
             {
-                if (__result != null || !who.hasMagnifyingGlass)
+                if (who == null || __result != null || !who.hasMagnifyingGlass)
                 {
                     return;
                 }
 
-                var isIsland = __instance.GetLocationContext() == GameLocation.LocationContext.Island;
+                var isIsland = __instance.InIslandContext();
                 if (isIsland)
                 {
-                    return;
+                    var needsExtraJournalScrap = _locationChecker.IsAnyLocationNotChecked("Journal Scrap");
+                    if (!needsExtraJournalScrap)
+                    {
+                        return;
+                    }
                 }
-                
-                if (who.secretNotesSeen.Count < MAX_SECRET_NOTES || who.hasItemWithNameThatContains("Secret Note") != null)
+                else
+                {
+                    var needsExtraSecretNotes = _locationChecker.IsAnyLocationNotChecked("Secret Note");
+                    if (!needsExtraSecretNotes)
+                    {
+                        return;
+                    }
+                }
+
+                var itemId = isIsland ? QualifiedItemIds.JOURNAL_SCRAP : QualifiedItemIds.SECRET_NOTE;
+                if (who.Items.ContainsId(itemId))
                 {
                     return;
                 }
 
-                if (Game1.random.NextDouble() > 0.4)
+                var unseenSecretNotes = Utility.GetUnseenSecretNotes(who, isIsland, out var totalNotes);
+                if (unseenSecretNotes.Length > 0)
                 {
                     return;
                 }
 
-                var needsExtraSecretNotes = _locationChecker.IsAnyLocationNotChecked("Secret Note");
-                if (!needsExtraSecretNotes)
+                if (Game1.random.NextBool(GameLocation.LAST_SECRET_NOTE_CHANCE * 0.25))
                 {
                     return;
                 }
 
-                var secretNoteNumber = Game1.random.Next(1, MAX_SECRET_NOTES+1);
-                var secretNote = new Object(79, 1);
-                secretNote.name = secretNote.name + " #" + secretNoteNumber;
+                var secretNote = ItemRegistry.Create<Object>(itemId);
                 __result = secretNote;
                 return;
             }

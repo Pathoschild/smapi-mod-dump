@@ -18,7 +18,8 @@ using StardewModdingAPI;
 using Unlockable_Bundles.Lib;
 using static Unlockable_Bundles.API.IUnlockableBundlesAPI;
 using static Unlockable_Bundles.ModEntry;
-
+using Unlockable_Bundles.Lib.WalletCurrency;
+using Unlockable_Bundles.API.ContentPatcher;
 
 namespace Unlockable_Bundles.API
 {
@@ -34,7 +35,7 @@ namespace Unlockable_Bundles.API
         {
             get => _isReady; set {
                 _isReady = value;
-                ContentPatcherHandling.DaysSincePurchaseToken.Ready = value;
+                BaseToken.Ready = value;
             }
         }
         public IList<string> PurchasedBundles => getPurchasedUnlockables();
@@ -192,13 +193,29 @@ namespace Unlockable_Bundles.API
                     key,
                     unlockable != null ? unlockable.Location : null,
                     location,
-                    new Dictionary<string, int>(unlockable.RandomPriceEntries == 0 ? unlockable.Price : saveData.Price),
+                    new Dictionary<string, int>(unlockable?.RandomPriceEntries == 0 ? unlockable.Price : saveData.Price),
                     new Dictionary<string, int>(saveData.AlreadyPaid),
                     saveData.Purchased,
                     saveData.DayPurchased == -1 ? -1 : Game1.Date.TotalDays - saveData.DayPurchased,
                     unlockable != null,
                     saveData.Discovered
                    );
+        }
+
+        public int getWalletCurrency(string currencyId, long who)
+        {
+            var currency = WalletCurrencyHandler.getCurrencyById(currencyId);
+            var relevantPlayer = WalletCurrencyHandler.getRelevantPlayer(currency, who);
+            return ModData.getWalletCurrency(currencyId, relevantPlayer);
+        }
+
+        public int addWalletCurrency(string currencyId, long who, int addedValue, bool broadcast, bool registerBillboard)
+        {
+            var currency = WalletCurrencyHandler.getCurrencyById(currencyId);
+            var relevantPlayer = WalletCurrencyHandler.getRelevantPlayer(currency, who);
+            WalletCurrencyHandler.addWalletCurrency(currency, relevantPlayer, addedValue, broadcast, registerBillboard);
+            
+            return ModData.addWalletCurrency(currencyId, relevantPlayer, addedValue);
         }
 
         public void raiseShopContributed(BundleContributedEventArgs args) => BundleContributedEvent?.Invoke(this, args);
@@ -217,7 +234,7 @@ namespace Unlockable_Bundles.API
             CachedPurchasedBundlesByLocation = null;
             CachedDiscoveredBundles = null;
             CachedBundles = null;
-            ContentPatcherHandling.DaysSincePurchaseToken.RequiresContextUpdate = true;
+            BaseToken.RequiresContextUpdate = true;
         }
     }
 }

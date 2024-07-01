@@ -15,6 +15,7 @@ using Pathoschild.Stardew.Common.Patching;
 using Pathoschild.Stardew.CropsAnytimeAnywhere.Framework;
 using Pathoschild.Stardew.CropsAnytimeAnywhere.Patches;
 using StardewModdingAPI;
+using StardewModdingAPI.Events;
 
 namespace Pathoschild.Stardew.CropsAnytimeAnywhere
 {
@@ -37,13 +38,15 @@ namespace Pathoschild.Stardew.CropsAnytimeAnywhere
         {
             CommonHelper.RemoveObsoleteFiles(this, "CropsAnytimeAnywhere.pdb"); // removed in 1.4.7
 
-            // read config
-            this.Config = new LocationConfigManager(
-                helper.ReadConfig<ModConfig>()
-            );
-
-            // read data
+            // read config & data
+            this.Config = new LocationConfigManager(helper.ReadConfig<ModConfig>());
             var fallbackTileTypes = this.LoadFallbackTileTypes();
+
+            // init
+            I18n.Init(helper.Translation);
+
+            // hook up events
+            helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
 
             // add patches
             HarmonyPatcher.Apply(this,
@@ -55,6 +58,26 @@ namespace Pathoschild.Stardew.CropsAnytimeAnywhere
         /*********
         ** Private methods
         *********/
+        /// <inheritdoc cref="IGameLoopEvents.GameLaunched"/>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void OnGameLaunched(object? sender, GameLaunchedEventArgs e)
+        {
+            // add Generic Mod Config Menu integration
+            new GenericModConfigMenuIntegrationForCropsAnytimeAnywhere(
+                getConfig: () => this.Config.Config,
+                reset: () => this.Config.UpdateConfig(new ModConfig()),
+                saveAndApply: () =>
+                {
+                    this.Helper.WriteConfig(this.Config.Config);
+                    this.Config.UpdateConfig(this.Config.Config);
+                },
+                modRegistry: this.Helper.ModRegistry,
+                monitor: this.Monitor,
+                manifest: this.ModManifest
+            ).Register();
+        }
+
         /// <summary>Load the fallback tile types.</summary>
         /// <returns>Returns the overrides if valid, else null.</returns>
         private Dictionary<string, Dictionary<int, string>> LoadFallbackTileTypes()

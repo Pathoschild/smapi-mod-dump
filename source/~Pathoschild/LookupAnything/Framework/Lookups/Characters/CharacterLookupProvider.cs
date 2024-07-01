@@ -254,7 +254,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Characters
             }
 
             // filter duplicates (e.g. multiple monsters)
-            HashSet<string> seen = new();
+            HashSet<string> seen = [];
             foreach (ISubject subject in GetAll())
             {
                 if (!seen.Add($"{subject.GetType().FullName}::{subject.Type}::{subject.Name}"))

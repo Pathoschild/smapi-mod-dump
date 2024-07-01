@@ -45,14 +45,15 @@ namespace ContentPatcher.Framework.Commands.Commands
         /// <inheritdoc />
         public override string GetDescription()
         {
-            return @"
+            return
+                """
                 patch dump
                    Usage: patch dump applied
                    Lists active patches grouped by their target value.
 
                    Usage: patch dump order
                    Lists every loaded patch in their apply order. When two patches edit the same asset, they'll be applied in the apply order.
-            ";
+                """;
         }
 
         /// <inheritdoc />

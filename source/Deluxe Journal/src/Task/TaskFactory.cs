@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-using StardewModdingAPI;
-
 using static DeluxeJournal.Task.TaskParameterAttribute;
 
 namespace DeluxeJournal.Task
@@ -24,6 +22,9 @@ namespace DeluxeJournal.Task
 
         private IReadOnlyList<TaskParameter>? _cachedParameters;
 
+        [TaskParameter(TaskParameterNames.Color, TaskParameterTag.ColorIndex, InputType = TaskParameterInputType.ColorButtons)]
+        public int ColorIndex { get; set; } = 0;
+
         /// <summary>Flags indicating which smart icons are enabled.</summary>
         public virtual SmartIconFlags EnabledSmartIcons => SmartIconFlags.None;
 
@@ -32,13 +33,25 @@ namespace DeluxeJournal.Task
 
         /// <summary>Initialize the state of the factory with the values of an existing ITask instance.</summary>
         /// <param name="task">ITask instance.</param>
-        /// <param name="translation">Translation helper.</param>
-        public abstract void Initialize(ITask task, ITranslationHelper translation);
+        public void Initialize(ITask task)
+        {
+            InitializeInternal(task);
+            ColorIndex = task.ColorIndex;
+        }
 
         /// <summary>Create a new <see cref="ITask"/> instance.</summary>
         /// <param name="name">The name of the new task.</param>
         /// <returns>A new task inheriting from <see cref="ITask"/> or <c>null</c> if the parameter values are insufficient.</returns>
-        public abstract ITask? Create(string name);
+        public ITask? Create(string name)
+        {
+            if (CreateInternal(name) is ITask task)
+            {
+                task.ColorIndex = ColorIndex;
+                return task;
+            }
+
+            return null;
+        }
 
         /// <summary>Can this factory create a valid ITask in its current state?</summary>
         public virtual bool IsReady()
@@ -57,10 +70,18 @@ namespace DeluxeJournal.Task
                     {
                         var attribute = (TaskParameterAttribute)prop.GetCustomAttributes(typeof(TaskParameterAttribute), true).First();
                         return new TaskParameter(this, prop, attribute);
-                    }).ToList();
+                    })
+                    .OrderBy(param => param.Attribute.Tag)
+                    .ToList();
             }
 
             return _cachedParameters;
         }
+
+        /// <inheritdoc cref="Initialize(ITask)"/>
+        protected abstract void InitializeInternal(ITask task);
+
+        /// <inheritdoc cref="Create(string)"/>
+        protected abstract ITask? CreateInternal(string name);
     }
 }

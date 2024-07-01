@@ -19,7 +19,16 @@ namespace DestroyableBushes
     public class ModConfig
     {
         /// <summary>The number of axe upgrades required to destroy non-tea bushes. 0 allows the default axe to remove bushes, 1 requires the copper axe or better, etc.</summary>
+        /// <remarks>The base game value this replaces is 1, i.e. non-tea bushes require a copper axe to destroy.</remarks>
         public int AxeUpgradesRequired { get; set; } = 0;
+
+        /// <summary>A damage multiplier applied to all axes when dealing damage to non-tea bushes.</summary>
+        /// <remarks>
+        /// Bushes effectively have 1 health. Their health starts at 0, and they are destroyed when health is -1 or lower.
+        /// By default, axes deal 0.2 damage per upgrade when hitting a non-tea bush. This mod also allows non-upgraded axes to hit non-tea bushes for 0.125 damage.
+        /// This multiplier is applied to those values. For example, setting this to 8.0 or higher should allow all axes to destroy bushes in one hit.
+        /// </remarks>
+        public float AxeDamageMultiplier { get; set; } = 1.0f;
 
         /// <summary>The number component of <see cref="WhenBushesRegrow"/>.</summary>
         [JsonIgnore]

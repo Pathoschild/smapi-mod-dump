@@ -1,0 +1,32 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Mushymato/StardewMods
+**
+*************************************************/
+
+{
+    // config
+    "config.RestrictKrobusStock.name": "Restrict Krobus Stock",
+    "config.RestrictKrobusStock.description": "Krobus only stocks 1 of each sprinkler attachment on Sunday, you can disable this restriction and buy unlimited amount of attachments. This setting will take effect the following day or save reload.",
+    "config.WaterOnPlanting.name": "Water on Planting",
+    "config.WaterOnPlanting.description": "When crop is planted by an attachment, water it once so that they will sprout the next day.",
+    "config.EnableForGardenPots.name": "Enable for Garden Pots",
+    "config.EnableForGardenPots.description": "Allow attachments to plant/fertilize garden pots. Does NOT water the crop regardless of Water on Planting setting.",
+    "config.TrellisPattern.name": "Trellis Planting Pattern",
+    "config.TrellisPattern.description": "Control how non-passable crops should be planted.\nAny: no restrictions\nRows: leave every third row passable.\nColumns: leave every third column passable.",
+    "config.TrellisPattern.0": "Any",
+    "config.TrellisPattern.1": "Rows",
+    "config.TrellisPattern.2": "Columns",
+    "config.InvisibleAttachments.name": "Invisible Attachments",
+    "config.InvisibleAttachments.description": "Make attachments invisible once attached, useful if using sprinkler replacement mods.",
+    "config.IntakeChestSize.name": "Intake Chest Size",
+    "config.IntakeChestSize.description": "Default 9 slots.",
+    "config.PlantOnChestClose.name": "Plant on Chest Close",
+    "config.PlantOnChestClose.description": "Plant/fertilize right after closing the attachment chest menu.\n!!WARNING: The player can get stuck on trellis crops.!!",
+    "config.SeasonAwarePlanting.name": "Season Aware Planting",
+    "config.SeasonAwarePlanting.description": "In areas affected by seasons, only plant crops that will be harvestable."
+}

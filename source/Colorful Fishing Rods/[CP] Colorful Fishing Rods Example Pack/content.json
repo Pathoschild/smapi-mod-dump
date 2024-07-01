@@ -1,0 +1,59 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/6480k/colorful-fishing-rods
+**
+*************************************************/
+
+{
+	"Format": "2.0",
+	"Changes": [
+		{
+			"Action": "EditData",
+			"Target": "Mods/ColorfulFishingRods",
+			"Entries": {
+				"(T)IridiumRod": { //qualified ID of the rod from Data/Tools
+					//8-bit RGB
+					"R": 0,
+					"G": 255,
+					"B": 0,
+					"A": 255
+				},
+				"(T)6480.colorfulfishingrodstemplate": {
+					"R": 0,
+					"G": 255,
+					"B": 0,
+					"A": 255
+				}
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/Tools",
+			"Entries": {
+				"6480.colorfulfishingrodstemplate": {
+					"ClassName": "FishingRod",
+					"Name": "6480's Custom Rod",
+					"AttachmentSlots": 1,
+					"SalePrice": 5000,
+					"DisplayName": "6480's Custom Rod",
+					"Description": "6480's Custom Rod.",
+					"Texture": "TileSheets\\tools",
+					"SpriteIndex": 10,
+					"MenuSpriteIndex": -1,
+					"UpgradeLevel": 5,
+					"ApplyUpgradeLevelToDisplayName": false,
+					"ConventionalUpgradeFrom": null,
+					"UpgradeFrom": null,
+					"CanBeLostOnDeath": false,
+					"SetProperties": null,
+					"ModData": null,
+					"CustomFields": null
+				}
+			}
+		}
+	]
+}

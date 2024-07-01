@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="74" height="60" tilewidth="16" tileheight="16" infinite="0" nextlayerid="29" nextobjectid="260">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="74" height="60" tilewidth="16" tileheight="16" infinite="0" nextlayerid="29" nextobjectid="260">
  <properties>
   <property name="Music" value="wavy"/>
   <property name="Outdoors" value="T"/>
@@ -3147,11 +3147,6 @@
   </data>
  </layer>
  <objectgroup id="2" name="Back">
-  <object id="89" name="TileData" x="1152" y="144" width="16" height="80">
-   <properties>
-    <property name="TouchAction" value="Warp BusStop 0 24"/>
-   </properties>
-  </object>
   <object id="149" name="TileData" x="1040" y="-112" width="48" height="144">
    <properties>
     <property name="NoSpawn" value="All"/>

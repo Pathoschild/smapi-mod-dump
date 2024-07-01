@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7311
-IDs: aedenthorn.FireBreath
-update keys: Nexus:7311, GitHub:aedenthorn/StardewValleyMods

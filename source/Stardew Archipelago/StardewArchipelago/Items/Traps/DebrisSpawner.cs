@@ -14,17 +14,16 @@ using StardewArchipelago.Archipelago;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.TerrainFeatures;
-using Object = StardewValley.Object;
 
 namespace StardewArchipelago.Items.Traps
 {
     public class DebrisSpawner
     {
-        private const int TWIG_1 = 294;
-        private const int TWIG_2 = 295;
-        private const int STONE_1 = 343;
-        private const int STONE_2 = 450;
-        private const int WEEDS = 750;
+        private const string TWIG_1 = "294";
+        private const string TWIG_2 = "295";
+        private const string STONE_1 = "343";
+        private const string STONE_2 = "450";
+        private const string WEEDS = "750";
 
         private IMonitor _monitor;
         private ArchipelagoClient _archipelago;
@@ -75,7 +74,7 @@ namespace StardewArchipelago.Items.Traps
                 var tile = new Vector2(Game1.random.Next(location.map.Layers[0].LayerWidth), Game1.random.Next(location.map.Layers[0].LayerHeight));
                 var noSpawn = location.doesTileHaveProperty((int)tile.X, (int)tile.Y, "NoSpawn", "Back") != null;
                 var wood = location.doesTileHaveProperty((int)tile.X, (int)tile.Y, "Type", "Back") == "Wood";
-                var tileIsClear = location.isTileLocationTotallyClearAndPlaceable(tile) && !location.objects.ContainsKey(tile) && !location.terrainFeatures.ContainsKey(tile);
+                var tileIsClear = location.CanItemBePlacedHere(tile) && !location.objects.ContainsKey(tile) && !location.terrainFeatures.ContainsKey(tile);
                 if (noSpawn || wood || !tileIsClear)
                 {
                     continue;
@@ -88,16 +87,16 @@ namespace StardewArchipelago.Items.Traps
                 }
 
                 var itemToSpawn = ChooseRandomDebris(location);
-                location.objects.Add(tile, new Object(tile, itemToSpawn, 1));
+                location.objects.Add(tile, new Object(itemToSpawn, 1));
             }
         }
 
         private static void SpawnRandomTree(GameLocation location, Vector2 tile)
         {
-            location.terrainFeatures.Add(tile, new Tree(Game1.random.Next(3) + 1, Game1.random.Next(3)));
+            location.terrainFeatures.Add(tile, new Tree((Game1.random.Next(3) + 1).ToString(), Game1.random.Next(3)));
         }
 
-        private static int ChooseRandomDebris(GameLocation location)
+        private static string ChooseRandomDebris(GameLocation location)
         {
             var typeRoll = Game1.random.NextDouble();
             if (typeRoll < 0.33)
@@ -109,7 +108,7 @@ namespace StardewArchipelago.Items.Traps
                 return Game1.random.NextDouble() < 0.5 ? STONE_1 : STONE_2;
             }
 
-            return GameLocation.getWeedForSeason(Game1.random, location.GetSeasonForLocation());
+            return GameLocation.getWeedForSeason(Game1.random, location.GetSeason());
         }
     }
 }

@@ -1,0 +1,17 @@
+{
+	"config.enabled":"Mod enabled",
+	"config.enabled.tooltip": "Activate the mod.",
+	"config.toggleKey": "Toggle key",
+	"config.togglekey.tooltip": "Key to open OSTPlayer UI.",
+	"config.progressivemode": "Progressive Mode",
+	"config.progressivemode.tooltip": "Only load tracks already played.",
+	"config.skipkey": "Skip key",
+	"config.skipkey.tooltip": "Key to skip current song.",
+	"config.randomskip": "Random skip",
+	"config.randomskip.tooltip": "Skip to a random song when the current song finishes or when skip key is pressed.",
+	"config.stopkey": "Stop key",
+	"config.stopkey.tooltip": "Key to stop OSTPlayer.",
+
+	"ost.playing": "Now playing:",
+	"ost.stopped": "Stopped OSTPlayer."
+}

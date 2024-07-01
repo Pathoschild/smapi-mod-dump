@@ -67,10 +67,12 @@ namespace StardewDruid.Dialogue
             vector.X += 16f;
             
             vector.Y += 16f;
-            
-            edible.drawInMenu(b, vector, 1f + Math.Max(0f, (timeLeft - 3000f) / 900f), transparency, 1f, StackDrawType.Hide);
 
-            b.Draw(Game1.mouseCursors, vector + new Vector2(24,24) + new Vector2(8f, 8f) * 4f, new Rectangle(0, 411, 16, 16), Color.White * transparency, 0f, new Vector2(8f, 8f), 3f + Math.Max(0f, (timeLeft - 3000f) / 900f), SpriteEffects.None, 1f);
+            float timeThink = timeLeft - 3000f;
+
+            edible.drawInMenu(b, vector, 1f + timeThink < 0f ? 0f : timeThink / 900f, transparency, 1f, StackDrawType.Hide);
+
+            b.Draw(Game1.mouseCursors, vector + new Vector2(24,24) + new Vector2(8f, 8f) * 4f, new Rectangle(0, 411, 16, 16), Color.White * transparency, 0f, new Vector2(8f, 8f), 3f + timeThink < 0f ? 0f : timeThink / 900f, SpriteEffects.None, 1f);
 
             vector.X += 51f;
 

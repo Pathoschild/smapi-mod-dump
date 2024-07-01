@@ -33,6 +33,10 @@ Well then, this is the mod for you! This mod introduces the _Prismatic Statue_, 
 
 ## Changelog
 
+## 1.5.2
+* Updated to support AchtuurCore 1.3.0
+
+
 ## 1.5.1
 * New/Changed
   * Change unlock requirement to be mining level 9 due to issues with mail framework mod.

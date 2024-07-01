@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using StardewValley.Menus;
+using DeluxeJournal.Task;
 
 namespace DeluxeJournal.Menus.Components
 {
@@ -29,6 +30,10 @@ namespace DeluxeJournal.Menus.Components
         public static readonly Color DefaultCompleteColor = new Color(38, 192, 32);
         public static readonly Color DefaultProgressColor = new Color(255, 145, 5);
 
+        private readonly Rectangle _colorBarLeftSourceRect;
+        private readonly Rectangle _colorBarMiddleSourceRect;
+        private readonly Rectangle _colorBarRightSourceRect;
+        private readonly Rectangle _fillSourceRect;
         private readonly int _sections;
 
         public Texture2D texture;
@@ -37,7 +42,6 @@ namespace DeluxeJournal.Menus.Components
         public Rectangle barRightSourceRect;
         public Rectangle notchSourceRect;
 
-        private Rectangle _fillSourceRect;
         private Color _progressColor;
         private Color _completeColor;
 
@@ -56,14 +60,18 @@ namespace DeluxeJournal.Menus.Components
             _sections = sections;
             _progressColor = progressColor;
             _completeColor = completeColor;
-            texture = Game1.mouseCursors2;
-            barLeftSourceRect = new Rectangle(0, 224, 5, 12);
-            barMiddleSourceRect = new Rectangle(5, 224, 37, 12);
-            barRightSourceRect = new Rectangle(42, 224, 5, 12);
-            notchSourceRect = new Rectangle(47, 224, 1, 12);
-            _fillSourceRect = new Rectangle(48, 67, 1, 8);
+            _colorBarLeftSourceRect = new(0, 16, 2, 8);
+            _colorBarMiddleSourceRect = new(2, 16, 36, 8);
+            _colorBarRightSourceRect = new(38, 16, 2, 8);
+            _fillSourceRect = new(47, 67, 1, 8);
 
-            TextMargin = new Vector2(80, 0);
+            texture = Game1.mouseCursors2;
+            barLeftSourceRect = new(0, 224, 6, 12);
+            barMiddleSourceRect = new(6, 224, 35, 12);
+            barRightSourceRect = new(41, 224, 6, 12);
+            notchSourceRect = new(47, 224, 1, 12);
+
+            TextMargin = new(80, 0);
             AlignText = TextAlignment.Left;
         }
 
@@ -72,15 +80,15 @@ namespace DeluxeJournal.Menus.Components
             return new Color((int)(color.R * 0.8f) - 40, (int)(color.G * 0.8f) - 40, (int)(color.B * 0.8f) - 40, color.A);
         }
 
-        public void Draw(SpriteBatch b, SpriteFont font, Color textColor, int currentCount, int maxCount)
+        public void Draw(SpriteBatch b, SpriteFont font, Color textColor, ColorSchema colorSchema, int currentCount, int maxCount)
         {
             float progress = (float)currentCount / maxCount;
             Color barColor = (progress >= 1f) ? _completeColor : _progressColor;
 
-            Draw(b, font, textColor, barColor, currentCount, maxCount);
+            Draw(b, font, textColor, barColor, colorSchema, currentCount, maxCount);
         }
 
-        public void Draw(SpriteBatch b, SpriteFont font, Color textColor, Color barColor, int currentCount, int maxCount)
+        public void Draw(SpriteBatch b, SpriteFont font, Color textColor, Color barColor, ColorSchema colorSchema, int currentCount, int maxCount)
         {
             float progress = MathHelper.Clamp((float)currentCount / maxCount, 0, 1f);
             string text = currentCount + "/" + maxCount;
@@ -102,21 +110,26 @@ namespace DeluxeJournal.Menus.Components
                     break;
             }
 
-            b.Draw(texture, new Rectangle(barBounds.X, barBounds.Y, 20, barBounds.Height), barLeftSourceRect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.5f);
-            b.Draw(texture, new Rectangle(barBounds.X + 20, barBounds.Y, barBounds.Width - 40, barBounds.Height), barMiddleSourceRect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.5f);
-            b.Draw(texture, new Rectangle(barBounds.Right - 20, barBounds.Y, 20, barBounds.Height), barRightSourceRect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.5f);
+            b.Draw(texture, new Rectangle(barBounds.X, barBounds.Y, 24, barBounds.Height), barLeftSourceRect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.5f);
+            b.Draw(texture, new Rectangle(barBounds.X + 24, barBounds.Y, barBounds.Width - 48, barBounds.Height), barMiddleSourceRect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.5f);
+            b.Draw(texture, new Rectangle(barBounds.Right - 24, barBounds.Y, 24, barBounds.Height), barRightSourceRect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.5f);
 
             barBounds.X += 12;
+            barBounds.Y += 12;
             barBounds.Width -= 24;
+            barBounds.Height -= 24;
+
+            b.Draw(Game1.staminaRect, barBounds, colorSchema.Main);
+            b.Draw(DeluxeJournalMod.ColoredTaskMask, new Rectangle(barBounds.X, barBounds.Y, 8, barBounds.Height), _colorBarLeftSourceRect, colorSchema.Shadow);
+            b.Draw(DeluxeJournalMod.ColoredTaskMask, new Rectangle(barBounds.X + 8, barBounds.Y, barBounds.Width - 16, barBounds.Height), _colorBarMiddleSourceRect, colorSchema.Shadow);
+            b.Draw(DeluxeJournalMod.ColoredTaskMask, new Rectangle(barBounds.Right - 8, barBounds.Y, 8, barBounds.Height), _colorBarRightSourceRect, colorSchema.Shadow);
 
             for (int i = 1; i < sections; i++)
             {
                 b.Draw(texture, new Vector2(barBounds.X + barBounds.Width * ((float)i / sections), (float)barBounds.Y), notchSourceRect, Color.White, 0, Vector2.Zero, 4f, SpriteEffects.None, 0.5f);
             }
 
-            barBounds.Y += 12;
-            barBounds.Width = (int)(barBounds.Width * progress) - 4;
-            barBounds.Height -= 24;
+            barBounds.Width = (int)((barBounds.Width - 24) * progress) - 4;
             b.Draw(DeluxeJournalMod.UiTexture, barBounds, _fillSourceRect, barColor, 0, Vector2.Zero, SpriteEffects.None, 0.005f);
 
             barBounds.X += barBounds.Width;

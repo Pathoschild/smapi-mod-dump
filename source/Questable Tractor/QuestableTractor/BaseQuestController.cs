@@ -12,10 +12,9 @@ using System;
 using System.Linq;
 using StardewModdingAPI;
 using StardewValley;
-using Microsoft.Xna.Framework;
 using System.Collections.Generic;
-using StardewValley.Quests;
-using StardewValley.Objects;
+
+using static NermNermNerm.Stardew.LocalizeFromSource.SdvLocalize;
 
 namespace NermNermNerm.Stardew.QuestableTractor
 {
@@ -39,7 +38,7 @@ namespace NermNermNerm.Stardew.QuestableTractor
             this.Mod = mod;
         }
 
-        public const string QuestCompleteStateMagicWord = "Complete";
+        public readonly static string QuestCompleteStateMagicWord = I("Complete");
 
         public ModEntry Mod { get; }
 
@@ -153,7 +152,7 @@ namespace NermNermNerm.Stardew.QuestableTractor
                     if (!e.Player.IsMainPlayer)
                     {
                         e.Player.holdUpItemThenMessage(item, true);
-                        Spout("This item is for unlocking the tractor - only the host can advance this quest.  Give this item to the host.  (You have to put in a chest for them.)");
+                        Spout(L("This item is for unlocking the tractor - only the host can advance this quest.  Give this item to the host.  (You have to put in a chest for them.)"));
                     }
                     else
                     {
@@ -183,7 +182,7 @@ namespace NermNermNerm.Stardew.QuestableTractor
         {
             if (player != Game1.MasterPlayer)
             {
-                throw new NotImplementedException("QuestableTractorMod quests should only be playable by the main player");
+                throw new NotImplementedException(I("QuestableTractorMod quests should only be playable by the main player"));
             }
 
             bool wasChanged;
@@ -200,7 +199,14 @@ namespace NermNermNerm.Stardew.QuestableTractor
 
             if (wasChanged)
             {
-                this.LogTrace($"Set {player.Name}'s ModData[{this.ModDataKey}] to '{value ?? "<null>"}'");
+                if (value is null)
+                {
+                    this.LogTrace($"Cleared {player.Name}'s ModData[{this.ModDataKey}]");
+                }
+                else
+                {
+                    this.LogTrace($"Set {player.Name}'s ModData[{this.ModDataKey}] to '{value}'");
+                }
                 this.OnStateChanged();
             }
         }
@@ -212,13 +218,16 @@ namespace NermNermNerm.Stardew.QuestableTractor
 
         public OverallQuestState OverallQuestState => this.GetOverallQuestState(Game1.player);
 
-        public OverallQuestState GetOverallQuestState(Farmer player) =>
-            this.GetRawQuestState(player) switch
-            {
-                null => OverallQuestState.NotStarted,
-                QuestCompleteStateMagicWord => OverallQuestState.Completed,
-                _ => OverallQuestState.InProgress
-            };
+        public OverallQuestState GetOverallQuestState(Farmer player)
+        {
+            string? state = this.GetRawQuestState(player);
+            if (state is null)
+                return OverallQuestState.NotStarted;
+            else if (state == QuestCompleteStateMagicWord)
+                return OverallQuestState.Completed;
+            else
+                return OverallQuestState.InProgress;
+        }
 
         /// <summary>
         ///   This is a hacky way to deal with quest completion until something more clever can be thought up.
@@ -323,7 +332,7 @@ namespace NermNermNerm.Stardew.QuestableTractor
             string? rawState = this.GetRawQuestState(player);
             if (rawState == null)
             {
-                throw new InvalidOperationException("State should not be queried when the quest isn't started");
+                throw new InvalidOperationException(I("State should not be queried when the quest isn't started"));
             }
 
             if (!this.TryParse(rawState, out TQuestState result))

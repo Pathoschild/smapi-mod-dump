@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-using System.Collections.Generic;
-
 namespace StardewArchipelago.Constants.Modded
 {
     public class ModNames

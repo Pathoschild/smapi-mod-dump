@@ -17,7 +17,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using HoverLabels.Drawing;
+using AchtuurCore.Framework.Borders;
 
 namespace HoverLabels.Labels;
 internal class ExampleLabel : IHoverLabel
@@ -40,12 +40,12 @@ internal class ExampleLabel : IHoverLabel
     public IEnumerable<Border> GetContents()
     {
         List<Border> borders = new();
-        Border title_border = new(new TitleLabelText("Tilled Dirt"));
+        Border title_border = new(new TitleLabel("Tilled Dirt"));
         yield return title_border;
 
         Border desc = new();
-        desc.AddLabelText(new LabelText("This tile has been hoe'd"));
-        desc.AddLabelText(new LabelText("Isn't that cool?"));
+        desc.AddLabel(new Label("This tile has been hoe'd"));
+        desc.AddLabel(new Label("Isn't that cool?"));
         yield return desc;
     }
 

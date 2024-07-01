@@ -144,7 +144,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Characters
                     _ when this.IsGourmand => this.GetDataForGourmand(),
                     _ => this.GetDataForVillager(npc)
                 },
-                _ => Enumerable.Empty<ICustomField>()
+                _ => []
             };
         }
 
@@ -451,7 +451,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Characters
 
                 case SubjectType.Pet when npc is Pet pet && Pet.TryGetData(pet.petType.Value, out PetData petData):
                     {
-                        string typeName = TokenParser.ParseText(petData.DisplayName);
+                        string typeName = TokenParser.ParseText(petData.DisplayName) ?? pet.petType.Value;
                         if (typeName.Length > 1)
                             typeName = char.ToUpperInvariant(typeName[0]) + typeName.Substring(1);
                         return typeName;
@@ -549,19 +549,19 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Characters
             ItemDropData[]? possibleDrops = this.GameHelper.GetMonsterData().FirstOrDefault(p => p.Name == monster.Name)?.Drops;
             if (this.IsHauntedSkull)
                 possibleDrops ??= this.GameHelper.GetMonsterData().FirstOrDefault(p => p.Name == "Lava Bat")?.Drops; // haunted skulls use lava bat data
-            possibleDrops ??= Array.Empty<ItemDropData>();
+            possibleDrops ??= [];
 
             // get actual drops
             IDictionary<string, List<ItemDropData>> dropsLeft = monster
                 .objectsToDrop
                 .Select(this.GetActualDrop)
-                .GroupBy(p => p.ItemID)
+                .GroupBy(p => p.ItemId)
                 .ToDictionary(group => group.Key, group => group.ToList());
 
             // return possible drops
             foreach (var drop in possibleDrops.OrderByDescending(p => p.Probability))
             {
-                bool isGuaranteed = dropsLeft.TryGetValue(drop.ItemID, out List<ItemDropData>? actualDrops) && actualDrops.Any();
+                bool isGuaranteed = dropsLeft.TryGetValue(drop.ItemId, out List<ItemDropData>? actualDrops) && actualDrops.Any();
                 if (isGuaranteed)
                 {
                     ItemDropData[] matches = actualDrops!.Where(p => p.MinDrop >= drop.MinDrop && p.MaxDrop <= drop.MaxDrop).ToArray();
@@ -573,7 +573,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Characters
                 }
 
                 yield return new ItemDropData(
-                    ItemID: drop.ItemID,
+                    ItemId: drop.ItemId,
                     MinDrop: 1,
                     MaxDrop: drop.MaxDrop,
                     Probability: isGuaranteed ? 1 : drop.Probability
@@ -618,7 +618,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Characters
             };
 
             // build model
-            return new ItemDropData(ItemID: id, MinDrop: minDrop, MaxDrop: maxDrop, Probability: 1);
+            return new ItemDropData(ItemId: id, MinDrop: minDrop, MaxDrop: maxDrop, Probability: 1);
         }
     }
 }

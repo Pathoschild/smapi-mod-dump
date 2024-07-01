@@ -15,9 +15,11 @@ using System;
 namespace SocialNetwork
 {
     public interface IMobilePhoneApi
-    {   
-        bool AddApp(string id, string name, Action action, Texture2D icon);
+    {
+        event EventHandler<StardewModdingAPI.Events.RenderedWorldEventArgs> OnBeforeRenderScreen;
+        event EventHandler<StardewModdingAPI.Events.RenderedWorldEventArgs> OnAfterRenderScreen;
 
+        bool AddApp(string id, string name, Action action, Texture2D icon);
         Vector2 GetScreenPosition();
         Vector2 GetScreenSize();
         Vector2 GetScreenSize(bool rotated);

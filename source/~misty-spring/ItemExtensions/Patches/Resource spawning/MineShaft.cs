@@ -268,6 +268,9 @@ public class MineShaftPatches
                     if (spawns.Type == MineType.Frenzy && spawns.LastFrenzy == (Game1.dayOfMonth, Game1.season))
                         continue;
 
+                    if (spawns.Type == MineType.Volcano)
+                        continue;
+
                     foreach (var floor in spawns.RealFloors)
                     {
 #if DEBUG

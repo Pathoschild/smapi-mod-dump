@@ -32,7 +32,7 @@ You can find a breakdown of the config values [here](./docs/config.md)
 &nbsp;     | No Translation  | Partial Translation  | Full Translation  | Translated By
 :--------: | :-------------: | :------------------: | :---------------: | :------------:
 Chinese    | ✔              | ✔                    | ❌                | [Krobus](https://www.nexusmods.com/users/127351118)
-French     | ✔              | ❌                   | ❌                | n/a
+French     | ✔              | ✔                    | ✔                 | [WelshieFrenchie](https://github.com/WelshieFrenchie)
 German     | ✔              | ❌                   | ❌                | n/a
 Hungarian  | ✔              | ❌                   | ❌                | n/a
 Italian    | ✔              | ❌                   | ❌                | n/a
@@ -77,6 +77,16 @@ Ukrainian  | ✔              | ❌                   | ❌                | n/a
 
 ## Releases
 Releases can be found on [GitHub](https://github.com/Hedgehog-Technologies/StardewMods/releases), on the [Nexus Mod](https://www.nexusmods.com/stardewvalley/mods/7736) site, and on the [CurseForge](https://www.curseforge.com/stardewvalley/mods/auto-forager) site.
+### 3.6.2
+- Adds French translations
+  - Thanks to [WelshieFrenchie](https://github.com/WelshieFrenchie) for the contribution
+### 3.6.1
+- Add config option to elevate some messages to SMAPI console
+  - This option is disabled by default
+### 3.6.0
+- Cover a missing path that was preventing forageables added directly to Data/Locations via Content Patcher from being Auto Foraged
+- Remove Supply Crates and Treasure Chests from being considered potential forageables
+- Fix typo in Orange's category
 ### 3.5.2
 - Fix tappers being delayed by a day when auto foraged from
 ### 3.5.1

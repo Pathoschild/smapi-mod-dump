@@ -33,7 +33,7 @@ namespace StardewArchipelago.GameModifications.CodeInjections
         {
             try
             {
-                if (Game1.MasterPlayer != who || 
+                if (Game1.MasterPlayer != who ||
                     !__instance.buildingType.Value.Equals("Gold Clock") ||
                     __instance.isTilePassable(tileLocation))
                 {

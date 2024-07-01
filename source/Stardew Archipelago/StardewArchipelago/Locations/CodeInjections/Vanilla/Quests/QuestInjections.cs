@@ -10,14 +10,17 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Archipelago.MultiClient.Net.Models;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using StardewArchipelago.Archipelago;
 using StardewArchipelago.Constants;
 using StardewArchipelago.Constants.Modded;
-using StardewArchipelago.Items.Unlocks;
+using StardewArchipelago.Constants.Vanilla;
+using StardewArchipelago.Items.Unlocks.Vanilla;
+using StardewArchipelago.Locations.Festival;
+using StardewArchipelago.Stardew.Ids.Vanilla;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;
@@ -33,16 +36,18 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Quests
 {
     public static class QuestInjections
     {
-        private static List<string> _ignoredQuests = new(){
+        private const string DESERT_FESTIVAL_FISHING_QUEST_ID = "98765";
+        private static List<string> _ignoredQuests = new()
+        {
             "To The Beach", "Explore The Mine", "Deeper In The Mine", "To The Bottom?", "The Mysterious Qi",
-            "A Winter Mystery", "Cryptic Note", "Dark Talisman", "Goblin Problem"
+            "A Winter Mystery", "Cryptic Note", "Dark Talisman", "Goblin Problem",
         };
 
         private static IMonitor _monitor;
         private static IModHelper _helper;
         private static ArchipelagoClient _archipelago;
         private static LocationChecker _locationChecker;
-        private static ContentManager _englishContentManager;
+        private static LocalizedContentManager _englishContentManager;
 
         public static void Initialize(IMonitor monitor, IModHelper helper, ArchipelagoClient archipelago, LocationChecker locationChecker)
         {
@@ -50,7 +55,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Quests
             _helper = helper;
             _archipelago = archipelago;
             _locationChecker = locationChecker;
-            _englishContentManager = new ContentManager(Game1.game1.Content.ServiceProvider, Game1.game1.Content.RootDirectory);
+            _englishContentManager = new LocalizedContentManager(Game1.game1.Content.ServiceProvider, Game1.game1.Content.RootDirectory, new CultureInfo("en-US"));
             UpdateIgnoredQuestList();
         }
 
@@ -61,6 +66,19 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Quests
                 var questName = __instance.GetName();
                 var englishQuestName = GetQuestEnglishName(__instance.id.Value, questName);
                 if (__instance.completed.Value || _ignoredQuests.Contains(englishQuestName))
+                {
+                    return true; // run original logic
+                }
+
+                if (__instance.id.Value != null && __instance.id.Value.Equals(DESERT_FESTIVAL_FISHING_QUEST_ID, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    // This one is a quest for some reason
+                    _locationChecker.AddCheckedLocation(FestivalLocationNames.WILLYS_CHALLENGE);
+                    OriginalQuestCompleteCode(__instance);
+                    return false; // don't run original logic
+                }
+
+                if (!_archipelago.SlotData.QuestLocations.StoryQuestsEnabled)
                 {
                     return true; // run original logic
                 }
@@ -122,11 +140,11 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Quests
             return numberOfSteps;
         }
 
-        private static string GetQuestEnglishName(int questId, string defaultName)
+        private static string GetQuestEnglishName(string questId, string defaultName)
         {
-            var englishQuests = _englishContentManager.Load<Dictionary<int, string>>("Data\\Quests");
+            var englishQuests = DataLoader.Quests(_englishContentManager);
 
-            if (!englishQuests.ContainsKey(questId))
+            if (string.IsNullOrWhiteSpace(questId) || !englishQuests.ContainsKey(questId))
             {
                 return defaultName;
             }
@@ -139,11 +157,12 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Quests
         private static void OriginalQuestCompleteCode(Quest __instance)
         {
             __instance.completed.Value = true;
+            Game1.player.currentLocation?.customQuestCompleteBehavior(__instance.id.Value);
             if (__instance.nextQuests.Count > 0)
             {
-                foreach (var nextQuest in __instance.nextQuests.Where(nextQuest => nextQuest > 0))
+                foreach (var nextQuest in __instance.nextQuests.Where(x => !string.IsNullOrEmpty(x) && x != "-1"))
                 {
-                    Game1.player.questLog.Add(Quest.getQuestFromId(nextQuest));
+                    Game1.player.addQuest(nextQuest);
                 }
 
                 Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString("Strings\\StringsFromCSFiles:Quest.cs.13636"), 2));
@@ -151,13 +170,14 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Quests
 
             Game1.player.questLog.Remove(__instance);
             Game1.playSound("questcomplete");
-            if (__instance.id.Value == 126)
+            if (__instance.id.Value == "126")
             {
                 Game1.player.mailReceived.Add("emilyFiber");
                 Game1.player.activeDialogueEvents.Add("emilyFiber", 2);
             }
 
             Game1.dayTimeMoneyBox.questsDirty = true;
+            Game1.player.autoGenerateActiveDialogueEvent("questComplete_" + __instance.id.Value);
         }
 
         private static bool CheckDailyQuestLocationOfType(string typeApName, int max)
@@ -203,11 +223,12 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Quests
             return false;
         }
 
-        public static void Command_RemoveQuest_CheckLocation_Postfix(Event __instance, GameLocation location, GameTime time, string[] split)
+        // public static void RemoveQuest(Event @event, string[] args, EventContext context)
+        public static void RemoveQuest_CheckLocation_Postfix(Event @event, string[] args, EventContext context)
         {
             try
             {
-                var questId = Convert.ToInt32(split[1]);
+                var questId = args[1];
                 var quest = Quest.getQuestFromId(questId);
                 var questName = quest.GetName();
                 var englishQuestName = GetQuestEnglishName(questId, questName);
@@ -221,7 +242,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Quests
             }
             catch (Exception ex)
             {
-                _monitor.Log($"Failed in {nameof(Command_RemoveQuest_CheckLocation_Postfix)}:\n{ex}", LogLevel.Error);
+                _monitor.Log($"Failed in {nameof(RemoveQuest_CheckLocation_Postfix)}:\n{ex}", LogLevel.Error);
                 return;
             }
         }
@@ -303,7 +324,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Quests
 
         private static void AddWeightedFishing(int groupNumber, Hint[] hints, List<string> remainingHelpWantedQuests)
         {
-            if (!_archipelago.HasReceivedItem(VanillaUnlockManager.PROGRESSIVE_FISHING_ROD))
+            if (!_archipelago.HasReceivedItem(ToolUnlockManager.PROGRESSIVE_FISHING_ROD))
             {
                 return;
             }
@@ -313,7 +334,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Quests
 
         private static void AddWeightedSlaying(int groupNumber, Hint[] hints, List<string> remainingHelpWantedQuests)
         {
-            if (Game1.stats.monstersKilled < 10)
+            if (Game1.stats.MonstersKilled < 10)
             {
                 return;
             }
@@ -338,7 +359,8 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Quests
             return $"{string.Format(DailyQuest.HELP_WANTED, type)} {number}";
         }
 
-        public static bool PerformAction_MysteriousQiLumberPile_Prefix(GameLocation __instance, string action, Farmer who, Location tileLocation, ref bool __result)
+        // public virtual bool performAction(string[] action, Farmer who, Location tileLocation)
+        public static bool PerformAction_MysteriousQiLumberPile_Prefix(GameLocation __instance, string[] action, Farmer who, Location tileLocation, ref bool __result)
         {
             try
             {
@@ -347,8 +369,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Quests
                     return true; // run original logic
                 }
 
-                var actionWords = action.Split(' ');
-                var actionFirstWord = actionWords[0];
+                var actionFirstWord = action[0];
 
                 if (actionFirstWord != "LumberPile" || who.hasOrWillReceiveMail("TH_LumberPile") || !who.hasOrWillReceiveMail("TH_SandDragon"))
                 {
@@ -356,12 +377,11 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Quests
                 }
 
                 Game1.player.mailReceived.Add("TH_LumberPile");
-                Game1.player.removeQuest(5);
+                Game1.player.removeQuest("5");
                 _locationChecker.AddCheckedLocation("The Mysterious Qi");
 
                 __result = true;
                 return false; // don't run original logic
-
             }
             catch (Exception ex)
             {
@@ -383,14 +403,13 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Quests
 
                 var shakeLeftField = _helper.Reflection.GetField<bool>(__instance, "shakeLeft");
 
-                var playerIsOnTheRight = Game1.player.getTileLocation().X > (double)tileLocation.X;
-                var playerIsAlignedVertically = Game1.player.getTileLocation().X == (double)tileLocation.X;
+                var playerIsOnTheRight = Game1.player.Tile.X > tileLocation.X;
+                var playerIsAlignedVertically = Game1.player.Tile.X == tileLocation.X;
 
                 shakeLeftField.SetValue(playerIsOnTheRight || playerIsAlignedVertically && Game1.random.NextDouble() < 0.5);
                 maxShakeField.SetValue((float)Math.PI / 128f);
                 var isTownBush = __instance.townBush.Value;
-                var seasonForLocation = Game1.GetSeasonForLocation(__instance.currentLocation);
-                var isInBloom = __instance.inBloom(seasonForLocation, Game1.dayOfMonth);
+                var isInBloom = __instance.inBloom();
                 if (!isTownBush && __instance.tileSheetOffset.Value == 1 && isInBloom)
                 {
                     ShakeForBushItem(__instance, tileLocation);
@@ -401,7 +420,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Quests
                 {
                     GetJunimoPlush(__instance);
                 }
-                else if (tileLocation.X == 28.0 && tileLocation.Y == 14.0 && Game1.player.eventsSeen.Contains(520702) && Game1.player.hasQuest(31) && Game1.currentLocation is Town currentTown)
+                else if (tileLocation.X == 28.0 && tileLocation.Y == 14.0 && Game1.player.eventsSeen.Contains("520702") && Game1.player.hasQuest("31") && Game1.currentLocation is Town currentTown)
                 {
                     currentTown.initiateMagnifyingGlassGet();
                 }
@@ -428,85 +447,61 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Quests
 
         private static void ShakeForBushItem(Bush bush, Vector2 tileLocation)
         {
-            var str = bush.overrideSeason.Value == -1 ? Game1.GetSeasonForLocation(bush.currentLocation) : Utility.getSeasonNameFromNumber(bush.overrideSeason.Value);
-            var shakeOff = -1;
-            if (str != "spring")
-            {
-                if (str == "fall")
-                {
-                    shakeOff = 410;
-                }
-            }
-            else
-            {
-                shakeOff = 296;
-            }
 
-            if (bush.size.Value == 3)
-            {
-                shakeOff = 815;
-            }
-
-            if (bush.size.Value == 4)
-            {
-                shakeOff = 73;
-            }
-
-            if (shakeOff == -1)
+            var shakeOffItem = bush.GetShakeOffItem();
+            if (string.IsNullOrWhiteSpace(shakeOffItem))
             {
                 return;
             }
 
             bush.tileSheetOffset.Value = 0;
             bush.setUpSourceRect();
-            var random = new Random((int)tileLocation.X + (int)tileLocation.Y * 5000 + (int)Game1.uniqueIDForThisGame + (int)Game1.stats.DaysPlayed);
-            if (bush.size.Value == 3 || bush.size.Value == 4)
+            switch (bush.size.Value)
             {
-                var num = 1;
-                for (var index = 0; index < num; ++index)
-                {
-                    if (bush.size.Value == 4)
+                case 3:
+                    Game1.createObjectDebris(shakeOffItem, (int)tileLocation.X, (int)tileLocation.Y);
+                    break;
+                case 4:
+                    bush.uniqueSpawnMutex.RequestLock((Action)(() =>
                     {
-                        bush.uniqueSpawnMutex.RequestLock(() =>
+                        Game1.player.team.MarkCollectedNut($"Bush_{bush.Location.Name}_{tileLocation.X}_{tileLocation.Y}");
+                        var obj = ItemRegistry.Create(shakeOffItem);
+                        var boundingBox = bush.getBoundingBox();
+                        var x = (double)boundingBox.Center.X;
+                        boundingBox = bush.getBoundingBox();
+                        var y = (double)(boundingBox.Bottom - 2);
+                        var pixelOrigin = new Vector2((float)x, (float)y);
+                        var location = bush.Location;
+                        boundingBox = bush.getBoundingBox();
+                        var bottom = boundingBox.Bottom;
+                        Game1.createItemDebris(obj, pixelOrigin, 0, location, bottom);
+                    }));
+                    break;
+                default:
+                    var random = Utility.CreateRandom((double)tileLocation.X, (double)tileLocation.Y * 5000.0, (double)Game1.uniqueIDForThisGame, (double)Game1.stats.DaysPlayed);
+                    var howMuch = random.Next(1, 2) + Game1.player.ForagingLevel / 4;
+                    for (var index = 0; index < howMuch; ++index)
+                    {
+                        var obj = ItemRegistry.Create(shakeOffItem);
+                        if (Game1.player.professions.Contains(16))
                         {
-                            Game1.player.team.MarkCollectedNut("Bush_" + bush.currentLocation.Name + "_" + tileLocation.X + "_" + tileLocation.Y);
-                            var @object = new Object(shakeOff, 1);
-                            var boundingBox = bush.getBoundingBox();
-                            var x = (double)boundingBox.Center.X;
-                            boundingBox = bush.getBoundingBox();
-                            var y = (double)(boundingBox.Bottom - 2);
-                            var origin = new Vector2((float)x, (float)y);
-                            var currentLocation = bush.currentLocation;
-                            boundingBox = bush.getBoundingBox();
-                            var bottom = boundingBox.Bottom;
-                            Game1.createItemDebris(@object, origin, 0, currentLocation, bottom);
-                        });
+                            obj.Quality = 4;
+                        }
+                        Game1.createItemDebris(obj, Utility.PointToVector2(bush.getBoundingBox().Center), Game1.random.Next(1, 4));
                     }
-                    else
-                    {
-                        Game1.createObjectDebris(shakeOff, (int)tileLocation.X, (int)tileLocation.Y);
-                    }
-                }
-            }
-            else
-            {
-                var num = random.Next(1, 2) + Game1.player.ForagingLevel / 4;
-                for (var index = 0; index < num; ++index)
-                {
-                    Game1.createItemDebris(new Object(shakeOff, 1, quality: (Game1.player.professions.Contains(16) ? 4 : 0)), Utility.PointToVector2(bush.getBoundingBox().Center), Game1.random.Next(1, 4));
-                }
+                    Game1.player.gainExperience(2, howMuch);
+                    break;
             }
             if (bush.size.Value == 3)
             {
                 return;
             }
-
             DelayedAction.playSoundAfterDelay("leafrustle", 100);
         }
 
         private static void GetJunimoPlush(Bush __instance)
         {
-            Game1.player.addItemByMenuIfNecessaryElseHoldUp(new Furniture(1733, Vector2.Zero), __instance.junimoPlushCallback);
+            Game1.player.addItemByMenuIfNecessaryElseHoldUp(new Furniture("1733", Vector2.Zero), __instance.junimoPlushCallback);
         }
 
         public static bool MgThief_AfterSpeech_WinterMysteryFinished_Prefix(Town __instance)
@@ -514,7 +509,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Quests
             try
             {
                 var afterGlassMethod = _helper.Reflection.GetMethod(__instance, "mgThief_afterGlass");
-                Game1.player.removeQuest(31);
+                Game1.player.removeQuest("31");
                 _locationChecker.AddCheckedLocation("A Winter Mystery");
                 afterGlassMethod.Invoke();
                 return false; // don't run original logic
@@ -526,42 +521,34 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Quests
             }
         }
 
-        public static void SkillsPageCtor_BearKnowledge_Postfix(SkillsPage __instance, int x, int y, int width, int height)
+        // public override void populateClickableComponentList()
+        public static void PopulateClickableComponentList_BearKnowledge_Postfix(PowersTab __instance)
         {
             try
             {
-                const int bearKnowledgeIndex = 8;
-                var x1 = __instance.xPositionOnScreen + IClickableMenu.spaceToClearSideBorder + 80;
-                var y1 = __instance.yPositionOnScreen + IClickableMenu.spaceToClearTopBorder + (int)(height / 2.0) + 80;
-                if (_archipelago.HasReceivedItem("Bear's Knowledge"))
+                var hasBearKnowledge = _archipelago.HasReceivedItem(APItem.BEARS_KNOWLEDGE);
+                foreach (var powersLine in __instance.powers)
                 {
-                    var textureComponent = new ClickableTextureComponent("", new Rectangle(x1 + 544, y1, 64, 64), null, Game1.content.LoadString("Strings\\Objects:BearPaw"), Game1.mouseCursors, new Rectangle(192, 336, 16, 16), 4f, true);
-                    textureComponent.myID = 10208;
-                    textureComponent.rightNeighborID = -99998;
-                    textureComponent.leftNeighborID = -99998;
-                    textureComponent.upNeighborID = 4;
-                    __instance.specialItems[bearKnowledgeIndex] = textureComponent;
-                }
-                else
-                {
-                    __instance.specialItems[bearKnowledgeIndex] = null;
-                }
+                    foreach (var powerComponent in powersLine)
+                    {
+                        // I couldn't really find a better way to identify this icon uniquely.
+                        // Ideally, in the long term, the condition should be changed in the Data itself, instead of this jank patching.
+                        if (powerComponent.sourceRect.X != 192 || powerComponent.sourceRect.Y != 336)
+                        {
+                            continue;
+                        }
 
-
-                var num1 = 680 / __instance.specialItems.Count;
-                for (var index = 0; index < __instance.specialItems.Count; ++index)
-                {
-                    if (__instance.specialItems[index] != null)
-                        __instance.specialItems[index].bounds.X = x1 + index * num1;
+                        // drawShadow is poorly named. If drawShadow, then it's "real", otherwise it's a black outline.
+                        powerComponent.drawShadow = hasBearKnowledge;
+                        return;
+                    }
                 }
-                ClickableComponent.SetUpNeighbors(__instance.specialItems, 4);
-                ClickableComponent.ChainNeighborsLeftRight(__instance.specialItems);
 
                 return;
             }
             catch (Exception ex)
             {
-                _monitor.Log($"Failed in {nameof(SkillsPageCtor_BearKnowledge_Postfix)}:\n{ex}", LogLevel.Error);
+                _monitor.Log($"Failed in {nameof(PopulateClickableComponentList_BearKnowledge_Postfix)}:\n{ex}", LogLevel.Error);
                 return;
             }
         }
@@ -570,13 +557,13 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Quests
         {
             try
             {
-                if (__instance.ParentSheetIndex != 296 && __instance.ParentSheetIndex != 410)
+                if (__instance.QualifiedItemId != QualifiedItemIds.SALMONBERRY && __instance.QualifiedItemId != QualifiedItemIds.BLACKBERRY)
                 {
                     return;
                 }
 
-                var hasSeenBearEvent = Game1.player.eventsSeen.Contains(2120303);
-                var hasReceivedBearKnowledge = _archipelago.HasReceivedItem("Bear's Knowledge");
+                var hasSeenBearEvent = Game1.player.eventsSeen.Contains(EventIds.BEAR_KNOWLEDGE_EVENT);
+                var hasReceivedBearKnowledge = _archipelago.HasReceivedItem(APItem.BEARS_KNOWLEDGE);
                 if (hasSeenBearEvent == hasReceivedBearKnowledge)
                 {
                     return;
@@ -598,38 +585,40 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Quests
             }
         }
 
-        public static bool Command_AwardFestivalPrize_QiMilk_Prefix(Event __instance, GameLocation location,
-            GameTime time, string[] split)
+        // public static void AwardFestivalPrize(Event @event, string[] args, EventContext context)
+        public static bool AwardFestivalPrize_QiMilk_Prefix(Event @event, string[] args, EventContext context)
         {
             try
             {
-                if (split.Length < 2)
+                if (args.Length < 2)
                 {
                     return true; // run original logic
                 }
-                var lower = split[1].ToLower();
-                if (lower != "qimilk")
+                var prize = args[1];
+                if (!prize.Equals("qimilk", StringComparison.InvariantCultureIgnoreCase))
                 {
                     return true; // run original logic
                 }
+
+                _locationChecker.AddCheckedLocation("Cryptic Note");
 
                 if (!Game1.player.mailReceived.Contains("qiCave"))
                 {
-                    _locationChecker.AddCheckedLocation("Cryptic Note");
                     Game1.player.mailReceived.Add("qiCave");
-
-                    if (_archipelago.SlotData.Goal == Goal.CrypticNote)
-                    {
-                        _archipelago.ReportGoalCompletion();
-                    }
                 }
-                ++__instance.CurrentCommand;
+
+                if (_archipelago.SlotData.Goal == Goal.CrypticNote)
+                {
+                    _archipelago.ReportGoalCompletion();
+                }
+
+                ++@event.CurrentCommand;
 
                 return false; // don't run original logic
             }
             catch (Exception ex)
             {
-                _monitor.Log($"Failed in {nameof(Command_AwardFestivalPrize_QiMilk_Prefix)}:\n{ex}",
+                _monitor.Log($"Failed in {nameof(AwardFestivalPrize_QiMilk_Prefix)}:\n{ex}",
                     LogLevel.Error);
                 return true; // run original logic
             }

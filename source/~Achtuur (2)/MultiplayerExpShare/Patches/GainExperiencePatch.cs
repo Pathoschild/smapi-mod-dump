@@ -59,7 +59,8 @@ public class GainExperiencePatch : BaseExpPatcher
 
         // Get nearby farmer id's
         Farmer[] nearbyFarmers = ModEntry.GetNearbyPlayers()
-            .Where(f => ModEntry.GetActorExpPercentage(f.GetSkillLevel(which), skillName) != 0f) // get all players that would actually receive exp
+            .Where(f => ModEntry.GetActorExpPercentage(f, f.GetSkillLevel(which), skillName) != 0f) // get all players that would actually receive exp
+            .Where(f => f.UniqueMultiplayerID != __instance.UniqueMultiplayerID)
             .ToArray();
 
         // If no farmers nearby to share exp with, actor gets all
@@ -67,9 +68,9 @@ public class GainExperiencePatch : BaseExpPatcher
             return;
 
         int level = __instance.GetSkillLevel(which);
-        int actor_exp = GetActorExp(howMuch, level, skillName);
+        int actor_exp = GetActorExp(__instance, howMuch, level, skillName);
         // Calculate shared exp, with rounding
-        int shared_exp = (int)Math.Round(howMuch * ModEntry.GetSharedExpPercentage(level, skillName) / nearbyFarmers.Length);
+        int shared_exp = (int)Math.Round(howMuch * ModEntry.GetSharedExpPercentage(__instance, level, skillName) / nearbyFarmers.Length);
 
         // Send message of this instance of shared exp
         if (shared_exp > 0)

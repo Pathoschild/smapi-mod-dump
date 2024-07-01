@@ -54,7 +54,7 @@ namespace BZP_Allergies
             AllergenModel egg = new(translation.Get("allergies.egg"));
             egg.AddObjectIds(new HashSet<string>{
                     "194", "195", "201", "203", "211", "213", "220", "221", "223", "234", "240", "648",
-                    "732"
+                    "732", "CalicoEgg"
                 });
             egg.AddTags(new HashSet<string> { "egg_item", "mayo_item", "large_egg_item" });
             ALLERGEN_DATA["egg"] = egg;
@@ -77,7 +77,7 @@ namespace BZP_Allergies
             AllergenModel shellfish = new(translation.Get("allergies.shellfish"));
             shellfish.AddObjectIds(new HashSet<string>{
                     "203", "218", "227", "228", "727", "728", "729", "730", "732", "733", "715", "372",
-                    "717", "718", "719", "720", "723", "716", "721", "722"
+                    "717", "718", "719", "720", "723", "716", "721", "722", "151", "149"
                 });
             ALLERGEN_DATA["shellfish"] = shellfish;
 
@@ -108,6 +108,11 @@ namespace BZP_Allergies
             {
                 throw new Exception("No allergen found with Id " + allergen.ToString());
             }
+        }
+
+        public static bool AllergenExists(string allergen)
+        {
+            return ALLERGEN_DATA_ASSET.ContainsKey(allergen);
         }
 
         public static string GetAllergenDisplayName(string allergen)
@@ -151,7 +156,7 @@ namespace BZP_Allergies
         }
 
         public static ISet<string> ModDataSetGet(IHaveModData obj, string key)
-        { 
+        {
             if (ModDataGet(obj, key, out string val) && val.Length > 0)
             {
                 return val.Split(',').ToHashSet();
@@ -176,7 +181,7 @@ namespace BZP_Allergies
             return ModDataSetContains(Game1.player, Constants.ModDataHas, allergen);
         }
 
-        public static bool FarmerIsAllergic (StardewValley.Object @object)
+        public static bool FarmerIsAllergic(StardewValley.Object @object)
         {
             ISet<string> containsAllergens = GetAllergensInObject(@object);
 
@@ -190,26 +195,18 @@ namespace BZP_Allergies
             return false;
         }
 
-        public static ISet<string> GetAllergensInObject(StardewValley.Object? @object)
+        public static ISet<string> GetAllergensInObject(Item? item)
         {
             ISet<string> result = new HashSet<string>();
-            if (@object == null)
+            if (item == null || item is not StardewValley.Object @object)
             {
                 return result;
             }
 
-            // special case: preserves item
-            List<StardewValley.Object> madeFrom = TryGetMadeFromObjects(@object);
+            List<StardewValley.Object> preservesInput = TryGetPreservesInputObjects(@object);
 
-            if (madeFrom.Any())
-            {
-                foreach (StardewValley.Object madeFromObj in madeFrom)
-                {
-                    result.UnionWith(GetAllergensInObject(madeFromObj));
-                }
-            }
-            // special case: cooked/milled/crafted (etc) item
-            else if (@object.modData.ContainsKey(Constants.ModDataMadeWith))
+            // special case: cooked/milled/crafted/machined (etc) item
+            if (@object.modData.ContainsKey(Constants.ModDataMadeWith))
             {
                 // try looking in the modData field for what the thing was crafted with
                 foreach (string allergenId in ModDataSetGet(@object, Constants.ModDataMadeWith))
@@ -224,13 +221,45 @@ namespace BZP_Allergies
                     }
                 }
             }
+            // special case: preserves item
+            else if (preservesInput.Any())
+            {
+                foreach (StardewValley.Object madeFromObj in preservesInput)
+                {
+                    result.UnionWith(GetAllergensInObject(madeFromObj));
+                }
+            }
+            
+            // has one of the allergen_{id} tags
+            else if (@object.GetContextTags().ToList().Find((string tag) => tag.StartsWith("allergen")) != null)
+            {
+                // get allergen tags
+                foreach (string tag in @object.GetContextTags())
+                {
+                    if (tag.StartsWith("allergen"))
+                    {
+                        string[] parts = tag.Split("_");
+                        if (parts.Length != 2) continue;
+
+                        string allergenId = parts[1];
+                        if (allergenId == "nut")
+                        {
+                            // special case since this doesn't match our name
+                            allergenId = "treenuts";
+                        }
+
+                        result.Add(allergenId);
+                    }
+                }
+            }
             // else: boring normal item
             else
             {
+
                 foreach (var allergenData in ALLERGEN_DATA_ASSET)
                 {
                     // do we have this allergen?
-                    if (allergenData.Value.ObjectIds.Contains(@object.ItemId))
+                    if (allergenData.Value.ObjectIds.Find(id => id.ToLower() == @object.ItemId.ToLower()) != null)
                     {
                         result.Add(allergenData.Key);
                     }
@@ -251,10 +280,26 @@ namespace BZP_Allergies
                 }
             }
 
+            // remove exclusions
+            foreach (var allergenData in ALLERGEN_DATA_ASSET)
+            {
+                if (!result.Contains(allergenData.Key)) continue;
+
+                if (allergenData.Value.ExceptObjectIds.Contains(@object.ItemId))
+                {
+                    result.Remove(allergenData.Key);
+                }
+
+                if (allergenData.Value.ExceptContextTags.Any(a => @object.HasContextTag(a)))
+                {
+                    result.Remove(allergenData.Key);
+                }
+            }
+
             return result;
         }
 
-        public static List<StardewValley.Object> TryGetMadeFromObjects(StardewValley.Object @object)
+        public static List<StardewValley.Object> TryGetPreservesInputObjects(StardewValley.Object @object)
         {
             List<StardewValley.Object> result = new();
 
@@ -262,8 +307,7 @@ namespace BZP_Allergies
             ISet<string> tags = @object.GetContextTags();
 
             // find the "preserve_sheet_index_{id}" tag
-            Regex rx = new(@"^preserve_sheet_index_\d+$");
-            List<string> filteredTags = tags.Where(t => rx.IsMatch(t)).ToList();
+            List<string> filteredTags = tags.Where(t => t.StartsWith("preserve_sheet_index_")).ToList();
 
             if (filteredTags.Count == 0)  // no preserves index
             {
@@ -273,15 +317,12 @@ namespace BZP_Allergies
             foreach (string tag in filteredTags)
             {
                 // get the id of the object it was made from
-                Match m = Regex.Match(tag, @"\d+");
-                if (m.Success)
+                string madeFromId = tag.Split("preserve_sheet_index_").Last();
+                if (ItemRegistry.Create(madeFromId) is StardewValley.Object casted)
                 {
-                    string madeFromId = m.Value;
-                    if (ItemRegistry.Create(madeFromId) is StardewValley.Object casted)
-                    {
-                        result.Add(casted);
-                    }
+                    result.Add(casted);
                 }
+                
             }
             return result;
         }
@@ -422,27 +463,34 @@ namespace BZP_Allergies
 
         public string? AddedByContentPackId { get; set; }
 
+        public List<string> ExceptObjectIds { get; set; }
+        public List<string> ExceptContextTags { get; set; }
+
         public AllergenModel (string displayName, string? addedByContentPackId = null)
         {
             ObjectIds = new();
             ContextTags = new();
+            ExceptObjectIds = new();
+            ExceptContextTags = new();
             DisplayName = displayName;
             AddedByContentPackId = addedByContentPackId;
         }
 
-        public void AddObjectIds (IEnumerable<string> ids)
+        public void AddObjectIds (IEnumerable<string> ids, bool except = false)
         {
+            List<string> addTo = except ? ExceptObjectIds : ObjectIds;
             foreach (string id in ids)
             {
-                ObjectIds.Add(id);
+                addTo.Add(id);
             }
         }
 
-        public void AddTags(IEnumerable<string> tags)
+        public void AddTags(IEnumerable<string> tags, bool except = false)
         {
+            List<string> addTo = except ? ExceptContextTags : ContextTags;
             foreach (string tag in tags)
             {
-                ContextTags.Add(tag);
+                addTo.Add(tag);
             }
         }
     }

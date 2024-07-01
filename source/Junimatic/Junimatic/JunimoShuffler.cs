@@ -19,6 +19,8 @@ using StardewValley.Inventories;
 using StardewValley.ItemTypeDefinitions;
 using StardewValley.Pathfinding;
 
+using static NermNermNerm.Stardew.LocalizeFromSource.SdvLocalize;
+
 namespace NermNermNerm.Junimatic
 {
     public class JunimoShuffler : NPC, ISimpleLog
@@ -45,11 +47,11 @@ namespace NermNermNerm.Junimatic
 
             this.alpha = 0;
             this.alphaChange = 0.05f;
-            this.LogTrace("Junimo cloned");
+            this.LogTrace($"Junimo cloned");
         }
 
         public JunimoShuffler(JunimoAssignment assignment, WorkFinder workFinder)
-            : base(new AnimatedSprite(@"Characters\Junimo", 0, 16, 16), assignment.origin.ToVector2()*64, 2, "Junimo")
+            : base(new AnimatedSprite(@"Characters\Junimo", 0, 16, 16), assignment.origin.ToVector2()*64, 2, I("Junimo"))
         {
             this.color.Value = assignment.projectType switch {
                 JunimoType.MiningProcessing => Color.OrangeRed,
@@ -89,11 +91,11 @@ namespace NermNermNerm.Junimatic
 
             this.LogTrace($"Junimo reached its source {this.Assignment}");
 
-            if (this.Carrying.Count != 0) throw new InvalidOperationException("inventory should be empty here");
+            if (this.Carrying.Count != 0) throw new InvalidOperationException(I("inventory should be empty here"));
 
             if (this.Assignment.source is GameStorage chest)
             {
-                if (this.Assignment.itemsToRemoveFromChest is null) throw new InvalidOperationException("Should have some items to fetch");
+                if (this.Assignment.itemsToRemoveFromChest is null) throw new InvalidOperationException(I("Should have some items to fetch"));
 
                 this.Assignment.itemsToRemoveFromChest.Reverse(); // <- tidy
 
@@ -109,7 +111,7 @@ namespace NermNermNerm.Junimatic
             else if (this.Assignment.source is GameMachine machine && machine.HeldObject is not null)
             {
                 this.Carrying.Add(machine.RemoveHeldObject());
-                l.playSound("dwop"); // <- might get overriden by the furnace sound...  but if it's not a furnace...
+                l.playSound("dwop"); // <- might get overridden by the furnace sound...  but if it's not a furnace...
             }
             else
             {
@@ -205,9 +207,9 @@ namespace NermNermNerm.Junimatic
         {
             base.initNetFields();
             base.NetFields
-                .AddField(this.color, "color")
-                .AddField(this.netAnimationEvent, "netAnimationEvent")
-                .AddField(this.carrying, "carrying");
+                .AddField(this.color, nameof(this.color))
+                .AddField(this.netAnimationEvent, nameof(this.netAnimationEvent))
+                .AddField(this.carrying, nameof(this.carrying));
             this.netAnimationEvent.onEvent += this.doAnimationEvent;
         }
 
@@ -270,14 +272,14 @@ namespace NermNermNerm.Junimatic
         {
             if (this.workFinder is null || this.Assignment is null)
             { // if !master game -- this should never happen since the sole caller already checks for this.
-                this.LogTrace("JunimoShuffler.OnDayEnding - not doing anything because this is not the master game");
+                this.LogTrace($"JunimoShuffler.OnDayEnding - not doing anything because this is not the master game");
                 return;
             }
 
             this.LogTrace($"JunimoShuffler.OnDayEnding - found a live junimo in {location.Name}");
             if (this.Carrying.Count > 0)
             {
-                this.LogTrace("JunimoShuffler.OnDayEnding - calling JunimoReachedTarget");
+                this.LogTrace($"JunimoShuffler.OnDayEnding - calling JunimoReachedTarget");
                 this.JunimoReachedTarget(this, location);
             }
 
@@ -290,7 +292,7 @@ namespace NermNermNerm.Junimatic
         {
             if (Game1.IsMasterGame && this.controller is null && this.workFinder is not null && this.Assignment is not null && !this.destroy)
             {
-                this.workFinder.LogTrace("Junimo returned due to players leaving scene");
+                this.workFinder.LogTrace($"Junimo returned due to players leaving scene");
                 if (this.Carrying.Count > 0)
                 {
                     this.JunimoReachedTarget(this, location);

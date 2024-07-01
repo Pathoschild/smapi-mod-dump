@@ -195,6 +195,22 @@ namespace Pathoschild.Stardew.FastAnimations.Framework
                     max: maxSpeed
                 )
                 .AddNumberField(
+                    name: I18n.Config_Event_Name,
+                    tooltip: () => I18n.Config_Event_Tooltip(defaultValue: defaultConfig.EventSpeed, suggestedValue: 4),
+                    get: config => config.EventSpeed,
+                    set: (config, value) => config.EventSpeed = value,
+                    min: minSpeed,
+                    max: maxSpeed
+                )
+                .AddNumberField(
+                    name: I18n.Config_Fade_Name,
+                    tooltip: () => I18n.Config_Fade_Tooltip(defaultValue: defaultConfig.FadeSpeed),
+                    get: config => config.FadeSpeed,
+                    set: (config, value) => config.FadeSpeed = value,
+                    min: minSpeed,
+                    max: maxSpeed
+                )
+                .AddNumberField(
                     name: I18n.Config_FishingTreasure_Name,
                     tooltip: () => I18n.Config_FishingTreasure_Tooltip(defaultValue: defaultConfig.FishingTreasureSpeed),
                     get: config => config.FishingTreasureSpeed,
@@ -219,12 +235,28 @@ namespace Pathoschild.Stardew.FastAnimations.Framework
                     max: maxSpeed
                 )
                 .AddNumberField(
+                    name: I18n.Config_ParrotExpress_Name,
+                    tooltip: () => I18n.Config_ParrotExpress_Tooltip(defaultValue: defaultConfig.ParrotExpressSpeed),
+                    get: config => config.ParrotExpressSpeed,
+                    set: (config, value) => config.ParrotExpressSpeed = value,
+                    min: minSpeed,
+                    max: maxSpeed
+                )
+                .AddNumberField(
                     name: I18n.Config_PrizeTicketMachine_Name,
                     tooltip: () => I18n.Config_PrizeTicketMachine_Tooltip(defaultValue: defaultConfig.PrizeTicketMachineSpeed),
                     get: config => config.PrizeTicketMachineSpeed,
                     (config, value) => config.PrizeTicketMachineSpeed = value,
                     minSpeed,
                     maxSpeed
+                )
+                .AddNumberField(
+                    name: I18n.Config_Tailor_Name,
+                    tooltip: () => I18n.Config_Tailor_Tooltip(defaultValue: defaultConfig.TailorSpeed),
+                    get: config => config.TailorSpeed,
+                    set: (config, value) => config.TailorSpeed = value,
+                    min: minSpeed,
+                    max: maxSpeed
                 )
                 .AddNumberField(
                     name: I18n.Config_TreeFall_Name,
@@ -244,6 +276,22 @@ namespace Pathoschild.Stardew.FastAnimations.Framework
                 )
 
                 .AddSectionTitle(I18n.Config_UiSpeeds)
+                .AddNumberField(
+                    name: I18n.Config_DialogueTyping_Name,
+                    tooltip: () => I18n.Config_DialogueTyping_Tooltip(defaultValue: defaultConfig.DialogueTypeSpeed),
+                    get: config => config.DialogueTypeSpeed,
+                    set: (config, value) => config.DialogueTypeSpeed = value,
+                    min: minSpeed,
+                    max: maxSpeed
+                )
+                .AddNumberField(
+                    name: I18n.Config_OpenDialogueBox_Name,
+                    tooltip: () => I18n.Config_OpenDialogueBox_Tooltip(defaultValue: defaultConfig.OpenDialogueBoxSpeed),
+                    get: config => config.OpenDialogueBoxSpeed,
+                    set: (config, value) => config.OpenDialogueBoxSpeed = value,
+                    min: minSpeed,
+                    max: maxSpeed
+                )
                 .AddNumberField(
                     name: I18n.Config_TitleMenu_Name,
                     tooltip: () => I18n.Config_TitleMenu_Tooltip(defaultValue: defaultConfig.TitleMenuTransitionSpeed),

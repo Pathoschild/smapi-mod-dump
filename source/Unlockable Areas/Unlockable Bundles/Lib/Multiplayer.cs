@@ -17,7 +17,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Unlockable_Bundles.Lib.Enums;
+using Unlockable_Bundles.Lib.MapFeatures;
 using Unlockable_Bundles.Lib.ShopTypes;
+using Unlockable_Bundles.Lib.WalletCurrency;
 using Unlockable_Bundles.NetLib;
 using static Unlockable_Bundles.ModEntry;
 
@@ -94,7 +97,7 @@ namespace Unlockable_Bundles.Lib
                 ModData.setPurchased(unlockable.ID, unlockable.LocationUnique);
                 ModAPI.raiseShopPurchased(new API.BundlePurchasedEventArgs(Game1.player, unlockable.Location, unlockable.LocationUnique, unlockable.ID, false));
 
-                MapPatches.applyUnlockable(unlockable, !Context.IsOnHostComputer);
+                MapPatches.applyUnlockable(unlockable, !MapPatches.AppliedUnlockables.Any(el => el.ID == unlockable.ID && el.LocationUnique == unlockable.LocationUnique));
 
                 if (Game1.activeClickableMenu != null
                     && Game1.activeClickableMenu.GetType() == typeof(DialogueShopMenu)
@@ -157,7 +160,7 @@ namespace Unlockable_Bundles.Lib
                     MapPatches.applyUnlockable(new Unlockable(unlockable), false);
 
             } else if (e.Type == "DebugWarpToHost") {
-#if DEBUG
+
                 var master = Game1.MasterPlayer;
                 var masterLocation = master.currentLocation;
                 Game1.warpFarmer(masterLocation.Name, master.TilePoint.X + 1, master.TilePoint.Y, 2);
@@ -170,7 +173,34 @@ namespace Unlockable_Bundles.Lib
                 Game1.yLocationAfterWarp = master.TilePoint.Y;
                 Game1.player.position.Value = new Microsoft.Xna.Framework.Vector2(master.Position.X, master.Position.Y);
                 Helper.Reflection.GetField<bool>(typeof(Game1), "_isWarping").SetValue(true);
-#endif
+
+            } else if (e.Type == "SPRUpdated") {
+                var data = e.ReadAs<KeyValuePair<PlacementRequirementType, string>>();
+
+                switch (data.Key) {
+                    case PlacementRequirementType.TriggerAction:
+                        ModData.Instance.SPRTriggerActionKeys.Add(data.Value);
+                        break;
+                }
+
+                PlacementRequirement.CheckShopPlacement(data.Key);
+
+            } else if (e.Type == "ResetDigSpot") {
+                var data = e.ReadAs<DigSpotTransferData>();
+
+                var location = Game1.getLocationFromName(data.Location);
+                if (data.Who != 0) {
+                    var farmer = Game1.getFarmer(data.Who);
+                    DigSpot.resetDigspot(farmer, location, data.X, data.Y, data.ResetMailFlag);
+
+                } else foreach (var farmer in Game1.getAllFarmers())
+                        DigSpot.resetDigspot(farmer, location, data.X, data.Y, data.ResetMailFlag);
+
+            } else if (e.Type == "WalletCurrencyChanged") {
+                var data = e.ReadAs<CurrencyTransferModel>();
+                var currency = WalletCurrencyHandler.getCurrencyById(data.CurrencyId);
+
+                WalletCurrencyHandler.addWalletCurrency(currency, data.Who, data.AddedValue, false, currency.Shared);
             }
         }
         public static string getDebugName() => $"{(Context.IsOnHostComputer ? "P" + Context.ScreenId : "NotOnHostComputer")} {Game1.player.UniqueMultiplayerID}";

@@ -15,11 +15,12 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using static StardewValley.GameData.QuantityModifier;
 using SVLocationData = StardewValley.GameData.Locations.LocationData;
 
 namespace Randomizer
 {
-    public class FishRandomizer
+	public class FishRandomizer
 	{
         private static RNG Rng { get; set; }
 
@@ -102,22 +103,22 @@ namespace Randomizer
                 editedObjectInfo.ObjectsReplacements.Add(fish.Id.ToString(), GetFishObjectData(fish));
             }
 
-            // Keeping this here for debugging purposes
+			// Keeping this here for debugging purposes
 			// Uncomment to print out all randomized seasons and locations
-            //List<int> sortedFishIds = ItemList.Items.Values
-            //    .Where(x => x is FishItem)
-            //    .Select(x => x.Id).ToList();
-            //sortedFishIds.Sort();
-            //foreach (int fishId in sortedFishIds)
-            //{
-            //    List<Seasons> seasons = (ItemList.Items[(ObjectIndexes)fishId] as FishItem).AvailableSeasons;
-            //    List<Locations> locs = (ItemList.Items[(ObjectIndexes)fishId] as FishItem).AvailableLocations;
-            //    string itemName = ItemList.Items[(ObjectIndexes)fishId].Name;
-            //    Globals.ConsoleWarn($"{fishId} {itemName}: {string.Join(" ", seasons.Select(x => x.ToString().ToLower()))}");
-            //    Globals.ConsoleWarn($"{fishId} {itemName}: {string.Join(" ", locs.Select(x => x.ToString().ToLower()))}");
-            //}
+			//List<int> sortedFishIds = ItemList.Items.Values
+			//    .Where(x => x is FishItem)
+			//    .Select(x => x.Id).ToList();
+			//sortedFishIds.Sort();
+			//foreach (int fishId in sortedFishIds)
+			//{
+			//    List<Seasons> seasons = (ItemList.Items[(ObjectIndexes)fishId] as FishItem).AvailableSeasons;
+			//    List<Locations> locs = (ItemList.Items[(ObjectIndexes)fishId] as FishItem).AvailableLocations;
+			//    string itemName = ItemList.Items[(ObjectIndexes)fishId].Name;
+			//    Globals.ConsoleWarn($"{fishId} {itemName}: {string.Join(" ", seasons.Select(x => x.ToString().ToLower()))}");
+			//    Globals.ConsoleWarn($"{fishId} {itemName}: {string.Join(" ", locs.Select(x => x.ToString().ToLower()))}");
+			//}
 
-            WriteToSpoilerLog(newToOldFishIdMap);
+			WriteToSpoilerLog(newToOldFishIdMap);
 		}
 
 		/// <summary>
@@ -230,8 +231,8 @@ namespace Randomizer
             Dictionary<string, SVLocationData> locationDataReplacements,
             Dictionary<string, string> oldToNewFishIdMap)
         {
-            // Go through each location and add to the location dictionary
-            foreach (var locData in DataLoader.Locations(Game1.content))
+			// Go through each location and add to the location dictionary
+			foreach (var locData in DataLoader.Locations(Game1.content))
             {
                 string locationName = locData.Key;
                 if (!Enum.TryParse(locationName, out Locations location))
@@ -240,13 +241,13 @@ namespace Randomizer
                     continue;
                 }
 
-                // Use the location data in the replacements if it's there
-                // Otherwise, use the one we're looping through, but add it to the replacements
-                // USE THIS VALUE AND NOT locData.Value NOW!
-                SVLocationData locationData = LocationData.TrySetLocationData(
-                    locationName,
-                    locData.Value,
-                    locationDataReplacements);
+				// Use the location data in the replacements if it's there
+				// Otherwise, use the one we're looping through, but add it to the replacements
+				// USE THIS VALUE AND NOT locData.Value NOW!
+				SVLocationData locationData = LocationData.TrySetLocationData(
+					locationName,
+					locData.Value,
+					locationDataReplacements);
 
                 foreach (var spawnFishData in locationData.Fish)
                 {
@@ -278,7 +279,110 @@ namespace Randomizer
                     TryAddLocationToFishItem(fishItem, location);
                     TryAddSeasonsToFishItem(fishItem, location, spawnFishData);
                 }
-            }
+
+				if (location == Locations.UndergroundMine)
+				{
+					// Some mines fish have no data and must be added manually
+					AddNewMinesFish(oldToNewFishIdMap, locationData);
+				}
+			}
+		}
+
+        /// <summary>
+        /// The mines fish need to be added manually, since the normal ones are
+        /// hard-coded and don't actually exist in the location data
+        /// </summary>
+        public static void AddNewMinesFish(
+			Dictionary<string, string> oldToNewFishIdMap,
+			SVLocationData undergroundLocationData)
+        {
+			var fishData = undergroundLocationData.Fish;
+
+            var minesFishIds = ItemList.Items.Values
+				.Where(item => item.IsFish)
+				.Cast<FishItem>()
+                .Where(fish => fish.IsMinesFish)
+                .Select(fish => fish.QualifiedId)
+                .ToList();
+
+            foreach(string fishId in minesFishIds) 
+			{
+				if (oldToNewFishIdMap.TryGetValue(fishId, out string newFishId))
+				{
+					var fishItem = ItemList.GetItemFromStringId(newFishId) as FishItem;
+					var spawnFishData = CreateNewSpawnFishData(newFishId);
+
+					//TODO: turn this on in the next major update
+					//TryAddLocationToFishItem(fishItem, Locations.UndergroundMine);
+					//TryAddSeasonToFishItem(fishItem, Seasons.Spring);
+					//TryAddSeasonToFishItem(fishItem, Seasons.Summer);
+					//TryAddSeasonToFishItem(fishItem, Seasons.Fall);
+					//TryAddSeasonToFishItem(fishItem, Seasons.Winter);
+
+					fishData.Insert(0, spawnFishData);
+					fishItem.IsNewMinesFish = true;
+					fishItem.MineFloorString = FishItem.ComputeMineFloorString(); // Use the default, as this isn't hard-coded
+				}
+				else
+				{
+					Globals.ConsoleWarn($"Mines fish id not mapped: {fishId}");
+				}
+			}
+		}
+
+		/// <summary>
+		/// Creates a new default fish spawn data
+		/// </summary>
+		/// <param name="fishId">The fish ID to use</param>
+		/// <returns>The spawn data object, ready to be inserted</returns>
+        public static SpawnFishData CreateNewSpawnFishData(string fishId)
+        {
+			return new SpawnFishData
+			{
+				Id = fishId,
+				ItemId = fishId,
+
+				Chance = 1.0f,
+				Season = null,
+				FishAreaId = null,
+				BobberPosition = null,
+				PlayerPosition = null,
+				MinFishingLevel = 0,
+				MinDistanceFromShore = 0,
+				MaxDistanceFromShore = -1,
+				ApplyDailyLuck = false,
+				CuriosityLureBuff = -1.0f,
+				SpecificBaitBuff = 0.0f,
+				SpecificBaitMultiplier = 1.66f,
+				CatchLimit = -1,
+				CanUseTrainingRod = null,
+				IsBossFish = false,
+				SetFlagOnCatch = null,
+				RequireMagicBait = false,
+				Precedence = 0,
+				IgnoreFishDataRequirements = false,
+				CanBeInherited = true,
+				ChanceModifiers = null,
+				ChanceModifierMode = QuantityModifierMode.Stack,
+				ChanceBoostPerLuckLevel = 0.0f,
+				UseFishCaughtSeededRandom = false,
+				Condition = null,
+				RandomItemId = null,
+				MaxItems = null,
+				MinStack = -1,
+				MaxStack = -1,
+				Quality = -1,
+				ObjectInternalName = null,
+				ObjectDisplayName = null,
+				ToolUpgradeLevel = -1,
+				IsRecipe = false,
+				StackModifiers = null,
+				StackModifierMode = QuantityModifierMode.Stack,
+				QualityModifiers = null,
+				QualityModifierMode = QuantityModifierMode.Stack,
+				ModData = null,
+				PerItemCondition = null
+			};
         }
 
         /// <summary>

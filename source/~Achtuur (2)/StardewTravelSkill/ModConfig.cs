@@ -51,9 +51,9 @@ internal class ModConfig
     public int SprintSteps { get; set; }
 
     /// <summary>
-    /// Add exp in steps of AddExpIncrement. Ie, with 25 steps per exp and AddExpIncrement = 1, the player gains 1 exp after 25 steps. With increment 5, the player gains 5 exp after 25*5 steps
+    /// Add exp in steps of ExpGainStepThreshold. Ie, with 25 steps per exp and threshold = 1, the player gains 1 exp after 25 steps. With increment 5, the player gains 5 exp after 25*5 steps
     /// </summary>
-    public int AddExpIncrement;
+    public int ExpGainStepThreshold;
 
     public ModConfig()
     {
@@ -67,7 +67,7 @@ internal class ModConfig
 
         // Unchangable by player via in game menu
         this.SprintSteps = 5;
-        this.AddExpIncrement = 10;
+        this.ExpGainStepThreshold = 10;
     }
 
     /// <summary>

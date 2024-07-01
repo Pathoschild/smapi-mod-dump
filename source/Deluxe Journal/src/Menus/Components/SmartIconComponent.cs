@@ -12,7 +12,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley;
-using StardewValley.GameData.Characters;
 using StardewValley.Menus;
 using StardewValley.Objects;
 using StardewValley.Tools;
@@ -24,7 +23,7 @@ using static StardewValley.Menus.ClickableComponent;
 
 namespace DeluxeJournal.Menus.Components
 {
-    public class SmartIconComponent
+    public class SmartIconComponent : IClickableComponentSupplier
     {
         /// <summary>Measure of the inner icon source in pixels.</summary>
         private const int InnerIconPixels = 9;
@@ -90,7 +89,7 @@ namespace DeluxeJournal.Menus.Components
 
             set
             {
-                if (_visible && !(_visible = value))
+                if (_visible & !(_visible = value))
                 {
                     foreach (var target in _taskTargetIcons)
                     {
@@ -414,7 +413,7 @@ namespace DeluxeJournal.Menus.Components
             {
                 b.Draw(DeluxeJournalMod.UiTexture,
                     new Rectangle(bounds.X + bounds.Width - 22, bounds.Y + 6, 16, 20),
-                    new Rectangle(64 + (tier - 1) * 8, 80, 8, 10),
+                    new Rectangle(80 + (tier - 1) * 8, 80, 8, 10),
                     color);
             }
         }
@@ -452,7 +451,7 @@ namespace DeluxeJournal.Menus.Components
                 {
                     b.Draw(DeluxeJournalMod.UiTexture,
                         new Rectangle((int)digitPosition.X - 10, (int)digitPosition.Y + 2, 10, 10),
-                        new Rectangle(88, 80, 5, 5),
+                        new Rectangle(104, 80, 5, 5),
                         color);
                 }
             }

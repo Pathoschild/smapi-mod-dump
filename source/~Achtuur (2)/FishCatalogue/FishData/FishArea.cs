@@ -32,8 +32,12 @@ internal struct FishArea
         {
             "ocean" => TrapWaterType.Ocean,
             "freshwater" => TrapWaterType.Freshwater,
-            _ => throw new Exception($"Invalid water type: {x}")
+            _ => TrapWaterType.Freshwater // default to freshwater??
         }).ToList();
+
+        // default to freshwater i guess?
+        if (this.waterTypes.Count == 0)
+            this.waterTypes = new List<TrapWaterType> { TrapWaterType.Freshwater };
 
         this.JunkChance = fish_area_data.CrabPotJunkChance;
     }

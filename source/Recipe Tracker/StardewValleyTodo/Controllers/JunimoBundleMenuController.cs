@@ -36,6 +36,8 @@ namespace StardewValleyTodo.Controllers {
             var name = currentPage.label;
             if (_inventoryTracker.Has(name)) {
                 _inventoryTracker.Off(name);
+
+                return;
             }
 
             var bundle = _junimoBundles.Find(name);

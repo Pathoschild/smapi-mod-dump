@@ -258,3 +258,36 @@ For example
 ```
 
 Here, clumps will only spawn between 1,12 and 23,20.
+
+### Other options
+
+You can add extra requirements for spawning clumps. For example:
+
+| name                      | description                                   | example                                 |
+|---------------------------|-----------------------------------------------|-----------------------------------------|
+| `@tool:TYPE`              | Tool that breaks this clump.                  | `@tool:axe`                             |
+| `@skill` ( + :TYPE)       | Skill that this clump adds EXP for.           | `@skill:mining`                         |
+| `@statcounter` ( + :TYPE) | Stat this clump counts towards.               | `@statcounter:Copper`                   |
+| `@width:min_max`          | Width this clump can have (in tiles).         | `@width:1_2` minimum 1 tile, max 2.     |
+| `@height:min_max`         | Height this clump can have (in tiles).        | `@height:2_2` only if 2 tiles tall.     |
+| `@hasLight`               | If this clump has a light property.           | `@hasLight`                             |
+| `@noLight`                | If this clump has no light property.          | `@noLight`                              |
+| `@hasExtraDrops`          | Used when the clump has extra item drops.     | `@hasExtraDrops`                        |
+| `@noExtraDrops`           | If the clump only has a "main" drop.          | `@noExtraDrops`                         |
+| `@addsHay`  (+ :min_max)  | Used if the clump adds hay, can state amount. | `@addsHay`, `@addsHay:1_100` (1 to 100) |
+| `@secretNotes`            | Whether the clump can drop secret notes.      | `@secretNotes`                          |
+
+For example:
+
+```json
+{
+    "Chance": 0.9,
+    "Precedence": 0,
+    "Id": "ItemExtension.Clump 1",
+    "ItemId": "mistyspring.ItemExtensions_ALL_CLUMPS @skill:mining @secretNotes",
+    "PerItemCondition":"ITEM_ID_PREFIX Target {{ModId}}_Log, ITEM_CONTEXT_TAG Target custom_tag",
+    "MaxItems": 1
+}
+```
+Here, it'll select all that start count towards the `mining` skill and can drop secret notes.
+Then, from the previous selection, it'll grab only those with `{{ModId}}_Log` in the id prefix, and have the context tag `custom_tag`.

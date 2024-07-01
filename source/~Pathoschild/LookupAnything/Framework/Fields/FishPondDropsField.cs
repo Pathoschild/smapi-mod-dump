@@ -20,7 +20,6 @@ using Pathoschild.Stardew.LookupAnything.Framework.Fields.Models;
 using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.GameData.FishPonds;
-using SObject = StardewValley.Object;
 
 namespace Pathoschild.Stardew.LookupAnything.Framework.Fields
 {
@@ -165,7 +164,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Fields
             foreach (FishPondDropData drop in gameHelper.GetFishPondDrops(data))
             {
                 bool isUnlocked = currentPopulation >= drop.MinPopulation;
-                Item item = ItemRegistry.Create(drop.ItemID);
+                Item item = ItemRegistry.Create(drop.ItemId);
                 SpriteInfo? sprite = gameHelper.GetSprite(item);
                 yield return new FishPondDrop(drop, item, sprite, isUnlocked);
             }

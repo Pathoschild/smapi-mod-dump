@@ -14,6 +14,7 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
+using StardewValley.TerrainFeatures;
 
 namespace WaterYourCrops
 {
@@ -37,6 +38,7 @@ namespace WaterYourCrops
             SHelper = helper;
 
             helper.Events.GameLoop.GameLaunched += GameLoop_GameLaunched;
+            helper.Events.GameLoop.DayStarted += GameLoop_DayStarted;
 
             var harmony = new Harmony(ModManifest.UniqueID);
             harmony.PatchAll();
@@ -77,6 +79,37 @@ namespace WaterYourCrops
             if (!debugOnly) SMonitor.LogOnce(message, level);
             if (debugOnly && Config.Debug) SMonitor.LogOnce(message, level);
             else return;
+        }
+
+        private void GameLoop_DayStarted(object sender, DayStartedEventArgs e)
+        {
+            if (!Config.EnableMod)
+                return;
+
+            Farm farm = Game1.getFarm();
+            GameLocation island = Game1.getLocationFromNameInLocationsList("IslandWest");
+
+            foreach(TerrainFeature f in farm.terrainFeatures.Values)
+            {
+                if (f is not HoeDirt) continue;
+                HoeDirt plot = (HoeDirt) f;
+                if (plot.needsWatering() && !plot.isWatered() && !plot.crop.fullyGrown.Value)
+                {
+                    Game1.showGlobalMessage($"{I18n.FarmNeedsWater()}");
+                    break;
+                }
+            }
+
+            foreach (TerrainFeature f in island.terrainFeatures.Values)
+            {
+                if (f is not HoeDirt) continue;
+                HoeDirt plot = (HoeDirt)f;
+                if (plot.needsWatering() && !plot.isWatered() && !plot.crop.fullyGrown.Value)
+                {
+                    Game1.showGlobalMessage($"{I18n.IslandNeedsWater()}");
+                    break;
+                }
+            }
         }
 
         private void SaveConfig()
@@ -129,8 +162,8 @@ namespace WaterYourCrops
                 mod: ModManifest,
                 name: () => I18n.OnlyWaterCan(),
                 tooltip: () => I18n.OnlyWaterCanTip(),
-                getValue: () => Config.Debug,
-                setValue: value => Config.Debug = value
+                getValue: () => Config.OnlyWaterCan,
+                setValue: value => Config.OnlyWaterCan = value
             );
             if (configMenuExt is not null)
             {
@@ -177,7 +210,12 @@ namespace WaterYourCrops
 
             waterTexture = Helper.ModContent.Load<Texture2D>("assets/waterTexture.png");
             if (waterTexture != null) Log("Successfully loaded texture.", debugOnly: true);
-            else Log("Couldn't load indicator texture.", LogLevel.Error);
+            else
+            {
+                Log("Couldn't load indicator texture! Please try re-installing the mod or posting a bug report on Nexus.", LogLevel.Error);
+                Config.EnableMod = false;
+                configMenu.Unregister(ModManifest);
+            }
         }
 
     }

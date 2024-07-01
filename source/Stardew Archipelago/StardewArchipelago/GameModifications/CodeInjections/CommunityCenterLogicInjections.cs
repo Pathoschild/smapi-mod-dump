@@ -10,7 +10,7 @@
 
 using System;
 using StardewArchipelago.Locations;
-using StardewArchipelago.Locations.CodeInjections.Vanilla.CC;
+using StardewArchipelago.Locations.CodeInjections.Vanilla.Bundles;
 using StardewModdingAPI;
 using StardewValley;
 
@@ -47,11 +47,10 @@ namespace StardewArchipelago.GameModifications.CodeInjections
                     __instance.hasOrWillReceiveMail("apccBoilerRoom") &&
                     __instance.hasOrWillReceiveMail("apccVault") &&
                     __instance.hasOrWillReceiveMail("apccBulletin");
-                
+
                 __result = allAreasCompleteAccordingToAp && allAreasCompleteLocally;
 
-                return false;// don't run original logic
-
+                return false; // don't run original logic
             }
             catch (Exception ex)
             {

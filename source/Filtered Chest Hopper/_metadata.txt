@@ -6,9 +6,9 @@ mods:
    Filtered Chest Hopper
 
 latest commit:
-   commit b9e3fb45646f7b25f8e26ab1289c275e32231813
+   commit 8f2eca76adbd738a4d66a92172565323c474d5db
    Author: Alex Apperley <AlexApperley@gmail.com>
-   Date:   Thu May 23 18:20:10 2024 -0500
+   Date:   Tue Jun 4 18:56:49 2024 -0500
    
-       Add checks for null item slots
+       Rework the quantity filter, and fix ID comparison ignoring TypeID
    

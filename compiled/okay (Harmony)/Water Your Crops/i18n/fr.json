@@ -1,0 +1,13 @@
+{
+  "EnableMod": "Activer le Mod",
+  "OnlyWaterCan": "Uniquement avec un arrosoir",
+  "OnlyWaterCanTip": "Afficher l'indicateur uniquement lorsque vous tenez un arrosoir.",
+  "IndicatorColor": "Couleur de l'indicateur",
+  "IndicatorColorTip": "La couleur de l'indicateur affiché sur chaque culture ayant besoin d'être arrosée.",
+  "IndicatorOpacity": "Opacité de l'indicateur",
+  "IndicatorOpacityTip": "À quel point l'indicateur est visible. Une valeur de 0 signifie qu'il est entièrement invisible, tandis qu'une valeur de 1 signifie qu'il est entièrement visible.",
+  "Debug": "Journaux de débogage",
+  "DebugTip": "Activer les journaux de débogage SMAPI. Activez-les avant de générer un journal SMAPI et de soumettre un rapport de bug.",
+  "FarmNeedsWater": "Vous avez des cultures sur votre ferme qui ont besoin d'être arrosées aujourd'hui !",
+  "IslandNeedsWater": "Vous avez des cultures sur l'île Gingembre qui ont besoin d'être arrosées aujourd'hui !"
+}

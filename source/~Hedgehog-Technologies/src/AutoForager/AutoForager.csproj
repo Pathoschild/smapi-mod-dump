@@ -7,7 +7,7 @@
     <Name>Auto Forager</Name>
     <Authors>Jag3Dagster</Authors>
     <Description>Automatically forage items simply by moving near them.</Description>
-    <Version>3.6.0</Version>
+    <Version>3.6.2</Version>
     <UpdateKeys>Nexus:7736</UpdateKeys>
 
     <MinimumApiVersion>auto</MinimumApiVersion>

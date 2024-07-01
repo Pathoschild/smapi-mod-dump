@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/25303
+IDs: FlyingTNT.MultipleFloorFarmhouse
+update keys: Nexus:25303, GitHub:FlyingTNT/StardewValleyMods

@@ -48,6 +48,7 @@
     "config.machines.fruit-tree": "Baum (Obstbaum)",
     "config.machines.trash-can": "Mülleimer",
     "config.machines.wild-tree": "Baum (Wilder Baum)",
+    "config.machines.feed-hopper": "Heu-Einfülltrichter und Silo",
 
     // special settings for individual machines
     "config.machines.wild-tree.collect-moss.name": "Moos sammeln",

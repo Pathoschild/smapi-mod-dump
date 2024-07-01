@@ -35,15 +35,11 @@ internal class WeatherCondition : BaseCondition
     }
     public override string Description()
     {
-        if (weather == Weather.Both)
-            return null;
         return WeatherToText(this.weather);
     }
 
     protected override string ItemID()
     {
-        if (weather == Weather.Both)
-            return null;
         return WeatherItemId[this.weather];
     }
 

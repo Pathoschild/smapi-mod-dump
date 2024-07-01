@@ -8,7 +8,6 @@
 **
 *************************************************/
 
-using StardewModdingAPI;
 using DeluxeJournal.Events;
 
 using static DeluxeJournal.Task.TaskParameterAttribute;
@@ -25,12 +24,12 @@ namespace DeluxeJournal.Task.Tasks
             [TaskParameter(TaskParameterNames.NPC, TaskParameterTag.NpcName)]
             public string? NpcName { get; set; }
 
-            [TaskParameter(TaskParameterNames.Quality, TaskParameterTag.Quality, Parent = TaskParameterNames.Item, Constraints = Constraint.GE0)]
+            [TaskParameter(TaskParameterNames.Quality, TaskParameterTag.Quality, Parent = TaskParameterNames.Item, InputType = TaskParameterInputType.DropDown, Constraints = Constraint.GE0)]
             public int Quality { get; set; } = 0;
 
             public override SmartIconFlags EnabledSmartIcons => SmartIconFlags.Item | SmartIconFlags.Npc;
 
-            public override void Initialize(ITask task, ITranslationHelper translation)
+            protected override void InitializeInternal(ITask task)
             {
                 if (task is GiftTask giftTask)
                 {
@@ -40,7 +39,7 @@ namespace DeluxeJournal.Task.Tasks
                 }
             }
 
-            public override ITask? Create(string name)
+            protected override ITask? CreateInternal(string name)
             {
                 return NpcName != null && (ItemIds == null || ItemIds.Count > 0)
                     ? new GiftTask(name, NpcName, ItemIds ?? new List<string>(), Quality)

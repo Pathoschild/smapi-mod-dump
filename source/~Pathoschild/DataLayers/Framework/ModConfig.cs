@@ -20,7 +20,7 @@ namespace Pathoschild.Stardew.DataLayers.Framework
         /*********
         ** Accessors
         *********/
-        /// <summary>When two groups of the same color overlap, draw one border around their edges instead of their individual borders.</summary>
+        /// <summary>When two groups of the same color overlap, whether to draw one border around their combined edge instead of their individual borders.</summary>
         public bool CombineOverlappingBorders { get; set; } = true;
 
         /// <summary>Whether to show a tile grid when a layer is open.</summary>

@@ -30,23 +30,44 @@ namespace PersonalIndoorFarm.Lib
         public static void useOnDoor(Farmer who, string doorId)
         {
             var key = generateLockKey(doorId);
-            if (isDoorLocked(who, doorId)) {
+            var lockStatus = Key.getDoorLocked(who, doorId);
+            if (lockStatus == DoorLockEnum.Locked) {
                 Game1.currentLocation.playSound("give_gift", Game1.player.Tile);
+                who.modData[key] = "F";
+
+            } else if (lockStatus == DoorLockEnum.Unlocked) {
+                Game1.currentLocation.playSound("select", Game1.player.Tile);
                 who.modData.Remove(key);
 
-            }   else {
+            } else if (lockStatus == DoorLockEnum.LockedWhenOffline) {
                 Game1.currentLocation.playSound("doorClose", Game1.player.Tile);
-                who.modData.Add(key, "T");
+                who.modData[key] = "T";
 
-            }      
+            }
         }
-        public static bool isDoorLocked(Farmer owner, string doorId) => owner.modData.ContainsKey(generateLockKey(doorId));
+        public static DoorLockEnum getDoorLocked(Farmer owner, string doorId)
+        {
+            if (!owner.modData.TryGetValue(generateLockKey(doorId), out var value))
+                return DoorLockEnum.LockedWhenOffline;
+
+            if (value == "F")
+                return DoorLockEnum.Unlocked;
+
+            if (value == "T")
+                return DoorLockEnum.Locked;
+
+            return DoorLockEnum.LockedWhenOffline;
+        }
 
         public static string generateLockKey(string doorId) => "DLX.PIF_Lock_" + doorId;
 
         public static void drawOverlay(SpriteBatch b, Furniture door, string doorId, Farmer owner)
         {
-            var color = isDoorLocked(owner, doorId) ? Config.LockedDoorColor : Config.UnlockedDoorColor;
+            var color = getDoorLocked(owner, doorId) switch {
+                DoorLockEnum.Locked => Config.LockedDoorColor,
+                DoorLockEnum.Unlocked => Config.UnlockedDoorColor,
+                DoorLockEnum.LockedWhenOffline or _ => Config.LockedWhenOfflineDoorColor,
+            };
             var pos = new Vector2(door.TileLocation.X * 64 + (door.boundingBox.Width / 2) - 32, door.TileLocation.Y * 64 + (door.boundingBox.Height / 2) - 32);
 
             b.Draw(AssetRequested.SpriteSheetTexture, Game1.GlobalToLocal(pos), new Rectangle(128, 0, 16, 16), color, 0f, new Vector2(), 4f, SpriteEffects.None, 1f);

@@ -1,0 +1,24 @@
+﻿{
+  "Name": "[DLL] Louis's Garage",
+  "Author": "XxHarvzBackxX",
+  "Version": "1.0.0",
+  "Description": "Stardew + Renault R5 Collaboration: Louis's Garage. (DLL Component)",
+  "UniqueID": "R5.DLL",
+  "EntryDll": "R5.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:24687" ],
+  "Dependencies": [
+    {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "IsRequired": true
+    },
+    {
+      "UniqueID": "R5.CP",
+      "IsRequired": true
+    },
+    {
+      "UniqueID": "spacechase0.SpaceCore",
+      "IsRequired": true
+    }
+  ]
+}

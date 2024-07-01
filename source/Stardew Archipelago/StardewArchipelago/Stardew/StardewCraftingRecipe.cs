@@ -19,7 +19,7 @@ namespace StardewArchipelago.Stardew
     {
         public string BigCraftable { get; private set; }
 
-        public StardewCraftingRecipe(string itemName, Dictionary<int, int> ingredients, int itemId, int itemAmount, string bigCraftable, string unlockConditions, string displayName) : base(itemName, ingredients, itemId, itemAmount, unlockConditions, displayName)
+        public StardewCraftingRecipe(string itemName, Dictionary<string, int> ingredients, string yieldItemId, int yieldItemAmount, string bigCraftable, string unlockConditions, string displayName) : base(itemName, ingredients, yieldItemId, yieldItemAmount, unlockConditions, displayName)
         {
             BigCraftable = bigCraftable;
         }

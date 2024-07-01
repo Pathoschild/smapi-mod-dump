@@ -18,16 +18,17 @@ Run the game using SMAPI.
 
 ## Config Options
 
-| setting                           | default                | what it does                                                                                           |
-| --------------------------------- | ---------------------- | ------------------------------------------------------------------------------------------------------ |
-| `ShowSchedulesKey`                | `V`                    | the key to open the Schedule Viewer                                                                    |
-| `UseAddress`                      | `true`                 | use Pelican Town address instead of "Home of ..." for schedule entries i.e. "2 Willow Lane" instead of "Home of Emily & Haley". (Changes may not take effect until the next day.) |
-| `DisableHover`                    | `false`                | don't show tile, facing direction, and animation info on hover                                         |
-| `UseLargerFontForScheduleDetails` | `false`                | use a larger font size on the Schedule Details page (longer location names may get cut off if enabled) |
-| `NPCSortOrder`                    | Alphabetical Ascending | the order the NPCs are sorted in the Schedule Viewer (Alphabetical/Heart Level & Ascending/Descending) |
+| setting                           | default                 | what it does                                                                                           |
+| --------------------------------- | ----------------------- | ------------------------------------------------------------------------------------------------------ |
+| `ShowSchedulesKey`                | `V`                     | the key to open the Schedule Viewer                                                                    |
+| `UseAddress`                      | `true`                  | use Pelican Town address instead of "Home of ..." for schedule entries i.e. "2 Willow Lane" instead of "Home of Emily & Haley". (Changes may not take effect until the next day.) |
+| `DisableHover`                    | `false`                 | don't show tile, facing direction, and animation info on hover                                         |
+| `UseLargerFontForScheduleDetails` | `false`                 | use a larger font size on the Schedule Details page (longer location names may get cut off if enabled) |
+| `NPCSortOrder`                    | Alphabetical Ascending  | the order the NPCs are sorted in the Schedule Viewer (Alphabetical/Heart Level & Ascending/Descending) |
 | **Filters**                       |
-| `OnlyShowMetNPCs`                 | `false`                | hides NPCs the farmer hasn't met yet                                                                   |
-| `OnlyShowSocializableNPCs`        | `true`                 | hides NPCs you can't socialize with i.e. Gunther or Sandy before the bus is repaired                   |
+| `OnlyShowMetNPCs`                 | `false`                 | hides NPCs the farmer hasn't met yet                                                                   |
+| `OnlyShowSocializableNPCs`        | `true`                  | hides NPCs you can't socialize with i.e. Gunther or Sandy before the bus is repaired                   |
+| `IgnoredNPCs`                     | `Dwarf, Krobus, Wizard` | hides the listed NPCs. Prepending a value with \"^\" will match any names that start with that value (ex: \"^Ha\" will hide both Haley and Harvey) |
 
 ## Compatibility
 
@@ -48,7 +49,7 @@ No known mod conflicts
 - [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098) - UI for editing config options
 - [Lookup Anything](https://www.nexusmods.com/stardewvalley/mods/541) - able to lookup NPC information from the Schedule Viewer and details pages
 - [Mobile Phone Continued](https://www.nexusmods.com/stardewvalley/mods/21017) - able to open the Schedule Viewer from the Mobile Phone
-- [Stardew Valley Expanded](https://www.nexusmods.com/stardewvalley/mods/3753) - see [SVETileAreas](..\SVETileAreas) for optional download that enhances schedule details for custom SVE locations
+- [Stardew Valley Expanded](https://www.nexusmods.com/stardewvalley/mods/3753) - see [Schedule Viewer - SVE Add-on](../AddOns/SVE/) for optional download that enhances schedule details for custom SVE locations
 - [Toolbar Icons](https://www.nexusmods.com/stardewvalley/mods/21017) - able to open the Schedule Viewer from a toolbar icon
 
 To integrate your mod see the [author guide](author-guide.md) for more info.
@@ -70,19 +71,19 @@ on the wiki for help contributing translations.
 
 (❑ = untranslated, ↻ = partly translated, ✓ = fully translated)
 
-| Language   | Status                           | Contributors                                            |
-| ---------- | -------------------------------- | ------------------------------------------------------- |
-| Chinese    | [↻](ScheduleViewer/i18n/zh.json) | [RegenLicht](https://www.nexusmods.com/users/102031818) |
-| French     | [✓](ScheduleViewer/i18n/fr.json) | YoshY                                                   |
-| German     | [❑](ScheduleViewer/i18n)         | &nbsp;                                                  |
-| Hungarian  | [❑](ScheduleViewer/i18n)         | &nbsp;                                                  |
-| Italian    | [❑](ScheduleViewer/i18n)         | &nbsp;                                                  |
-| Japanese   | [❑](ScheduleViewer/i18n)         | &nbsp;                                                  |
-| Korean     | [✓](ScheduleViewer/i18n/ko.json) | [cheesecats](https://www.nexusmods.com/users/88438538)  |
-| Portuguese | [✓](ScheduleViewer/i18n/pt.json) | [Sxdic](https://www.nexusmods.com/users/34556965)       |
-| Russian    | [❑](ScheduleViewer/i18n)         | &nbsp;                                                  |
-| Spanish    | [✓](ScheduleViewer/i18n/es.json) | [36095](https://github.com/36095)                       |
-| Turkish    | [✓](ScheduleViewer/i18n/tr.json) | [KzyNothh](https://www.nexusmods.com/users/94536368)    |
+| Language   | Main Mod Status                     | SVE Add-on Status                | Contributors                                            |
+| ---------- | ----------------------------------- | -------------------------------- | ------------------------------------------------------- |
+| Chinese    | [✓](../ScheduleViewer/i18n/zh.json) | [✓](../AddOns/SVE/i18n/zh.json) | [RegenLicht](https://www.nexusmods.com/users/102031818), [Awassakura](https://www.nexusmods.com/users/104142703), [HanaGee](https://www.nexusmods.com/users/121177218) |
+| French     | [↻](../ScheduleViewer/i18n/fr.json) | [❑](../AddOns/SVE/i18n)         | YoshY, [CaranudLapin](https://github.com/CaranudLapin)  |
+| German     | [❑](../ScheduleViewer/i18n)         | [❑](../AddOns/SVE/i18n)         | &nbsp;                                                  |
+| Hungarian  | [❑](../ScheduleViewer/i18n)         | [❑](../AddOns/SVE/i18n)         | &nbsp;                                                  |
+| Italian    | [❑](../ScheduleViewer/i18n)         | [❑](../AddOns/SVE/i18n)         | &nbsp;                                                  |
+| Japanese   | [❑](../ScheduleViewer/i18n)         | [❑](../AddOns/SVE/i18n)         | &nbsp;                                                  |
+| Korean     | [↻](../ScheduleViewer/i18n/ko.json) | [❑](../AddOns/SVE/i18n)         | [cheesecats](https://www.nexusmods.com/users/88438538)  |
+| Portuguese | [↻](../ScheduleViewer/i18n/pt.json) | [❑](../AddOns/SVE/i18n)         | [Sxdic](https://www.nexusmods.com/users/34556965)       |
+| Russian    | [❑](../ScheduleViewer/i18n)         | [❑](../AddOns/SVE/i18n)         | &nbsp;                                                  |
+| Spanish    | [↻](../ScheduleViewer/i18n/es.json) | [❑](../AddOns/SVE/i18n)         | [36095](https://github.com/36095)                       |
+| Turkish    | [↻](../ScheduleViewer/i18n/tr.json) | [❑](../AddOns/SVE/i18n)         | [KzyNothh](https://www.nexusmods.com/users/94536368)    |
 
 ## See also
 

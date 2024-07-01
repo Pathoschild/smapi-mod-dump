@@ -38,11 +38,12 @@ namespace ContentPatcher.Framework.Commands.Commands
         /// <inheritdoc />
         public override string GetDescription()
         {
-            return @"
+            return
+                """
                 patch invalidate
-                   Usage: patch invalidate ""<asset name>""
+                   Usage: patch invalidate "<asset name>"
                    Invalidates an asset from the game/SMAPI content cache. If it's an asset handled by SMAPI, the asset will be reloaded immediately and Content Patcher will reapply its changes to it. Otherwise the next code which loads the same asset will get a new instance.
-            ";
+                """;
         }
 
         /// <inheritdoc />

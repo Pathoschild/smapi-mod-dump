@@ -9,12 +9,10 @@
 *************************************************/
 
 using System;
-using System.Linq;
-using Microsoft.Xna.Framework;
 using StardewArchipelago.Archipelago;
+using StardewArchipelago.Constants.Vanilla;
 using StardewModdingAPI;
 using StardewValley;
-using StardewValley.Menus;
 using StardewValley.Objects;
 
 namespace StardewArchipelago.Locations.Festival
@@ -25,27 +23,26 @@ namespace StardewArchipelago.Locations.Festival
         private static IModHelper _modHelper;
         private static ArchipelagoClient _archipelago;
         private static LocationChecker _locationChecker;
-        private static ShopReplacer _shopReplacer;
 
-        public static void Initialize(IMonitor monitor, IModHelper modHelper, ArchipelagoClient archipelago, LocationChecker locationChecker, ShopReplacer shopReplacer)
+        public static void Initialize(IMonitor monitor, IModHelper modHelper, ArchipelagoClient archipelago, LocationChecker locationChecker)
         {
             _monitor = monitor;
             _modHelper = modHelper;
             _archipelago = archipelago;
             _locationChecker = locationChecker;
-            _shopReplacer = shopReplacer;
         }
 
+        // public override bool checkForAction(Farmer who, bool justCheckingForActivity = false)
         public static bool CheckForAction_SpiritEveChest_Prefix(Chest __instance, Farmer who, bool justCheckingForActivity, ref bool __result)
         {
             try
             {
-                if (justCheckingForActivity || __instance.giftbox.Value || __instance.playerChest.Value)
+                if (justCheckingForActivity || __instance.giftbox.Value || __instance.playerChest.Value || Game1.CurrentEvent == null || !Game1.CurrentEvent.isSpecificFestival("fall27"))
                 {
                     return true; // run original logic
                 }
 
-                if (__instance.items.Count <= 0 || __instance.items.Count > 1 || __instance.items.First().ParentSheetIndex != 373)
+                if (__instance.Items.Count <= 0 || __instance.Items.Count > 1)
                 {
                     return true; // run original logic
                 }
@@ -55,49 +52,25 @@ namespace StardewArchipelago.Locations.Festival
                     __instance.GetMutex().RequestLock(() => __instance.openChestEvent.Fire());
                 else
                     __instance.performOpenChest();
-                
-                var obj = __instance.items[0];
-                __instance.items[0] = null;
-                __instance.items.RemoveAt(0);
-                __result = true;
+
+                if (_archipelago.HasReceivedItem("Golden Pumpkin"))
+                {
+                    __instance.Items[0] = ItemRegistry.Create(QualifiedItemIds.GOLDEN_PUMPKIN);
+                }
+                else
+                {
+                    __instance.Items[0] = ItemRegistry.Create(QualifiedItemIds.PRIZE_TICKET);
+                }
 
                 _locationChecker.AddCheckedLocation(FestivalLocationNames.GOLDEN_PUMPKIN);
 
+                __result = true;
                 return false; // don't run original logic
-
             }
             catch (Exception ex)
             {
                 _monitor.Log($"Failed in {nameof(CheckForAction_SpiritEveChest_Prefix)}:\n{ex}", LogLevel.Error);
                 return true; // run original logic
-            }
-        }
-
-        private static ShopMenu _lastShopMenuUpdated = null;
-        // public override void update(GameTime time)
-        public static void Update_HandleSpiritEveShopFirstTimeOnly_Postfix(ShopMenu __instance, GameTime time)
-        {
-            try
-            {
-                // We only run this once for each menu
-                if (_lastShopMenuUpdated == __instance || __instance.storeContext != "Temp" || !Game1.CurrentEvent.isSpecificFestival("fall27"))
-                {
-                    return;
-                }
-
-                _lastShopMenuUpdated = __instance;
-                var myActiveHints = _archipelago.GetMyActiveHints();
-
-                _shopReplacer.ReplaceShopItem(__instance.itemPriceAndStock, FestivalLocationNames.RARECROW_2, item => _shopReplacer.IsRarecrow(item, 2), myActiveHints);
-                _shopReplacer.PlaceShopRecipeCheck(__instance.itemPriceAndStock, FestivalLocationNames.JACK_O_LANTERN_RECIPE, "Jack-O-Lantern", myActiveHints, new[] { 2000, 1 });
-
-                __instance.forSale = __instance.itemPriceAndStock.Keys.ToList();
-                return;
-            }
-            catch (Exception ex)
-            {
-                _monitor.Log($"Failed in {nameof(Update_HandleSpiritEveShopFirstTimeOnly_Postfix)}:\n{ex}", LogLevel.Error);
-                return;
             }
         }
     }

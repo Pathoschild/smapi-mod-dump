@@ -1,0 +1,16 @@
+{
+  "Name": "geodeCrusherPlus",
+  "Author": "Tomokisan",
+  "Version": "1.0.3",
+  "Description": "Add ability to geode crusher to crush any geode.",
+  "UniqueID": "tomokisan.geodeCrusherPlus",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": ["Nexus:24254"],
+  "EntryDll": "geodeCrusherPlus.dll",
+  "Dependencies": [
+    {
+      "UniqueID": "tomokisan.CP_geodeCrusherPlus",
+      "MinimumVersion": "1.0.3"
+    }
+  ]
+}

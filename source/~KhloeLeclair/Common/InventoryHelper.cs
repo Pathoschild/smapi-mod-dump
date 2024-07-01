@@ -970,6 +970,7 @@ public static class InventoryHelper {
 	#endregion
 
 	#region Mutex Handling
+#if COMMON_MUTEX
 
 	public static void WithInventories(
 		IEnumerable<LocatedInventory>? inventories,
@@ -1034,6 +1035,8 @@ public static class InventoryHelper {
 		List<IBCInventory> locked = [];
 		List<IBCInventory> lockable = [];
 
+		List<IBCInventory> acquirable = [];
+
 		if (inventories != null)
 			foreach (LocatedInventory loc in inventories) {
 				if (loc.Location == null && !nullLocationValid)
@@ -1060,35 +1063,70 @@ public static class InventoryHelper {
 					mlocked = true;
 
 				WorkingInventory entry = new(loc.Source, provider, mutex, loc.Location, who);
+
+				// How about acquire events?
+				if (provider is IEventedInventoryProvider eip)
+					acquirable.Add(entry);
+
 				if (mlocked)
 					locked.Add(entry);
 				else
 					lockable.Add(entry);
 			}
 
-		if (lockable.Count == 0) {
-			withLocks(locked, () => { });
-			return;
+		void OnDone(Action onDone) {
+			if (lockable.Count == 0) {
+				withLocks(locked, onDone);
+				return;
+			}
+
+			List<NetMutex> mutexes = lockable.Where(entry => entry.Mutex != null).Select(entry => entry.Mutex!).Distinct().ToList();
+
+			AdvancedMultipleMutexRequest? mmr = null;
+			mmr = new AdvancedMultipleMutexRequest(
+				mutexes,
+				() => {
+					locked.AddRange(lockable);
+					withLocks(locked, () => {
+						mmr?.ReleaseLock();
+						mmr = null;
+						onDone();
+					});
+				},
+				() => {
+					withLocks(locked, onDone);
+				},
+				helper: helper);
 		}
 
-		List<NetMutex> mutexes = lockable.Where(entry => entry.Mutex != null).Select(entry => entry.Mutex!).Distinct().ToList();
+		if (acquirable.Count > 0) {
+			MultipleEventedInventoryExclusiveRequest? meier = null;
+			meier = new MultipleEventedInventoryExclusiveRequest(
+				acquirable,
+				onSuccess: () => {
+					OnDone(() => {
+						meier?.ReleaseLock();
+						meier = null;
+					});
+				},
+				onFailure: () => {
+					// Remove the acquirable inventories, because
+					// they weren't locked.
+					lockable.RemoveAll(inv => acquirable.Contains(inv));
+					locked.RemoveAll(inv => acquirable.Contains(inv));
 
-		AdvancedMultipleMutexRequest? mmr = null;
-		mmr = new AdvancedMultipleMutexRequest(
-			mutexes,
-			() => {
-				locked.AddRange(lockable);
-				withLocks(locked, () => {
-					mmr?.ReleaseLock();
-					mmr = null;
-				});
-			},
-			() => {
-				withLocks(locked, () => { });
-			},
-			helper: helper);
+					// Now continue on.
+					OnDone(() => { });
+				},
+				helper: helper);
+
+			meier.RequestLock();
+
+		} else
+			OnDone(() => { });
 	}
 
+#endif
 	#endregion
 
 	#region Recipes and Crafting

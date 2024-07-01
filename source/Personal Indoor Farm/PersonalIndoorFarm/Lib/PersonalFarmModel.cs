@@ -23,10 +23,12 @@ namespace PersonalIndoorFarm.Lib
         public string MapAsset_T0;
         public string MapAsset_T1;
         public string MapAsset_T2;
+        public string MapAsset_T3;
 
         public Point ArrivalTile_T0;
         public Point ArrivalTile_T1;
         public Point ArrivalTile_T2;
+        public Point ArrivalTile_T3;
 
         public string Preview;
     }

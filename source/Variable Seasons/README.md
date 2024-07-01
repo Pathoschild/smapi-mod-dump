@@ -54,6 +54,4 @@ What's in development:
 Known bugs:
 
 - The TV weather channel will display an incorrect message for the season in certain scenarios. For example, if Summer comes early (prior to Spring 27) and the player watches the weather channel on Spring 27 (in-game season is Summer at this point), the TV will mention the Dance of the Moonlight Jellies even though that festival won't be happening for another month. This is a cosmetic bug, but it's annoying/confusing enough to warrant prioritizing.
-- The season listed on the load save files list will always reflect the actual in-game season, not the calendar season. It's purely cosmetic and doesn't affect how the seasons progress in-game, but I'd like to fix it for clarity's sake if possible.
-- Festivals that occur "out of season" will will use their "in season" maps. This is most noticable, for example, if Spirit's Eve occurs after the change to winter, the festival map will display the fall textures just for the festival, then revert back to winter textures the festival ends. This is probably fixable, but it's not really a priority right now. Canon can be that Pelican Town has a secret crew of prolific snow-shovelers.
 - ??? (please report any you find)

@@ -1,0 +1,11 @@
+{
+	"Name": "Manure Industries",
+	"Author": "Drewdus42",
+	"Version": "2.0.0",
+	"Description": "This content pack adds my new Manure Compost Bins.",
+	"UniqueID": "Drewdus42.ManureIndustries",
+	"MinimumApiVersion": "3.0.0",
+	"UpdateKeys": [ "Nexus:9310" ],
+	"EntryDll": "CompostBins.dll"
+
+}

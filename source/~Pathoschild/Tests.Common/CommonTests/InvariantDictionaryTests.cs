@@ -9,6 +9,7 @@
 *************************************************/
 
 using System;
+using FluentAssertions;
 using NUnit.Framework;
 using Pathoschild.Stardew.Common.Utilities;
 
@@ -26,8 +27,11 @@ namespace Pathoschild.Stardew.Tests.Common.CommonTests
         public void Add_FailsIfDuplicate()
         {
             // ReSharper disable once CollectionNeverQueried.Local
-            InvariantDictionary<bool> dict = new InvariantDictionary<bool> { ["a"] = true };
-            Assert.Throws<ArgumentException>(() => dict.Add("A", false));
+            InvariantDictionary<bool> dict = new() { ["a"] = true };
+
+            FluentActions
+                .Invoking(() => dict.Add("A", false))
+                .Should().Throw<ArgumentException>();
         }
 
         /// <summary>Ensure that setting values through the indexer yields the expected case-insensitive count.</summary>
@@ -36,7 +40,7 @@ namespace Pathoschild.Stardew.Tests.Common.CommonTests
         [TestCase("a", "A", "a", ExpectedResult = 1)]
         public int Indexer_Count(params string[] keys)
         {
-            InvariantDictionary<bool> dict = new InvariantDictionary<bool>();
+            InvariantDictionary<bool> dict = new();
             foreach (string key in keys)
                 dict[key] = true;
             return dict.Count;
@@ -50,7 +54,7 @@ namespace Pathoschild.Stardew.Tests.Common.CommonTests
         [TestCase("á", "a", "b", "c", ExpectedResult = false)]
         public bool ContainsKey(string search, params string[] keys)
         {
-            InvariantDictionary<bool> dict = new InvariantDictionary<bool>();
+            InvariantDictionary<bool> dict = new();
             foreach (string key in keys)
                 dict.Add(key, true);
 

@@ -33,9 +33,10 @@ namespace StardewArchipelago.GameModifications
         private ClickableComponent passwordLabel;
 
         public CharacterCustomizationArchipelago(CharacterCustomization parent, IModHelper modHelper)
-        :base(parent.source)
+            : base(parent.source)
         {
             height += 48;
+            CreateArchipelagoFields();
             SetupArchipelagoFieldsPositions();
             var bounds = Game1.graphics.GraphicsDevice.Viewport.Bounds;
             gameWindowSizeChanged(bounds, bounds);
@@ -111,9 +112,9 @@ namespace StardewArchipelago.GameModifications
         public override void performHoverAction(int x, int y)
         {
             base.performHoverAction(x, y);
-            this.IpAddressTextBox.Hover(x, y);
-            this.SlotNameTextBox.Hover(x, y);
-            this.PasswordTextBox.Hover(x, y);
+            IpAddressTextBox.Hover(x, y);
+            SlotNameTextBox.Hover(x, y);
+            PasswordTextBox.Hover(x, y);
         }
 
         public override void receiveLeftClick(int x, int y, bool playSound = true)
@@ -155,31 +156,30 @@ namespace StardewArchipelago.GameModifications
             farmTypeButtons.Clear();
         }
 
+        private void CreateArchipelagoFields()
+        {
+            var texture = Game1.content.Load<Texture2D>("LooseSprites\\textBox");
+            CreateIpField(texture);
+            CreateSlotNameField(texture);
+            CreatePasswordField(texture);
+        }
+
         private void SetupArchipelagoFieldsPositions()
         {
             var xOffset = xPositionOnScreen + spaceToClearSideBorder + borderWidth;
             var yOffset = yPositionOnScreen + spaceToClearTopBorder + borderWidth + ARCHIPELAGO_Y_OFFSET;
-            var texture = Game1.content.Load<Texture2D>("LooseSprites\\textBox");
 
-            SetupIpFieldPosition(xOffset, yOffset, texture);
-            SetupSlotNameFieldPosition(xOffset, yOffset + 64, texture);
-            SetupPasswordFieldPosition(xOffset, yOffset + 128, texture);
+            SetupIpFieldPosition(xOffset, yOffset);
+            SetupSlotNameFieldPosition(xOffset, yOffset + 64);
+            SetupPasswordFieldPosition(xOffset, yOffset + 128);
 
             skipIntroButton.setPosition(skipIntroButton.bounds.X - 240, skipIntroButton.bounds.Y + 136);
         }
 
-        private void SetupIpFieldPosition(int xOffset, int yOffset, Texture2D texture)
+        private void CreateIpField(Texture2D texture)
         {
-            var xPosition = xOffset + 256 + 64 + 16;
-            var yPosition = yOffset - 16;
-            IpAddressTextBox = new TextBox(texture, null, Game1.smallFont, Game1.textColor)
-            {
-                X = xPosition,
-                Y = yPosition,
-            };
-            IpAddressTextBox.limitWidth = false;
-            var ipAddressRectangle = new Rectangle(xPosition, yPosition, 192, 48);
-            ipAddressCC = new ClickableComponent(ipAddressRectangle, "")
+            IpAddressTextBox = new TextBox(texture, null, Game1.smallFont, Game1.textColor);
+            ipAddressCC = new ClickableComponent(Rectangle.Empty, "")
             {
                 myID = 536536,
                 upNeighborID = -99998,
@@ -187,23 +187,13 @@ namespace StardewArchipelago.GameModifications
                 rightNeighborID = -99998,
                 downNeighborID = -99998,
             };
-            var languageOffset = LocalizedContentManager.CurrentLanguageCode is LocalizedContentManager.LanguageCode.ru or LocalizedContentManager.LanguageCode.es or LocalizedContentManager.LanguageCode.pt ? -4 : 0;
-            ipAddressLabel = new ClickableComponent(new Rectangle(xOffset + languageOffset + 16 + 192 + 4, yOffset - 8, 1, 1), "Server");
-            labels.Add(ipAddressLabel);
+            ipAddressLabel = new ClickableComponent(Rectangle.Empty, "Server");
         }
 
-        private void SetupSlotNameFieldPosition(int xOffset, int yOffset, Texture2D texture)
+        private void CreateSlotNameField(Texture2D texture)
         {
-            var xPosition = xOffset + 256 + 64 + 16;
-            var yPosition = yOffset - 16;
-            SlotNameTextBox = new TextBox(texture, null, Game1.smallFont, Game1.textColor)
-            {
-                X = xPosition,
-                Y = yPosition,
-            };
-            SlotNameTextBox.limitWidth = false;
-            var ipAddressRectangle = new Rectangle(xPosition, yPosition, 192, 48);
-            slotNameCC = new ClickableComponent(ipAddressRectangle, "")
+            SlotNameTextBox = new TextBox(texture, null, Game1.smallFont, Game1.textColor);
+            slotNameCC = new ClickableComponent(Rectangle.Empty, "")
             {
                 myID = 537537,
                 upNeighborID = -99998,
@@ -211,23 +201,13 @@ namespace StardewArchipelago.GameModifications
                 rightNeighborID = -99998,
                 downNeighborID = -99998,
             };
-            var languageOffset = LocalizedContentManager.CurrentLanguageCode is LocalizedContentManager.LanguageCode.ru or LocalizedContentManager.LanguageCode.es or LocalizedContentManager.LanguageCode.pt ? -4 : 0;
-            slotNameLabel = new ClickableComponent(new Rectangle(xOffset + languageOffset + 16 + 192 + 4, yOffset - 8, 1, 1), "Slot");
-            labels.Add(slotNameLabel);
+            slotNameLabel = new ClickableComponent(Rectangle.Empty, "Slot");
         }
 
-        private void SetupPasswordFieldPosition(int xOffset, int yOffset, Texture2D texture)
+        private void CreatePasswordField(Texture2D texture)
         {
-            var xPosition = xOffset + 256 + 64 + 16;
-            var yPosition = yOffset - 16;
-            PasswordTextBox = new TextBox(texture, null, Game1.smallFont, Game1.textColor)
-            {
-                X = xPosition,
-                Y = yPosition,
-            };
-            PasswordTextBox.limitWidth = false;
-            var ipAddressRectangle = new Rectangle(xPosition, yPosition, 192, 48);
-            passwordCC = new ClickableComponent(ipAddressRectangle, "")
+            PasswordTextBox = new TextBox(texture, null, Game1.smallFont, Game1.textColor);
+            passwordCC = new ClickableComponent(Rectangle.Empty, "")
             {
                 myID = 538538,
                 upNeighborID = -99998,
@@ -235,8 +215,60 @@ namespace StardewArchipelago.GameModifications
                 rightNeighborID = -99998,
                 downNeighborID = -99998,
             };
+            passwordLabel = new ClickableComponent(Rectangle.Empty, "Password");
+        }
+
+        private void SetupIpFieldPosition(int xOffset, int yOffset)
+        {
+            var xPosition = xOffset + 256 + 64 + 16;
+            var yPosition = yOffset - 16;
+            IpAddressTextBox.X = xPosition;
+            IpAddressTextBox.Y = yPosition;
+            IpAddressTextBox.limitWidth = false;
+
+            var ipAddressRectangle = new Rectangle(xPosition, yPosition, 192, 48);
+            ipAddressCC.bounds = ipAddressRectangle;
+
             var languageOffset = LocalizedContentManager.CurrentLanguageCode is LocalizedContentManager.LanguageCode.ru or LocalizedContentManager.LanguageCode.es or LocalizedContentManager.LanguageCode.pt ? -4 : 0;
-            passwordLabel = new ClickableComponent(new Rectangle(xOffset + languageOffset + 16 + 192 + 4, yOffset - 8, 1, 1), "Password");
+            var ipAddressLabelPosition = new Rectangle(xOffset + languageOffset + 16 + 192 + 4, yOffset - 8, 1, 1);
+            ipAddressLabel.bounds = ipAddressLabelPosition;
+
+            labels.Add(ipAddressLabel);
+        }
+
+        private void SetupSlotNameFieldPosition(int xOffset, int yOffset)
+        {
+            var xPosition = xOffset + 256 + 64 + 16;
+            var yPosition = yOffset - 16;
+            SlotNameTextBox.X = xPosition;
+            SlotNameTextBox.Y = yPosition;
+            SlotNameTextBox.limitWidth = false;
+            
+            var slotNameRectangle = new Rectangle(xPosition, yPosition, 192, 48);
+            slotNameCC.bounds = slotNameRectangle;
+
+            var languageOffset = LocalizedContentManager.CurrentLanguageCode is LocalizedContentManager.LanguageCode.ru or LocalizedContentManager.LanguageCode.es or LocalizedContentManager.LanguageCode.pt ? -4 : 0;
+            var slotNameLabelPosition = new Rectangle(xOffset + languageOffset + 16 + 192 + 4, yOffset - 8, 1, 1);
+            slotNameLabel.bounds = slotNameLabelPosition;
+
+            labels.Add(slotNameLabel);
+        }
+
+        private void SetupPasswordFieldPosition(int xOffset, int yOffset)
+        {
+            var xPosition = xOffset + 256 + 64 + 16;
+            var yPosition = yOffset - 16;
+            PasswordTextBox.X = xPosition;
+            PasswordTextBox.Y = yPosition;
+            PasswordTextBox.limitWidth = false;
+
+            var ipAddressRectangle = new Rectangle(xPosition, yPosition, 192, 48);
+            passwordCC.bounds = ipAddressRectangle;
+
+            var languageOffset = LocalizedContentManager.CurrentLanguageCode is LocalizedContentManager.LanguageCode.ru or LocalizedContentManager.LanguageCode.es or LocalizedContentManager.LanguageCode.pt ? -4 : 0;
+            var passwordLabelPosition = new Rectangle(xOffset + languageOffset + 16 + 192 + 4, yOffset - 8, 1, 1);
+            passwordLabel.bounds = passwordLabelPosition;
+            
             labels.Add(passwordLabel);
         }
 
@@ -276,7 +308,6 @@ namespace StardewArchipelago.GameModifications
             favThingBox.Text = "No Bugs";
             skipIntroField.SetValue(true);
             skipIntroButton.sourceRect.X = 236;
-
         }
     }
 }

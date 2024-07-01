@@ -2437,14 +2437,22 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 	public void PerformCraft(IRecipe recipe, int times, Action<int>? DoneAction = null, bool playSound = true, bool moveResultToInventory = false) {
 		ClearCraftCache();
 
+		//Log($"PerformCraft: {recipe.Name} -- {times}", LogLevel.Trace);
+
 		if (Working) {
+			//Log($"- FinishPerformCraft: Successes = 0", LogLevel.Trace);
 			DoneAction?.Invoke(0);
 			return;
 		}
 
+		Working = true;
+
 		_CleanCraftingLocked();
 
 		InventoryHelper.WithInventories(CachedInventories, Mod.GetInventoryProvider, Game1.player, (locked, onDone) => {
+
+			Working = false;
+
 			craftingLocked = locked;
 			craftingOnDoneLocked = onDone;
 
@@ -2499,20 +2507,29 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 					HeldItem = null;
 			}
 
-			craftingOnDone?.Invoke(craftingSuccessful);
+			//Log($"- FinishPerformCraft: Successes = {craftingSuccessful}", LogLevel.Trace);
 
 			// Clear the state and return.
+			int success = craftingSuccessful;
+
 			activeRecipe = null;
 			craftingRemaining = 0;
 			craftingSuccessful = 0;
 			craftingUsedAdditional = false;
+
+			// Also call our callback.
+			craftingOnDone?.Invoke(success);
 			craftingOnDone = null;
+
 			return;
 		}
 
 		Working = true;
 
 		int times = Math.Min(craftingRemaining, 20);
+
+		//Log($"- PerformNextCraft: {times} of {craftingRemaining}", LogLevel.Trace);
+
 		craftingRemaining -= times;
 
 		List<Item?> items = GetActualContainerContents(craftingLocked);
@@ -2528,6 +2545,13 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 				craftingUsedAdditional |= used_additional;
 
 				Working = false;
+
+				//Log($"- PerformCraftRecursive: Success = {successes >= times}", LogLevel.Trace);
+
+				// If we didn't craft successfully the expected
+				// number of times, abort early.
+				if (successes < times)
+					craftingRemaining = 0;
 
 				// Finish immediately if we're done, otherwise
 				// wait till the next update() to craft more.
@@ -4406,7 +4430,8 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 			exitFunction = () => {
 				if (Game1.options.SnappyMenus)
 					snapCursorToCurrentSnappedComponent();
-				activeRecipe = null;
+				if (craftingRemaining <= 0)
+					activeRecipe = null;
 			}
 		};
 
@@ -5994,7 +6019,7 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 
 		bool divided = false;
 
-		// We get the description stuff from a cache to avoid recomputing it every frame.
+		// Description
 		ISimpleNode[]? description = GetRecipeTooltipDescription();
 		if (description is not null) {
 			divided = true;
@@ -6007,8 +6032,30 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 		if (slots > 0)
 			builder.Attachments(recipeItem!);
 
+		// Price Catalog
+		if (recipeItem != null && Game1.player.stats.Get("Book_PriceCatalogue") != 0 &&
+			recipeItem is not Furniture &&
+			recipeItem.CanBeLostOnDeath() &&
+			recipeItem is not Clothing &&
+			recipeItem is not Wallpaper &&
+			!(recipeItem is SObject sobj && sobj.bigCraftable.Value)
+		) {
+			int price = recipeItem.sellToStorePrice() * recipeItem.Stack * quantity;
+			if (price > 0) {
+				if (!divided) {
+					builder.Divider(false);
+					divided = true;
+				}
 
-		// This could theoretically change, so we don't cache it (yet).
+				builder
+					.Group()
+						.Text($"{price} ")
+						.Texture(Game1.debrisSpriteSheet, new Rectangle(5, 69, 6, 6), scale: 3f)
+					.EndGroup();
+			}
+		}
+
+		// Times Crafted
 		if (Game1.options.showAdvancedCraftingInformation) {
 			int count = hoverRecipe.GetTimesCrafted(Game1.player);
 			if (count > 0) {
@@ -6023,6 +6070,7 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 			}
 		}
 
+		// Gift Tastes
 		bool show = Mod.Config.ShowTastes == GiftMode.Always || (Mod.Config.ShowTastes == GiftMode.Shift && shifting);
 		if (show) {
 			ISimpleNode[]? tastes = GetRecipeTooltipGiftTastes();

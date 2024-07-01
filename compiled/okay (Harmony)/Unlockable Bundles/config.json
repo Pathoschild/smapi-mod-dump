@@ -1,4 +1,5 @@
 {
   "ScrollDelay": 25,
-  "ScrollCharacterLength": 10
+  "ScrollCharacterLength": 10,
+  "DebugLogging": false
 }

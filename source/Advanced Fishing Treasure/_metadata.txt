@@ -6,9 +6,10 @@ mods:
    Advanced Fishing Treasure
 
 latest commit:
-   commit f671a7cd57ff4096b27d7e3f633d16b00c1e7206
+   commit b2b36630f3ef4cb52476b4d5c2532c3abac37e7d
    Author: Aloe <162494218+aceynk@users.noreply.github.com>
-   Date:   Wed May 29 12:10:22 2024 -0700
+   Date:   Sun Jun 23 13:32:22 2024 -0700
    
-       Fixing a bug with non-Object items
+       fixed yet another issue with ring items
+       hopefully fixed a strange NRE bug.
    

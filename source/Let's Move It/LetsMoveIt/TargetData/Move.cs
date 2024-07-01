@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Buildings;
+using StardewValley.Locations;
 using StardewValley.Monsters;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
@@ -25,7 +26,7 @@ namespace LetsMoveIt.TargetData
         /// <param name="location">The current location.</param>
         /// <param name="tile">The current tile position.</param>
         /// <param name="overwriteTile">To Overwrite existing Object.</param>
-        public static void MoveTo(GameLocation location, Vector2 tile, bool overwriteTile)
+        public void MoveTo(GameLocation location, Vector2 tile, bool overwriteTile)
         {
             if (!Config.ModEnabled)
             {
@@ -38,6 +39,7 @@ namespace LetsMoveIt.TargetData
             if (TargetObject is Farmer farmer)
             {
                 farmer.Position = (Game1.getMousePosition() + new Point(Game1.viewport.Location.X - 32, Game1.viewport.Location.Y - 32)).ToVector2();
+                Game1.player.forceCanMove();
                 TargetObject = null;
             }
             else if (TargetObject is NPC character)
@@ -58,8 +60,20 @@ namespace LetsMoveIt.TargetData
             {
                 if (location != TargetLocation)
                 {
+                    if (MarniesLivestock && TargetLocation is Forest forest)
+                    {
+                        forest.marniesLivestock.Remove(farmAnimal);
+                    }
                     TargetLocation.animals.Remove(farmAnimal.myID.Value);
                     location.animals.TryAdd(farmAnimal.myID.Value, farmAnimal);
+                    if (location is AnimalHouse currentHouse && !currentHouse.isFull() && location.Map.Id.Remove(4) == farmAnimal.buildingTypeILiveIn.Value && location.NameOrUniqueName != farmAnimal.home?.GetIndoors().NameOrUniqueName)
+                    {
+                        if (farmAnimal.home?.GetIndoors() is AnimalHouse animalHouse)
+                        {
+                            animalHouse.animalsThatLiveHere.Remove(farmAnimal.myID.Value);
+                        }
+                        currentHouse.animalsThatLiveHere.Add(farmAnimal.myID.Value);
+                    }
                 }
                 farmAnimal.Position = (Game1.getMousePosition() + new Point(Game1.viewport.Location.X - 32, Game1.viewport.Location.Y - 32)).ToVector2();
                 TargetObject = null;
@@ -268,6 +282,7 @@ namespace LetsMoveIt.TargetData
                     if (newPot is IndoorPot pot)
                     {
                         pot.hoeDirt.Value.crop = crop;
+                        pot.hoeDirt.Value.applySpeedIncreases(Game1.player);
                         pot.hoeDirt.Value.crop.updateDrawMath(tile);
                         TargetObject = null;
                     }
@@ -277,6 +292,7 @@ namespace LetsMoveIt.TargetData
                     if (newHoeDirt is HoeDirt hoeDirt)
                     {
                         hoeDirt.crop = crop;
+                        hoeDirt.applySpeedIncreases(Game1.player);
                         hoeDirt.crop.updateDrawMath(tile);
                         TargetObject = null;
                     }
@@ -306,11 +322,7 @@ namespace LetsMoveIt.TargetData
                     }
                 }
             }
-            if (TargetObject is null)
-            {
-                PlaySound();
-            }
-            else
+            if (TargetObject is not null)
             {
                 TargetObject = null;
                 Game1.playSound("dwop");

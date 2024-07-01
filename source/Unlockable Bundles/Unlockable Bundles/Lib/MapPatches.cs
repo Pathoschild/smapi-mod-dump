@@ -82,7 +82,7 @@ namespace Unlockable_Bundles.Lib
 
             cacheMapIfNecessary(location, isNew);
 
-            if (location.Name != location.NameOrUniqueName && Game1.currentLocation.NameOrUniqueName != location.NameOrUniqueName)
+            if ((location.Name != location.NameOrUniqueName || isExceptionLocation(location)) && Game1.currentLocation.NameOrUniqueName != location.NameOrUniqueName)
                 return;
 
             //Alternative to applyOverlay: applySmapiOverlay(map, unlockable, location)
@@ -268,7 +268,7 @@ namespace Unlockable_Bundles.Lib
             location.updateSeasonalTileSheets();
         }
 
-        public static void checkIfMapPatchesNeedToBeReapplied(GameLocation location)
+        public static void checkIfMapPatchesNeedToBeReapplied(GameLocation location, string source = "")
         {
             if (!Context.IsWorldReady)
                 return;
@@ -285,7 +285,7 @@ namespace Unlockable_Bundles.Lib
             if (!needToBeApplied.Any())
                 return;
 
-            Monitor.Log($"reloadMap called for {location.Name} by {Multiplayer.getDebugName()} after HasDayStarted. Possibly reapplying map patches", DebugLogLevel);
+            Monitor.Log($"{source} called for {location.Name} by {Multiplayer.getDebugName()} after HasDayStarted. Possibly reapplying map patches", DebugLogLevel);
 
             if (Multiplayer.IsScreenReady.Value && !ShopPlacement.UnappliedMapPatches.Value.Any()) {
                 foreach (var unlockable in needToBeApplied)

@@ -1,0 +1,11 @@
+{
+  "Name": "prizeMachineCustomPrizes",
+  "Author": "Tomokisan",
+  "Version": "1.1.0",
+  "Description": "Let you easily fully customize the prize list of Prize Machine.",
+  "UniqueID": "tomokisan.prizeMachineCustomPrizes",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": ["Nexus:24982"],
+  "EntryDll": "prizeMachineCustomPrizes.dll",
+  "Dependencies": []
+}

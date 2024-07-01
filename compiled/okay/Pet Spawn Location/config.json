@@ -1,6 +1,6 @@
 {
-  "Player_Walk_Through_Allowed": false,
-  "Pets_Collide_With_Others_Allowed": true,
+  "Player_Walk_Through_Allowed": true,
+  "Pets_Collide_With_Others_Allowed": false,
   "Player_Walk_Through_ToggleKey": "PageUp",
   "Pets_Collide_With_Others_ToggleKey": "PageDown"
 }

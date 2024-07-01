@@ -21,7 +21,7 @@ namespace Pathoschild.Stardew.FastAnimations.Handlers
 {
     /// <summary>Handles the hold-up-item animation.</summary>
     /// <remarks>See game logic in <see cref="Farmer.holdUpItemThenMessage"/>.</remarks>
-    internal class HoldUpItemHandler : BaseAnimationHandler
+    internal sealed class HoldUpItemHandler : BaseAnimationHandler
     {
         /*********
         ** Public methods
@@ -31,52 +31,45 @@ namespace Pathoschild.Stardew.FastAnimations.Handlers
             : base(multiplier) { }
 
         /// <inheritdoc />
-        public override bool IsEnabled(int playerAnimationID)
+        public override bool TryApply(int playerAnimationId)
         {
             Farmer player = Game1.player;
-            if (player.mostRecentlyGrabbedItem is null)
-                return false;
 
-            List<FarmerSprite.AnimationFrame>? animation = player.FarmerSprite?.currentAnimation;
             return
-                animation?.Count == 3
-                && animation[0] is { frame: 57, milliseconds: 0 }
-                && animation[1] is { frame: 57, milliseconds: 2500 }
-                && animation[2] is { milliseconds: 500 };
-        }
-
-        /// <inheritdoc />
-        public override void Update(int playerAnimationID)
-        {
-            Farmer player = Game1.player;
-            GameLocation location = Game1.currentLocation;
-
-            this.ApplySkips(
-                run: () =>
+                this.IsAnimating(player)
+                && this.ApplySkipsWhile(() =>
                 {
                     // player animation
-                    player.Update(Game1.currentGameTime, location);
+                    player.Update(Game1.currentGameTime, player.currentLocation);
 
                     // animation of item thrown in the air
                     foreach (TemporaryAnimatedSprite sprite in this.GetTemporarySprites(player).ToArray())
                     {
                         bool done = sprite.update(Game1.currentGameTime);
                         if (done)
-                            location.TemporarySprites.Remove(sprite);
+                            player.currentLocation.TemporarySprites.Remove(sprite);
                     }
-                },
-                until: () => !this.IsEnabled(playerAnimationID)
-            );
 
-            // reduce freeze time
-            int reduceTimersBy = (int)(BaseAnimationHandler.MillisecondsPerFrame * this.Multiplier);
-            player.freezePause = Math.Max(0, player.freezePause - reduceTimersBy);
+                    // reduce freeze time
+                    player.freezePause = Math.Max(0, player.freezePause - BaseAnimationHandler.MillisecondsPerFrame);
+
+                    return this.IsAnimating(player);
+                });
         }
 
 
         /*********
         ** Private methods
         *********/
+        /// <summary>Get whether the animation is playing now.</summary>
+        /// <param name="player">The player performing the action.</param>
+        private bool IsAnimating(Farmer player)
+        {
+            return
+                player.mostRecentlyGrabbedItem is not null
+                && player.FarmerSprite?.currentAnimation is [{ frame: 57, milliseconds: 0 }, { frame: 57, milliseconds: 2500 }, { milliseconds: 500 }];
+        }
+
         /// <summary>Get the temporary animated sprites added as part of the item-hold-up animation.</summary>
         /// <param name="player">The player being animated.</param>
         /// <remarks>Derived from <see cref="Farmer.showHoldingItem"/>.</remarks>

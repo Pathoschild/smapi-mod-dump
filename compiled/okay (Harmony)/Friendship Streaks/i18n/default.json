@@ -1,0 +1,9 @@
+{
+  //Config
+  "Config.Enable_Bonus": "Enable Bonus",
+  "Config.Enable_Bonus_Description": "Toggles the friendship multiplier depending on the streak level",
+
+  //Main
+  "Multiplier": "Multiplier",
+  "Max": "Max"
+}

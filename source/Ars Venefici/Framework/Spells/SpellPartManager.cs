@@ -82,7 +82,7 @@ namespace ArsVenefici.Framework.Spells
 
             Buff hasteBuff = new Buff(
                 id: "HeyImAmethyst.ArsVenifici_Haste",
-                displayName: modEntry.Helper.Translation.Get($"spellpart.haste.name"),
+                displayName: modEntry.Helper.Translation.Get("spellpart.haste.name"),
                 iconTexture: Game1.buffsIcons,
                 iconSheetIndex: 9,
                 duration: 30_000, // 30 seconds

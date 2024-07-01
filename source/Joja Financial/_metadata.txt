@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/NermNermNerm/JojaFinancial
+   Git: https://github.com/NermNermNerm/JojaFinancial.git
+
+mods:
+   Joja Financial
+
+latest commit:
+   commit 0df94e94d0dcee768b45706ca8f5f733e8cbc821
+   Author: SteveBenz <s8878992@hotmail.com>
+   Date:   Fri Jun 14 14:45:59 2024 -0700
+   
+       Bump version
+   

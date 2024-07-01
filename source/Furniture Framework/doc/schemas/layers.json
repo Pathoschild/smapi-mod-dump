@@ -15,28 +15,32 @@
 	"description": "The list of Layers for this Furniture. Can be directional.",
 	"type": "array",
 	"items": {
-		"Source Rect": {
-			"description": "The Source Rectangle in the sprite-sheet for this Layer. Can be directional.",
-			"oneOf": [
-				{ "$ref": "/Leroymilo/FurnitureFramework/main/doc/schemas/rectangle.json" },
-				{
-					"type": "object",
-					"additionalProperties": {
-						"$ref": "/Leroymilo/FurnitureFramework/main/doc/schemas/rectangle.json"
+		"type": "object",
+		"properties": {
+			"Source Rect": {
+				"description": "The Source Rectangle in the sprite-sheet for this Layer. Can be directional.",
+				"oneOf": [
+					{ "$ref": "/Leroymilo/FurnitureFramework/main/doc/schemas/rectangle.json" },
+					{
+						"type": "object",
+						"additionalProperties": {
+							"$ref": "/Leroymilo/FurnitureFramework/main/doc/schemas/rectangle.json"
+						}
 					}
-				}
-			]
+				]
+			},
+	
+			"Draw Pos": {
+				"description": "The position, in pixels, relative to the top left of the base sprite where this Layer should be drawn.",
+				"$ref": "/Leroymilo/FurnitureFramework/main/doc/schemas/vector.json"
+			},
+	
+			"Depth": {
+				"description": "The depth where this Layer should be drawn.",
+				"$ref": "/Leroymilo/FurnitureFramework/main/doc/schemas/depth.json"
+			}
 		},
-
-		"Draw Pos": {
-			"description": "The position, in pixels, relative to the top left of the base sprite where this Layer should be drawn.",
-			"$ref": "/Leroymilo/FurnitureFramework/main/doc/schemas/vector.json"
-		},
-
-		"Depth": {
-			"description": "The depth where this Layer should be drawn.",
-			"$ref": "/Leroymilo/FurnitureFramework/main/doc/schemas/depth.json"
-		}
-	},
-	"required": [ "Source Rect" ]
+		"required": [ "Source Rect" ],
+		"additionalProperties": false
+	}
 }

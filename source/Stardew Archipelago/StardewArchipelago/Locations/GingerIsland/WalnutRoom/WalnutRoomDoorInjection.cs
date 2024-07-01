@@ -10,7 +10,7 @@
 
 using System;
 using StardewArchipelago.Archipelago;
-using StardewArchipelago.Items.Unlocks;
+using StardewArchipelago.Items.Unlocks.Vanilla;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;
@@ -43,7 +43,7 @@ namespace StardewArchipelago.Locations.GingerIsland.WalnutRoom
                 {
                     return true; // run original logic
                 }
-                
+
                 if (_archipelago.HasReceivedItem(VanillaUnlockManager.QI_WALNUT_ROOM))
                 {
                     Game1.playSound("doorClose");

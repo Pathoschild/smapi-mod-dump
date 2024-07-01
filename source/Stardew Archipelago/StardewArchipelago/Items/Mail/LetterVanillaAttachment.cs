@@ -17,7 +17,7 @@ namespace StardewArchipelago.Items.Mail
         public string[] VanillaMailTitles { get; private set; }
         public bool NoLetter { get; private set; }
 
-        public LetterVanillaAttachment(ReceivedItem apItem, string mailTitle, bool noLetter) : this(apItem, new []{mailTitle}, noLetter)
+        public LetterVanillaAttachment(ReceivedItem apItem, string mailTitle, bool noLetter) : this(apItem, new[] { mailTitle }, noLetter)
         {
         }
 

@@ -1,0 +1,169 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/itsbenter/ResourcefulFriends
+**
+*************************************************/
+
+{
+    "$schema": "https://smapi.io/schemas/content-patcher.json",
+    "Changes": [
+        {
+            "LogName": "Bearberry",
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "TargetField": [
+                "FlashShifter.StardewValleyExpandedCP_Bearberrys",
+                "ContextTags"
+            ],
+            "Entries": {
+                "#-1": "itsbenter_petalkin_winter_uncommon"
+            },
+            "When":{
+                "HasFlag |contains=beenToWoods": true
+            }
+        },
+        {
+            "LogName": "Ferngill Primrose",
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "TargetField": [
+                "FlashShifter.StardewValleyExpandedCP_Ferngill_Primrose",
+                "ContextTags"
+            ],
+            "Entries": {
+                "#-1": "itsbenter_petalkin_spring_uncommon"
+            },
+            "When": {
+                "HasFlag |contains=RailroadBoulderRemoved": true
+            }
+        },
+        {
+            "LogName": "Goldenrod",
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "TargetField": [
+                "FlashShifter.StardewValleyExpandedCP_Goldenrod",
+                "ContextTags"
+            ],
+            "Entries": {
+                "#-1": "itsbenter_petalkin_summer_uncommon"
+            },
+            "When": {
+                "HasFlag |contains=RailroadBoulderRemoved": true
+            }
+        },
+        {
+            "LogName": "Lucky Four Leaf Clover",
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "TargetField": [
+                "FlashShifter.StardewValleyExpandedCP_Lucky_Four_Leaf_Clover",
+                "ContextTags"
+            ],
+            "Entries": {
+                "#-1": "itsbenter_petalkin_spring_uncommon",
+                "#-2": "itsbenter_petalkin_summer_uncommon"
+            }
+        },
+        {
+            "LogName": "Mushroom Colony",
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "TargetField": [
+                "FlashShifter.StardewValleyExpandedCP_Mushroom_Colony",
+                "ContextTags"
+            ],
+            "Entries": {
+                "#-1": "itsbenter_petalkin_fall_common"
+            },
+            "When":{
+                "HasFlag |contains=beenToWoods": true
+            }
+        },
+        {
+            "LogName": "Poison Mushroom",
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "TargetField": [
+                "FlashShifter.StardewValleyExpandedCP_Poison_Mushroom",
+                "ContextTags"
+            ],
+            "Entries": {
+                "#-1": "itsbenter_petalkin_summer_uncommon",
+                "#-2": "itsbenter_petalkin_fall_uncommon"
+            },
+            "When":{
+                "HasFlag |contains=beenToWoods": true
+            }
+        },
+        {
+            "LogName": "Smelly Rafflesia",
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "TargetField": [
+                "FlashShifter.StardewValleyExpandedCP_Smelly_Rafflesia",
+                "ContextTags"
+            ],
+            "Entries": {
+                "#-1": "itsbenter_petalkin_spring_rare",
+                "#-2": "itsbenter_petalkin_summer_uncommon",
+                "#-3": "itsbenter_petalkin_fall_rare"
+            },
+            "When":{
+                "HasFlag |contains=beenToWoods": true
+            }
+        },
+        {
+            "LogName": "Red Baneberry",
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "TargetField": [
+                "FlashShifter.StardewValleyExpandedCP_Red_Baneberry",
+                "ContextTags"
+            ],
+            "Entries": {
+                "#-1": "itsbenter_petalkin_summer_common"
+            },
+            "When":{
+                "HasFlag |contains=beenToWoods": true
+            }
+        },
+        {
+            "LogName": "Thistle",
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "TargetField": [
+                "FlashShifter.StardewValleyExpandedCP_Thistle",
+                "ContextTags"
+            ],
+            "Entries": {
+                "#-1": "itsbenter_petalkin_spring_uncommon",
+                "#-2": "itsbenter_petalkin_summer_uncommon",
+                "#-3": "itsbenter_petalkin_fall_uncommon",
+                "#-4": "itsbenter_petalkin_winter_uncommon"
+            },
+            "When":{
+                "HasFlag |contains=RailroadBoulderRemoved": true
+            }
+        },
+        {
+            "LogName": "Winter Star Rose",
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "TargetField": [
+                "FlashShifter.StardewValleyExpandedCP_Winter_Star_Rose",
+                "ContextTags"
+            ],
+            "Entries": {
+                "#-1": "itsbenter_petalkin_winter_uncommon"
+            },
+            "When":{
+                "HasFlag |contains=RailroadBoulderRemoved": true
+            }
+        },
+    ]
+}

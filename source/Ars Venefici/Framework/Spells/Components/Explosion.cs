@@ -54,7 +54,7 @@ namespace ArsVenefici.Framework.Spells.Components
 
         public override int ManaCost()
         {
-            return 25;
+            return 45;
         }
     }
 }

@@ -15,7 +15,7 @@ using StardewValley;
 namespace Pathoschild.Stardew.FastAnimations.Handlers
 {
     /// <summary>Handles the horse mount/dismount animation.</summary>
-    internal class MountHorseHandler : BaseAnimationHandler
+    internal sealed class MountHorseHandler : BaseAnimationHandler
     {
         /*********
         ** Public methods
@@ -25,22 +25,19 @@ namespace Pathoschild.Stardew.FastAnimations.Handlers
             : base(multiplier) { }
 
         /// <inheritdoc />
-        public override bool IsEnabled(int playerAnimationID)
+        public override bool TryApply(int playerAnimationId)
         {
-            return this.IsMountingOrDismounting(Game1.player);
-        }
+            Farmer player = Game1.player;
 
-        /// <inheritdoc />
-        public override void Update(int playerAnimationID)
-        {
-            this.ApplySkips(
-                run: () =>
+            return
+                this.IsMountingOrDismounting(player)
+                && this.ApplySkipsWhile(() =>
                 {
-                    Game1.player.update(Game1.currentGameTime, Game1.player.currentLocation);
-                    Game1.player.mount?.update(Game1.currentGameTime, Game1.player.currentLocation);
-                },
-                until: () => !this.IsMountingOrDismounting(Game1.player)
-            );
+                    player.update(Game1.currentGameTime, player.currentLocation);
+                    player.mount?.update(Game1.currentGameTime, player.currentLocation);
+
+                    return this.IsMountingOrDismounting(player);
+                });
         }
 
 
@@ -55,7 +52,7 @@ namespace Pathoschild.Stardew.FastAnimations.Handlers
                 Context.IsWorldReady
                 && (
                     player.isAnimatingMount
-                    || player.mount?.dismounting.Value == true
+                    || player.mount?.dismounting.Value is true
                 );
         }
     }

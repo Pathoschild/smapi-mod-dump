@@ -1,0 +1,4 @@
+{
+  "Config.SearchUndiscovered.Name": "Search Undiscovered Items",
+  "Config.SearchUndiscovered.Description": "If enabled, items that have not been discovered will be included in the search results, but they will still remain grayed out. If disabled, searching will only show items you have already discovered.",
+}

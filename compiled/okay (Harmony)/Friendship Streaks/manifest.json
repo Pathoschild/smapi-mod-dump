@@ -1,0 +1,12 @@
+{
+  "Name": "Friendship Streaks",
+  "Author": "AvalonMFX",
+  "Version": "1.0.0",
+  "Description": "Tracks your current and highest talking and gift streak for each NPC",
+  "UniqueID": "AvalonMFX.FriendshipStreaks",
+  "EntryDll": "FriendshipStreaks.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [
+    "Nexus:25595"
+  ]
+}

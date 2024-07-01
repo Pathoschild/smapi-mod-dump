@@ -14,7 +14,7 @@ namespace StardewArchipelago.Items.Mail
     {
         public const string Friendship = "Friendship";
         public const string Backpack = "Backpack";
-        public const string SkullKey = "SkullKey"; 
+        public const string SkullKey = "SkullKey";
         public const string DwarvishTranslationGuide = "DwarvishTranslationGuide";
         public const string RustyKey = "RustyKey";
         public const string ClubCard = "ClubCard";
@@ -23,7 +23,9 @@ namespace StardewArchipelago.Items.Mail
         public const string DarkTalisman = "DarkTalisman";
         public const string KeyToTheTown = "KeyToTheTown";
         public const string GoldenScythe = "GoldenScythe";
+        public const string ProgressiveScythe = "ProgressiveScythe";
         public const string PierreStocklist = "PierreStocklist";
+        public const string FreeCactis = "FreeCactis";
         public const string BeachBridge = "BeachBridge";
         public const string ProgressiveTool = "ProgressiveTool";
         public const string FishingRod = "FishingRod";

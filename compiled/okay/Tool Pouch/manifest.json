@@ -1,0 +1,15 @@
+{
+  "Name": "ToolPouch",
+  "Author": "CodeWordZ",
+  "Version": "1.0.6",
+  "Description": "A pouch that can hold all your tools so they don't take up inventory space!",
+  "UniqueID": "CodeWordZ.ToolPouch",
+  "EntryDll": "ToolPouch.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:25136" ],
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.SpaceCore"
+    }
+  ]
+}

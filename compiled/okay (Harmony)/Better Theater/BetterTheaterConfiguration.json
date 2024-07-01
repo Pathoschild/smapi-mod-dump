@@ -1,0 +1,12 @@
+{
+  "EnableSaloonSaleConcessions": true,
+
+  "SaloonConcessionStockLimit": 10,
+  "SaloonConcessionQuality": 4,
+
+  "EnableTasteChange": true,
+  "EnableUniversalTasteChange": true,
+  "EnableSpecialTasteChange": true,
+
+  "LiftRestrictionOfWatchingMovie": true
+}

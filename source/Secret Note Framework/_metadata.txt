@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/ichortower/SecretNoteFramework
+   Git: https://github.com/ichortower/SecretNoteFramework.git
+
+mods:
+   Secret Note Framework
+
+latest commit:
+   commit 92e8a09cfd0dad78dd9f64a8ba68bbb1b61073f2
+   Author: ichortower <sudo.ichor@proton.me>
+   Date:   Mon Jun 10 23:45:27 2024 -0400
+   
+       Add update keys.
+   

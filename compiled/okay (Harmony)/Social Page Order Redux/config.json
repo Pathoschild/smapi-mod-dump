@@ -1,7 +1,7 @@
 {
   "EnableMod": true,
-  "prevButton": "Up",
-  "nextButton": "Down",
+  "prevButton": "Down, DPadLeft",
+  "nextButton": "Up, DPadRight",
   "UseButton": true,
   "UseDropdown": true,
   "UseFilter": true,

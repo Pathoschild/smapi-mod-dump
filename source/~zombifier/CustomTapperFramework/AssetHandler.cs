@@ -19,7 +19,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 using SObject = StardewValley.Object;
 
-namespace CustomTapperFramework;
+namespace Selph.StardewMods.MachineTerrainFramework;
 
 public class AssetHandler {
   private string dataPath;

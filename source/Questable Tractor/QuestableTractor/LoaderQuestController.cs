@@ -13,14 +13,11 @@ using StardewValley;
 using StardewValley.GameData.GarbageCans;
 using StardewValley.TerrainFeatures;
 
+using static NermNermNerm.Stardew.LocalizeFromSource.SdvLocalize;
+
+
 namespace NermNermNerm.Stardew.QuestableTractor
 {
-
-    // Find a place to put this on day start when quest is not active
-    //this.HideStarterItemIfNeeded();
-    //this.MonitorInventoryForItem(this.BrokenAttachmentPartId, this.PlayerGotBrokenPart);
-
-
     internal class LoaderQuestController
         : TractorPartQuestController<LoaderQuestState>
     {
@@ -29,7 +26,7 @@ namespace NermNermNerm.Stardew.QuestableTractor
             this.AddPetFinder();
         }
 
-        protected override string QuestCompleteMessage => "Sweet!  You've now got a front-end loader attachment for your tractor to clear out debris!#$b#HINT: To use it, equip the pick or the axe while on the tractor.";
+        protected override string QuestCompleteMessage => L("Sweet!  You've now got a front-end loader attachment for your tractor to clear out debris!#$b#HINT: To use it, equip the pick or the axe while on the tractor.");
         protected override string ModDataKey => ModDataKeys.LoaderQuestStatus;
         public override string WorkingAttachmentPartId => ObjectIds.WorkingLoader;
         public override string BrokenAttachmentPartId => ObjectIds.BustedLoader;
@@ -130,18 +127,18 @@ namespace NermNermNerm.Stardew.QuestableTractor
             if (this.OverallQuestState == OverallQuestState.InProgress &&
                 this.State >= LoaderQuestState.FindSomeShoes && this.State < LoaderQuestState.DisguiseTheShoes)
             {
-                this.LogTrace("Added shoes to trashcan loot table");
+                this.LogTrace($"Added shoes to trashcan loot table");
                 gcd.GarbageCans["Evelyn"].Items.Add(new GarbageCanItemData()
                 {
                     ItemId = ObjectIds.AlexesOldShoe,
                     IgnoreBaseChance = true,
-                    Condition = "RANDOM 0.3 @addDailyLuck",
+                    Condition = I("RANDOM 0.3 @addDailyLuck"),
                     Id = "QuestableTractor.AlexesOldShoe",
                 });
             }
             else
             {
-                this.LogTrace("Left Evelyn's garbage can alone");
+                this.LogTrace($"Left Evelyn's garbage can alone");
             }
         }
     }

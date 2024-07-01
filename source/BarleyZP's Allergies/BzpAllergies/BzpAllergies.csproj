@@ -23,5 +23,8 @@
     </Reference>
   </ItemGroup>
 
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="if not exist &quot;$(GameModsPath)/[CP] BzpAllergies&quot; (mkdir &quot;$(GameModsPath)/[CP] BzpAllergies&quot;) else (echo [CP] BzpAllergies dir exists)&#xD;&#xA;xcopy &quot;$(ProjectDir)[CP] BzpAllergies&quot; &quot;$(GameModsPath)\[CP] BzpAllergies&quot; /E /Y&#xD;&#xA;if not exist &quot;$(GameModsPath)/[CP] Cornucopia Allergies&quot; (mkdir &quot;$(GameModsPath)\[CP] Cornucopia Allergies&quot;) else (echo [CP] Corncuopia Allergies dir exists)&#xD;&#xA;xcopy &quot;$(ProjectDir)ContentPacks\[CP] Cornucopia Allergies&quot; &quot;$(GameModsPath)\[CP] Cornucopia Allergies&quot; /E /Y" />
+  </Target>
 
 </Project>

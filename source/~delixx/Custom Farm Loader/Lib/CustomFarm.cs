@@ -96,6 +96,10 @@ namespace Custom_Farm_Loader.Lib
 
             Helper.Events.GameLoop.GameLaunched += GameLaunched;
             Helper.Events.Content.LocaleChanged += (s, e) => clearCache();
+            Helper.Events.GameLoop.ReturnedToTitle += (s, e) => {
+                if (Context.ScreenId == 0 && LocalizedContentManager.CurrentLanguageCode != LocalizedContentManager.LanguageCode.en)
+                    clearCache();
+            };
         }
 
         public static void clearCache() {

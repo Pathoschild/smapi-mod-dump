@@ -49,7 +49,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Fields
 
                 text = !string.IsNullOrWhiteSpace(text) ? text : item.DisplayName;
                 Color? color = this.LinkSubject != null ? Color.Blue : null;
-                this.Value = new IFormattedText[] { new FormattedText(text, color) };
+                this.Value = [new FormattedText(text, color)];
             }
         }
 

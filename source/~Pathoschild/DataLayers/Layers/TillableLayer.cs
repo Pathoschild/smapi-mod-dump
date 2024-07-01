@@ -50,13 +50,12 @@ namespace Pathoschild.Stardew.DataLayers.Layers
         {
             const string layerId = "Tillable";
 
-            this.Legend = new[]
-            {
+            this.Legend = [
                 this.Tilled = new LegendEntry(I18n.Keys.Tillable_Tilled, colors.Get(layerId, "Tilled", Color.DarkMagenta)),
                 this.Tillable = new LegendEntry(I18n.Keys.Tillable_Tillable, colors.Get(layerId, "Tillable", Color.Green)),
                 this.Occupied = new LegendEntry(I18n.Keys.Tillable_Occupied, colors.Get(layerId, "Occupied", Color.Orange)),
                 this.NonTillable = new LegendEntry(I18n.Keys.Tillable_NotTillable, colors.Get(layerId, "NotTillable", Color.Red))
-            };
+            ];
         }
 
         /// <summary>Get the updated data layer tiles.</summary>
@@ -67,13 +66,12 @@ namespace Pathoschild.Stardew.DataLayers.Layers
         public override TileGroup[] Update(GameLocation location, in Rectangle visibleArea, in Vector2[] visibleTiles, in Vector2 cursorTile)
         {
             var tiles = this.GetTiles(location, visibleArea.GetTiles());
-            return new[]
-            {
+            return [
                 new TileGroup(tiles[this.Tilled]),
                 new TileGroup(tiles[this.Tillable], outerBorderColor: this.Tillable.Color),
                 new TileGroup(tiles[this.Occupied]),
                 new TileGroup(tiles[this.NonTillable])
-            };
+            ];
         }
 
 

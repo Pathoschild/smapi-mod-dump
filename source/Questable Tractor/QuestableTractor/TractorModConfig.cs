@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using NermNermNerm.Stardew.LocalizeFromSource;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Buildings;
@@ -22,6 +23,7 @@ namespace NermNermNerm.Stardew.QuestableTractor
     /// <summary>
     ///   This class manages the relationship between this mod and PathosChild.TractorMod.
     /// </summary>
+    [NoStrict]
     internal class TractorModConfig
     {
         private readonly ModEntry mod;
@@ -37,7 +39,7 @@ namespace NermNermNerm.Stardew.QuestableTractor
         public void TractorGarageBuildingCostChanged()
         {
             this.mod.Helper.GameContent.InvalidateCache("Data/Buildings");
-            this.mod.LogTrace("Invalidating asset 'Data/Buildings'.");
+            this.mod.LogTrace($"Invalidating asset 'Data/Buildings'.");
         }
 
         public void SetConfig(bool isHoeUnlocked, bool isLoaderUnlocked, bool isHarvesterUnlocked, bool isWatererUnlocked, bool isSpreaderUnlocked)
@@ -102,7 +104,7 @@ namespace NermNermNerm.Stardew.QuestableTractor
         {
             if (Game1.MasterPlayer is null)
             {
-                this.mod.LogTrace("Skipping building updates -- we were asked for it before the game was loaded or we're multiplayer.");
+                this.mod.LogTrace($"Skipping building updates -- we were asked for it before the game was loaded or we're multiplayer.");
                 // Leave it alone if we're being called before on game start.
                 return;
             }
@@ -116,12 +118,12 @@ namespace NermNermNerm.Stardew.QuestableTractor
             if (!this.mod.RestoreTractorQuestController.IsStartedByMasterPlayer
                 || (!this.mod.RestoreTractorQuestController.IsCompletedByMasterPlayer && this.mod.RestoreTractorQuestController.GetState(Game1.MasterPlayer) < RestorationState.BuildTractorGarage))
             {
-                this.mod.LogTrace("Disabled the ability to buy a tractor garage at Robin's.");
+                this.mod.LogTrace($"Disabled the ability to buy a tractor garage at Robin's.");
                 value.Builder = null;
             }
             else if (!this.mod.RestoreTractorQuestController.IsCompletedByMasterPlayer && this.mod.RestoreTractorQuestController.GetState(Game1.MasterPlayer) < RestorationState.WaitingForSebastianDay1)
             {
-                this.mod.LogTrace("Discounted garage price at Robin's.");
+                this.mod.LogTrace($"Discounted garage price at Robin's.");
                 value.BuildCost = 350;
                 value.BuildMaterials = new List<BuildingMaterial>
                 {
@@ -133,7 +135,7 @@ namespace NermNermNerm.Stardew.QuestableTractor
             else
             {
                 // Normal cost after first build
-                this.mod.LogTrace("Reverted the tractor garage price to normal at Robin's.");
+                this.mod.LogTrace($"Reverted the tractor garage price to normal at Robin's.");
             }
         }
     }

@@ -54,13 +54,13 @@ namespace Pathoschild.Stardew.Automate.Framework
         ** (These just minimize object allocations, and aren't used to store state between ticks.)
         ****/
         /// <summary>The pre-allocated list used to store machines which have output ready during the current automation tick.</summary>
-        private readonly List<IMachine> PooledOutputReady = new();
+        private readonly List<IMachine> PooledOutputReady = [];
 
         /// <summary>The pre-allocated list used to store machines which have input ready during the current automation tick.</summary>
-        private readonly List<IMachine> PooledInputReady = new();
+        private readonly List<IMachine> PooledInputReady = [];
 
         /// <summary>A pre-allocated set used to store machine IDs that should be ignored for input during the current automation tick.</summary>
-        private readonly HashSet<string> PooledIgnoreMachinesForInput = new();
+        private readonly HashSet<string> PooledIgnoreMachinesForInput = [];
 
 
         /*********
@@ -98,7 +98,7 @@ namespace Pathoschild.Stardew.Automate.Framework
             this.LocationKey = locationKey;
             this.Machines = machines.ToArray();
             this.Containers = containers.ToArray();
-            this.Tiles = new HashSet<Vector2>(tiles);
+            this.Tiles = [..tiles];
             this.Monitor = monitor;
 
             this.IsJunimoGroup = this.Containers.Any(p => p.IsJunimoChest);

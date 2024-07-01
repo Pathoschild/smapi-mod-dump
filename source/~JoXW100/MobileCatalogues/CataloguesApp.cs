@@ -56,10 +56,10 @@ namespace MobileCatalogues
         internal static void OpenCatalogueApp()
         {
             api = ModEntry.api;
-            Helper.Events.Input.ButtonPressed += HelperEvents.Input_ButtonPressed;
             api.SetAppRunning(true);
             api.SetRunningApp(Helper.ModRegistry.ModID);
-            Helper.Events.Display.RenderedWorld += Visuals.Display_RenderedWorld;
+            api.OnAfterRenderScreen += Visuals.Display_RenderedWorld;
+            Helper.Events.Input.ButtonPressed += HelperEvents.Input_ButtonPressed;
             opening = true;
         }
 
@@ -68,8 +68,8 @@ namespace MobileCatalogues
         {
             api.SetAppRunning(false);
             api.SetRunningApp(null);
+            api.OnAfterRenderScreen -= Visuals.Display_RenderedWorld;
             Helper.Events.Input.ButtonPressed -= HelperEvents.Input_ButtonPressed;
-            Helper.Events.Display.RenderedWorld -= Visuals.Display_RenderedWorld;
         }
 
 
@@ -114,8 +114,9 @@ namespace MobileCatalogues
                     return Config.PriceKrobusCatalogue;
                 case "guild-catalogue":
                     return Config.PriceGuildCatalogue;
+                default:
+                    return 0;
             }
-            return 0;
         }
         internal static void PurchaseCatalogue(string id)
         {

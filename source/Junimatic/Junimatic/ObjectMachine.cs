@@ -16,6 +16,9 @@ using StardewValley.GameData.Machines;
 using StardewValley.Inventories;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
+using NermNermNerm.Stardew.LocalizeFromSource;
+
+using static NermNermNerm.Stardew.LocalizeFromSource.SdvLocalize;
 
 namespace NermNermNerm.Junimatic
 {
@@ -111,7 +114,7 @@ namespace NermNermNerm.Junimatic
         /// </summary>
         public override bool IsCompatibleWithJunimo(JunimoType projectType)
         {
-            string cacheKey = this.Machine.ItemId + ":" + projectType.ToString();
+            string cacheKey = $"{this.Machine.ItemId}:{projectType}";
             if (cachedCompatList.TryGetValue(cacheKey, out bool result))
             {
                 return result;
@@ -124,6 +127,7 @@ namespace NermNermNerm.Junimatic
 
         private bool IsManualFeedMachine => this.Machine.ItemId == "21"; // Crystalarium
 
+        [NoStrict]
         private bool IsCompatibleWithJunimoNoCache(JunimoType projectType)
         {
             // The MachineData contains clues as to what the assignments should be, but it's definitely fuzzy.
@@ -159,6 +163,15 @@ namespace NermNermNerm.Junimatic
                 case "264": // heavy tapper
                 case "MushroomLog":
                     return projectType == JunimoType.Forestry; // no good data
+                case "Dehydrator":
+                    if (projectType == JunimoType.Forestry)
+                    {
+                        // The Data for this machine will return true for farming Junimos as well, but there's no
+                        // category for woodsy stuff and we're kinda blazing our own path with the idea that forestry
+                        // Junimos work mushrooms.
+                        return true;
+                    }
+                    break;
             }
 
             // TODO: Add configurable special cases.
@@ -167,8 +180,8 @@ namespace NermNermNerm.Junimatic
                 ["category_minerals", "category_gem", "bone_item"],
                 ["egg_item", "large_egg_item", "slime_egg_item"],
                 ["category_vegetable", "category_fruit", "keg_wine", "preserves_pickle", "preserves_jelly"],
-                [], // there just aren't any tags for fish or wood stuff listed
-                []];
+                ["category_fish"],
+                []]; // there aren't any tags for wood stuff listed
 
             int[][] categories = [
                 [StardewValley.Object.GemCategory, StardewValley.Object.mineralsCategory, StardewValley.Object.metalResources, StardewValley.Object.monsterLootCategory],
@@ -268,7 +281,7 @@ namespace NermNermNerm.Junimatic
 
         public override string ToString()
         {
-            return $"{this.Machine.Name} at {this.Machine.TileLocation}";
+            return IF($"{this.Machine.Name} at {this.Machine.TileLocation}");
         }
     }
 }

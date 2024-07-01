@@ -23,32 +23,33 @@ namespace StardewArchipelago.Extensions
     {
         private static readonly Dictionary<WarpRequest, WarpRequest> ExtraWarps = new()
         {
-            {new WarpRequest(Game1.getLocationRequest("Town"), 96, 51, FacingDirection.Down), new WarpRequest(Game1.getLocationRequest("AbandonedJojaMart"), 9, 13, FacingDirection.Up)},
-            {new WarpRequest(Game1.getLocationRequest("Town"), 96, 51, FacingDirection.Down), new WarpRequest(Game1.getLocationRequest("MovieTheater"), 13, 15, FacingDirection.Up)},
+            { new WarpRequest(Game1.getLocationRequest("Town"), 96, 51, FacingDirection.Down), new WarpRequest(Game1.getLocationRequest("AbandonedJojaMart"), 9, 13, FacingDirection.Up) },
+            { new WarpRequest(Game1.getLocationRequest("Town"), 96, 51, FacingDirection.Down), new WarpRequest(Game1.getLocationRequest("MovieTheater"), 13, 15, FacingDirection.Up) },
             // {new WarpRequest(Game1.getLocationRequest("Town"), , , FacingDirection.Down), new WarpRequest(Game1.getLocationRequest("Trailer_Big"), , , FacingDirection.Up)},
-            {new WarpRequest(Game1.getLocationRequest("Town"), 35, 97, FacingDirection.Down), new WarpRequest(Game1.getLocationRequest("Sewer"), 16, 11, FacingDirection.Down)},
-            {new WarpRequest(Game1.getLocationRequest("Forest"), 94, 100, FacingDirection.Down), new WarpRequest(Game1.getLocationRequest("Sewer"), 3, 48, FacingDirection.Up)},
-            {new WarpRequest(Game1.getLocationRequest("Mountain"), 16, 8, FacingDirection.Down), new WarpRequest(Game1.getLocationRequest("LeoTreeHouse"), 3, 8, FacingDirection.Up)},
-            {new WarpRequest(Game1.getLocationRequest("BeachNightMarket"), 49, 11, FacingDirection.Down), new WarpRequest(Game1.getLocationRequest("ElliottHouse"), 3, 9, FacingDirection.Down)},
-            {new WarpRequest(Game1.getLocationRequest("BeachNightMarket"), 30, 34, FacingDirection.Down), new WarpRequest(Game1.getLocationRequest("FishShop"), 5, 9, FacingDirection.Down)},
-            {new WarpRequest(Game1.getLocationRequest("FishShop"), 4, 4, FacingDirection.Down), new WarpRequest(Game1.getLocationRequest("BoatTunnel"), 6, 12, FacingDirection.Up)},
-            {new WarpRequest(Game1.getLocationRequest("IslandWest"), 20, 23, FacingDirection.Down), new WarpRequest(Game1.getLocationRequest("QiNutRoom"), 7, 8, FacingDirection.Up)},
-            {new WarpRequest(Game1.getLocationRequest("WizardHouse"), 4, 5, FacingDirection.Down), new WarpRequest(Game1.getLocationRequest("WizardHouseBasement"), 4, 4, FacingDirection.Down)},
-            {new WarpRequest(Game1.getLocationRequest("IslandWest"), 77, 40, FacingDirection.Down), new WarpRequest(Game1.getLocationRequest("IslandFarmhouse"), 14, 17, FacingDirection.Down)},
-            {new WarpRequest(Game1.getLocationRequest("DeepWoods"), 20, 6, FacingDirection.Up), new WarpRequest(Game1.getLocationRequest("DeepWoodsMaxHouse"), 19, 24, FacingDirection.Up)},
-            {new WarpRequest(Game1.getLocationRequest("Custom_SpriteSpring2"), 31, 11, FacingDirection.Up), new WarpRequest(Game1.getLocationRequest("Custom_SpriteSpringCave"), 10, 14, FacingDirection.Up)},
-            {new WarpRequest(Game1.getLocationRequest("Custom_GrandpasShedRuins"), 15, 16, FacingDirection.Down), new WarpRequest(Game1.getLocationRequest("Custom_GrandpasShedOutside"), 22, 17, FacingDirection.Down)},
-            {new WarpRequest(Game1.getLocationRequest("Custom_GrandpasShed"), 15, 16, FacingDirection.Down), new WarpRequest(Game1.getLocationRequest("Custom_GrandpasShedOutside"), 22, 17, FacingDirection.Down)},
-            {new WarpRequest(Game1.getLocationRequest("Custom_GrandpasShedRuins"), 25, 14, FacingDirection.Up), new WarpRequest(Game1.getLocationRequest("Custom_GrandpasShedGreenhouse"), 30, 16, FacingDirection.Down)},
-            {new WarpRequest(Game1.getLocationRequest("Backwoods"), 21, 1, FacingDirection.Up), new WarpRequest(Game1.getLocationRequest("Custom_EnchantedGrove"), 30, 32, FacingDirection.Up)},
-            {new WarpRequest(Game1.getLocationRequest("Custom_EnchantedGrove"), 40, 10, FacingDirection.Down), new WarpRequest(Game1.getLocationRequest("Custom_GalmoranOutpost"), 39, 36, FacingDirection.Down)},
-            {new WarpRequest(Game1.getLocationRequest("Custom_EnchantedGrove"), 40, 41, FacingDirection.Up), new WarpRequest(Game1.getLocationRequest("Custom_JunimoForest"), 31, 97, FacingDirection.Down)},
-            {new WarpRequest(Game1.getLocationRequest("Custom_EnchantedGrove"), 20, 41, FacingDirection.Up), new WarpRequest(Game1.getLocationRequest("Custom_ApplesRoom"), 2, 9, FacingDirection.Down)},
-            {new WarpRequest(Game1.getLocationRequest("Custom_EnchantedGrove"), 17, 25, FacingDirection.Up), new WarpRequest(Game1.getLocationRequest("Custom_WizardBasement"), 8, 18, FacingDirection.Down)},
-            {new WarpRequest(Game1.getLocationRequest("Custom_EnchantedGrove"), 20, 10, FacingDirection.Up), new WarpRequest(Game1.getLocationRequest("Custom_SpriteSpring2"), 52, 20, FacingDirection.Down)},
-            {new WarpRequest(Game1.getLocationRequest("Custom_EnchantedGrove"), 43, 25, FacingDirection.Up), new WarpRequest(Game1.getLocationRequest("Custom_AdventurerSummit"), 8, 24, FacingDirection.Down)},
-            {new WarpRequest(Game1.getLocationRequest("Forest"), 19, 110, FacingDirection.Down), new WarpRequest(Game1.getLocationRequest("Custom_JunimoWoods"), 37, 2, FacingDirection.Down)},
-
+            { new WarpRequest(Game1.getLocationRequest("Town"), 35, 97, FacingDirection.Down), new WarpRequest(Game1.getLocationRequest("Sewer"), 16, 11, FacingDirection.Down) },
+            { new WarpRequest(Game1.getLocationRequest("Forest"), 94, 100, FacingDirection.Down), new WarpRequest(Game1.getLocationRequest("Sewer"), 3, 48, FacingDirection.Up) },
+                        { new WarpRequest(Game1.getLocationRequest("Forest"), 101, 72, FacingDirection.Down), new WarpRequest(Game1.getLocationRequest("MasteryCave"), 7, 11, FacingDirection.Up) },
+            // The warp for SVE's Forest to MasteryCave is changed from 101, 71 to 110, 81.  How do we resolve that one?
+            { new WarpRequest(Game1.getLocationRequest("Mountain"), 16, 8, FacingDirection.Down), new WarpRequest(Game1.getLocationRequest("LeoTreeHouse"), 3, 8, FacingDirection.Up) },
+            { new WarpRequest(Game1.getLocationRequest("BeachNightMarket"), 49, 11, FacingDirection.Down), new WarpRequest(Game1.getLocationRequest("ElliottHouse"), 3, 9, FacingDirection.Down) },
+            { new WarpRequest(Game1.getLocationRequest("BeachNightMarket"), 30, 34, FacingDirection.Down), new WarpRequest(Game1.getLocationRequest("FishShop"), 5, 9, FacingDirection.Down) },
+            { new WarpRequest(Game1.getLocationRequest("FishShop"), 4, 4, FacingDirection.Down), new WarpRequest(Game1.getLocationRequest("BoatTunnel"), 6, 12, FacingDirection.Up) },
+            { new WarpRequest(Game1.getLocationRequest("IslandWest"), 20, 23, FacingDirection.Down), new WarpRequest(Game1.getLocationRequest("QiNutRoom"), 7, 8, FacingDirection.Up) },
+            { new WarpRequest(Game1.getLocationRequest("WizardHouse"), 4, 5, FacingDirection.Down), new WarpRequest(Game1.getLocationRequest("WizardHouseBasement"), 4, 4, FacingDirection.Down) },
+            { new WarpRequest(Game1.getLocationRequest("IslandWest"), 77, 40, FacingDirection.Down), new WarpRequest(Game1.getLocationRequest("IslandFarmhouse"), 14, 17, FacingDirection.Down) },
+            { new WarpRequest(Game1.getLocationRequest("DeepWoods"), 20, 6, FacingDirection.Up), new WarpRequest(Game1.getLocationRequest("DeepWoodsMaxHouse"), 19, 24, FacingDirection.Up) },
+            { new WarpRequest(Game1.getLocationRequest("Custom_SpriteSpring2"), 31, 11, FacingDirection.Up), new WarpRequest(Game1.getLocationRequest("Custom_SpriteSpringCave"), 10, 14, FacingDirection.Up) },
+            { new WarpRequest(Game1.getLocationRequest("Custom_GrandpasShedRuins"), 15, 16, FacingDirection.Down), new WarpRequest(Game1.getLocationRequest("Custom_GrandpasShedOutside"), 22, 17, FacingDirection.Down) },
+            { new WarpRequest(Game1.getLocationRequest("Custom_GrandpasShed"), 15, 16, FacingDirection.Down), new WarpRequest(Game1.getLocationRequest("Custom_GrandpasShedOutside"), 22, 17, FacingDirection.Down) },
+            { new WarpRequest(Game1.getLocationRequest("Custom_GrandpasShedRuins"), 25, 14, FacingDirection.Up), new WarpRequest(Game1.getLocationRequest("Custom_GrandpasShedGreenhouse"), 30, 16, FacingDirection.Down) },
+            { new WarpRequest(Game1.getLocationRequest("Backwoods"), 21, 1, FacingDirection.Up), new WarpRequest(Game1.getLocationRequest("Custom_EnchantedGrove"), 30, 32, FacingDirection.Up) },
+            { new WarpRequest(Game1.getLocationRequest("Custom_EnchantedGrove"), 40, 10, FacingDirection.Down), new WarpRequest(Game1.getLocationRequest("Custom_GalmoranOutpost"), 39, 36, FacingDirection.Down) },
+            { new WarpRequest(Game1.getLocationRequest("Custom_EnchantedGrove"), 40, 41, FacingDirection.Up), new WarpRequest(Game1.getLocationRequest("Custom_JunimoForest"), 31, 97, FacingDirection.Down) },
+            { new WarpRequest(Game1.getLocationRequest("Custom_EnchantedGrove"), 20, 41, FacingDirection.Up), new WarpRequest(Game1.getLocationRequest("Custom_ApplesRoom"), 2, 9, FacingDirection.Down) },
+            { new WarpRequest(Game1.getLocationRequest("Custom_EnchantedGrove"), 17, 25, FacingDirection.Up), new WarpRequest(Game1.getLocationRequest("Custom_WizardBasement"), 8, 18, FacingDirection.Down) },
+            { new WarpRequest(Game1.getLocationRequest("Custom_EnchantedGrove"), 20, 10, FacingDirection.Up), new WarpRequest(Game1.getLocationRequest("Custom_SpriteSpring2"), 52, 20, FacingDirection.Down) },
+            { new WarpRequest(Game1.getLocationRequest("Custom_EnchantedGrove"), 43, 25, FacingDirection.Up), new WarpRequest(Game1.getLocationRequest("Custom_AdventurerSummit"), 8, 24, FacingDirection.Down) },
+            { new WarpRequest(Game1.getLocationRequest("Forest"), 19, 110, FacingDirection.Down), new WarpRequest(Game1.getLocationRequest("Custom_JunimoWoods"), 37, 2, FacingDirection.Down) },
         };
 
         private static readonly Dictionary<WarpRequest, WarpRequest> ExtraWarpsBothWays = ExtraWarps.Union(ExtraWarps.ToDictionary(x => x.Value, x => x.Key)).ToDictionary(x => x.Key, x => x.Value);
@@ -101,6 +102,7 @@ namespace StardewArchipelago.Extensions
             warpPoints.AddRange(GetAllTouchWarpsTo(origin, destinationName).Select(warp => new Point(warp.X, warp.Y)));
             warpPoints.AddRange(GetAllTouchActionWarpsTo(origin, destinationName).Select(x => new Point(x.Key.X, x.Key.Y)));
             warpPoints.AddRange(GetDoorWarpPoints(origin, destinationName));
+            warpPoints.AddRange(GetBuildingWarps(origin, destinationName).Select(x => new Point(x.Key.X, x.Key.Y)));
             return warpPoints.Distinct().ToList();
         }
 
@@ -149,6 +151,14 @@ namespace StardewArchipelago.Extensions
                         return new Point(warpTarget.X, warpTarget.Y);
                     }
                 }
+
+                foreach (var (warp, warpTarget) in GetBuildingWarps(origin, destinationName))
+                {
+                    if (warp.X == warpPointLocation.X && warp.Y == warpPointLocation.Y)
+                    {
+                        return new Point(warpTarget.X, warpTarget.Y);
+                    }
+                }
             }
 
             throw new Exception(
@@ -160,14 +170,26 @@ namespace StardewArchipelago.Extensions
             var warps = new List<Warp>();
             foreach (var warp in origin.warps)
             {
-                if (warp.TargetName.Equals(destinationName, StringComparison.OrdinalIgnoreCase))
+                try
                 {
-                    warps.Add(warp);
+                    if (warp.TargetName.Equals(destinationName, StringComparison.OrdinalIgnoreCase))
+                    {
+                        warps.Add(warp);
+                    }
+                    else if (warp.TargetName == "VolcanoEntrance" && destinationName == "VolcanoDungeon0")
+                    {
+                        var realTargetPoint = new Point(warp.TargetX, warp.TargetY).CheckSpecialVolcanoEdgeCaseWarp(destinationName);
+                        warps.Add(new Warp(warp.X, warp.Y, warp.TargetName, realTargetPoint.X, realTargetPoint.Y, warp.flipFarmer.Value));
+                    }
                 }
-                else if (warp.TargetName == "VolcanoEntrance" && destinationName == "VolcanoDungeon0")
+                catch (Exception ex)
                 {
-                    var realTargetPoint = new Point(warp.TargetX, warp.TargetY).CheckSpecialVolcanoEdgeCaseWarp(destinationName);
-                    warps.Add(new Warp(warp.X, warp.Y, warp.TargetName, realTargetPoint.X, realTargetPoint.Y, warp.flipFarmer.Value));
+                    var currentMethodName = $"{nameof(GameLocationExtensions)}.{nameof(GetAllTouchWarpsTo)}";
+                    var currentMethodCall = $"{currentMethodName}({origin.Name}, {destinationName})";
+                    var currentLoop = $"warp: {warp}";
+                    var currentState = $"{currentMethodCall} => [{currentLoop}]";
+                    var errorMessage = $"Failed in {currentState}:{Environment.NewLine}\t{ex}";
+                    throw new Exception(errorMessage, ex);
                 }
             }
 
@@ -208,15 +230,27 @@ namespace StardewArchipelago.Extensions
             {
                 for (var x = 0; x < backLayer.LayerWidth; x++)
                 {
-                    var tile = backLayer.Tiles[x, y];
-                    if (tile == null || (!tile.TileIndexProperties.TryGetValue("TouchAction", out var propertyValue) && !tile.Properties.TryGetValue("TouchAction", out propertyValue)))
+                    try
                     {
-                        continue;
-                    }
+                        var tile = backLayer.Tiles[x, y];
+                        if (tile == null || (!tile.TileIndexProperties.TryGetValue("TouchAction", out var propertyValue) && !tile.Properties.TryGetValue("TouchAction", out propertyValue)))
+                        {
+                            continue;
+                        }
 
-                    if (TryGetWarpPointFromProperty(destinationName, propertyValue, out var warpPoint))
+                        if (TryGetWarpPointFromProperty(destinationName, propertyValue, out var warpPoint))
+                        {
+                            touchActionWarps.Add(new Point(x, y), warpPoint);
+                        }
+                    }
+                    catch (Exception ex)
                     {
-                        touchActionWarps.Add(new Point(x, y), warpPoint);
+                        var currentMethodName = $"{nameof(GameLocationExtensions)}.{nameof(GetAllTouchActionWarpsTo)}";
+                        var currentMethodCall = $"{currentMethodName}({origin.Name}, {destinationName})";
+                        var currentLoop = $"x: {x}, y: {y}";
+                        var currentState = $"{currentMethodCall} => [{currentLoop}]";
+                        var errorMessage = $"Failed in {currentState}:{Environment.NewLine}\t{ex}";
+                        throw new Exception(errorMessage, ex);
                     }
                 }
             }
@@ -248,15 +282,27 @@ namespace StardewArchipelago.Extensions
             {
                 for (var x = 0; x < buildingsLayer.LayerWidth; x++)
                 {
-                    var tile = buildingsLayer.Tiles[x, y];
-                    if (tile == null || (!tile.TileIndexProperties.TryGetValue("Action", out var propertyValue) && !tile.Properties.TryGetValue("Action", out propertyValue)))
+                    try
                     {
-                        continue;
-                    }
+                        var tile = buildingsLayer.Tiles[x, y];
+                        if (tile == null || (!tile.TileIndexProperties.TryGetValue("Action", out var propertyValue) && !tile.Properties.TryGetValue("Action", out propertyValue)))
+                        {
+                            continue;
+                        }
 
-                    if (TryGetWarpPointFromProperty(destinationName, propertyValue, out var warpPoint))
+                        if (TryGetWarpPointFromProperty(destinationName, propertyValue, out var warpPoint))
+                        {
+                            actionWarps.Add(new Point(x, y), warpPoint);
+                        }
+                    }
+                    catch (Exception ex)
                     {
-                        actionWarps.Add(new Point(x, y), warpPoint);
+                        var currentMethodName = $"{nameof(GameLocationExtensions)}.{nameof(GetAllActionWarpsTo)}";
+                        var currentMethodCall = $"{currentMethodName}({origin.Name}, {destinationName})";
+                        var currentLoop = $"x: {x}, y: {y}";
+                        var currentState = $"{currentMethodCall} => [{currentLoop}]";
+                        var errorMessage = $"Failed in {currentState}:{Environment.NewLine}\t{ex}";
+                        throw new Exception(errorMessage, ex);
                     }
                 }
             }
@@ -308,10 +354,22 @@ namespace StardewArchipelago.Extensions
         {
             foreach (var pair in origin.doors.Pairs)
             {
+                //try
+                //{
                 if (pair.Value.Equals(destinationName, StringComparison.OrdinalIgnoreCase))
                 {
                     yield return pair.Key;
                 }
+                //}
+                //catch (Exception ex)
+                //{
+                //    var currentMethodName = $"{nameof(GameLocationExtensions)}.{nameof(GetDoorWarpPoints)}";
+                //    var currentMethodCall = $"{currentMethodName}({origin.Name}, {destinationName})";
+                //    var currentLoop = $"pair: {pair}";
+                //    var currentState = $"{currentMethodCall} => [{currentLoop}]";
+                //    var errorMessage = $"Failed in {currentState}:{Environment.NewLine}\t{ex}";
+                //    throw new Exception(errorMessage, ex);
+                //}
             }
         }
 
@@ -373,16 +431,67 @@ namespace StardewArchipelago.Extensions
             var specialTriggerWarps = new Dictionary<Point, Point>();
             foreach (var (warp1, warp2) in ExtraWarpsBothWays)
             {
-                if (!warp1.LocationRequest.Name.Equals(origin.Name, StringComparison.OrdinalIgnoreCase) ||
-                    !warp2.LocationRequest.Name.Equals(destinationName, StringComparison.OrdinalIgnoreCase))
+                try
                 {
-                    continue;
-                }
+                    if (!warp1.LocationRequest.Name.Equals(origin.Name, StringComparison.OrdinalIgnoreCase) ||
+                        !warp2.LocationRequest.Name.Equals(destinationName, StringComparison.OrdinalIgnoreCase))
+                    {
+                        continue;
+                    }
 
-                specialTriggerWarps.Add(new Point(warp1.TileX, warp1.TileY), new Point(warp2.TileX, warp2.TileY));
+                    specialTriggerWarps.Add(new Point(warp1.TileX, warp1.TileY), new Point(warp2.TileX, warp2.TileY));
+                }
+                catch (Exception ex)
+                {
+                    var currentMethodName = $"{nameof(GameLocationExtensions)}.{nameof(GetSpecialTriggerWarps)}";
+                    var currentMethodCall = $"{currentMethodName}({origin.Name}, {destinationName})";
+                    var currentLoop = $"warp1: {warp1}, warp2: {warp2}";
+                    var currentState = $"{currentMethodCall} => [{currentLoop}]";
+                    var errorMessage = $"Failed in {currentState}:{Environment.NewLine}\t{ex}";
+                    throw new Exception(errorMessage, ex);
+                }
             }
 
             return specialTriggerWarps;
+        }
+
+        private static Dictionary<Point, Point> GetBuildingWarps(GameLocation origin, string destinationName)
+        {
+            var buildingWarps = new Dictionary<Point, Point>();
+            foreach (var building in origin.buildings)
+            {
+                try
+                {
+                    var interior = building.GetIndoors();
+                    if (interior == null)
+                    {
+                        continue;
+                    }
+                    if (!interior.NameOrUniqueName.Equals(destinationName, StringComparison.OrdinalIgnoreCase))
+                    {
+                        continue;
+                    }
+
+                    foreach (var warp in interior.warps)
+                    {
+                        if (warp.TargetName == origin.NameOrUniqueName)
+                        {
+                            buildingWarps.Add(new Point(warp.TargetX, warp.TargetY), new Point(warp.X, warp.Y));
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    var currentMethodName = $"{nameof(GameLocationExtensions)}.{nameof(GetBuildingWarps)}";
+                    var currentMethodCall = $"{currentMethodName}({origin.Name}, {destinationName})";
+                    var currentLoop = $"building: {building}";
+                    var currentState = $"{currentMethodCall} => [{currentLoop}]";
+                    var errorMessage = $"Failed in {currentState}:{Environment.NewLine}\t{ex}";
+                    throw new Exception(errorMessage, ex);
+                }
+            }
+
+            return buildingWarps;
         }
 
         public static Point GetClosestWarpPointTo(this GameLocation origin, string destinationName, Point currentLocation)

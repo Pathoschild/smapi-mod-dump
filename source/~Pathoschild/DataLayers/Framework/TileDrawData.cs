@@ -23,7 +23,7 @@ namespace Pathoschild.Stardew.DataLayers.Framework
         public Vector2 TilePosition { get; }
 
         /// <summary>The overlay colors to draw.</summary>
-        public HashSet<Color> Colors { get; } = new();
+        public HashSet<Color> Colors { get; } = [];
 
         /// <summary>The border colors to draw.</summary>
         public Dictionary<Color, TileEdge> BorderColors { get; } = new();

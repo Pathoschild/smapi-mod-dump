@@ -8,14 +8,13 @@
 **
 *************************************************/
 
-using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Linq;
 using Microsoft.Xna.Framework;
 using StardewValley;
-using StardewValley.Inventories;
 using StardewValley.Objects;
+using Force.DeepCloner;
+using StardewValley.Menus;
+
 namespace FilteredChestHopper
 {
     internal class Pipeline
@@ -91,11 +90,12 @@ namespace FilteredChestHopper
                     {
                         bool match = true;
                         int filterCount = 0;
+                        filterItems.RemoveEmptySlots();
                         for (int j = filterItems.Count - 1; j >= 0; j--)
                         {
-                            if(filterItems[j] != null && chestAboveItems[i] != null && filterItems[j].ItemId == chestAboveItems[i].ItemId && (!mod.Config.CompareQuality || filterItems[j].Quality == chestAboveItems[i].Quality))
+                            if(filterItems[j] != null && chestAboveItems[i] != null && filterItems[j].QualifiedItemId == chestAboveItems[i].QualifiedItemId && (!mod.Config.CompareQuality || filterItems[j].Quality == chestAboveItems[i].Quality))
                             {
-                                if(mod.Config.CompareQuantity)
+                                if(mod.Config.CompareQuantity && chestAboveItems[i].TypeDefinitionId == ItemRegistry.type_object)
                                 {
                                     filterCount = filterItems[j].Stack == 1 ? 0 : filterItems[j].Stack;
                                 }
@@ -113,47 +113,52 @@ namespace FilteredChestHopper
 
                             if(filterCount > 0)
                             {
-                                bool hasStack = false;
-                                //Check for an existing stack
+                                int amountToMove = filterCount;
+
+                                //Calculate the amount to move to match the filter amount
                                 foreach (var itemStack in outputChest[1].GetItemsForPlayer(inputChest.owner.Value))
                                 {
-                                    if (itemStack.canStackWith(item))
+                                    if (itemStack != null && itemStack.canStackWith(item))
                                     {
-                                        hasStack = true;
-                                        int amountToMove = filterCount - itemStack.Stack;
-                                        if (amountToMove > filterCount)
+                                        //handle single items
+                                        if (itemStack.Stack == 0)
                                         {
-                                            amountToMove = filterCount;
+                                            amountToMove--;
                                         }
-                                        if (amountToMove < 0)
-                                        {
-                                            amountToMove = 0;
-                                        }
-                                        itemStack.Stack += amountToMove;
-                                        if (amountToMove > 0)
-                                        {
-                                            item.Stack -= amountToMove;
-                                        }
+                                        amountToMove -= itemStack.Stack;
                                     }
                                 }
-                                //or make a new one
-                                if (!hasStack)
+
+                                //continue if the amount to move is already met
+                                if (amountToMove < 1)
+                                    continue;
+
+                                //Make a new item stack
+                                Item newItem = new StardewValley.Object(item.ItemId, item.Stack, item.IsRecipe, item.salePrice(), item.Quality);
+
+                                //Limit the new stack size to the amount to Move
+                                if (newItem.Stack > amountToMove)
                                 {
-                                    Item newItem = new StardewValley.Object(item.ItemId, item.Stack, item.IsRecipe, item.salePrice(), item.Quality);
-                                    if (newItem.Stack > filterCount)
+                                    newItem.Stack = amountToMove;
+                                }
+
+                                //Attempt the addition
+                                if (outputChest[1].addItem(newItem) == null)
+                                {
+                                    //clean up the old stack
+                                    if (item.Stack == newItem.Stack)
                                     {
-                                        newItem.Stack = filterCount;
+                                        chestAboveItems.RemoveAt(i);
                                     }
-                                    if (outputChest[1].addItem(newItem) == null)
+                                    //handle single items
+                                    else if(newItem.Stack == 0)
                                     {
-                                        if (item.Stack == newItem.Stack)
-                                        {
-                                            chestAboveItems.RemoveAt(i);
-                                        }
-                                        else
-                                        {
-                                            item.Stack -= newItem.Stack;
-                                        }
+                                        item.Stack--;
+                                    }
+                                    //or just remove larger stacks
+                                    else
+                                    {
+                                        item.Stack -= newItem.Stack;
                                     }
                                 }
                             }
@@ -168,18 +173,6 @@ namespace FilteredChestHopper
                         }
                     }
                 }
-            }
-        }
-
-        private void RemoveFromStack(IInventory chest, int index, int amount)
-        {
-            if(chest[index].Stack <= amount)
-            {
-                chest.RemoveAt(index);
-            }
-            else
-            {
-                chest[index].Stack -= amount;
             }
         }
 

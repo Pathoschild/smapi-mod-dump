@@ -4,5 +4,8 @@
   "EnableVisualTaskCompleteIndicator": false,
   "ShowSmartAddTip": true,
   "ShowAddTaskHelpMessage": true,
-  "MoneyViewNetWealth": false
+  "MoneyViewNetWealth": false,
+  "ToggleOverlaysKeybind": "O",
+  "OverlayBackgroundColor": "00000040",
+  "TargetColorSchemaFile": ""
 }

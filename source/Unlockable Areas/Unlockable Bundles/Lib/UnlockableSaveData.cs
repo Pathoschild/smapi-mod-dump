@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 
 namespace Unlockable_Bundles.Lib
 {
+    //The savedata for each individual bundle
     public class UnlockableSaveData
     {
         public bool Purchased = false;

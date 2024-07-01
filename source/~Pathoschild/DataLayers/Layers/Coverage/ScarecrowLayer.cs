@@ -50,11 +50,10 @@ namespace Pathoschild.Stardew.DataLayers.Layers.Coverage
             const string layerId = "ScarecrowCoverage";
 
             this.SelectedColor = colors.Get(layerId, "Selected", Color.Blue);
-            this.Legend = new[]
-            {
+            this.Legend = [
                 this.Covered = new LegendEntry(I18n.Keys.Scarecrows_Protected, colors.Get(layerId, "Covered", Color.Green)),
                 this.Exposed = new LegendEntry(I18n.Keys.Scarecrows_Exposed, colors.Get(layerId, "NotCovered", Color.Red))
-            };
+            ];
         }
 
         /// <summary>Get the updated data layer tiles.</summary>

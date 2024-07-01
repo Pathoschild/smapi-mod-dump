@@ -11,7 +11,7 @@
 {
     "Name": "AchtuurCore",
     "Author": "Achtuur",
-    "Version": "1.2.3",
+    "Version": "1.3.0",
     "Description": "Core mod for most of my mods.",
     "UniqueID": "Achtuur.AchtuurCore",
     "EntryDll": "AchtuurCore.dll",

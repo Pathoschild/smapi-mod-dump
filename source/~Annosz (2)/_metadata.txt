@@ -9,11 +9,11 @@ mods:
    Ui Info Suite 2
 
 latest commit:
-   commit 4b2cdbcb1ab28261e7e04fc47dc8875027f142bb
+   commit 3aa1043cb99ed1e114d9f47fbd8b32d54bb94fb0
    Author: Drew Hoener <drewhoener@gmail.com>
-   Date:   Wed May 29 16:03:27 2024 -0400
+   Date:   Mon Jun 10 21:30:03 2024 -0400
    
-       Merge pull request #546 from drewhoener/master
+       Merge pull request #554 from drewhoener/master
        
-       v2.3.4 PR 1
+       Fix German translation
    

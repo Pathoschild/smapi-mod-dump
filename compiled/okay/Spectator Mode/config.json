@@ -1,0 +1,9 @@
+{
+  "SpectateLocationKeybind": "F6",
+  "SpectatePlayerKeybind": "F7",
+  "ToggleStateKeybind": "K",
+  "MoveSpeed": 32,
+  "MoveThreshold": 64,
+  "RotatePlayerKeybind": "F8",
+  "RotationInterval": 30
+}

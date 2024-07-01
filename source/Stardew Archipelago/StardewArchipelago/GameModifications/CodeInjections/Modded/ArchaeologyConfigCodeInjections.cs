@@ -17,8 +17,8 @@ namespace StardewArchipelago.GameModifications.CodeInjections.Modded
     internal class ArchaeologyConfigCodeInjections
     {
         private const double ARTIFACT_SPOT_MULTIPLIER = 1.6; // Default Value: 10
+        private const double PANNING_MULTIPLIER = 1.5; // Default Value: 20
         private const double DIGGING_MULTIPLIER = 1.6; // Default Value: 5
-        private const double PANNING_MULTIPLIER = 3; // Default Value: 5
         private const double WATER_SHIFTER_MULTIPLIER = 1.8; // Default Value: 2
 
         private static IMonitor _monitor;
@@ -47,6 +47,21 @@ namespace StardewArchipelago.GameModifications.CodeInjections.Modded
             }
         }
 
+        // public int ExperienceFromPanSpots { get; set; } = 20;
+        public static void ExperienceFromPanSpots_APMultiplier_Postfix(object __instance, ref int __result)
+        {
+            try
+            {
+                __result = (int)(__result * PANNING_MULTIPLIER);
+                return;
+            }
+            catch (Exception ex)
+            {
+                _monitor.Log($"Failed in {nameof(ExperienceFromPanSpots_APMultiplier_Postfix)}:\n{ex}", LogLevel.Error);
+                return;
+            }
+        }
+
         // public int ExperienceFromMinesDigging { get; set; } = 5;
         public static void ExperienceFromMinesDigging_APMultiplier_Postfix(object __instance, ref int __result)
         {
@@ -58,21 +73,6 @@ namespace StardewArchipelago.GameModifications.CodeInjections.Modded
             catch (Exception ex)
             {
                 _monitor.Log($"Failed in {nameof(ExperienceFromMinesDigging_APMultiplier_Postfix)}:\n{ex}", LogLevel.Error);
-                return;
-            }
-        }
-
-        // public int ExperienceFromBuriedAndPannedItem { get; set; } = 5;
-        public static void ExperienceFromBuriedAndPannedItem_APMultiplier_Postfix(object __instance, ref int __result)
-        {
-            try
-            {
-                __result = (int)(__result * PANNING_MULTIPLIER);
-                return;
-            }
-            catch (Exception ex)
-            {
-                _monitor.Log($"Failed in {nameof(ExperienceFromBuriedAndPannedItem_APMultiplier_Postfix)}:\n{ex}", LogLevel.Error);
                 return;
             }
         }

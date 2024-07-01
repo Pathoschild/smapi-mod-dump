@@ -36,7 +36,7 @@ namespace ContentPatcher.Framework.Migrations
         public ISemanticVersion Version { get; }
 
         /// <inheritdoc />
-        public string[] MigrationWarnings { get; protected set; } = Array.Empty<string>();
+        public string[] MigrationWarnings { get; protected set; } = [];
 
 
         /*********

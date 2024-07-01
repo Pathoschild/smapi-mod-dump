@@ -89,7 +89,6 @@ namespace MarketTown
 
         public void OnPlayerSend(NPC npc, string textInput)
         {
-
             Random random = new Random();
             // Available option
             string helpKey = "help";
@@ -170,7 +169,7 @@ namespace MarketTown
                             npc.modData["hapyke.FoodStore/inviteDate"] = Game1.stats.DaysPlayed.ToString();
                         }
                         else
-                            npc.showTextAboveHead(SHelper.Translation.Get("foodstore.cannotinvitevisit." + inviteIndex), default, default, 5000);
+                            NPCShowTextAboveHead(npc, SHelper.Translation.Get("foodstore.cannotinvitevisit." + inviteIndex));
 
                     }
                     npc.modData["hapyke.FoodStore/inviteTried"] = "true";
@@ -213,11 +212,13 @@ namespace MarketTown
             else                        // All other message
             {
                 int randomIndex = random.Next(1, 8);
-                string npcAge, npcManner, npcSocial;
+                string npcAge, npcManner, npcSocial, npcHeartLevel;
 
                 int age = npc.Age;
                 int manner = npc.Manners;
                 int social = npc.SocialAnxiety;
+                int heartLevel = 0;
+                if (Game1.player.friendshipData.ContainsKey(npc.Name)) heartLevel = (int)Game1.player.friendshipData[npc.Name].Points / 250;
 
                 switch (age)
                 {
@@ -264,7 +265,23 @@ namespace MarketTown
                         npcSocial = "neutral";
                         break;
                 }
-                string text = SHelper.Translation.Get("foodstore.general." + npcAge + npcManner + npcSocial + randomIndex.ToString());
+                switch (heartLevel)
+                {
+                    case 0:
+                    case 1:
+                    case 2:
+                        npcHeartLevel = ".0";
+                        break;
+                    case 3:
+                    case 4:
+                    case 5:
+                        npcHeartLevel = ".3";
+                        break;
+                    default:
+                        npcHeartLevel = ".6";
+                        break;
+                }
+                string text = SHelper.Translation.Get("foodstore.general." + npcAge + npcManner + npcSocial + randomIndex.ToString() + npcHeartLevel);
                 //SHelper.Events.Input.ButtonPressed += (sender, args) => { Game1.chatBox.addInfoMessage(args.Button.ToString()); };
                 NPCShowTextAboveHead(npc, text);
             }
@@ -295,28 +312,26 @@ namespace MarketTown
         private void Validate_NPCMap()          //Get NPC in map
         {
             NpcMap.Clear();
+            float closetDistance = 999f;
+            float currentDistance = 999f;
+            bool foundOne = false;
+            NPC selectNpc = new NPC();
             foreach (NPC npc in Game1.currentLocation.characters)
             {
                 if (npc.IsVillager)
                 {
-                    string displayName = npc.displayName;
-                    if (NpcMap.ContainsKey(displayName))
+                    currentDistance = (Game1.player.Tile - npc.Tile).Length();
+                    if (currentDistance > closetDistance) continue;
+                    else
                     {
-                        NPC newNPC = npc;
-                        NPC oldNPC = NpcMap[displayName];
-                        Microsoft.Xna.Framework.Vector2 val = Microsoft.Xna.Framework.Vector2.Subtract(Game1.player.Tile, oldNPC.Tile);
-                        float oldDistance = ((Microsoft.Xna.Framework.Vector2)val).Length();
-                        val = Microsoft.Xna.Framework.Vector2.Subtract(Game1.player.Tile, newNPC.Tile);
-                        float newDistance = ((Microsoft.Xna.Framework.Vector2)val).Length();
-                        if (oldDistance < newDistance)
-                        {
-                            continue;
-                        }
-                        NpcMap.Remove(displayName);
+                        closetDistance = currentDistance;
+                        selectNpc = npc;
+                        foundOne = true;
                     }
-                    NpcMap.Add(displayName, npc);
                 }
             }
+
+            if ( selectNpc != null && foundOne ) { NpcMap.Add(selectNpc.displayName, selectNpc); }
         }
 
         private void Validate_Target()          //Get distance from NPC to Player
@@ -344,11 +359,11 @@ namespace MarketTown
         {
             foreach (NPC npc in Game1.currentLocation.characters)
             {
-                if (npc.isVillager() && npc.displayName != Target && npc.isGlowing)
+                if (npc.IsVillager && npc.displayName != Target && npc.isGlowing)
                 {
                     npc.stopGlowing();
                 }
-                else if (npc.isVillager() && npc.displayName == Target && !npc.isGlowing)
+                else if (npc.IsVillager && npc.displayName == Target && !npc.isGlowing)
                 {
                     npc.startGlowing(Color.Purple, false, 0.01f);
                 }
@@ -365,13 +380,13 @@ namespace MarketTown
                 {
                     int charCount = 0;
                     IEnumerable<string> splits = from w in message.Split(new char[1] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
-                                                 group w by (charCount += w.Length + 1) / 300 into g // Adjust the number to split longer chunks
+                                                 group w by (charCount += w.Length + 1) / 60 into g // Adjust the number to split longer chunks
                                                  select string.Join(" ", g);
 
                     foreach (string split in splits)
                     {
-                        float minDisplayTime = 1500f;
-                        float maxDisplayTime = 3000f;
+                        float minDisplayTime = 2000f;
+                        float maxDisplayTime = 3500f;
                         float percentOfMax = (float)split.Length / (float)60;
                         int duration = (int)(minDisplayTime + (maxDisplayTime - minDisplayTime) * percentOfMax);
                         npc.showTextAboveHead(split, default, default, duration, default);

@@ -9,13 +9,13 @@
 *************************************************/
 
 {
-  "Name": "Personal Indoor Farm",
+  "Name": "PIF - Personal Rooms",
   "Author": "DeLiXx",
-  "Version": "1.0.5",
-  "Description": "Framework for personal indoor farms",
+  "Version": "1.0.7-dev.1",
+  "Description": "Framework for personal rooms",
   "UniqueID": "DLX.PIF",
   "EntryDll": "PersonalIndoorFarm.dll",
-  "MinimumApiVersion": "3.14.1",
+  "MinimumApiVersion": "4.0.0",
   "UpdateKeys": [ "Nexus:20537" ],
   "Dependencies": [
     {

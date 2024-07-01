@@ -13,7 +13,7 @@ namespace DaLion.Professions.Framework.Patchers.Combat;
 #region using directives
 
 using System.Reflection;
-using DaLion.Professions.Framework.VirtualProperties;
+using DaLion.Core.Framework.VirtualProperties;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
 using StardewValley.Monsters;

@@ -1,8 +1,0 @@
-{
-  "Enabled": true,
-  "FireButton": "Insert",
-  "ScaleWithSkill": true,
-  "FireDamage": 100,
-  "FireDistance": 256,
-  "FireSound": "furnace"
-}

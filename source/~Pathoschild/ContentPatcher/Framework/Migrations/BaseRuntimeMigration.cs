@@ -8,7 +8,6 @@
 **
 *************************************************/
 
-using System;
 using System.Diagnostics.CodeAnalysis;
 using ContentPatcher.Framework.Conditions;
 using ContentPatcher.Framework.Migrations.Internal;
@@ -25,7 +24,7 @@ namespace ContentPatcher.Framework.Migrations
         *********/
         /// <summary>The migrators that convert older <see cref="PatchType.EditData"/> patches to a newer asset or format.</summary>
         /// <remarks>For each edit, the first migrator which applies or returns errors is used.</remarks>
-        protected IEditAssetMigrator[] RuntimeEditDataMigrators = Array.Empty<IEditAssetMigrator>();
+        protected IEditAssetMigrator[] RuntimeEditDataMigrators = [];
 
 
         /*********

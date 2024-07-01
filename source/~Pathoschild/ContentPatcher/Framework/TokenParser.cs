@@ -260,7 +260,7 @@ namespace ContentPatcher.Framework
         {
             proxyFields = null;
 
-            List<TokenizableProxy?> fields = new();
+            List<TokenizableProxy?> fields = [];
             switch (token)
             {
                 case JValue valueToken:

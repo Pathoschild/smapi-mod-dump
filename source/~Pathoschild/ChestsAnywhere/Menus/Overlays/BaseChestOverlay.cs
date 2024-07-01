@@ -132,7 +132,7 @@ namespace Pathoschild.Stardew.ChestsAnywhere.Menus.Overlays
         private ClickableTextureComponent EditExitButton;
 
         /// <summary>The textboxes managed by Chests Anywhere.</summary>
-        private IEnumerable<ValidatedTextBox> ManagedTextboxes => new[] { this.EditNameField, this.EditOrderField, this.EditCategoryField };
+        private IEnumerable<ValidatedTextBox> ManagedTextboxes => [this.EditNameField, this.EditOrderField, this.EditCategoryField];
 
 
         /*********
@@ -650,21 +650,19 @@ namespace Pathoschild.Stardew.ChestsAnywhere.Menus.Overlays
             this.EditHideChestField = new Checkbox();
             this.EditAutomateStorage = new SimpleDropdown<AutomateContainerPreference>(
                 this.Reflection,
-                options: new[]
-                {
+                options: [
                     new KeyValuePair<AutomateContainerPreference, string>(AutomateContainerPreference.Allow, I18n.Label_AutomateStore()),
                     new KeyValuePair<AutomateContainerPreference, string>(AutomateContainerPreference.Prefer, I18n.Label_AutomateStoreFirst()),
                     new KeyValuePair<AutomateContainerPreference, string>(AutomateContainerPreference.Disable, I18n.Label_AutomateStoreDisabled())
-                }
+                ]
             );
             this.EditAutomateFetch = new SimpleDropdown<AutomateContainerPreference>(
                 this.Reflection,
-                options: new[]
-                {
+                options: [
                     new KeyValuePair<AutomateContainerPreference, string>(AutomateContainerPreference.Allow, I18n.Label_AutomateTake()),
                     new KeyValuePair<AutomateContainerPreference, string>(AutomateContainerPreference.Prefer, I18n.Label_AutomateTakeFirst()),
                     new KeyValuePair<AutomateContainerPreference, string>(AutomateContainerPreference.Disable, I18n.Label_AutomateTakeDisabled())
-                }
+                ]
             );
             this.FillForm();
 

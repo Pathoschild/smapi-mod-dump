@@ -11,6 +11,8 @@
   "MenuTabOffset": 0,
   "EnableMenuTab": true,
   "EnableShopDisplay": true,
+  "EnableTooltip": true,
+  "ShowMenuHotkey": "H",
   "ValidCategories": [
     -2,
     -4,

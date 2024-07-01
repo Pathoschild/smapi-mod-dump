@@ -9,7 +9,6 @@
 *************************************************/
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using StardewArchipelago.Constants;
@@ -70,7 +69,7 @@ namespace StardewArchipelago.Items
 
         private string ChooseBabyName(Random random)
         {
-            var npcNames = Game1.content.Load<Dictionary<string, string>>("Data\\NPCDispositions").Keys.ToHashSet();
+            var npcNames = DataLoader.Characters(Game1.content).Keys.ToHashSet();
             foreach (var npc in Utility.getAllCharacters())
             {
                 npcNames.Add(npc.Name);
@@ -89,8 +88,7 @@ namespace StardewArchipelago.Items
                         babyName += " ";
                     }
                 }
-            }
-            while (npcNames.Contains(babyName));
+            } while (npcNames.Contains(babyName));
 
             return babyName;
         }

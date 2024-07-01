@@ -1,6 +1,8 @@
 {
     "AutoSwingWeapon.name": "自动挥舞武器",
     "InstantClubsSpecialAttack.name": "棍棒武器瞬发锤地",
-    "InstantClubsSpecialAttack.tooltip": "按住右键/动作键，使棍棒武器连续锤地",
-    "AlwaysFaceTheCursor.name": "总是面向光标方向"
+    "InstantClubsSpecialAttack.tooltip": "按住右键/动作键，使棍棒武器连续锤地。",
+    "AlwaysFaceTheCursor.name": "总是面向光标方向",
+    "DisableChangeFacingDirection.name": "禁用改变面朝方向功能",
+    "DisableChangeFacingDirection.tooltip": "如果禁用， \"总是面向光标方向\" 则不会有效。"
 }

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <AssemblyName>BiggerBackpack</AssemblyName>
     <RootNamespace>BiggerBackpack</RootNamespace>
-    <Version>7.1</Version>
+    <Version>7.3</Version>
     <TargetFramework>net6.0</TargetFramework>
     <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
     <CheckEolTargetFramework>false</CheckEolTargetFramework>
@@ -17,13 +17,7 @@
   <ItemGroup>
     <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
     <PackageReference Include="Pathoschild.Stardew.ModTranslationClassBuilder" Version="2.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\StardewHack\StardewHack.csproj" Private="false" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="README.md" CopyToOutputDirectory="PreserveNewest" />
     <None Update="backpack.png" CopyToOutputDirectory="PreserveNewest" />
     <None Update="JunimoNote.png" CopyToOutputDirectory="PreserveNewest" />

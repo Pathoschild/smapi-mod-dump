@@ -124,11 +124,11 @@ namespace ContentPatcher.Framework.Patches
             )
         {
             // set fields
-            this.Records = records?.ToArray() ?? Array.Empty<EditDataPatchRecord>();
-            this.Fields = fields?.ToArray() ?? Array.Empty<EditDataPatchField>();
-            this.MoveRecords = moveRecords?.ToArray() ?? Array.Empty<EditDataPatchMoveRecord>();
-            this.TextOperations = textOperations?.ToArray() ?? Array.Empty<ITextOperation>();
-            this.TargetField = targetField?.ToArray() ?? Array.Empty<IManagedTokenString>();
+            this.Records = records?.ToArray() ?? [];
+            this.Fields = fields?.ToArray() ?? [];
+            this.MoveRecords = moveRecords?.ToArray() ?? [];
+            this.TextOperations = textOperations?.ToArray() ?? [];
+            this.TargetField = targetField?.ToArray() ?? [];
             this.Monitor = monitor;
             this.TryParseFields = tryParseFields;
 
@@ -158,9 +158,9 @@ namespace ContentPatcher.Framework.Patches
                 base.UpdateContext(context);
 
                 // reload data
-                this.Records = Array.Empty<EditDataPatchRecord>();
-                this.Fields = Array.Empty<EditDataPatchField>();
-                this.MoveRecords = Array.Empty<EditDataPatchMoveRecord>();
+                this.Records = [];
+                this.Fields = [];
+                this.MoveRecords = [];
                 if (this.IsReady)
                 {
                     if (this.TryLoadFile(this.RawFromAsset, context, out List<EditDataPatchRecord>? records, out List<EditDataPatchField>? fields, out List<EditDataPatchMoveRecord>? moveEntries, out string? error))

@@ -1,0 +1,10 @@
+{
+  "SeasonAwarePlanting": true,
+  "RestrictKrobusStock": true,
+  "WaterOnPlanting": true,
+  "EnableForGardenPots": true,
+  "TrellisPattern": "Rows",
+  "IntakeChestSize": 9,
+  "PlantOnChestClose": false,
+  "InvisibleAttachments": false
+}

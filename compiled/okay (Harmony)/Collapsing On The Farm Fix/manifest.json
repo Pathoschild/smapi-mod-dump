@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Collapsing On The Farm Fix (Beta)",
   "Author": "monsoonsheep",
-  "Version": "0.2.3",
+  "Version": "0.2.4",
   "Description": "When you pass out on your farm, you won't get sent a mail saying someone found you. It's your property! If you're married, your spouse will take care of you.",
   "UniqueID": "monsoonsheep.CollapseOnFarmFix",
   "EntryDll": "CollapseOnFarmFix.dll",

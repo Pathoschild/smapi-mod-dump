@@ -363,6 +363,7 @@ SightRange | An integer | The tile distance (in a square pattern) at which this 
 SeesPlayersAtSpawn | true, **false** | If true, the monster will always be aware of players, regardless of distance. | Slimes with this setting will have red eyes and behave aggressively.
 RangedAttacks | **true**, false | If false, the monster will not use any ranged attacks. | This setting may not affect new monster types added by other mods.
 InstantKillImmunity | true, **false** | If true, the monster will be immune to certain effects that instantly defeat monsters. | Currently, this prevents the monster being eaten by the Frog Egg trinket.
+StunImmunity | true, **false** | If true, the monster will be immune to certain effects that stun monsters. | Currently, this prevents the monster being frozen by the Ice Rod trinket.
 FacingDirection | "up", "down", "left", "right" | The direction the monster is facing when it spawns. | Spikers will attack in the chosen direction (or a single random direction if this setting is not used).
 Segments | An integer (minimum 0) | The number of extra body parts this monster will have (if applicable). | Slimes will have this number of extra slimes "stacked" on top of them. Royal Serpents will have this number of extra tail segments.
 Sprite | The "address" of a loaded asset | A loaded spritesheet to replace this monster's default sprite. | These can be default assests in Stardew or those loaded by a mod like Content Patcher. Examples: `"Characters/Monsters/Skeleton"` or `"Animals/horse"`

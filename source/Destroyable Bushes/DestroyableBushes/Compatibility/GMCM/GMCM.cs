@@ -90,6 +90,15 @@ namespace DestroyableBushes
                     }
                 );
 
+                api.AddNumberOption
+                (
+                    mod: ModManifest,
+                    getValue: () => Config.AxeDamageMultiplier,
+                    setValue: (float val) => Config.AxeDamageMultiplier = val,
+                    name: () => Helper.Translation.Get("AxeDamageMultiplier.Name"),
+                    tooltip: () => Helper.Translation.Get("AxeDamageMultiplier.Desc")
+                );
+
                 api.AddTextOption
                 (
                     mod: ModManifest,

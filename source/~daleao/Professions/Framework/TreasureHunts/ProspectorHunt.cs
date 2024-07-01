@@ -466,7 +466,6 @@ internal sealed class ProspectorHunt : TreasureHunt
         }
         else if (this.Random.NextBool(0.25 * luckModifier))
         {
-            // !!! COMBAT INTERVETION NEEDED
             treasuresAndQuantities.AddOrUpdate(
                 QualifiedObjectIds.DragonTooth,
                 1,

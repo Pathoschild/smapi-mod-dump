@@ -10,49 +10,51 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using StardewArchipelago.Archipelago;
 using StardewArchipelago.Items.Mail;
-using StardewArchipelago.Constants.Modded;
+using StardewArchipelago.Items.Unlocks.Modded;
+using StardewArchipelago.Items.Unlocks.Vanilla;
+using StardewArchipelago.Locations;
 
 namespace StardewArchipelago.Items.Unlocks
 {
     public class UnlockManager
     {
         private List<IUnlockManager> _specificUnlockManagers;
+        private Dictionary<string, Func<ReceivedItem, LetterAttachment>> _unlockables;
 
-        public UnlockManager(ArchipelagoClient archipelago)
+        public UnlockManager(ArchipelagoClient archipelago, LocationChecker locationChecker)
         {
+            _unlockables = new Dictionary<string, Func<ReceivedItem, LetterAttachment>>();
             _specificUnlockManagers = new List<IUnlockManager>();
-            _specificUnlockManagers.Add(new VanillaUnlockManager(archipelago));
-            if (archipelago.SlotData.Mods.HasModdedSkill())
+            _specificUnlockManagers.Add(new VanillaUnlockManager(archipelago, locationChecker));
+
+            if (archipelago.SlotData.Mods.IsModded)
             {
-                _specificUnlockManagers.Add(new ModSkillUnlockManager());
-                
+                _specificUnlockManagers.Add(new ModUnlockManager(archipelago));
             }
-            if (archipelago.SlotData.Mods.HasMod(ModNames.MAGIC))
+
+            RegisterUnlocks();
+        }
+
+        private void RegisterUnlocks()
+        {
+            foreach (var specificUnlockManager in _specificUnlockManagers)
             {
-                _specificUnlockManagers.Add(new MagicUnlockManager());
-            }
-            if (archipelago.SlotData.Mods.HasMod(ModNames.SVE))
-            {
-                _specificUnlockManagers.Add(new SVEUnlockManager());
+                specificUnlockManager.RegisterUnlocks(_unlockables);
             }
         }
 
         public bool IsUnlock(string unlockName)
         {
-            return _specificUnlockManagers.Any(specificUnlockManager => specificUnlockManager.IsUnlock(unlockName));
+            return _unlockables.ContainsKey(unlockName);
         }
 
         public LetterAttachment PerformUnlockAsLetter(ReceivedItem unlock)
         {
-            foreach (var specificUnlockManager in _specificUnlockManagers)
+            if (IsUnlock(unlock.ItemName))
             {
-                if (specificUnlockManager.IsUnlock(unlock.ItemName))
-                {
-                    return specificUnlockManager.PerformUnlockAsLetter(unlock);
-                }
+                return _unlockables[unlock.ItemName](unlock);
             }
 
             throw new ArgumentException($"Could not perform unlock '{unlock.ItemName}'");

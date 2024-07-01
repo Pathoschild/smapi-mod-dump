@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -17,22 +18,22 @@ using StardewValley.Menus;
 
 namespace PersonalAnvil
 {
-    public sealed class WorkbenchGeodeMenu : MenuWithInventory
+    public class WorkbenchGeodeMenu : MenuWithInventory
     {
         public const int region_geodeSpot = 998;
-        private readonly AnimatedSprite clint;
-        private readonly IModHelper content;
-        private readonly List<TemporaryAnimatedSprite> fluffSprites = new();
+        public ClickableComponent geodeSpot;
+        private AnimatedSprite clint;
+        private TemporaryAnimatedSprite geodeDestructionAnimation;
+        private TemporaryAnimatedSprite sparkle;
+        public int geodeAnimationTimer;
+        private int yPositionOfGem;
         private int alertTimer;
         private float delayBeforeShowArtifactTimer;
-        public int geodeAnimationTimer;
-        private TemporaryAnimatedSprite geodeDestructionAnimation;
-        public ClickableComponent geodeSpot;
         private Item geodeTreasure;
         private Item geodeTreasureOverride;
-        private TemporaryAnimatedSprite sparkle;
         private bool waitingForServerResponse;
-        private int yPositionOfGem;
+        private readonly IModHelper content;
+        private List<TemporaryAnimatedSprite> fluffSprites = new();
 
         public WorkbenchGeodeMenu(IModHelper content) : base(null, true, true, 12, 132)
         {
@@ -42,8 +43,9 @@ namespace PersonalAnvil
             inventory.highlightMethod = highlightGeodes;
             geodeSpot = new ClickableComponent(
                 new Rectangle(xPositionOnScreen + spaceToClearSideBorder + borderWidth / 2,
-                    yPositionOnScreen + spaceToClearTopBorder + 4, 560, 308), "") { myID = 998, downNeighborID = 0 };
-            clint = new AnimatedSprite(content.ModContent.GetInternalAssetName("assets/Empty.png").ToString(), 8, 32, 48);
+                    yPositionOnScreen + spaceToClearTopBorder + 4, 560, 308), "")
+            { myID = 998, downNeighborID = 0 };
+            clint = new AnimatedSprite(content.ModContent.GetInternalAssetName("assets/empty.png").ToString(), 8, 32, 48);
             if (inventory.inventory != null && inventory.inventory.Count >= 12)
                 for (var index = 0; index < 12; ++index)
                     if (inventory.inventory[index] != null)
@@ -51,9 +53,11 @@ namespace PersonalAnvil
 
             if (trashCan != null) trashCan.myID = 106;
             if (okButton != null) okButton.leftNeighborID = 11;
-            if (!Game1.options.SnappyMenus) return;
-            populateClickableComponentList();
-            snapToDefaultClickableComponent();
+            if (Game1.options.SnappyMenus)
+            {
+                populateClickableComponentList();
+                snapToDefaultClickableComponent();
+            }
         }
 
         public override void snapToDefaultClickableComponent()
@@ -102,18 +106,18 @@ namespace PersonalAnvil
             base.receiveLeftClick(x, y);
             if (!geodeSpot.containsPoint(x, y))
                 return;
-            if (heldItem == null || !Utility.IsGeode(heldItem) || Game1.player.Money < 25 ||
+            if (heldItem == null || !Utility.IsGeode(heldItem) ||
                 geodeAnimationTimer > 0) return;
             if (Game1.player.freeSpotsInInventory() > 1 ||
                 (Game1.player.freeSpotsInInventory() == 1 && heldItem.Stack == 1))
             {
-                if (heldItem.ParentSheetIndex == 791 && !Game1.netWorldState.Value.GoldenCoconutCracked.Value)
+                if (heldItem.QualifiedItemId == "(O)791" && !Game1.netWorldState.Value.GoldenCoconutCracked)
                 {
                     waitingForServerResponse = true;
                     Game1.player.team.goldenCoconutMutex.RequestLock(() =>
                     {
                         waitingForServerResponse = false;
-                        geodeTreasureOverride = new Object(73, 1);
+                        geodeTreasureOverride = ItemRegistry.Create("(O)73");
                         startGeodeCrack();
                     }, () =>
                     {
@@ -165,27 +169,30 @@ namespace PersonalAnvil
                 alertTimer -= time.ElapsedGameTime.Milliseconds;
             if (geodeAnimationTimer <= 0)
                 return;
-            Game1.changeMusicTrack("none");
+            Game1.MusicDuckTimer = 1500f;
             geodeAnimationTimer -= time.ElapsedGameTime.Milliseconds;
             if (geodeAnimationTimer <= 0)
             {
                 geodeDestructionAnimation = null;
                 geodeSpot.item = null;
-                if (geodeTreasure != null && Utility.IsNormalObjectAtParentSheetIndex(geodeTreasure, 73))
-                    Game1.netWorldState.Value.GoldenCoconutCracked.Value = true;
+                if (geodeTreasure?.QualifiedItemId == "(O)73")
+                {
+                    Game1.netWorldState.Value.GoldenCoconutCracked = true;
+                }
                 Game1.player.addItemToInventoryBool(geodeTreasure);
                 geodeTreasure = null;
                 yPositionOfGem = 0;
                 fluffSprites.Clear();
-                delayBeforeShowArtifactTimer = 0.0f;
+                delayBeforeShowArtifactTimer = 0f;
+                return;
             }
             else
             {
-                var currentFrame = clint.currentFrame;
+                int currentFrame = clint.currentFrame;
                 clint.animateOnce(time);
                 if (clint.currentFrame == 11 && currentFrame != 11)
                 {
-                    if (geodeSpot.item != null && geodeSpot.item.ParentSheetIndex == 275)
+                    if (geodeSpot.item?.QualifiedItemId == "(O)275" || geodeSpot.item?.QualifiedItemId == "(O)MysteryBox" || geodeSpot.item?.QualifiedItemId == "(O)GoldenMysteryBox")
                     {
                         Game1.playSound("hammer");
                         Game1.playSound("woodWhack");
@@ -197,25 +204,27 @@ namespace PersonalAnvil
                     }
 
                     ++Game1.stats.GeodesCracked;
-                    var y = 448;
+                    if (geodeSpot.item?.QualifiedItemId == "(O)MysteryBox" || geodeSpot.item?.QualifiedItemId == "(O)GoldenMysteryBox")
+                    {
+                        Game1.stats.Increment("MysteryBoxesOpened");
+                    }
+                    var geodeDestructionYOffset = 448;
                     if (geodeSpot.item != null)
                     {
-                        var parentSheetIndex = (geodeSpot.item as Object)?.ParentSheetIndex;
-                        if (parentSheetIndex != null)
-                            switch ((int)parentSheetIndex)
+                        string qualifiedItemId = geodeSpot.item.QualifiedItemId;
+                        if (!(qualifiedItemId == "(O)536"))
+                        {
+                            if (qualifiedItemId == "(O)537")
                             {
-                                case 536:
-                                    y += 64;
-                                    break;
-                                case 537:
-                                    y += 128;
-                                    break;
+                                geodeDestructionYOffset += 128;
                             }
-
-                        geodeDestructionAnimation = new TemporaryAnimatedSprite("TileSheets\\animations",
-                            new Rectangle(0, y, 64, 64), 100f, 8, 0,
-                            new Vector2(geodeSpot.bounds.X + 392 - 32, geodeSpot.bounds.Y + 192 - 32), false, false);
-                        if (geodeSpot.item != null && geodeSpot.item.ParentSheetIndex == 275)
+                        }
+                        else
+                        {
+                            geodeDestructionYOffset += 64;
+                        }
+                        geodeDestructionAnimation = new TemporaryAnimatedSprite("TileSheets\\animations", new Rectangle(0, geodeDestructionYOffset, 64, 64), 100f, 8, 0, new Vector2(geodeSpot.bounds.X + 392 - 32, geodeSpot.bounds.Y + 192 - 32), flicker: false, flipped: false);
+                        if (geodeSpot.item?.QualifiedItemId == "(O)275")
                         {
                             geodeDestructionAnimation = new TemporaryAnimatedSprite
                             {
@@ -226,50 +235,90 @@ namespace PersonalAnvil
                                 position = new Vector2(geodeSpot.bounds.X + 380 - 32, geodeSpot.bounds.Y + 192 - 32),
                                 holdLastFrame = true,
                                 interval = 100f,
-                                id = 777f,
+                                id = 777,
                                 scale = 4f
                             };
-                            for (var index = 0; index < 6; ++index)
+                            for (int j = 0; j < 6; j++)
                             {
-                                fluffSprites.Add(new TemporaryAnimatedSprite("LooseSprites\\Cursors",
-                                    new Rectangle(372, 1956, 10, 10),
-                                    new Vector2(geodeSpot.bounds.X + 392 - 32 + Game1.random.Next(21),
-                                        geodeSpot.bounds.Y + 192 - 16), false, 1f / 500f,
-                                    new Color(byte.MaxValue, 222, 198))
+                                fluffSprites.Add(new TemporaryAnimatedSprite("LooseSprites\\Cursors", new Rectangle(372, 1956, 10, 10), new Vector2(geodeSpot.bounds.X + 392 - 32 + Game1.random.Next(21), geodeSpot.bounds.Y + 192 - 16), flipped: false, 0.002f, new Color(255, 222, 198))
                                 {
                                     alphaFade = 0.02f,
-                                    motion = new Vector2(Game1.random.Next(-20, 21) / 10f,
-                                        Game1.random.Next(5, 20) / 10f),
+                                    motion = new Vector2((float)Game1.random.Next(-20, 21) / 10f, (float)Game1.random.Next(5, 20) / 10f),
                                     interval = 99999f,
                                     layerDepth = 0.9f,
                                     scale = 3f,
                                     scaleChange = 0.01f,
-                                    rotationChange = (float)(Game1.random.Next(-5, 6) * 3.1415927410125732 / 256.0),
-                                    delayBeforeAnimationStart = index * 20
+                                    rotationChange = (float)Game1.random.Next(-5, 6) * (float)Math.PI / 256f,
+                                    delayBeforeAnimationStart = j * 20
                                 });
                                 fluffSprites.Add(new TemporaryAnimatedSprite
                                 {
-                                    texture = Game1.temporaryContent.Load<Texture2D>(
-                                        "LooseSprites//temporary_sprites_1"),
+                                    texture = Game1.temporaryContent.Load<Texture2D>("LooseSprites//temporary_sprites_1"),
                                     sourceRect = new Rectangle(499, 132, 5, 5),
                                     sourceRectStartingPos = new Vector2(499f, 132f),
-                                    motion = new Vector2(Game1.random.Next(-30, 31) / 10f, Game1.random.Next(-7, -4)),
-                                    acceleration = new Vector2(0.0f, 0.25f),
+                                    motion = new Vector2((float)Game1.random.Next(-30, 31) / 10f, Game1.random.Next(-7, -4)),
+                                    acceleration = new Vector2(0f, 0.25f),
                                     totalNumberOfLoops = 1,
                                     interval = 1000f,
                                     alphaFade = 0.015f,
                                     animationLength = 1,
                                     layerDepth = 1f,
                                     scale = 4f,
-                                    rotationChange = (float)(Game1.random.Next(-5, 6) * 3.1415927410125732 / 256.0),
-                                    delayBeforeAnimationStart = index * 10,
-                                    position = new Vector2(geodeSpot.bounds.X + 392 - 32 + Game1.random.Next(21),
-                                        geodeSpot.bounds.Y + 192 - 16)
+                                    rotationChange = (float)Game1.random.Next(-5, 6) * (float)Math.PI / 256f,
+                                    delayBeforeAnimationStart = j * 10,
+                                    position = new Vector2(geodeSpot.bounds.X + 392 - 32 + Game1.random.Next(21), geodeSpot.bounds.Y + 192 - 16)
                                 });
                                 delayBeforeShowArtifactTimer = 500f;
                             }
                         }
-
+                        else if (geodeSpot.item?.QualifiedItemId == "(O)MysteryBox" || geodeSpot.item?.QualifiedItemId == "(O)GoldenMysteryBox")
+                        {
+                            geodeDestructionAnimation = new TemporaryAnimatedSprite
+                            {
+                                texture = Game1.temporaryContent.Load<Texture2D>("LooseSprites\\Cursors_1_6"),
+                                sourceRect = new Rectangle((geodeSpot.item?.QualifiedItemId == "(O)GoldenMysteryBox") ? 256 : 0, 27, 24, 24),
+                                sourceRectStartingPos = new Vector2((geodeSpot.item?.QualifiedItemId == "(O)GoldenMysteryBox") ? 256 : 0, 27f),
+                                animationLength = 8,
+                                position = new Vector2(geodeSpot.bounds.X + 380 - 48, geodeSpot.bounds.Y + 192 - 48),
+                                holdLastFrame = true,
+                                interval = 100f,
+                                id = 777,
+                                scale = 4f
+                            };
+                            for (int i = 0; i < 6; i++)
+                            {
+                                fluffSprites.Add(new TemporaryAnimatedSprite("LooseSprites\\Cursors", new Rectangle(372, 1956, 10, 10), new Vector2(geodeSpot.bounds.X + 392 - 48 + Game1.random.Next(32), geodeSpot.bounds.Y + 192 - 24), flipped: false, 0.002f, new Color(255, 222, 198))
+                                {
+                                    alphaFade = 0.02f,
+                                    motion = new Vector2((float)Game1.random.Next(-20, 21) / 10f, (float)Game1.random.Next(5, 20) / 10f),
+                                    interval = 99999f,
+                                    layerDepth = 0.9f,
+                                    scale = 3f,
+                                    scaleChange = 0.01f,
+                                    rotationChange = (float)Game1.random.Next(-5, 6) * (float)Math.PI / 256f,
+                                    delayBeforeAnimationStart = i * 20
+                                });
+                                int which = Game1.random.Next(3);
+                                fluffSprites.Add(new TemporaryAnimatedSprite
+                                {
+                                    texture = Game1.temporaryContent.Load<Texture2D>("LooseSprites\\Cursors_1_6"),
+                                    sourceRect = new Rectangle(((geodeSpot.item?.QualifiedItemId == "(O)GoldenMysteryBox") ? 15 : 0) + which * 5, 52, 5, 5),
+                                    sourceRectStartingPos = new Vector2(which * 5, 75f),
+                                    motion = new Vector2((float)Game1.random.Next(-30, 31) / 10f, Game1.random.Next(-7, -4)),
+                                    acceleration = new Vector2(0f, 0.25f),
+                                    totalNumberOfLoops = 1,
+                                    interval = 1000f,
+                                    alphaFade = 0.015f,
+                                    animationLength = 1,
+                                    layerDepth = 1f,
+                                    scale = 4f,
+                                    rotationChange = (float)Game1.random.Next(-5, 6) * (float)Math.PI / 256f,
+                                    delayBeforeAnimationStart = i * 10,
+                                    position = new Vector2(geodeSpot.bounds.X + 392 - 48 + Game1.random.Next(32), geodeSpot.bounds.Y + 192 - 24)
+                                });
+                                delayBeforeShowArtifactTimer = 500f;
+                            }
+                        }
                         if (geodeTreasureOverride != null)
                         {
                             geodeTreasure = geodeTreasureOverride;
@@ -279,11 +328,10 @@ namespace PersonalAnvil
                         {
                             geodeTreasure = Utility.getTreasureFromGeode(geodeSpot.item);
                         }
-
-                        if (geodeSpot.item.ParentSheetIndex != 275 &&
-                            (!(geodeTreasure is Object) || !((Object)geodeTreasure).Type.Contains("Mineral")) &&
-                            geodeTreasure is Object && ((Object)geodeTreasure).Type.Contains("Arch") &&
-                            !Game1.player.hasOrWillReceiveMail("artifactFound")) geodeTreasure = new Object(390, 5);
+                        if (!(geodeSpot.item.QualifiedItemId == "(O)275") && (!(geodeTreasure is StardewValley.Object mineral) || !(mineral.Type == "Minerals")) && geodeTreasure is StardewValley.Object artifact && artifact.Type == "Arch" && !Game1.player.hasOrWillReceiveMail("artifactFound"))
+                        {
+                            geodeTreasure = ItemRegistry.Create("(O)390", 5);
+                        }
                     }
                 }
 
@@ -294,10 +342,10 @@ namespace PersonalAnvil
                       geodeDestructionAnimation.currentParentTileIndex < 5)))
                 {
                     geodeDestructionAnimation.update(time);
-                    if (delayBeforeShowArtifactTimer > 0.0)
+                    if (delayBeforeShowArtifactTimer > 0f)
                     {
                         delayBeforeShowArtifactTimer -= (float)time.ElapsedGameTime.TotalMilliseconds;
-                        if (delayBeforeShowArtifactTimer <= 0.0)
+                        if (delayBeforeShowArtifactTimer <= 0f)
                         {
                             fluffSprites.Add(geodeDestructionAnimation);
                             fluffSprites.Reverse();
@@ -305,8 +353,8 @@ namespace PersonalAnvil
                             {
                                 interval = 100f,
                                 animationLength = 6,
-                                alpha = 1f / 1000f,
-                                id = 777f
+                                alpha = 0.001f,
+                                id = 777
                             };
                         }
                     }
@@ -315,23 +363,17 @@ namespace PersonalAnvil
                         if (geodeDestructionAnimation.currentParentTileIndex < 3)
                             --yPositionOfGem;
                         --yPositionOfGem;
-                        if ((geodeDestructionAnimation.currentParentTileIndex == 7 ||
-                             (geodeDestructionAnimation.id == 777.0 &&
-                              geodeDestructionAnimation.currentParentTileIndex == 5)) && (!(geodeTreasure is Object) ||
-                                ((Object)geodeTreasure).Price > 75))
+                        if (geodeDestructionAnimation.currentParentTileIndex == 7 || (geodeDestructionAnimation.id == 777 && geodeDestructionAnimation.currentParentTileIndex == 5))
                         {
-                            sparkle = new TemporaryAnimatedSprite("TileSheets\\animations",
-                                new Rectangle(0, 640, 64, 64), 100f, 8, 0,
-                                new Vector2(geodeSpot.bounds.X + 392 - 32,
-                                    geodeSpot.bounds.Y + 192 + yPositionOfGem - 32), false, false);
-                            Game1.playSound("discoverMineral");
-                        }
-                        else if ((geodeDestructionAnimation.currentParentTileIndex == 7 ||
-                                  (geodeDestructionAnimation.id == 777.0 &&
-                                   geodeDestructionAnimation.currentParentTileIndex == 5)) && geodeTreasure is Object &&
-                                 ((Object)geodeTreasure).Price <= 75)
-                        {
-                            Game1.playSound("newArtifact");
+                            if (!(geodeTreasure is StardewValley.Object treasure) || treasure.Price > 75 || geodeSpot.item?.QualifiedItemId == "(O)MysteryBox" || geodeSpot.item?.QualifiedItemId == "(O)GoldenMysteryBox")
+                            {
+                                sparkle = new TemporaryAnimatedSprite("TileSheets\\animations", new Rectangle(0, 640, 64, 64), 100f, 8, 0, new Vector2(geodeSpot.bounds.X + ((geodeSpot.item.itemId.Value == "MysteryBox") ? 94 : 98) * 4 - 32, geodeSpot.bounds.Y + 192 + yPositionOfGem - 32), flicker: false, flipped: false);
+                                Game1.playSound("discoverMineral");
+                            }
+                            else
+                            {
+                                Game1.playSound("newArtifact");
+                            }
                         }
                     }
                 }
@@ -345,16 +387,9 @@ namespace PersonalAnvil
         public override void gameWindowSizeChanged(Rectangle oldBounds, Rectangle newBounds)
         {
             base.gameWindowSizeChanged(oldBounds, newBounds);
-            geodeSpot = new ClickableComponent(
-                new Rectangle(
-                    xPositionOnScreen + spaceToClearSideBorder + borderWidth / 2,
-                    yPositionOnScreen + spaceToClearTopBorder + 4, 560, 308), "Anvil");
-            var yPosition = yPositionOnScreen + spaceToClearTopBorder + borderWidth +
-                192 - 16 + 128 + 4;
-            inventory =
-                new InventoryMenu(
-                    xPositionOnScreen + spaceToClearSideBorder + borderWidth / 2 +
-                    12, yPosition, false, highlightMethod: inventory.highlightMethod);
+            geodeSpot = new ClickableComponent(new Rectangle(base.xPositionOnScreen + IClickableMenu.spaceToClearSideBorder + IClickableMenu.borderWidth / 2, base.yPositionOnScreen + IClickableMenu.spaceToClearTopBorder + 4, 560, 308), "Anvil");
+            int yPositionForInventory = base.yPositionOnScreen + IClickableMenu.spaceToClearTopBorder + IClickableMenu.borderWidth + 192 - 16 + 128 + 4;
+            base.inventory = new InventoryMenu(base.xPositionOnScreen + IClickableMenu.spaceToClearSideBorder + IClickableMenu.borderWidth / 2 + 12, yPositionForInventory, playerInventory: false, null, base.inventory.highlightMethod);
         }
 
         public override void draw(SpriteBatch b)
@@ -368,26 +403,32 @@ namespace PersonalAnvil
             {
                 if (geodeDestructionAnimation == null)
                 {
-                    var flag = geodeSpot.item.ParentSheetIndex == 275;
-                    geodeSpot.item.drawInMenu(b,
-                        new Vector2(geodeSpot.bounds.X + 360 + (flag ? -8 : 0),
-                            geodeSpot.bounds.Y + 160 + (flag ? 8 : 0)), 1f);
+                    Vector2 offset = Vector2.Zero;
+                    if (geodeSpot.item.QualifiedItemId == "(O)275")
+                    {
+                        offset = new Vector2(-2f, 2f);
+                    }
+                    else if (geodeSpot.item.QualifiedItemId == "(O)MysteryBox" || geodeSpot.item?.QualifiedItemId == "(O)GoldenMysteryBox")
+                    {
+                        offset = new Vector2(-7f, 4f);
+                    }
+                    _ = geodeSpot.item.QualifiedItemId == "(O)275";
+                    geodeSpot.item.drawInMenu(b, new Vector2(geodeSpot.bounds.X + 360, geodeSpot.bounds.Y + 160) + offset, 1f);
                 }
                 else
                 {
-                    geodeDestructionAnimation.draw(b, true);
+                    geodeDestructionAnimation.draw(b, localPosition: true);
                 }
-
-                foreach (var fluffSprite in fluffSprites)
-                    fluffSprite.draw(b, true);
-                if (geodeTreasure != null && delayBeforeShowArtifactTimer <= 0.0)
-                    geodeTreasure.drawInMenu(b,
-                        new Vector2(geodeSpot.bounds.X + 360,
-                            geodeSpot.bounds.Y + 160 + yPositionOfGem), 1f);
-                if (sparkle != null)
-                    sparkle.draw(b, true);
+                foreach (TemporaryAnimatedSprite fluffSprite in fluffSprites)
+                {
+                    fluffSprite.draw(b, localPosition: true);
+                }
+                if (geodeTreasure != null && delayBeforeShowArtifactTimer <= 0f)
+                {
+                    geodeTreasure.drawInMenu(b, new Vector2(geodeSpot.bounds.X + (geodeSpot.item.QualifiedItemId.Contains("MysteryBox") ? 86 : 90) * 4, geodeSpot.bounds.Y + 160 + yPositionOfGem), 1f);
+                }
+                sparkle?.draw(b, localPosition: true);
             }
-
             clint.draw(b,
                 new Vector2(geodeSpot.bounds.X + 384, geodeSpot.bounds.Y + 64), 0.877f);
             if (!hoverText.Equals(""))

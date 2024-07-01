@@ -97,6 +97,11 @@ namespace ItemBags.Persistence
             Object.VegetableCategory, Object.FruitsCategory, Object.flowersCategory, Object.GreensCategory
         }.AsReadOnly();
 
+        internal static void LogInvalidObjectData(string Id, ObjectData Data) => 
+            ItemBagsMod.Logger.LogOnce($"{Id} does not contain a valid Name nor DisplayName in Game1.objectData. " +
+                $"If this item belongs to a modded bag, it will be skipped when initializing the bag. " +
+                $"(Name={Data.Name ?? "null"}, DisplayName={Data.DisplayName ?? "null"})", LogLevel.Warn);
+
         /// <summary>Must be executed after <see cref="IJsonAssetsAPI.IdsFixed"/> event has fired.<para/>
         /// Returns all BigCraftable and all Objects that belong to the given mod manifest UniqueID. 
         /// Does not include other types of items such as Hats or Weapons.</summary>
@@ -118,7 +123,9 @@ namespace ItemBags.Persistence
                         foreach (System.Collections.Generic.KeyValuePair<string, ObjectData> KVP in Game1.objectData)
                         {
                             string ObjectName = KVP.Value.DisplayName ?? KVP.Value.Name;
-                            if (!AllObjectIds.ContainsKey(ObjectName))
+                            if (string.IsNullOrEmpty(ObjectName))
+                                LogInvalidObjectData(KVP.Key, KVP.Value);
+                            else if (!AllObjectIds.ContainsKey(ObjectName))
                                 AllObjectIds.Add(ObjectName, KVP.Key);
                         }
 
@@ -270,7 +277,9 @@ namespace ItemBags.Persistence
                     foreach (System.Collections.Generic.KeyValuePair<string, ObjectData> KVP in Game1.objectData)
                     {
                         string ObjectName = KVP.Value.DisplayName ?? KVP.Value.Name;
-                        if (!AllObjectIds.ContainsKey(ObjectName))
+                        if (string.IsNullOrEmpty(ObjectName))
+                            LogInvalidObjectData(KVP.Key, KVP.Value);
+                        else if (!AllObjectIds.ContainsKey(ObjectName))
                             AllObjectIds.Add(ObjectName, KVP.Key);
                     }
 
@@ -420,7 +429,9 @@ namespace ItemBags.Persistence
                 foreach (System.Collections.Generic.KeyValuePair<string, ObjectData> KVP in Game1.objectData)
                 {
                     string ObjectName = KVP.Value.DisplayName ?? KVP.Value.Name;
-                    if (!AllObjectIds.ContainsKey(ObjectName))
+                    if (string.IsNullOrEmpty(ObjectName))
+                        ModdedBag.LogInvalidObjectData(KVP.Key, KVP.Value);
+                    else if (!AllObjectIds.ContainsKey(ObjectName))
                         AllObjectIds.Add(ObjectName, KVP.Key);
                 }
 

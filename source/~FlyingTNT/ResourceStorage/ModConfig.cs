@@ -9,7 +9,6 @@
 *************************************************/
 
 using StardewModdingAPI;
-using StardewModdingAPI.Utilities;
 
 namespace ResourceStorage
 {
@@ -28,5 +27,9 @@ namespace ResourceStorage
         public SButton ResourcesKey { get; set; } = SButton.R;
         public int IconOffsetX { get; set; } = 0;
         public int IconOffsetY { get; set; } = 0;
+        public int SortButtonOffsetX { get; set; } = 0;
+        public int SortButtonOffsetY { get; set; } = 0;
+        public int SearchBarOffsetX { get; set; } = 0;
+        public int SearchBarOffsetY { get; set; } = 0;
     }
 }

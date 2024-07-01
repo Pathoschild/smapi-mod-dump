@@ -12,12 +12,35 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using System;
-using System.Collections.Generic;
 
 namespace MobilePhone
 {
     public class MobilePhoneApi
     {
+        public event EventHandler<StardewModdingAPI.Events.RenderedWorldEventArgs> OnBeforeRenderScreen;
+        public event EventHandler<StardewModdingAPI.Events.RenderedWorldEventArgs> OnAfterRenderScreen;
+
+        public MobilePhoneApi()
+        {
+            PhoneVisuals.OnBeforeRenderScreen += CallBeforeRenderEvent;
+            PhoneVisuals.OnAfterRenderScreen += CallAfterRenderEvent;
+        }
+
+        ~MobilePhoneApi()
+        {
+            PhoneVisuals.OnBeforeRenderScreen -= CallBeforeRenderEvent;
+            PhoneVisuals.OnAfterRenderScreen -= CallAfterRenderEvent;
+        }
+
+        private void CallBeforeRenderEvent(object sender, StardewModdingAPI.Events.RenderedWorldEventArgs e)
+        {
+            this.OnBeforeRenderScreen?.Invoke(sender, e);
+        }
+
+        private void CallAfterRenderEvent(object sender, StardewModdingAPI.Events.RenderedWorldEventArgs e)
+        {
+            this.OnAfterRenderScreen?.Invoke(sender, e);
+        }
 
         public bool AddApp(string id, string name, Action action, Texture2D icon)
         {
@@ -29,32 +52,65 @@ namespace MobilePhone
             return true;
         }
 
-        public Vector2 GetScreenPosition()
+        public Vector2 GetRawScreenPosition()
         {
             return PhoneUtils.GetScreenPosition();
         }
-        public Vector2 GetScreenSize()
+
+        public Vector2 GetRawScreenSize()
         {
             return PhoneUtils.GetScreenSize();
         }
 
-        public Vector2 GetScreenSize(bool rotated)
+        public Vector2 GetRawScreenSize(bool rotated)
         {
             return PhoneUtils.GetScreenSize(rotated);
         }
-        public Rectangle GetPhoneRectangle()
+
+        public Rectangle GetRawPhoneRectangle()
         {
             return ModEntry.phoneRect;
         }
-        public Rectangle GetScreenRectangle()
+
+        public Rectangle GetRawScreenRectangle()
         {
             return ModEntry.screenRect;
+        }
+
+        public Vector2 GetScreenPosition()
+        {
+            return GetRawScreenPosition() * GetUIScale();
+        }
+
+        public Vector2 GetScreenSize()
+        {
+            return GetRawScreenSize() * GetUIScale();
+        }
+
+        public Vector2 GetScreenSize(bool rotated)
+        {
+            return GetRawScreenSize(rotated) * GetUIScale();
+        }
+
+        public Rectangle GetPhoneRectangle()
+        {
+            return PhoneUtils.ScaleRect(GetRawPhoneRectangle(), GetUIScale());
+        }
+
+        public Rectangle GetScreenRectangle()
+        {
+            return PhoneUtils.ScaleRect(GetRawScreenRectangle(), GetUIScale());
         }
 
         public bool AddOnPhoneRotated(EventHandler action)
         {
             ModEntry.OnScreenRotated += action;
             return true;
+        }
+
+        public float GetUIScale()
+        {
+            return Game1.options.zoomLevel != 1f ? 1f : 1f / Game1.options.uiScale;
         }
 
         public Texture2D GetBackgroundTexture(bool rotated)
@@ -66,32 +122,41 @@ namespace MobilePhone
         {
             return ModEntry.phoneRotated;
         }
+
         public void SetPhoneRotated(bool value)
         {
             ModEntry.phoneRotated = value;
         }
+
         public bool GetPhoneOpened()
         {
             return ModEntry.phoneOpen;
         }
+
         public void SetPhoneOpened(bool value)
         {
             PhoneUtils.TogglePhone(value);
         }
+
         public bool GetAppRunning()
         {
             return ModEntry.appRunning;
         }
+
         public void SetAppRunning(bool value)
         {
             ModEntry.appRunning = value;
             if (!value)
+            {
                 ModEntry.runningApp = null;
+            }
         }
+
         public string GetRunningApp()
         {
             return ModEntry.runningApp;
         }
+
         public void SetRunningApp(string value)
         {
             ModEntry.runningApp = value;
@@ -101,14 +166,17 @@ namespace MobilePhone
         {
             PhoneUtils.PlayRingTone();
         }
+
         public void PlayNotificationTone()
         {
             PhoneUtils.PlayNotificationTone();
         }
+
         public NPC GetCallingNPC()
         {
             return ModEntry.callingNPC;
         }
+
         public bool IsCallingNPC()
         {
             return ModEntry.callingNPC != null;

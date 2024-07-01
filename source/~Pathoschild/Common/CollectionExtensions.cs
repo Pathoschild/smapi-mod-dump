@@ -31,7 +31,7 @@ namespace Pathoschild.Stardew.Common
         /// <returns>Returns whether any values were removed.</returns>
         public static bool RemoveAll<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, Func<TKey, TValue, bool> where)
         {
-            List<TKey> removeKeys = new();
+            List<TKey> removeKeys = [];
             foreach ((TKey key, TValue value) in dictionary)
             {
                 if (where(key, value))

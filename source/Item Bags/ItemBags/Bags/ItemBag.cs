@@ -696,6 +696,8 @@ namespace ItemBags.Bags
                 Item.heldObject.Value == null &&
                 !IsSecretNote(Item) &&
                 !Item.isLostItem && (!Item.GetType().IsSubclassOf(typeof(Object)) || Item is ColoredObject || Item is Torch) &&
+                // "Combine Machines" mod allows combining multiple quantity of a placeable machine into a special item whose Stack=1 but has additional properties
+                !Item.modData.ContainsKey("SlayerDharok.CombineMachines.CombinedQuantity") &&
                 // "Better Chests" mod allows picking up chests that contain items. Disallow this from being placed in a bag because the chest contents would be lost
                 !Item.modData.ContainsKey("furyx639.BetterChests-ProxyChestFactory-GlobalInventoryId");
         }

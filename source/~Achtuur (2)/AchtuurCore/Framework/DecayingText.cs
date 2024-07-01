@@ -25,7 +25,7 @@ public class DecayingText
 
     public Color TextColor { get; set; }
 
-    public DecayingText(string text, int tickLifeSpan, Color? color = null)
+    public DecayingText(string text, int tickLifeSpan=60, Color? color = null)
     {
         this.Text = text;
         this.TickLifeSpan = tickLifeSpan;

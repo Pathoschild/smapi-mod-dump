@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+using Newtonsoft.Json;
+
 namespace Pathoschild.Stardew.CropsAnytimeAnywhere.Framework
 {
     /// <summary>Per-location mod configuration.</summary>
@@ -33,6 +35,7 @@ namespace Pathoschild.Stardew.CropsAnytimeAnywhere.Framework
         /// <param name="growCrops">Whether crops can grow here.</param>
         /// <param name="growCropsOutOfSeason">Whether out-of-season crops grow here too.</param>
         /// <param name="forceTillable">Whether to allow hoeing anywhere.</param>
+        [JsonConstructor]
         public PerLocationConfig(bool growCrops, bool growCropsOutOfSeason, ModConfigForceTillable? forceTillable)
         {
             this.GrowCrops = growCrops;
@@ -44,5 +47,10 @@ namespace Pathoschild.Stardew.CropsAnytimeAnywhere.Framework
                 other: false
             );
         }
+
+        /// <summary>Construct an instance.</summary>
+        /// <param name="config">The config instance to copy.</param>
+        public PerLocationConfig(PerLocationConfig config)
+            : this(config.GrowCrops, config.GrowCropsOutOfSeason, new ModConfigForceTillable(config.ForceTillable)) { }
     }
 }

@@ -8,7 +8,6 @@
 **
 *************************************************/
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -16,6 +15,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Pathoschild.Stardew.FastAnimations.Framework;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.ItemTypeDefinitions;
 using StardewValley.Objects;
 using SObject = StardewValley.Object;
 
@@ -23,7 +23,7 @@ namespace Pathoschild.Stardew.FastAnimations.Handlers
 {
     /// <summary>Handles the crop harvesting animation.</summary>
     /// <remarks>See game logic in <see cref="GameLocation.checkAction(xTile.Dimensions.Location, xTile.Dimensions.Rectangle, Farmer)"/> (look for <c>who.animateOnce(279</c>), <see cref="FarmerSprite"/>'s private <c>animateOnce(GameTime)</c> method (runs animation + some logic), and <see cref="Farmer.showItemIntake"/>.</remarks>
-    internal class HarvestHandler : BaseAnimationHandler
+    internal sealed class HarvestHandler : BaseAnimationHandler
     {
         /*********
         ** Public methods
@@ -33,36 +33,28 @@ namespace Pathoschild.Stardew.FastAnimations.Handlers
             : base(multiplier) { }
 
         /// <inheritdoc />
-        public override bool IsEnabled(int playerAnimationID)
+        public override bool TryApply(int playerAnimationId)
         {
+            Farmer player = Game1.player;
+
             return
                 Context.IsWorldReady
-                && Game1.player.Sprite.CurrentAnimation != null
-                && playerAnimationID is FarmerSprite.harvestItemDown or FarmerSprite.harvestItemLeft or FarmerSprite.harvestItemRight or FarmerSprite.harvestItemUp
-                && !this.IsRidingTractor();
-        }
-
-        /// <inheritdoc />
-        public override void Update(int playerAnimationID)
-        {
-            var player = Game1.player;
-            var location = player.currentLocation;
-
-            this.ApplySkips(
-                run: () =>
+                && player.Sprite.CurrentAnimation != null
+                && playerAnimationId is FarmerSprite.harvestItemDown or FarmerSprite.harvestItemLeft or FarmerSprite.harvestItemRight or FarmerSprite.harvestItemUp
+                && !this.IsRidingTractor()
+                && this.ApplySkips(() =>
                 {
                     // player animation
-                    player.Update(Game1.currentGameTime, location);
+                    player.Update(Game1.currentGameTime, player.currentLocation);
 
                     // animation of item thrown in the air
-                    foreach (var sprite in this.GetTemporarySprites(player))
+                    foreach (TemporaryAnimatedSprite sprite in this.GetTemporarySprites(player).ToArray())
                     {
                         bool done = sprite.update(Game1.currentGameTime);
                         if (done)
-                            location.TemporarySprites.Remove(sprite);
+                            player.currentLocation.TemporarySprites.Remove(sprite);
                     }
-                }
-            );
+                });
         }
 
 
@@ -76,11 +68,11 @@ namespace Pathoschild.Stardew.FastAnimations.Handlers
         {
             // get harvested item
             SObject harvestedObj = player.mostRecentlyGrabbedItem as SObject ?? player.ActiveObject;
-            if (harvestedObj == null)
-                return Array.Empty<TemporaryAnimatedSprite>();
+            if (harvestedObj is null)
+                return [];
 
             // get source rectangles
-            var data = ItemRegistry.GetDataOrErrorItem(harvestedObj.QualifiedItemId);
+            ParsedItemData data = ItemRegistry.GetDataOrErrorItem(harvestedObj.QualifiedItemId);
             Texture2D texture = data.GetTexture();
             Rectangle mainSourceRect = data.GetSourceRect();
             Rectangle? coloredSourceRect = null;

@@ -12,6 +12,7 @@ using StardewValley;
 
 namespace DeluxeJournal.Util
 {
+    /// <summary>Helper functions for encoding and decoding compound item IDs for flavored items.</summary>
     public static class FlavoredItemHelper
     {
         /// <summary>Encode a flavored item ID using the base preserve item ID and the corresponding ingredient item ID.</summary>
@@ -31,14 +32,14 @@ namespace DeluxeJournal.Util
         }
 
         /// <summary>Decode the flavored item ID into its preserve and ingredient IDs.</summary>
+        /// <remarks>See <see cref="EncodeFlavoredItemId(string, string)"/> for flavored item ID format details.</remarks>
         /// <param name="flavoredId">The encoded flavored item ID.</param>
         /// <param name="preserveId">The decoded qualified perserve item ID.</param>
         /// <param name="ingredientId">The decoded ingredient item ID.</param>
         /// <param name="qualifyIngredientId">Qualify the ingredient ID.</param>
         /// <returns>
         /// <c>true</c> if the flavored item ID was of the correct format and could be decoded;
-        /// <c>false</c> if the operation failed. See <see cref="EncodeFlavoredItemId(string, string)"/>
-        /// for flavored item ID format details.
+        /// <c>false</c> if the operation failed.
         /// </returns>
         public static bool DecodeFlavoredItemId(string flavoredId, out string preserveId, out string ingredientId, bool qualifyIngredientId = true)
         {
@@ -63,11 +64,9 @@ namespace DeluxeJournal.Util
         }
 
         /// <summary>Get the preserve ID from an encoded flavored item ID.</summary>
+        /// <remarks>See <see cref="EncodeFlavoredItemId(string, string)"/> for flavored item ID format details.</remarks>
         /// <param name="flavoredId">The encoded flavored item ID.</param>
-        /// <returns>
-        /// The preserve item ID or return back the <paramref name="flavoredId"/> if invalid format.
-        /// See <see cref="EncodeFlavoredItemId(string, string)"/> for flavored item ID format details.
-        /// </returns>
+        /// <returns>The preserve item ID or return back the <paramref name="flavoredId"/> if invalid format.</returns>
         public static string GetPreserveId(string flavoredId)
         {
             int seperatorIndex = flavoredId.IndexOf('/');
@@ -81,12 +80,10 @@ namespace DeluxeJournal.Util
         }
 
         /// <summary>Get the ingredient ID from an encoded flavored item ID.</summary>
+        /// <remarks>See <see cref="EncodeFlavoredItemId(string, string)"/> for flavored item ID format details.</remarks>
         /// <param name="flavoredId">The encoded flavored item ID.</param>
         /// <param name="qualify">Qualify the ingredient ID.</param>
-        /// <returns>
-        /// The ingredient item ID or an empty string if invalid format.
-        /// See <see cref="EncodeFlavoredItemId(string, string)"/> for flavored item ID format details.
-        /// </returns>
+        /// <returns>The ingredient item ID or an empty string if invalid format.</returns>
         public static string GetIngredientId(string flavoredId, bool qualify = true)
         {
             int seperatorIndex = flavoredId.IndexOf('/') + 1;
@@ -131,11 +128,9 @@ namespace DeluxeJournal.Util
         }
 
         /// <summary>Create a flavored item instance from an encoded flavored item ID.</summary>
+        /// <remarks>See <see cref="EncodeFlavoredItemId(string, string)"/> for flavored item ID format details.</remarks>
         /// <param name="flavoredId">The encoded flavored item ID.</param>
-        /// <returns>
-        /// An item instance or <c>null</c> if one could not be created.
-        /// See <see cref="EncodeFlavoredItemId(string, string)"/> for flavored item ID format details.
-        /// </returns>
+        /// <returns>An item instance or <c>null</c> if one could not be created.</returns>
         public static Item? CreateFlavoredItem(string flavoredId)
         {
             if (DecodeFlavoredItemId(flavoredId, out string preserveId, out string ingredientId))
@@ -147,35 +142,31 @@ namespace DeluxeJournal.Util
         }
 
         /// <summary>Create a flavored item instance from a preserved item ID and ingredient item ID.</summary>
+        /// <remarks>See <see cref="EncodeFlavoredItemId(string, string)"/> for flavored item ID format details.</remarks>
         /// <param name="preserveId">The qualified preserve item ID.</param>
         /// <param name="ingredientId">The ingredient item ID.</param>
-        /// <returns>
-        /// An item instance or <c>null</c> if one could not be created.
-        /// See <see cref="EncodeFlavoredItemId(string, string)"/> for flavored item ID format details.
-        /// </returns>
+        /// <returns>An item instance or <c>null</c> if one could not be created.</returns>
         public static Item? CreateFlavoredItem(string preserveId, string ingredientId)
         {
             return CreateFlavoredItem(GetPreserveType(preserveId), ingredientId);
         }
 
-        /// <summary>Create a flavored item instance from a <see cref="StardewValley.Object.PreserveType"/> enum value and ingredient item ID.</summary>
+        /// <summary>Create a flavored item instance from a <see cref="SObject.PreserveType"/> enum value and ingredient item ID.</summary>
+        /// <remarks>See <see cref="EncodeFlavoredItemId(string, string)"/> for flavored item ID format details.</remarks>
         /// <param name="preserveType">The preserve type.</param>
         /// <param name="ingredientId">The ingredient item ID.</param>
-        /// <returns>
-        /// An item instance or <c>null</c> if one could not be created.
-        /// See <see cref="EncodeFlavoredItemId(string, string)"/> for flavored item ID format details.
-        /// </returns>
+        /// <returns>An item instance or <c>null</c> if one could not be created.</returns>
         public static Item? CreateFlavoredItem(SObject.PreserveType preserveType, string ingredientId)
         {
-            if (ItemRegistry.Create(ingredientId, allowNull: true) is not SObject ingredient)
+            if (ItemRegistry.Create(ingredientId, allowNull: true) is SObject ingredient)
             {
-                return null;
+                return ItemRegistry.GetObjectTypeDefinition().CreateFlavoredItem(preserveType, ingredient);
             }
 
-            return ItemRegistry.GetObjectTypeDefinition().CreateFlavoredItem(preserveType, ingredient);
+            return null;
         }
 
-        /// <summary>Get the <see cref="StardewValley.Object.PreserveType"/> enum value given the preserve item ID.</summary>
+        /// <summary>Get the <see cref="SObject.PreserveType"/> enum value given the preserve item ID.</summary>
         /// <param name="preserveId">The qualified preserve item ID.</param>
         public static SObject.PreserveType GetPreserveType(string preserveId)
         {

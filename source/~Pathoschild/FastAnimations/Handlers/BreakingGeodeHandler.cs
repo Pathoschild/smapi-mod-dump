@@ -16,7 +16,7 @@ namespace Pathoschild.Stardew.FastAnimations.Handlers
 {
     /// <summary>Handles the geode-breaking animation.</summary>
     /// <remarks>See game logic in <see cref="GeodeMenu.receiveLeftClick"/>.</remarks>
-    internal class BreakingGeodeHandler : BaseAnimationHandler
+    internal sealed class BreakingGeodeHandler : BaseAnimationHandler
     {
         /*********
         ** Public methods
@@ -26,19 +26,13 @@ namespace Pathoschild.Stardew.FastAnimations.Handlers
             : base(multiplier) { }
 
         /// <inheritdoc />
-        public override bool IsEnabled(int playerAnimationID)
+        public override bool TryApply(int playerAnimationId)
         {
-            return Game1.activeClickableMenu is GeodeMenu { geodeAnimationTimer: > 0 };
-        }
-
-        /// <inheritdoc />
-        public override void Update(int playerAnimationID)
-        {
-            GeodeMenu menu = (GeodeMenu)Game1.activeClickableMenu;
-
-            this.ApplySkips(
-                () => menu.update(Game1.currentGameTime)
-            );
+            return
+                Game1.activeClickableMenu is GeodeMenu { geodeAnimationTimer: > 0 } menu
+                && this.ApplySkips(() =>
+                    menu.update(Game1.currentGameTime)
+                );
         }
     }
 }

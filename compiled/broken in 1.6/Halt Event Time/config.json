@@ -1,9 +1,0 @@
-{
-  "Debug": false,
-  "Limit": "ActionControl",
-  "AsyncThreshold": 233,
-  "PauseNPC": true,
-  "PauseBuff": true,
-  "PauseMonster": true,
-  "PauseTemporarySprite": true
-}

@@ -6,9 +6,9 @@ mods:
    Unlockable Areas
 
 latest commit:
-   commit 5ae9e22f7dedd7ae62f8d0c984cc6629cb2f7b8a
+   commit 562939073d83ea0ed63ab92b28e1637c28002db1
    Author: DeLiXx <fake122344@gmail.com>
-   Date:   Sun May 26 15:05:07 2024 +0200
+   Date:   Sun Jun 30 13:04:51 2024 +0200
    
-       Fixed overview icon inconsistency in multiplayer
+       added new triggeraction UB_AddCurrency
    

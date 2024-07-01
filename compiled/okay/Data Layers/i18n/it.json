@@ -1,4 +1,7 @@
 ﻿{
+    /*********
+    ** Data Layers UI
+    *********/
     // accessible
     "accessible.name": "Accessibilità",
     "accessible.clear": "Libera",
@@ -68,5 +71,48 @@
     "tillable.tillable": "Coltivabile",
     "tillable.tilled": "Coltivato",
     "tillable.occupied": "Occupata",
-    "tillable.not-tillable": "Non Coltivabile"
+    "tillable.not-tillable": "Non Coltivabile",
+
+
+    /*********
+    ** Generic Mod Config Menu UI
+    *********/
+    // section names
+    "config.section.main-options": "Opzioni principali",
+    "config.section.main-controls": "Comandi principali",
+    "config.section.layer": "Livello '{{LayerName}}'", // {{LayerName}} is the layer name set above.
+
+    // main options
+    "config.show-grid.name": "Mostra griglia",
+    "config.show-grid.desc": "Scegli se mostrare una griglia di caselle quando un livello è aperto.",
+
+    "config.combine-borders.name": "Unisci i bordi sovrapposti",
+    "config.combine-borders.desc": "Quando due gruppi dello stesso colore si sovrappongono, si può scegliere se disegnare un bordo intorno al loro bordo combinato invece dei bordi individuali.",
+
+    "config.color-scheme.name": "Schema di colori",
+    "config.color-schene.desc": "Lo schema di colori da applicare, che modifica i colori di tutti i livelli di dati.",
+    "config.color-schemes.default": "colori predefiniti",
+
+    // main controls
+    "config.toggle-layer-key.name": "Alterna livelli di dati",
+    "config.toggle-layer-key.desc": "Il tasto che mostra o nasconde la sovrapposizione del livello di dati.",
+
+    "config.prev-layer-key.name": "Tasto del livello precedente",
+    "config.prev-layer-key.desc": "Il tasto che scorre all'indietro i livelli di dati disponibili.",
+
+    "config.next-layer-key.name": "Tasto del livello successivo",
+    "config.next-layer-key.desc": "Il tasto che scorre in avanti i livelli di dati disponibili.",
+
+    // data layers
+    "config.layer-enabled.name": "Abilitato",
+    "config.layer-enabled.desc": "Scegli se questo livello deve essere disponibile nel gioco.",
+
+    "config.layer-update-on-view-change.name": "Aggiorna quando la visuale cambia",
+    "config.layer-update-on-view-change.desc": "Scegli se le informazioni sul livello disegnato devono essere aggiornate quando una nuova parte del mondo viene visualizzata, indipendentemente dall'impostazione 'aggiornamenti al secondo'.",
+
+    "config.layer-updates-per-second.name": "Aggiornamenti al secondo",
+    "config.layer-updates-per-second.desc": "La frequenza con cui il livello deve essere aggiornato durante la visualizzazione, come numero al secondo. L'impostazione di un valore più alto di quello predefinito può causare lag. Predefinito {{defaultValue}}.",
+
+    "config.layer-shortcut.name": "Tasto rapido",
+    "config.layer-shortcut.desc": "Il tasto che seleziona questo livello quando la sovrapposizione è aperta."
 }

@@ -19,7 +19,7 @@ namespace Relativity
     public class ModEntry : Mod
     {
         // GTI = GameTickInterval, STP = ShouldTimePass
-        private static int LocalGTI => 7000 + (Game1.currentLocation?.getExtraMillisecondsPerInGameMinuteForThisLocation() ?? 0);
+        private static int LocalGTI => 7000 + (Game1.currentLocation?.ExtraMillisecondsPerInGameMinute ?? 0);
         private static bool LocalSTP => Game1.shouldTimePass(true);
         private readonly Dictionary<long, (bool STP, int GTI)> playerTimeData = new();
 
