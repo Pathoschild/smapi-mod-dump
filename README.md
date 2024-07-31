@@ -16,10 +16,7 @@ The `compiled` folder has the latest download for each mod, grouped into a few c
 * `broken in *`  
   Mods which broke in that game version.
 * `okay`  
-  Mods which work fine in the latest versions (and don't fit one of the next two categories).
-* `okay (Harmony)`  
-  Mods which work fine in the latest versions, and use Harmony to patch the game code. Using many Harmony mods together
-  often causes conflicts, so these are separate for testing.
+  Mods which work fine in the latest versions (and aren't in the next category).
 * `okay (special groups)`  
   Mods which work fine in the latest version, but need to be tested separately from other mods. That include:
 
