@@ -13,6 +13,8 @@
     "config.TrellisPattern.2": "Columns",
     "config.InvisibleAttachments.name": "Invisible Attachments",
     "config.InvisibleAttachments.description": "Make attachments invisible once attached, useful if using sprinkler replacement mods.",
+    "config.OpenIntakeChestKey.name": "Open Intake Chest Key",
+    "config.OpenIntakeChestKey.description": "Set button to open intake chest on sprinkler attachment, chests can be opened remotely when using a mouse button",
     "config.IntakeChestSize.name": "Intake Chest Size",
     "config.IntakeChestSize.description": "Default 9 slots.",
     "config.PlantOnChestClose.name": "Plant on Chest Close",

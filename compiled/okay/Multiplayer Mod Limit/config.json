@@ -1,6 +1,7 @@
 {
   "EnableMod": true,
-  "KickPlayerDelayTime": 1,
+  "KickPlayerDelayTime": 3,
+  "SendSMAPIInfo": true,
   "RequireSMAPI": true,
   "LimitMode": "WhiteListMode",
   "AllowedModListSelected": "Default",

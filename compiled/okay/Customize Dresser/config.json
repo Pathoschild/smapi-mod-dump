@@ -17,7 +17,7 @@
   "Sixteen": "Seeds",
   "Seventeen": "Flowers",
   "Eighteen": "Fruits",
-  "Nineteen": "Vegetable",
+  "Nineteen": "Vegetables",
   "Twenty": "Forage Fruits, Vegetables, Mushrooms",
   "TwentyOne": "Forage Crabpot, Beach, and Roe",
   "TwentyTwo": "Animal Products",
@@ -50,7 +50,9 @@
   "Animal_Products_Tab": true,
   "CookedFood_and_ArtisanGoods_Tab": true,
   "Furniture_Tab": true,
-  "Artifacts_Trinkets_Misc_Tabs": true,
+  "Artifacts_Tabs": true,
+  "Trinkets_Tabs": true,
+  "Misc_Tabs": true,
   "Controller_NextTabButton": "RightShoulder",
   "Controller_PrevTabButton": "LeftShoulder",
   "Controller_HotkeyStackingButton": "LeftTrigger",
@@ -58,5 +60,7 @@
   "Keyboard_HotkeyStackingButton": "LeftShift",
   "Keyboard_FavoritingButton": "Tab",
   "Keyboard_NextTabButton": "C",
-  "Keyboard_PrevTabButton": "Z"
+  "Keyboard_PrevTabButton": "Z",
+  "GridFormat": false,
+  "HoverText": false
 }

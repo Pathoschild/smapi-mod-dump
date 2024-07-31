@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/26186
+IDs: LyzzCL.FishDontStopTime
+update keys: Nexus:26186

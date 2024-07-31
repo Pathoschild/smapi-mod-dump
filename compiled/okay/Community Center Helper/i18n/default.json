@@ -75,6 +75,7 @@
 	"mineIronOre": "Mine Iron Node (Mines 41+, numerous on 71-79)",
 	"mineGoldOre": "Mine Gold Node (Mines 81+)",
 	"mineIridiumOre": "Mine Mystic Stone (Mines 101+), meteorite (rare event)",
+	"mineRadioactiveOre": "Mine Radioactive Nodes (Mines in dangerous state)",
 	
 	// Gems Through Mining
 	"gemEmerald": "Mine Emerald Node (Mines 81+), Gem Node",
@@ -85,6 +86,8 @@
 	"gemJade": "Mine Jade Node (Mines 41+), Gem Node",
 	"gemDiamond": "Mine Diamond Node (Mines 51+), Gem Node",
 	"gemPrismaticShard": "Mine Gem Node, Mystic Stone (Mines 101+, 25%), Iridium Node (4%)",
+	"gemCinderShard": "Mine Cinder Shard Node (Volcano)",
+	"boneNode": "Mine Bone Node (Ginger Island Dig Site)",
 	
 	// Farm Cave
 	"caveYours": "Find in farm cave", // once cave type has been chosen, the other type is disregarded and this is used
@@ -144,6 +147,7 @@
 	
 	// Location Names (for foraging suggestions)
 	"locationFarm": "on Farm",
+	"locationTown": "in Pelican Town",
 	"locationMines": "in the Mines",
 	"locationMinesArea1": "on Mines 1-39",
 	"locationMinesArea2": "on Mines 41-79",
@@ -154,10 +158,13 @@
 	"locationBeachEast": "on Beach (right side)",
 	"locationBeachEastInaccessible": "on Beach (right side; 300 {{wood}} to fix bridge)", // tip displayed if bridge is not fixed
 	"locationForest": "in Cindersap Forest",
+	"locationBus": "at Bus Stop",
 	"locationWoods": "in Secret Woods",
 	"locationSewer": "in Sewer",
 	"locationDesert": "in Calico Desert",
 	"locationSkullPrehistoric": "on Skull Cavern prehistoric floors",
+	"locationIsland": "on Ginger Island",
+	"locationVolcano": "in the Volcano",
 	"locationRidgeForest": "in Ridge Forest", // RSV
 	"locationUnknown": "in ???",
 	
@@ -168,6 +175,7 @@
 	"waterMountain": "in Mountain lake",
 	"waterForestPond": "in Cindersap Forest pond",
 	"waterForestRiver": "in Cindersap Forest river",
+	"waterForestFalls": "at bottom of Cindersap Forest waterfalls",
 	"waterSpecialFarm": "on Farm",
 	"waterWoods": "in Secret Woods pond",
 	"waterDesert": "in Desert pond",
@@ -218,6 +226,9 @@
 	"shopDesertTrader": "Desert Trader",
 	"shopOasis": "Oasis",
 	"shopOasisWeekday": "Oasis ({{day}})",
+	"shopIslandTrader": "Island Trader",
+	"shopIslandResort": "Island Resort",
+	"shopDwarfVolcano": "Volcano Dwarf",
 	"shopTravelingCartRandom": "Traveling Cart (random)",
 	"shopTravelingCartSeason": "Traveling Cart in {{season}}",
 	"shopEggFestival": "Pierre at Egg Festival (Spring 13)",
@@ -256,6 +267,8 @@
 	"treePomegranate": "Pomegranate Tree",
 	"treeCherry": "Cherry Tree",
 	"treeMahogany": "Mahogany Tree",
+	"treeBanana": "Banana Tree",
+	"treeMango": "Mango Tree",
 	"treeLime": "Lime Tree", // Cornucopia
 	"treePapaya": "Papaya Tree", // Cornucopia
 	"treeWalnut": "Walnut Tree", // Cornucopia
@@ -274,6 +287,7 @@
 	"treeMaple": "Maple Tree",
 	"treeOak": "Oak Tree",
 	"treePine": "Pine Tree",
+	"treeMystic": "Mystic Tree ({{craftingInfo}})",
 	"treeMushroom": "Mushroom Tree (rare Fall event)",
 	"treeDescSeedling": "seedling from {{shop}}{{startingYear}}", // advice for fruit trees
 	"treeDescNonFruit": "already on farm/grow {{treeSeed}}", // advice for Maple/Oak/Pine trees
@@ -344,12 +358,14 @@
 	"recipeIngredientSeparator": ", ",
 	
 	// Skill Level Requirements
-	"farmingLvRequirement": "Farming Lv. {{num}}",
-	"miningLvRequirement": "Mining Lv. {{num}}",
-	"fishingLvRequirement": "Fishing Lv. {{num}}",
-	"foragingLvRequirement": "Foraging Lv. {{num}}",
-	"combatLvRequirement": "Combat Lv. {{num}}",
+	"skillLvRequirement": "{{skill}} Lv. {{num}}",
 	"totalSkillLvRequirement": "Combined Skill Lv. {{num}}",
+	"skillMastery": "{{skill}} Mastery",
+	"farmingSkill": "Farming",
+	"miningSkill": "Mining",
+	"fishingSkill": "Fishing",
+	"foragingSkill": "Foraging",
+	"combatSkill": "Combat",
 	
 	// Machine Sources
 	"statueOfPerfectionTip": "perfect Grandpa evaluation", // advice for statue if you haven't had evaluation or achieved 4 candles
@@ -385,4 +401,15 @@
 	"yearSeason": "{{season}} Year {{year}}",
 	"year": "Year {{year}}",
 	"today": "today", // when Queen of Sauce episode is airing that very day
+	
+	/***** Mod Config Menu Text *****/
+	
+	"optionShowSpoilersName": "Show Spoilers",
+	"optionShowSpoilersTooltip": "Whether hints should include spoilers of certain things not yet encountered.",
+	
+	"optionCollectionsTabName": "Collections Tab Hints",
+	"optionCollectionsTabTooltip": "Additionally show tooltip hints in the Collections tab for how to obtain items. For \"All Items\" setting, toggle display with click/Action/Tool Button. (Items from mods not guaranteed to show hints.)",
+	"collectionsTabOff": "Off",
+	"collectionsTabUnknowns": "Unknowns Only",
+	"collectionsTabAll": "All Items",
 }

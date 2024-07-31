@@ -17,6 +17,7 @@
   "ui.main-menu.font": "Font Family",
   "ui.main-menu.font.keep-orig": "Keep Original",
   "ui.main-menu.refresh-fonts": "Refresh Font List",
+  "ui.main-menu.manage-fonts": "Manage font files...",
   "ui.main-menu.font-from-pack": "(from '{{packName}}' pack)",
   "ui.main-menu.font-size": "Font Size",
 
@@ -69,6 +70,14 @@
   "ui.export-menu.compress": "Compressed",
   "ui.export-menu.export": "Export",
   "ui.export-menu.cancel": "Cancel",
+
+  "ui.font-manage-menu.title": "Manage Fonts",
+  "ui.font-manage-menu.section.search": "Search Settings",
+  "ui.font-manage-menu.new": "New",
+  "ui.font-manage-menu.delete": "Delete",
+  "ui.font-manage-menu.log-details": "Log search details",
+  "ui.font-manage-menu.ok": "Apply",
+  "ui.font-manage-menu.cancel": "Cancel",
 
   "config.section-color-and-shadow": "Color & Shadow",
   "config.disable-text-shadow": "Disable text shadow",

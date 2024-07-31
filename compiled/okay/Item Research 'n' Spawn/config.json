@@ -1,0 +1,18 @@
+{
+  "ShowMenuButton": "R",
+  "DefaultMode": "Research",
+  "UseDefaultBalanceConfig": true,
+  "ShowMissingItems": false,
+  "EnableSounds": true,
+  "ResearchAmountMultiplier": 1.5,
+  "SellPriceMultiplier": 0.8,
+  "BuyPriceMultiplier": 1.2,
+  "ResearchTimeSeconds": 1.0,
+  "UseCustomUIColor": false,
+  "CustomUIColor": {
+    "B": 0,
+    "G": 215,
+    "R": 255,
+    "A": 255
+  }
+}

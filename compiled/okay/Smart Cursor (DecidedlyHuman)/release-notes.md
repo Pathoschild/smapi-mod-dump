@@ -1,5 +1,9 @@
 ﻿# Smart Cursor Changelog
 
+## 1.3.1
+#### Fixes
+* Fixed tool locking/player animation freezing issue. This should have been released in March. I'm *very* sorry for being so late.
+
 ## 1.3.0
 #### Changes
 * Full 1.6 update.

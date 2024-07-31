@@ -1,0 +1,11 @@
+﻿{
+  "Name": "WateringCanUpgrade",
+  "Author": "WillTheMage",
+  "Version": "1.0.0",
+  "Description": "A mod that increases the watering can's irrigation area.",
+  "UniqueID": "WillTheMage.WateringCanUpgrade",
+  "EntryDll": "WateringCanUpgrade.dll",
+  "MinimumApiVersion": "3.0.0",
+  "MinimumGameVersion": "1.6.0",
+  "UpdateKeys": ["Nexus:25977"]
+}

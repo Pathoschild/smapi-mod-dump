@@ -68,9 +68,6 @@
     "config.casino-slots.name": "Casino slots",
     "config.casino-slots.tooltip": "How fast the casino slots turn. Default {{defaultValue}}x.",
 
-    "config.event.name": "Event cutscene",
-    "config.event.tooltip": "How fast event cutscenes play. Default {{defaultValue}}x, suggested {{suggestedValue}}x.",
-
     "config.fade.name": "Fade",
     "config.fade.tooltip": "How fast the screen fades to black and fades back in. Default {{defaultValue}}x.",
 
@@ -113,5 +110,14 @@
     "config.title-menu.tooltip": "How fast the title menu transitions between screens. Default {{defaultValue}}x.",
 
     "config.load-game-blink.name": "Load game blink",
-    "config.load-game-blink.tooltip": "How fast the blinking-slot delay happens after you click a load-save slot. Default {{defaultValue}}x."
+    "config.load-game-blink.tooltip": "How fast the blinking-slot delay happens after you click a load-save slot. Default {{defaultValue}}x.",
+
+    /****
+    ** 'Experimental' section
+    ****/
+    "config.experimental": "Experimental options",
+    "config.experimental-warning": "These options aren't fully stable yet, and may cause issues like freezes and crashes. Enabling any of these isn't recommended.",
+
+    "config.event.name": "Event cutscene",
+    "config.event.tooltip": "How fast event cutscenes play. Default {{defaultValue}}x, suggested {{suggestedValue}}x."
 }

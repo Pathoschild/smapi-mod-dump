@@ -1,7 +1,7 @@
 ﻿{
   "Name": "GNMTokens",
   "Author": "Hana",
-  "Version": "1.3.0",
+  "Version": "1.4.0",
   "Description": "Provides Content Patcher Tokens for customizable pronouns and other language.",
   "UniqueID": "Hana.GNMTokens",
   "EntryDll": "GNMTokens.dll",

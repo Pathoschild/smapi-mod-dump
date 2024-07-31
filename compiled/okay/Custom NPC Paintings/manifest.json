@@ -1,0 +1,10 @@
+{
+  "Name": "Custom NPC Paintings",
+  "Author": "AvalonMFX",
+  "Version": "1.0.1",
+  "Description": "Allows you to easily create Paintings of NPCs",
+  "UniqueID": "AvalonMFX.CustomNPCPaintings",
+  "EntryDll": "CustomNPCPaintings.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:26228" ]
+}

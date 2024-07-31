@@ -4,6 +4,7 @@
   "WaterOnPlanting": true,
   "EnableForGardenPots": true,
   "TrellisPattern": "Rows",
+  "OpenIntakeChestKey": "MouseRight, ControllerA",
   "IntakeChestSize": 9,
   "PlantOnChestClose": false,
   "InvisibleAttachments": false

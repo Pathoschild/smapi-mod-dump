@@ -1,7 +1,7 @@
 ﻿{
   "Name": "KeyBindUI",
   "Author": "Enaium",
-  "Version": "1.2.0",
+  "Version": "1.2.1",
   "Description": "Key bind UI",
   "UniqueID": "Enaium.KeyBindUI",
   "EntryDll": "KeyBindUI.dll",

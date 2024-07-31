@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/26121
+IDs: spacechase0.AngrySeagulls
+update keys: Nexus:26121, GitHub:spacechase0/StardewValleyMods

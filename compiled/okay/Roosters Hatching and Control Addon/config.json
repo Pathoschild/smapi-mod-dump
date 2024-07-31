@@ -1,4 +1,5 @@
 {
+  "steps": 5,
   "Options": {
     "UpdateRate": {
       "Value": "On Day Start",
@@ -97,6 +98,10 @@
         "Interval": "150"
       },
       "EnableRoosterHatching": {
+        "Value": "true",
+        "Type": "Bool"
+      },
+      "EditAllFemales": {
         "Value": "true",
         "Type": "Bool"
       },
@@ -274,6 +279,10 @@
         "Value": "true",
         "Type": "Bool"
       },
+      "EditAllFemales": {
+        "Value": "true",
+        "Type": "Bool"
+      },
       "MatureDays": {
         "Value": "4",
         "Type": "Number",
@@ -448,6 +457,10 @@
         "Value": "true",
         "Type": "Bool"
       },
+      "EditAllFemales": {
+        "Value": "true",
+        "Type": "Bool"
+      },
       "MatureDays": {
         "Value": "4",
         "Type": "Number",
@@ -619,6 +632,10 @@
         "Interval": "150"
       },
       "EnableRoosterHatching": {
+        "Value": "true",
+        "Type": "Bool"
+      },
+      "EditAllFemales": {
         "Value": "true",
         "Type": "Bool"
       },
@@ -805,6 +822,10 @@
         "Value": "true",
         "Type": "Bool"
       },
+      "EditAllFemales": {
+        "Value": "true",
+        "Type": "Bool"
+      },
       "MatureDays": {
         "Value": "4",
         "Type": "Number",
@@ -958,5 +979,6 @@
         "Type": "Text"
       }
     }
-  }
+  },
+  "FemalesOptions": {}
 }

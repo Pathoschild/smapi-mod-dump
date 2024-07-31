@@ -1,8 +1,8 @@
 {
   "Name": "鼠标移动钓鱼",
   "Author": "Night",
-  "Version": "1.0.3",
-  "Description": "挥动鼠标拉杆。",
+  "Version": "1.1.9",
+  "Description": "挥动鼠标拉杆钓鱼。",
   "UniqueID": "Night.MovementFishing",
   "EntryDll": "MovementFishing.dll",
   "MinimumApiVersion": "4.0.0",

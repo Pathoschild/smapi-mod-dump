@@ -13,6 +13,8 @@
     "config.TrellisPattern.2": "竖列",
     "config.InvisibleAttachments.name": "隐形附加器",
     "config.InvisibleAttachments.description": "让安装后的附加器隐形",
+    "config.OpenIntakeChestKey.name": "附加器箱子按键",
+    "config.OpenIntakeChestKey.description": "设置打开附加器箱子的按键，使用鼠标键时可远程打开箱子",
     "config.IntakeChestSize.name": "附加器箱子大小",
     "config.IntakeChestSize.description": "默认九格",
     "config.PlantOnChestClose.name": "即时种植",

@@ -1,28 +1,35 @@
 {
     "Config.GeneralSettingTitle.Name": "常规设置",
-    
+
     // 启用模组
     "Config.EnableMod.Name": "启用模组",
+
     // 踢出玩家延迟时间
     "Config.KickPlayerDelayTime.Name": "踢出玩家延迟时间",
     "Config.KickPlayerDelayTIme.Tooltip": "当一个不满足要求的玩家加入游戏后，他被踢出游戏的延迟时间。（单位：秒）",
-    
+
+    // 发送SMAPI信息
+    "Config.SendSMAPIInfo.Name": "发送SMAPI信息",
+    "Config.SendSMAPIIngo.Tooltip": "该功能仅在客机端玩家安装该模组时生效。当某个玩家不满足模组要求时，是否向该玩家的SMAPI控制台发送相关的模组信息。启用该选项可能会对联机延迟造成影响。",
+
     "Config.LimitSettingTitle.Name": "限制设置",
-    
+
     // 要求SMAPI
     "Config.RequireSMAPI.Name": "要求SMAPI",
     "Config.RequireSMAPI.Tooltip": "如果启用，玩家必须安装SMAPI才能加入游戏。",
-    "UI.RequireSMAPI": "{{name}}将被踢出，因为他未安装SMAPI。",
-    
+    "UI.RequireSMAPI.ServerTooltip": "{{name}}将被踢出，因为他未安装SMAPI。",
+    "UI.RequireSMAPI.ClientTooltip": "你将被踢出，因为你未安装SMAPI。",
+
     // 限制模式
     "Config.LimitMode.Name": "限制模式",
     "Config.LimitMode.Tooltip": "模组判断玩家是否满足模组要求的方式。当选择<白名单模式>时，模组会根据<AllowedModList>和<RequiredModList>来判断玩家是否满足要求。当选择<黑名单模式>时，模组会根据<RequiredModList>和<BannedModList>来判断玩家时否满足要求。",
     "Config.LimitMode.WhiteListMode": "白名单模式",
     "Config.LimitMode.BlackListMode": "黑名单模式",
-    "UI.KickPlayerTooltip": "{{name}}将被踢出，因为他不满足模组要求。",
+    "UI.KickPlayer.ServerTooltip": "{{name}}将被踢出，因为他不满足模组要求。",
+    "UI.KickPlayer.ClientTooltip": "你将被踢出，因为你不满足模组要求。",
     "UI.ModLimit.Required": "{{id}}被要求",
     "UI.ModLimit.Banned": "{{id}}被禁止",
-    
+
     // 选择的模组列表
     "Config.ModListSelectedTitle.Name": "选择的模组列表设置",
     "Config.ModListSelected.Paragraph": "模组列表太过复杂，无法在此次设置，请使用<config.json>文件进行设置。\n本模组允许同时设置多个模组列表，每个模组列表由名字和模组的UniqueId数组组成。\n当进入游戏后，会根据名字自动生成下面几个选项的内容。",
@@ -32,5 +39,7 @@
     "Config.RequiredModListSelected.Tooltip": "<RequiredModList>中包含的模组是必须安装的模组。",
     "Config.BannedModListSelected.Name": "选择的禁止模组列表",
     "Config.BannedModListSelected.Tooltip": "<BannedModList>中包含的模组是禁止安装的模组。",
-    "UI.GenerateModList": "模组列表已生成。你需要重新启动游戏才能在Generic Mod Config Menu中进行设置。"
+    "UI.GenerateModList": "模组列表已生成。",
+    "UI.AddMod.Exist": "该模组在当前列表已经存在。",
+    "UI.AddMod.Success": "成功向当前模组列表添加模组。"
 }

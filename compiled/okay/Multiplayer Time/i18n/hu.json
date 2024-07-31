@@ -1,0 +1,12 @@
+{
+  "Sunday": "Vas. {{day}}",
+  "Monday": "Hét. {{day}}",
+  "Tuesday": "Ke. {{day}}",
+  "Wednesday": "Sze. {{day}}",
+  "Thursday": "Csü. {{day}}",
+  "Friday": "Pén. {{day}}",
+  "Saturday": "Szo. {{day}}",
+  "AM": "{{time}} am",
+  "PM": "{{time}} pm",
+  "Default": "24"
+}

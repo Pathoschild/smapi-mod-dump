@@ -1,12 +1,12 @@
 {
     "Name": "Spectator Mode",
     "Author": "weizinai",
-    "Version": "0.2.1",
+    "Version": "0.4.1",
     "Description": "This mod allows you to see the world in spectator mode.",
     "UniqueID": "weizinai.SpectatorMode",
     "EntryDll": "SpectatorMode.dll",
     "UpdateKeys": [
-        "Nexus:25339"
+        "Nexus: 25339"
     ],
     "Dependencies": [
         {

@@ -1,0 +1,6 @@
+{
+    "UI.RecordModInfo.Tooltip": "Successfully recorded the mod information that has been loaded in the current game save.",
+
+    "UI.CheckModInfo.NoInfo": "This game save doesn't record any mod information.",
+    "UI.CheckModInfo.RemovedMod": "Mod {{name}} has been removed.",
+}

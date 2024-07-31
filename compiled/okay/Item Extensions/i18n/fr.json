@@ -1,4 +1,23 @@
 {
   "ItemHover_Requirements_Extra": "{0} {1}s",
-  "CantBreak": "Votre {0} n’est pas assez solide pour casser ça."
+  "CantBreak": "Votre {0} n’est pas assez solide pour casser ça.",
+  "config.Description": "Ceci active/désactive les fonctions du mod.\nAssurez-vous de relancer le jeu après avoir appliqué des paramètres.",
+  "config.MixedSeeds.name": "Graines mélangées",
+  "config.Panning.name": "Tamisage",
+  "config.MenuActions.name": "Menu d’actions",
+  "config.QualityChanges.name": "Personnalisation de la qualité",
+  "config.ShopTrades.name": "Marchands de boutiques",
+  "config.EatingAnimations.name": "Animations de nourriture",
+  "config.TrainDrops.name": "Train",
+  "config.FishPond.name": "Étang à poisson",
+  "config.TerrainFeatures.name": "Fonctionnalités du terrain",
+  "config.Treasure.name": "Trésors de pêche",
+  "config.Ores.name": "Minérais",
+  "config.Volcano.name": "dans le volcan",
+  "config.Mountain.name": "dans la montagne",
+  "config.Ores.tooltip": "Doit être activé pour permettre le reste des paramètres.",
+  "config.Drops.title": "Butins (monstres, trésors)",
+  "config.Resources.title": "Ressources",
+  "config.VanillaExt.title": "Extension du jeu de base",
+  "config.Customization.title": "Personnalisation"
 }

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/26055
+IDs: GlitchedDeveloper.TerrariaBosses
+update keys: Nexus:26055, GitHub:GlitchedDeveloper/StardewValley-TerrariaBosses

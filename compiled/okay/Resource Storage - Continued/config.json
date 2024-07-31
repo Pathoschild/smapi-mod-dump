@@ -11,5 +11,9 @@
   "ModKey3Amount": 10,
   "ResourcesKey": "R",
   "IconOffsetX": 0,
-  "IconOffsetY": 0
+  "IconOffsetY": 0,
+  "SortButtonOffsetX": 0,
+  "SortButtonOffsetY": 0,
+  "SearchBarOffsetX": 0,
+  "SearchBarOffsetY": 0
 }

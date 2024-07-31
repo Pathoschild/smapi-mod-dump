@@ -1,11 +1,11 @@
 ﻿{
   "Name": "Dynamic dialogues framework",
   "Author": "mistyspring",
-  "Version": "1.6.3",
+  "Version": "1.7.0",
   "Description": "Framework which allows for more dynamic dialogues.",
   "UniqueID": "mistyspring.dynamicdialogues",
   "EntryDll": "DynamicDialogues.dll",
-  "MinimumApiVersion": "3.14.0",
+  "MinimumApiVersion": "4.0.0-alpha",
   "UpdateKeys": ["nexus:12836"],
   "Dependencies": [
     {

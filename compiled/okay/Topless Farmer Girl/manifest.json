@@ -1,0 +1,10 @@
+{
+	"Name": "Topless Farmer Girl",
+	"Author": "Mangupix",
+	"Version": "1.1.0",
+	"Description": "Nude edits for female player characters.",
+	"UniqueID": "Mangupix.ToplessFarmerGirl",
+	"MinimumApiVersion": "4.0.0",
+	"EntryDll": "ToplessFarmerGirl.dll",
+	"UpdateKeys": [ "Nexus:19939" ]
+}

@@ -1,5 +1,5 @@
 {
-    "Format": "2.0.0",
+    "Format": "2.3.0",
     "ConfigSchema": {
         "Mechanic": {
             "AllowValues": "duration, mix, replace",
@@ -30,75 +30,10 @@
         },
     },
     "Changes": [
-        // duration
+        // Include proper content edit file
         {
-            // snow
-            "Action": "EditData",
-            "When": {
-                "Mechanic": "duration",
-                "Query: {{Day}} +2 >= {{SnowDurationStart}} AND {{Day}} +2 <= {{SnowDurationEnd}}": true
-            },
-            "Target": "Data/LocationContexts",
-            "TargetField": [ "Default", "WeatherConditions", "#6"], // Id: "WinterSnow"
-            "Entries": {
-                "Condition": "SEASON winter, SYNCED_RANDOM day location_weather {{ChanceToSnow_duration}}",
-            }
-        },
-        {
-            // rain
-            "Action": "EditData",
-            "When": {
-                "Mechanic": "duration",
-                "Query: {{Day}} +2 >= {{SnowDurationStart}} AND {{Day}} +2 <= {{SnowDurationEnd}}": false
-            },
-            "Target": "Data/LocationContexts",
-            "TargetField": [ "Default", "WeatherConditions", "#6"], // Id: "WinterSnow"
-            "Entries": {
-                "Id": "WinterRain",
-                "Condition": "SEASON winter, SYNCED_RANDOM day location_weather {{ChanceToRain_duration}}",
-                "Weather": "Rain"
-            }
-        },
-        // mix
-        {
-            "Action": "EditData",
-            "When": {
-                "Mechanic": "mix"
-            },
-            "Target": "Data/LocationContexts",
-            "TargetField": [ "Default", "WeatherConditions", "#11"], // Id: "Default"
-            "Entries": {
-                "Id": "WinterSnow",
-                "Condition": "SEASON winter, SYNCED_RANDOM day location_weather {{ChanceToSnow_mix}}",
-                "Weather": "Snow"
-            }
-        },
-        {
-            "Action": "EditData",
-            "When": {
-                "Mechanic": "mix"
-            },
-            "Target": "Data/LocationContexts",
-            "TargetField": [ "Default", "WeatherConditions", "#6"], // Id: "WinterSnow"
-            "Entries": {
-                "Id": "WinterRain",
-                "Condition": "SEASON winter, SYNCED_RANDOM day location_weather {{ChanceToRain_mix}}",
-                "Weather": "Rain"
-            }
-        },
-        // replace
-        {
-            "Action": "EditData",
-            "When": {
-                "Mechanic": "replace"
-            },
-            "Target": "Data/LocationContexts",
-            "TargetField": [ "Default", "WeatherConditions", "#6"], // Id: "WinterSnow"
-            "Entries": {
-                "Id": "WinterRain",
-                "Condition": "SEASON winter, SYNCED_RANDOM day location_weather {{ChanceToRain_replace}}",
-                "Weather": "Rain"
-            }
+            "Action": "Include",
+            "FromFile": "assets/{{Mechanic}}.json"
         }
     ]
 }

@@ -1,0 +1,11 @@
+{
+  "Name": "HDPortraiturePlus",
+  "Author": "Smallfire",
+  "Version": "1.0.1",
+  "Description": "This is a secondary development of the Portrait mod, introducing version control support for more organized update management.这是 Portrait mod 的二次开发，引入了版本控制支持，以实现更有条理的更新管理。",
+  "UniqueID": "Smallfire.HDPortraiturePlus",
+  "EntryDll": "Portraiture.dll",
+  "MinimumApiVersion": "3.14.0",
+  "UpdateKeys": [ "Nexus:???" ],
+  "Dependencies": []
+}

@@ -4,6 +4,7 @@
   "qsMenu.title": "下降层数：",
   "qsMenu.title2": "楼梯消耗：{{costNum}}({{hasNum}})",
   "time.late": "太晚了，该回家了。",
+  "info.currentLayer": "当前层: {{layer}}",
   "staircase.lack": "我还需要 {{lackNum}} 个楼梯才能往下走！",
   "staircase.fall": "我成功下降了 {{layers}} 层, 用了 {{costNum}} 个楼梯.",
   "unlocked.mail.text": "@,^我注意到你现在正在探索沙漠骷髅矿洞，我记得我们矮人曾经在哪里建造了一个通往地底深处的洞，那个洞就藏在雕像下面。现在我已经把那个雕像挪开了，希望能够帮助你更好地探索沙漠矿洞^注意：那个洞很深，我建议你使用楼梯下降。^——矮人",
@@ -23,5 +24,7 @@
   "config.recipeModify.name": "简易配方",
   "config.recipeModify.tooltip": "简化楼梯合成配方(10木材10石头，重回主标题后生效)",
   "config.ignoreLimit.name": "忽略限制",
-  "config.ignoreLimit.tooltip": "是否忽略最大下降层数的限制\n是否可以在沙漠节期间使用"
+  "config.ignoreLimit.tooltip": "是否忽略最大下降层数的限制\n是否可以在沙漠节期间使用",
+  "config.autoPause.name": "自动暂停",
+  "config.autoPause.tooltip": "进入沙漠矿井时，时间会自动暂停"
 }

@@ -1,0 +1,13 @@
+{
+    "enchantment.Gatherer.name": "Gatherer",
+    "enchantment.Horticulturist.name": "Horticulturist",
+    "enchantment.Palaeontologist.name": "Palaeontologist",
+    "enchantment.Reaper.name": "Reaper",
+    "enchantment.Gatherer.description": "50% chance to get 1 more fiber when cutting weeds, 50% chance to get 1 more hay when cutting grass, and 50% chance to get 1 more moss from trees.",
+    "enchantment.Horticulturist.description": "Get 1 more flower (normal quality) when harvesting flower crops. No effect on forage seeds.",
+    "enchantment.Palaeontologist.description": "50% chance to get 1 bone fragment from cutting weeds or grass, and 5% to get 1 random fossil from cutting weeds or grass.",
+    "enchantment.Reaper.description": "Increase damage and crit chance, monsters killed drop extra loot.",
+    // config
+    "config.AvailableScytheEnchantments.name": "Available Scythe Enchantments",
+    "config.AvailableScytheEnchantments.description": "Set which enchantments will be available through forging with a prismatic shard, no effect on existing enchantments."
+}

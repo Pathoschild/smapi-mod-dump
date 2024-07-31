@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/26194
+IDs: DLX.QuickSave
+update keys: Nexus:26194, GitHub:Annosz/UIInfoSuite2

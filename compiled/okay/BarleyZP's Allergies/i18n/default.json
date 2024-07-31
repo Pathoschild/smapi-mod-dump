@@ -52,5 +52,7 @@
   "allergies.shellfish": "Shellfish",
   "allergies.treenuts": "Tree Nuts",
   "allergies.dairy": "Dairy",
-  "allergies.mushroom": "Mushrooms"
+  "allergies.mushroom": "Mushrooms",
+
+  "reaction-passout": "Your allergic reactions have left you exhausted."
 }

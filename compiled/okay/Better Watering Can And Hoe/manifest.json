@@ -1,7 +1,7 @@
 {
     "Name": "Better Watering Can And Hoe",
     "Author": "Aflojack45",
-    "Version": "2.1.0",
+    "Version": "2.2.0",
     "Description": "This mod make possible to use your tools in your preferred mode. If you want to use with 3x3 always you don't have to wait every time for power-up your tool. You can use it as your single click. You can use with Watering Cans and Hoes too.",
     "UniqueID": "Aflojack45.BetterWateringCanAndHoe",
     "EntryDll": "BetterWateringCanAndHoe.dll",

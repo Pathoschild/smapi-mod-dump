@@ -1,0 +1,9 @@
+{
+  "Name": "Standalone Crane Game",
+  "Author": "rokugin",
+  "Version": "1.2.0",
+  "Description": "Code for standalone crane game mod.",
+  "UniqueID": "rokugin.crane",
+  "EntryDll": "StandaloneCraneGame.dll",
+  "UpdateKeys": [ "Nexus:25830" ]
+}

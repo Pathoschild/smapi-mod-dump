@@ -1,0 +1,51 @@
+{
+  "AllowanceLastGranted": {
+    "Day": 1,
+    "Season": "Spring",
+    "SeasonKey": "spring",
+    "Year": 1
+  },
+  "AnnualAllowanceLastGranted": {
+    "Day": 1,
+    "Season": "Spring",
+    "SeasonKey": "spring",
+    "Year": 1
+  },
+  "WeeklyAllowanceLastGranted": {
+    "Day": 1,
+    "Season": "Spring",
+    "SeasonKey": "spring",
+    "Year": 1
+  },
+  "AllowanceFirstEnabled": null,
+  "AllowanceGameMin": 0,
+  "AllowanceGameMax": 2147483647,
+  "AllowanceAmountMin": 50,
+  "AllowanceAmountMax": 5000000,
+  "AllowanceAmountPerc": 5,
+  "AllowanceAmountFixed": 5000,
+  "AllowanceAmountStep": 50,
+  "AllowanceEnabled": false,
+  "AllowanceDebugModeEnabled": false,
+  "AllowanceIsFixed": false,
+  "AllowanceIsNegative": false,
+  "AllowanceAffectsEarnings": false,
+  "AllowanceMessageTime": 3,
+  "AllowanceIncreaseBtn": "F8",
+  "AllowanceDecreaseBtn": "F7",
+  "GrantAllowanceOnKeyPress": false,
+  "AllowanceAnnualInterval": 0,
+  "AllowanceWeeklyInterval": 0,
+  "GrantAllowanceSpring": false,
+  "GrantAllowanceSummer": false,
+  "GrantAllowanceFall": false,
+  "GrantAllowanceWinter": false,
+  "GrantAllowanceSun": false,
+  "GrantAllowanceMon": false,
+  "GrantAllowanceTue": false,
+  "GrantAllowanceWed": false,
+  "GrantAllowanceThu": false,
+  "GrantAllowanceFri": false,
+  "GrantAllowanceSat": false,
+  "GrantAllowanceMultiplePerDay": false
+}

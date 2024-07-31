@@ -24,6 +24,9 @@
 
     "config.Rain.name":"Rain",
     "config.Rain.description":"Rain transparency",
+    
+    "config.Petals.name":"Petals",
+    "config.Petals.description":"Hides petals in-game.",
 
     "config.FishingBubbles.name": "Fishing bubbles",
     "config.FishingBubbles.description": "Changes fishing bubbles for an '!' icon.",

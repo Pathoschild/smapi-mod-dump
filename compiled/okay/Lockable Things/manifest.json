@@ -1,0 +1,16 @@
+{
+  "Name": "Lockable Things",
+  "Author": "ThisIsCad",
+  "Version": "1.4.0",
+  "Description": "A simple mod that prevents you from accidentally picking up crab pots, breaking floors, updating signs, etc. Adds a hotkey to unlock these items.",
+  "UniqueID": "ThisIsCad.LockableThings",
+  "EntryDll": "LockableThings.dll",
+  "MinimumApiVersion": "4.0.4",
+  "UpdateKeys": [ "Nexus:26281" ],
+  "ModUpdater": {
+    "Repository": "LockableThings",
+    "User": "brandonwamboldt",
+    "Directory": "_releases",
+    "ModFolder": ""
+  }
+}

@@ -15,7 +15,6 @@
   "WeaponSwingSpeed": 1.0,
   "BreakGeodeSpeed": 20.0,
   "CasinoSlotsSpeed": 8.0,
-  "EventSpeed": 1.0,
   "FadeSpeed": 4.0,
   "FishingTreasureSpeed": 4.0,
   "ForgeSpeed": 8.0,
@@ -29,5 +28,6 @@
   "WheelSpinSpeed": 16.0,
   "DialogueTypeSpeed": 4.0,
   "TitleMenuTransitionSpeed": 10.0,
-  "LoadGameBlinkSpeed": 2.0
+  "LoadGameBlinkSpeed": 2.0,
+  "Experimental_EventSpeed": 1.0
 }

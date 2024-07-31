@@ -1,0 +1,20 @@
+{
+
+  "$schema": "https://smapi.io/schemas/manifest.json",
+  "UniqueID": "ApryllForever.IridiumBombs",
+  "Name": "IridiumBombs",
+  "Author": "ApryllForever",
+  "Version": "1.0.0",
+  "Description": "Iridium Bombs.",
+  "MinimumApiVersion": "3.16.0",
+  "EntryDll": "IridiumBombs.dll",
+
+  "Dependencies": [
+    //{
+    // "UniqueID": "spacechase0.SpaceCore"
+    //}
+
+  ],
+
+  "UpdateKeys": [ "Nexus: 26476" ]
+}

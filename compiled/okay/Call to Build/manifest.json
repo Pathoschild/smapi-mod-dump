@@ -1,0 +1,10 @@
+{
+  "Name": "Call to build",
+  "Author": "TheWarpriest",
+  "Version": "1.2.0",
+  "Description": "Call to upgrade and construct buildings on your farm.",
+  "UniqueID": "TheWarpriest.CallToBuild",
+  "EntryDll": "CallToBuild.dll",
+  "MinimumApiVersion": "4.0.8",
+  "UpdateKeys": [ "Nexus:26122" ]
+}

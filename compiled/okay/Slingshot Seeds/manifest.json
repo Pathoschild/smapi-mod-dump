@@ -1,0 +1,10 @@
+{
+	"Name": "Slingshot Seeds",
+	"Author": "BlaDe",
+	"Version": "1.0.0",
+	"Description": "Use the Slingshot to plant your crops",
+	"UniqueID": "BlaDe.SlingshotSeeds",
+	"EntryDll": "SlingshotSeeds.dll",
+	"MinimumApiVersion": "4.0.0",
+	"UpdateKeys": [ "Nexus:25943" ]
+}

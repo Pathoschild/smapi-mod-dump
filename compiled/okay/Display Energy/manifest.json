@@ -1,10 +1,10 @@
 {
   "Name": "DisplayEnergy",
   "Author": "dmarcoux",
-  "Version": "1.0.0",
-  "Description": "Display the player's energy.",
+  "Version": "1.1.0",
+  "Description": "Permanently display the player's current and max energy. Supports split-screen.",
   "UniqueID": "dmarcoux.DisplayEnergy",
   "EntryDll": "DisplayEnergy.dll",
-  "MinimumApiVersion": "3.0.0",
-  "UpdateKeys": ["GitHub:dmarcoux/DisplayEnergy"]
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": ["GitHub:dmarcoux/DisplayEnergy", "ModDrop:1087175", "Nexus:10662"]
 }

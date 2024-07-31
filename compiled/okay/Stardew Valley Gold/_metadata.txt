@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/26006
+IDs: CleverArtisan.StardewValleyGold
+update keys: Nexus:26006

@@ -4,6 +4,7 @@
   "Forge": true,
   "Lava": true,
   "Rain": 1.0,
+  "Petals": false,
   "Sewing": false,
   "SoftLight": false,
   "Water": false,

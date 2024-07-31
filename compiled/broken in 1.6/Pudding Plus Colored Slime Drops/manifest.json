@@ -7,5 +7,7 @@
 	  "UniqueID": "TerryDBS.ColoredSlimeDrops",
 	  "EntryDll": "PuddingMod.dll",
 	  "MinimumApiVersion": "3.0.0",
-	  "UpdateKeys": ["Nexus:7048"]
+	  "UpdateKeys": ["Nexus:7048"],
+
+	  "@modDump": "Ignore update alert for 4.0.0"
 	}

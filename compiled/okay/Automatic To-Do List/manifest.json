@@ -1,0 +1,10 @@
+{
+    "Name": "Automatic To-do List",
+    "Author": "VoxaelFox",
+    "Version": "1.4.1",
+    "Description": "Automatic task management for common tasks.",
+    "UniqueID": "VoxaelFox.AutomaticTodoList",
+    "EntryDll": "AutomaticTodoList.dll",
+    "MinimumApiVersion": "4.0.0",
+    "UpdateKeys": [ "Nexus:26008" ]
+}

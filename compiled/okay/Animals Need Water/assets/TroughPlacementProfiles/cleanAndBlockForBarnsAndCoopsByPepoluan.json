@@ -1,5 +1,6 @@
 {
   "modUniqueId": "pepoluan.cleanblockbarncoop",
+  "targetBuildings": ["barn", "coop"],
   "coopTroughTiles": [
     {
       "tileX": 10,

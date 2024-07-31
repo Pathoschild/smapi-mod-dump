@@ -1,0 +1,10 @@
+{
+  "Name": "KivoValleySoundsLib",
+  "Author": "ST",
+  "Version": "2.0.0", // fixed locally
+  "Description": "Add some necessary codes into SDV",
+  "UniqueID": "ST.KivoValley.SoundsLib",
+  "EntryDll": "KivoValleySoundsLib.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": []
+}

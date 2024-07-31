@@ -1,0 +1,10 @@
+{
+  "Name": "Experience Multiplier",
+  "Author": "Falson",
+  "Version": "1.0.1",
+  "UniqueID": "Falson.ExperienceMultiplier",
+  "Description": "Allows you to set a multiplier for experience gain in each of the 5 skills. Each skill can have a different multiplier value",
+  "MinimumApiLevel": "4.1.1",
+  "EntryDll": "ExperienceMultiplier.dll",
+  "UpdateKeys": ["Nexus:25945"]
+}

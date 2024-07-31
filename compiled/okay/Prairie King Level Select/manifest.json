@@ -1,0 +1,10 @@
+{
+  "Name": "Prairie King Level Select",
+  "Author": "b1rdyw1rdy",
+  "Version": "1.0.1",
+  "Description": "Make levels in Journey of the Prairie King selectable after they have been reached",
+  "UniqueID": "b1rdyw1rdy.PrairieKingLevelSelect",
+  "EntryDll": "PrairieKingLevelSelect.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:26183" ]
+}

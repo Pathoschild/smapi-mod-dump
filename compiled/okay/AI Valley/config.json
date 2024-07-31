@@ -1,0 +1,14 @@
+{
+  "APIKey": "",
+  "Model": "Off",
+  "Prompt": "You now assume the role of one of the NPCs in the game Stardew Valley. You must provide a dialogue as your character. Remember to speak in first person.",
+  "MaxDialogueMemory": 15,
+  "MaxTokens": 150,
+  "Temperature": 0.7,
+  "FrequencyPenalty": 0.0,
+  "PresencePenalty": 0.0,
+  "TopP": 1.0,
+  "Language": "English",
+  "Debug": false,
+  "IgnoreNPCs": "Dusty"
+}

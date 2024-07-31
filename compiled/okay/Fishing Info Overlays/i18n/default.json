@@ -47,7 +47,7 @@
 	"GenericMC.barSortMode1": "Catch Chance",
 
 	"GenericMC.barExtraCheckFrequency": "Dynamic Frequency",
-	"GenericMC.barExtraCheckFrequencyDesc": "When 0: Fishing isn't simulated. A less accurate check is used. Percentages might be slightly off.\nOtherwise a performance intensive check simulates fishing in current location. The higher the number, the more attempts (more accuracy and less flickering). Should be accurate with any mod, but can tank performance if high. In split screen mode, divided by the screen amount to help performance.",
+	"GenericMC.barExtraCheckFrequencyDesc": "When 0: Fishing isn't simulated. A less accurate check is used. Percentages might be slightly off. Otherwise a performance intensive check simulates fishing in current location. The higher the number, the more attempts (more accuracy and less flickering). Should be accurate with any mod, but can tank performance if high. In split screen mode, divided by the screen amount to help performance.",
 
 	"GenericMC.barScanRadius": "Scan Radius",
 	"GenericMC.barScanRadiusDesc": "The overlay will scan an area X tiles around the player for water, and will only display fish info for the nearest water tile found (if any).",

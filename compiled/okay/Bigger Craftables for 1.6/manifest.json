@@ -6,5 +6,7 @@
   "UniqueID": "YourName.BiggerCraftables",
   "EntryDll": "BiggerCraftables.dll",
   "MinimumApiVersion": "3.0.0",
-  "UpdateKeys": []
+  "UpdateKeys": [],
+
+  "@modDump": "ignore update alert for 1.6.0"
 }

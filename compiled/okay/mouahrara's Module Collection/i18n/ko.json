@@ -1,0 +1,96 @@
+{
+	// Arcade games - Pay-to-play
+	"ArcadeGames.PayToPlay.JunimoKart_InsertCoin": "동전을 넣어 주세요",
+	"ArcadeGames.PayToPlay.JunimoKart_PressAnyButton": "아무 버튼이나 누르세요",
+	"ArcadeGames.PayToPlay.JunimoKart_Loading": "로딩 중...",
+	"ArcadeGames.PayToPlay.JunimoKart_Credit0": "크레딧: 0",
+	"ArcadeGames.PayToPlay.JunimoKart_Credit1": "크레딧: 1",
+	"ArcadeGames.PayToPlay.JunimoKart_Free": "무료",
+
+	// GMCM - Modules
+	"GMCM.Modules.Enabled.Title": "활성화",
+	"GMCM.Modules.Enabled.Tooltip": "모드가 활성화 되었는지 여부.",
+
+	// GMCM - Sections
+	"GMCM.ArcadeGames.Title": "아케이드 게임",
+	"GMCM.ArcadeGames.Description": "모드 상용시 아케이드 게임에 사소한 조정과 기능을 추가합니다.",
+	"GMCM.ArcadeGames.BackTo": "아케이드 게임으로 돌아가기",
+	"GMCM.Machines.Title": "기계",
+	"GMCM.Machines.Description": "모드 사용시 기계에 사소한 조정과 기능을 추가합니다.",
+	"GMCM.Machines.BackTo": "기계로 돌아가기",
+	"GMCM.Shops.Title": "상점",
+	"GMCM.Shops.Description": "모드 사용시 상점에 사소한 조정 및 기능을 추가합니다.",
+	"GMCM.Shops.BackTo": "상점으로 돌아 가기",
+	"GMCM.UserInterface.Title": "사용자 인터페이스",
+	"GMCM.UserInterface.Description": "모드 사용시 사용자 인터페이스에 사소한 조정 및 기능을 추가합니다.",
+	"GMCM.UserInterface.BackTo": "사용자 인터페이스로 돌아가기",
+	"GMCM.Other.Title": "기타",
+	"GMCM.Other.Description": "모드 사용시 다른 게임 요소에 사소한 조정과 기능을 추가합니다.",
+	"GMCM.Other.BackTo": "기타로 돌아가기",
+
+	// GMCM - Sections - Arcade games - Modules
+	"GMCM.ArcadeGames.KonamiCode.Title": "치트 코드",
+	"GMCM.ArcadeGames.KonamiCode.Tooltip": "무제한 생명을 얻으려면 비밀 코드를 입력하세요.",
+	"GMCM.ArcadeGames.KonamiCode.Description": "모드 사용시 치트 코드를 입력하여 무제한 생명을 얻을 수 있습니다.",
+	"GMCM.ArcadeGames.KonamiCode.AdditionalInformation": "/!\\ 무제한 생명 모드에서는 아케이드 게임을 이긴 업적과 특별 보상이 비활성화됩니다.",
+	"GMCM.ArcadeGames.NonRealisticLeaderboard.Title": "순위표",
+	"GMCM.ArcadeGames.NonRealisticLeaderboard.Tooltip": "순위표 에서 동일한 플레이어의 여러 고득점을 숨 깁니다.",
+	"GMCM.ArcadeGames.NonRealisticLeaderboard.Description": "모드 사용시 순위표에서 동일한 플레이어의 여러 고득점을 제거 합니다.",
+	"GMCM.ArcadeGames.PayToPlay.Title": "유료 게임",
+	"GMCM.ArcadeGames.PayToPlay.Tooltip": "아케이드 게임을 유료로 플레이하세요.",
+	"GMCM.ArcadeGames.PayToPlay.Description": "모드 사용시 아케이드 게임을 플레이하려면 비용을 지불해야합니다.",
+	"GMCM.ArcadeGames.PayToPlay.CoinPerJotPKGame.Title": "프레리 킹 게임당 코인",
+	"GMCM.ArcadeGames.PayToPlay.CoinPerJotPKGame.Tooltip": "프레리 킹 게임을 플레이하는 데 필요한 금화 ($) 수입니다.",
+	"GMCM.ArcadeGames.PayToPlay.CoinPerJKGame.Title": "주니모 카트 게임당 코인",
+	"GMCM.ArcadeGames.PayToPlay.CoinPerJKGame.Tooltip": "주니모 카트 게임을 플레이하는 데 필요한 금화 ($) 수입니다.",
+
+	// GMCM - Sections - Machines - Modules
+	"GMCM.Machines.SafeReplacement.Title": "안전 교체",
+	"GMCM.Machines.SafeReplacement.Tooltip": "보석 복제기에 새 보석을 삽입할 때 자동으로 보석 복제기의 내용물을 검색합니다",
+	"GMCM.Machines.SafeReplacement.Description": "모드 사용시 보석을 삽입할 때 자동으로 보석의 내용을 검색합니다.",
+
+	// GMCM - TweaksAndFeatures - Shops - Modules
+	"GMCM.Shops.BetterAnimalPurchase.Title": "편리한 동물 구매",
+	"GMCM.Shops.BetterAnimalPurchase.Tooltip": "여러 동물을 연속으로 구매하고 색상을 선택하세요.",
+	"GMCM.Shops.BetterAnimalPurchase.Description": "모드 사용시 여러 동물을 연속으로 구매하고 색상을 선택할 수 있습니다.",
+	"GMCM.Shops.BetterAnimalPurchase.SecondaryPreviousKey.Title": "보조 이전 키",
+	"GMCM.Shops.BetterAnimalPurchase.SecondaryPreviousKey.Tooltip": "키보드의 왼쪽 화살표 키에 추가하여 이전 품종의 동물을 선택하는 보조 키입니다.",
+	"GMCM.Shops.BetterAnimalPurchase.SecondaryNextKey.Title": "보조 다음 키",
+	"GMCM.Shops.BetterAnimalPurchase.SecondaryNextKey.Tooltip": "키보드의 오른쪽 화살표 키 외에 다음 종류의 동물을 선택하기 위한 보조 키입니다.",
+	"GMCM.Shops.GeodesAutoProcess.Title": "정동석 자동 가공",
+	"GMCM.Shops.GeodesAutoProcess.Tooltip": "많은 정동석을 자동으로 빠르게 처리합니다.",
+	"GMCM.Shops.GeodesAutoProcess.Description": "모드 사용시 많은 정동석을 자동으로 빠르게 처리할 수 있습니다.",
+	"GMCM.Shops.GeodesAutoProcess.SpeedMultiplier.Title": "가공 속도 승수",
+	"GMCM.Shops.GeodesAutoProcess.SpeedMultiplier.Tooltip": "가공 속도를 조정하는 승수입니다.",
+
+	// GMCM - Sections - User Interface - Modules
+	"GMCM.UserInterface.FastScrolling.Title": "빠른 스크롤",
+	"GMCM.UserInterface.FastScrolling.Tooltip": "건물을 짓거나, 이동하거나, 페인트 칠하거나, 파괴 할 때, 농장 동물을 구매하거나 이동할 때 더 빠르게 스크롤하세요.",
+	"GMCM.UserInterface.FastScrolling.Description": "모드 사용시 건물을 건설, 이동, 페인트 칠 또는 파괴 할 때와 농장 동물을 구매하거나 이동할 때 더 빠르게 스크롤 할 수 있습니다.",
+	"GMCM.UserInterface.FastScrolling.SpeedMultiplier.Title": "스크롤 속도 승수",
+	"GMCM.UserInterface.FastScrolling.SpeedMultiplier.Tooltip": "스크롤 속도를 조정하는 승수입니다.",
+	"GMCM.UserInterface.FastScrolling.ConsistentScrolling.Title": "일관된 스크롤",
+	"GMCM.UserInterface.FastScrolling.ConsistentScrolling.Tooltip": "스크롤 느낌을 일관되게 유지하기 위해 줌 레벨에 따라 스크롤 속도를 조정합니다.",
+	"GMCM.UserInterface.Zoom.Title": "확대 및 축소",
+	"GMCM.UserInterface.Zoom.Tooltip": "건물을 짓거나, 이동하거나, 페인트칠하거나, 파괴할 때, 그리고 농장 동물을 구매하거나 이동할 때 확대 및 축소하세요.",
+	"GMCM.UserInterface.Zoom.Description": "모드 사용시 건물을 짓고, 이동하고, 페인트 칠하거나 파괴 할 때, 농장 동물을 구매하거나 이동할 때 확대 및 축소 할 수 있습니다.",
+	"GMCM.UserInterface.Zoom.SecondaryZoomInKey.Title": "보조 확대 및 축소 키",
+	"GMCM.UserInterface.Zoom.SecondaryZoomInKey.Tooltip": "마우스 위로 스크롤하는 것 외에 확대하기 위한 보조 키입니다.",
+	"GMCM.UserInterface.Zoom.SecondaryZoomOutKey.Title": "보조 확대 및 축소 키",
+	"GMCM.UserInterface.Zoom.SecondaryZoomOutKey.Tooltip": "확대 및 축소를위한 마우스 스크롤 외에 보조 키입니다.",
+	"GMCM.UserInterface.Zoom.SpeedMultiplier.Title": "축소 속도 승수",
+	"GMCM.UserInterface.Zoom.SpeedMultiplier.Tooltip": "축소 속도를 조정하는 배율입니다.",
+	"GMCM.UserInterface.Zoom.MinimumZoomLevel.Title": "최소 축소 레벨",
+	"GMCM.UserInterface.Zoom.MinimumZoomLevel.Tooltip": "도달할 수 있는 최소 축소 수준입니다. 이 옵션은 매우 큰 지도에서 지연을 유발할 수 있는 과도한 축소를 방지하는 데 도움이 됩니다.",
+
+	// GMCM - Sections - Other - Modules
+	"GMCM.Other.BetterPorchRepair.Title": "더 나은 현관 수리",
+	"GMCM.Other.BetterPorchRepair.Tooltip": "첫 번째 업그레이드 후 농가 현관을 완전히 수리하여 이전에 부서진 부분을 걸을 수 있고 거기에 물건을 놓을 수 있습니다.",
+	"GMCM.Other.BetterPorchRepair.Description": "모드 사용시 첫 번째 업그레이드 후 농가 현관을 완전히 수리하여 이전에 부서진 영역을 걸을 수 있고 거기에 물건을 놓을 수 있습니다.",
+	"GMCM.Other.FestivalEndTime.Title": "축제 종료 시간",
+	"GMCM.Other.FestivalEndTime.Tooltip": "축제가 끝날 시간에 맞춰 집으로 돌아가세요.",
+	"GMCM.Other.FestivalEndTime.Description": "모드 사용시 축제가 종료되는 시간에 집으로 돌아갈 수 있습니다.",
+	"GMCM.Other.FestivalEndTime.AdditionalInformation": "축제 종료 시간은 오전 1시 사이의 최소값과 도착 종료 시간과 축제 기간의 합으로 결정됩니다.\n\n공식은 다음과 같습니다: min(1am, ArrivalEndTime + FestivalDuration).\n\n예를 들어 달걀축제의 도착 종료 시간은 오후 2시입니다. 기본 기간인 2시간을 고려할 때 축제 종료 시간은 오후 4시입니다.",
+	"GMCM.Other.FestivalEndTime.AdditionalTime.Title": "기간(시간)",
+	"GMCM.Other.FestivalEndTime.AdditionalTime.Tooltip": "축제 종료 시간을 얻기 위해 도착 종료 시간에 추가할 축제 기간입니다."
+}

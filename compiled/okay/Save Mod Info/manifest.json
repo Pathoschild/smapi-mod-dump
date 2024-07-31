@@ -1,0 +1,11 @@
+{
+    "Name": "Save Mod Info",
+    "Author": "weizinai",
+    "Version": "0.1.0",
+    "Description": "This mod can display the mod change information of the game save.",
+    "UniqueID": "weizinai.SaveModInfo",
+    "EntryDll": "SaveModInfo.dll",
+    "UpdateKeys": [
+        "Nexus: 25903"
+    ]
+}

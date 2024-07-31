@@ -1,10 +1,15 @@
 {
-  "UseVanillaDoors": true,
-  "UseVMVDoors": true,
-  "SinglePlayerMode": false,
+  "OwnerFarmhouse": "Owner",
+  "OwnerOutside": "PlacedBy",
   "LockedDoorColor": {
     "B": 0,
     "G": 0,
+    "R": 153,
+    "A": 153
+  },
+  "LockedWhenOfflineDoorColor": {
+    "B": 0,
+    "G": 153,
     "R": 153,
     "A": 153
   },

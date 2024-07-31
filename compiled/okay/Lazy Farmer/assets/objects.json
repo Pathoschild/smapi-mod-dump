@@ -1,0 +1,38 @@
+{
+  "LazyEssence": {
+    "Name": "Lazy Essence",
+    "DisplayName": "Lazy Essence",
+    "Description": "The very essence of lazyness.",
+    "Type": "Basic",
+    "Category": -15,
+    "Price": 1,
+    "Texture": "TileSheets/LazySprites",
+    "SpriteIndex": 0,
+    "Edibility": -300,
+    "IsDrink": false,
+    "Buffs": null,
+    "GeodeDropsDefaultItems": false,
+    "GeodeDrops": null,
+    "ArtifactSpotChances": null,
+    "CanBeGivenAsGift": true,
+    "CanBeTrashed": true,
+    "ExcludeFromFishingCollection": true,
+    "ExcludeFromShippingCollection": true,
+    "ExcludeFromRandomSale": false,
+    "ContextTags": ["color_gray"],
+    "CustomFields": null
+  },
+  "LazyDrink": {
+    "Name": "Lazy Drink",
+    "DisplayName": "Lazy Drink",
+    "Description": "A drink for when you're feeling lazy.",
+    "Type": "Crafting",
+    "Category": 0,
+    "Price": 1,
+    "Texture": "TileSheets/LazySprites",
+    "SpriteIndex": 3,
+    "Edibility": 1,
+    "IsDrink": true,
+    "Buffs": [{ "BuffId": "LazyBuff" }]
+  }
+}

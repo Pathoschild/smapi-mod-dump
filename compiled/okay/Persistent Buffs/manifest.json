@@ -1,7 +1,7 @@
 {
   "Name": "PersistentBuffs",
   "Author": "aceynk",
-  "Version": "1.1.0",
+  "Version": "1.1.1",
   "Description": "Allows creation of buffs that persist through sleep.",
   "UniqueID": "aceynk.PersistentBuffs",
   "EntryDll": "PersistentBuffs.dll",

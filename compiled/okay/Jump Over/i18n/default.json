@@ -1,0 +1,9 @@
+﻿{
+    /*********
+    ** Generic Mod Config Menu UI
+    *********/
+    "config.jump-key.name": "Jump Key",
+    "config.jump-key.tooltip": "The key to jump.",
+    "config.rock-crab-crushing.name": "Rock Crab Crushing",
+    "config.rock-crab-crushing.tooltip": "The ability to crush rock crabs by jumping on them.",
+}

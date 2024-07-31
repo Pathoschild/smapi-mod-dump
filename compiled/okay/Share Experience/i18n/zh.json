@@ -1,4 +1,6 @@
 {
   "config.name.ShareConversionPercent": "经验转化率百分比(%)",
-  "config.tips.ShareConversionPercent": "范围: [0, 100]"
+  "config.tips.ShareConversionPercent": "范围: [0, 100]",
+  "config.name.ExtraSkills": "设置额外的MOD技能ID",
+  "config.tips.ExtraSkills": "如果使用的其它MOD中增加了额外技能，可以配置此项使额外技能可以与基础技能一起分享经验，格式为技能标识数字用空格隔开，示例:5 6，具体配置方法在N网介绍页。"
 }

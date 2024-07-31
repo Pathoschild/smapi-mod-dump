@@ -75,6 +75,7 @@
 	"mineIronOre": "挖掘铁矿石矿点(矿井第41层及以后,71-79层为多)",
 	"mineGoldOre": "挖掘金矿石矿点(矿井第81层及以后)",
 	"mineIridiumOre": "挖掘铱矿石矿点(矿井第101层及以后)、陨石(稀有事件)",
+	"mineRadioactiveOre": "Mine Radioactive Nodes (Mines in dangerous state)", // TODO
 	
 	// Gems Through Mining
 	"gemEmerald": "挖掘绿宝石矿点(矿井第81层及以后)、挖掘宝石矿点",
@@ -85,6 +86,8 @@
 	"gemJade": "挖掘翡翠矿点(矿井第41层及以后)、挖掘宝石矿点",
 	"gemDiamond": "挖掘钻石矿点(矿井第51层及以后)、挖掘宝石矿点",
 	"gemPrismaticShard": "挖掘宝石矿点、神秘矿石(矿井第101层及以后, 25%)、铱矿石矿点(4%)",
+	"gemCinderShard": "Mine Cinder Shard Node (Volcano)", // TODO
+	"boneNode": "Mine Bone Node (Ginger Island Dig Site)", // TODO
 	
 	// Farm Cave
 	"caveYours": "农场的山洞", // once cave type has been chosen, the other type is disregarded and this is used
@@ -144,6 +147,7 @@
 	
 	// Location Names (for foraging suggestions)
 	"locationFarm": "农场",
+	"locationTown": "in Pelican Town", // TODO
 	"locationMines": "矿井",
 	"locationMinesArea1": "矿井1-39层",
 	"locationMinesArea2": "矿井41-79层",
@@ -154,10 +158,13 @@
 	"locationBeachEast": "海滩(右边部分)",
 	"locationBeachEastInaccessible": "海滩(右边部分;需用300个{{wood}}修复桥)", // tip displayed if bridge is not fixed
 	"locationForest": "煤矿森林",
+	"locationBus": "at Bus Stop", // TODO
 	"locationWoods": "秘密森林",
 	"locationSewer": "下水道",
 	"locationDesert": "卡利科沙漠",
 	"locationSkullPrehistoric": "头骨山洞的史前层",
+	"locationIsland": "on Ginger Island", // TODO
+	"locationVolcano": "in the Volcano", // TODO
 	"locationRidgeForest": "in Ridge Forest", // RSV // TODO
 	"locationUnknown": "in ???",
 	
@@ -168,6 +175,7 @@
 	"waterMountain": "山区湖泊",
 	"waterForestPond": "煤矿森林池塘",
 	"waterForestRiver": "煤矿森林河流",
+	"waterForestFalls": "at bottom of Cindersap Forest waterfalls", // TODO
 	"waterSpecialFarm": "农场",
 	"waterWoods": "秘密森林池塘",
 	"waterDesert": "沙漠池塘",
@@ -218,6 +226,9 @@
 	"shopDesertTrader": "沙漠商人",
 	"shopOasis": "绿洲",
 	"shopOasisWeekday": "绿洲({{day}})",
+	"shopIslandTrader": "Island Trader", // TODO
+	"shopIslandResort": "Island Resort", // TODO
+	"shopDwarfVolcano": "Volcano Dwarf", // TODO
 	"shopTravelingCartRandom": "旅行货车(随机)",
 	"shopTravelingCartSeason": "{{season}}于旅行货车",
 	"shopEggFestival": "复活节中皮埃尔的摊位(春季第13日)",
@@ -256,6 +267,8 @@
 	"treePomegranate": "石榴树",
 	"treeCherry": "樱桃树",
 	"treeMahogany": "Mahogany Tree", // TODO
+	"treeBanana": "Banana Tree", // TODO
+	"treeMango": "Mango Tree", // TODO
 	"treeLime": "青柠树", // Cornucopia
 	"treePapaya": "木瓜树", // Cornucopia
 	"treeWalnut": "胡桃树", // Cornucopia
@@ -274,6 +287,7 @@
 	"treeMaple": "枫树",
 	"treeOak": "橡树",
 	"treePine": "松树",
+	"treeMystic": "Mystic Tree ({{craftingInfo}})", // TODO
 	"treeMushroom": "蘑菇树(秋季 稀有事件)",
 	"treeDescSeedling": "幼苗在{{shop}}可以买到{{startingYear}}", // advice for fruit trees
 	"treeDescNonFruit": "在农场已有 或 种植{{treeSeed}}", // advice for Maple/Oak/Pine trees
@@ -344,12 +358,14 @@
 	"recipeIngredientSeparator": "、",
 	
 	// Skill Level Requirements
-	"farmingLvRequirement": "耕种等级{{num}}",
-	"miningLvRequirement": "采矿等级{{num}}",
-	"fishingLvRequirement": "钓鱼等级{{num}}",
-	"foragingLvRequirement": "采集等级{{num}}",
-	"combatLvRequirement": "战斗等级{{num}}",
+	"skillLvRequirement": "{{skill}}等级{{num}}",
 	"totalSkillLvRequirement": "总等级{{num}}",
+	"skillMastery": "{{skill}} Mastery",
+	"farmingSkill": "耕种",
+	"miningSkill": "采矿",
+	"fishingSkill": "钓鱼",
+	"foragingSkill": "采集",
+	"combatSkill": "战斗",
 	
 	// Machine Sources
 	"statueOfPerfectionTip": "爷爷的评估为满分", // advice for statue if you haven't had evaluation or achieved 4 candles
@@ -385,4 +401,15 @@
 	"yearSeason": "第{{year}}年的{{season}}",
 	"year": "第{{year}}年",
 	"today": "今天", // when Queen of Sauce episode is airing that very day
+	
+	/***** Mod Config Menu Text *****/
+	
+	"optionShowSpoilersName": "Show Spoilers", // TODO
+	"optionShowSpoilersTooltip": "Whether hints should include spoilers of certain things not yet encountered.", // TODO
+	
+	"optionCollectionsTabName": "Collections Tab Hints", // TODO
+	"optionCollectionsTabTooltip": "Additionally show tooltip hints in the Collections tab for how to obtain items. For \"All Items\" setting, toggle display with click/Action/Tool Button. (Items from mods not guaranteed to show hints.)", // TODO
+	"collectionsTabOff": "Off", // TODO
+	"collectionsTabUnknowns": "Unknowns Only", // TODO
+	"collectionsTabAll": "All Items", // TODO
 }

@@ -1,0 +1,20 @@
+{
+    "$schema": "https://smapi.io/schemas/i18n.json",
+    "Farm Damage": "Rapport de dégâts :",
+    "Colon_Punctuation": " : ",
+    "Tilled Soil": "Sol labouré",
+    "GMCM Visuals": "Visuels :",
+    "GMCM Crop Images": "Images pour cultures détruites",
+    "Growing Plant": "Plante en croissance",
+    "Seed Packet": "Paquet de graines",
+    "Harvested Produce": "Produit à récolter",
+    "GMCM Show In World Overlay": "Montrer les objets détruits ",
+    "GMCM Show In World Overlay Tooltip": "Une image clignotante de l’objet détruit s’affiche sur l’endroit précédent",
+    "GMCM Show X": "Afficher un ''X'' pour les dégâts",
+    "GMCM Show X Tooltip": "Un ''X'' indiquera chaque lieu endommagé. Si le lieu est en dehors de l’écran, une flèche pointera vers la destination en bordure d’écran.", 
+    "GMCM Function": "Fonction :",
+    "GMCM New Object": "Le nouvel objet retire l’affichage",
+    "GMCM New Object Tooltip": "Les images s’effaceront à la fin de chaque jour à chaque fois. Cette option retire l’image de l’objet détruit si vous placez un autre objet par-dessus ou labourez le sol.",
+    "GMCM Show HUD Damage Report": "Notification quotidienne de dégâts",
+    "GMCM Show HUD Damage Report Tooltip": "Chaque matin si des débris causent des dégâts alors un « Rapport de dégâts » s’affichera dans la fenêtre de notification du jeu."
+  }

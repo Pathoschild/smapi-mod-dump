@@ -68,9 +68,6 @@
     "config.casino-slots.name": "赌场老虎机",
     "config.casino-slots.tooltip": "赌场老虎机的转速。默认{{defaultValue}}x。",
 
-    "config.event.name": "事件",
-    "config.event.tooltip": "事件的速度。默认{{defaultValue}}x，建议{{suggestedValue}}x.",
-
     "config.fade.name": "淡入淡出",
     "config.fade.tooltip": "屏幕淡入淡出黑色的速度。默认{{defaultValue}}x.",
 
@@ -113,5 +110,14 @@
     "config.title-menu.tooltip": "标题菜单的转场速度，即新建、加载存档时屏幕切换的速度。默认{{defaultValue}}x。",
 
     "config.load-game-blink.name": "点击存档后的闪烁效果",
-    "config.load-game-blink.tooltip": "加载存档时，点击某个存档后闪烁的速度。默认{{defaultValue}}x。"
+    "config.load-game-blink.tooltip": "加载存档时，点击某个存档后闪烁的速度。默认{{defaultValue}}x。",
+
+    /****
+    ** 'Experimental' section
+    ****/
+    "config.experimental": "Experimental options", // TODO
+    "config.experimental-warning": "These options aren't fully stable yet, and may cause issues like freezes and crashes. Enabling any of these isn't recommended.", // TODO
+
+    "config.event.name": "事件",
+    "config.event.tooltip": "事件的速度。默认{{defaultValue}}x，建议{{suggestedValue}}x."
 }

@@ -1,0 +1,11 @@
+﻿{
+  "Name": "IDigWhereIWant",
+  "Author": "WillTheMage",
+  "Version": "1.0.1",
+  "Description": "Allows you to use the hoe anywhere on the screen.",
+  "UniqueID": "WillTheMage.IDigWhereIWant",
+  "EntryDll": "IDigWhereIWant.dll",
+  "MinimumApiVersion": "3.8.0",
+  "MinimumGameVersion": "1.6.0",
+  "UpdateKeys": ["Nexus:26063"]  
+}

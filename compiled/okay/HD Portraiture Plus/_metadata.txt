@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/26029
+IDs: Smallfire.HDPortraiturePlus
+update keys: Nexus:???, Nexus:26029, GitHub:Platonymous/Stardew-Valley-Mods

@@ -28,5 +28,9 @@
 	"openByPhone_tooltip": "允许玩家使用电话打开菜单",
 	"openByKey_tooltip": "允许玩家使用键绑定打开菜单",
 	"openByPad_tooltip": "允许玩家使用JPad打开菜单",
-	"CloseWhenCCComplete": "在社区中心完成后关闭乔家社区"
+	"CloseWhenCCComplete": "在社区中心完成后关闭乔家社区",
+	"sorry": "抱歉，暂时没有可用服务。您可以尝试调整设置。",
+	"enablec": "启用乔家社区",
+	"enableg": "启用乔家全球",
+	"enableq": "启用乔家·齐"
 }

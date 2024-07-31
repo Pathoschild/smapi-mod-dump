@@ -1,5 +1,6 @@
 {
   "ScrollDelay": 25,
   "ScrollCharacterLength": 10,
-  "DebugLogging": false
+  "DebugLogging": false,
+  "ShowItemTooltip": true
 }

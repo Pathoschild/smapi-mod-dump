@@ -68,9 +68,6 @@
     "config.casino-slots.name": "Slot del casinò",
     "config.casino-slots.tooltip": "La velocità di rotazione delle slot del casinò. Predefinito {{defaultValue}}x.",
 
-    "config.event.name": "Filmati degli eventi",
-    "config.event.tooltip": "La velocità di riproduzione dei filmati degli eventi. Predefinito {{defaultValue}}x, consigliato {{suggestedValue}}x.",
-
     "config.fade.name": "Dissolvenza",
     "config.fade.tooltip": "La velocità con cui lo schermo passa al nero e va in dissolvenza. Predefinito {{defaultValue}}x.",
 
@@ -113,5 +110,14 @@
     "config.title-menu.tooltip": "La velocità di transizione del menu principale tra le schermate. Predefinito {{defaultValue}}x.",
 
     "config.load-game-blink.name": "Lampeggiamento del caricamento della partita",
-    "config.load-game-blink.tooltip": "La velocità con cui avviene il ritardo del lampeggiamento degli slot dopo aver fatto clic su uno slot di caricamento-salvataggio. Predefinito {{defaultValue}}x."
+    "config.load-game-blink.tooltip": "La velocità con cui avviene il ritardo del lampeggiamento degli slot dopo aver fatto clic su uno slot di caricamento-salvataggio. Predefinito {{defaultValue}}x.",
+
+    /****
+    ** 'Experimental' section
+    ****/
+    "config.experimental": "Experimental options", // TODO
+    "config.experimental-warning": "These options aren't fully stable yet, and may cause issues like freezes and crashes. Enabling any of these isn't recommended.", // TODO
+
+    "config.event.name": "Filmati degli eventi",
+    "config.event.tooltip": "La velocità di riproduzione dei filmati degli eventi. Predefinito {{defaultValue}}x, consigliato {{suggestedValue}}x."
 }

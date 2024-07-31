@@ -1,0 +1,13 @@
+{
+    "Name": "More Visible Cask Rarity",
+    "Author": "mushymato",
+    "Version": "1.0.0",
+    "MinimumApiVersion": "4.0.0",
+    "MinimumGameVersion": "1.6.0",
+    "Description": "Move the rarity indicator on casks to a more visible location.",
+    "UniqueID": "mushymato.MoreVisibleCaskRarity",
+    "UpdateKeys": [
+        "Nexus:26052"
+    ],
+    "EntryDll": "MoreVisibleCaskRarity.dll"
+}

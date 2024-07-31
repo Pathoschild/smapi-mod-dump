@@ -7,5 +7,6 @@
   "TransformSound": "cowboy_explosion",
   "MoveSpeed": 10,
   "StaminaUse": 0,
+  "UseMana": true,
   "ZoomOutEnabled": true
 }

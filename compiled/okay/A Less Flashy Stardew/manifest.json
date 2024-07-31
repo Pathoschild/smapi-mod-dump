@@ -1,7 +1,7 @@
 {
   "Name": "Less Flashy Stardew",
   "Author": "mistyspring",
-  "Version": "3.1.1",
+  "Version": "3.2.0",
   "Description": "Reduces flashing in SDV.",
   "UniqueID": "mistyspring.lessflashy",
   "EntryDll": "LessFlashy.dll",

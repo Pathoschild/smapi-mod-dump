@@ -28,5 +28,9 @@
 	"openByPhone_tooltip": "Allow player to open the shop using Phone",
 	"openByKey_tooltip": "Allow player to open the shop using key bind",
 	"openByPad_tooltip": "Allow player to open the shop using JPad",
-	"CloseWhenCCComplete": "Close Joja Community When Community Centre is completed"
+	"CloseWhenCCComplete": "Close Joja Community When Community Centre is completed",
+	"sorry": "Sorry, it seems that no services are avaliable now. You may need to change the configuration.",
+	"enablec": "Enable Joja Community",
+	"enableg": "Enable Joja Global",
+	"enableq": "Enable Joja Qi"
 }

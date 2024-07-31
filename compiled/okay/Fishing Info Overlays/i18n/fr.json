@@ -1,0 +1,84 @@
+{
+	"GenericMC.barLabel": "Barre d’aperçu (lieu)",
+	"GenericMC.barDescription": "Une barre qui montre les informations du lieu lorsque vous tenez une canne à pêche (appât/leurre/déchets/poisson ici) ou un casier à crabes (déchets/crustacés ici).",
+	"GenericMC.barDescription2": "Vous pouvez survoler le nom de la variable pour plus d’information. Si vous tenez une canne à pêche et sauvegardez, vous pouvez voir les résultats se mettre à jour dans ce menu.",
+
+	"GenericMC.barSonarMode": "Nécessite un flotteur à sonar",
+	"GenericMC.barSonarModeDesc": "Le flotteur à sonar (1.6) devient une condition pour certaines fonctionnalités du mod :\nMod entier : désactive toutes les fonctionnalités du mode sans sonar.\nMini + Scan : désactive l’aperçu du mini-jeu et la fonctionnalité Shift Scan sans sonar.\nShift Scan : désactive la visée de la souris lorsque la touche Shift est maintenue sans sonar.",
+	"GenericMC.barSonarMode0": "Mod entier",
+	"GenericMC.barSonarMode1": "Mini + Scan",
+	"GenericMC.barSonarMode2": "Shift Scan",
+
+	"GenericMC.barIconMode": "Icône du mode",
+	"GenericMC.barIconModeDesc": "La direction dans laquelle les icônes (appât/leurre/déchets/poisson) vont bouger avant d’être séparées en lignes/colonnes",
+	"GenericMC.barIconMode0": "Icônes horizontales",
+	"GenericMC.barIconMode1": "Icônes verticales",
+	"GenericMC.barIconMode2": "Icônes verticales + Texte",
+
+	"GenericMC.Disabled": "Désactivé",
+
+	"GenericMC.barPosX": "Position horizontale (X)",
+	"GenericMC.barPosXDesc": "Coordonnée horizontale (X) du coin supérieur gauche de la barre.\nLes valeurs de pixel commencent à 0 jusqu’à la taille de votre écran.",
+	"GenericMC.barPosY": "Position verticale (Y)",
+	"GenericMC.barPosYDesc": "Coordonnée verticale (Y) du coin supérieur gauche de la barre.\nLes valeurs de pixel commencent à 0 jusqu’à la taille de votre écran.",
+
+	"GenericMC.barScale": "Échelle",
+	"GenericMC.barScaleDesc": "La barre s’échelonne selon l’échelle de l’UI et cette variable (pour un ajustement plus fin).\nValeurs entre 0.1 et 10.",
+
+	"GenericMC.barMaxIcons": "Icônes max (au total)",
+	"GenericMC.barMaxIconsDesc": "Combien d’icônes la barre peut afficher au total.\nValeurs entre 4 et 500. Trop peut causer du lag.",
+	"GenericMC.barMaxIconsPerRow": "Icônes max (par colonne/ligne)",
+	"GenericMC.barMaxIconsPerRowDesc": "Combien d’icônes la barre peut afficher avant de changer de colonne (mode horizontal) ou de ligne (mode vertical).\nValeurs entre 4 et 500. De préférence un nombre total divisible.",
+
+	"GenericMC.barBackgroundMode": "Mode d’arrière-plan",
+	"GenericMC.barBackgroundModeDesc": "L’arrière-plan noir derrière les icône, principalement utile pour le mode Icône+Texte.\nLes cercles sont peints derrière chaque icône.\nLe rectangle est dessiné derrière tout (meilleure performance).",
+	"GenericMC.barBackgroundMode0": "Cercles",
+	"GenericMC.barBackgroundMode1": "Rectangle",
+
+	"GenericMC.barShowBaitTackle": "Montrer les icônes appât/leurre",
+	"GenericMC.barShowBaitTackleDesc": "Active les icônes qui montrent combien d’appâts et la durabilité du leurre votre canne à pêche a (s’il y en a).",
+
+	"GenericMC.barShowPercentages": "Montrer les pourcentages",
+	"GenericMC.barShowPercentagesDesc": "Montre un pourcentage de chance simulé d’attraper chaque poisson sous son icône.\ns’appuie beaucoup sur la fréquence de vérification : plus il y en, mieux c’est.",
+
+	"GenericMC.barSortMode": "Mode de tri",
+	"GenericMC.barSortModeDesc": "Trier par nom arrange les icônes de façon alphabétique.\nTrier par probabilité (%) s’appuie sur la fréquence de vérification : plus il y en, mieux c’est.\nSans tri, l’ordre est : Déchets ; par ID ; extras.",
+	"GenericMC.barSortMode0": "Nom",
+	"GenericMC.barSortMode1": "Probabilité (%)",
+
+	"GenericMC.barExtraCheckFrequency": "Fréquence dynamique",
+	"GenericMC.barExtraCheckFrequencyDesc": "À 0 il n’y a pas de simulation. Une vérification moins précise est mise en place. Les pourcentages peuvent ne pas être valables. Sinon une simulation demandant une intense performance recrée les conditions de pêche dans la zone. Plus haut est le nombre, plus il y aura d’essai (plus de précision et moins d’oscillation). Devrait être précis avec tous les mods mais peut agir sur les performances si haut. En mode écran divisé, est également divisé par le nombre d’écran pour aider les performances.",
+
+	"GenericMC.barScanRadius": "Rayon de scan",
+	"GenericMC.barScanRadiusDesc": "L’overlay va scanner X cases autour du joueur pour de l’eau et montrera uniquement les informations sur les poissons pour la prochaine case d’eau trouvée (s’il y en a une).",
+
+	"GenericMC.barCrabPotEnabled": "Aperçu du casier de crabes",
+	"GenericMC.barCrabPotEnabledDesc": "Étend l’aperçu au casier de crabes.",
+
+	"GenericMC.barUncaughtDarker": "Poissons inconnus cachés",
+	"GenericMC.barUncaughtDarkerDesc": "Fait apparaître les icônes de poissons non encore attrapés noir comme dans l’onglet Collection (s’applique aussi au mini-jeu). Le mode Icone Textuelle les montre aussi comme « ??? ».",
+
+	"GenericMC.barOnlyFish": "Seulement les poissons",
+	"GenericMC.barOnlyFishDesc": "La barre va uniquement montrer des choses provenant de la liste officielle des poissons (et déchets), passant sur des choses comme des meubles ou notes. Ils contribuent toujours au calcul des probabilités. C’est principalement par souci de cohérence, puisque certains de ces objets sont déjà sur liste noire (cachés). Gardez en tête qu’il y a une petite probabilité que certains mods n’ajoutent pas leurs poissons sur cette liste, même si ceux-ci ne compteraient pas vraiment comme des poissons.",
+
+	"GenericMC.MinigameLabel": "Aperçu (Mini-jeu)",
+	"GenericMC.MinigameDescription": "Si activé, le mini-jeu de pêche montrera un aperçu du poisson que vous essayez d’attraper à la place de l’icône générique",
+	"GenericMC.MinigameDescription2": "Tant que ce mod remplace la variable de position BobberBar ça devrait fonctionner, autrement vous devriez essayer un autre mod ou désactiver l’aperçu ici.",
+
+	"GenericMC.MinigameMode": "Mode mini-jeu",
+	"GenericMC.MinigameModeDesc": "Complet : copie de multiples couches pour mieux apparaître.\nSimple : remplace uniquement le poisson, l’apparence est moins bonne mais offre de meilleures performances.\nBarre uniquement (inclus dans les deux précédents) : souligne les contours du poisson dans la barre du lieu (si activée).",
+	"GenericMC.MinigameMode0": "Complet",
+	"GenericMC.MinigameMode1": "Simple",
+	"GenericMC.MinigameMode2": "Barre uniquement",
+
+	"GenericMC.SplitScreenDesc": "Paramètres Écran-partagé. Seulement le joueur principal devrait changer ceci.",
+	"GenericMC.SplitScreen2": "Écran partagé 2 : (Haut) Droite",
+	"GenericMC.SplitScreen3": "Écran partagé 3 : Bas Gauche",
+	"GenericMC.SplitScreen4": "Écran partagé 4 : Bas Droite",
+
+	"GenericMC.barColors": "Personnalisation des couleurs",
+	"GenericMC.barBackgroundColor": "Couleur de l’arrière-plan",
+	"GenericMC.barTextColor": "Couleur du texte",
+
+	"Bar.CrabMineWarning": "Mauvaise idée : les casiers à crabes placés dans les mines seront perdus au moment de la sortie."
+}

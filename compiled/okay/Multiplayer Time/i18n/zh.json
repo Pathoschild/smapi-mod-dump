@@ -1,0 +1,12 @@
+{
+  "Sunday": "{{day}}日 星期天",
+  "Monday": "{{day}}日 星期一",
+  "Tuesday": "{{day}}日 星期二",
+  "Wednesday": "{{day}}日 星期三",
+  "Thursday": "{{day}}日 星期四",
+  "Friday": "{{day}}日 星期五",
+  "Saturday": "{{day}}日 星期六",
+  "AM": "{{time}} am",
+  "PM": "{{time}} pm",
+  "Default": "24"
+}

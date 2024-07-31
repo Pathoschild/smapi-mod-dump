@@ -1,0 +1,10 @@
+{
+    "Name": "Typable Books",
+    "Author": "Kronosta",
+    "Version": "1.0.2",
+    "Description": "Adds a book item with text boxes, inspired by Minecraft's written book item.",
+    "UniqueID": "Kronosta.TypableBooks",
+    "EntryDll": "TypableBooks.dll",
+    "MinimumApiVersion": "4.0.0",
+    "UpdateKeys": [ "Nexus:25982" ]
+}

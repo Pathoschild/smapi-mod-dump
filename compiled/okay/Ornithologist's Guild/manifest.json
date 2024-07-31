@@ -1,8 +1,8 @@
 ﻿{
   "Name": "Ornithologist's Guild",
   "Author": "Ivy",
-  "Version": "1.6.2",
-  "Description": "Bird houses, binoculars, and a new building to explore! Ornithologist's Guild brings a totally new birding experience to Stardew Valley, complete with updated bird mechanics, seasonal birds, a progression system, a new shop, an NPC with a tragic past, and much more!",
+  "Version": "1.7.3",
+  "Description": "Ornithologist's Guild brings a totally new birding experience to Stardew Valley, complete with overhauled bird mechanics, bird feeders and baths, seasonal birds, nests and fledglings, a progression system, a new location and shop, a new NPC with a tragic past, and sooo much more! Do you have what it takes to be Pelican Town's next great birder?",
   "UniqueID": "Ivy.OrnithologistsGuild",
   "MinimumApiVersion": "4.0.0",
   "EntryDll": "OrnithologistsGuild.dll",

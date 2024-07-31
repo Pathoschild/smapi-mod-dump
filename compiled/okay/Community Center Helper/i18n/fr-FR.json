@@ -75,6 +75,7 @@
 	"mineIronOre": "Miner un filon de fer (Mines, fréquent aux étages 71-79)",
 	"mineGoldOre": "Miner un filon d'or (Mines, fréquent aux étages 81+)",
 	"mineIridiumOre": "Miner un filon mystique (Mines 101+), météorite (événement rare)",
+	"mineRadioactiveOre": "Mine Radioactive Nodes (Mines in dangerous state)", // TODO
 	
 	// Gems Through Mining
 	"gemEmerald": "Miner un filon d'émeraude(Mines 81+) ou un filon de gemmes",
@@ -85,6 +86,8 @@
 	"gemJade": "Miner un filon de jade (Mines 41+) ou un filon de gemmes",
 	"gemDiamond": "Miner un filon de diamant (Mines 51+) ou un filon de gemmes",
 	"gemPrismaticShard": "Miner un filon de gemmes, une pierre mustique (Mines 101+, 25%) ou un filon d'iridium (4%)",
+	"gemCinderShard": "Mine Cinder Shard Node (Volcano)", // TODO
+	"boneNode": "Mine Bone Node (Ginger Island Dig Site)", // TODO
 	
 	// Farm Cave
 	"caveYours": "Trouvé dans la grotte de la ferme", // once cave type has been chosen, the other type is disregarded and this is used
@@ -144,6 +147,7 @@
 	
 	// Location Names (for foraging suggestions)
 	"locationFarm": "la ferme",
+	"locationTown": "in Pelican Town", // TODO
 	"locationMines": "la Mine",
 	"locationMinesArea1": "dans les mines 1-39",
 	"locationMinesArea2": "dans les mines 41-79",
@@ -154,10 +158,13 @@
 	"locationBeachEast": "sur la plage (côté droit)",
 	"locationBeachEastInaccessible": "sur la plage (côté droit; 300 {{wood}} pour réparer le pont)", // tip displayed if bridge is not fixed
 	"locationForest": "la Forêt Sève-Cendreuse",
+	"locationBus": "at Bus Stop", // TODO
 	"locationWoods": "la forêt secrète",
 	"locationSewer": " égouts",
 	"locationDesert": " désert de Calico",
 	"locationSkullPrehistoric": "la Caverne du Crâne, étages préhistoriques",
+	"locationIsland": "on Ginger Island", // TODO
+	"locationVolcano": "in the Volcano", // TODO
 	"locationRidgeForest": "in Ridge Forest", // RSV // TODO
 	"locationUnknown": "dans ???",
 	
@@ -168,6 +175,7 @@
 	"waterMountain": "dans le lac de la montagne",
 	"waterForestPond": "dans la mare de la forêt",
 	"waterForestRiver": "dans la rivière de la forêt",
+	"waterForestFalls": "at bottom of Cindersap Forest waterfalls", // TODO
 	"waterSpecialFarm": "dans la ferme",
 	"waterWoods": "dans l'étang de la forêt secrète",
 	"waterDesert": "dans l'étang du désert",
@@ -218,7 +226,10 @@
 	"shopDesertTrader": "Marchand du Désert",
 	"shopOasis": "Oasis",
 	"shopOasisWeekday": "Oasis ({{day}})",
-	"shopTravelingCartRandom": "Chariot de voyage (random)",
+	"shopIslandTrader": "Island Trader", // TODO
+	"shopIslandResort": "Island Resort", // TODO
+	"shopDwarfVolcano": "Volcano Dwarf", // TODO
+	"shopTravelingCartRandom": "Chariot de voyage (aléatoire)",
 	"shopTravelingCartSeason": "Chariot de voyage en {{season}}",
 	"shopEggFestival": "Pierre à la Fête des Oeufs (Spring 13)",
 	"shopFlowerDance": "Pierre à la Danse des Fleurs (Spring 24)",
@@ -256,6 +267,8 @@
 	"treePomegranate": "Grenadier",
 	"treeCherry": "Cerisier",
 	"treeMahogany": "Mahogany Tree", // TODO
+	"treeBanana": "Banana Tree", // TODO
+	"treeMango": "Mango Tree", // TODO
 	"treeLime": "Citronnier", // Cornucopia
 	"treePapaya": "Papayer", // Cornucopia
 	"treeWalnut": "Noyer", // Cornucopia
@@ -274,6 +287,7 @@
 	"treeMaple": "Erable",
 	"treeOak": "Chêne",
 	"treePine": "Pin",
+	"treeMystic": "Mystic Tree ({{craftingInfo}})", // TODO
 	"treeMushroom": "Arbre champignon (événement rare d'Automne)",
 	"treeDescSeedling": "semis du {{shop}}{{startingYear}}", // advice for fruit trees
 	"treeDescNonFruit": "déjà sur la ferme/faire pousser {{treeSeed}}", // advice for Maple/Oak/Pine trees
@@ -344,12 +358,14 @@
 	"recipeIngredientSeparator": ", ",
 	
 	// Skill Level Requirements
-	"farmingLvRequirement": "Agriculture Nv. {{num}}",
-	"miningLvRequirement": "Extraction minière Nv. {{num}}",
-	"fishingLvRequirement": "Pêche Nv. {{num}}",
-	"foragingLvRequirement": "Cueillette Nv. {{num}}",
-	"combatLvRequirement": "Combat Nv. {{num}}",
+	"skillLvRequirement": "{{skill}} Nv. {{num}}",
 	"totalSkillLvRequirement": " Nv. total {{num}}",
+	"skillMastery": "{{skill}} Mastery", // TODO
+	"farmingSkill": "Agriculture",
+	"miningSkill": "Extraction minière",
+	"fishingSkill": "Pêche",
+	"foragingSkill": "Cueillette",
+	"combatSkill": "Combat",
 	
 	// Machine Sources
 	"statueOfPerfectionTip": "évaluation parfaite de Grand Père", // advice for statue if you haven't had evaluation or achieved 4 candles
@@ -385,4 +401,15 @@
 	"yearSeason": "{{season}} année {{year}}",
 	"year": "Year {{year}}",
 	"today": "aujourd'hui", // when Queen of Sauce episode is airing that very day
+	
+	/***** Mod Config Menu Text *****/
+	
+	"optionShowSpoilersName": "Show Spoilers", // TODO
+	"optionShowSpoilersTooltip": "Whether hints should include spoilers of certain things not yet encountered.", // TODO
+	
+	"optionCollectionsTabName": "Collections Tab Hints", // TODO
+	"optionCollectionsTabTooltip": "Additionally show tooltip hints in the Collections tab for how to obtain items. For \"All Items\" setting, toggle display with click/Action/Tool Button. (Items from mods not guaranteed to show hints.)", // TODO
+	"collectionsTabOff": "Off", // TODO
+	"collectionsTabUnknowns": "Unknowns Only", // TODO
+	"collectionsTabAll": "All Items", // TODO
 }

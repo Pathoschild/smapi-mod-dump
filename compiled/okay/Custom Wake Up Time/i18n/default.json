@@ -1,0 +1,14 @@
+{
+  "timeDayStartSettings": "Time day start for each day",
+  "fixedHour": "Fixed hour",
+  "monday": "Monday",
+  "tuesday": "Tuesday",
+  "wednesday": "Wednesday",
+  "thursday": "Thursday",
+  "friday": "Friday",
+  "saturday": "Saturday",
+  "sunday": "Sunday",
+  "random": "Random",
+  "randomMin": "Minimum",
+  "randomMax": "Maximum"
+}

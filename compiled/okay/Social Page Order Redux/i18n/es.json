@@ -1,8 +1,21 @@
 {
-    "sort": "Ordenar",
-    "sort-0": "Amistad (Asc)",
-    "sort-1": "Amistad (Desc)",
-    "sort-2": "Nombre (Asc)",
-    "sort-3": "Nombre (Desc)",
-    "sort-by": "Ordenar Por "
+  "sort": "Ordenar",
+  "sort-0": "Amistad (Asc)",
+  "sort-1": "Amistad (Desc)",
+  "sort-2": "Nombre (Asc)",
+  "sort-3": "Nombre (Desc)",
+  "sort-by": "Ordenar Por ",
+  "GMCM-EnableMod": "Activar mod",
+  "GMCM-PreviousSortKey": "Tecla del ordenamiento anterior",
+  "GMCM-NextSortKey": "Tecla del ordenamiento siguiente",
+  "GMCM-UseFilter": "Usar filtro",
+  "GMCM-UseButton": "Usar botón",
+  "GMCM-UseDropdown": "Usar menú desplegable",
+  "GMCM-AutoFocusSearch": "Enfocar automáticamente la barra de búsqueda",
+  "GMCM-ButtonOffsetX": "Compensación X del botón",
+  "GMCM-ButtonOffsetY": "Compensación Y del botón",
+  "GMCM-DropdownOffsetX": "Compensación X del menú desplegable",
+  "GMCM-DropdownOffsetY": "Compensación Y del menú desplegable",
+  "GMCM-FilterOffsetX": "Compensación X del filtro",
+  "GMCM-FilterOffsetY": "Compensación Y del filtro"
 }

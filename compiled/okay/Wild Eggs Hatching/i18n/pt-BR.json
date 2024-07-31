@@ -40,6 +40,8 @@
   "config.ChosenFancyChickenPercentage.name": "Probabilidade da Galinha Chique",
   "config.ChosenFancyDuckPercentage.name": "Probabilidade do Pato Chique",
   "config.ChosenGoosePercentage.name": "Probabilidade do Ganso",
+  "config.ChosenLoonPercentage.name": "Loon Probabilidade",
+
   "config.ChosenLovebirdPercentage.name": "Probabilidade dos Pombinhos",
   "config.ChosenParrotPercentage.name": "Probabilidade do Papagaio",
   "config.ChosenPeafowlPercentage.name": "Probabilidade do Pavão",
@@ -76,6 +78,9 @@
   "config.ChosenPepperRexPercentage.name": "Probabilidade do Pepper Rex",
   "config.ChosenWildflourCrowPercentage.name": "Probabilidade do Corvo de Wildflour",
   "config.ChosenGartenPercentage.name": "Garten Probabilidade",
+  
+  "config.ChosenMizuTurkeyPercentage.name": "Mizu's Turkey Probabilidade",
+  "config.ChosenBirdbGoosePercentage.name": "Birdb's Goose Probabilidade",
   //
   "Owl.description": "Uma coruja marrom que vive no celeiro.",
   "LargeWildEgg.name": "Grande Ovo Selvagem",

@@ -1,13 +1,15 @@
 {
   "Name": "Roosters Hatching and Control Addon",
   "Author": "Meara & MikeW",
-  "Version": "2.0.0",
+  "Version": "2.0.1",
   "Description": "An addon for Roosters that makes it possible to tweak and hatch them from chicken eggs.",
   "UniqueID": "Mikew.roostersaddon.smapi",
   "MinimumApiVersion": "2.5",
   "UpdateKeys": ["22555"],
   "Dependencies": [
     { "UniqueID": "Meara.Roosters", "IsRequired": true },
+    { "UniqueID": "Mikew.letmehatchthisegg.smapi", "IsRequired": false },
+    
     { "UniqueID": "6480.blueegg", "IsRequired": false },
     { "UniqueID": "Pathoschild.ContentPatcher",
     "MinimumVersion": "1.22.0", "IsRequired": true }

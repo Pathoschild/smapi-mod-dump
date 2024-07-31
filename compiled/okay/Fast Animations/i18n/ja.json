@@ -68,9 +68,6 @@
     "config.casino-slots.name": "カジノスロット",
     "config.casino-slots.tooltip": "カジノスロットの回転速度。標準は{{defaultValue}}x。",
 
-    "config.event.name": "イベントのカットシーン",
-    "config.event.tooltip": "イベントのカットシーンの再生速度。標準は{{defaultValue}}x、推奨は{{suggestedValue}}x。",
-
     "config.fade.name": "フェード",
     "config.fade.tooltip": "画面が黒くフェードアウトし、フェードインするまでの時間。標準は{{defaultValue}}x。",
 
@@ -113,5 +110,14 @@
     "config.title-menu.tooltip": "タイトルメニューの画面遷移の速さ。標準は{{defaultValue}}x。",
 
     "config.load-game-blink.name": "ロード時の点滅",
-    "config.load-game-blink.tooltip": "ロード時にセーブスロットをクリックした後、点滅するスロットのディレイの速さ。標準は{{defaultValue}}x。"
+    "config.load-game-blink.tooltip": "ロード時にセーブスロットをクリックした後、点滅するスロットのディレイの速さ。標準は{{defaultValue}}x。",
+
+    /****
+    ** 'Experimental' section
+    ****/
+    "config.experimental": "Experimental options", // TODO
+    "config.experimental-warning": "These options aren't fully stable yet, and may cause issues like freezes and crashes. Enabling any of these isn't recommended.", // TODO
+
+    "config.event.name": "イベントのカットシーン",
+    "config.event.tooltip": "イベントのカットシーンの再生速度。標準は{{defaultValue}}x、推奨は{{suggestedValue}}x。"
 }

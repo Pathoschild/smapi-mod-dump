@@ -5,386 +5,392 @@
 // and publish it.  Instructions on how to integrate it into the source repo can be found here:
 // https://github.com/NermNermNerm/LocalizeFromSource?tab=readme-ov-file#ingesting-translations
 //
-// Built from commit: 905e2bccba59ca4361201eaae37b6448f3bfca58  !! DO NOT DELETE THIS LINE !!
+// Built from commit: a562f20a6f70fd692e6063505dee1c49c412284a  !! DO NOT DELETE THIS LINE !!
 {
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/ConversationKeys.cs#L18
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/ConversationKeys.cs#L18
     "KOEpNoH7vj": "You've been to the mines I see...  Your grandfather did too, even after his mind began to go.  I worried for him, but there was no stopping him.$0#$b#Then one day he came to me, shaken to the core.  He sobbed 'A big slime ate my friend!' but I know he went to the mines alone...$2#$b#He kept going on like that for several days.  I felt terrible for him, because although *I* knew it wasn't real, it was real enough to him.$0#$b#He never went back to the mines; that was very much for the best.$2",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/ModConfigMenu.cs#L38
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/JunimoStatusMenu.cs#L328
+    "qNywKHpOCo": "= $ Shiny things $ =",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/JunimoStatusMenu.cs#L369
+    "MfuDzOWgFM": "Junimos won't put items with equal or better quality\nthan these items into machines or shipping bins.",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/ModConfigMenu.cs#L38
     "NbEFcDz1jb": "Junimos work anywhere",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/ModConfigMenu.cs#L41
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/ModConfigMenu.cs#L41
     "n3yOJ9dnKX": "Normally Junimos only work on player farms, as they are shy.  Turning this on allows Junimo portals to work anywhere.",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/ModConfigMenu.cs#L46
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/ModConfigMenu.cs#L46
     "rHYaECJWre": "Minimal Questing",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/ModConfigMenu.cs#L49
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/ModConfigMenu.cs#L49
     "ryZXAFukmX": "Normally quests are required to unlock the Junimos.  This enables skipping most of the quests - you just have to complete the portal quest.",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/PetFindsThings.cs#L138
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/PetFindsThings.cs#L138
     "vONvot9XIi": "I wonder what {{arg0}} has been up to...",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/PetFindsThings.cs#L77
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/PetFindsThings.cs#L77
     "djmeLRwMtO": "Pets sometimes have an uncanny ability to spot missing things!$0#$b#Just last week I lost my favorite milking bucket.  I came across it a few days later and my cat, Muffin, was sleeping in it.$1#$b#Well, I guess she didn't exactly find it for me, but at least she knew where it was!$0",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/PetFindsThings.cs#L85
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/PetFindsThings.cs#L85
     "N1gDRt0T0i": "Do I miss my \"normal\" life on days like this?$2#$b#No, not really.  Except for Jeremy Clarkson...$1#$b#...My pet Schnauzer.  He had an uncanny ability to fetch the thing I wanted before I even knew I wanted it.$0",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockAnimal.cs#L62
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockAnimal.cs#L62
     "aEWmrG5CfR": "That's not a chicken.",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockAnimal.cs#L62
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockAnimal.cs#L62
     "MBkkio0DCs": "I wonder if it's lost and can't find its way home...  It seems distressed.",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockAnimal.cs#L62
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockAnimal.cs#L62
     "fpgy1f2A0N": "Maybe a Junimo Portal would help it find its way home.",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockAnimal.cs#L104
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockAnimal.cs#L104
     "cNwHdGjcxq": "That wasn't a chicken...  was it?$2#$b#Your grandfather had some little houses like that on his farm.  He said they were for his 'helpers'.  But as he declined, he was prone to say, well, a lot of stuff....$2#$b#I suppose I caught a glimpse of them from time to time, but, well...  I think I'm more comfortable not seeing them.$3#$b#You say they're good creatures?  Well...  Okay.  *Something* was sure keeping that farm in trim when your Grandad was declining.$2#$b#I suppose everybody needs a little magic in their lives from time to time.$0",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockAnimal.cs#L182
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockAnimal.cs#L182
     "Giekfc5hqc": "Thank you for helping our friend get home...",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockAnimal.cs#L182
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockAnimal.cs#L182
     "aLauGiQih1": "I can help you, like I helped your Grandfather...",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockAnimal.cs#L182
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockAnimal.cs#L182
     "T4sugTti3v": "I like animals and the wonderful things you can make with their help...",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockAnimal.cs#L205
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockAnimal.cs#L205
     "Q2hxdvc5kS": "Hello @!  Are you missing any chickens?  I think one might have run off!",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockAnimal.cs#L205
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockAnimal.cs#L205
     "K9koWKoaPA": "I saw it across the river to the south of my farm!  I went over to try and round it up, but it ran away from me!$2#$b#Maybe it would come to you if you went down there and called it!",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockAnimal.cs#L205
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockAnimal.cs#L205
     "ES1Adkpzkl": "Oof! I need to be getting back! Anyway, I hope you can wrangle it back home!  Bye now!  Don't be a stranger!",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockAnimal.cs#L228
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockAnimal.cs#L228
     "liglB0huCJ": "Chicken Round-Up",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockAnimal.cs#L228
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockAnimal.cs#L228
     "Khq4khgEh6": "Marnie thinks one of your chickens has escaped and is in the forest south of her farm; you should investigate.",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockAnimal.cs#L228
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockAnimal.cs#L228
     "PQglbbKcy5": "Enter the Cindersnap Forest during the day.",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockAnimal.cs#L229
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockAnimal.cs#L229
     "MqDgX5oqrz": "Help the Junimo Go Home",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockAnimal.cs#L229
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockAnimal.cs#L229
     "AHR3GCj5Mv": "Help the Junimo in the Cindersnap Forest get home.",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockAnimal.cs#L229
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockAnimal.cs#L229
     "vWAr85iFBF": "Enter the Cindersnap Forest during the day with a Junimo Portal in your inventory.",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockCropMachines.cs#L112
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockCropMachines.cs#L112
     "uScnjVETFm": "We love giant crops!  Please keep growing them!",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockCropMachines.cs#L112
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockCropMachines.cs#L112
     "x0JObvTAuL": "One of us will come and help with your kegs, casks and preserves jars if you connect them to a portal!",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockCropMachines.cs#L134
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockCropMachines.cs#L134
     "nypR1cZjON": "Did you ever see the giant crops your Granddad used to crow?  Crazy big pumpkins.#$b#Abby campaigned for me to buy one every year.  I think she wanted me to buy one so she could carve out a house for herself.$1",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockCropMachines.cs#L143
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockCropMachines.cs#L143
     "RWSgCcWL4J": "Has Abby been needling you about growing giant pumpkins?$4#$b#Don't do it, really, there's no money in it.  Quantity is good, sure, but the quality isn't.$2#$b#Your grandpa grew them in his declining years in particular.  He said 'my helpers like them'.  Not sure what he meant by that, but he really enjoyed them that made it worth it to him!$1",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockCropMachines.cs#L152
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockCropMachines.cs#L152
     "xo6o8p862z": "When you were a kid visiting the farm, did you ever see any of the giant cauliflowers that your grandpa grew?  I mean huge!  like way huge!$1#$b#I only got to see them once that I can recall when my Mom took me down there one afternoon.#$b#I climbed one like a tree and my Mom got all worried.#$b#Your grandad fished me down and told my mom not to worry because magical creatures would protect me.#$b#I don't know why, I guess it's because I was just a kid, but I felt really special for a long time after that day.",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockCropMachines.cs#L161
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockCropMachines.cs#L161
     "JVwYRHGRNB": "Your grandad used to grow these gigantic pumpkins.  I totally wanted to carve one of those things.$1#$b#But my mom wouldn't buy one and your grandad invented this cock&bull story about magical creatures.$5#$b#Didn't he know I was too old for stories like that?  Meh.  I guess I should cut him slack for being old and senile.$2#$b#So...  Do you want to hear about any more of my first-world problems?$2",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L48
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L51
     "MdQHomtqLT": "Enables the fishing Junimo - Enables the Junimo for handling fishing things with or without having done the quest.",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L170
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L202
     "uaY6CDf9CM": "{{arg0}} of 6 teleported",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L215
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L247
     "zHGVhw2toA": "You've made a new Junimo friend that will help with traps and fishing-related machines",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L346
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L378
     "u5Xs3tgNPi": "@!  I'm so glad you came!",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L346
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L378
     "BpE8De3Ya3": "Please come to the mines with me.  There's something I have to show you!",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L346
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L378
     "ktA1j1jHzJ": "I had been having these recurring dreams...  In it, there was somebody like me, but wasn't me...  You know how dreams are.",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L346
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L378
     "Ww5peBcXuE": "Anyway, this other me was at a pool, deep in a cave.  It was filled with litter, but the whole community was pitching in to clean it up.",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L346
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L378
     "uTDMjRgVJy": "They cleaned it, but there were no fish in it anymore, which made the other me sad.",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L346
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L378
     "CsYnBwJciE": "But then a fish tank appeared!  And then fish started appearing in the fish tank, and the other me started netting them out and releasing them into the pond!",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L346
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L378
     "deAMOx4enW": "As to what happened next, well, you'd best see for yourself.  Please take the elevator down to 60.",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L393
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L425
     "kQGrrfg5xP": "It was just a dream, I thought, but the next night I dreamt the same thing, so I just had to come down here.",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L393
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L425
     "nqawfSl7dr": "Look at this!  The fish tank from my dream!  Where did that come from?",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L393
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L425
     "vfyxUCodZX": "Well, the tank was empty, and I decided I'd try putting a fish in there, so I caught a ghostfish and put it in there.",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L393
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L425
     "laaojosbjM": "AND IT DISAPPEARED!",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L393
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L425
     "fCtFLI4LeZ": "Poof!",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L393
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L425
     "fMkItbauLZ": "Gone!",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L393
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L425
     "G2Ps8uc6RK": "So I put in another, and it disappeared too!",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L393
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L425
     "Ub8dFjg0BF": "Is it going to the world in my dream?  I don't know, but after about half a dozen fish went in there they stopped disappearing.",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L393
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L425
     "ZWLPDQQZ62": "...But the tank is still here...",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L393
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L425
     "vV1ZQpSDhe": "I see some smaller fish darting around in the pool, but I haven't been able to land any of them.",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L393
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L425
     "OxjKrcriFv": "You're the only one that can help since you've got the skill, the equipment and can handle yourself this deep in the mine.",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L393
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L425
     "OM9yp5ibnu": "Could you try and catch some of those little fish and put them in the tank and see what happens?",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L393
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L425
     "bJtL0fPDHo": "I'm afraid I've got to leave you to it.  I know it could take a while to catch them and I...",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L393
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L425
     "mgTWGTTK0z": "Well, I've got a lot to think about.",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L312
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L344
     "QtyXFFxBHc": "Find Linus At His Tent",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L312
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L344
     "a3sOXMDZvV": "Linus said he had something he needed your help with.",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L312
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L344
     "lbIlqYzNWx": "Go to Linus' tent before 10pm",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L313
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L345
     "aUfDSfqXNA": "Meet Linus At Level 60",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L313
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L345
     "ksKMHp4F7z": "Linus had something he wanted to show you at level 60 of the mines.",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L313
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L345
     "sciNRXGlJs": "Follow Linus to level 60",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L314
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L346
     "NwZy9Wf803": "Catch Six Ice Pips",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L314
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L346
     "YRzobXsl4e": "Catch six ice pips and put them in the mysterious fish tank.",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L322
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L354
     "xw8PvRWl5h": "@,^Please come visit me at my tent.  I've found something and I need your help to sort it out.^   -Linus",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L322
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L354
     "vTqnS5SaOA": "Meet Linus at his tent",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L330
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L362
     "ruSiyojzaq": "I'm still having those dreams.  The other me...  who seems less and less like me each night, keeps checking that fish tank in his world.  He's disappointed and puzzled.#$b#I'm pretty puzzled too.  But I'm glad you're working on it.",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L331
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L363
     "pgldaGwn6v": "Did you finish collecting those fish?  I'm betting you have.  I had one last dream, where the fish were released and the tank disappeared.#$b#You know, one of the reasons I adopted my, uh...  lifestyle is that I was, well, not so stable in the head.#$b#And sometimes angry.  That was the part that made me take what most would regard as a drastic lifestyle change.#$b#But I've never felt saner.  At least up until these dreams started happening.#$b#But in these visions there is nothing like anger, so, well, that's good.#$b#But I still hope they go away.",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L339
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L371
     "Niz2hChPAS": "Hey I just read a paper written by one of my old college buddies on habitat restoration of an underground pool populated with Ghostfish and Ice Pips!$1#$b#I'm told we have such a cavern deep in the mines.  Perhaps you could take me to it one day.#$b#Funny, the paper didn't specify where he got the fish to repopulate from...$3",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L183
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockForest.cs#L183
     "TPJNvwmuSR": "Thx!  Bai!!!",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L183
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockForest.cs#L183
     "jDjeyijfdQ": "The giant trees were cut down to make ships and buildings and other wonderful things...",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L183
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockForest.cs#L183
     "XEBSO9uSW8": "...but they cut like there would always be more, until they cut down the last one.",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L183
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockForest.cs#L183
     "eFJvx689nC": "You will be wiser.  We will help.",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L206
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockForest.cs#L206
     "gZocCqhgXS": "Welcome!  You're just in time!",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L206
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockForest.cs#L206
     "RrI5xa73j3": "I hiked the back-woods trail today.",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L206
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockForest.cs#L206
     "KaRNxr3YIH": "It can be a bit treacherous at my age...",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L206
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockForest.cs#L206
     "HfsVff5XXS": "But the view of the desert is breathtaking.",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L206
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockForest.cs#L206
     "LqwpJR5PXw": "I picked a few wild mushrooms and herbs along the way.",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L206
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockForest.cs#L206
     "wbswl1MG0p": "Dinner is served!",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L206
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockForest.cs#L206
     "MwzKrmro2h": "What do you think?",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L206
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockForest.cs#L206
     "YSO3qN9j4O": "I'm glad you like it.",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L206
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockForest.cs#L206
     "LsnsBa8pGp": "You know, when people see you talking to the trees, well...  They tend to think you're crazy.$2",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L206
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockForest.cs#L206
     "GNQsVZOcgc": "But when you hear the trees talking *to* *you*, then... well...#$b#Then maybe they're right.$2",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L206
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockForest.cs#L206
     "urrMKMGmv7": "Last night I dreamt I saw what these trees looked like before they were cut...",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L206
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockForest.cs#L206
     "MS7oJsd5r6": "Then, the vision pivoted to your farm; your farm when those big stumps and logs were standing trees...",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L206
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockForest.cs#L206
     "IdMfVTp1WE": "I found these seeds in my tent as I was stepping out this morning.#$b#I guess I tracked them in last night.  They're usually not so easy to find.  Here.  I think they're meant for you.",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L206
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockForest.cs#L206
     "kzV8AFCjUA": "I'm glad you're the sort of friend that doesn't mind listening to the ravings of a crazy old man.",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L206
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockForest.cs#L206
     "m2ysp95THa": "Well...  It's getting late.  You should get back to your farm and I should crawl into my tent.#$b#I plan on breaking camp in the morning and making the hike up to the mountain.",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L206
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockForest.cs#L206
     "PaVvrqHeAU": "Do the trees talk to you too?",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L206
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockForest.cs#L206
     "OGGOrzoslh": "Hm.  Perhaps it's best not to answer that one...",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L167
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockForest.cs#L167
     "fBeysmsxcb": "Plant The Mystic Seed",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L167
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockForest.cs#L167
     "qeDVDSoV4F": "Linus gave you some tree seeds...  Do the Junimos talk to him too?",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L167
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockForest.cs#L167
     "XjovUPUpOK": "Grow a Mystic Tree and 2 Mahogony Trees to adulthood on your farm.",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L168
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockForest.cs#L168
     "fXwO7pRsAh": "Meet Linus In The Secret Woods",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L168
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockForest.cs#L168
     "oD0YBwmUKy": "Have dinner with Linus in the Secret Woods",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L168
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockForest.cs#L168
     "dtOYnKDbnP": "Enter the secret woods on a sunny day between 6 and 11pm.",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L176
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockForest.cs#L176
     "wUzYzsuFrB": "@,^how are you doing?  I've decided to spend a night or two in the deep woods, west of Marnie's ranch.  Would you care to share a meal in the wild with me? ^   -Linus",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L176
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockForest.cs#L176
     "mGm0o8rO1f": "Meet at Linus' camp in the woods",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockMiner.cs#L44
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockMiner.cs#L44
     "iqYpoWQEl8": "Give the strange orb to the host player - only the host can advance this quest.  (Put it in a chest for them)",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockMiner.cs#L96
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockMiner.cs#L100
     "gmlJQdk8lf": "a strange faintly glowing orb",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockMiner.cs#L96
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockMiner.cs#L100
     "WCZNY4BDTA": "It looks vaguely magical. It's quite hard and smooth.",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockMiner.cs#L106
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockMiner.cs#L110
     "T7QBZYZe9a": "My dear boy...^My beloved grand-daughter...#$b#I am sorry to come to you like this, but I had to thank you for rescuing my dear Junimo friend.#$b#He protected me at a time when my darkest enemy was my own failing mind.#$b#In better days, he helped me with my smelters and other mine-related machines.  He will help you too; he really enjoys watching the glow of the fires!#$b#I rest much easier now knowing that my friend is safe.  I am so proud of you...",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockMiner.cs#L123
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockMiner.cs#L127
     "s5xLKhGeJz": "What have you brought for me this time?",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockMiner.cs#L123
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockMiner.cs#L127
     "vzsfntmac2": "Hm..  Yes...#$b#Junimos are harmless, but they are not defenseless.  When this one was overwhelmed by the slime, it bound itself into a protective stasis and went into a sort of torpor.#$b#If we return this to the Junimo's world, they will be able to care for this one.",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockMiner.cs#L123
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockMiner.cs#L127
     "o5ZUcAdfjZ": "I shall, using my immense powers, transport this one back to the Junimo realm!",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockMiner.cs#L123
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockMiner.cs#L127
     "SFICKyeN6K": "There.  Done.",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockMiner.cs#L123
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockMiner.cs#L127
     "c3J39hhYpX": "Yes.  Done.  It's safely back to the Junimo realm and you should get about your business.",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockMiner.cs#L123
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockMiner.cs#L127
     "AstEj4WO8L": "That's it...#$b#Really...#$b#I think.",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockMiner.cs#L204
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockMiner.cs#L208
     "xRj9KIs8xE": "The Strange Orb",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockMiner.cs#L204
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockMiner.cs#L208
     "k18OUCY10Z": "Investigate the strange glowing thing you found inside a big slime.",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockMiner.cs#L204
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockMiner.cs#L208
     "xnJcqLM5pj": "Bring the faintly glowing orb to the wizard's tower.",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockPortal.cs#L143
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockPortal.cs#L143
     "iJO75x9GnF": "Ah... Come in.",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockPortal.cs#L63
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockPortal.cs#L63
     "M8yHwtBPah": "Give the strange little structure to the host player - only the host can advance this quest.  (Put it in a chest for them.)",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockPortal.cs#L119
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockPortal.cs#L119
     "DPZMafDe9x": "A portal through which Junimos who want to help out on the farm can appear.  Place pathways next to these when placing them outdoors so the Junimos will know where to go.",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockPortal.cs#L119
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockPortal.cs#L119
     "PQKLcoVlHA": "Junimo Portal",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockPortal.cs#L133
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockPortal.cs#L133
     "CXUrtaOigV": "a strange little structure",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockPortal.cs#L133
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockPortal.cs#L133
     "DkGS7LQ3rk": "At first it looked like a woody weed, but a closer look makes it like a little structure, and it smells sorta like the Wizard's forest-magic potion.",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockPortal.cs#L143
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockPortal.cs#L143
     "R48vE4R2Kv": "You have something to show me?  Well, bring it to me!",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockPortal.cs#L143
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockPortal.cs#L143
     "pUzIQ7qsKu": "Ah I see why you thought I should see this...#$b#I believe I recognize the magical traces, but let me consult my vast reference library to be certain...",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockPortal.cs#L195
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockPortal.cs#L195
     "ZxAxDD4aib": "Come along then!",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockPortal.cs#L195
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockPortal.cs#L195
     "mrTqHoj8qR": "Yes.  I was right...#$b#As always.",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockPortal.cs#L227
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockPortal.cs#L227
     "PYI0in4tJw": "This is a sort of a crude portal, made by your Grandfather to allow Junimos to easily travel between their world and ours.#$b#It's an easy thing to construct, even the greenest apprentice could do it.  Here, let me teach it to you.",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockPortal.cs#L227
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockPortal.cs#L227
     "pxvf6js4j1": "I learned how to craft a 'Junimo Portal'",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockPortal.cs#L227
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockPortal.cs#L227
     "YzFzmLhV1i": "Enticing a Junimo to *use* it, well, that's up to the Junimo...",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockPortal.cs#L227
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockPortal.cs#L227
     "Ln1mYzqDlE": "Usage: After completing quests to get junimo helpers, you can place Junimo Portals either in buildings or outside.  If outside, place walkways between the hut and any chests or machines you want the Junimo to automate.  If in a building, you can place walkways or just leave a clear path.",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockPortal.cs#L276
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockPortal.cs#L276
     "yr9QG3hVkF": "That was some storm!  I wonder if the rain washed the mud off of any of Grandpa's old stuff!",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockPortal.cs#L112
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockPortal.cs#L112
     "DUQ46Jdpha": "The Strange Little Structure",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockPortal.cs#L112
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockPortal.cs#L112
     "vXt8llcQp8": "You found the remnants of what looks like a little building.  It smells like it has some Forest Magic in it.",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockPortal.cs#L112
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockPortal.cs#L112
     "oduPiN5wI0": "Bring the remnants of the strange little structure to the wizard's tower."
 }

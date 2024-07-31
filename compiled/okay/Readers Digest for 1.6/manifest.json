@@ -1,10 +1,10 @@
-﻿{
+{
   "Name": "Readers Digest for 1.6",
-  "Author": "Originally Remy Bach, Updated by Slash215",
-  "Version": "3.0.1",
+  "Author": "Slash215",
+  "Version": "3.0.2",
   "Description": "Receive the Cooking or Tips Channel info as a mailbox message.",
   "UniqueID": "Slash215.readersdigest",
   "EntryDll": "readersdigest.dll",
-  "MinimumApiVersion": "2.11.2",
+  "MinimumApiVersion": "4.0.6",
   "UpdateKeys": [ "Nexus:22972" ]
 }

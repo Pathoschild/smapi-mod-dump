@@ -18,20 +18,30 @@ Provided functionality for players:
 
 Provided functionality for content pack authors:
 * Fixes NPCs taking the longer path when there are circular routes. Note that the "length" of the path is determined by amount of warps, not by amount of tiles travelled, so if there are two paths to a location with the same amount of warps but one map is much larger, they might still take the larger map path.
+* New map properties:
+    * `spacechase0.SpaceCore_ColoredLights [x y type radiusMultiplier colorR colorG colorB]+` - A list of light sources that can be colored or use custom light textures.
+        * `x` and `y` - the tile coordinates
+        * `type` - same as vanilla `Light` property light types, or you can use the path to a custom light texture (must be loaded with Action: Load)
+        * `radiusMultiplier` - Make the light bigger or smaller
+        * `colorR`, `colorG`, `colorB` - Make the lights a specific color, using RGB values. Each value should be in the range of [0, 255].
 * New GameStateQuery queries:
     * Every custom skill registered through the C# API automatically registers a `PLAYER_<SKILLID_IN_CAPS>_LEVEL` query matching the vanilla ones (such as PLAYER_FARMING_LEVEL).
     * `NEARBY_CROPS radius cropId` - Only usable in CropExtensionData YieldOverrides PerItemCondition entries. Checks for fully grown crops of a particular type in a certain radius.
     * `PLAYER_SEEN_CONVERSATION_TOPIC targetPlayer topicId` - If the player has seen the conversation topic in the past (but is no longer active). For targetPlayer, see [here](https://stardewvalleywiki.com/Modding:Game_state_queries#Target_player).
-* New tile action - `spacechase0.SpaceCore_TriggerAction triggerActionId` - for running a trigger action, set the Trigger to "Manual"
-* New touch action - `spacechase0.SpaceCore_TriggerAction triggerActionId` - for running a trigger action, set the Trigger to "Manual"
+* New tile actions
+    * `spacechase0.SpaceCore_TriggerAction triggerActionId` - for running a trigger action, set the Trigger to "Manual"
+    * `spacechase0.SpaceCore_OpenGlobalInventory inventoryId` - open a global inventory with the given ID
+* New touch actions
+    * `spacechase0.SpaceCore_TriggerAction triggerActionId` - for running a trigger action, set the Trigger to "Manual"
 * New trigger actions
-    * `spacechase0.SpaceCore_OnItemUsed` - use item GSQ conditions to check the right item
+    * `spacechase0.SpaceCore_OnItemUsed` - use item GSQ conditions to check the right item, make sure to set `UseForTriggerAction` in ObjectExtensionData (see further below) for that item to true
     * `spacechase0.SpaceCore_OnItemEaten` - use item GSQ conditions to check the right item
 * New trigger action actions
     * `spacechase0.SpaceCore_PlaySound sound local` - `sound` = the cue ID, `local` = `true` if everyone near the player should hear it, `false` otherwise
     * `spacechase0.SpaceCore_ShowHudMessage "message goes here" optionalQualifiedItemIdForIcon`
     * `spacechase0.SpaceCore_PlayEvent eventid ifNotSeen` - `ifNotSeen` is optional (defaults to false) - if true, the event won't play if it has been seen before
     * `spacechase0.SpaceCore_DamageCurrentFarmer amount`
+    * `spacechase0.SpaceCore_ApplyBuff buffId "Source to show on the buff"` - Applies the buff `buffId` (from the vanilla file `Data/Buffs`), with the source in the tooltip being shown as what you provide.
 * Custom event commands
     * `damageFarmer amount`
     * `setDating npc [true/false]` - default true
@@ -58,9 +68,18 @@ Provided functionality for content pack authors:
             * `Position` - Vector2, the tile to warp to - ex. `"25, 15"`
             * `Color` - Color, the color the screen should flash - ex. `{ "R": 0, "G": 0, "B": 255, "A": 255 }`
         * `UseForTriggerAction` - True to run a trigger action upon use, false otherwise. Default false.
+        * `ConsumeForTriggerAction` - If the above field is true, this will control if the item is consumed on use. Default false for backwards compatibility.
         * `GiftableToNpcDisallowList` - A dictionary of NPC names to messages that should show when you try to gift the item to them, instead of them receiving the gift.
         * `GiftableToNpcAllowList` - A dictionary of NPC names to `true` for if you want that NPC allowed. If set, any NPCs not listed here will not be able to receive the gift, and instead will show the message from the following field.
         * `GiftedToNotOnAllowListMessage` - The message to show for when the item is gifted to someone not on the allow list. Required if `GiftableToNpcAllowList` is set. (The disallow list is checked first, so you can still allow specific responses by certain NPCs.)
+    * Food buffs - Put these in the `CustomFields` inside the entry in `Buffs`
+        * `"spacechase0.SpaceCore/HealthRegeneration"` - Add a buff that adds an amount of health regeneration per second.
+        * `"spacechase0.SpaceCore/StaminaRegeneration"` - Add a buff that adds an amount of stamina regeneration per second.
+    * `Data/Buffs` extensions - Put these in `CustomFields`.
+        * `"spacechase0.SpaceCore/HealthRegeneration"` - Add a buff that adds an amount of health regeneration per second.
+        * `"spacechase0.SpaceCore/StaminaRegeneration"` - Add a buff that adds an amount of stamina regeneration per second.
+    * Buffs from worn items  - These are in asset in `spacechase0.SpaceCore/WearableData`, which is a dictionary with the key being the qualified item ID of the wearable, and the value being an object containing the following fields:
+        * `BuffIdToApply` - The ID of the buff to apply, pulled from the vanilla file `Data/Buffs`.
     * Crops - These are in `spacechase0.SpaceCore/CropExtensionData`
         * `YieldOverrides` - A little complex, but you can override each crop phase's harvestability with experience gained, the new phase it goes to, and the drops it has (including conditional drops). Example [here](https://gist.github.com/spacechase0/79f95bcd46160da9e52f5bc0c71329f4).
     * Weapons - Stored in the `CustomFields` on the weapon data asset object:
@@ -75,6 +94,11 @@ Provided functionality for content pack authors:
             * `IconTexture` - The path to the texture to use for the tab. Use the `{{InternalAssetKey: }}` token for your own assets.
             * `IconRect` - The subrect of the texture to use for the tab. An object containing `X`, `Y`, `Width`, `Height` (all in pixels).
             * `FilterCondition` - A GameStateQuery condition used for filtering the items. Use `TRUE` to just get everything (useful for your first tab). Example to get all seeds: `"ITEM_CATEGORY Input -74"`
+    * Virtual Currencies (like qi gems and golden walnuts) - Stored in the asset `"spacechase0.SpaceCore/VirtualCurrencyData"`, which is a dictionary with the key being the object ID of the currency, and the value being an object containing the following fields:
+        * `TeamWide` - True if the currency is shared across all farmers, false if it is per farmer.
+        * `ObtainSound` - The sound to play on getting more. (Known bug: Doesn't seem to fire the first time.)
+        * If you want to use the currency as the `Currency` field in your shop, run the following command with your currency ID: `spacecore_getcurrencyid MyCurrencyId`. The resulting number (including the negative sign, if there is one) is what you should use for the `Currency` field.
+        * If you want to use the currency as a trade item for a specific shop entry, just set the `TradeItemId` to the currency item ID and the set the proper `TradeItemAmount`.
     * NPCs - Stored in the asset `"spacechase0.SpaceCore/NpcExtensionData"`, which is a dictionary with the key being an NPC name, and the value being an object containing the following fields:
         * `GiftEventTriggers` - A dictionary with the keys being an object, and the values being an event to trigger when that item is given to the NPC.
             * The "event to trigger" needs to be the full event key (ID and preconditions) used in the events data file, so that SpaceCore can find the event.
@@ -84,6 +108,8 @@ Provided functionality for content pack authors:
             * The event can reoccur if the item is given again.
                 * For Content Patcher users: If you don't want this behavior, make sure to add a `HasSeenEvent` event condition to your `"When"` block for the patch.
         * `IgnoreMarriageSchedule` - true/false, defaults to false
+    * Schedule Animations - Stored in the asset `spacechase0.SpaceCore/ScheduleAnimationExtensionData`, which is a dictionary with the key being the animation ID from `Data/animationDescriptions` and the value containing the data for the animation override.
+        * You can make bigger animations and make the NPC emote or play a sound at certain points in the animation. Example [here](https://gist.github.com/spacechase0/55f5b8b75a47b5d4d6f790609f48d20c).
     * Crafting/Cooking Recipes - Stored in `spacechase0.SpaceCore/CraftingRecipeOverrides` and `spacechase0.SpaceCore/CookingRecipeOverrides`, these assets are both a dictionary, with the key being the ID of the corresponding recipe, and the value being an object with the following:
         * `ProductQualifiedId` - The qualified ID of the product
         * `ProductAmount` - How many of the product should be made
@@ -92,12 +118,16 @@ Provided functionality for content pack authors:
             * `Value` - Different depending on `Type`:
                 * For `Item` type ingredients, the qualified ID of the ingredient
                 * For `ContextTag` type ingredients, the context tags. Multiple can be specified separated by commas, which will mean any context tag in the list means the item works as this ingredient.
+            * `ContextTagsRequireAll` - (default false) - if true and `Type` is `"ContextTag"`, then all context tags must be had for a valid ingredient. If false, then only one needs to be had for the ingredient to be considered valid.
             * `Amount` - The amount of this ingredient should be required.
             * `OverrideText` - You can override the text shown for the ingredient by specifying this. Required for `Type`=`"ContextTag"`
             * `OverrideTexturePath` - The path to texture to use for this ingredient. You can use a vanilla texture path, or one from your mod using the `{{InternalAssetKey}}` token. Required for `Type`=`"ContextTag"`
             * `OverrideTextureRect` - If using `OverrideTexturePath`, where on the texture should be displayed for this ingredient. Required for `Type`=`"ContextTag"`
     * Farm Types - Stored in `spacechase0.SpaceCore/FarmExtensionData`:
         * This lets you place buildings (with or without animals) and fences on the farm at creation. Example [here](https://gist.github.com/spacechase0/063505cabbed28dfa94b802b28857885).
+    * Trigger Actions - Stored in `spacechase0.SpaceCore/TriggerActionExtensionData`, a dictionary with the key being the trigger action ID and the value being an object with the following fields.
+        * `Times` - An list of the times the trigger action should be triggered. Example: `"Times": [ 630 ]`
+            * The `Trigger` for this trigger action must be set to "Manual" for it to work.
 * Animations - You can animate textures by editing `"spacechase0.SpaceCore/TextureOverrides"`, which is a dictionary with the key being the ID of your animation, and the following information:
     * `TargetTexture` - The path to the file you want to animate.
     * `TargetRect` - The rectangle in the target file you want to animate. Example: `{ "X": 32, "Y": 48, "Width": 16, "Height": 16 }`
@@ -200,7 +230,7 @@ The rest of the features assume you understand C# and the game code a little bit
     * `string GetSkillPageHoverText(int level)` - optional, extra text to show when hovering on the skills page
     * `void DoLevelPerk(int level)` - optional, apply a some code immediately upon leveling
     * `bool ShouldShowOnSkillsPage`
-    * Custom buffs for your skill you can have by adding ` "spacechase.SpaceCore.SkillBuff.<skill_ID_here>": "<value>"` as a custom field to the buff for food or drink.
+    * Custom buffs for your skill you can have by adding `"spacechase0.SpaceCore.SkillBuff.<skill_ID_here>": "<value>"` as a custom field to the buff for food or drink.
     * Your custom skill can have level up crafting and cooking recipes by just adding your skill ID to where the vanilla skill ID would be.
     * By adding the skill id to the context tags of a book object, players can read the book to gain exp in the custom skill.
 * Custom crafting recipes, for when you want more flexibility (like using non-Object item types).

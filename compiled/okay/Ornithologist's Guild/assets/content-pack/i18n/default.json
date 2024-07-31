@@ -63,5 +63,12 @@
   "birdie.Mallard.attribute.1": "yellow beak",
   "birdie.Mallard.attribute.2": "blue wing patch",
   "birdie.Mallard.attribute.3": "orange legs",
-  "birdie.Mallard.funFact": "Mallards can be found across the globe and can live until their late 20's!"
+  "birdie.Mallard.funFact": "Mallards can be found across the globe and can live until their late 20's!",
+
+  "birdie.AnnasHummingbird.commonName": "Anna's Hummingbird",
+  "birdie.AnnasHummingbird.scientificName": "Calypte anna",
+  "birdie.AnnasHummingbird.attribute.1": "slender beak",
+  "birdie.AnnasHummingbird.attribute.2": "magenta neck",
+  "birdie.AnnasHummingbird.attribute.3": "green back",
+  "birdie.AnnasHummingbird.funFact": "Hummingbirds' tiny legs can neither hop nor walk, but they're able to scoot sideways when perched."
 }

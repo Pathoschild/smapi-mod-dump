@@ -1,4 +1,6 @@
 {
+  "egg.fertilized.name": "Fertilized",
+  "egg.fertilized.description": "A fresh egg from the coop with a chick inside, ready to hatch!",
   "shop.void.displayname": "Void Rooster",
   "shop.void.description": "Buy Void Roosters!",
   "shop.gold.displayname": "Gold Rooster",
@@ -25,6 +27,7 @@
   "config.pagelink.blue.name": "=> Blue Rooster",
   "config.pagelink.void.name": "=> Void Rooster",
   "config.pagelink.gold.name": "=> Gold Rooster",
+  "config.pagelink.females.name": "=> Edit Roosters' Females",
   "config.Text.updateRate.name": "Update Rate",
   "config.Text.updateRate.description": "Set how often the rooster's stats are updated.",
   "config.value.on Day Start": "On Day Start",
@@ -79,6 +82,8 @@
   "config.Bool.Buyable.description": "Whether the rooster can be bought.",
   "config.Bool.EnableRoosterHatching.name": "Enable Hatching",
   "config.Bool.EnableRoosterHatching.description": "Enable the rooster to hatch from eggs.",
+  "config.bool.editallfemales.name": "Edit All Females",
+  "config.bool.editallfemales.description": "Edits all animals that lay the rooster's eggs.",
   "config.Text.ProduceOption.name": "Production Mode",
   "config.Text.ProduceOption.description": "Choose the produce mode for the rooster.",
   "config.Text.Produce_1.name": "Produce 1",
@@ -231,5 +236,10 @@
 
   "config.value.Random Size Golden Egg": "Random Size Golden Egg",
   "config.value.Random Gems": "Random Gems",
-  "config.value.Random Minerals": "Random Minerals"
+  "config.value.Random Minerals": "Random Minerals",
+  "config.value.cockwhite": "White Rooster",
+  "config.value.cockbrown": "Brown Rooster",
+  "config.value.cockblue": "Blue Rooster",
+  "config.value.cockvoid": "Void Rooster",
+  "config.value.cockgold": "Gold Rooster"
 }

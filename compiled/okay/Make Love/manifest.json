@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Make Love",
   "Author": "Kabulla",
-  "Version": "1.1.2",
+  "Version": "1.2.1",
   "Description": "Making love with NPCs.",
   "UniqueID": "Kabulla.MakeLove",
   "EntryDll": "MakeLove.dll",

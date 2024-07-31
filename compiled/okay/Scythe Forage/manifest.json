@@ -1,0 +1,10 @@
+{
+    "Name": "ScytheForage",
+    "Author": "wronque",
+    "Version": "1.0.0",
+    "Description": "Makes the iridium scythe able to pick up forageables.",
+    "UniqueID": "wronque.ScytheForage",
+    "EntryDll": "ScytheForage.dll",
+    "MinimumApiVersion": "4.0.0",
+    "UpdateKeys": ["Nexus:26185"]
+}

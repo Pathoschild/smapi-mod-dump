@@ -68,9 +68,6 @@
     "config.casino-slots.name": "Слоти казино",
     "config.casino-slots.tooltip": "Як швидко слоти казино обертаються. Типово: {{defaultValue}}x.",
 
-    "config.event.name": "Event cutscene", // TODO
-    "config.event.tooltip": "How fast event cutscenes play. Default {{defaultValue}}x, suggested {{suggestedValue}}x.", // TODO
-
     "config.fade.name": "Fade", // TODO
     "config.fade.tooltip": "How fast the screen fades to black and fades back in. Default {{defaultValue}}x.", // TODO
 
@@ -113,5 +110,14 @@
     "config.title-menu.tooltip": "Як швидко головне меню перемикається між екранами. Типово: {{defaultValue}}x.",
 
     "config.load-game-blink.name": "Мерехтіння завантаження гри",
-    "config.load-game-blink.tooltip": "Як довго триває затримка після того як ви натиснули на кнопку «Грати далі». Типово: {{defaultValue}}x."
+    "config.load-game-blink.tooltip": "Як довго триває затримка після того як ви натиснули на кнопку «Грати далі». Типово: {{defaultValue}}x.",
+
+    /****
+    ** 'Experimental' section
+    ****/
+    "config.experimental": "Experimental options", // TODO
+    "config.experimental-warning": "These options aren't fully stable yet, and may cause issues like freezes and crashes. Enabling any of these isn't recommended.", // TODO
+
+    "config.event.name": "Event cutscene", // TODO
+    "config.event.tooltip": "How fast event cutscenes play. Default {{defaultValue}}x, suggested {{suggestedValue}}x." // TODO
 }

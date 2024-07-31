@@ -1,0 +1,22 @@
+﻿{
+  "pouch.description": "Çok kullanışlı bir alet çantası! Açmak için sağ tıkla.",
+  "error.pouch": "Alet çantanın içine, alet çantasını mı koymayı denedin sen?.",
+  "pouch.name": "Alet Çantası",
+  "letter.body": "Hey @,^Alet yükseltme hizmetimi kullandığın için teşekkürler! Minnettarlığımın bir göstergesi olarak, işte sana tüm aletlerini koyabileceğin bir alet çantası! Umarım bu işine yarar!^ -Clint",
+  "letter.signoff": "Clint'ten Bir Hediye",
+  "options.title": "Alet Çantası Seçenekleri",
+  "options.description": "İsteğine göre yapılandır",
+  "backdrop.title": "Arkaplan Kullan",
+  "backdrop.description": "Daha iyi görmek için arka plan kullan",
+  "animation.title": "Animasyon süresi (milisaniye)",
+  "animation.description": "Açılış animasyonunun süresi",
+  "gamepadSelect.title": "Sol çubuk ile seç",
+  "gamepadSelect.description": "Aracı seçmek için gamepad'in sol çubuğunu kullan",
+  "hover.title": "Basılı tuıtarak araç seçme",
+  "hover.description1": "Tut",
+  "hover.description2": "ve öğenin üzerine gelin, seçmek için basılı tutmayı bırakın",
+  "menu.title": "Menü Tuşu",
+  "menu.description": "Alet Çantası menüsünü açmak için kullanılan tuş (Klavye)",
+  "gamepadMenu.title": "Menü Tuşu",
+  "gamepadMenu.description": "Alet Çantası menüsünü açmak için kullanılan tuş (Kol)"
+}

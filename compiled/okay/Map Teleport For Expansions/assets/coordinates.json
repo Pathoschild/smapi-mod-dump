@@ -298,8 +298,8 @@
             "displayName": "North/DigSite",
             "teleportName": "IslandNorth",
             "label": "挖掘场",
-            "x": 16,
-            "y": 51
+            "x": 30,
+            "y": 53
         },
         {
             "displayName": "North/Volcano",

@@ -68,9 +68,6 @@
     "config.casino-slots.name": "Kumarhane slotları",
     "config.casino-slots.tooltip": "Kumarhane slotlarının ne kadar hızlı döndüğü. Varsayılan {{defaultValue}}x.",
 
-    "config.event.name": "Arasahneler",
-    "config.event.tooltip": "Arasahnelerin hızını belirler. Varsayılan: {{defaultValue}}x, Önerilen: {{suggestedValue}}x.",
-
     "config.fade.name": "Kararma",
     "config.fade.tooltip": "Ekranın kararma ve aydınlanma hızı. Varsayılan: {{defaultValue}}x.",
 
@@ -113,5 +110,14 @@
     "config.title-menu.tooltip": "Başlık menüsünün ekranlar arasında ne kadar hızlı geçiş yaptığı. Varsayılan {{defaultValue}}x.",
 
     "config.load-game-blink.name": "Oyun yükleme yanıp sönmesi",
-    "config.load-game-blink.tooltip": "Bir oyun yükleme slotuna tıkladıktan sonra yanıp sönen yuva gecikmesinin ne kadar hızlı gerçekleştiği. Varsayılan {{defaultValue}}x."
+    "config.load-game-blink.tooltip": "Bir oyun yükleme slotuna tıkladıktan sonra yanıp sönen yuva gecikmesinin ne kadar hızlı gerçekleştiği. Varsayılan {{defaultValue}}x.",
+
+    /****
+    ** 'Experimental' section
+    ****/
+    "config.experimental": "Experimental options", // TODO
+    "config.experimental-warning": "These options aren't fully stable yet, and may cause issues like freezes and crashes. Enabling any of these isn't recommended.", // TODO
+
+    "config.event.name": "Arasahneler",
+    "config.event.tooltip": "Arasahnelerin hızını belirler. Varsayılan: {{defaultValue}}x, Önerilen: {{suggestedValue}}x."
 }

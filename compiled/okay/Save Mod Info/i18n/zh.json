@@ -1,0 +1,6 @@
+{
+    "UI.RecordModInfo.Tooltip": "成功记录当前游戏存档已加载的模组信息",
+    
+    "UI.CheckModInfo.NoInfo": "该存档没有记录过模组信息",
+    "UI.CheckModInfo.RemovedMod": "模组{{name}}已被移除",
+}

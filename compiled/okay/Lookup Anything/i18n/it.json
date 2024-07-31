@@ -51,7 +51,7 @@
     "quality.iridium": "iridio",
 
     // item names shown in recipes
-    "item.wild-seeds": "Wild Seeds (Any)", // TODO
+    "item.wild-seeds": "Semi selvatici (Qualsiasi)",
 
     // NPC friendship
     "friendship-status.friendly": "Amichevole",

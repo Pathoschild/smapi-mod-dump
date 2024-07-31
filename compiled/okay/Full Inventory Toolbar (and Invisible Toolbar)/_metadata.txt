@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/25711
+IDs: mushymato.FullInventoryToolbar
+update keys: Nexus:25711

@@ -1,0 +1,10 @@
+{
+  "Name": "MineTooltips",
+  "Author": "Codeize",
+  "Version": "1.0.0",
+  "Description": "MineTooltips is a mod for Stardew Valley that provides insights into what monsters and rewards spawn in The Mines.",
+  "UniqueID": "Codeize.MineTooltips",
+  "EntryDll": "MineTooltips.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:26315" ]
+}

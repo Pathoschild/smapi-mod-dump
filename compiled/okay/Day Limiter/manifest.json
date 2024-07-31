@@ -1,9 +1,9 @@
 {
   "Name": "Day Limiter",
-  "Author": "tadfoster",
-  "Version": "1.0.2",
+  "Author": "Parzivl",
+  "Version": "1.0.5",
   "Description": "This mod allows players to set a day limit on how long they want to play Stardew Valley. Once the day limit is reached, the game will automatically quit, encouraging players to take breaks and manage their time effectively.",
-  "UniqueID": "tadfoster.DayLimiter",
+  "UniqueID": "Parzivl.DayLimiter",
   "EntryDll": "DayLimiter.dll",
   "MinimumApiVersion": "3.17.0",
   "UpdateKeys": [ "Nexus:25529" ]

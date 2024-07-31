@@ -1,0 +1,15 @@
+{
+  "Name": "Skull Cave Auto Pause",
+  "Author": "kun2331",
+  "Version": "1.0.0",
+  "Description": "Time will automatically pause when enter into the desert mine",
+  "UniqueID": "kun2331.SkullCaveAutoPause",
+  "EntryDll": "SkullCaveAutoPause.dll",
+  "UpdateKeys": [ "Nexus:25767" ],
+  "Dependencies": [
+    {
+      "UniqueID": "kun2331.QuickDescendByUsingStaircase",
+      "IsRequired": false
+    }
+  ]
+}

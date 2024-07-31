@@ -1,0 +1,10 @@
+{
+  "Name": "LazyFarmer",
+  "Author": "LazyGamer",
+  "Version": "0.1.0",
+  "Description": "I am too lazy to write a description.",
+  "UniqueID": "LazyGamer.LazyFarmer",
+  "EntryDll": "LazyFarmer.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": ["Nexus:26294", "GitHub:setsevireon/LazyFarmer"]
+}

@@ -1,5 +1,6 @@
 {
   "modUniqueId": "DaisyNiko.CCBB",
+  "targetBuildings": ["barn", "coop"],
   "coopTroughTiles": [
     {
       "tileX": 12,

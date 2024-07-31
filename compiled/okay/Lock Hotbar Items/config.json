@@ -1,3 +1,4 @@
 {
-  "AlwaysShowFavorites": false
+  "AlwaysShowFavorites": false,
+  "ModifierKey": "LeftAlt"
 }

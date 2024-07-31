@@ -1,0 +1,29 @@
+{
+    "$schema": "https://smapi.io/schemas/i18n.json",
+
+    "Farm Damage": "Schadensbericht:",
+    "Colon_Punctuation": ": ",
+    "Tilled Soil": "Gepflügter Boden",
+    
+    //GMCM stuff:
+    "GMCM Visuals": "Bildmaterial:",
+
+    "GMCM Crop Images": "Zerstörte Ernten erscheinen als:",
+    "Growing Plant": "Wachsende Pflanze",
+    "Seed Packet": "Saatgut-Paket",
+    "Harvested Produce": "Geerntetes Erzeugnis",
+
+    "GMCM Show In World Overlay": "Rendering von zerstörten Objekten anzeigen",
+    "GMCM Show In World Overlay Tooltip": "Ein pulsierendes Bild des zerstörten Objekts wird an seinem früheren Standort angezeigt",
+
+    "GMCM Show X": "Ein 'X' für Schaden anzeigen",
+    "GMCM Show X Tooltip": "Ein 'X' wird die beschädigte Stelle anzeigen. Befindet die Stelle sich außerhalb des Bildschirms, zeigt ein Pfeil am Rand des Bildschirms in die Richtung",
+
+    "GMCM Function": "Funktion:",
+
+    "GMCM New Object": "Neues Objekt entfernt das Rendering",
+    "GMCM New Object Tooltip": "Renderings werden am Ende des Tages immer zurückgesetzt. Mit dieser Option wird ein Rendering entfernt, wenn Sie ein anderes Objekt dort platzieren oder den Boden bearbeiten.",
+
+    "GMCM Show HUD Damage Report": "Tägliche Schadensmeldung anzeigen",
+    "GMCM Show HUD Damage Report Tooltip": "Jeden Morgen, wenn Schaden verursacht wurde, wird ein 'Schadensbericht' zusammen mit der HUD-Benachrichtigung des Spiels angezeigt."
+} 

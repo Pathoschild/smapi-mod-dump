@@ -1,0 +1,42 @@
+{
+  "Difficulty": "Classic",
+  "SpawnGore": true,
+  "DemonEyeSpawning": {
+    "SpawnChance": 5,
+    "SpawnAfter": 1800,
+    "OnlyAfterTerrariaEasterEgg": true,
+    "BlockWhenEOCAlive": true,
+    "SpawnHalloweenVariants": "During Fall",
+    "SpawnLocation": {
+      "Anywhere": false,
+      "AnywhereOutdoors": false,
+      "Farm": true,
+      "Mines": false,
+      "SkullCavern": false,
+      "QuarryMine": false,
+      "MutantBugLair": false,
+      "VolcanoDungeon": false,
+      "SecretWoods": false,
+      "GingerIsland": false,
+      "Desert": false
+    }
+  },
+  "EyeOfCthulhu": {
+    "PlayCutscene": true,
+    "SpawnAfter": 1800,
+    "OnlyOne": true,
+    "SpawnLocation": {
+      "Anywhere": false,
+      "AnywhereOutdoors": false,
+      "Farm": true,
+      "Mines": false,
+      "SkullCavern": false,
+      "QuarryMine": false,
+      "MutantBugLair": false,
+      "VolcanoDungeon": false,
+      "SecretWoods": false,
+      "GingerIsland": false,
+      "Desert": false
+    }
+  }
+}

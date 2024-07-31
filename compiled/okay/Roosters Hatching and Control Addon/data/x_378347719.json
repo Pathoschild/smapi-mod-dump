@@ -1,0 +1,374 @@
+{
+  "Roosters": {
+    "White": {
+      "ProduceOption": "Customize Below",
+      "DeluxeProduceOption": "Customize Below",
+      "AllProduces": {
+        "Produce": {
+          "First": {
+            "Name": "684",
+            "Probability": "60"
+          },
+          "Second": {
+            "Name": "685",
+            "Probability": "40"
+          },
+          "Third": {
+            "Name": "770",
+            "Probability": "0"
+          },
+          "Fourth": {
+            "Name": "684",
+            "Probability": "0"
+          },
+          "Chosen": {
+            "Name": "685",
+            "Probability": "40"
+          }
+        },
+        "Deluxe": {
+          "First": {
+            "Name": "774",
+            "Probability": "60"
+          },
+          "Second": {
+            "Name": "535",
+            "Probability": "40"
+          },
+          "Third": {
+            "Name": "DeluxeBait",
+            "Probability": "0"
+          },
+          "Fourth": {
+            "Name": "774",
+            "Probability": "0"
+          },
+          "Chosen": {
+            "Name": "774",
+            "Probability": "60"
+          }
+        }
+      },
+      "Eggs": {
+        "Normal": {
+          "Name": "176",
+          "Probability": "0"
+        },
+        "Large": {
+          "Name": "174",
+          "Probability": "20"
+        },
+        "Fertilized": {
+          "Name": "Meara.Roosters_FertEggWhite",
+          "Probability": "0"
+        }
+      },
+      "HarvestType": "Dig Up",
+      "ProduceDays": 1,
+      "MatureDays": 4,
+      "Buyable": true,
+      "BuildingRequired": "Big Coop",
+      "Female": "White Chicken",
+      "Females": [],
+      "FarmAnimalName": "cockwhite",
+      "Price": 2400,
+      "Quantity": 0
+    },
+    "Brown": {
+      "ProduceOption": "Customize Below",
+      "DeluxeProduceOption": "Customize Below",
+      "AllProduces": {
+        "Produce": {
+          "First": {
+            "Name": "684",
+            "Probability": "60"
+          },
+          "Second": {
+            "Name": "685",
+            "Probability": "40"
+          },
+          "Third": {
+            "Name": "MixedFlowerSeeds",
+            "Probability": "0"
+          },
+          "Fourth": {
+            "Name": "684",
+            "Probability": "0"
+          },
+          "Chosen": {
+            "Name": "684",
+            "Probability": "60"
+          }
+        },
+        "Deluxe": {
+          "First": {
+            "Name": "774",
+            "Probability": "60"
+          },
+          "Second": {
+            "Name": "535",
+            "Probability": "40"
+          },
+          "Third": {
+            "Name": "DeluxeBait",
+            "Probability": "0"
+          },
+          "Fourth": {
+            "Name": "774",
+            "Probability": "0"
+          },
+          "Chosen": {
+            "Name": "535",
+            "Probability": "40"
+          }
+        }
+      },
+      "Eggs": {
+        "Normal": {
+          "Name": "180",
+          "Probability": "0"
+        },
+        "Large": {
+          "Name": "182",
+          "Probability": "20"
+        },
+        "Fertilized": {
+          "Name": "Meara.Roosters_FertEggBrown",
+          "Probability": "0"
+        }
+      },
+      "HarvestType": "Dig Up",
+      "ProduceDays": 1,
+      "MatureDays": 4,
+      "Buyable": true,
+      "BuildingRequired": "Big Coop",
+      "Female": "Brown Chicken",
+      "Females": [],
+      "FarmAnimalName": "cockbrown",
+      "Price": 2400,
+      "Quantity": 0
+    },
+    "Blue": {
+      "ProduceOption": "Customize Below",
+      "DeluxeProduceOption": "Customize Below",
+      "AllProduces": {
+        "Produce": {
+          "First": {
+            "Name": "908",
+            "Probability": "60"
+          },
+          "Second": {
+            "Name": "414",
+            "Probability": "40"
+          },
+          "Third": {
+            "Name": "908",
+            "Probability": "0"
+          },
+          "Fourth": {
+            "Name": "908",
+            "Probability": "0"
+          },
+          "Chosen": {
+            "Name": "414",
+            "Probability": "40"
+          }
+        },
+        "Deluxe": {
+          "First": {
+            "Name": "454",
+            "Probability": "60"
+          },
+          "Second": {
+            "Name": "MysteryBox",
+            "Probability": "40"
+          },
+          "Third": {
+            "Name": "454",
+            "Probability": "0"
+          },
+          "Fourth": {
+            "Name": "454",
+            "Probability": "0"
+          },
+          "Chosen": {
+            "Name": "454",
+            "Probability": "60"
+          }
+        }
+      },
+      "Eggs": {
+        "Normal": {
+          "Name": "Meara.RoostersBlueEgg",
+          "Probability": "0"
+        },
+        "Large": {
+          "Name": "Meara.RoostersLargeBlueEgg",
+          "Probability": "20"
+        },
+        "Fertilized": {
+          "Name": "Meara.Roosters_FertEggBlue",
+          "Probability": "0"
+        }
+      },
+      "HarvestType": "Dig Up",
+      "ProduceDays": 1,
+      "MatureDays": 4,
+      "Buyable": true,
+      "BuildingRequired": "Big Coop",
+      "Female": "Blue Chicken",
+      "Females": [],
+      "FarmAnimalName": "cockblue",
+      "Price": 2400,
+      "Quantity": 0
+    },
+    "Void": {
+      "ProduceOption": "Customize Below",
+      "DeluxeProduceOption": "Customize Below",
+      "AllProduces": {
+        "Produce": {
+          "First": {
+            "Name": "769",
+            "Probability": "60"
+          },
+          "Second": {
+            "Name": "558",
+            "Probability": "40"
+          },
+          "Third": {
+            "Name": "769",
+            "Probability": "0"
+          },
+          "Fourth": {
+            "Name": "769",
+            "Probability": "0"
+          },
+          "Chosen": {
+            "Name": "769",
+            "Probability": "60"
+          }
+        },
+        "Deluxe": {
+          "First": {
+            "Name": "879",
+            "Probability": "60"
+          },
+          "Second": {
+            "Name": "808",
+            "Probability": "40"
+          },
+          "Third": {
+            "Name": "879",
+            "Probability": "0"
+          },
+          "Fourth": {
+            "Name": "879",
+            "Probability": "0"
+          },
+          "Chosen": {
+            "Name": "558",
+            "Probability": "40"
+          }
+        }
+      },
+      "Eggs": {
+        "Normal": {
+          "Name": "305",
+          "Probability": "0"
+        },
+        "Large": {
+          "Name": "Meara.RoostersLargevoidEgg",
+          "Probability": "20"
+        },
+        "Fertilized": {
+          "Name": "Meara.Roosters_FertEggVoid",
+          "Probability": "0"
+        }
+      },
+      "HarvestType": "Dig Up",
+      "ProduceDays": 1,
+      "MatureDays": 4,
+      "Buyable": false,
+      "BuildingRequired": "Big Coop",
+      "Female": "Void Chicken",
+      "Females": [],
+      "FarmAnimalName": "cockvoid",
+      "Price": 2400,
+      "Quantity": 0
+    },
+    "Gold": {
+      "ProduceOption": "Customize Below",
+      "DeluxeProduceOption": "Customize Below",
+      "AllProduces": {
+        "Produce": {
+          "First": {
+            "Name": "68",
+            "Probability": "60"
+          },
+          "Second": {
+            "Name": "86",
+            "Probability": "40"
+          },
+          "Third": {
+            "Name": "66",
+            "Probability": "0"
+          },
+          "Fourth": {
+            "Name": "68",
+            "Probability": "0"
+          },
+          "Chosen": {
+            "Name": "86",
+            "Probability": "40"
+          }
+        },
+        "Deluxe": {
+          "First": {
+            "Name": "124",
+            "Probability": "60"
+          },
+          "Second": {
+            "Name": "166",
+            "Probability": "40"
+          },
+          "Third": {
+            "Name": "124",
+            "Probability": "0"
+          },
+          "Fourth": {
+            "Name": "124",
+            "Probability": "0"
+          },
+          "Chosen": {
+            "Name": "124",
+            "Probability": "60"
+          }
+        }
+      },
+      "Eggs": {
+        "Normal": {
+          "Name": "928",
+          "Probability": "0"
+        },
+        "Large": {
+          "Name": "Meara.RoostersLargegoldEgg",
+          "Probability": "20"
+        },
+        "Fertilized": {
+          "Name": "Meara.Roosters_FertEggGold",
+          "Probability": "0"
+        }
+      },
+      "HarvestType": "Dig Up",
+      "ProduceDays": 1,
+      "MatureDays": 4,
+      "Buyable": false,
+      "BuildingRequired": "Big Coop",
+      "Female": "Golden Chicken",
+      "Females": [],
+      "FarmAnimalName": "cockgold",
+      "Price": 2400,
+      "Quantity": 0
+    }
+  }
+}

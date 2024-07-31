@@ -1,0 +1,10 @@
+{
+  "config-menu.title.keys": "Atalhos",
+  "config-menu.title-tooltip.keys": "Altere seus atalhos.",
+  "config-menu.key.change-owner": "Trocar o proprietário do estábulo",
+  "config-menu.key-tooltip.change-owner": "Atalho para alterar o proprietário do estábulo.",
+  
+  "dialog.choose-new-owner": "Escolha o novo proprietário:",
+
+  "alert.stable-new-owner": "Esse estábulo tem um novo proprietário: "
+}

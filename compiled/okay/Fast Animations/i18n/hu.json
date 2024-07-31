@@ -68,9 +68,6 @@
     "config.casino-slots.name": "Félkarú rabló",
     "config.casino-slots.tooltip": "Milyen gyorsan forognak a félkarú rabló paneljai. Alapból {{defaultValue}}x.",
 
-    "config.event.name": "Event cutscene", // TODO
-    "config.event.tooltip": "How fast event cutscenes play. Default {{defaultValue}}x, suggested {{suggestedValue}}x.", // TODO
-
     "config.fade.name": "Fade", // TODO
     "config.fade.tooltip": "How fast the screen fades to black and fades back in. Default {{defaultValue}}x.", // TODO
 
@@ -113,5 +110,14 @@
     "config.title-menu.tooltip": "Milyen gyorsan vált a főmenü képernyők között. Alapból {{defaultValue}}x.",
 
     "config.load-game-blink.name": "Játék betöltése",
-    "config.load-game-blink.tooltip": "Milyen gyorsan villant a játék, miután rányomtál, hogy töltsön be egy mentést. Alapból {{defaultValue}}x."
+    "config.load-game-blink.tooltip": "Milyen gyorsan villant a játék, miután rányomtál, hogy töltsön be egy mentést. Alapból {{defaultValue}}x.",
+
+    /****
+    ** 'Experimental' section
+    ****/
+    "config.experimental": "Experimental options", // TODO
+    "config.experimental-warning": "These options aren't fully stable yet, and may cause issues like freezes and crashes. Enabling any of these isn't recommended.", // TODO
+
+    "config.event.name": "Event cutscene", // TODO
+    "config.event.tooltip": "How fast event cutscenes play. Default {{defaultValue}}x, suggested {{suggestedValue}}x." // TODO
 }

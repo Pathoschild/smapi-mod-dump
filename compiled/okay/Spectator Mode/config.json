@@ -1,9 +1,12 @@
 {
-  "SpectateLocationKeybind": "F6",
-  "SpectatePlayerKeybind": "F7",
-  "ToggleStateKeybind": "K",
+  "SpectateLocationKey": "F6",
+  "OnlyShowOutdoors": true,
+  "SpectatePlayerKey": "F7",
+  "ToggleStateKey": "K",
   "MoveSpeed": 32,
   "MoveThreshold": 64,
-  "RotatePlayerKeybind": "F8",
-  "RotationInterval": 30
+  "ShowTimeAndMoney": true,
+  "ShowToolbar": true,
+  "RandomSpectateKey": "F8",
+  "RandomSpectateInterval": 30
 }

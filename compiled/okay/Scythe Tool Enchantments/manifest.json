@@ -1,0 +1,19 @@
+{
+    "Name": "Scythe Tool Enchantments",
+    "Author": "mushymato",
+    "Version": "1.0.1",
+    "MinimumApiVersion": "4.0.8",
+    "MinimumGameVersion": "1.6.8",
+    "Description": "Add 4 new enchantment effects for the iridium scythe.",
+    "UniqueID": "mushymato.ScytheToolEnchantments",
+    "UpdateKeys": [
+        "Nexus:26217"
+    ],
+    "EntryDll": "ScytheToolEnchantments.dll",
+    "Dependencies": [
+        {
+            "UniqueID": "spacechase0.SpaceCore",
+            "MinimumVersion": "1.23.2"
+        }
+    ]
+}

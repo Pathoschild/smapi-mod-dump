@@ -1,3 +1,24 @@
 {
-  "EnableMod": true
+  "EnableMod": true,
+  "InitialFriendship": 0,
+  "AdultAnimals": false,
+  "ChickenPrice": 800,
+  "DuckPrice": 1200,
+  "RabbitPrice": 8000,
+  "CowPrice": 1500,
+  "GoatPrice": 4000,
+  "SheepPrice": 8000,
+  "PigPrice": 16000,
+  "DefaultIncubatorTime": 9000,
+  "DefaultOstrichIncubatorTime": 15000,
+  "DefaultSlimeIncubatorTime": 4000,
+  "ChickenIncubationTime": 9000,
+  "DuckIncubationTime": 9000,
+  "DinosaurIncubationTime": 18000,
+  "OstrichIncubationTime": 15000,
+  "GreenSlimeIncubationTime": 4000,
+  "BlueSlimeIncubationTime": 4000,
+  "RedSlimeIncubationTime": 4000,
+  "PurpleSlimeIncubationTime": 4000,
+  "TigerSlimeIncubationTime": 4000
 }

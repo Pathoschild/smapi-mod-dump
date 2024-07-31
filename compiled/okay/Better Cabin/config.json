@@ -48,6 +48,9 @@
   "BuildCabinContinually": true,
   "LockCabin": true,
   "LockCabinKeybind": "L",
+  "SetWhiteListKey": "U",
   "ResetCabinPlayer": true,
-  "ResetCabinPlayerKeybind": "Delete"
+  "ResetCabinPlayerKeybind": "Delete",
+  "CabinCost": 0,
+  "PassableMailbox": true
 }

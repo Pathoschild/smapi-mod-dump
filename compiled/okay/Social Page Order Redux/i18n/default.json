@@ -1,8 +1,21 @@
 {
-    "sort": "Sort",
-    "sort-0": "Friendship (Asc)",
-    "sort-1": "Friendship (Desc)",
-    "sort-2": "Name (Asc)",
-    "sort-3": "Name (Desc)",
-    "sort-by": "Sort By "
+  "sort": "Sort",
+  "sort-0": "Friendship (Asc)",
+  "sort-1": "Friendship (Desc)",
+  "sort-2": "Name (Asc)",
+  "sort-3": "Name (Desc)",
+  "sort-by": "Sort By ", // Note: The sort option text (sort-0, sort-1...) is directly appended onto this, so it should have a trailing space (if necessary in your language)
+  "GMCM-EnableMod": "Enable Mod",
+  "GMCM-PreviousSortKey": "Prev Sort Key",
+  "GMCM-NextSortKey": "Next Sort Key",
+  "GMCM-UseFilter": "Use Filter",
+  "GMCM-UseButton": "Use Button",
+  "GMCM-UseDropdown": "Use Dropdown",
+  "GMCM-AutoFocusSearch": "Auto-Focus Search Bar",
+  "GMCM-ButtonOffsetX": "Button X Offset",
+  "GMCM-ButtonOffsetY": "Button Y Offset",
+  "GMCM-DropdownOffsetX": "Dropdown X Offset",
+  "GMCM-DropdownOffsetY": "Dropdown Y Offset",
+  "GMCM-FilterOffsetX": "Filter X Offset",
+  "GMCM-FilterOffsetY": "Filter Y Offset"
 }

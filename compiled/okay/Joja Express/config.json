@@ -6,5 +6,8 @@
   "OpenByPhone": true,
   "OpenByKey": false,
   "OpenByPad": true,
-  "CloseWhenCCComplete": true
+  "CloseWhenCCComplete": true,
+  "EnableCommunity": true,
+  "EnableGlobal": true,
+  "EnableQi": true
 }

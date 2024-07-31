@@ -4,6 +4,7 @@
   "qsMenu.title": "descend layers: ",
   "qsMenu.title2": "staircase cost: {{costNum}}({{hasNum}})",
   "time.late": "it is too late, i should go home now.",
+  "info.currentLayer": "current layer: {{layer}}",
   "staircase.lack": "i need {{lackNum}} more staircase to get down!",
   "staircase.fall": "i get down {{layers}} layers, spend {{costNum}} staircases.",
   "unlocked.mail.text": "@,^I noticed that you seem to be exploring the desert mine, where there happens to be an underground descent hole which digged by our dwarf tribe, and now covered by a statue. Now I have unlocked that hole, hoping this can help you better reach the depths of the underground.^Attention, that hole is very deep. I suggest you use the staircases to descend.^--Dwarf",
@@ -23,5 +24,7 @@
   "config.recipeModify.name": "easier recipe",
   "config.recipeModify.tooltip": "modify recipe of staircase(10 woods and 10 stones, take effect after return to the main title)",
   "config.ignoreLimit.name": "ignore limit",
-  "config.ignoreLimit.tooltip": "whether to break through the maximum number of layers limit\nwhether to allow to use it during the desert festival days"
+  "config.ignoreLimit.tooltip": "whether to break through the maximum number of layers limit\nwhether to allow to use it during the desert festival days",
+  "config.autoPause.name": "auto pause",
+  "config.autoPause.tooltip": "time will automatically pause when you enter into desert mine."
 }

@@ -1,0 +1,10 @@
+{
+  "config-menu.title.keys": "Keybinds",
+  "config-menu.title-tooltip.keys": "Change your Keybinds.",
+  "config-menu.key.change-owner": "Change horse owner",
+  "config-menu.key-tooltip.change-owner": "Keybind to change the horse owner from a stable.",
+
+  "dialog.choose-new-owner": "Choose the new owner:",
+
+  "alert.stable-new-owner": "This stable got a new owner: "
+}

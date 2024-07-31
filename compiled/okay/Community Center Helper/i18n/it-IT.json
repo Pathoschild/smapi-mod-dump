@@ -75,6 +75,7 @@
 	"mineIronOre": "Rompi Filone di Ferro (Miniere 41+, molto nei piani 71-79)",
 	"mineGoldOre": "Rompi Filone d'Oro (Miniere 81+)",
 	"mineIridiumOre": "Rompi Pietre Mistiche (Miniere 101+), meteorite (evento raro)",
+	"mineRadioactiveOre": "Mine Radioactive Nodes (Mines in dangerous state)", // TODO
 	
 	// Gems Through Mining
 	"gemEmerald": "Rompi Filone di Smeraldo (Miniere 81+), Filone di Gemme",
@@ -85,6 +86,8 @@
 	"gemJade": "Rompi Filone di Giada (Miniere 41+), Filone di Gemme",
 	"gemDiamond": "Rompi Filone di Diamante (Miniere 51+), Filone di Gemme",
 	"gemPrismaticShard": "Rompi Filone di gemme, Pietre Mistiche (Miniere 101+, 25%), Filone di Iridio (4%)",
+	"gemCinderShard": "Mine Cinder Shard Node (Volcano)", // TODO
+	"boneNode": "Mine Bone Node (Ginger Island Dig Site)", // TODO
 	
 	// Farm Cave
 	"caveYours": "Trovati nella grotta della fattoria", // once cave type has been chosen, the other type is disregarded and this is used
@@ -144,6 +147,7 @@
 	
 	// Location Names (for foraging suggestions)
 	"locationFarm": "nella Fattoria",
+	"locationTown": "in Pelican Town", // TODO
 	"locationMines": "nelle Miniere",
 	"locationMinesArea1": "nelle Miniere 1-39",
 	"locationMinesArea2": "nelle Miniere 41-79",
@@ -154,10 +158,13 @@
 	"locationBeachEast": "alla Spiaggia (lato destro)",
 	"locationBeachEastInaccessible": "alla Spiaggia (lato destro; 300 {{wood}} per riparare il ponte)", // tip displayed if bridge is not fixed
 	"locationForest": "nella Foresta Linfabrace",
+	"locationBus": "at Bus Stop", // TODO
 	"locationWoods": "nei Boschi Segreti",
 	"locationSewer": "nelle Fogne",
 	"locationDesert": "nel Deserto di Calico",
 	"locationSkullPrehistoric": "nei piani preistorici della Caverna del Teschio",
+	"locationIsland": "on Ginger Island", // TODO
+	"locationVolcano": "in the Volcano", // TODO
 	"locationRidgeForest": "in Ridge Forest", // RSV // TODO
 	"locationUnknown": "in ???",
 	
@@ -168,6 +175,7 @@
 	"waterMountain": "nel lago delle Montagne",
 	"waterForestPond": "nel laghetto della Foresta Linfabrace",
 	"waterForestRiver": "nel fiume della Foresta Linfabrace",
+	"waterForestFalls": "at bottom of Cindersap Forest waterfalls", // TODO
 	"waterSpecialFarm": "nella Fattoria",
 	"waterWoods": "nel laghetto dei Boschi Segreti",
 	"waterDesert": "nel laghetto del Deserto",
@@ -218,6 +226,9 @@
 	"shopDesertTrader": "Mercante del Deserto",
 	"shopOasis": "Oasi",
 	"shopOasisWeekday": "Oasi ({{day}})",
+	"shopIslandTrader": "Island Trader", // TODO
+	"shopIslandResort": "Island Resort", // TODO
+	"shopDwarfVolcano": "Volcano Dwarf", // TODO
 	"shopTravelingCartRandom": "Carovana del Mercante (casuale)",
 	"shopTravelingCartSeason": "Carovana del Mercante in {{season}}",
 	"shopEggFestival": "Pierre al Festival delle uova (Primavera 13)",
@@ -256,6 +267,8 @@
 	"treePomegranate": "Melograno",
 	"treeCherry": "Ciliegio",
 	"treeMahogany": "Mahogany Tree", // TODO
+	"treeBanana": "Banana Tree", // TODO
+	"treeMango": "Mango Tree", // TODO
 	"treeLime": "Albero di Lime", // Cornucopia
 	"treePapaya": "Albero di papaya", // Cornucopia
 	"treeWalnut": "Albero noce", // Cornucopia
@@ -274,6 +287,7 @@
 	"treeMaple": "Acero",
 	"treeOak": "Quercia",
 	"treePine": "Pino",
+	"treeMystic": "Mystic Tree ({{craftingInfo}})", // TODO
 	"treeMushroom": "Albero di Funghi (evento autunnale raro)",
 	"treeDescSeedling": "pianticela da {{shop}}{{startingYear}}", // advice for fruit trees
 	"treeDescNonFruit": "già nella fattoria/cresci {{treeSeed}}", // advice for Maple/Oak/Pine trees
@@ -344,12 +358,14 @@
 	"recipeIngredientSeparator": ", ",
 	
 	// Skill Level Requirements
-	"farmingLvRequirement": "Fattoria Lv. {{num}}",
-	"miningLvRequirement": "Estrazione Lv. {{num}}",
-	"fishingLvRequirement": "Pesca Lv. {{num}}",
-	"foragingLvRequirement": "Racc. Selvatica Lv. {{num}}",
-	"combatLvRequirement": "Combattimento Lv. {{num}}",
+	"skillLvRequirement": "{{skill}} Lv. {{num}}",
 	"totalSkillLvRequirement": "Abilità combinate Lv. {{num}}",
+	"skillMastery": "{{skill}} Mastery", // TODO
+	"farmingSkill": "Fattoria",
+	"miningSkill": "Estrazione",
+	"fishingSkill": "Pesca",
+	"foragingSkill": "Racc. Selvatica",
+	"combatSkill": "Combattimento",
 	
 	// Machine Sources
 	"statueOfPerfectionTip": "valutazione del Nonno perfetta", // advice for statue if you haven't had evaluation or achieved 4 candles
@@ -385,4 +401,15 @@
 	"yearSeason": "{{season}} Anno {{year}}",
 	"year": "Anno {{year}}",
 	"today": "oggi", // when Queen of Sauce episode is airing that very day
+	
+	/***** Mod Config Menu Text *****/
+	
+	"optionShowSpoilersName": "Show Spoilers", // TODO
+	"optionShowSpoilersTooltip": "Whether hints should include spoilers of certain things not yet encountered.", // TODO
+	
+	"optionCollectionsTabName": "Collections Tab Hints", // TODO
+	"optionCollectionsTabTooltip": "Additionally show tooltip hints in the Collections tab for how to obtain items. For \"All Items\" setting, toggle display with click/Action/Tool Button. (Items from mods not guaranteed to show hints.)", // TODO
+	"collectionsTabOff": "Off", // TODO
+	"collectionsTabUnknowns": "Unknowns Only", // TODO
+	"collectionsTabAll": "All Items", // TODO
 }

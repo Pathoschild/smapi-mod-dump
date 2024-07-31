@@ -1,7 +1,7 @@
 {
   "Name": "Multiple Horses",
   "Author": "CyanFire",
-  "Version": "1.0.0",
+  "Version": "1.0.7",
   "Description": "Build extra stables and own more horses!",
   "UniqueID": "CF.MultipleHorses",
   "EntryDll": "MultipleHorses.dll",

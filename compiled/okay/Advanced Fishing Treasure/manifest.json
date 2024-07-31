@@ -1,7 +1,7 @@
 {
   "Name": "AdvancedFishingTreasure",
   "Author": "aceynk",
-  "Version": "1.1.5",
+  "Version": "1.1.6",
   "Description": "Allows customization of fishing treasures in Stardew Valley",
   "UniqueID": "aceynk.AdvancedFishingTreasure",
   "EntryDll": "AdvancedFishingTreasure.dll",

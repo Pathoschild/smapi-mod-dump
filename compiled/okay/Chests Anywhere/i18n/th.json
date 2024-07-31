@@ -48,14 +48,23 @@
     /**********
     ** Generic Mod Config Menu UI
     **********/
-    // general options
+    /****
+    ** general options
+    ****/
     "config.title.general-options": "ตัวเลือกทั่วไป",
+
     "config.show-hover-tooltips.name": "แสดงตัวเด้งแนะนำ",
     "config.show-hover-tooltips.desc": "จะแสดงชื่อหีบในตัวแนะนำหรือไม่เมื่อคุณชี้ไปที่หีบ",
+
     "config.enable-shipping-bin.name": "เปิดใช้งานถังจัดส่ง",
     "config.enable-shipping-bin.desc": "คุณจะเปิดใช้งานการเข้าถึงถังจัดส่งหรือเปล่า",
+
+    "config.enable-sprinkler-attachments.name": "Enable sprinkler attachments", // TODO
+    "config.enable-sprinkler-attachments.desc": "Whether to enable access to sprinkler attachments like enrichers.", // TODO
+
     "config.add-organize-player-items.name": "เพิ่มปุ่มจัดระเบียบไอเทมผู้เล่น",
     "config.add-organize-player-items.desc": "จะเพิ่มปุ่ม 'จัดระเบียบ' ใน UI หีบสำหรับคลังสินค้าของผู้เล่นหรือไม่",
+
     "config.range.name": "ช่วง",
     "config.range.desc": "ช่วงที่สามารถเข้าถึงหีบได้ผ่านเมนู",
     "config.range.unlimited": "หีบทั้งหมด",
@@ -63,34 +72,51 @@
     "config.range.currentLocation": "หีบภายในตำแหน่งปัจจุบัน",
     "config.range.none": "ไม่มี (ไม่สามารถเข้าถึงหีบจากระยะไกลได้)",
 
-    // general controls
+    /****
+    ** general controls
+    ****/
     "config.title.general-controls": "การควบคุมทั่วไป",
+
     "config.toggle-ui-key.name": "สลับ UI",
     "config.toggle-ui-key.desc": "ปุ่มที่ใช้แสดงหรือซ่อน UI หีบ",
 
-    // controls when chest UI is open
+    /****
+    ** controls when chest UI is open
+    ****/
     "config.title.menu-controls": "ควบคุมเมื่อเปิด UI หีบ",
+
     "config.edit-chest.name": "แก้ไขหีบ",
     "config.edit-chest.desc": "ปุ่มที่ใช้สำหรับแก้ไขตัวเลือกสำหรับหีบปัจจุบัน",
+
     "config.sort-items.name": "จัดเรียงรายการ",
     "config.sort-items.desc": "ปุ่มที่ใช้สำหรับจัดเรียงไอเทมในหีบปัจจุบัน",
+
     "config.navigate-prev-chest.name": "นำทาง: หีบก่อนหน้า",
     "config.navigate-prev-chest.desc": "ปุ่มที่ใช้สำหรับนำทางไปยังหีบก่อนหน้าในขณะที่เมนูเปิดอยู่",
+
     "config.navigate-next-chest.name": "นำทาง: หีบถัดไป",
     "config.navigate-next-chest.desc": "ปุ่มที่ใช้สำหรับนำทางไปยังหีบถัดไปในขณะที่เมนูเปิดอยู่",
+
     "config.navigate-prev-category.name": "นำทาง: หมวดหมู่ก่อนหน้า",
     "config.navigate-prev-category.desc": "ปุ่มที่ใช้สำหรับนำทางไปยังหมวดหมู่ก่อนหน้าในขณะที่เมนูเปิดอยู่",
+
     "config.navigate-next-category.name": "นำทาง: หมวดหมู่ถัดไป",
     "config.navigate-next-category.desc": "ปุ่มที่ใช้สำหรับนำทางไปยังหมวดหมู่ถัดไปในขณะที่เมนูเปิดอยู่",
+
     "config.hold-to-scroll-categories.name": "กดค้างไว้เพื่อเลื่อนหมวดหมู่",
     "config.hold-to-scroll-categories.desc": "ปุ่มที่ใช้สำหรับเปิดใช้งานการเลื่อนรายการแบบเลื่อนของหมวดหมู่ด้วยล้อเลื่อนของเมาส์เมื่อกดค้างไว้",
+
     "config.hold-to-scroll-chests.name": "กดค้างเพื่อเลื่อนหีบ",
     "config.hold-to-scroll-chests.desc": "ปุ่มที่เมื่อกดค้างไว้ จะเปิดใช้งานการเลื่อนทรวงอกแบบเลื่อนลงด้วยล้อเลื่อนของเมาส์",
 
-    // disable in locations
+    /****
+    ** disable in locations
+    ****/
     "config.title.disable-in-locations": "ปิดการใช้งานในสถานที่",
+
     "config.disable-mines.name": "เหมืองและถ้ำกะโหลก",
     "config.disable-mines.desc": "ปิดใช้งานการเข้าถึงหีบสมบัติขณะอยู่ในเหมืองหรือถ้ำกะโหลก",
+
     "config.disable-custom-names.name": "ชื่อสถานที่ที่กำหนดเอง",
     "config.disable-custom-names.desc": "ชื่อเฉพาะ (ตามที่แสดงโดยม็อด DebugMode) สำหรับตำแหน่งที่จะปิดการเข้าถึงหีบ คุณสามารถแสดงรายการหลายรายการด้วยเครื่องหมายจุลภาค"
 }

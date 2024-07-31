@@ -1,12 +1,6 @@
 {
     "coordinates": [
         {
-            "displayName": "Farm/Default",
-            "teleportName": "Farm",
-            "x": 64,
-            "y": 15
-        },
-        {
             "displayName": "BusStop/Default",
             "teleportName": "BusStop",
             "x": 14,
@@ -67,7 +61,7 @@
             "y": 56
         },
         {
-            "displayName": "Town/PierreStore_ExtendedHours",
+            "displayName": "Town/PierreStore",
             "teleportName": "Town",
             "x": 43,
             "y": 57
@@ -163,13 +157,13 @@
             "y": 51
         },
         {
-            "displayName": "Town/MovieTheater_CommunityCenterRoute",
+            "displayName": "Town/MovieTheater",
             "teleportName": "Town",
             "x": 95,
             "y": 51
         },
         {
-            "displayName": "Beach/FishShop_ExtendedHours",
+            "displayName": "Beach/FishShop",
             "teleportName": "Beach",
             "x": 30,
             "y": 34
@@ -297,8 +291,8 @@
         {
             "displayName": "North/DigSite",
             "teleportName": "IslandNorth",
-            "x": 16,
-            "y": 51
+            "x": 30,
+            "y": 53
         },
         {
             "displayName": "North/Volcano",

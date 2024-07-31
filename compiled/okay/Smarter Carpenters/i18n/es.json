@@ -1,0 +1,7 @@
+{
+  "modConfigMenu.paragraph": "¿Para qué llevarle los materiales al carpintero cuando va a construir en tu finca? Mejor, dile que color de cofres en tu finca puede buscar los ingredientes.",
+  "modConfigMenu.chestColorName": "Color de Cofre",
+  "modConfigMenu.chestColorTooltip": "¿En qué color de cofres deben los carpinteros buscar? Cofres sin pintar no son considerados. Por defecto, el mod usa color 7 amarillo.",
+  "modConfigMenu.chestLocationName": "Lugar de Cofre",
+  "modConfigMenu.chestLocationTooltip": "={{targetLocation}} (por defecto): Carpinteros buscarán materiales dentro de cofres en la finca donde se está construyendo. ={{mainFarmOnly}}: Carpinteros buscarán materiales dentro de cofres en la finca principal sin importar donde se está construyendo."
+}

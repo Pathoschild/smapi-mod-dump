@@ -1,0 +1,12 @@
+{
+  "Name": "Edit Stable Ownership",
+  "Author": "Predo",
+  "Version": "1.0.0",
+  "Description": "Allows the host to edit the ownership of a stable.",
+  "UniqueID": "predo.sdvmods.EditStableOwnership",
+  "EntryDll": "EditStableOwnership.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [
+    "PedroLucasMiguel/PredoSDVMods"
+  ]
+}

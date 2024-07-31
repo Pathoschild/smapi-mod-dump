@@ -1,0 +1,10 @@
+{
+  "Name": "True God Mode",
+  "Author": "WingleWanger",
+  "Version": "1.7.3",
+  "Description": "",
+  "UniqueID": "winglewanger.truegodmode",
+  "EntryDll": "truegodmode.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:25735" ]
+}

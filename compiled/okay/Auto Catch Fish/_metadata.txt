@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/25997
+IDs: WillTheMage.AutoCatchFishMod
+update keys: Nexus:25997

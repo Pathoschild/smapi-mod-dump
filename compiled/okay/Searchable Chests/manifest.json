@@ -1,0 +1,16 @@
+{
+  "Name": "Searchable Chests",
+  "Author": "ThisIsCad",
+  "Version": "1.2.0",
+  "Description": "A simple mod to add a vanilla-friendly chest search bar.",
+  "UniqueID": "ThisIsCad.SearchableChests",
+  "EntryDll": "SearchableChests.dll",
+  "MinimumApiVersion": "4.0.4",
+  "UpdateKeys": [ "Nexus:25736" ],
+  "ModUpdater": {
+    "Repository": "SearchableChests",
+    "User": "brandonwamboldt",
+    "Directory": "_releases",
+    "ModFolder": ""
+  }
+}

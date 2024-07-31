@@ -10,6 +10,7 @@
   "ChosenPercentage_FancyChicken": 0,
   "ChosenPercentage_FancyDuck": 0,
   "ChosenPercentage_Goose": 0,
+  "ChosenPercentage_Loon": 0,
   "ChosenPercentage_Lovebird": 0,
   "ChosenPercentage_Parrot": 0,
   "ChosenPercentage_Peafowl": 0,
@@ -45,6 +46,8 @@
   "ChosenPercentage_PepperRex": 0,
   "ChosenPercentage_WildflourCrow": 0,
   "ChosenPercentage_Garten": 0,
+  "ChosenPercentage_MizuTurkey": 0,
+  "ChosenPercentage_BirdbGoose": 0,
   "ShowCoopAnimal": false,
   "ShowBarnAnimal": false
 }

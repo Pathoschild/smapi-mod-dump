@@ -16,10 +16,8 @@
     "LeftShoulder",
     "RightShoulder"
   ],
-  "ProcessingMode": "IncreaseSpeed",
-  "ProcessingModeExclusions": [
-    "Lightning Rod"
-  ],
+  "ProcessingMode": "MultiplyItems",
+  "ProcessingModeExclusions": [],
   "AllowCombiningScarecrows": true,
   "FurnaceMultiplyCoalInputs": true
 }

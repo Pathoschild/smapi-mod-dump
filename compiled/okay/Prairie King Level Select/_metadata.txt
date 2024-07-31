@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/26183
+IDs: b1rdyw1rdy.PrairieKingLevelSelect
+update keys: Nexus:26183

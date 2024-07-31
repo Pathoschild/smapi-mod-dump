@@ -1,7 +1,7 @@
 {
   "Name": "ToolPouch",
   "Author": "CodeWordZ",
-  "Version": "1.0.6",
+  "Version": "1.1.1",
   "Description": "A pouch that can hold all your tools so they don't take up inventory space!",
   "UniqueID": "CodeWordZ.ToolPouch",
   "EntryDll": "ToolPouch.dll",

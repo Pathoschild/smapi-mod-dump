@@ -1,7 +1,7 @@
 {
   "Name": "Upgraded Jars",
   "Author": "CyanFire",
-  "Version": "1.5.1",
+  "Version": "1.5.2",
   "Description": "Extra code for Upgraded Jars",
   "UniqueID": "CF.UpgradedJars",
   "EntryDll": "UpgradedJars.dll",

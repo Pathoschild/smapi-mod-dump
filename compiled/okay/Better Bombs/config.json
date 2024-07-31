@@ -1,7 +1,13 @@
 {
-  "BreakClumps": true,
-  "CollectMinerals": true,
   "DamageFarmers": false,
   "Radius": 1.0,
-  "Damage": 1.0
+  "Damage": 1.0,
+  "BreakClumps": false,
+  "BreakStoneClumps": false,
+  "BreakWoodClumps": false,
+  "BreakWeedsClumps": false,
+  "BreakOtherClumps": false,
+  "CollectMinerals": false,
+  "CollectForage": false,
+  "CollectFish": false
 }

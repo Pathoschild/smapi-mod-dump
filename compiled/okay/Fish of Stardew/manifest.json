@@ -1,7 +1,7 @@
 {
   "Name": "Fish of Stardew",
   "Author": "AztecViper",
-  "Version": "3.1.1",
+  "Version": "3.1.2", // fixed locally
   "Description": "Description",
   "UniqueID": "aztecviper.fishOfStardewMod",
   "EntryDll": "FishOfStardewMod.dll",

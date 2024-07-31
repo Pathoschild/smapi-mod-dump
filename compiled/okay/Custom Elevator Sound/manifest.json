@@ -1,7 +1,7 @@
 {
   "Name": "Custom Elevator Sound",
   "Author": "pneuma163",
-  "Version": "1.1.0",
+  "Version": "1.1.1",
   "Description": "Changes the sound of the elevator in the Mines",
   "UniqueID": "pneuma163.CustomElevatorSound",
   "EntryDll": "CustomElevatorSound.dll",

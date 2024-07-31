@@ -1,13 +1,14 @@
 {
-	"Name": "[DLL] Weather Wonders",
+	"Name": "[DLL] Weather Wonders - Beta",
 	"Author": "Kanadeyoru",
-	"Version": "1.3.4",
+	"Version": "1.4.1-beta",
 	"Description": "Expansion for the weather system, everything made to be vanilla-friendly!",
 	"UniqueID": "Kana.WeatherWonders.DLL",
 	"MinimumApiVersion": "4.0.0",
 	"MinimumGameVersion": "1.6",
 	"EntryDll": "WeatherWonders.dll",
 	"UpdateKeys": [
+		"CurseForge:1016623",
 		"Nexus:23868"
 	],
 	"Dependencies": [

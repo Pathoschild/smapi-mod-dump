@@ -68,9 +68,6 @@
     "config.casino-slots.name": "สล็อตคาสิโน",
     "config.casino-slots.tooltip": "ต้องการให้สล็อตคาสิโนหมุนเร็วแค่ไหน ค่าเริ่มต้นคือ {{defaultValue}}x",
 
-    "config.event.name": "Event cutscene", // TODO
-    "config.event.tooltip": "How fast event cutscenes play. Default {{defaultValue}}x, suggested {{suggestedValue}}x.", // TODO
-
     "config.fade.name": "Fade", // TODO
     "config.fade.tooltip": "How fast the screen fades to black and fades back in. Default {{defaultValue}}x.", // TODO
 
@@ -113,5 +110,14 @@
     "config.title-menu.tooltip": "ความเร็วในการเปลี่ยนเมนูชื่อเรื่องระหว่างหน้าจอ ค่าเริ่มต้นคือ {{defaultValue}}x",
 
     "config.load-game-blink.name": "กะพริบโหลดเกม",
-    "config.load-game-blink.tooltip": "ความหน่วงของช่องกะพริบเกิดขึ้นเร็วแค่ไหนหลังจากที่คุณคลิกช่องบันทึกโหลด ค่าเริ่มต้นคือ {{defaultValue}}x"
+    "config.load-game-blink.tooltip": "ความหน่วงของช่องกะพริบเกิดขึ้นเร็วแค่ไหนหลังจากที่คุณคลิกช่องบันทึกโหลด ค่าเริ่มต้นคือ {{defaultValue}}x",
+
+    /****
+    ** 'Experimental' section
+    ****/
+    "config.experimental": "Experimental options", // TODO
+    "config.experimental-warning": "These options aren't fully stable yet, and may cause issues like freezes and crashes. Enabling any of these isn't recommended.", // TODO
+
+    "config.event.name": "Event cutscene", // TODO
+    "config.event.tooltip": "How fast event cutscenes play. Default {{defaultValue}}x, suggested {{suggestedValue}}x." // TODO
 }

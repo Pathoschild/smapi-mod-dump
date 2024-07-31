@@ -1,0 +1,41 @@
+{
+  "DefaultImg.Autumn": "Herbst",
+  "DefaultImg.Forest": "Wald",
+  "DefaultImg.Castle": "Schloss",
+  "DefaultImg.Cold Winter Night": "Kalte Winternacht",
+  "DefaultImg.Foragables": "Futtermittel",
+  "DefaultImg.Green Hill": "Gruener Berg",
+  "DefaultImg.Gus' Kegs": "Gus's Faesser'",
+  "DefaultImg.Holly": "Adventskranz",
+  "DefaultImg.Night Sky": "Nachthimmel",
+  "DefaultImg.Palm Trees": "Exotische Palmen",
+  "DefaultImg.Puzzle": "Puzzle",
+  "DefaultImg.Snow Hill": "Schneeberg",
+  "DefaultImg.Sunset": "Sonnenuntergang",
+  "DefaultImg.The Beach": "Der Strand",
+  "DefaultImg.The Boat": "Das Boot",
+  "DefaultImg.The Fields": "Die Felder",
+  "DefaultImg.Into The Trees": "In den Baeumen",
+  "DefaultImg.Ginger Island Volcano": "Ingwerinsel-Vulkan",
+  "DefaultImg.Moonrise": "Mondaufgang",
+
+  "DefaultFrame.WoodenFrame": "Holzrahmen",
+
+  "Menu.OpenNPCList": "NPC Liste oeffnen",
+  "Menu.OpenBackgroundList": "Hintergroende oeffnen",
+  "Menu.OpenFrameList": "Rahmenliste oeffnen",
+  "Menu.Export": "Exportieren",
+  "Menu.FlipNPC": "NPC-Sprite drehen",
+  "Menu.NPC": "NPC",
+  "Menu.Background": "Hintergrund",
+  "Menu.NPCFrame": "NPC Frame",
+  "Menu.TileSize": "Kachelgroesse",
+  "Menu.NPCPaintings": "NPC Gemaelde",
+
+  "Menu.Export.Painting": "Gemaelde",
+
+  "Config.OpenCustomiser": "Personalisierer oeffnen",
+  "Config.OpenCustomiserDescription": "Oeffnet den Personalisierer wenn ein Katalog sich in deiner aktuellen Gegend befindet",
+
+  "Misc.WarningMessageHappyHomeDesigner": "Es scheint, als wuerdest du Happy Home Designer verwenden. Custom NPC Paintings kann den Knopf nicht zum Menue hinzufuegen. Bitte fuege einen Hotkey zum oeffnen des Personalisierer hinzu. Er kann geoeffnet, wenn bei deiner aktuellen Umgebung ein Katalog steht. Die Nachricht wird nicht mehr erscheinen, wenn du einen Hotkey festgelegt hast."
+}

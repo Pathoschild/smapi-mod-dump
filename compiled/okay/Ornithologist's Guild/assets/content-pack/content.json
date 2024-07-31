@@ -2,18 +2,67 @@
   "FormatVersion": 1,
   "Birdies": [
     {
+      "ID": "AnnasHummingbird",
+      "AssetPath": "assets/AnnasHummingbird.png",
+      "SoundAssetPath": "assets/AnnasHummingbird.wav",
+      "Attributes": 3,
+      "MaxFlockSize": 1,
+      "Cautiousness": 3,
+      "FlapDuration": 50,
+      "FlySpeed": 6,
+      "BaseWt": 0.1,
+      "FeederBaseWts": {
+        "Hummingbird": 0.15
+      },
+      "FoodBaseWts": {
+        "Sugar": 0.15
+      },
+      "LandPreference": 0,
+      "PerchPreference": 1,
+      "WaterPreference": 0,
+      "CanUseBaths": false,
+      "CanNestInTrees": true,
+      "Conditions": [
+        {
+          "When": {
+            "Time": "{{Range: 1800, 2600}}"
+          },
+          "NilWt": true
+        },
+        {
+          "When": {
+            "Ivy.OrnithologistsGuild/LocationBiome": "void, desert"
+          },
+          "NilWt": true
+        },
+        {
+          "When": {
+            "Season": "Spring, Fall"
+          },
+          "AddWt": 0.15
+        },
+        {
+          "When": {
+            "Season": "Winter"
+          },
+          "SubWt": 0.1
+        }
+      ]
+    },
+    {
       "ID": "Mallard",
       "AssetPath": "assets/Mallard.png",
       "SoundAssetPath": "assets/Mallard.wav",
       "Attributes": 2,
       "MaxFlockSize": 5,
-      "Cautiousness": 2,
+      "Cautiousness": 3,
       "FlapDuration": 350,
       "FlySpeed": 4,
       "BaseWt": 0.025,
       "PerchPreference": 0,
       "WaterPreference": 1,
       "CanUseBaths": false,
+      "CanNestInTrees": false,
       "Conditions": [
         {
           "When": {
@@ -56,6 +105,7 @@
       "Cautiousness": 6,
       "FlapDuration": 400,
       "FlySpeed": 5.5,
+      "PerchPreference": 3,
       "BaseWt": 0.1,
       "FeederBaseWts": {
         "Hopper": 0.2,
@@ -112,7 +162,19 @@
       "Conditions": [
         {
           "When": {
-            "Time": "{{Range: 1800, 2600}}"
+            "Time": "{{Range: 0600, 0800}}"
+          },
+          "AddWt": 0.15
+        },
+        {
+          "When": {
+            "Time": "{{Range: 1800, 2000}}"
+          },
+          "AddWt": 0.15
+        },
+        {
+          "When": {
+            "Time": "{{Range: 2000, 2600}}"
           },
           "NilWt": true
         },
@@ -139,6 +201,7 @@
       "Cautiousness": 3,
       "FlapDuration": 500,
       "FlySpeed": 4,
+      "PerchPreference": 2,
       "BaseWt": 0.3,
       "FeederBaseWts": {
         "Hopper": 0.3,
@@ -185,6 +248,7 @@
       "Cautiousness": 5,
       "FlapDuration": 400,
       "FlySpeed": 4,
+      "PerchPreference": 2,
       "BaseWt": 0.05,
       "FeederBaseWts": {
         "Tube": 0.2,
@@ -230,6 +294,7 @@
       "Cautiousness": 5,
       "FlapDuration": 400,
       "FlySpeed": 5.5,
+      "PerchPreference": 2,
       "BaseWt": 0.2,
       "FeederBaseWts": {
         "Hopper": 0.3,
@@ -261,7 +326,7 @@
       "SoundAssetPath": "assets/HouseSparrow.wav",
       "Attributes": 2,
       "MaxFlockSize": 5,
-      "Cautiousness": 2,
+      "Cautiousness": 3,
       "FlapDuration": 450,
       "FlySpeed": 4.5,
       "BaseWt": 0.15,
@@ -306,6 +371,7 @@
       "FlapDuration": 400,
       "FlySpeed": 5,
       "BaseWt": 0.025,
+      "CanNestInTrees": false,
       "FeederBaseWts": {
         "Platform": 0.1
       },
@@ -344,6 +410,8 @@
       "Cautiousness": 4,
       "FlapDuration": 550,
       "FlySpeed": 4.5,
+      "LandPreference": 3,
+      "CanNestInTrees": false,
       "BaseWt": 0.05,
       "FeederBaseWts": {
         "Platform": 0.1
@@ -383,6 +451,7 @@
       "Cautiousness": 5,
       "FlapDuration": 400,
       "FlySpeed": 4,
+      "PerchPreference": 2,
       "BaseWt": 0.5,
       "FeederBaseWts": {},
       "FoodBaseWts": {},

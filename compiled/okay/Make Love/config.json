@@ -1,78 +1,93 @@
 {
   "DisableDatingRequirement": false,
   "RequiredFriendshipLevel": 8,
+  "FarmerFrame1": 59,
+  "FarmerFrame2": 101,
+  "FarmerFramePassive": 59,
   "NpcConfigs": [
     {
       "Name": "Abigail",
       "Passive": true,
-      "Frame": 54,
-      "FrameDirectionRight": false
+      "NpcFrame1": 16,
+      "FrameDirectionRight": false,
+      "ContentPatcherFolder": null
     },
     {
       "Name": "Emily",
       "Passive": true,
-      "Frame": 56,
-      "FrameDirectionRight": false
+      "NpcFrame1": 16,
+      "FrameDirectionRight": false,
+      "ContentPatcherFolder": null
     },
     {
       "Name": "Haley",
       "Passive": true,
-      "Frame": 48,
-      "FrameDirectionRight": false
+      "NpcFrame1": 16,
+      "FrameDirectionRight": false,
+      "ContentPatcherFolder": null
     },
     {
       "Name": "Leah",
       "Passive": true,
-      "Frame": 52,
-      "FrameDirectionRight": false
+      "NpcFrame1": 16,
+      "FrameDirectionRight": false,
+      "ContentPatcherFolder": null
     },
     {
       "Name": "Maru",
       "Passive": true,
-      "Frame": 48,
-      "FrameDirectionRight": false
+      "NpcFrame1": 16,
+      "FrameDirectionRight": false,
+      "ContentPatcherFolder": null
     },
     {
       "Name": "Penny",
       "Passive": true,
-      "Frame": 52,
-      "FrameDirectionRight": false
+      "NpcFrame1": 16,
+      "FrameDirectionRight": false,
+      "ContentPatcherFolder": null
     },
     {
       "Name": "Sam",
       "Passive": false,
-      "Frame": 56,
-      "FrameDirectionRight": false
+      "NpcFrame1": 16,
+      "FrameDirectionRight": false,
+      "ContentPatcherFolder": null
     },
     {
       "Name": "Sebastian",
       "Passive": false,
-      "Frame": 60,
-      "FrameDirectionRight": false
+      "NpcFrame1": 16,
+      "FrameDirectionRight": false,
+      "ContentPatcherFolder": null
     },
     {
       "Name": "Alex",
       "Passive": false,
-      "Frame": 52,
-      "FrameDirectionRight": false
+      "NpcFrame1": 16,
+      "FrameDirectionRight": false,
+      "ContentPatcherFolder": null
     },
     {
       "Name": "Harvey",
       "Passive": false,
-      "Frame": 56,
-      "FrameDirectionRight": false
+      "NpcFrame1": 16,
+      "FrameDirectionRight": false,
+      "ContentPatcherFolder": null
     },
     {
       "Name": "Shane",
       "Passive": false,
-      "Frame": 52,
-      "FrameDirectionRight": false
+      "NpcFrame1": 16,
+      "FrameDirectionRight": false,
+      "ContentPatcherFolder": null
     },
     {
       "Name": "Elliott",
       "Passive": false,
-      "Frame": 52,
-      "FrameDirectionRight": false
+      "NpcFrame1": 16,
+      "FrameDirectionRight": false,
+      "ContentPatcherFolder": null
     }
   ]
 }

@@ -73,5 +73,7 @@
   "config.useBushes.name": "Use Bushes",
   "config.useBushes.desc": "If bee houses should detect flowering bushes",
   "config.modifyCustomBeehouses.name": "Modify Custom Beehouses",
-  "config.modifyCustomBeehouses.desc": "Apply some Better Beehouse modifications to other machines/objects marked as bee houses"
+  "config.modifyCustomBeehouses.desc": "Apply some Better Beehouse modifications to other machines/objects marked as bee houses",
+  "config.debugKey.name": "Flower Visualizer",
+  "config.debugKey.desc": "Toggles the overlay. When active, hovering over a valid beehouse machine will display which tiles it can get honey from."
 }

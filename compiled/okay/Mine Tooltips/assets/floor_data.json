@@ -1,0 +1,196 @@
+{
+  "monsters": [
+    {
+      "name": "Green Slime",
+      "IconPath": "icons/monsters/Green_Slime.png"
+    },
+    {
+      "name": "Duggy",
+      "IconPath": "icons/monsters/Duggy.png"
+    },
+    {
+      "name": "Bug",
+      "IconPath": "icons/monsters/Bug.png"
+    },
+    {
+      "name": "Rock Crab",
+      "IconPath": "icons/monsters/Rock_Crab.png"
+    },
+    {
+      "name": "Bat",
+      "IconPath": "icons/monsters/Bat.png"
+    },
+    {
+      "name": "Stone Golem",
+      "IconPath": "icons/monsters/Stone_Golem.png"
+    },
+    {
+      "name": "Frost Bat",
+      "IconPath": "icons/monsters/Frost_Bat.png"
+    },
+    {
+      "name": "Dust Sprite",
+      "IconPath": "icons/monsters/Dust_Sprite.png"
+    },
+    {
+      "name": "Grub",
+      "IconPath": "icons/monsters/Grub.png"
+    },
+    {
+      "name": "Cave Fly",
+      "IconPath": "icons/monsters/Cave_Fly.png"
+    },
+    {
+      "name": "Skeleton",
+      "IconPath": "icons/monsters/Skeleton.png"
+    },
+    {
+      "name": "Ghost",
+      "IconPath": "icons/monsters/Ghost.png"
+    },
+    {
+      "name": "Metal Head",
+      "IconPath": "icons/monsters/Metal_Head.png"
+    },
+    {
+      "name": "Lava Crab",
+      "IconPath": "icons/monsters/Lava_Crab.png"
+    },
+    {
+      "name": "Shadow Brute",
+      "IconPath": "icons/monsters/Shadow_Brute.png"
+    },
+    {
+      "name": "Shadow Shaman",
+      "IconPath": "icons/monsters/Shadow_Shaman.png"
+    },
+    {
+      "name": "Squid Kid",
+      "IconPath": "icons/monsters/Squid_Kid.png"
+    },
+    {
+      "name": "Lava Bat",
+      "IconPath": "icons/monsters/Lava_Bat.png"
+    },
+    {
+      "name": "Red Sludge",
+      "IconPath": "icons/monsters/Red_Sludge.png"
+    },
+    {
+      "name": "Frost Jelly",
+      "IconPath": "icons/monsters/Frost_Jelly.png"
+    }
+  ],
+  "floors": [
+    {
+      "range": "1-9",
+      "monsters": [ "Green Slime", "Duggy", "Bug", "Rock Crab" ]
+    },
+    {
+      "range": "11-19",
+      "monsters": [ "Green Slime", "Duggy", "Bug", "Rock Crab", "Grub", "Cave Fly" ]
+    },
+    {
+      "range": "21-29",
+      "monsters": [ "Green Slime", "Duggy", "Bug", "Rock Crab", "Grub", "Cave Fly" ]
+    },
+    {
+      "range": "31-39",
+      "monsters": [ "Bug", "Bat", "Stone Golem" ]
+    },
+    {
+      "range": "41-49",
+      "monsters": [ "Frost Jelly", "Frost Bat", "Dust Sprite", "Ghost" ]
+    },
+    {
+      "range": "51-59",
+      "monsters": [ "Frost Jelly", "Frost Bat", "Dust Sprite", "Ghost" ]
+    },
+    {
+      "range": "61-69",
+      "monsters": [ "Frost Bat", "Dust Sprite", "Skeleton", "Ghost", "Metal Head" ]
+    },
+    {
+      "range": "71-79",
+      "monsters": [ "Frost Jelly", "Frost Bat", "Dust Sprite", "Ghost", "Skeleton" ]
+    },
+    {
+      "range": "81-89",
+      "monsters": [ "Red Sludge", "Lava Bat", "Lava Crab", "Shadow Brute", "Shadow Shaman", "Metal Head" ]
+    },
+    {
+      "range": "91-99",
+      "monsters": [ "Red Sludge", "Lava Bat", "Lava Crab", "Shadow Brute", "Shadow Shaman", "Metal Head", "Squid Kid" ]
+    },
+    {
+      "range": "101-109",
+      "monsters": [ "Red Sludge", "Lava Bat", "Lava Crab", "Shadow Brute", "Shadow Shaman", "Metal Head", "Squid Kid" ]
+    },
+    {
+      "range": "111-119",
+      "monsters": [ "Red Sludge", "Lava Bat", "Lava Crab", "Shadow Brute", "Shadow Shaman", "Metal Head", "Squid Kid" ]
+    }
+  ],
+  "rewards": [
+    {
+      "RewardFloor": 0,
+      "RewardName": "Rusty Sword",
+      "RewardIconPath": "icons/rewards/0/Rusty_Sword.png"
+    },
+    {
+      "RewardFloor": 10,
+      "RewardName": "Leather Boots",
+      "RewardIconPath": "icons/rewards/10/Leather_Boots.png"
+    },
+    {
+      "RewardFloor": 20,
+      "RewardName": "Steel Smallsword",
+      "RewardIconPath": "icons/rewards/20/Steel_Smallsword.png"
+    },
+    {
+      "RewardFloor": 40,
+      "RewardName": "Slingshot",
+      "RewardIconPath": "icons/rewards/40/Slingshot.png"
+    },
+    {
+      "RewardFloor": 50,
+      "RewardName": "Tundra Boots",
+      "RewardIconPath": "icons/rewards/50/Tundra_Boots.png"
+    },
+    {
+      "RewardFloor": 60,
+      "RewardName": "Crystal Dagger",
+      "RewardIconPath": "icons/rewards/60/Crystal_Dagger.png"
+    },
+    {
+      "RewardFloor": 70,
+      "RewardName": "Master Slingshot",
+      "RewardIconPath": "icons/rewards/70/Master_Slingshot.png"
+    },
+    {
+      "RewardFloor": 80,
+      "RewardName": "Firewalker Boots",
+      "RewardIconPath": "icons/rewards/80/Firewalker_Boots.png"
+    },
+    {
+      "RewardFloor": 90,
+      "RewardName": "Obsidian Edge",
+      "RewardIconPath": "icons/rewards/90/Obsidian_Edge.png"
+    },
+    {
+      "RewardFloor": 100,
+      "RewardName": "Stardrop",
+      "RewardIconPath": "icons/rewards/100/Stardrop.png"
+    },
+    {
+      "RewardFloor": 110,
+      "RewardName": "Space Boots",
+      "RewardIconPath": "icons/rewards/110/Space_Boots.png"
+    },
+    {
+      "RewardFloor": 120,
+      "RewardName": "Skull Key",
+      "RewardIconPath": "icons/rewards/120/Skull_Key.png"
+    }
+  ]
+}

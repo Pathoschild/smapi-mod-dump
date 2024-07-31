@@ -5,25 +5,29 @@
   "ToggleModStateKeybind": "G",
   "Cooldown": 10,
   "AutoTillDirt": {
+    "StopStamina": 3.0,
+    "FindToolFromInventory": false,
     "IsEnable": false,
     "Range": 0
   },
-  "StopTillDirtStamina": 3.0,
   "AutoClearTilledDirt": {
+    "StopStamina": 3.0,
+    "FindToolFromInventory": false,
     "IsEnable": false,
     "Range": 0
   },
-  "StopClearTilledDirtStamina": 3.0,
   "AutoWaterDirt": {
+    "StopStamina": 3.0,
+    "FindToolFromInventory": false,
     "IsEnable": false,
     "Range": 0
   },
-  "StopWaterDirtStamina": 3.0,
+  "WaterOnlyWhenCrop": false,
   "AutoRefillWateringCan": {
+    "FindToolFromInventory": true,
     "IsEnable": false,
     "Range": 1
   },
-  "FindWateringCanFromInventory": true,
   "AutoSeed": {
     "IsEnable": false,
     "Range": 0
@@ -42,10 +46,10 @@
     "Range": 1
   },
   "AutoClearDeadCrop": {
+    "FindToolFromInventory": true,
     "IsEnable": false,
     "Range": 0
   },
-  "FindToolForClearDeadCrop": true,
   "AutoPetAnimal": {
     "IsEnable": false,
     "Range": 1
@@ -55,17 +59,17 @@
     "Range": 1
   },
   "AutoMilkAnimal": {
+    "StopStamina": 3.0,
+    "FindToolFromInventory": true,
     "IsEnable": false,
     "Range": 1
   },
-  "StopMilkAnimalStamina": 3.0,
-  "FindMilkPailFromInventory": true,
   "AutoShearsAnimal": {
+    "StopStamina": 3.0,
+    "FindToolFromInventory": true,
     "IsEnable": false,
     "Range": 1
   },
-  "StopShearsAnimalStamina": 3.0,
-  "FindShearsFromInventory": true,
   "AutoFeedAnimalCracker": {
     "IsEnable": false,
     "Range": 1
@@ -76,11 +80,11 @@
     "Range": 1
   },
   "AutoClearStone": {
+    "StopStamina": 3.0,
+    "FindToolFromInventory": true,
     "IsEnable": false,
     "Range": 1
   },
-  "StopClearStoneStamina": 3.0,
-  "FindPickaxeFromInventory": true,
   "ClearStoneOnMineShaft": false,
   "ClearStoneOnVolcano": false,
   "ClearFarmStone": true,
@@ -97,47 +101,41 @@
     "Range": 1
   },
   "AutoBreakContainer": {
+    "FindToolFromInventory": true,
     "IsEnable": false,
     "Range": 1
   },
-  "FindToolForBreakContainer": true,
   "AutoOpenTreasure": {
     "IsEnable": false,
     "Range": 1
   },
   "AutoClearCrystal": {
+    "FindToolFromInventory": true,
     "IsEnable": false,
     "Range": 1
   },
-  "FindToolForClearCrystal": true,
   "AutoCoolLava": {
+    "StopStamina": 3.0,
+    "FindToolFromInventory": true,
     "IsEnable": false,
     "Range": 1
   },
-  "StopCoolLavaStamina": 3.0,
-  "FindToolForCoolLava": true,
-  "ShowLadderInfo": true,
-  "ShowShaftInfo": true,
-  "ShowMonsterInfo": true,
-  "ShowMonsterKillInfo": true,
-  "ShowMineralInfo": true,
   "AutoForage": {
     "IsEnable": false,
     "Range": 1
   },
   "AutoHarvestGinger": {
+    "StopStamina": 3.0,
+    "FindToolFromInventory": true,
     "IsEnable": false,
     "Range": 0
   },
-  "StopHarvestGingerStamina": 3.0,
-  "FindToolForHarvestGinger": true,
   "AutoChopTree": {
+    "StopStamina": 3.0,
+    "FindToolFromInventory": false,
     "IsEnable": false,
     "Range": 1
   },
-  "StopChopTreeStamina": 3.0,
-  "ChopTapperTree": false,
-  "ChopVinegarTree": false,
   "ChopOakTree": {
     "0": true,
     "1": false,
@@ -213,10 +211,10 @@
     "Range": 1
   },
   "AutoHarvestMoss": {
+    "FindToolFromInventory": true,
     "IsEnable": false,
     "Range": 1
   },
-  "FindScytheFromInventory": true,
   "AutoPlaceTapper": {
     "IsEnable": false,
     "Range": 1
@@ -226,14 +224,13 @@
     "Range": 1
   },
   "AutoClearWood": {
+    "StopStamina": 3.0,
+    "FindToolFromInventory": true,
     "IsEnable": false,
     "Range": 1
   },
-  "StopClearWoodStamina": 3.0,
-  "ClearTwig": true,
   "ClearStump": false,
   "ClearHollowLog": false,
-  "FindAxeFromInventory": true,
   "AutoPlaceCarbPot": {
     "IsEnable": false,
     "Range": 1
@@ -262,17 +259,17 @@
   "DrinkBuffMaintain2": "None",
   "MagneticRadiusIncrease": 0,
   "AutoClearWeeds": {
+    "FindToolFromInventory": true,
     "IsEnable": false,
     "Range": 1
   },
-  "FindToolForClearWeeds": true,
   "ClearLargeWeeds": false,
   "AutoDigSpots": {
+    "StopStamina": 3.0,
+    "FindToolFromInventory": true,
     "IsEnable": false,
     "Range": 0
   },
-  "StopDigSpotsStamina": 3.0,
-  "FindHoeFromInventory": true,
   "AutoHarvestMachine": {
     "IsEnable": false,
     "Range": 1

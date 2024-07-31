@@ -1,10 +1,14 @@
 {
   "default": {
     "generalSettings": "General settings",
-    "modActive": "Activate mod"
+    "modActive": "Activate mod",
+    "prizeSettings": "Prizes settings",
+    "prizeTitle": "Prize"
   },
   "fr-FR": {
     "generalSettings": "Paramètres généraux",
-    "modActive": "Activer le mod"
+    "modActive": "Activer le mod",
+    "prizeSettings": "Paramètres prix",
+    "prizeTitle": "Prix"
   }
 }

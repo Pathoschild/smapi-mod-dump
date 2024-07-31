@@ -1,0 +1,13 @@
+{
+    "Name": "Special Order Notifications",
+    "Author": "mushymato",
+    "Version": "1.0.0",
+    "MinimumApiVersion": "4.0.0",
+    "MinimumGameVersion": "1.6.0",
+    "Description": "Add notifications for special orders",
+    "UniqueID": "mushymato.SpecialOrderNotifications",
+    "UpdateKeys": [
+        "Nexus:25999"
+    ],
+    "EntryDll": "SpecialOrderNotifications.dll"
+}

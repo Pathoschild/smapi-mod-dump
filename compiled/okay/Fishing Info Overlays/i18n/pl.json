@@ -47,7 +47,7 @@
 	"GenericMC.barSortMode1": "Szansa Złapania",
 
 	"GenericMC.barExtraCheckFrequency": "Częstotliwość Dynamiczna",
-	"GenericMC.barExtraCheckFrequencyDesc": "Gdy 0: Łowienie nie jest symulowane. Stosowana jest mniej dokładna kontrola. Wartości procentowe mogą być niedokładne.\nPowyżej 0, stosowane są testy intensywnej wydajności, które symulują łowienie w tym miejscu. Im wyższa liczba, tym więcej testów (tym większa dokładność i mniej migotania ikon). Dokładne nawet jeśli masz inne mody, ale wysoka liczba testów może spowolnić grę. W trybie podzielonego ekranu ta liczba jest podzielona przez ilość ekranów, aby nie powodować spowolnień.",
+	"GenericMC.barExtraCheckFrequencyDesc": "Gdy 0: Łowienie nie jest symulowane. Stosowana jest mniej dokładna kontrola. Wartości procentowe mogą być niedokładne. Powyżej 0, stosowane są testy intensywnej wydajności, które symulują łowienie w tym miejscu. Im wyższa liczba, tym więcej testów (tym większa dokładność i mniej migotania ikon). Dokładne nawet jeśli masz inne mody, ale wysoka liczba testów może spowolnić grę. W trybie podzielonego ekranu ta liczba jest podzielona przez ilość ekranów, aby nie powodować spowolnień.",
 
 	"GenericMC.barScanRadius": "Radius skanowania",
 	"GenericMC.barScanRadiusDesc": "Pasek Info będzie skanować X kafelek wokół gracza w poszukiwaniu wody i wyświetli informacje o rybach tylko dla najbliższej - jeśli istnieje.",

@@ -1,11 +1,15 @@
 ﻿[
-	// To make a content pack for this mod you need to alter the sprite sheet of the NPC listed above, adding 2 sprites,
-	// the actual animation sprite and the ending sprite. To alter the sprite sheet of a NPC 
-	// you have to create a ContentPatcher MOD, like the [CP] MakeLove.
+	// To make a content pack for this mod you need to create a spritesheet for your NPC with 2 sprites,
+	// the actual animation sprite and the ending sprite. Name the spritesheet with the pattern NPCNAME_Love.png and save
+	// in the assets folder of your mod.
+	// I recommend not to use the first line of the spritesheet because it cause a issue when flipping the sprite.
+	// Then create a npc.json like above:
 	{
 		"Name": "Julia", //The name of the NPC
-		"Frame": 52, // The frame of the NPC sprite sheet that should be used while making love. Start with 0 and go from left to right, top to botton.
+		"NpcFrame1": 4, // The frame of the NPC sprite sheet that should be used while making love. 
+		// Start with 0 and go from left to right, top to botton.
 		// the frame after this must be the animation's ending sprite.
+		"Passive": true, // if the NPC is acting as a passive actor of the animation, otherwise false
 		"FrameDirectionRight": false //True if the frame is facing right, false if facing left.
 	} //Place a comma here add more than one NPC.
 ]

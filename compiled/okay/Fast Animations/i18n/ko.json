@@ -68,9 +68,6 @@
     "config.casino-slots.name": "카지노 슬롯",
     "config.casino-slots.tooltip": "카지노 슬롯이 회전하는 속도. 기본 값 {{defaultValue}}.",
 
-    "config.event.name": "Event cutscene", // TODO
-    "config.event.tooltip": "How fast event cutscenes play. Default {{defaultValue}}x, suggested {{suggestedValue}}x.", // TODO
-
     "config.fade.name": "Fade", // TODO
     "config.fade.tooltip": "How fast the screen fades to black and fades back in. Default {{defaultValue}}x.", // TODO
 
@@ -113,5 +110,14 @@
     "config.title-menu.tooltip": "타이틀 메뉴 화면 전환 속도. 기본 값 {{defaultValue}}.",
 
     "config.load-game-blink.name": "게임 불러오기 깜박임",
-    "config.load-game-blink.tooltip": "불러오기 창에서 저장 슬롯을 클릭한 후 슬롯이 깜박이는 지연이 발생하는 속도. 기본 값 {{defaultValue}}."
+    "config.load-game-blink.tooltip": "불러오기 창에서 저장 슬롯을 클릭한 후 슬롯이 깜박이는 지연이 발생하는 속도. 기본 값 {{defaultValue}}.",
+
+    /****
+    ** 'Experimental' section
+    ****/
+    "config.experimental": "Experimental options", // TODO
+    "config.experimental-warning": "These options aren't fully stable yet, and may cause issues like freezes and crashes. Enabling any of these isn't recommended.", // TODO
+
+    "config.event.name": "Event cutscene", // TODO
+    "config.event.tooltip": "How fast event cutscenes play. Default {{defaultValue}}x, suggested {{suggestedValue}}x." // TODO
 }

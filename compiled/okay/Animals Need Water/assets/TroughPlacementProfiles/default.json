@@ -1,5 +1,6 @@
 {
   "modUniqueId": "",
+  "targetBuildings": ["barn", "coop"],
   "coopTroughTiles": [
     {
       "tileX": 10,

@@ -1,0 +1,7 @@
+{
+  // Credits to https://next.nexusmods.com/profile/TIANWANGDUNMOGU/
+  "selph.CustomTapperFramework.WaterPlanter.name": "水培种植器",
+  "selph.CustomTapperFramework.WaterPlanter.description": "放置于水源旁，允许在这里种植水生作物。",
+  "selph.CustomTapperFramework.WaterPot.name": "水培盆",
+  "selph.CustomTapperFramework.WaterPot.description": "允许在陆地上或温室内种植水生作物。"
+}

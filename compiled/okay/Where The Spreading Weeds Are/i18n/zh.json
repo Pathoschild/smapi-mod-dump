@@ -1,0 +1,36 @@
+{
+    "$schema": "https://smapi.io/schemas/i18n.json",
+
+    //note the ":" in the translation. This is the first line/heading of the entire damage report.
+    "Farm Damage": "损伤报告:",
+
+    //follows a location name, precedes a list
+    //- This string includes punctuation and typesettin ginformation - what does the punctuation
+    //that precedes a list look like in your language? For example, in English it's ": " while in French it's " : "
+    "Colon_Punctuation": ": ",
+    
+    //name to call the TerrainFeature HoeDirt
+    "Tilled Soil": "耕种土地",
+    
+    //GMCM stuff:
+    "GMCM Visuals": "视觉:",
+
+    "GMCM Crop Images": "毁坏的农作物显示样式:",
+    "Growing Plant": "生长状态",
+    "Seed Packet": "种子袋",
+    "Harvested Produce": "农作物图标",
+
+    "GMCM Show In World Overlay": "显示被毁坏物品的渲染",
+    "GMCM Show In World Overlay Tooltip": "在被毁坏的物品处显示原本物品的渲染图，以告诉玩家毁坏的物品是什么。",
+
+    "GMCM Show X": "在损伤处显示'X'",
+    "GMCM Show X Tooltip": "在每个被损伤的地方显示一个'X'图标，若图标在屏幕外则会显示箭头指向图标。",
+
+    "GMCM Function": "功能:",
+
+    "GMCM New Object": "新物品重置渲染",
+    "GMCM New Object Tooltip": "始终在一天结束时重置被毁坏物品的渲染。启用此选项后，如果将另一个物品放置到被毁坏物品的渲染处，将直接删除此渲染。",
+
+    "GMCM Show HUD Damage Report": "显示每日损伤通知",
+    "GMCM Show HUD Damage Report Tooltip": "如果蔓延的杂草对农作物造成损伤，则会在屏幕HUD显示 \"损伤报告\""
+}

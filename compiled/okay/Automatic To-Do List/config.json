@@ -1,0 +1,16 @@
+{
+  "ToggleTodoListKeybind": "LeftShift + L",
+  "PanelPosition": "10, 80",
+  "VisibleItemCount": 10,
+  "CheckBirthdays": true,
+  "CheckHarvestableCrops": true,
+  "CheckWaterableCrops": true,
+  "CheckReadyMachines": true,
+  "CheckToolPickup": true,
+  "CheckDailyQuestBulletinBoard": true,
+  "CheckSpecialOrdersBoard": true,
+  "CheckTravelingMerchant": true,
+  "CheckQueenOfSauce": true,
+  "CheckGiftingNPCs": false,
+  "GiftingNPCsString": ""
+}

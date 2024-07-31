@@ -190,7 +190,7 @@
 	},
     {
 		"Name": "CMC",
-		"Default": "True",
+		"Default": "False",
 		"Type": "bool",
         "ToolTipKey": "GMCM.Options.CMC.ToolTip",
 		"EnableWithMod": "Cornucopia.MoreCrops"
@@ -202,7 +202,7 @@
 	},
 	{
 		"Name": "CMF",
-		"Default": "True",
+		"Default": "False",
 		"Type": "bool",
         "ToolTipKey": "GMCM.Options.CMF.ToolTip",
 		"EnableWithMod": "Cornucopia.MoreFlowers"
@@ -222,21 +222,23 @@
     },
     {
         "Name": "SOAlesMeads",
-        "Default": "True",
+        "Default": "False",
         "Type": "bool",
-        "ToolTipKey": "GMCM.Options.SpecialOrders.ToolTip"
+        "ToolTipKey": "GMCM.Options.SpecialOrders.ToolTip",
+        "EnableWithMod": "wildflour.alesxmeads"
     },
 
     {
         "Name": "SOBaristaEnable",
         "Type": "subtitle",
-        "EnableWithMod": "wildflour.atelierbarista",
+        "EnableWithMod": "wildflour.atelierbarista"
     },
     {
         "Name": "SOBarista",
-        "Default": "True",
+        "Default": "False",
         "Type": "bool",
-        "ToolTipKey": "GMCM.Options.SpecialOrders.ToolTip"
+        "ToolTipKey": "GMCM.Options.SpecialOrders.ToolTip",
+        "EnableWithMod": "wildflour.atelierbarista"
     },
 
     {
@@ -246,45 +248,49 @@
     },
     {
         "Name": "SOBeverages",
-        "Default": "True",
+        "Default": "False",
         "Type": "bool",
-        "ToolTipKey": "GMCM.Options.SpecialOrders.ToolTip"
+        "ToolTipKey": "GMCM.Options.SpecialOrders.ToolTip",
+        "EnableWithMod": "wildflour.atelierjuicebar"
     },
 
     {
         "Name": "SOCandyEnable",
         "Type": "subtitle",
-        "EnableWithMod": "wildflour.ateliercandy",
+        "EnableWithMod": "wildflour.ateliercandy"
     },
     {
         "Name": "SOCandy",
-        "Default": "True",
+        "Default": "False",
         "Type": "bool",
-        "ToolTipKey": "GMCM.Options.SpecialOrders.ToolTip"
+        "ToolTipKey": "GMCM.Options.SpecialOrders.ToolTip",
+        "EnableWithMod": "wildflour.ateliercandy"
     },
 
     {
         "Name": "SOFrozenEnable",
         "Type": "subtitle",
-        "EnableWithMod": "wildflour.atelierfrozen",
+        "EnableWithMod": "wildflour.atelierfrozen"
     },
     {
         "Name": "SOFrozen",
-        "Default": "True",
+        "Default": "False",
         "Type": "bool",
-        "ToolTipKey": "GMCM.Options.SpecialOrders.ToolTip"
+        "ToolTipKey": "GMCM.Options.SpecialOrders.ToolTip",
+        "EnableWithMod": "wildflour.atelierfrozen"
     },
 
     {
         "Name": "SOFloralEnable",
         "Type": "subtitle",
-        "EnableWithMod": "wildflour.atelierfloral",
+        "EnableWithMod": "wildflour.atelierfloral"
     },
     {
         "Name": "SOFloral",
-        "Default": "True",
+        "Default": "False",
         "Type": "bool",
-        "ToolTipKey": "GMCM.Options.SpecialOrders.ToolTip"
+        "ToolTipKey": "GMCM.Options.SpecialOrders.ToolTip",
+        "EnableWithMod": "wildflour.atelierfloral"
     },    
 
     {
@@ -294,9 +300,10 @@
     },
     {
         "Name": "SOJams",
-        "Default": "True",
+        "Default": "False",
         "Type": "bool",
-        "ToolTipKey": "GMCM.Options.SpecialOrders.ToolTip"
+        "ToolTipKey": "GMCM.Options.SpecialOrders.ToolTip",
+        "EnableWithMod": "wildflour.jams"
     },
 
     {
@@ -306,9 +313,10 @@
     },
     {
         "Name": "SOPantry",
-        "Default": "True",
+        "Default": "False",
         "Type": "bool",
-        "ToolTipKey": "GMCM.Options.SpecialOrders.ToolTip"
+        "ToolTipKey": "GMCM.Options.SpecialOrders.ToolTip",
+        "EnableWithMod": "wildflour.gourmetpantry"
     },
 
    
@@ -329,7 +337,8 @@
         "Name": "AlesMeadsShipment",
         "Default": "True",
         "Type": "bool",
-        "ToolTipKey": "GMCM.Options.ShippingCollection.ToolTip"
+        "ToolTipKey": "GMCM.Options.ShippingCollection.ToolTip",
+        "EnableWithMod": "wildflour.alesxmeads"
     },
 
     {
@@ -341,7 +350,8 @@
         "Name": "BaristaShipment",
         "Default": "True",
         "Type": "bool",
-        "ToolTipKey": "GMCM.Options.ShippingCollection.ToolTip"
+        "ToolTipKey": "GMCM.Options.ShippingCollection.ToolTip",
+        "EnableWithMod": "wildflour.atelierbarista"
     },
 
     {
@@ -353,7 +363,8 @@
         "Name": "BeveragesShipment",
         "Default": "True",
         "Type": "bool",
-        "ToolTipKey": "GMCM.Options.ShippingCollection.ToolTip"
+        "ToolTipKey": "GMCM.Options.ShippingCollection.ToolTip",
+        "EnableWithMod": "wildflour.atelierjuicebar"
     },
 
     {
@@ -365,7 +376,8 @@
         "Name": "CandyShipment",
         "Default": "True",
         "Type": "bool",
-        "ToolTipKey": "GMCM.Options.ShippingCollection.ToolTip"
+        "ToolTipKey": "GMCM.Options.ShippingCollection.ToolTip",
+        "EnableWithMod": "wildflour.ateliercandy"
     },
 
     {
@@ -377,7 +389,8 @@
         "Name": "FrozenShipment",
         "Default": "True",
         "Type": "bool",
-        "ToolTipKey": "GMCM.Options.ShippingCollection.ToolTip"
+        "ToolTipKey": "GMCM.Options.ShippingCollection.ToolTip",
+        "EnableWithMod": "wildflour.atelierfrozen"
     },
 
     {
@@ -389,7 +402,8 @@
         "Name": "FloralShipment",
         "Default": "True",
         "Type": "bool",
-        "ToolTipKey": "GMCM.Options.ShippingCollection.ToolTip"
+        "ToolTipKey": "GMCM.Options.ShippingCollection.ToolTip",
+        "EnableWithMod": "wildflour.atelierfloral"
     },
 
     {
@@ -401,7 +415,8 @@
         "Name": "MakeupShipment",
         "Default": "True",
         "Type": "bool",
-        "ToolTipKey": "GMCM.Options.ShippingCollection.ToolTip"
+        "ToolTipKey": "GMCM.Options.ShippingCollection.ToolTip",
+        "EnableWithMod": "wildflour.ateliermakeup"
     },
 
     {
@@ -413,7 +428,8 @@
         "Name": "PantryShipment",
         "Default": "True",
         "Type": "bool",
-        "ToolTipKey": "GMCM.Options.ShippingCollection.ToolTip"
+        "ToolTipKey": "GMCM.Options.ShippingCollection.ToolTip",
+        "EnableWithMod": "wildflour.gourmetpantry"
     },
 
     //PAGE 4 SECRET FORAGE LOCATIONS

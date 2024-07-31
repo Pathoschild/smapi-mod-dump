@@ -1,7 +1,7 @@
 {
     "Name": "AutoTravel2",
     "Author": "GrumpyCrouton",
-    "Version": "1.4.0",
+    "Version": "1.4.1",
     "Description": "Allows you to create Travel Destinations that you can travel to via a menu at any time.",
     "UniqueID": "GrumpyCrouton.AutoTravel2",
     "EntryDll": "AutoTravel2.dll",

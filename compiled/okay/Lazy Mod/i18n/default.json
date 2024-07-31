@@ -1,82 +1,76 @@
 ﻿{
     // Config
     "Config.OpenConfigMenuKeybind.Name": "Open Config Menu Keybind",
+
     "Config.ToggleModStateKeybind.Name": "Toggle Mod State Keybind",
     "Config.ToggleModStateKeybind.Tooltip": "Keybind for toggling automation feature in mods. AutoOpenAnimalDoor and ShowInfo are not affected.",
+
     "Config.Cooldown.Name": "Cooldown",
     "Config.Cooldown.Tooltip": "The cooldown (frames) for each automation operation.",
 
+    "Config.Enable.Name": "Enable",
+    "Config.Range.Name": "Range",
+    "Config.StopStamina.Name": "Stop Stamina",
+    "Config.FindToolFromInventory.Name": "Find Tool From Inventory",
+    "Config.FindToolFromInventory.Tooltip": "When this option is enabled, only a tool is required in the backpack for the feature to work.",
+
     // Farming
     "Config.FarmingPage.Name": "Farming",
+
     "Config.AutoTillDirt.Name": "Auto Till Dirt",
     "Config.AutoTillDirt.Tooltip": "This feature only works when you are holding a hoe.",
-    "Config.AutoTillDirtRange.Name": "Auto Till Dirt Range",
-    "Config.StopTillDirtStamina.Name": "Stop Till Dirt Stamina",
+
     "Config.AutoClearTilledDirt.Name": "Auto Clear Tilled Dirt",
     "Config.AutoClearTilledDirt.Tooltip": "This feature only works when you are holding a pickaxe.",
-    "Config.AutoClearTilledDirtRange.Name": "Auto Clear Tilled Dirt Range",
-    "Config.StopClearTilledDirtStamina.Name": "Stop Clear Tilled Dirt Stamina",
+
     "Config.AutoWaterDirt.Name": "Auto Water Dirt",
     "Config.AutoWaterDirt.Tooltip": "This feature only works when you hold the watering can.",
-    "Config.AutoWaterDirtRange.Name": "Auto Water Dirt Range",
-    "Config.StopWaterDirtStamina.Name": "Stop Water Dirt Stamina",
+    "Config.WaterOnlyWhenCrop.Name": "Water Only When Crop",
+    "Config.WaterOnlyWhenCrop.Tooltip": "When this option is enabled, auto-watering will only process hoe dirt with crops.",
+
     "Config.AutoRefillWateringCan.Name": "Auto Refill Watering Can",
     "Config.AutoRefillWateringCan.Tooltip": "This feature only works when you hold the watering can.",
-    "Config.AutoRefillWateringCanRange.Name": "Auto Refill Watering Can Range",
-    "Config.StopRefillWateringCanRange.Name": "Stop Refill Watering Can Stamina",
-    "Config.FindWateringCanFromInventory.Name": "Find Watering Can From Inventory",
-    "Config.FindWateringCanFromInventory.Tooltip": "When this option is enabled, only a watering can is required in the backpack for the feature to work.",
+
     "Config.AutoSeed.Name": "Auto Seed",
     "Config.AutoSeed.Tooltip": "This feature only works when you hold the seeds.",
-    "Config.AutoSeedRange.Name": "Auto Seed Range",
+
     "Config.AutoFertilize.Name": "Auto Fertilize",
     "Config.AutoFertilize.Tooltip": "This feature only works when you hold the fertilizer.",
-    "Config.AutoFertilizeRange.Name": "Auto Fertilize Range",
+
     "Config.AutoHarvestCrop.Name": "Auto Harvest Crop",
-    "Config.AutoHarvestCropRange.Name": "Auto Harvest Crop Range",
     "Config.AutoHarvestFlower.Name": "Auto Harvest Flower",
+
     "Config.AutoShakeFruitTree.Name": "Auto Shake Fruit Tree",
-    "Config.AutoShakeFruitTreeRange.Name": "Auto Shake Fruit Tree Range",
+
     "Config.AutoClearDeadCrop.Name": "Auto Clear Dead Crop",
     "Config.AutoClearDeadCrop.Tooltip": "This feature only works when you hold the scythe(melee weapon).",
-    "Config.AutoClearDeadCropRange.Name": "Auto Clear Dead Crop Range",
-    "Config.FindToolForClearDeadCrop.Name": "Find Tool From Inventory",
-    "Config.FindToolForClearDeadCrop.Tooltip": "When this option is enabled, only a scythe (melee weapon) is required in the backpack for the feature to work.",
 
     // Animal
     "Config.AnimalPage.Name": "Animal",
+
     "Config.AutoPetAnimal.Name": "Auto Pet Animal",
-    "Config.AutoPetAnimalRange.Name": "Auto Pet Animal Range",
+
     "Config.AutoPetPet.Name": "Auto Pet Pet",
-    "Config.AutoPetPetRange.Name": "Auto Pet Pet Range",
+
     "Config.AutoMilkAnimal.Name": "Auto Milk Animal",
     "Config.AutoMilkAnimal.Tooltip": "This feature only works when you hold the milk pail.",
-    "Config.AutoMilkAnimalRange.Name": "Auto Milk Animal Range",
-    "Config.StopMilkAnimalStamina.Name": "Stop Milk Animal Stamina",
-    "Config.FindMilkPailFromInventory.Name": "Find Milk Pail From Inventory",
-    "Config.FindMilkPailFromInventory.Tooltip": "When this option is enabled, only a milk pail is required in the backpack for the feature to work.",
+
     "Config.AutoShearsAnimal.Name": "Auto Shears",
     "Config.AutoShearsAnimal.Tooltip": "This feature only works when you hold the shears.",
-    "Config.AutoShearsAnimalRange.Name": "Auto Shears Range",
-    "Config.StopShearsAnimalStamina.Name": "Stop Shears Stamina",
-    "Config.FindShearsFromInventory.Name": "Find Shears From Inventory",
-    "Config.FindShearsFromInventory.Tooltip": "When this option is enabled, only a shears is required in the backpack for the feature to work.",
+
     "Config.AutoFeedAnimalCracker.Name": "Auto Feed Animal Cracker",
     "Config.AutoFeedAnimalCracker.Tooltip": "This feature only works when you hold the animal cracker.",
-    "Config.AutoFeedAnimalCrackerRange.Name": "Auto Feed Animal Cracker Range",
+
     "Config.AutoOpenAnimalDoor.Name": "Auto Open Animal Door",
     "Config.AutoOpenAnimalDoor.Tooltip": "When this option is enabled, if the weather is not rainy or the season is not winter, the animal door will be automatically opened for you at the beginning of each day and closed for you at the end of each day.",
+
     "Config.AutoOpenFenceGate.Name": "Auto Open Fence Gate",
-    "Config.AutoOpenFenceGateRange.Name": "Auto Open Fence Gate Range",
 
     // Mining
     "Config.MiningPage.Name": "Mining",
+
     "Config.AutoClearStone.Name": "Auto Clear Stone",
     "Config.AutoClearStone.Tooltip": "This feature only works when you hold the pickaxe.",
-    "Config.AutoClearStoneRange.Name": "Auto Clear Stone Range",
-    "Config.StopClearStoneStamina.Name": "Stop Clear Stone Stamina",
-    "Config.FindPickaxeFromInventory.Name": "Find Pickaxe From Inventory",
-    "Config.FindPickaxeFromInventory.Tooltip": "When this option is enabled, only a pickaxe is required in the backpack for the feature to work.",
     "Config.ClearStoneOnMineShaft.Name": "Clear Stone On Mine Shaft",
     "Config.ClearStoneOnMineShaft.Tooltip": "When this option is enabled, it will take effect even if the player is in the mine shaft.",
     "Config.ClearStoneOnVolcano.Name": "Clear Stone On Volcano",
@@ -93,103 +87,84 @@
     "Config.ClearCalicoEggStone.Name": "Clear Calico Egg Stone",
     "Config.ClearBoulder.Name": "Clear Boulder",
     "Config.ClearMeteorite.Name": "Clear Meteorite",
+
     "Config.AutoCollectCoal.Name": "Auto Collect Coal",
     "Config.AutoCollectCoal.Tooltip": "When this option is enabled, coal from backpack and mine cart will be automatically collected for you.",
-    "Config.AutoCollectCoalRange.Name": "Auto Collect Coal Range",
+
     "Config.AutoBreakContainer.Name": "Auto Break Container",
     "Config.AutoBreakContainer.Tooltip": "This feature only works when you hold the melee weapon(scythe).",
-    "Config.AutoBreakContainerRange.Name": "Auto Break Container Range",
-    "Config.FindToolForBreakContainer.Name": "Find Weapon From Inventory",
-    "Config.FindToolForBreakContainer.Tooltip": "When this option is enabled, only a melee weapon (scythe) is required in the backpack for the feature to work.",
+
     "Config.AutoOpenTreasure.Name": "Auto Open Treasure",
-    "Config.AutoOpenTreasureRange.Name": "Auto Open Treasure Range",
+
     "Config.AutoClearCrystal.Name": "Auto Clear Crystal",
-    "Config.AutoClearCrystalRange.Name": "Auto Clear Crystal Range",
-    "Config.FindToolForClearCrystal.Name": "Find Tool From Inventory",
-    "Config.FindToolForClearCrystal.Tooltip": "When this option is enabled, only a melee weapon (scythe) is required in the backpack for the feature to work.",
+
     "Config.AutoCoolLava.Name": "Auto Cool Lava",
     "Config.AutoCoolLava.Tooltip": "This feature only works when you hold the watering can.",
-    "Config.AutoCoolLavaRange.Name": "Auto Cool Lava Range",
-    "Config.StopCoolLavaStamina.Name": "Stop Cool Lava Stamina",
-    "Config.FindToolForCoolLava.Name": "Find Watering Can From Inventory",
-    "Config.FindToolForCoolLava.Tooltip": "When this option is enabled, only a watering can is required in the backpack for the feature to work.",
-    "Config.ShowMineShaftInfo.Name": "Show Mine Shaft Info",
-    "Config.ShowLadderInfo.Name": "Show Ladder Info",
-    "Config.ShowShaftInfo.Name": "Show Shaft Info",
-    "Config.ShowMonsterInfo.Name": "Show Monster Info",
-    "Config.ShowMonsterKillInfo.Name": "Show Monster Kill Info",
-    "Config.ShowMonsterKillInfo.Tooltip": "When this option is enabled, left-clicking on the monster info icon will open the list of monster kill targets.",
-    "Config.ShowMineralInfo.Name": "Show Mineral Info",
 
     // Foraging
     "Config.ForagingPage.Name": "Foraging",
+
     "Config.AutoForage.Name": "Auto Forage",
-    "Config.AutoForageRange.Name": "Auto Forage Range",
+
     "Config.AutoHarvestGinger.Name": "Auto Harvest Ginger",
     "Config.AutoHarvestGinger.Tooltip": "This feature only works when you hold the hoe.",
-    "Config.AutoHarvestGingerRange.Name": "Auto Harvest Ginger Range",
-    "Config.StopHarvestGingerStamina.Name": "Stop Harvest Ginger Stamina",
-    "Config.FindToolForHarvestGinger.Name": "Find Hoe From Inventory",
-    "Config.FindToolForHarvestGinger.Tooltip": "When this option is enabled, only a hoe is required in the backpack for the feature to work.",
+
     "Config.AutoChopTree.Name": "Auto Chop Tree",
     "Config.AutoChopTree.Tooltip": "This feature only works when you hold the axe.",
-    "Config.AutoChopTreeRange.Name": "Auto Chop Tree Range",
-    "Config.StopChopTreeStamina.Name": "Stop Chop Tree Stamina",
-    "Config.ChopTapperTree.Name": "Chop Tapper Tree",
-    "Config.ChopVinegarTree.Name": "Chop Vinegar Tree",
+
     "Config.AutoShakeTree.Name": "Auto Shake Tree",
-    "Config.AutoShakeTreeRange.Name": "Auto Shake Tree Range",
+
     "Config.AutoPlaceTapper.Name": "Auto Place Tapper",
     "Config.AutoPlaceTapper.Tooltip": "This feature only works when you hold the tapper.",
-    "Config.AutoPlaceTapperRange.Name": "Auto Place Tapper Range",
+
     "Config.AutoHarvestMoss.Name": "Auto Harvest Moss",
     "Config.AutoHarvestMoss.Tooltip": "This feature only works when you hold the scythe(melee weapon).",
-    "Config.AutoHarvestMossRange.Name": "Auto Harvest Moss Range",
-    "Config.FindScytheFromInventory.Name": "Find Scythe From Inventory",
-    "Config.FindScytheFromInventory.Tooltip": "When this option is enabled, only a scythe (melee weapon) is required in the backpack for the feature to work.",
+
     "Config.AutoPlaceVinegar.Name": "Auto Place Vinegar On Tree",
     "Config.AutoPlaceVinegar.Tooltip": "This feature only works when you hold the vinegar.",
-    "Config.AutoPlaceVinegarRange.Name": "Auto Place Vinegar Range",
+
     "Config.AutoClearWood.Name": "Auto Clear Wood",
     "Config.AutoClearWood.Tooltip": "This feature only works when you hold the axe.",
-    "Config.AutoClearWoodRange.Name": "Auto Clear Wood Range",
-    "Config.StopClearWoodStamina.Name": "Stop Clear Wood Stamina",
-    "Config.FindAxeFromInventory.Name": "Find Axe From Inventory",
-    "Config.FindAxeFromInventory.Tooltip": "When this option is enabled, only an axe is required in the backpack for the feature to work.",
-    "Config.ClearTwig.Name": "Clear Twig",
     "Config.ClearStump.Name": "Clear Stump",
     "Config.ClearHollowLog.Name": "Clear Hollow Log",
 
     // Fishing
     "Config.FishingPage.Name": "Fishing",
+
     "Config.AutoGrabTreasureItem.Name": "Auto Grab Treasure Item",
+
     "Config.AutoExitTreasureMenu.Name": "Auto Exit Treasure Menu",
+
     "Config.AutoPlaceCarbPot.Name": "Auto Place Carb Pot",
     "Config.AutoPlaceCarbPot.Tooltip": "This feature only works when you hold the carb pot.",
-    "Config.AutoPlaceCarbPotRange.Name": "Auto Place Carb Pot Range",
+
     "Config.AutoAddBaitForCarbPot.Name": "Auto Add Bait For Carb Pot",
     "Config.AutoAddBaitForCarbPot.Tooltip": "This feature only works when you hold the bait.",
-    "Config.AutoAddBaitForCarbPotRange.Name": "Auto Add Bait For Carb Pot Range",
+
     "Config.AutoHarvestCarbPot.Name": "Auto Harvest Carb Pot",
-    "Config.AutoHarvestCarbPotRange.Name": "Auto Harvest Carb Pot Range",
 
     // Food
     "Config.FoodPage.Name": "Food",
+
     "Config.AutoEatFoodForStamina.Name": "Auto Eat Food For Stamina",
     "Config.AutoEatFoodStaminaRate.Name": "Auto Eat Food Stamina Rate",
     "Config.IntelligentFoodSelectionForStamina.Name": "Intelligent Food Selection For Stamina",
     "Config.IntelligentFoodSelectionForStamina.Tooltip": "When this option is enabled, the most cost-effective food in the backpack is automatically selected.",
+
     "Config.AutoEatFoodForHealth.Name": "Auto Eat Food For Health",
     "Config.AutoEatFoodHealthRate.Name": "Auto Eat Food Health Rate",
     "Config.IntelligentFoodSelectionForHealth.Name": "Intelligent Food Selection For Health",
     "Config.IntelligentFoodSelectionForHealth.Tooltip": "When this option is enabled, the most cost-effective food in the backpack is automatically selected.",
+
     "Config.RedundantFoodCount.Name": "Redundant Food Count",
     "Config.RedundantFoodCount.Tooltip": "When the number of foods with the highest quantity in the backpack minus the number of foods with the second highest quantity is greater than the value you set, the food with the highest quantity will be automatically selected.",
+
     "Config.AutoEatBuffFood.Name": "Auto Eat Buff Food",
     "Config.AutoEatBuffFood.Tooltip": "When this option is enabled, if the player does not have a buff from food, they will automatically eat food with the speed buff in their inventory.(e.g. spinner)",
     "Config.FoodBuffMaintain1.Name": "Food Buff Maintain 1",
     "Config.FoodBuffMaintain2.Name": "Food Buff Maintain 2",
     "Config.FoodBuffMaintain.Tooltip": "The food buff that you want to maintain.When both are set to non-None, it will prioritize finding food with both buffs in the inventory, and if not, it will look for food with buff 1, if it still doesn't, it will look for food with buff 2, and when only one item is None, it will look for food with another buff.(For example, if you have both Spinner and Crab Cake in your backpack, if the two options are set to Speed and Luck respectively, the Spinner will be preferred.When one option is set to Speed and the other is set to None, the items further in the backpack are selected.)",
+
     "Config.AutoDrinkBuffDrink.Name": "Auto Drink Buff Drink",
     "Config.AutoDrinkBuffDrink.Tooltip": "When this option is enabled, if the player does not have a buff from a drink, they will automatically drink the drink with the speed buff in their inventory. (e.g. coffee)",
     "Config.DrinkBuffMaintain1.Name": "Drink Buff Maintain 1",
@@ -198,36 +173,33 @@
 
     // Other
     "Config.OtherPage.Name": "Other",
+
     "Config.MagneticRadiusIncrease.Name": "Magnetic Radius Increase(Tile)",
+
     "Config.AutoClearWeeds.Name": "Auto Clear Weeds",
     "Config.AutoClearWeeds.Tooltip": "This feature only works when you hold the scythe(melee weapon).",
-    "Config.AutoClearWeedsRange.Name": "Auto Clear Weeds Range",
-    "Config.FindToolForClearWeeds.Name": "Find Tool From Inventory",
-    "Config.FindToolForClearWeeds.Tooltip": "When this option is enabled, only a scythe (melee weapon) is required in the backpack for the feature to work.",
     "Config.ClearLargeWeeds.Name": "Clear Large Weeds",
+
     "Config.AutoDigSpots.Name": "Auto Dig Spots",
     "Config.AutoDigSpots.Tooltip": "This feature only works when you hold the hoe.",
-    "Config.AutoDigSpotsRange.Name": "Auto Dig Spots Range",
-    "Config.StopDigSpotsStamina.Name": "Stop Dig Spots Stamina",
-    "Config.FindHoeFromInventory.Name": "Find Hoe From Inventory",
-    "Config.FindHoeFromInventory.Tooltip": "When this option is enabled, only a hoe is required in the backpack for the feature to work.",
+
     "Config.AutoHarvestMachine.Name": "Auto Harvest Machine",
-    "Config.AutoHarvestMachineRange.Name": "Auto Harvest Machine Range",
+
     "Config.AutoTriggerMachine.Name": "Auto Trigger Machine",
-    "Config.AutoTriggerMachineRange.Name": "Auto Trigger Machine Range",
+
     "Config.AutoUseFairyDust.Name": "Auto Use Fairy Dust",
     "Config.AutoUseFairyDust.Tooltip": "This feature only works when you hold the fairy dust.",
-    "Config.AutoUseFairyDustRange.Name": "Auto Use Fairy Dust Range",
+
     "Config.AutoGarbageCan.Name": "Auto Garbage Can",
-    "Config.AutoGarbageCanRange.Name": "Auto Garbage Can Range",
     "Config.StopGarbageCanNearVillager.Name": "Stop Garbage Can Near Villager",
+
     "Config.AutoPlaceFloor.Name": "Auto Place Floor",
     "Config.AutoPlaceFloor.Tooltip": "This feature only works when you hold the floor.",
-    "Config.AutoPlaceFloorRange.Name": "Auto Place Floor Range",
 
     // Tree Settings
     "Config.TreeSettingsPage.Name": "Tree Settings",
     "Config.TreeSettingsPage.Tooltip": "Here you can set the tree that automatically chops the tree.",
+
     "Config.OakTreeTitle.Name": "Oak Tree",
     "Config.ChopSeedStageOakTree.Name": "Chop Seed Stage Oak Tree",
     "Config.ChopSproutStageOakTree.Name": "Chop Sprout Stage Oak Tree",
@@ -236,6 +208,7 @@
     "Config.ChopSmallTreeStageOakTree.Name": "Chop Small Tree Stage Oak Tree",
     "Config.ChopOakTree.Name": "Chop Oak Tree",
     "Config.ChopStumpStageOakTree.Name": "Chop Stump Stage Oak Tree",
+
     "Config.MapleTreeTitle.Name": "Maple Tree",
     "Config.ChopSeedStageMapleTree.Name": "Chop Seed Stage Maple Tree",
     "Config.ChopSproutStageMapleTree.Name": "Chop Sprout Stage Maple Tree",
@@ -244,6 +217,7 @@
     "Config.ChopSmallTreeStageMapleTree.Name": "Chop Small Tree Stage Maple Tree",
     "Config.ChopMapleTree.Name": "Chop Maple Tree",
     "Config.ChopStumpStageMapleTree.Name": "Chop Stump Stage Maple Tree",
+
     "Config.PineTreeTitle.Name": "Pine Tree",
     "Config.ChopSeedStagePineTree.Name": "Chop Seed Stage Pine Tree",
     "Config.ChopSproutStagePineTree.Name": "Chop Sprout Stage Pine Tree",
@@ -252,6 +226,7 @@
     "Config.ChopSmallTreeStagePineTree.Name": "Chop Small Tree Stage Pine Tree",
     "Config.ChopPineTree.Name": "Chop Pine Tree",
     "Config.ChopStumpStagePineTree.Name": "Chop Stump Stage Pine Tree",
+
     "Config.MahoganyTreeTitle.Name": "Mahogany Tree",
     "Config.ChopSeedStageMahoganyTree.Name": "Chop Seed Stage Mahogany Tree",
     "Config.ChopSproutStageMahoganyTree.Name": "Chop Sprout Stage Mahogany Tree",
@@ -260,12 +235,14 @@
     "Config.ChopSmallTreeStageMahoganyTree.Name": "Chop Small Tree Stage Mahogany Tree",
     "Config.ChopMahoganyTree.Name": "Chop Mahogany Tree",
     "Config.ChopStumpStageMahoganyTree.Name": "Chop Stump Stage Mahogany Tree",
+
     "Config.PalmTreeTitle.Name": "Palm Tree",
     "Config.ChopSaplingStagePalmTree.Name": "Chop Sapling Stage Palm Tree",
     "Config.ChopBushStagePalmTree.Name": "Chop Bush Stage Palm Tree",
     "Config.ChopSmallTreeStagePalmTree.Name": "Chop Small Tree Stage Palm Tree",
     "Config.ChopPalmTree.Name": "Chop Palm Tree",
     "Config.ChopStumpStagePalmTree.Name": "Chop Stump Stage Palm Tree",
+
     "Config.MushroomTreeTitle.Name": "Mushroom Tree",
     "Config.ChopSeedStageMushroomTree.Name": "Chop Seed Stage Mushroom Tree",
     "Config.ChopSproutStageMushroomTree.Name": "Chop Sprout Stage Mushroom Tree",
@@ -274,6 +251,7 @@
     "Config.ChopSmallTreeStageMushroomTree.Name": "Chop Small Tree Stage Mushroom Tree",
     "Config.ChopMushroomTree.Name": "Chop Mushroom Tree",
     "Config.ChopStumpStageMushroomTree.Name": "Chop Stump Stage Mushroom Tree",
+
     "Config.GreenRainTreeTitle.Name": "Green Rain Tree",
     "Config.ChopSeedStageGreenRainTree.Name": "Chop Seed Stage Green Rain Tree",
     "Config.ChopSproutStageGreenRainTree.Name": "Chop Sprout Stage Green Rain Tree",
@@ -282,6 +260,7 @@
     "Config.ChopSmallTreeStageGreenRainTree.Name": "Chop Small Tree Stage Green Rain Tree",
     "Config.ChopGreenRainTree.Name": "Chop Green Rain Tree",
     "Config.ChopStumpStageGreenRainTree.Name": "Chop Stump Stage Green Rain Tree",
+
     "Config.MysticTreeTitle.Name": "Mystic Tree",
     "Config.ChopSeedStageMysticTree.Name": "Chop Seed Stage Mystic Tree",
     "Config.ChopSproutStageMysticTree.Name": "Chop Sprout Stage Mystic Tree",
@@ -306,6 +285,6 @@
     "BuffType.None.Name": "None",
 
     // Message
-    "Message.ModEnable": "The mod automation feature is enabled.",
-    "Message.ModDisable": "The mod automation feature is disable."
+    "UI.ModState.Enable": "The mod automation feature is enabled.",
+    "UI.ModState.Disable": "The mod automation feature is disable."
 }

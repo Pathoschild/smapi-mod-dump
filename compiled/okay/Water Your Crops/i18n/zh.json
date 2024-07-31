@@ -1,0 +1,13 @@
+{
+  "EnableMod": "启用Mod",
+  "OnlyWaterCan": "仅手持喷壶时",
+  "OnlyWaterCanTip": "启用以使指示器仅手持喷壶时才工作。",
+  "IndicatorColor": "指示器颜色",
+  "IndicatorColorTip": "为指示器选择在待浇水作物所处地块上显示的颜色。",
+  "IndicatorOpacity": "指示器不透明度",
+  "IndicatorOpacityTip": "该值越接近1，指示器越不透明，显示越清晰；越接近0则反之。",
+  "Debug": "Debug日志",
+  "DebugTip": "用于SMAPI调试日志。在生成SMAPI日志和发布bug报告之前启用。",
+  "FarmNeedsWater": "你的农场今天有作物需要浇水！",
+  "IslandNeedsWater": "你的姜岛农场今天有作物需要浇水！"
+}

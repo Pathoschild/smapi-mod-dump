@@ -52,5 +52,7 @@
   "allergies.shellfish": "Crustáceos",
   "allergies.treenuts": "Frutos secos",
   "allergies.dairy": "Lácteos",
-  "allergies.mushroom": "Seta"
+  "allergies.mushroom": "Seta",
+
+  "reaction-passout": "Las reacciones alérgicas te han dejado exhausto."
 }

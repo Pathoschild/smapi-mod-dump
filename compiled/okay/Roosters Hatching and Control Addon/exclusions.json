@@ -1,0 +1,24 @@
+{
+  "AnimalExclusions": [
+    "Domestic Guinea Fowl",
+    "White Legbar",
+    "Blue Parrot",
+    "White Parrot",
+    "Red Parrot",
+    "Void Parrot",
+    "Echidna",
+    "Birch Echidna",
+    "Knuckles the Echidna",
+    "Oak Echidna",
+    "Warm Echidna",
+    "Lady Amherst's Pheasant",
+    "ExampleAnimalKey1",
+    "ExampleAnimalKey2",
+    "ExampleAnimalKey3",
+    "OR",
+    "ExampleAnimalKey1, ExampleAnimalKey2, ExampleAnimalKey3"
+  ],
+  "AnimalExclusionsModID": [
+    "ModIDExample"
+  ]
+}

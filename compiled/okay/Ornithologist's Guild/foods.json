@@ -32,5 +32,12 @@
             "Tube"
         ],
         "QualifiedItemId": "(O)Ivy_OrnithologistsGuild_HulledSunflowerSeeds"
+    },
+    {
+        "Type": "Sugar",
+        "FeedersTypes": [
+            "Hummingbird"
+        ],
+        "QualifiedItemId": "(O)245"
     }
 ]

@@ -1,5 +1,6 @@
 {
   "modUniqueId": "AairTheGreat.MoreBarnCoopAnimals",
+  "targetBuildings": ["barn", "coop"],
   "coopTroughTiles": [
     {
       "tileX": 1,

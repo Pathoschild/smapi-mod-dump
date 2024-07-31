@@ -1,0 +1,548 @@
+{
+    "Format": "2.3.0",
+    "Changes": [
+        {
+            "Action": "Load",
+            "Target": "Mods/GlitchedDeveloper.TerrariaBosses/Items/Crimtane Tools",
+            "FromFile": "assets/Items/Crimtane Tools.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Mods/GlitchedDeveloper.TerrariaBosses/Items/Demonite Tools",
+            "FromFile": "assets/Items/Demonite Tools.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Mods/GlitchedDeveloper.TerrariaBosses/Items/Objects",
+            "FromFile": "assets/Items/Objects.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Mods/GlitchedDeveloper.TerrariaBosses/Items/Trophies",
+            "FromFile": "assets/Items/Trophies.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Mods/GlitchedDeveloper.TerrariaBosses/Debris/Crimtane",
+            "FromFile": "assets/Debris/Crimtane.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Mods/GlitchedDeveloper.TerrariaBosses/Debris/Demonite",
+            "FromFile": "assets/Debris/Demonite.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Mods/GlitchedDeveloper.TerrariaBosses/Gore/1",
+            "FromFile": "assets/Gore/1.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Mods/GlitchedDeveloper.TerrariaBosses/Gore/2",
+            "FromFile": "assets/Gore/2.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Mods/GlitchedDeveloper.TerrariaBosses/Gore/6",
+            "FromFile": "assets/Gore/6.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Mods/GlitchedDeveloper.TerrariaBosses/Gore/7",
+            "FromFile": "assets/Gore/7.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Mods/GlitchedDeveloper.TerrariaBosses/Gore/8",
+            "FromFile": "assets/Gore/8.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Mods/GlitchedDeveloper.TerrariaBosses/Gore/9",
+            "FromFile": "assets/Gore/9.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Mods/GlitchedDeveloper.TerrariaBosses/Gore/10",
+            "FromFile": "assets/Gore/10.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Mods/GlitchedDeveloper.TerrariaBosses/Gore/247",
+            "FromFile": "assets/Gore/247.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Mods/GlitchedDeveloper.TerrariaBosses/Gore/248",
+            "FromFile": "assets/Gore/248.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Mods/GlitchedDeveloper.TerrariaBosses/Gore/249",
+            "FromFile": "assets/Gore/249.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Mods/GlitchedDeveloper.TerrariaBosses/Gore/250",
+            "FromFile": "assets/Gore/250.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Mods/GlitchedDeveloper.TerrariaBosses/Gore/251",
+            "FromFile": "assets/Gore/251.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Mods/GlitchedDeveloper.TerrariaBosses/Gore/252",
+            "FromFile": "assets/Gore/252.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Mods/GlitchedDeveloper.TerrariaBosses/Gore/253",
+            "FromFile": "assets/Gore/253.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Mods/GlitchedDeveloper.TerrariaBosses/Gore/447",
+            "FromFile": "assets/Gore/447.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Mods/GlitchedDeveloper.TerrariaBosses/Gore/448",
+            "FromFile": "assets/Gore/448.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Mods/GlitchedDeveloper.TerrariaBosses/Gore/449",
+            "FromFile": "assets/Gore/449.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Mods/GlitchedDeveloper.TerrariaBosses/Gore/450",
+            "FromFile": "assets/Gore/450.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Mods/GlitchedDeveloper.TerrariaBosses/Monsters/Cataract Eye",
+            "FromFile": "assets/Monsters/Cataract Eye.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Mods/GlitchedDeveloper.TerrariaBosses/Monsters/Demon Eye",
+            "FromFile": "assets/Monsters/Demon Eye.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Mods/GlitchedDeveloper.TerrariaBosses/Monsters/Dilated Eye",
+            "FromFile": "assets/Monsters/Dilated Eye.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Mods/GlitchedDeveloper.TerrariaBosses/Monsters/Eye of Cthulhu",
+            "FromFile": "assets/Monsters/Eye of Cthulhu.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Mods/GlitchedDeveloper.TerrariaBosses/Monsters/Green Eye",
+            "FromFile": "assets/Monsters/Green Eye.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Mods/GlitchedDeveloper.TerrariaBosses/Monsters/Owl Demon Eye",
+            "FromFile": "assets/Monsters/Owl Demon Eye.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Mods/GlitchedDeveloper.TerrariaBosses/Monsters/Purple Eye",
+            "FromFile": "assets/Monsters/Purple Eye.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Mods/GlitchedDeveloper.TerrariaBosses/Monsters/Servant of Cthulhu",
+            "FromFile": "assets/Monsters/Servant of Cthulhu.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Mods/GlitchedDeveloper.TerrariaBosses/Monsters/Sleepy Eye",
+            "FromFile": "assets/Monsters/Sleepy Eye.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Mods/GlitchedDeveloper.TerrariaBosses/Monsters/Spaceship Demon Eye",
+            "FromFile": "assets/Monsters/Spaceship Demon Eye.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Mods/GlitchedDeveloper.TerrariaBosses/UI/NPC_Head_Boss_0",
+            "FromFile": "assets/UI/NPC_Head_Boss_0.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Mods/GlitchedDeveloper.TerrariaBosses/UI/NPC_Head_Boss_1",
+            "FromFile": "assets/UI/NPC_Head_Boss_1.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Mods/GlitchedDeveloper.TerrariaBosses/UI/UI_BossBar",
+            "FromFile": "assets/UI/UI_BossBar.png"
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Machines",
+            "TargetField": [
+                "(BC)13",
+                "OutputRules"
+            ],
+            "Entries": {
+                "GlitchedDeveloper.TerrariaBosses_CrimtaneOre": {
+                    "Id": "GlitchedDeveloper.TerrariaBosses_CrimtaneOre",
+                    "Triggers": [
+                        {
+                            "Id": "ItemPlacedInMachine",
+                            "RequiredItemId": "(O)GlitchedDeveloper.TerrariaBosses_CrimtaneOre",
+                            "RequiredCount": 5
+                        }
+                    ],
+                    "OutputItem": {
+                        "Id": "(O)GlitchedDeveloper.TerrariaBosses_CrimtaneOre",
+                        "ItemId": "(O)GlitchedDeveloper.TerrariaBosses_CrimtaneOre"
+                    },
+                    "MinutesUntilReady": 30
+                },
+                "GlitchedDeveloper.TerrariaBosses_DemoniteOre": {
+                    "Id": "GlitchedDeveloper.TerrariaBosses_DemoniteOre",
+                    "Triggers": [
+                        {
+                            "Id": "ItemPlacedInMachine",
+                            "RequiredItemId": "(O)GlitchedDeveloper.TerrariaBosses_DemoniteOre",
+                            "RequiredCount": 5
+                        }
+                    ],
+                    "OutputItem": {
+                        "Id": "(O)GlitchedDeveloper.TerrariaBosses_DemoniteOre",
+                        "ItemId": "(O)GlitchedDeveloper.TerrariaBosses_DemoniteOre"
+                    },
+                    "MinutesUntilReady": 30
+                }
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Monsters",
+            "Entries": {
+                "Demon Eye": "60/18/0/0/true/1000//2/.01/99999/2/.0/false/20/DemonEye",
+                "Cataract Eye": "65/18/0/0/true/1000//4/.01/99999/2/.0/false/20/DemonEye",
+                "Sleepy Eye": "60/16/0/0/true/1000//2/.01/99999/2/.0/false/20/DemonEye",
+                "Dilated Eye": "50/18/0/0/true/1000//2/.01/99999/2/.0/false/20/DemonEye",
+                "Green Eye": "60/20/0/0/true/1000//0/.01/99999/2/.0/false/20/DemonEye",
+                "Purple Eye": "60/14/0/0/true/1000//4/.01/99999/2/.0/false/20/DemonEye",
+                "Owl Demon Eye": "75/16/0/0/true/1000//6/.01/99999/2/.0/false/20/DemonEye",
+                "Spaceship Demon Eye": "60/20/0/0/true/1000//4/.01/99999/2/.0/false/20/DemonEye",
+                "Eye of Cthulhu": "2800/15/0/0/true/1000//12/.01/99999/2/.0/false/20/EyeOfCthulhu",
+                "Servant of Cthulhu": "8/12/0/0/true/1000//0/.01/99999/2/.0/false/20/DemonEye"
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "Entries": {
+                "GlitchedDeveloper.TerrariaBosses_Lens": {
+                    "Name": "GlitchedDeveloper.TerrariaBosses_Lens",
+                    "DisplayName": "Lens",
+                    "Description": "Material",
+                    "Type": "Basic",
+                    "Category": -20,
+                    "Price": 100,
+                    "Texture": "Mods/GlitchedDeveloper.TerrariaBosses/Items/Objects",
+                    "SpriteIndex": 0
+                },
+                "GlitchedDeveloper.TerrariaBosses_SuspiciousLookingEye": {
+                    "Name": "GlitchedDeveloper.TerrariaBosses_SuspiciousLookingEye",
+                    "DisplayName": "Suspicious Looking Eye",
+                    "Description": "Summons the Eye of Cthulhu",
+                    "Type": "Crafting",
+                    "Category": 0,
+                    "Texture": "Mods/GlitchedDeveloper.TerrariaBosses/Items/Objects",
+                    "SpriteIndex": 1,
+                    "ContextTags": [
+                        "not_placeable"
+                    ]
+                },
+                "GlitchedDeveloper.TerrariaBosses_CrimtaneOre": {
+                    "Name": "GlitchedDeveloper.TerrariaBosses_CrimtaneOre",
+                    "DisplayName": "Crimtane Ore",
+                    "Description": "Can be smelted into bars.",
+                    "Type": "Basic",
+                    "Category": -15,
+                    "Price": 1300,
+                    "Texture": "Mods/GlitchedDeveloper.TerrariaBosses/Items/Objects",
+                    "SpriteIndex": 2,
+                    "ContextTags": [
+                        "ore_item"
+                    ]
+                },
+                "GlitchedDeveloper.TerrariaBosses_CrimtaneBar": {
+                    "Name": "GlitchedDeveloper.TerrariaBosses_CrimtaneBar",
+                    "DisplayName": "Crimtane Bar",
+                    "Description": "A bar of pure crimtane.",
+                    "Type": "Basic",
+                    "Category": -15,
+                    "Price": 3900,
+                    "Texture": "Mods/GlitchedDeveloper.TerrariaBosses/Items/Objects",
+                    "SpriteIndex": 3,
+                    "ContextTags": [
+                        "furnace_item"
+                    ]
+                },
+                "GlitchedDeveloper.TerrariaBosses_DemoniteOre": {
+                    "Name": "GlitchedDeveloper.TerrariaBosses_DemoniteOre",
+                    "DisplayName": "Demonite Ore",
+                    "Description": "Can be smelted into bars.",
+                    "Type": "Basic",
+                    "Category": -15,
+                    "Price": 1000,
+                    "Texture": "Mods/GlitchedDeveloper.TerrariaBosses/Items/Objects",
+                    "SpriteIndex": 4,
+                    "ContextTags": [
+                        "ore_item"
+                    ]
+                },
+                "GlitchedDeveloper.TerrariaBosses_DemoniteBar": {
+                    "Name": "GlitchedDeveloper.TerrariaBosses_DemoniteBar",
+                    "DisplayName": "Demonite Bar",
+                    "Description": "A bar of pure demonite.",
+                    "Type": "Basic",
+                    "Category": -15,
+                    "Price": 3000,
+                    "Texture": "Mods/GlitchedDeveloper.TerrariaBosses/Items/Objects",
+                    "SpriteIndex": 5,
+                    "ContextTags": [
+                        "furnace_item"
+                    ]
+                }
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/CraftingRecipes",
+            "Entries": {
+                "Suspicious Looking Eye": "GlitchedDeveloper.TerrariaBosses_Lens 6/Home/GlitchedDeveloper.TerrariaBosses_SuspiciousLookingEye/false/default"
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Tools",
+            "Entries": {
+                "GlitchedDeveloper.TerrariaBosses_CrimtaneHoe": {
+                    "ClassName": "Hoe",
+                    "Name": "GlitchedDeveloper.TerrariaBosses_CrimtaneHoe",
+                    "SalePrice": 30000,
+                    "DisplayName": "Crimtane Hoe",
+                    "Description": "[LocalizedText Strings/StringsFromCSFiles:Hoe.cs.14102]",
+                    "Texture": "Mods/GlitchedDeveloper.TerrariaBosses/Items/CrimtaneTools",
+                    "SpriteIndex": 0,
+                    "MenuSpriteIndex": 17,
+                    "UpgradeLevel": 5,
+                    "ApplyUpgradeLevelToDisplayName": true,
+                    "UpgradeFrom": [
+                        {
+                            "RequireToolId": "(T)IridiumHoe",
+                            "TradeItemId": "(O)GlitchedDeveloper.TerrariaBosses_CrimtaneBar",
+                            "TradeItemAmount": 5
+                        }
+                    ],
+                    "CanBeLostOnDeath": false
+                },
+                "GlitchedDeveloper.TerrariaBosses_CrimtanePickaxe": {
+                    "ClassName": "Pickaxe",
+                    "Name": "GlitchedDeveloper.TerrariaBosses_CrimtanePickaxe",
+                    "SalePrice": 30000,
+                    "DisplayName": "Crimtane Pickaxe",
+                    "Description": "[LocalizedText Strings/StringsFromCSFiles:Pickaxe.cs.14185]",
+                    "Texture": "Mods/GlitchedDeveloper.TerrariaBosses/Items/CrimtaneTools",
+                    "SpriteIndex": 6,
+                    "MenuSpriteIndex": 23,
+                    "UpgradeLevel": 5,
+                    "ApplyUpgradeLevelToDisplayName": true,
+                    "UpgradeFrom": [
+                        {
+                            "RequireToolId": "(T)IridiumPickaxe",
+                            "TradeItemId": "(O)GlitchedDeveloper.TerrariaBosses_CrimtaneBar",
+                            "TradeItemAmount": 5
+                        }
+                    ],
+                    "CanBeLostOnDeath": false
+                },
+                "GlitchedDeveloper.TerrariaBosses_CrimtaneAxe": {
+                    "ClassName": "Axe",
+                    "Name": "GlitchedDeveloper.TerrariaBosses_CrimtaneAxe",
+                    "SalePrice": 30000,
+                    "DisplayName": "Crimtane Axe",
+                    "Description": "[LocalizedText Strings/StringsFromCSFiles:Axe.cs.14019]",
+                    "Texture": "Mods/GlitchedDeveloper.TerrariaBosses/Items/CrimtaneTools",
+                    "SpriteIndex": 24,
+                    "MenuSpriteIndex": 41,
+                    "UpgradeLevel": 5,
+                    "ApplyUpgradeLevelToDisplayName": true,
+                    "UpgradeFrom": [
+                        {
+                            "RequireToolId": "(T)IridiumAxe",
+                            "TradeItemId": "(O)GlitchedDeveloper.TerrariaBosses_CrimtaneBar",
+                            "TradeItemAmount": 5
+                        }
+                    ],
+                    "CanBeLostOnDeath": false
+                },
+                "GlitchedDeveloper.TerrariaBosses_CrimtaneWateringCan": {
+                    "ClassName": "WateringCan",
+                    "Name": "GlitchedDeveloper.TerrariaBosses_CrimtaneWateringCan",
+                    "SalePrice": 30000,
+                    "DisplayName": "Crimtane Watering Can",
+                    "Description": "[LocalizedText Strings/StringsFromCSFiles:WateringCan.cs.14325]",
+                    "Texture": "Mods/GlitchedDeveloper.TerrariaBosses/Items/CrimtaneTools",
+                    "SpriteIndex": 30,
+                    "MenuSpriteIndex": 44,
+                    "UpgradeLevel": 5,
+                    "ApplyUpgradeLevelToDisplayName": true,
+                    "UpgradeFrom": [
+                        {
+                            "RequireToolId": "(T)IridiumWateringCan",
+                            "TradeItemId": "(O)GlitchedDeveloper.TerrariaBosses_CrimtaneBar",
+                            "TradeItemAmount": 5
+                        }
+                    ],
+                    "CanBeLostOnDeath": false
+                },
+                "GlitchedDeveloper.TerrariaBosses_DemoniteHoe": {
+                    "ClassName": "Hoe",
+                    "Name": "GlitchedDeveloper.TerrariaBosses_DemoniteHoe",
+                    "SalePrice": 30000,
+                    "DisplayName": "Demonite Hoe",
+                    "Description": "[LocalizedText Strings/StringsFromCSFiles:Hoe.cs.14102]",
+                    "Texture": "Mods/GlitchedDeveloper.TerrariaBosses/Items/DemoniteTools",
+                    "SpriteIndex": 0,
+                    "MenuSpriteIndex": 17,
+                    "UpgradeLevel": 5,
+                    "ApplyUpgradeLevelToDisplayName": true,
+                    "UpgradeFrom": [
+                        {
+                            "RequireToolId": "(T)IridiumHoe",
+                            "TradeItemId": "(O)GlitchedDeveloper.TerrariaBosses_DemoniteBar",
+                            "TradeItemAmount": 5
+                        }
+                    ],
+                    "CanBeLostOnDeath": false
+                },
+                "GlitchedDeveloper.TerrariaBosses_DemonitePickaxe": {
+                    "ClassName": "Pickaxe",
+                    "Name": "GlitchedDeveloper.TerrariaBosses_DemonitePickaxe",
+                    "SalePrice": 30000,
+                    "DisplayName": "Demonite Pickaxe",
+                    "Description": "[LocalizedText Strings/StringsFromCSFiles:Pickaxe.cs.14185]",
+                    "Texture": "Mods/GlitchedDeveloper.TerrariaBosses/Items/DemoniteTools",
+                    "SpriteIndex": 6,
+                    "MenuSpriteIndex": 23,
+                    "UpgradeLevel": 5,
+                    "ApplyUpgradeLevelToDisplayName": true,
+                    "UpgradeFrom": [
+                        {
+                            "RequireToolId": "(T)IridiumPickaxe",
+                            "TradeItemId": "(O)GlitchedDeveloper.TerrariaBosses_DemoniteBar",
+                            "TradeItemAmount": 5
+                        }
+                    ],
+                    "CanBeLostOnDeath": false
+                },
+                "GlitchedDeveloper.TerrariaBosses_DemoniteAxe": {
+                    "ClassName": "Axe",
+                    "Name": "GlitchedDeveloper.TerrariaBosses_DemoniteAxe",
+                    "SalePrice": 30000,
+                    "DisplayName": "Demonite Axe",
+                    "Description": "[LocalizedText Strings/StringsFromCSFiles:Axe.cs.14019]",
+                    "Texture": "Mods/GlitchedDeveloper.TerrariaBosses/Items/DemoniteTools",
+                    "SpriteIndex": 24,
+                    "MenuSpriteIndex": 41,
+                    "UpgradeLevel": 5,
+                    "ApplyUpgradeLevelToDisplayName": true,
+                    "UpgradeFrom": [
+                        {
+                            "RequireToolId": "(T)IridiumAxe",
+                            "TradeItemId": "(O)GlitchedDeveloper.TerrariaBosses_DemoniteBar",
+                            "TradeItemAmount": 5
+                        }
+                    ],
+                    "CanBeLostOnDeath": false
+                },
+                "GlitchedDeveloper.TerrariaBosses_DemoniteWateringCan": {
+                    "ClassName": "WateringCan",
+                    "Name": "GlitchedDeveloper.TerrariaBosses_DemoniteWateringCan",
+                    "SalePrice": 30000,
+                    "DisplayName": "Demonite Watering Can",
+                    "Description": "[LocalizedText Strings/StringsFromCSFiles:WateringCan.cs.14325]",
+                    "Texture": "Mods/GlitchedDeveloper.TerrariaBosses/Items/DemoniteTools",
+                    "SpriteIndex": 30,
+                    "MenuSpriteIndex": 44,
+                    "UpgradeLevel": 5,
+                    "ApplyUpgradeLevelToDisplayName": true,
+                    "UpgradeFrom": [
+                        {
+                            "RequireToolId": "(T)IridiumWateringCan",
+                            "TradeItemId": "(O)GlitchedDeveloper.TerrariaBosses_DemoniteBar",
+                            "TradeItemAmount": 5
+                        }
+                    ],
+                    "CanBeLostOnDeath": false
+                }
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Furniture",
+            "Entries": {
+                "GlitchedDeveloper.TerrariaBosses_EyeOfCthulhuTrophy": "Eye of Cthulhu Trophy/painting/2 2/2 2/1/10000/-1/Eye of Cthulhu Trophy/0/Mods\\GlitchedDeveloper.TerrariaBosses\\Items\\Trophies/true"
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/AudioChanges",
+            "Entries": {
+                "GlitchedDeveloper.TerrariaBosses_Boss 1": {
+                    "ID": "GlitchedDeveloper.TerrariaBosses_Boss 1",
+                    "Category": "Music",
+                    "FilePaths": [
+                        "{{AbsoluteFilePath: assets/Music/Boss 1.ogg}}"
+                    ],
+                    "StreamedVorbis": true,
+                    "Looped": true
+                },
+                "GlitchedDeveloper.TerrariaBosses_Hit 1": {
+                    "ID": "GlitchedDeveloper.TerrariaBosses_Hit 1",
+                    "Category": "Sound",
+                    "FilePaths": [
+                        "{{AbsoluteFilePath: assets/Sounds/Hit 1.wav}}"
+                    ],
+                    "StreamedVorbis": false,
+                    "Looped": false
+                },
+                "GlitchedDeveloper.TerrariaBosses_Killed 1": {
+                    "ID": "GlitchedDeveloper.TerrariaBosses_Killed 1",
+                    "Category": "Sound",
+                    "FilePaths": [
+                        "{{AbsoluteFilePath: assets/Sounds/Killed 1.wav}}"
+                    ],
+                    "StreamedVorbis": false,
+                    "Looped": false
+                },
+                "GlitchedDeveloper.TerrariaBosses_Roar 0": {
+                    "ID": "GlitchedDeveloper.TerrariaBosses_Roar 0",
+                    "Category": "Sound",
+                    "FilePaths": [
+                        "{{AbsoluteFilePath: assets/Sounds/Roar 0.wav}}"
+                    ],
+                    "StreamedVorbis": false,
+                    "Looped": false
+                }
+            }
+        }
+    ]
+}

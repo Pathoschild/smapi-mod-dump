@@ -64,8 +64,8 @@
 	"cookRecipe": "料理する",
 	
 	// From Geodes
-	"openGeode": "鍛冶屋で「{{geode}}」を割れてもらう",
-	"openAnyGeode": "鍛冶屋でジオードを割れてもらう",
+	"openGeode": "鍛冶屋に「{{geode}}」を割れてもらう",
+	"openAnyGeode": "鍛冶屋にジオードを割れてもらう",
 	
 	// Panning
 	"panning": "砂金皿で採取",
@@ -75,6 +75,7 @@
 	"mineIronOre": "鉄鉱脈 （鉱山41F以上、71-79F勧め）を採掘",
 	"mineGoldOre": "金鉱脈 （鉱山81F以上）を採掘",
 	"mineIridiumOre": "神秘の鉱脈（鉱山101F以上）、いんせき（レアイベント）を採掘",
+	"mineRadioactiveOre": "放射性鉱脈（「危険」状態の時の鉱山）を採掘",
 	
 	// Gems Through Mining
 	"gemEmerald": "エメラルド鉱脈（鉱山81F以上）、宝石鉱脈を採掘",
@@ -85,6 +86,8 @@
 	"gemJade": "ヒスイ鉱脈（鉱山41F以上）、宝石鉱脈を採掘",
 	"gemDiamond": "ダイヤモンド鉱脈（鉱山51F以上）、宝石鉱脈を採掘",
 	"gemPrismaticShard": "宝石鉱脈、神秘の鉱脈（鉱山101F以上、25%）、イリジウム鉱脈（4%）を採掘",
+	"gemCinderShard": "噴石のかけらの鉱脈（火山）を採掘",
+	"boneNode": "骨鉱脈（ジンジャーアイランド石切場）を採掘",
 	
 	// Farm Cave
 	"caveYours": "牧場の洞窟", // once cave type has been chosen, the other type is disregarded and this is used
@@ -144,6 +147,7 @@
 	
 	// Location Names (for foraging suggestions)
 	"locationFarm": "牧場",
+	"locationTown": "ペリカンタウン",
 	"locationMines": "鉱山",
 	"locationMinesArea1": "鉱山1-39F",
 	"locationMinesArea2": "鉱山41-79F",
@@ -154,10 +158,13 @@
 	"locationBeachEast": "ビーチ（右側）",
 	"locationBeachEastInaccessible": "ビーチ（右側、{{wood}}300個で橋を改修）", // tip displayed if bridge is not fixed
 	"locationForest": "シンダーサップの森",
+	"locationBus": "バス停",
 	"locationWoods": "秘密の森",
 	"locationSewer": "下水管",
 	"locationDesert": "カリコ砂漠",
 	"locationSkullPrehistoric": "ドクロの洞窟の先史時代",
+	"locationIsland": "ジンジャーアイランド",
+	"locationVolcano": "火山",
 	"locationRidgeForest": "尾根の森", // RSV
 	"locationUnknown": "???",
 	
@@ -168,6 +175,7 @@
 	"waterMountain": "山の湖",
 	"waterForestPond": "シンダーサップの森の池",
 	"waterForestRiver": "シンダーサップの森の川",
+	"waterForestFalls": "シンダーサップの森の滝の下",
 	"waterSpecialFarm": "牧場",
 	"waterWoods": "秘密の森の池",
 	"waterDesert": "砂漠の池",
@@ -218,6 +226,9 @@
 	"shopDesertTrader": "砂漠の業者",
 	"shopOasis": "オアシス",
 	"shopOasisWeekday": "オアシス（{{day}}）",
+	"shopIslandTrader": "島のトレーダー",
+	"shopIslandResort": "ビーチリゾート",
+	"shopDwarfVolcano": "火山のドワーフ",
 	"shopTravelingCartRandom": "行商人のカート（ランダム）",
 	"shopTravelingCartSeason": "{{season}}に行商人のカート",
 	"shopEggFestival": "エッグフェスティバル（春の13日)でピエール",
@@ -256,6 +267,8 @@
 	"treePomegranate": "ザクロの木",
 	"treeCherry": "サクランボの木",
 	"treeMahogany": "マホガニーの木",
+	"treeBanana": "バナナの木",
+	"treeMango": "マンゴーの木",
 	"treeLime": "ライムの木", // Cornucopia
 	"treePapaya": "パパイヤの木", // Cornucopia
 	"treeWalnut": "クルミの木", // Cornucopia
@@ -274,6 +287,7 @@
 	"treeMaple": "カエデの木",
 	"treeOak": "オークの木",
 	"treePine": "マツの木",
+	"treeMystic": "神秘の木（{{craftingInfo}}）",
 	"treeMushroom": "キノコの木（秋のレアイベント）",
 	"treeDescSeedling": "苗は{{shop}}から", // advice for fruit trees
 	"treeDescNonFruit": "牧場にあるか、{{treeSeed}}から育つ", // advice for Maple/Oak/Pine trees
@@ -296,7 +310,7 @@
 	"monsterAreaMinesAndSkull": "鉱山、ドクロの洞窟",
 	"monsterAreaMinesRange": "鉱山{{start}}-{{end}}F",
 	"monsterAreaSkull": "ドクロの洞窟",
-	"monsterAreaSkullFloorPlus": "ドクロの洞窟{{floor}}F以上",
+	"monsterAreaSkullFloorPlus": "ドクロの洞窟{{start}}F以上",
 	"monsterAreaSkullPrehistoric": "ドクロの洞窟の先史時代",
 	"monsterAreaSkullMummy": "ドクロの洞窟のミイラ階",
 	"monsterAreaVolcano": "火山",
@@ -344,12 +358,14 @@
 	"recipeIngredientSeparator": "、",
 	
 	// Skill Level Requirements
-	"farmingLvRequirement": "農業Lv{{num}}",
-	"miningLvRequirement": "採鉱Lv{{num}}",
-	"fishingLvRequirement": "釣りLv{{num}}",
-	"foragingLvRequirement": "採取Lv{{num}}",
-	"combatLvRequirement": "戦闘Lv{{num}}",
+	"skillLvRequirement": "{{skill}}Lv{{num}}",
 	"totalSkillLvRequirement": "合計スキルLv{{num}}",
+	"skillMastery": "{{skill}}の達人",
+	"farmingSkill": "農業",
+	"miningSkill": "採鉱",
+	"fishingSkill": "釣り",
+	"foragingSkill": "採取",
+	"combatSkill": "戦闘",
 	
 	// Machine Sources
 	"statueOfPerfectionTip": "おじいさんから完璧評価", // advice for statue if you haven't had evaluation or achieved 4 candles
@@ -385,4 +401,15 @@
 	"yearSeason": "{{year}}年目の{{season}}",
 	"year": "{{year}}年目",
 	"today": "今日", // when Queen of Sauce episode is airing that very day
+	
+	/***** Mod Config Menu Text *****/
+	
+	"optionShowSpoilersName": "ネタバレ表示",
+	"optionShowSpoilersTooltip": "一部のコンテンツのネタバレになるヒントでも表示します。",
+	
+	"optionCollectionsTabName": "コレクションのヒント",
+	"optionCollectionsTabTooltip": "コレクションタブにもアイテムのヒントを表示します。「全て」の設定で、クリックかアクションボタンで表示を切り替えます。（MODのアイテムは基本的に未対応）",
+	"collectionsTabOff": "なし",
+	"collectionsTabUnknowns": "未取得アイテムのみ",
+	"collectionsTabAll": "全てのアイテム",
 }

@@ -1,4 +1,5 @@
 {
   "selph.ExtraAnimalConfig.AddedToSiloMsg": "Added {{count}} pieces of {{displayName}} to the silo.",
   "selph.ExtraAnimalConfig.SiloCountMsg": "Pieces of {{displayName}}: {{count}}/{{maxCount}}",
+  "selph.ExtraAnimalConfig.HopperEmpty": "The hopper is empty. Build a silo for your feed and fill it.",
 }

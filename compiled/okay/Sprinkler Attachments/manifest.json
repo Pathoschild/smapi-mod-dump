@@ -1,7 +1,7 @@
 {
     "Name": "Sprinkler Attachments",
     "Author": "mushymato",
-    "Version": "1.0.3",
+    "Version": "1.1.0",
     "MinimumApiVersion": "4.0.0",
     "MinimumGameVersion": "1.6.0",
     "Description": "Add new sprinkler add-on items similar to pressure nozzle and enricher.",

@@ -1,0 +1,36 @@
+{
+    "$schema": "https://smapi.io/schemas/i18n.json",
+
+    //note the ":" in the translation. This is the first line/heading of the entire damage report.
+    "Farm Damage": "Damage Report:",
+
+    //follows a location name, precedes a list
+    //- This string includes punctuation and typesettin ginformation - what does the punctuation
+    //that precedes a list look like in your language? For example, in English it's ": " while in French it's " : "
+    "Colon_Punctuation": ": ",
+    
+    //name to call the TerrainFeature HoeDirt
+    "Tilled Soil": "Tilled Soil",
+    
+    //GMCM stuff:
+    "GMCM Visuals": "Visuals:",
+
+    "GMCM Crop Images": "Destroyed crops appear as:",
+    "Growing Plant": "Growing Plant",
+    "Seed Packet": "Seed Packet",
+    "Harvested Produce": "Harvested Produce",
+
+    "GMCM Show In World Overlay": "Show render of destroyed objects",
+    "GMCM Show In World Overlay Tooltip": "A pulsing image of the destroyed object displays in its former location",
+
+    "GMCM Show X": "Display an 'X' for damage",
+    "GMCM Show X Tooltip": "An 'X' will indicate each damaged location. If it is off screen then an arrow on the edge of the screen will point to it.",
+
+    "GMCM Function": "Function:",
+
+    "GMCM New Object": "New object removes render",
+    "GMCM New Object Tooltip": "Renders reset at the end of the day always. This option removes a render if you place another object there or till the soil.",
+
+    "GMCM Show HUD Damage Report": "Show daily damage notification",
+    "GMCM Show HUD Damage Report Tooltip": "Each morning if debris causes damage then a \"Damage Report\" displays along with the game's own HUD notification"
+}

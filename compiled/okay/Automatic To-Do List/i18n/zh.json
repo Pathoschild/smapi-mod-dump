@@ -1,0 +1,55 @@
+{
+    // general configuration section
+    "config.general.title": "常规",  
+    "config.general.toggle-keybind.name": "切换自动待办事项列表",
+    "config.general.toggle-keybind.description": "用于切换自动待办事项列表面板的快捷键。",
+    "config.general.visible-items-count.name": "可见项目数", 
+    "config.general.visible-items-count.description": "自动待办事项列表面板中一次显示的项目数。如果待办事项项目超过此数量，面板将显示一个溢出指示器", 
+    "config.general.panel-position-x.name": "面板位置 X",  
+    "config.general.panel-position-x.description": "自动待办事项列表面板的 X 坐标位置",
+    "config.general.panel-position-y.name": "面板位置 Y",
+    "config.general.panel-position-y.description": "自动待办事项列表面板的 Y 坐标位置",
+
+    // checks configuration section
+    "config.checks.title": "检查",
+    "config.checks.birthdays.toggle.name": "检查生日",
+    "config.checks.birthdays.toggle.description": "是否为 村民生日时赠送礼物 添加待办事项",
+    "config.checks.harvestable-crops.toggle.name": "检查可收获的作物",
+    "config.checks.harvestable-crops.toggle.description": "是否为 在不同地点收获作物 添加待办事项事项",
+    "config.checks.waterable-crops.toggle.name": "检查可浇水的作物",
+    "config.checks.waterable-crops.toggle.description": "是否为 在不同地点给作物浇水 添加待办事项事项",
+    "config.checks.ready-machines.toggle.name": "检查完工的机器",
+    "config.checks.ready-machines.toggle.description": "是否为 在不同地点采收完工机器 添加待办事项事项",
+    "config.checks.tool-pickup.toggle.name": "检查工具领取", 
+    "config.checks.tool-pickup.toggle.description": "是否为 从克林特处领取升级工具 添加待办事项事项",
+    "config.checks.bulletin-board.toggle.name": "检查公告板",  
+    "config.checks.bulletin-board.toggle.description": "是否为 接受皮埃尔杂货店外公告板上日常任务 添加待办事项",
+    "config.checks.special-orders-board.toggle.name": "检查特别订单板",
+    "config.checks.special-orders-board.toggle.description": "是否为 接受特别订单板上特别订单 添加待办事项",
+    "config.checks.traveling-merchant.toggle.name": "检查旅行商人",
+    "config.checks.traveling-merchant.toggle.description": "是否为 访问旅行商人的货车 添加待办事项",
+    "config.checks.queen-of-sauce.toggle.name": "检查酱料女王",
+    "config.checks.queen-of-sauce.toggle.description": "是否为 观看酱料女王学习新食谱 添加待办事项。对于已学习过的食谱的重播，将不会创建待办事项。",
+    "config.checks.gifting-npcs.toggle.name": "检查特定村民的送礼",
+    "config.checks.gifting-npcs.toggle.description": "是否为 每周给特定村民送礼物 添加待办事项",
+    "config.checks.gifting-npcs.npcs.name": "要送礼的村民",
+    "config.checks.gifting-npcs.npcs.description": "用逗号分隔要送礼的村民名单。如果留空，则会选择所有村民",
+
+    // panel text
+    "panel.title": "待办事项",
+    "panel.overflow-indicator": "... (还有{{count}}项未显示)", // TODO   
+
+    // text of the actual line items on the in-game list 
+    "items.birthday.text": "给 {{npc}} 送生日礼物",
+    "items.bulletin-board.text": "查看每日任务公告板",
+    "items.gifting.first-gift.text": "给{{npc}}送礼（本周第一次）",
+    "items.gifting.second-gift.text": "给{{npc}}送礼（本周第二次）",
+    "items.harvestable-crops.text": "收获作物（{{location}}），还剩 {{remaining}} 个",
+    "items.queen-of-sauce.text": "观看酱料女王： ({{recipeName}})",  
+    "items.ready-machines.text": "采收完工的机器（{{location}}），还剩 {{remaining}} 个",
+    "items.special-orders-board.standard.text": "查看城镇中的特别订单看板",
+    "items.special-orders-board.qi.text": "查看齐先生的核桃房中的特别订单看板",
+    "items.tool-pickup.text": "从克林特处领取 {{tool}}",
+    "items.traveling-merchant.text": "访问旅行商人的货车",
+    "items.waterable-crops.text": "给作物浇水（{{location}}），还剩 {{remaining}} 个" 
+}

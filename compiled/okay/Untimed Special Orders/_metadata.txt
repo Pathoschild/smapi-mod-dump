@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/26117
+IDs: EnderTedi.UntimedSpecialOrders
+update keys: Nexus:26117, GitHub:EnderTedi/Untimed-Special-Orders

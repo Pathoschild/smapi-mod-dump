@@ -1,4 +1,23 @@
 {
   "ItemHover_Requirements_Extra": "{0}个{1}",
-  "CantBreak": "你的{0}不够强大，无法敲碎这个。"
+  "CantBreak": "你的{0}不够强大，无法敲碎这个。",
+  "config.Description": "这将切换模组的功能。应用设置后请确保重置游戏。",
+  "config.MixedSeeds.name": "混合种子",
+  "config.Panning.name": "淘金",
+  "config.MenuActions.name": "菜单操作",
+  "config.QualityChanges.name": "品质自定义",
+  "config.ShopTrades.name": "商店交易",
+  "config.EatingAnimations.name": "进食动画",
+  "config.TrainDrops.name": "火车掉落",
+  "config.FishPond.name": "鱼塘",
+  "config.TerrainFeatures.name": "地形特征",
+  "config.Treasure.name": "钓鱼宝藏",
+  "config.Ores.name": "矿石",
+  "config.Volcano.name": "火山中",
+  "config.Mountain.name": "山中",
+  "config.Ores.tooltip": "必须启用才能允许其他矿石设置。",
+  "config.Drops.title": "掉落相关",
+  "config.Resources.title": "资源",
+  "config.VanillaExt.title": "原版扩展",
+  "config.Customization.title": "自定义"
 }

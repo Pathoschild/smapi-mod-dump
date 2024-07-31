@@ -1,0 +1,161 @@
+{
+  "modUniqueId": "Ghilminion_Ghilland.Bigger.Barn",
+  "targetBuildings": ["barn"],
+  "barnTroughTiles": [
+    {
+      "tileX": 19,
+      "tileY": 3,
+      "layer": "Buildings",
+      "emptyIndex": 0,
+      "fullIndex": 3
+    },
+    {
+      "tileX": 3,
+      "tileY": 7,
+      "layer": "Buildings",
+      "emptyIndex": 6,
+      "fullIndex": 8
+    },
+    {
+      "tileX": 4,
+      "tileY": 7,
+      "layer": "Buildings",
+      "emptyIndex": 7,
+      "fullIndex": 9
+    },
+    {
+      "tileX": 3,
+      "tileY": 6,
+      "layer": "Front",
+      "emptyIndex": 1,
+      "fullIndex": 4
+    },
+    {
+      "tileX": 4,
+      "tileY": 6,
+      "layer": "Front",
+      "emptyIndex": 2,
+      "fullIndex": 5
+    }
+  ],
+  "barn2TroughTiles": [
+    {
+      "tileX": 25,
+      "tileY": 3,
+      "layer": "Buildings",
+      "emptyIndex": 0,
+      "fullIndex": 3
+    },
+    {
+      "tileX": 26,
+      "tileY": 3,
+      "layer": "Buildings",
+      "emptyIndex": 6,
+      "fullIndex": 8
+    },
+    {
+      "tileX": 27,
+      "tileY": 3,
+      "layer": "Buildings",
+      "emptyIndex": 7,
+      "fullIndex": 9
+    },
+    {
+      "tileX": 26,
+      "tileY": 2,
+      "layer": "Front",
+      "emptyIndex": 1,
+      "fullIndex": 4
+    },
+    {
+      "tileX": 27,
+      "tileY": 2,
+      "layer": "Front",
+      "emptyIndex": 2,
+      "fullIndex": 5
+    },
+    {
+      "tileX": 4,
+      "tileY": 3,
+      "layer": "Buildings",
+      "emptyIndex": 6,
+      "fullIndex": 8
+    },
+    {
+      "tileX": 5,
+      "tileY": 3,
+      "layer": "Buildings",
+      "emptyIndex": 7,
+      "fullIndex": 9
+    },
+    {
+      "tileX": 4,
+      "tileY": 2,
+      "layer": "Front",
+      "emptyIndex": 1,
+      "fullIndex": 4
+    },
+    {
+      "tileX": 5,
+      "tileY": 2,
+      "layer": "Front",
+      "emptyIndex": 2,
+      "fullIndex": 5
+    }
+  ],
+  "barn3TroughTiles": [
+    {
+      "tileX": 37,
+      "tileY": 3,
+      "layer": "Buildings",
+      "emptyIndex": 0,
+      "fullIndex": 3
+    },
+    {
+      "tileX": 38,
+      "tileY": 3,
+      "layer": "Buildings",
+      "emptyIndex": 6,
+      "fullIndex": 8
+    },
+    {
+      "tileX": 39,
+      "tileY": 3,
+      "layer": "Buildings",
+      "emptyIndex": 7,
+      "fullIndex": 9
+    },
+    {
+      "tileX": 38,
+      "tileY": 2,
+      "layer": "Front",
+      "emptyIndex": 1,
+      "fullIndex": 4
+    },
+    {
+      "tileX": 39,
+      "tileY": 2,
+      "layer": "Front",
+      "emptyIndex": 2,
+      "fullIndex": 5
+    }
+  ],
+  "barn3WateringSystem": {
+    "tileX": 40,
+    "tileY": 3,
+    "layer": "Buildings",
+    "systemIndex": 0,
+    "tilesToRemove": [
+      {
+        "tileX": 40,
+        "tileY": 3,
+        "layer": "Buildings"
+      },
+      {
+        "tileX": 40,
+        "tileY": 2,
+        "layer": "Front"
+      }
+    ]
+  }
+}

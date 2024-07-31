@@ -1,9 +1,0 @@
-{
-  "ActivationKey": "LeftControl",
-  "ToggleKey": "F5",
-  "HoeSelect": true,
-  "IfNoneToolChooseWeapon": true,
-  "RideHorseCursor": true,
-  "PickaxeOverWateringCan": true,
-  "CursorOverToolHitLocation": false
-}

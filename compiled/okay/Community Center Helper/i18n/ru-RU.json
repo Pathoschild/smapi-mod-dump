@@ -75,6 +75,7 @@
 	"mineIronOre": "Железная жила (Шахты 41+, чаще на 71-79)",
 	"mineGoldOre": "Золотая жила (Шахты 81+)",
 	"mineIridiumOre": "Загадочный камень (Шахты 101+), метеорит (редкое событие)",
+	"mineRadioactiveOre": "Mine Radioactive Nodes (Mines in dangerous state)", // TODO
 	
 	// Gems Through Mining
 	"gemEmerald": "Месторождение изумруда (Шахта 81+), Месторождение драгоценных камней",
@@ -85,6 +86,8 @@
 	"gemJade": "Месторождение нефрита (Шахта 41+), Месторождение драгоценных камней",
 	"gemDiamond": "Месторождение алмаза  (Шахта 51+), Месторождение драгоценных камней",
 	"gemPrismaticShard": "Месторождение драгоценных камней, Загадочный камень (Шахта 101+, 25%), Иридиевая жила (4%)",
+	"gemCinderShard": "Mine Cinder Shard Node (Volcano)", // TODO
+	"boneNode": "Mine Bone Node (Ginger Island Dig Site)", // TODO
 	
 	// Farm Cave
 	"caveYours": "Находится в пещере фермы", // once cave type has been chosen, the other type is disregarded and this is used
@@ -144,6 +147,7 @@
 	
 	// Location Names (for foraging suggestions)
 	"locationFarm": "на ферме",
+	"locationTown": "in Pelican Town", // TODO
 	"locationMines": "в Шахтах",
 	"locationMinesArea1": "в Шахтах 1-39",
 	"locationMinesArea2": "в Шахтах 41-79",
@@ -154,10 +158,13 @@
 	"locationBeachEast": "на Пляже (правая сторона)",
 	"locationBeachEastInaccessible": "на Пляже (правая сторона; 300 {{wood}} для починки моста)", // tip displayed if bridge is not fixed
 	"locationForest": "в лесу Синдерсэп",
+	"locationBus": "at Bus Stop", // TODO
 	"locationWoods": "в Тайном лесу",
 	"locationSewer": "в Канализации",
 	"locationDesert": "в пустыне Калико",
 	"locationSkullPrehistoric": "в Пещере Черепа, доисторические уровни",
+	"locationIsland": "on Ginger Island", // TODO
+	"locationVolcano": "in the Volcano", // TODO
 	"locationRidgeForest": "in Ridge Forest", // RSV // TODO
 	"locationUnknown": "в ???",
 	
@@ -168,6 +175,7 @@
 	"waterMountain": "в горном озере",
 	"waterForestPond": "в пруде леса Синдерсэпа",
 	"waterForestRiver": "в реке леса Синдерсэпа",
+	"waterForestFalls": "at bottom of Cindersap Forest waterfalls", // TODO
 	"waterSpecialFarm": "на ферме",
 	"waterWoods": "в пруде Тайного леса",
 	"waterDesert": "в пруде Пустыне",
@@ -218,6 +226,9 @@
 	"shopDesertTrader": "у Менялы в пустыне Калико",
 	"shopOasis": "в Оазисе",
 	"shopOasisWeekday": "в Оазисе ({{day}})",
+	"shopIslandTrader": "Island Trader", // TODO
+	"shopIslandResort": "Island Resort", // TODO
+	"shopDwarfVolcano": "Volcano Dwarf", // TODO
 	"shopTravelingCartRandom": "у Странствующего Торговца (случайно)",
 	"shopTravelingCartSeason": "у Странствующего Торговца {{season}}",
 	"shopEggFestival": "у Пьера на Яичном фестивале (Весна 13)",
@@ -256,6 +267,8 @@
 	"treePomegranate": "Гранатовое Дерево",
 	"treeCherry": "Вишневое Дерево",
 	"treeMahogany": "Mahogany Tree", // TODO
+	"treeBanana": "Banana Tree", // TODO
+	"treeMango": "Mango Tree", // TODO
 	"treeLime": "Лаймовое дерево", // Cornucopia
 	"treePapaya": "Дерево папайи", // Cornucopia
 	"treeWalnut": "Ореховое дерево", // Cornucopia
@@ -274,6 +287,7 @@
 	"treeMaple": "Клён",
 	"treeOak": "Дуб",
 	"treePine": "Сосна",
+	"treeMystic": "Mystic Tree ({{craftingInfo}})", // TODO
 	"treeMushroom": "Грибное дерево (редкое событие осенью)",
 	"treeDescSeedling": "купите саженец дерева {{shop}}{{startingYear}}", // advice for fruit trees
 	"treeDescNonFruit": "в любом месте на ферме/земле{{treeSeed}}", // advice for Maple/Oak/Pine trees
@@ -344,12 +358,14 @@
 	"recipeIngredientSeparator": ", ",
 	
 	// Skill Level Requirements
-	"farmingLvRequirement": "Фермерство Ур. {{num}}",
-	"miningLvRequirement": "Горное дело Ур. {{num}}",
-	"fishingLvRequirement": "Рыбная ловля Ур. {{num}}",
-	"foragingLvRequirement": "Собирательство Ур. {{num}}",
-	"combatLvRequirement": "Боевые навыки Ур. {{num}}",
+	"skillLvRequirement": "{{skill}} Ур. {{num}}",
 	"totalSkillLvRequirement": "Всего навыков Ур. {{num}}",
+	"skillMastery": "{{skill}} Mastery", // TODO
+	"farmingSkill": "Фермерство",
+	"miningSkill": "Горное дело",
+	"fishingSkill": "Рыбная ловля",
+	"foragingSkill": "Собирательство",
+	"combatSkill": "Боевые навыки",
 	
 	// Machine Sources
 	"statueOfPerfectionTip": "идеальная оценка Дедушки", // advice for statue if you haven't had evaluation or achieved 4 candles
@@ -385,4 +401,15 @@
 	"yearSeason": "{{season}} год {{year}}",
 	"year": "Год {{year}}",
 	"today": "сегодня", // when Queen of Sauce episode is airing that very day
+	
+	/***** Mod Config Menu Text *****/
+	
+	"optionShowSpoilersName": "Show Spoilers", // TODO
+	"optionShowSpoilersTooltip": "Whether hints should include spoilers of certain things not yet encountered.", // TODO
+	
+	"optionCollectionsTabName": "Collections Tab Hints", // TODO
+	"optionCollectionsTabTooltip": "Additionally show tooltip hints in the Collections tab for how to obtain items. For \"All Items\" setting, toggle display with click/Action/Tool Button. (Items from mods not guaranteed to show hints.)", // TODO
+	"collectionsTabOff": "Off", // TODO
+	"collectionsTabUnknowns": "Unknowns Only", // TODO
+	"collectionsTabAll": "All Items", // TODO
 }

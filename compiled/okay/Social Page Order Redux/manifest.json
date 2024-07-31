@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Social Page Order Redux",
   "Author": "aedenthorn, FlyingTNT",
-  "Version": "1.0.4",
+  "Version": "1.1.0",
   "Description": "Lets you reorder and search the social page.",
   "UniqueID": "FlyingTNT.SocialPageOrderRedux",
   "EntryDll": "SocialPageOrderRedux.dll",

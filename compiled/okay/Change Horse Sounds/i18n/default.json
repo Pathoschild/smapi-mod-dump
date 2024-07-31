@@ -1,0 +1,5 @@
+{
+  "config.ReplaceSounds.name": "Replace Horse Footstep Sounds\n",
+  "config.ReplaceSounds.description": "Select whether to replace horse footstep sounds or not",
+  "config.PlayOnce.text": "Please open the config file to set PlayOnce to selected files. This is achieved by adding a list of the desired filenames, comma seperated to the SoundsToPlayOnce section."
+}

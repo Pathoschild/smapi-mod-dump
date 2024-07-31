@@ -1,0 +1,12 @@
+{
+  "Sunday": "Dom. {{day}}",
+  "Monday": "Lun. {{day}}",
+  "Tuesday": "Mar. {{day}}",
+  "Wednesday": "Mer. {{day}}",
+  "Thursday": "Gio. {{day}}",
+  "Friday": "Ven. {{day}}",
+  "Saturday": "Sab. {{day}}",
+  "AM": "{{time}} am",
+  "PM": "{{time}} pm",
+  "Default": "12"
+}

@@ -1,0 +1,10 @@
+{
+  "EnableGodMode": true,
+  "InfiniteEnergy": false,
+  "InstantBite": false,
+  "FreeShopping": false,
+  "ToggleGodModeKey": "None",
+  "ToggleInfiniteEnergyKey": "None",
+  "ToggleInstantBiteKey": "None",
+  "ToggleFreeShoppingKey": "None"
+}

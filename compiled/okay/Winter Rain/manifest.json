@@ -1,7 +1,7 @@
 {
     "Name": "Winter Rain",
     "Author": "idermailer",
-    "Version": "2.0.0",
+    "Version": "2.0.2",
     "Description": "It rains in winter",
     "UniqueID": "idermailer.WinterRain",
     "UpdateKeys": [ "Nexus:13767" ],

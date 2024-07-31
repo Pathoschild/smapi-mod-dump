@@ -75,6 +75,7 @@
 	"mineIronOre": "Eisenader (Minenebenen 41+, häufig auf 71-79) abbauen",
 	"mineGoldOre": "Goldader (Minenebenen 81+) abbauen",
 	"mineIridiumOre": "Baue Mystischen Stein ab (Minenebenen 101+), Meteorit (seltenes Ereignis)",
+	"mineRadioactiveOre": "Mine Radioactive Nodes (Mines in dangerous state)", // TODO
 
 	// Gems Through Mining
 	"gemEmerald": "Smaragdader (Minenebenen 81+) oder Edelsteinader abbauen",
@@ -85,6 +86,8 @@
 	"gemJade": "Jadeader (Minenebenen 41+) oder Edelsteinader abbauen",
 	"gemDiamond": "Diamantenader (Minenebenen 51+) oder Edelsteinader abbauen",
 	"gemPrismaticShard": "Edelsteinader, Mystischen Stein (Minenebenen 101+, 25%) oder Iridiumader (4%) abbauen",
+	"gemCinderShard": "Mine Cinder Shard Node (Volcano)", // TODO
+	"boneNode": "Mine Bone Node (Ginger Island Dig Site)", // TODO
 
 	// Farm Cave
 	"caveYours": "In Farm-Höhle", // once cave type has been chosen, the other type is disregarded and this is used
@@ -144,6 +147,7 @@
 
 	// Location Names (for foraging suggestions)
 	"locationFarm": "auf der Farm",
+	"locationTown": "in Pelican Town", // TODO
 	"locationMines": "in den Minen",
 	"locationMinesArea1": "auf Minenebenen 1-39",
 	"locationMinesArea2": "auf Minenebenen 41-79",
@@ -154,10 +158,13 @@
 	"locationBeachEast": "am Strand (rechte Seite)",
 	"locationBeachEastInaccessible": "am Strand (rechte Seite; 300 {{wood}}, um die Brücke zu reparieren)", // tip displayed if bridge is not fixed
 	"locationForest": "in Zundersaftwald",
+	"locationBus": "at Bus Stop", // TODO
 	"locationWoods": "in Geheimen Wäldern",
 	"locationSewer": "in der Kanalisation",
 	"locationDesert": "in der Calico-Wüste",
 	"locationSkullPrehistoric": "auf prähistorischer Ebene der Schädelhöhle",
+	"locationIsland": "on Ginger Island", // TODO
+	"locationVolcano": "in the Volcano", // TODO
 	"locationRidgeForest": "in Ridge Forest", // RSV // TODO
 	"locationUnknown": "in ???",
 
@@ -168,6 +175,7 @@
 	"waterMountain": "im Bergsee",
 	"waterForestPond": "im Zundersaftwaldsee",
 	"waterForestRiver": "im Zundersaftwaldfluss",
+	"waterForestFalls": "at bottom of Cindersap Forest waterfalls", // TODO
 	"waterSpecialFarm": "auf der Farm",
 	"waterWoods": "im See der geheimen Wälder",
 	"waterDesert": "im Wüstenteich",
@@ -218,6 +226,9 @@
 	"shopDesertTrader": "Wüstenhändler",
 	"shopOasis": "Oase",
 	"shopOasisWeekday": "Oase (am {{day}})",
+	"shopIslandTrader": "Island Trader", // TODO
+	"shopIslandResort": "Island Resort", // TODO
+	"shopDwarfVolcano": "Volcano Dwarf", // TODO
 	"shopTravelingCartRandom": "Reisewagen (zufällig)",
 	"shopTravelingCartSeason": "Reisewagen im {{season}}",
 	"shopEggFestival": "Pierre am Egg Festival (13. im Frühling)",
@@ -256,6 +267,8 @@
 	"treePomegranate": "Granatapfelbaum",
 	"treeCherry": "Kirschbaum",
 	"treeMahogany": "Mahogany Tree", // TODO
+	"treeBanana": "Banana Tree", // TODO
+	"treeMango": "Mango Tree", // TODO
 	"treeLime": "Limettenbaum", // Cornucopia
 	"treePapaya": "Papayabaum", // Cornucopia
 	"treeWalnut": "Walnussbaum", // Cornucopia
@@ -274,6 +287,7 @@
 	"treeMaple": "Ahornbaum",
 	"treeOak": "Eichenbaum",
 	"treePine": "Kieferbaum",
+	"treeMystic": "Mystic Tree ({{craftingInfo}})", // TODO
 	"treeMushroom": "Pilzbaum (seltenes Ereignis im Herbst)",
 	"treeDescSeedling": "Setzling von {{shop}}{{startingYear}}", // advice for fruit trees
 	"treeDescNonFruit": "auf der Farm/pflanze {{treeSeed}}", // advice for Maple/Oak/Pine trees
@@ -344,12 +358,14 @@
 	"recipeIngredientSeparator": ", ",
 
 	// Skill Level Requirements
-	"farmingLvRequirement": "Landwirtschaftslevel {{num}}",
-	"miningLvRequirement": "Bergbaulevel {{num}}",
-	"fishingLvRequirement": "Angellevel {{num}}",
-	"foragingLvRequirement": "Sammlerlevel {{num}}",
-	"combatLvRequirement": "Kampflevel {{num}}",
+	"skillLvRequirement": "{{skill}}level {{num}}",
 	"totalSkillLvRequirement": "gesamtes Fähigkeitslevel {{num}}",
+	"skillMastery": "{{skill}} Mastery", // TODO
+	"farmingSkill": "Landwirtschafts",
+	"miningSkill": "Bergbau",
+	"fishingSkill": "Angel",
+	"foragingSkill": "Sammler",
+	"combatSkill": "Kampf",
 
 	// Machine Sources
 	"statueOfPerfectionTip": "perfekte Einschätzung durch Opa", // advice for statue if you haven't had evaluation or achieved 4 candles
@@ -385,4 +401,15 @@
 	"yearSeason": "{{season}} im {{year}}. Jahr",
 	"year": "Jahr {{year}}",
 	"today": "heute", // when Queen of Sauce episode is airing that very day
+	
+	/***** Mod Config Menu Text *****/
+	
+	"optionShowSpoilersName": "Show Spoilers", // TODO
+	"optionShowSpoilersTooltip": "Whether hints should include spoilers of certain things not yet encountered.", // TODO
+	
+	"optionCollectionsTabName": "Collections Tab Hints", // TODO
+	"optionCollectionsTabTooltip": "Additionally show tooltip hints in the Collections tab for how to obtain items. For \"All Items\" setting, toggle display with click/Action/Tool Button. (Items from mods not guaranteed to show hints.)", // TODO
+	"collectionsTabOff": "Off", // TODO
+	"collectionsTabUnknowns": "Unknowns Only", // TODO
+	"collectionsTabAll": "All Items", // TODO
 }

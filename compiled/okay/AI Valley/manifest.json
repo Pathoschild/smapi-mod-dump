@@ -1,0 +1,16 @@
+{
+  "Name": "AIValley",
+  "Author": "Dualityofsoul",
+  "Version": "0.1.2", // fixed locally
+  "Description": "Adds ChatGPT responses to stardew valley!",
+  "UniqueID": "Dualityofsoul.AIValley",
+  "EntryDll": "AIValley.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [],
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.GenericModConfigMenu",
+      "IsRequired": false
+    }
+  ]
+}

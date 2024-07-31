@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Resource Storage",
   "Author": "aedenthorn and FlyingTNT",
-  "Version": "1.0.11",
+  "Version": "1.1.0",
   "Description": "Allows you to store infinite amounts of common resources.",
   "UniqueID": "FlyingTNT.ResourceStorage",
   "EntryDll": "ResourceStorage.dll",
@@ -12,5 +12,12 @@
     "Directory": "_releases",
     "ModFolder": "ResourceStorage"
   },
-  "UpdateKeys": [ "Nexus:22539" ]
+  "UpdateKeys": [ "Nexus:22539" ],
+  "Dependencies": [
+    {
+      "UniqueID": "leclair.bettercrafting",
+      "MinimumVersion": "2.12.0",
+      "IsRequired":  false
+    }
+  ]
 }

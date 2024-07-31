@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/25045
 IDs: sunsst.IPv6
-update keys: GitHub:sunsst/Stardew-Valley-IPv6, Nexus:25045
+update keys: Nexus:25045@IPV6ForSMAPI, GitHub:sunsst/Stardew-Valley-IPv6, Nexus:25045

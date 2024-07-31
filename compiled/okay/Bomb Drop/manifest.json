@@ -1,0 +1,11 @@
+﻿{
+  "Name": "Bomb Drop Mod",
+  "Author": "WillTheMage",
+  "Version": "1.0.0",
+  "Description": "Adds chances of dropping bombs when destroying rocks or ores.",
+  "UniqueID": "WillTheMage.BombDropMod",
+  "EntryDll": "BombDropMod.dll",
+  "MinimumApiVersion": "3.0.0",
+  "MinimumGameVersion": "1.6.0",
+  "UpdateKeys": ["Nexus:26062"]
+}

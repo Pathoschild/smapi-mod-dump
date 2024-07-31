@@ -1,28 +1,16 @@
 ﻿{
-  "Name": "Better Beehouses",
-  "Author": "Tlitookilakin",
-  "Version": "2.1.1",
-  "Description": "Improves bee houses",
-  "UniqueID": "tlitookilakin.BetterBeehouses",
-  "EntryDll": "BetterBeehouses.dll",
-  "MinimumApiVersion": "4.0.0",
-  "UpdateKeys": [ "GitHub:tlitookilakin/BetterBeehouses", "Nexus:10996", "ModDrop:1105633" ],
-  "Dependencies": [
-    {
-        "UniqueID": "Digus.ProducerFrameworkMod",
-        "IsRequired": false
-    },
-    {
-        "UniqueID": "Pathoschild.Automate",
-        "IsRequired": false
-    },
-    {
-        "UniqueID": "CJBok.ItemSpawner",
-        "IsRequired": false
-    },
-    {
-        "UniqueID": "aedenthorn.Wildflowers",
-        "IsRequired": false
-    }
-  ]
+	"Name": "Better Beehouses",
+	"Author": "Tlitookilakin",
+	"Version": "2.1.2",
+	"Description": "Improves bee houses",
+	"UniqueID": "tlitookilakin.BetterBeehouses",
+	"EntryDll": "BetterBeehouses.dll",
+	"MinimumApiVersion": "4.0.0",
+	"UpdateKeys": [ "GitHub:tlitookilakin/BetterBeehouses", "Nexus:10996", "ModDrop:1105633" ],
+	"Dependencies": [
+		{
+			"UniqueID": "Digus.ProducerFrameworkMod",
+			"IsRequired": false
+		}
+	]
 }

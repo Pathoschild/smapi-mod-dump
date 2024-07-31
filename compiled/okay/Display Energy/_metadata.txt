@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/10662
 IDs: dmarcoux.DisplayEnergy
-update keys: GitHub:dmarcoux/DisplayEnergy, Nexus:10662
+update keys: GitHub:dmarcoux/DisplayEnergy, ModDrop:1087175, Nexus:10662

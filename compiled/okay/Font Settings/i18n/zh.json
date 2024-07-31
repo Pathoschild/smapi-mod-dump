@@ -16,6 +16,7 @@
   "ui.main-menu.font": "字体",
   "ui.main-menu.font.keep-orig": "保持原版",
   "ui.main-menu.refresh-fonts": "刷新字体列表",
+  "ui.main-menu.manage-fonts": "管理字体文件",
   "ui.main-menu.font-from-pack": "(‘{{packName}}’字体包)",
   "ui.main-menu.font-size": "大小",
 
@@ -67,6 +68,14 @@
   "ui.export-menu.compress": "压缩",
   "ui.export-menu.export": "导出",
   "ui.export-menu.cancel": "返回",
+
+  "ui.font-manage-menu.title": "管理字体",
+  "ui.font-manage-menu.section.search": "搜索设置",
+  "ui.font-manage-menu.new": "新建",
+  "ui.font-manage-menu.delete": "删除",
+  "ui.font-manage-menu.log-details": "显示搜索日志",
+  "ui.font-manage-menu.ok": "应用",
+  "ui.font-manage-menu.cancel": "取消",
 
   "config.section-color-and-shadow": "颜色和阴影",
   "config.disable-text-shadow": "禁用字体阴影",

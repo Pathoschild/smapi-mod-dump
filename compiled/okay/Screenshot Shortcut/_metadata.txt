@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/26477
+IDs: Tarsnip.ScreenshotShortcut
+update keys: Nexus:26477

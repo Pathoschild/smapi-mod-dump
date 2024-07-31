@@ -1,4 +1,6 @@
 {
   "MenuKey": "L",
-  "DefaultMeanTabID": "Town"
+  "OpenMenuByTelephone": false,
+  "DefaultMeanTabId": "Town",
+  "ProgressMode": true
 }

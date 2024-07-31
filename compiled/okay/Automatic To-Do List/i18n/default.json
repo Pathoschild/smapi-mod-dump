@@ -1,0 +1,55 @@
+{
+    // general configuration section
+    "config.general.title": "General",
+    "config.general.toggle-keybind.name": "Toggle Automatic Todo List",
+    "config.general.toggle-keybind.description": "The keybind to toggle the Automatic Todo List panel",
+    "config.general.visible-item-count.name": "Number of Visible Items",
+    "config.general.visible-item-count.description": "The number of items to show at once in the Automatic Todo List panel. If more todo items than this number exist, the panel will display an overflow indicator",
+    "config.general.panel-position-x.name": "Panel Position X",
+    "config.general.panel-position-x.description": "The X position of the Automatic Todo List panel",
+    "config.general.panel-position-y.name": "Panel Position Y",
+    "config.general.panel-position-y.description": "The Y position of the Automatic Todo List panel",
+
+    // checks configuration section
+    "config.checks.title": "Checks",
+    "config.checks.birthdays.toggle.name": "Check Birthdays",
+    "config.checks.birthdays.toggle.description": "Whether or not to add to-do items for gifting villagers on their birthdays",
+    "config.checks.harvestable-crops.toggle.name": "Check Harvestable Crops",
+    "config.checks.harvestable-crops.toggle.description": "Whether or not to add to-do items for harvesting crops in various locations",
+    "config.checks.waterable-crops.toggle.name": "Check Waterable Crops",
+    "config.checks.waterable-crops.toggle.description": "Whether or not to add to-do items for watering crops in various locations",
+    "config.checks.ready-machines.toggle.name": "Check Ready Machines",
+    "config.checks.ready-machines.toggle.description": "Whether or not to add to-do items for emptying ready machines in various locations",
+    "config.checks.tool-pickup.toggle.name": "Check Tool Pickup",
+    "config.checks.tool-pickup.toggle.description": "Whether or not to add to-do items for picking up upgraded tools from Clint",
+    "config.checks.bulletin-board.toggle.name": "Check Bulletin Board",
+    "config.checks.bulletin-board.toggle.description": "Whether or not to add to-do items to accept the daily quest from the bulletin board outside Pierre's General Store",
+    "config.checks.special-orders-board.toggle.name": "Check Special Orders Boards",
+    "config.checks.special-orders-board.toggle.description": "Whether or not to add to-do items to accept special orders from special orders boards",
+    "config.checks.traveling-merchant.toggle.name": "Check Traveling Merchant",
+    "config.checks.traveling-merchant.toggle.description": "Whether or not to add to-do items to visit the Traveling Merchant's cart",
+    "config.checks.queen-of-sauce.toggle.name": "Check Queen of Sauce",
+    "config.checks.queen-of-sauce.toggle.description": "Whether or not to add to-do items to watch the Queen of Sauce to learn new recipes. To-do items will not be created for reruns of learned recipes.",
+    "config.checks.gifting-npcs.toggle.name": "Check Gifting Specific Villagers",
+    "config.checks.gifting-npcs.toggle.description": "Whether or not to add to-do items to give gifts to specific villagers each week",
+    "config.checks.gifting-npcs.npcs.name": "Villagers To Gift",
+    "config.checks.gifting-npcs.npcs.description": "A comma-separated list of villagers to gift. If left blank, all villagers will be selected",
+
+    // panel text
+    "panel.title": "Todo List",
+    "panel.overflow-indicator": "... ({{count}} more not shown)",
+
+    // text of the actual line items on the in-game list
+    "items.birthday.text": "Give {{npc}} a birthday gift",
+    "items.bulletin-board.text": "Check the daily quest bulletin board",
+    "items.gifting.first-gift.text": "Give {{npc}} a gift (1st this week)",
+    "items.gifting.second-gift.text": "Give {{npc}} a gift (2nd this week)",
+    "items.harvestable-crops.text": "Harvest crops ({{location}}) ({{remaining}} remaining)",
+    "items.queen-of-sauce.text": "Watch The Queen of Sauce ({{recipeName}})",
+    "items.ready-machines.text": "Empty ready machines ({{location}}) ({{remaining}} remaining)",
+    "items.special-orders-board.standard.text": "Check the special orders board in town",
+    "items.special-orders-board.qi.text": "Check the special orders board in Mr. Qi's Walnut Room",
+    "items.tool-pickup.text": "Pick up {{tool}} from Clint",
+    "items.traveling-merchant.text": "Visit the Traveling Merchant's cart",
+    "items.waterable-crops.text": "Water crops ({{location}}) ({{remaining}} remaining)"
+}

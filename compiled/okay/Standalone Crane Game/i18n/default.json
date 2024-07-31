@@ -1,0 +1,10 @@
+{
+  "debug-section.text": "Debug Logging",
+  "enabled.name": "Enabled",
+  "debug-enabled.tooltip": "Toggle showing debug information in SMAPI console. Default: false",
+  "crane-game-section.text": "Crane Game Settings",
+  "cost.name": "Crane Game Cost",
+  "cost.tooltip": "Set the cost per play for standalone crane game. Default: 500",
+  "cost-not-free.text": "coins per play. Start?",
+  "cost-free.text": "No cost to play. Start?"
+}

@@ -75,6 +75,7 @@
 	"mineIronOre": "Minere um Minério de Ferro (Minas 41+, numeroso em 71-79)",
 	"mineGoldOre": "Minere um Minério de Ouro (Minas 81+)",
 	"mineIridiumOre": "Minere uma Pedra Mítica (Minas 101+), meteoritos (evento raro)",
+	"mineRadioactiveOre": "Mine Radioactive Nodes (Mines in dangerous state)", // TODO
 	
 	// Gems Through Mining
 	"gemEmerald": "Minere um Nó de Esmeralda (Minas 81+), Nó de Gemas",
@@ -85,6 +86,8 @@
 	"gemJade": "Minere um Nó de Jade (Minas 41+), Nó de Gemas",
 	"gemDiamond": "Minere um Nó de Diamante (Minas 51+), Nó de Gemas",
 	"gemPrismaticShard": "Minere Nó de Gemas, Pedras Míticas (Minas 101+, 25%), Nó de Irídio (4%)",
+	"gemCinderShard": "Mine Cinder Shard Node (Volcano)", // TODO
+	"boneNode": "Mine Bone Node (Ginger Island Dig Site)", // TODO
 	
 	// Farm Cave
 	"caveYours": "Ache na caverna da fazenda", // once cave type has been chosen, the other type is disregarded and this is used
@@ -144,6 +147,7 @@
 	
 	// Location Names (for foraging suggestions)
 	"locationFarm": "A Fazenda",
+	"locationTown": "in Pelican Town", // TODO
 	"locationMines": "As Minas",
 	"locationMinesArea1": "As Minas 1-39",
 	"locationMinesArea2": "As Minas 41-79",
@@ -154,10 +158,13 @@
 	"locationBeachEast": "A Praia (lado direito após a ponte)",
 	"locationBeachEastInaccessible": "A Praia (lado direito; 300 {{wood}} para consertar a ponte)", // tip displayed if bridge is not fixed
 	"locationForest": "A Floresta Cinzaseiva",
+	"locationBus": "at Bus Stop", // TODO
 	"locationWoods": "O Bosque Secreto",
 	"locationSewer": "Os Esgotos",
 	"locationDesert": "Deserto do Cálico",
 	"locationSkullPrehistoric": "Caverna da Caveira nos andares pré-históricos",
+	"locationIsland": "on Ginger Island", // TODO
+	"locationVolcano": "in the Volcano", // TODO
 	"locationRidgeForest": "in Ridge Forest", // RSV // TODO
 	"locationUnknown": "na ???",
 	
@@ -168,6 +175,7 @@
 	"waterMountain": "no lago da Montanha",
 	"waterForestPond": "no lago da Floresta Cinzaseiva",
 	"waterForestRiver": "no rio da Floresta Cinzaseiva",
+	"waterForestFalls": "at bottom of Cindersap Forest waterfalls", // TODO
 	"waterSpecialFarm": "na Fazenda",
 	"waterWoods": "no lago do Bosque Secreto",
 	"waterDesert": "no lago do Deserto",
@@ -218,6 +226,9 @@
 	"shopDesertTrader": "Mercador do Deserto",
 	"shopOasis": "Oasis",
 	"shopOasisWeekday": "Oasis ({{day}})",
+	"shopIslandTrader": "Island Trader", // TODO
+	"shopIslandResort": "Island Resort", // TODO
+	"shopDwarfVolcano": "Volcano Dwarf", // TODO
 	"shopTravelingCartRandom": "Carrinho de Viagem (aleatório)",
 	"shopTravelingCartSeason": "Carrinho de Viagem em {{season}}",
 	"shopEggFestival": "Pierre durante o Festival do Ovo (Primavera 13)",
@@ -256,6 +267,8 @@
 	"treePomegranate": "Romãzeira",
 	"treeCherry": "Cerejeira",
 	"treeMahogany": "Mahogany Tree", // TODO
+	"treeBanana": "Banana Tree", // TODO
+	"treeMango": "Mango Tree", // TODO
 	"treeLime": "Árvore limão", // Cornucopia
 	"treePapaya": "Árvore Mamão", // Cornucopia
 	"treeWalnut": "Árvore de Noz", // Cornucopia
@@ -274,6 +287,7 @@
 	"treeMaple": "Árvore de Ácer",
 	"treeOak": "Árvore de Carvalho",
 	"treePine": "Pinheiro",
+	"treeMystic": "Mystic Tree ({{craftingInfo}})", // TODO
 	"treeMushroom": "Árvore de Cogumelos (evento Raro do Outono)",
 	"treeDescSeedling": "sementes do {{shop}}{{startingYear}}", // advice for fruit trees
 	"treeDescNonFruit": "já na Fazenda {{treeSeed}}", // advice for Maple/Oak/Pine trees
@@ -344,12 +358,14 @@
 	"recipeIngredientSeparator": ", ",
 	
 	// Skill Level Requirements
-	"farmingLvRequirement": "Cultivo nível {{num}}",
-	"miningLvRequirement": "Mineração nível {{num}}",
-	"fishingLvRequirement": "Pesca nível {{num}}",
-	"foragingLvRequirement": "Coleta nível {{num}}",
-	"combatLvRequirement": "Combate nível {{num}}",
+	"skillLvRequirement": "{{skill}} nível {{num}}",
 	"totalSkillLvRequirement": "Nível de habilidade total {{num}}",
+	"skillMastery": "{{skill}} Mastery", // TODO
+	"farmingSkill": "Cultivo",
+	"miningSkill": "Mineração",
+	"fishingSkill": "Pesca",
+	"foragingSkill": "Coleta",
+	"combatSkill": "Combate",
 	
 	// Machine Sources
 	"statueOfPerfectionTip": "nota do avô perfeita", // advice for statue if you haven't had evaluation or achieved 4 candles
@@ -385,4 +401,15 @@
 	"yearSeason": "{{season}} Ano {{year}}",
 	"year": "Ano {{year}}",
 	"today": "hoje", // when Queen of Sauce episode is airing that very day
+	
+	/***** Mod Config Menu Text *****/
+	
+	"optionShowSpoilersName": "Show Spoilers", // TODO
+	"optionShowSpoilersTooltip": "Whether hints should include spoilers of certain things not yet encountered.", // TODO
+	
+	"optionCollectionsTabName": "Collections Tab Hints", // TODO
+	"optionCollectionsTabTooltip": "Additionally show tooltip hints in the Collections tab for how to obtain items. For \"All Items\" setting, toggle display with click/Action/Tool Button. (Items from mods not guaranteed to show hints.)", // TODO
+	"collectionsTabOff": "Off", // TODO
+	"collectionsTabUnknowns": "Unknowns Only", // TODO
+	"collectionsTabAll": "All Items", // TODO
 }

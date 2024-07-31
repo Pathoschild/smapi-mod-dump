@@ -1,0 +1,9 @@
+{
+    "Name": "More Ancient Seeds C",
+    "Author": "Zexu2K",
+    "Version": "1.0.0",
+    "Description": "Adding more ancient seeds to the game.",
+    "UniqueID": "Zeux2K.More_Ancient_Seeds_C",
+    "EntryDll": "ofen.dll",
+    "MinimumApiVersion": "3.0.0"
+ }

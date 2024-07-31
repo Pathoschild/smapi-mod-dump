@@ -5,5 +5,7 @@
   "FireDamage": 50,
   "FireDistance": 256,
   "FireSound": "furnace",
+  "StaminaUse": 0,
+  "UseMana": true,
   "FireAnnoysNonMonsters": false
 }

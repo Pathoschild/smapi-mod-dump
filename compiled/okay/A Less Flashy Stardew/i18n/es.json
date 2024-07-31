@@ -25,6 +25,9 @@
     "config.Rain.name":"Lluvia",
     "config.Rain.description":"Transparencia de lluvia",
 
+    "config.Petals.name":"Pétalos",
+    "config.Petals.description":"Esconde los pétalos.",
+
     "config.FishingBubbles.name": "Charco de burbujas",
     "config.FishingBubbles.description": "Cambia el charco de burbujas por un ícono de exclamación.",
     "config.FishingBubbles.values.Basic": "Transparente",

@@ -1,0 +1,18 @@
+{
+    "config.ToolbarArrangement.name": "工具栏排列",
+    "config.ToolbarArrangement.description": "横向或竖向排列工具栏",
+    "config.ToolbarArrangement.1": "横",
+    "config.ToolbarArrangement.2": "竖",
+    "config.ToolbarRowCount.name": "工具栏行数",
+    "config.ToolbarRowCount.description": "工具栏物品数量",
+    "config.ToolbarRowCount.auto": "自动",
+    "config.MultiShift.name": "多行切换",
+    "config.MultiShift.description": "按键同时切换多行工具栏",
+    "config.MultiShiftRowCount.name": "多行切换 - 行数",
+    "config.MultiShiftRowCount.description": "切换行数，小于工具栏行数",
+    "config.MultiShiftRowCount.full": "全部",
+    "config.HideToolbarItemBoxes.name": "隐藏工具栏物品框",
+    "config.HideToolbarItemBoxes.description": "不显示每个物品的框（选中物品除外）",
+    "config.HideToolbarBackground.name": "隐藏工具栏背景",
+    "config.HideToolbarBackground.description": "不显示工具栏的UI背景"
+}

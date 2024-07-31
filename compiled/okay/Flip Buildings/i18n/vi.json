@@ -1,0 +1,7 @@
+﻿{
+	"Carpenter_Flip": "Lật công trình",
+	"Carpenter_SelectBuilding_Flip": "Chọn công trình để Lật",
+	"Carpenter_CannotFlip": "Công trình này không thể lật được",
+	"Carpenter_CannotFlip_Permission": "Bạn không có quyền lật công trình này",
+	"Carpenter_CannotFlip_PlayerHere": "Không thể lật công trình này khi có người chơi ở bên trong"
+}

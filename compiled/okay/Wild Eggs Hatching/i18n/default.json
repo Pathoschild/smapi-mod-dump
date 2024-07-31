@@ -39,6 +39,7 @@
   "config.ChosenFancyChickenPercentage.name": "Fancy Chicken Probability",
   "config.ChosenFancyDuckPercentage.name": "Fancy Duck Probability",
   "config.ChosenGoosePercentage.name": "Goose Probability",
+  "config.ChosenLoonPercentage.name": "Loon Probability",
   "config.ChosenLovebirdPercentage.name": "Lovebird Probability",
   "config.ChosenParrotPercentage.name": "Parrot Probability",
   "config.ChosenPeafowlPercentage.name": "Peafowl Probability",
@@ -75,6 +76,8 @@
   "config.ChosenPepperRexPercentage.name": "Pepper Rex Probability",
   "config.ChosenWildflourCrowPercentage.name": "Wildflour's Crow Probability",
   "config.ChosenGartenPercentage.name": "Garten Probability",
+  "config.ChosenMizuTurkeyPercentage.name": "Mizu's Turkey Probability",
+  "config.ChosenBirdbGoosePercentage.name": "Birdb's Goose Probability",
 
   //
   "Owl.description": "A brown owl that lives in the barn.",

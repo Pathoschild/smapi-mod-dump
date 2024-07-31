@@ -2,7 +2,7 @@
   "Name": "Atelier Cauldron",
   "Author": "Kedi & sophiesalacia & wildflourmods",
   "Description": "Manages config options for Wildflour Atelier Goods packs.",
-  "Version": "1.0.9",
+  "Version": "1.1.1",
   "UniqueID": "Atelier.Cauldron",
   "UpdateKeys": ["Nexus:22926"],
   "MinimumApiVersion": "4.0.0",

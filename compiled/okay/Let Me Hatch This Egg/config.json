@@ -4,7 +4,145 @@
   "ShowEdits": false,
   "AlternateBirthText": false,
   "ShowAnimalKeys": false,
-  "CloneVanillaEggs": false,
+  "CloneVanillaEggs": true,
   "DinoEggAsArtifact": false,
-  "CloneMachineRules": false
+  "CloneMachineRules": false,
+  "ChangeEggColors": false,
+  "LinkAnimalColorToEgg": true,
+  "EggOptions": {
+    "107": {
+      "ColorEdit": "false",
+      "GrayscaleEdit": "false",
+      "Saturation": "1",
+      "Luminance": "1",
+      "MinLuminance": "0.1",
+      "MaxLuminance": "0.9"
+    },
+    "176": {
+      "ColorEdit": "false",
+      "GrayscaleEdit": "false",
+      "Saturation": "1",
+      "Luminance": "1",
+      "MinLuminance": "0.1",
+      "MaxLuminance": "0.9"
+    },
+    "182": {
+      "ColorEdit": "false",
+      "GrayscaleEdit": "false",
+      "Saturation": "1",
+      "Luminance": "1",
+      "MinLuminance": "0.1",
+      "MaxLuminance": "0.9"
+    },
+    "174": {
+      "ColorEdit": "false",
+      "GrayscaleEdit": "false",
+      "Saturation": "1",
+      "Luminance": "1",
+      "MinLuminance": "0.1",
+      "MaxLuminance": "0.9"
+    },
+    "180": {
+      "ColorEdit": "false",
+      "GrayscaleEdit": "false",
+      "Saturation": "1",
+      "Luminance": "1",
+      "MinLuminance": "0.1",
+      "MaxLuminance": "0.9"
+    },
+    "305": {
+      "ColorEdit": "false",
+      "GrayscaleEdit": "false",
+      "Saturation": "1",
+      "Luminance": "1",
+      "MinLuminance": "0.1",
+      "MaxLuminance": "0.9"
+    },
+    "289": {
+      "ColorEdit": "false",
+      "GrayscaleEdit": "false",
+      "Saturation": "1",
+      "Luminance": "1",
+      "MinLuminance": "0.1",
+      "MaxLuminance": "0.9"
+    },
+    "413": {
+      "ColorEdit": "false",
+      "GrayscaleEdit": "false",
+      "Saturation": "1",
+      "Luminance": "1",
+      "MinLuminance": "0.1",
+      "MaxLuminance": "0.9"
+    },
+    "437": {
+      "ColorEdit": "false",
+      "GrayscaleEdit": "false",
+      "Saturation": "1",
+      "Luminance": "1",
+      "MinLuminance": "0.1",
+      "MaxLuminance": "0.9"
+    },
+    "439": {
+      "ColorEdit": "false",
+      "GrayscaleEdit": "false",
+      "Saturation": "1",
+      "Luminance": "1",
+      "MinLuminance": "0.1",
+      "MaxLuminance": "0.9"
+    },
+    "442": {
+      "ColorEdit": "false",
+      "GrayscaleEdit": "false",
+      "Saturation": "1",
+      "Luminance": "1",
+      "MinLuminance": "0.1",
+      "MaxLuminance": "0.9"
+    },
+    "680": {
+      "ColorEdit": "false",
+      "GrayscaleEdit": "false",
+      "Saturation": "1",
+      "Luminance": "1",
+      "MinLuminance": "0.1",
+      "MaxLuminance": "0.9"
+    },
+    "857": {
+      "ColorEdit": "false",
+      "GrayscaleEdit": "false",
+      "Saturation": "1",
+      "Luminance": "1",
+      "MinLuminance": "0.1",
+      "MaxLuminance": "0.9"
+    },
+    "928": {
+      "ColorEdit": "false",
+      "GrayscaleEdit": "false",
+      "Saturation": "1",
+      "Luminance": "1",
+      "MinLuminance": "0.1",
+      "MaxLuminance": "0.9"
+    }
+  },
+  "EggPalettes": {},
+  "EggColors": {},
+  "EggColors_ColorObject": {},
+  "EditedEggListsOptions": {},
+  "EditedBirthTextOptions": {},
+  "ClonedVanillaEggsOptions": {},
+  "EggsEnabledForCloning": {
+    "107": true,
+    "176": true,
+    "182": true,
+    "174": true,
+    "180": true,
+    "305": true,
+    "289": true,
+    "413": true,
+    "437": true,
+    "439": true,
+    "442": true,
+    "680": true,
+    "857": true,
+    "928": true
+  }
 }

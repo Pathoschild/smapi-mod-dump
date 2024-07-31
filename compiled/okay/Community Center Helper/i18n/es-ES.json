@@ -75,6 +75,7 @@
 	"mineIronOre": "Mina Piedra de Hierro (Minas 41+, abundante en niveles 71-79)",
 	"mineGoldOre": "Mina Piedra de Oro (niveles de Mina 81+)",
 	"mineIridiumOre": "Mina Piedra Mística (niveles de Mina 101+), meteorito (evento poco común)",
+	"mineRadioactiveOre": "Mine Radioactive Nodes (Mines in dangerous state)", // TODO
 	
 	// Gems Through Mining
 	"gemEmerald": "Mina Piedra de Esmeralda (Minas 81+), Piedra de Gema",
@@ -85,6 +86,8 @@
 	"gemJade": "Mina Piedra de Jade (Minas 41+), Piedra de Gema",
 	"gemDiamond": "Mina Piedra de Diamante (Minas 51+), Piedra de Gema",
 	"gemPrismaticShard": "Mina Piedra de Gema, Piedra Mística (Mines 101+, 25%), Piedra de Iridio (4%)",
+	"gemCinderShard": "Mine Cinder Shard Node (Volcano)", // TODO
+	"boneNode": "Mine Bone Node (Ginger Island Dig Site)", // TODO
 	
 	// Farm Cave
 	"caveYours": "Encuéntralo en la cueva de tu granja", // once cave type has been chosen, the other type is disregarded and this is used
@@ -144,6 +147,7 @@
 	
 	// Location Names (for foraging suggestions)
 	"locationFarm": "en la Granja",
+	"locationTown": "in Pelican Town", // TODO
 	"locationMines": "en las Minas",
 	"locationMinesArea1": "en los niveles de mina 1-39",
 	"locationMinesArea2": "en los niveles de mina 41-79",
@@ -154,10 +158,13 @@
 	"locationBeachEast": "en la Playa (lado derecho)",
 	"locationBeachEastInaccessible": "en la Playa (lado derecho; 300 {{wood}} para arreglar puente)", // tip displayed if bridge is not fixed
 	"locationForest": "en Bosque Tizón",
+	"locationBus": "at Bus Stop", // TODO
 	"locationWoods": "en Bosque Secreto",
 	"locationSewer": "en las Alcantarillas",
 	"locationDesert": "en el Desierto de Calico",
 	"locationSkullPrehistoric": "en la Caverna Calavera (niveles prehistóricos",
+	"locationIsland": "on Ginger Island", // TODO
+	"locationVolcano": "in the Volcano", // TODO
 	"locationRidgeForest": "in Ridge Forest", // RSV // TODO
 	"locationUnknown": "en ???",
 	
@@ -168,6 +175,7 @@
 	"waterMountain": "en el lago de la Montaña",
 	"waterForestPond": "en el estanque del Bosque Tizón",
 	"waterForestRiver": "en el río del Bosque Tizón",
+	"waterForestFalls": "at bottom of Cindersap Forest waterfalls", // TODO
 	"waterSpecialFarm": "en la Granja",
 	"waterWoods": "en el estanque del Bosque Secreto",
 	"waterDesert": "en el estanque del Desierto",
@@ -218,6 +226,9 @@
 	"shopDesertTrader": "Comerciante del desierto",
 	"shopOasis": "Oasis",
 	"shopOasisWeekday": "Oasis ({{day}})",
+	"shopIslandTrader": "Island Trader", // TODO
+	"shopIslandResort": "Island Resort", // TODO
+	"shopDwarfVolcano": "Volcano Dwarf", // TODO
 	"shopTravelingCartRandom": "Carro ambulante (aleatorio)",
 	"shopTravelingCartSeason": "Carro ambulante en {{season}}",
 	"shopEggFestival": "Pierre durante el festival del Huevo (13 de Primavera)",
@@ -256,6 +267,8 @@
 	"treePomegranate": "Granado",
 	"treeCherry": "Cerezo",
 	"treeMahogany": "Mahogany Tree", // TODO
+	"treeBanana": "Banana Tree", // TODO
+	"treeMango": "Mango Tree", // TODO
 	"treeLime": "Limonero", // Cornucopia
 	"treePapaya": "Papayo", // Cornucopia
 	"treeWalnut": "Nogal", // Cornucopia
@@ -274,6 +287,7 @@
 	"treeMaple": "Arce",
 	"treeOak": "Roble",
 	"treePine": "Pino",
+	"treeMystic": "Mystic Tree ({{craftingInfo}})", // TODO
 	"treeMushroom": "Árbol Seta (evento de Otoño poco común)",
 	"treeDescSeedling": "planta de semillero de {{shop}}{{startingYear}}", // advice for fruit trees
 	"treeDescNonFruit": "ya está en la Granja {{treeSeed}}", // advice for Maple/Oak/Pine trees
@@ -344,12 +358,14 @@
 	"recipeIngredientSeparator": ", ",
 	
 	// Skill Level Requirements
-	"farmingLvRequirement": "Agricultura Lv. {{num}}",
-	"miningLvRequirement": "Minería Lv. {{num}}",
-	"fishingLvRequirement": "Pesca Lv. {{num}}",
-	"foragingLvRequirement": "Recolección Lv. {{num}}",
-	"combatLvRequirement": "Combate Lv. {{num}}",
+	"skillLvRequirement": "{{skill}} Lv. {{num}}",
 	"totalSkillLvRequirement": "Habilidad total Lv. {{num}}",
+	"skillMastery": "{{skill}} Mastery", // TODO
+	"farmingSkill": "Agricultura",
+	"miningSkill": "Minería",
+	"fishingSkill": "Pesca",
+	"foragingSkill": "Recolección",
+	"combatSkill": "Combate",
 	
 	// Machine Sources
 	"statueOfPerfectionTip": "evaluación perfecta del Abuelo", // advice for statue if you haven't had evaluation or achieved 4 candles
@@ -385,4 +401,15 @@
 	"yearSeason": "{{season}} del Año {{year}}",
 	"year": "Año {{year}}",
 	"today": "hoy", // when Queen of Sauce episode is airing that very day
+	
+	/***** Mod Config Menu Text *****/
+	
+	"optionShowSpoilersName": "Show Spoilers", // TODO
+	"optionShowSpoilersTooltip": "Whether hints should include spoilers of certain things not yet encountered.", // TODO
+	
+	"optionCollectionsTabName": "Collections Tab Hints", // TODO
+	"optionCollectionsTabTooltip": "Additionally show tooltip hints in the Collections tab for how to obtain items. For \"All Items\" setting, toggle display with click/Action/Tool Button. (Items from mods not guaranteed to show hints.)", // TODO
+	"collectionsTabOff": "Off", // TODO
+	"collectionsTabUnknowns": "Unknowns Only", // TODO
+	"collectionsTabAll": "All Items", // TODO
 }

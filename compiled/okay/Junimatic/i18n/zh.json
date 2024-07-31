@@ -4,639 +4,649 @@
 // it into the source repository can be found here:
 // https://github.com/NermNermNerm/LocalizeFromSource?tab=readme-ov-file#ingesting-translations
 //
-// Built from commit: 905e2bccba59ca4361201eaae37b6448f3bfca58  !! DO NOT DELETE THIS LINE !!
+// Built from commit: a562f20a6f70fd692e6063505dee1c49c412284a  !! DO NOT DELETE THIS LINE !!
 {
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/ConversationKeys.cs#L18
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/ConversationKeys.cs#L18
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "You've been to the mines I see...  Your grandfather did too, even after his mind began to go.  I worried for him, but there was no stopping him.$0#$b#Then one day he came to me, shaken to the core.  He sobbed 'A big slime ate my friend!' but I know he went to the mines alone...$2#$b#He kept going on like that for several days.  I felt terrible for him, because although *I* knew it wasn't real, it was real enough to him.$0#$b#He never went back to the mines; that was very much for the best.$2"
     "KOEpNoH7vj": "我注意到你探索了矿洞……你的爷爷也是，甚至在他开始神志不清以后。我很担心他，但没人能让他停下。$0#$b#有一天他浑身颤抖着来找我，抽泣道：“一只大型史莱姆吃掉了我的朋友！”但他明明是一个人进的矿洞……$2#$b#这样的情形持续了几天。我很同情他。即使我知道那些事情不是真的，但对他来说已经足够真实了。$0#$b#他再也没有回过矿洞，我想这样最好。$2",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/ModConfigMenu.cs#L38
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/JunimoStatusMenu.cs#L328
+    // >>>MISSING TRANSLATION
+    // source: "= $ Shiny things $ ="
+    "qNywKHpOCo": "",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/JunimoStatusMenu.cs#L369
+    // >>>MISSING TRANSLATION
+    // source: "Junimos won't put items with equal or better quality\nthan these items into machines or shipping bins."
+    "MfuDzOWgFM": "",
+
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/ModConfigMenu.cs#L38
     // >>>MISSING TRANSLATION
     // source: "Junimos work anywhere"
     "NbEFcDz1jb": "",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/ModConfigMenu.cs#L41
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/ModConfigMenu.cs#L41
     // >>>MISSING TRANSLATION
     // source: "Normally Junimos only work on player farms, as they are shy.  Turning this on allows Junimo portals to work anywhere."
     "n3yOJ9dnKX": "",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/ModConfigMenu.cs#L46
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/ModConfigMenu.cs#L46
     // >>>MISSING TRANSLATION
     // source: "Minimal Questing"
     "rHYaECJWre": "",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/ModConfigMenu.cs#L49
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/ModConfigMenu.cs#L49
     // >>>MISSING TRANSLATION
     // source: "Normally quests are required to unlock the Junimos.  This enables skipping most of the quests - you just have to complete the portal quest."
     "ryZXAFukmX": "",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/PetFindsThings.cs#L138
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/PetFindsThings.cs#L138
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "I wonder what {{arg0}} has been up to..."
     "vONvot9XIi": "不知道{{arg0}}在做什么……",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/PetFindsThings.cs#L77
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/PetFindsThings.cs#L77
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Pets sometimes have an uncanny ability to spot missing things!$0#$b#Just last week I lost my favorite milking bucket.  I came across it a few days later and my cat, Muffin, was sleeping in it.$1#$b#Well, I guess she didn't exactly find it for me, but at least she knew where it was!$0"
     "djmeLRwMtO": "宠物们有时会展现出一种令人不安的能力——它们能找到失踪的东西！$0#$b#上周我弄丢了我最喜欢的牛奶桶。几天以后我发现了它。而我的猫，玛芬，就睡在桶里。$1#$b#好吧，也许这算不上是她帮我找到的。但至少她知道牛奶桶在哪儿！$0",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/PetFindsThings.cs#L85
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/PetFindsThings.cs#L85
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Do I miss my \"normal\" life on days like this?$2#$b#No, not really.  Except for Jeremy Clarkson...$1#$b#...My pet Schnauzer.  He had an uncanny ability to fetch the thing I wanted before I even knew I wanted it.$0"
     "N1gDRt0T0i": "你问我在这样的日子里会不会想念平常的生活？$2#$b#不，并不会。好吧，除了我最爱看的电视秀……#$b#……还有我的宠物小柴柴，他有一种令人不安的能力。在我意识到我需要某件东西之前，他就会把它带给我。$0",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockAnimal.cs#L62
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockAnimal.cs#L62
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "That's not a chicken."
     "aEWmrG5CfR": "那可不是一只鸡。",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockAnimal.cs#L62
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockAnimal.cs#L62
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "I wonder if it's lost and can't find its way home...  It seems distressed."
     "MBkkio0DCs": "不知道它是不是迷路了，没法找到回家的路……它看起来很苦恼。",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockAnimal.cs#L62
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockAnimal.cs#L62
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Maybe a Junimo Portal would help it find its way home."
     "fpgy1f2A0N": "也许祝尼魔传送门能帮它找到回家的路。",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockAnimal.cs#L104
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockAnimal.cs#L104
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "That wasn't a chicken...  was it?$2#$b#Your grandfather had some little houses like that on his farm.  He said they were for his 'helpers'.  But as he declined, he was prone to say, well, a lot of stuff....$2#$b#I suppose I caught a glimpse of them from time to time, but, well...  I think I'm more comfortable not seeing them.$3#$b#You say they're good creatures?  Well...  Okay.  *Something* was sure keeping that farm in trim when your Grandad was declining.$2#$b#I suppose everybody needs a little magic in their lives from time to time.$0"
     "cNwHdGjcxq": "那不是一只鸡……对吧？$2#$b#你爷爷的农场上也有这样的小房子。他说那些房子里住的是他的“帮手”。不过他有很多问题都不愿意解答……$2#$b#我觉得我时不时会瞥见它们几眼。但是……好吧，我宁愿自己看不见它们。$3#$b#你说它们是友好的生物？嗯……好吧。尽管你爷爷不愿意承认，但当时的确有*某些东西*在维护农场的秩序。$2#$b#我想每个人都需要不时在生活里来点魔法。$0",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockAnimal.cs#L182
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockAnimal.cs#L182
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Thank you for helping our friend get home..."
     "Giekfc5hqc": "谢谢你帮助我们的朋友回家……",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockAnimal.cs#L182
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockAnimal.cs#L182
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "I can help you, like I helped your Grandfather..."
     "aLauGiQih1": "我可以帮助你，就像帮助你的爷爷那样……",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockAnimal.cs#L182
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockAnimal.cs#L182
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "I like animals and the wonderful things you can make with their help..."
     "T4sugTti3v": "我喜欢动物，也喜欢你在它们的帮助下制造的美妙产品……",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockAnimal.cs#L205
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockAnimal.cs#L205
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Hello @!  Are you missing any chickens?  I think one might have run off!"
     "Q2hxdvc5kS": "你好，@！你的鸡舍里有鸡走丢了吗？我好像看到一只跑掉了！",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockAnimal.cs#L205
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockAnimal.cs#L205
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "I saw it across the river to the south of my farm!  I went over to try and round it up, but it ran away from me!$2#$b#Maybe it would come to you if you went down there and called it!"
     "K9koWKoaPA": "我看见它在我农场南边的那条河对面！我试着把它抓起来，但它从我手里逃跑了！$2#$b#要是你去那里呼唤它的话，也许它会来找你！",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockAnimal.cs#L205
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockAnimal.cs#L205
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Oof! I need to be getting back! Anyway, I hope you can wrangle it back home!  Bye now!  Don't be a stranger!"
     "ES1Adkpzkl": "呼！我得回去了！总之，希望你能成功把它带回家！再见，保持联系！",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockAnimal.cs#L228
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockAnimal.cs#L228
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Chicken Round-Up"
     "liglB0huCJ": "找回丢失的鸡",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockAnimal.cs#L228
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockAnimal.cs#L228
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Marnie thinks one of your chickens has escaped and is in the forest south of her farm; you should investigate."
     "Khq4khgEh6": "玛妮认为你养的一只鸡逃跑了，就在她农场南部的森林里。你应该去调查一下。",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockAnimal.cs#L228
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockAnimal.cs#L228
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Enter the Cindersnap Forest during the day."
     "PQglbbKcy5": "在白天进入煤炭森林。",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockAnimal.cs#L229
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockAnimal.cs#L229
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Help the Junimo Go Home"
     "MqDgX5oqrz": "帮助祝尼魔回家",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockAnimal.cs#L229
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockAnimal.cs#L229
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Help the Junimo in the Cindersnap Forest get home."
     "AHR3GCj5Mv": "帮助煤炭森林里的祝尼魔回家。",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockAnimal.cs#L229
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockAnimal.cs#L229
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Enter the Cindersnap Forest during the day with a Junimo Portal in your inventory."
     "vWAr85iFBF": "带上祝尼魔传送门，在白天进入煤炭森林。",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockCropMachines.cs#L112
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockCropMachines.cs#L112
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "We love giant crops!  Please keep growing them!"
     "uScnjVETFm": "我们喜欢巨大作物！请继续种植吧！",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockCropMachines.cs#L112
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockCropMachines.cs#L112
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "One of us will come and help with your kegs, casks and preserves jars if you connect them to a portal!"
     "x0JObvTAuL": "我们中的一员会来帮助你管理小桶、木桶和罐头，只要你把它们连接到传送门上！",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockCropMachines.cs#L134
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockCropMachines.cs#L134
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Did you ever see the giant crops your Granddad used to crow?  Crazy big pumpkins.#$b#Abby campaigned for me to buy one every year.  I think she wanted me to buy one so she could carve out a house for herself.$1"
     "nypR1cZjON": "你见过你爷爷种植的巨大作物吗？那些不可思议的大南瓜。#$b#阿比每年都劝我买一个。我觉得她是想用巨大南瓜给自己雕刻出一个房子。$1",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockCropMachines.cs#L143
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockCropMachines.cs#L143
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Has Abby been needling you about growing giant pumpkins?$4#$b#Don't do it, really, there's no money in it.  Quantity is good, sure, but the quality isn't.$2#$b#Your grandpa grew them in his declining years in particular.  He said 'my helpers like them'.  Not sure what he meant by that, but he really enjoyed them that made it worth it to him!$1"
     "RWSgCcWL4J": "阿比是不是一直在劝说你培育巨大作物？$4#$b#说真的，别这么做。这赚不到多少钱。收获的数量的确很不错，但品质就不好说了。$2#$b#你爷爷晚年倒是会种很多巨大作物，他说“我的帮手们喜欢它们”。虽然不知道这是什么意思，但他很享受这个过程，大概这对他来说就足够了吧！$1",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockCropMachines.cs#L152
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockCropMachines.cs#L152
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "When you were a kid visiting the farm, did you ever see any of the giant cauliflowers that your grandpa grew?  I mean huge!  like way huge!$1#$b#I only got to see them once that I can recall when my Mom took me down there one afternoon.#$b#I climbed one like a tree and my Mom got all worried.#$b#Your grandad fished me down and told my mom not to worry because magical creatures would protect me.#$b#I don't know why, I guess it's because I was just a kid, but I felt really special for a long time after that day."
     "xo6o8p862z": "你小时候来农场时，有没有见过你爷爷种的巨型花椰菜？我是说很大的那种！比普通的大得多！$1#$b#我只记得见过一次，那天下午妈妈刚好带我去农场上。#$b#我像爬树一样爬上了一棵花椰菜，搞得妈妈很担心。#$b#你爷爷把我捞了下来，告诉我妈妈不用担心，因为魔法生物会保护我。#$b#我也不知道为什么。可能因为我当时只是个孩子吧。但正是因为那次经历，之后的很长一段时间，我感觉自己是特殊的。",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockCropMachines.cs#L161
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockCropMachines.cs#L161
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Your grandad used to grow these gigantic pumpkins.  I totally wanted to carve one of those things.$1#$b#But my mom wouldn't buy one and your grandad invented this cock&bull story about magical creatures.$5#$b#Didn't he know I was too old for stories like that?  Meh.  I guess I should cut him slack for being old and senile.$2#$b#So...  Do you want to hear about any more of my first-world problems?$2"
     "JVwYRHGRNB": "你爷爷以前会培育那些巨大的南瓜。我好想拿一个南瓜来雕刻啊。$1#$b#但我妈妈不愿意买，而且你爷爷还编出了什么关于魔法生物的故事。$5#$b#他难道不知道我已经长大了，不相信那种故事了吗？算了，毕竟他老了，我们得包容他一点。$2#$b#所以……你想听听我那些无关紧要的小问题吗？$2",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L48
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L51
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Enables the fishing Junimo - Enables the Junimo for handling fishing things with or without having done the quest."
     "MdQHomtqLT": "解锁捕鱼祝尼魔——解锁处理鱼类功能的祝尼魔，无论是否完成任务。",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L170
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L202
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "{{arg0}} of 6 teleported"
     "uaY6CDf9CM": "{{arg0}}已传送（共6个）",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L215
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L247
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "You've made a new Junimo friend that will help with traps and fishing-related machines"
     "zHGVhw2toA": "你结识了一位新的祝尼魔朋友，它能帮助你管理关于陷阱和鱼类的机器",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L346
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L378
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "@!  I'm so glad you came!"
     "u5Xs3tgNPi": "@！很高兴见到你！",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L346
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L378
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Please come to the mines with me.  There's something I have to show you!"
     "BpE8De3Ya3": "请和我一起去矿洞一趟吧。我有些东西想让你看看！",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L346
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L378
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "I had been having these recurring dreams...  In it, there was somebody like me, but wasn't me...  You know how dreams are."
     "ktA1j1jHzJ": "我一直在反复做同样的梦……在那些梦里，有一个和我一样的人，但又不是我……你知道梦是怎么回事的。",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L346
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L378
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Anyway, this other me was at a pool, deep in a cave.  It was filled with litter, but the whole community was pitching in to clean it up."
     "Ww5peBcXuE": "总之，另一个我在矿洞深处的水池边。里面满是垃圾，但是整个社区都在努力清理。",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L346
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L378
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "They cleaned it, but there were no fish in it anymore, which made the other me sad."
     "uTDMjRgVJy": "最后他们把水池清理干净了，但里面也不再有鱼生活了。这让我很伤心。",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L346
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L378
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "But then a fish tank appeared!  And then fish started appearing in the fish tank, and the other me started netting them out and releasing them into the pond!"
     "CsYnBwJciE": "但就在那时，一个鱼缸出现了！鱼缸里出现了鱼，而另一个我拿着网把它们捞了出来，放进了水池里！",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L346
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L378
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "As to what happened next, well, you'd best see for yourself.  Please take the elevator down to 60."
     "deAMOx4enW": "至于之后发生的事情……我想你最好亲眼看看。请坐电梯到达第60层。",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L393
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L425
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "It was just a dream, I thought, but the next night I dreamt the same thing, so I just had to come down here."
     "kQGrrfg5xP": "我以为那只是一个梦，但之后的那个晚上我又做了一模一样的梦。所以我决定来这里看看。",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L393
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L425
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Look at this!  The fish tank from my dream!  Where did that come from?"
     "nqawfSl7dr": "看这个！是我梦里的鱼缸！它是从哪儿来的？",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L393
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L425
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Well, the tank was empty, and I decided I'd try putting a fish in there, so I caught a ghostfish and put it in there."
     "vfyxUCodZX": "好吧，这个鱼缸是空的。但我决定在里面放一条鱼试试。所以我捉了一条鬼鱼放进鱼缸里。",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L393
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L425
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "AND IT DISAPPEARED!"
     "laaojosbjM": "然后它就消失了！",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L393
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L425
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Poof!"
     "fCtFLI4LeZ": "噗！",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L393
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L425
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Gone!"
     "fMkItbauLZ": "不见了！",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L393
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L425
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "So I put in another, and it disappeared too!"
     "G2Ps8uc6RK": "所以我又往鱼缸里放了一条鱼，然后它也消失了！",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L393
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L425
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Is it going to the world in my dream?  I don't know, but after about half a dozen fish went in there they stopped disappearing."
     "Ub8dFjg0BF": "它会不会到了我梦里的世界？我不知道。但在我放了六条鱼进去以后，新的鱼就不再消失了。",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L393
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L425
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "...But the tank is still here..."
     "ZWLPDQQZ62": "……然而鱼缸还在这里…",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L393
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L425
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "I see some smaller fish darting around in the pool, but I haven't been able to land any of them."
     "vV1ZQpSDhe": "我看见还有一些小一点的鱼在水池里游动，但我还没能把它们抓上来。",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L393
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L425
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "You're the only one that can help since you've got the skill, the equipment and can handle yourself this deep in the mine."
     "OxjKrcriFv": "你是唯一一个有能力帮助我的人了，毕竟你擅长钓鱼，有条件和工具，而且也能在矿洞里照应好自己。",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L393
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L425
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Could you try and catch some of those little fish and put them in the tank and see what happens?"
     "OM9yp5ibnu": "你能试着帮我抓几条小鱼放进鱼缸里，看看会发生什么事吗？",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L393
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L425
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "I'm afraid I've got to leave you to it.  I know it could take a while to catch them and I..."
     "bJtL0fPDHo": "恐怕我得把这件事交给你来做了。我知道钓鱼要花上不少时间，而且我……",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L393
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L425
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Well, I've got a lot to think about."
     "mgTWGTTK0z": "好吧，我有很多要考虑的事情。",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L312
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L344
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Find Linus At His Tent"
     "QtyXFFxBHc": "在帐篷和莱纳斯碰面",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L312
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L344
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Linus said he had something he needed your help with."
     "a3sOXMDZvV": "莱纳斯有些事情需要你的帮忙。",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L312
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L344
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Go to Linus' tent before 10pm"
     "lbIlqYzNWx": "在晚上10点前前往莱纳斯的帐篷",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L313
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L345
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Meet Linus At Level 60"
     "aUfDSfqXNA": "在矿洞第60层和莱纳斯碰面",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L313
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L345
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Linus had something he wanted to show you at level 60 of the mines."
     "ksKMHp4F7z": "莱纳斯有些东西想让你看看，就在矿洞的第60层。",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L313
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L345
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Follow Linus to level 60"
     "sciNRXGlJs": "跟随莱纳斯前往矿洞第60层",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L314
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L346
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Catch Six Ice Pips"
     "NwZy9Wf803": "捕捉六条冰柱鱼",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L314
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L346
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Catch six ice pips and put them in the mysterious fish tank."
     "YRzobXsl4e": "捕捉六条冰柱鱼，把它们放进神秘的鱼缸里。",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L322
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L354
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "@,^Please come visit me at my tent.  I've found something and I need your help to sort it out.^   -Linus"
     "xw8PvRWl5h": "@：^请来我的帐篷与我碰面。我有些事需要你的帮助才能解决。^   -莱纳斯",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L322
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L354
     // >>>MISSING TRANSLATION
     // source: "Meet Linus at his tent"
     "vTqnS5SaOA": "",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L330
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L362
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "I'm still having those dreams.  The other me...  who seems less and less like me each night, keeps checking that fish tank in his world.  He's disappointed and puzzled.#$b#I'm pretty puzzled too.  But I'm glad you're working on it."
     "ruSiyojzaq": "我还是在做那些梦。另一个我……虽然他每晚都变得越来越不像我了。他一直在检查那个世界里的鱼缸，失望而困惑。#$b#我也很困惑。但我很高兴你在为此努力。",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L331
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L363
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Did you finish collecting those fish?  I'm betting you have.  I had one last dream, where the fish were released and the tank disappeared.#$b#You know, one of the reasons I adopted my, uh...  lifestyle is that I was, well, not so stable in the head.#$b#And sometimes angry.  That was the part that made me take what most would regard as a drastic lifestyle change.#$b#But I've never felt saner.  At least up until these dreams started happening.#$b#But in these visions there is nothing like anger, so, well, that's good.#$b#But I still hope they go away."
     "pgldaGwn6v": "你收集完那些鱼了吗？我觉得肯定是这样。我做了最后一个梦，那些鱼都被放生了，而鱼缸消失了。#$b#你知道，我选择……呃，现在的生活方式的原因之一，就是因为我的精神不太稳定。#$b#有时我会感到怒火中烧。正是因此，我才能承受这种大多数人都难以接受的生活剧变。#$b#但我并没有因此感觉自己变得更加理智。至少是在那些梦境开始之前。#$b#在那些幻象里没有怒火，所以那大概是件好事。#$b#但我还是希望那些梦能结束。",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockFishing.cs#L339
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockFishing.cs#L371
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Hey I just read a paper written by one of my old college buddies on habitat restoration of an underground pool populated with Ghostfish and Ice Pips!$1#$b#I'm told we have such a cavern deep in the mines.  Perhaps you could take me to it one day.#$b#Funny, the paper didn't specify where he got the fish to repopulate from...$3"
     "Niz2hChPAS": "嘿，我刚刚读到了一篇大学同学写的论文，主题是通过鬼鱼和冰柱鱼对地下水池污染进行生态修复！$1#$b#听说我们的矿洞深处也有这样的地方，也许哪天你可以带我去看看。#$b#有趣的是，那篇论文里没有提到那些鱼是从哪里来的……$3",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L183
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockForest.cs#L183
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Thx!  Bai!!!"
     "TPJNvwmuSR": "谢谢！拜拜！",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L183
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockForest.cs#L183
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "The giant trees were cut down to make ships and buildings and other wonderful things..."
     "jDjeyijfdQ": "那些巨大的树木被砍倒，用来做成船只、建筑和其他美妙的东西……",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L183
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockForest.cs#L183
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "...but they cut like there would always be more, until they cut down the last one."
     "XEBSO9uSW8": "……但他们以为资源取之不尽、用之不竭，直到他们砍倒了世界上的最后一棵树。",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L183
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockForest.cs#L183
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "You will be wiser.  We will help."
     "eFJvx689nC": "你会变得更加明智。我们会帮助你。",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L206
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockForest.cs#L206
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Welcome!  You're just in time!"
     "gZocCqhgXS": "欢迎！你来得正好！",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L206
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockForest.cs#L206
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "I hiked the back-woods trail today."
     "RrI5xa73j3": "我昨天在后山的火车轨道附近远足。",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L206
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockForest.cs#L206
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "It can be a bit treacherous at my age..."
     "KaRNxr3YIH": "虽然这对我的年纪来说有点吃力……",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L206
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockForest.cs#L206
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "But the view of the desert is breathtaking."
     "HfsVff5XXS": "但在那里眺望远处的沙漠，景色真是不可思议。",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L206
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockForest.cs#L206
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "I picked a few wild mushrooms and herbs along the way."
     "LqwpJR5PXw": "我在路上还采集了一些野生蘑菇和草药。",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L206
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockForest.cs#L206
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Dinner is served!"
     "wbswl1MG0p": "晚餐准备好了！",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L206
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockForest.cs#L206
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "What do you think?"
     "MwzKrmro2h": "你觉得怎样？",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L206
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockForest.cs#L206
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "I'm glad you like it."
     "YSO3qN9j4O": "很高兴你能喜欢。",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L206
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockForest.cs#L206
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "You know, when people see you talking to the trees, well...  They tend to think you're crazy.$2"
     "LsnsBa8pGp": "你知道，如果有人看见你在和树木说话……他们往往会认为你的精神出了问题。$2",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L206
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockForest.cs#L206
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "But when you hear the trees talking *to* *you*, then... well...#$b#Then maybe they're right.$2"
     "GNQsVZOcgc": "但要是你听见树木在*对你说话*……#$b#好吧，也许他们是对的。$2",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L206
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockForest.cs#L206
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Last night I dreamt I saw what these trees looked like before they were cut..."
     "urrMKMGmv7": "昨晚我梦见了这些被砍下来的树木原本的模样……",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L206
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockForest.cs#L206
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Then, the vision pivoted to your farm; your farm when those big stumps and logs were standing trees..."
     "MS7oJsd5r6": "然后我的眼前转向了你的农场，那些巨大的树桩和枯木，曾经都是矗立的树木……",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L206
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockForest.cs#L206
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "I found these seeds in my tent as I was stepping out this morning.#$b#I guess I tracked them in last night.  They're usually not so easy to find.  Here.  I think they're meant for you."
     "IdMfVTp1WE": "今天早上出门时，我在帐篷里发现了这些种子。#$b#我想这大概是昨晚找到的。它们一般很少在这里出现。我想它们是给你的。",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L206
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockForest.cs#L206
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "I'm glad you're the sort of friend that doesn't mind listening to the ravings of a crazy old man."
     "kzV8AFCjUA": "很高兴你没有介意一个老家伙的胡言乱语。你真是个好朋友。",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L206
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockForest.cs#L206
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Well...  It's getting late.  You should get back to your farm and I should crawl into my tent.#$b#I plan on breaking camp in the morning and making the hike up to the mountain."
     "m2ysp95THa": "现在……天色已经晚了。你得回农场去了，而我也该钻回我的帐篷里。#$b#我打算早上露营，然后去山上远足。",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L206
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockForest.cs#L206
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Do the trees talk to you too?"
     "PaVvrqHeAU": "那些树也会对你说话吗？",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L206
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockForest.cs#L206
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Hm.  Perhaps it's best not to answer that one..."
     "OGGOrzoslh": "嗯，也许你还是不要回答比较好……",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L167
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockForest.cs#L167
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Plant The Mystic Seed"
     "fBeysmsxcb": "种下神秘种子",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L167
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockForest.cs#L167
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Linus gave you some tree seeds...  Do the Junimos talk to him too?"
     "qeDVDSoV4F": "莱纳斯给了你一些树种……祝尼魔也对他说话了吗？",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L167
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockForest.cs#L167
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Grow a Mystic Tree and 2 Mahogony Trees to adulthood on your farm."
     "XjovUPUpOK": "在农场上种植1棵神秘树和2棵桃花心木树，使其成熟。",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L168
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockForest.cs#L168
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Meet Linus In The Secret Woods"
     "fXwO7pRsAh": "在秘密森林和莱纳斯碰面",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L168
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockForest.cs#L168
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Have dinner with Linus in the Secret Woods"
     "oD0YBwmUKy": "在秘密森林和莱纳斯共进晚餐",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L168
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockForest.cs#L168
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Enter the secret woods on a sunny day between 6 and 11pm."
     "dtOYnKDbnP": "在晴天的晚上6点到11点之间进入秘密森林。",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L176
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockForest.cs#L176
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "@,^how are you doing?  I've decided to spend a night or two in the deep woods, west of Marnie's ranch.  Would you care to share a meal in the wild with me? ^   -Linus"
     "wUzYzsuFrB": "@：^最近过得怎样？我打算在秘密森林里露营一两个晚上，就在玛妮牧场的西边。你要来和我共进一顿晚餐吗？ ^   -莱纳斯",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockForest.cs#L176
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockForest.cs#L176
     // >>>MISSING TRANSLATION
     // source: "Meet at Linus' camp in the woods"
     "mGm0o8rO1f": "",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockMiner.cs#L44
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockMiner.cs#L44
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Give the strange orb to the host player - only the host can advance this quest.  (Put it in a chest for them)"
     "iqYpoWQEl8": "把奇怪的法球交给主机玩家——只有主机玩家能推进任务（可以放进主机玩家的箱子里）。",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockMiner.cs#L96
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockMiner.cs#L100
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "a strange faintly glowing orb"
     "gmlJQdk8lf": "奇怪的微光法球",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockMiner.cs#L96
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockMiner.cs#L100
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "It looks vaguely magical. It's quite hard and smooth."
     "WCZNY4BDTA": "看起来似乎有魔法，摸上去坚硬而光滑。",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockMiner.cs#L106
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockMiner.cs#L110
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "My dear boy...^My beloved grand-daughter...#$b#I am sorry to come to you like this, but I had to thank you for rescuing my dear Junimo friend.#$b#He protected me at a time when my darkest enemy was my own failing mind.#$b#In better days, he helped me with my smelters and other mine-related machines.  He will help you too; he really enjoys watching the glow of the fires!#$b#I rest much easier now knowing that my friend is safe.  I am so proud of you..."
     "T7QBZYZe9a": "我亲爱的孙子……^我亲爱的孙女……#$b#很抱歉以这样的方式和你见面，但我得谢谢你帮助了我的祝尼魔朋友。#$b#曾经有一段时间，我最大的敌人成了我逐渐衰朽的神经。而他在那时帮助了我。#$b#在那些日子里，他帮助我管理着熔炉和其他矿物相关的机器。他也会帮助你的，毕竟他真的很喜欢看着燃烧的火光！#$b#看到我的朋友安然无恙，我也可以安息了。我为你感到骄傲……",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockMiner.cs#L123
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockMiner.cs#L127
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "What have you brought for me this time?"
     "s5xLKhGeJz": "你这次带给我了什么？",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockMiner.cs#L123
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockMiner.cs#L127
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Hm..  Yes...#$b#Junimos are harmless, but they are not defenseless.  When this one was overwhelmed by the slime, it bound itself into a protective stasis and went into a sort of torpor.#$b#If we return this to the Junimo's world, they will be able to care for this one."
     "vzsfntmac2": "嗯……没错……#$b#祝尼魔是无害的，但他们并非毫无防范之力。当这只祝尼魔被史莱姆袭击时，它让自己进入了保护性的停滞状态，失去了所有意识。#$b#如果我们让它回到祝尼魔的世界里，它们就能好好照顾它了。",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockMiner.cs#L123
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockMiner.cs#L127
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "I shall, using my immense powers, transport this one back to the Junimo realm!"
     "o5ZUcAdfjZ": "我，在此使用我的法力，将你传送回祝尼魔王国！",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockMiner.cs#L123
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockMiner.cs#L127
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "There.  Done."
     "SFICKyeN6K": "好了，大功告成。",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockMiner.cs#L123
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockMiner.cs#L127
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Yes.  Done.  It's safely back to the Junimo realm and you should get about your business."
     "c3J39hhYpX": "是的，结束了。这只祝尼魔安全回到了王国，你可以继续去忙你的事了。",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockMiner.cs#L123
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockMiner.cs#L127
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "That's it...#$b#Really...#$b#I think."
     "AstEj4WO8L": "就是这样……#$b#真的……#$b#至少我觉得是这样。",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockMiner.cs#L204
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockMiner.cs#L208
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "The Strange Orb"
     "xRj9KIs8xE": "奇怪的法球",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockMiner.cs#L204
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockMiner.cs#L208
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Investigate the strange glowing thing you found inside a big slime."
     "k18OUCY10Z": "调查你在巨大史莱姆里找到的神秘发光物体。",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockMiner.cs#L204
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockMiner.cs#L208
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Bring the faintly glowing orb to the wizard's tower."
     "xnJcqLM5pj": "把散发着微光的法球带到法师塔。",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockPortal.cs#L143
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockPortal.cs#L143
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Ah... Come in."
     "iJO75x9GnF": "啊……进来吧。",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockPortal.cs#L63
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockPortal.cs#L63
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Give the strange little structure to the host player - only the host can advance this quest.  (Put it in a chest for them.)"
     "M8yHwtBPah": "把奇怪的小雕像交给主机玩家——只有主机玩家能推进任务（可以放进主机玩家的箱子里）。",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockPortal.cs#L119
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockPortal.cs#L119
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "A portal through which Junimos who want to help out on the farm can appear.  Place pathways next to these when placing them outdoors so the Junimos will know where to go."
     "DPZMafDe9x": "通过这个传送门，想要帮助农场的祝尼魔可以出现。把道路铺设在室外传送门的附近，这样祝尼魔就能知道该去哪里了。",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockPortal.cs#L119
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockPortal.cs#L119
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Junimo Portal"
     "PQKLcoVlHA": "祝尼魔传送门",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockPortal.cs#L133
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockPortal.cs#L133
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "a strange little structure"
     "CXUrtaOigV": "一个奇怪的小构件",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockPortal.cs#L133
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockPortal.cs#L133
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "At first it looked like a woody weed, but a closer look makes it like a little structure, and it smells sorta like the Wizard's forest-magic potion."
     "DkGS7LQ3rk": "一开始它看起来像是杂草，但近看才会发现它是某种构件，闻起来有法师的森林魔法药剂的味道。",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockPortal.cs#L143
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockPortal.cs#L143
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "You have something to show me?  Well, bring it to me!"
     "R48vE4R2Kv": "你有东西要给我？好吧，让我看看！",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockPortal.cs#L143
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockPortal.cs#L143
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Ah I see why you thought I should see this...#$b#I believe I recognize the magical traces, but let me consult my vast reference library to be certain..."
     "pUzIQ7qsKu": "啊，我明白你为什么要让我看这个了……#$b#我想我认识上面的魔法痕迹，但还是让我在图书馆里查阅一下资料确定……",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockPortal.cs#L195
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockPortal.cs#L195
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Come along then!"
     "ZxAxDD4aib": "一起来吧！",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockPortal.cs#L195
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockPortal.cs#L195
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Yes.  I was right...#$b#As always."
     "mrTqHoj8qR": "是的，我说得没错……#$b#一如既往。",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockPortal.cs#L227
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockPortal.cs#L227
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "This is a sort of a crude portal, made by your Grandfather to allow Junimos to easily travel between their world and ours.#$b#It's an easy thing to construct, even the greenest apprentice could do it.  Here, let me teach it to you."
     "PYI0in4tJw": "这是某种简单的传送门，是你爷爷制作的，能让祝尼魔在两个世界之间穿梭旅行。#$b#它很容易制作，即使是对于刚入门的学徒。这儿，让我告诉你制作方法。",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockPortal.cs#L227
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockPortal.cs#L227
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "I learned how to craft a 'Junimo Portal'"
     "pxvf6js4j1": "我学会了如何制作“祝尼魔传送门”",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockPortal.cs#L227
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockPortal.cs#L227
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Enticing a Junimo to *use* it, well, that's up to the Junimo..."
     "YzFzmLhV1i": "吸引祝尼魔来*使用*传送门。好吧，这得取决于祝尼魔是否愿意……",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockPortal.cs#L227
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockPortal.cs#L227
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Usage: After completing quests to get junimo helpers, you can place Junimo Portals either in buildings or outside.  If outside, place walkways between the hut and any chests or machines you want the Junimo to automate.  If in a building, you can place walkways or just leave a clear path."
     "Ln1mYzqDlE": "使用方法：在完成获取祝尼魔帮手的任务后，你可以把祝尼魔传送门放在室内或室外。放置在室外时，需要用路径连接传送门和需要自动化的箱子及机器。放置在室内时，连接路径或不连接均可。",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockPortal.cs#L276
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockPortal.cs#L276
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "That was some storm!  I wonder if the rain washed the mud off of any of Grandpa's old stuff!"
     "yr9QG3hVkF": "真是一场大雨！不知道雨水会不会把爷爷的旧东西上的泥巴冲刷掉？",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockPortal.cs#L112
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockPortal.cs#L112
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "The Strange Little Structure"
     "DUQ46Jdpha": "奇怪的小构件",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockPortal.cs#L112
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockPortal.cs#L112
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "You found the remnants of what looks like a little building.  It smells like it has some Forest Magic in it."
     "vXt8llcQp8": "你找到了某个小型建筑的残余构件，闻起来有森林的魔法。",
 
-    // https://github.com/NermNermNerm/Junimatic/blob/905e2bccba59ca4361201eaae37b6448f3bfca58/Junimatic/UnlockPortal.cs#L112
+    // https://github.com/NermNermNerm/Junimatic/blob/a562f20a6f70fd692e6063505dee1c49c412284a/Junimatic/UnlockPortal.cs#L112
     // Translated by nexus:KatherineC4 on 6/20/2024
     // source: "Bring the remnants of the strange little structure to the wizard's tower."
     "oduPiN5wI0": "把奇怪的小构件带到法师塔。"

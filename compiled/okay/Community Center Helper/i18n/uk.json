@@ -75,6 +75,7 @@
 	"mineIronOre": "Розбийте залізну жилу (Шахта 41+ рів., найбільша кількість на 71-79 рів.)",
 	"mineGoldOre": "Розбийте золоту жилу (Шахта 81+ рів.)",
 	"mineIridiumOre": "Розбийте іридієву жилу (Шахта 101+ рів.), метеорит (рідкісна подія)",
+	"mineRadioactiveOre": "Mine Radioactive Nodes (Mines in dangerous state)", // TODO
 
 	// Gems Through Mining
 	"gemEmerald": "Розбийте смарагдову жилу (Шахта 81+ рів.), коштовну жилу",
@@ -85,6 +86,8 @@
 	"gemJade": "Розбийте нефритову жилу (Шахта 41+ рів.), коштовну жилу",
 	"gemDiamond": "Розбийте діамантову жилу (Шахта 51+ рів.), коштовну жилу",
 	"gemPrismaticShard": "Розбийте коштовну жилу, містичний камінь (Шахта 101+ рів., 25%), іридієву жилу (4%)",
+	"gemCinderShard": "Mine Cinder Shard Node (Volcano)", // TODO
+	"boneNode": "Mine Bone Node (Ginger Island Dig Site)", // TODO
 
 	// Farm Cave
 	"caveYours": "Знайдіть в печері на фермі", // once cave type has been chosen, the other type is disregarded and this is used
@@ -144,6 +147,7 @@
 
 	// Location Names (for foraging suggestions)
 	"locationFarm": "на фермі",
+	"locationTown": "in Pelican Town", // TODO
 	"locationMines": "в шахті",
 	"locationMinesArea1": "в шахті 1-39 рів.",
 	"locationMinesArea2": "в шахті 41-79 рів.",
@@ -154,10 +158,13 @@
 	"locationBeachEast": "на пляжі (праворуч)",
 	"locationBeachEastInaccessible": "на пляжі (праворуч; потрібно 300 {{wood}}, щоб полагодити міст)", // tip displayed if bridge is not fixed
 	"locationForest": "у лісі Сіндерсеп",
+	"locationBus": "at Bus Stop", // TODO
 	"locationWoods": "в таємному лісі",
 	"locationSewer": "в каналізації",
 	"locationDesert": "в пустелі Каліко",
 	"locationSkullPrehistoric": "в Печері Черепа на доісторичних рівнях",
+	"locationIsland": "on Ginger Island", // TODO
+	"locationVolcano": "in the Volcano", // TODO
 	"locationRidgeForest": "in Ridge Forest", // RSV // TODO
 	"locationUnknown": "в ???",
 
@@ -168,6 +175,7 @@
 	"waterMountain": "в гірському озері",
 	"waterForestPond": "в ставку лісу Сіндерсеп",
 	"waterForestRiver": "в річці лісу Сіндерсеп",
+	"waterForestFalls": "at bottom of Cindersap Forest waterfalls", // TODO
 	"waterSpecialFarm": "на фермі",
 	"waterWoods": "в ставку таємного лісу",
 	"waterDesert": "в ставку пустелі",
@@ -218,6 +226,9 @@
 	"shopDesertTrader": "у крамаря з пустелі",
 	"shopOasis": "в Оазі",
 	"shopOasisWeekday": "в Оазі {{day}}",
+	"shopIslandTrader": "Island Trader", // TODO
+	"shopIslandResort": "Island Resort", // TODO
+	"shopDwarfVolcano": "Volcano Dwarf", // TODO
 	"shopTravelingCartRandom": "в мандрівного купця (будь-коли)",
 	"shopTravelingCartSeason": "в мандрівного купця {{season}}",
 	"shopEggFestival": "у П'єра на Фестивалі яєць (Навесні 13 числа)",
@@ -256,6 +267,8 @@
 	"treePomegranate": "Гранатове дерево",
 	"treeCherry": "Вишневе дерево",
 	"treeMahogany": "Mahogany Tree", // TODO
+	"treeBanana": "Banana Tree", // TODO
+	"treeMango": "Mango Tree", // TODO
 	"treeLime": "Лаймове дерево", // Cornucopia
 	"treePapaya": "Дерево папаї", // Cornucopia
 	"treeWalnut": "Горіхове дерево", // Cornucopia
@@ -274,6 +287,7 @@
 	"treeMaple": "Клен",
 	"treeOak": "Дуб",
 	"treePine": "Сосну",
+	"treeMystic": "Mystic Tree ({{craftingInfo}})", // TODO
 	"treeMushroom": "Грибне дерево (рідкісна осіння подія)",
 	"treeDescSeedling": "купіть саджанець {{shop}}{{startingYear}}", // advice for fruit trees
 	"treeDescNonFruit": "в будь-якому місці на фермі/землі {{treeSeed}}", // advice for Maple/Oak/Pine trees
@@ -344,12 +358,14 @@
 	"recipeIngredientSeparator": ", ",
 
 	// Skill Level Requirements
-	"farmingLvRequirement": "Фермерство {{num}} рів.",
-	"miningLvRequirement": "Шахтарство {{num}} рів.",
-	"fishingLvRequirement": "Рибальство {{num}} рів.",
-	"foragingLvRequirement": "Збирацтво {{num}} рів.",
-	"combatLvRequirement": "Бойові навички {{num}} рів.",
+	"skillLvRequirement": "{{skill}} {{num}} рів.",
 	"totalSkillLvRequirement": "Комбінація навичок {{num}} рів.",
+	"skillMastery": "{{skill}} Mastery", // TODO
+	"farmingSkill": "Фермерство",
+	"miningSkill": "Шахтарство",
+	"fishingSkill": "Рибальство",
+	"foragingSkill": "Збирацтво",
+	"combatSkill": "Бойові навички",
 
 	// Machine Sources
 	"statueOfPerfectionTip": "ідеальна оцінка дідуся", // advice for statue if you haven't had evaluation or achieved 4 candles
@@ -385,4 +401,15 @@
 	"yearSeason": "{{season}} {{year}} року",
 	"year": "{{year}} року",
 	"today": "сьогодні", // when Queen of Sauce episode is airing that very day
+	
+	/***** Mod Config Menu Text *****/
+	
+	"optionShowSpoilersName": "Show Spoilers", // TODO
+	"optionShowSpoilersTooltip": "Whether hints should include spoilers of certain things not yet encountered.", // TODO
+	
+	"optionCollectionsTabName": "Collections Tab Hints", // TODO
+	"optionCollectionsTabTooltip": "Additionally show tooltip hints in the Collections tab for how to obtain items. For \"All Items\" setting, toggle display with click/Action/Tool Button. (Items from mods not guaranteed to show hints.)", // TODO
+	"collectionsTabOff": "Off", // TODO
+	"collectionsTabUnknowns": "Unknowns Only", // TODO
+	"collectionsTabAll": "All Items", // TODO
 }

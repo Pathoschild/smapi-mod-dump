@@ -1,5 +1,5 @@
 [Config]
-ConfigVersion = "0.2.3"
+ConfigVersion = "0.2.4"
 # Should Clear Glasses be enabled? Unsetting this will disable _all_ Clear Glasses functionality.
 Enabled = true
 # Button to toggle Clear Glasses

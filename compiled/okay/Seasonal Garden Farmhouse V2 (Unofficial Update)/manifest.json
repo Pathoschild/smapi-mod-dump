@@ -1,7 +1,7 @@
 {
   "Name": "Seasonal Garden Farmhouse V2",
   "Author": "CyanFire",
-  "Version": "1.7.14",
+  "Version": "1.7.19",
   "Description": "Extra code needed for Seasonal Garden Farmhouse functionality",
   "UniqueID": "CF.SeasonalGardenFarmhouseV2.SMAPI",
   "EntryDll": "SeasonalGardenFarmhouseV2.dll",

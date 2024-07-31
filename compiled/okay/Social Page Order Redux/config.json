@@ -10,5 +10,6 @@
   "DropdownOffsetX": 0,
   "DropdownOffsetY": 0,
   "FilterOffsetX": 0,
-  "FilterOffsetY": 0
+  "FilterOffsetY": 0,
+  "SearchBarAutoFocus": true
 }

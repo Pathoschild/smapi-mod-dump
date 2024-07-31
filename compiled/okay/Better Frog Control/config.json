@@ -1,0 +1,8 @@
+{
+  "AllowSpittingMonster": true,
+  "FrogInteractDistance": 60.0,
+  "CountAsPlayerKill": false,
+  "BlacklistType": "SameType",
+  "BlacklistDuration": "UntilLeave",
+  "BlacklistDurationSeconds": 5.0
+}

@@ -1,0 +1,12 @@
+{
+  "Name": "Stardew Valley Gold",
+  "Author": "Clever Artisan (Vastias)",
+  "Version": "1.0.0",
+  "Description": "Allows the player to earn passive income or passive debt via button-press or schedule.",
+  "UniqueID": "CleverArtisan.StardewValleyGold",
+  "EntryDll": "StardewValleyGold.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [
+    "Nexus:26006"
+  ]
+}

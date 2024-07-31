@@ -1,12 +1,12 @@
 ﻿{
     "Name": "Lazy Mod",
     "Author": "weizinai",
-    "Version": "1.1.1",
+    "Version": "1.2.2",
     "Description": "A mod help you do many things.",
     "UniqueID": "weizinai.LazyMod",
     "EntryDll": "LazyMod.dll",
     "UpdateKeys": [
-        "Nexus:22826"
+        "Nexus: 22826"
     ],
     "Dependencies": [
         {

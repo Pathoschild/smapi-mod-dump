@@ -1,0 +1,10 @@
+﻿{
+  "Author": "hackswell",
+  "Description": "Adds many useful functions to make gameplay more efficient. Forked from pomepome/JoysOfEfficiency on GitHub",
+  "EntryDll": "GloryOfEfficiency.dll",
+  "MinimumApiVersion": "4.0",
+  "Name": "GloryOfEfficiency",
+  "UniqueID": "hackswell.GloryOfEfficiency",
+  "UpdateKeys": [ "Nexus:1234567" ],
+  "Version": "1.0.0"
+}

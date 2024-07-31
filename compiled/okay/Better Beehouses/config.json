@@ -19,5 +19,6 @@
   "PathParticleCount": 5,
   "AnythingHoney": false,
   "UseBushes": true,
-  "ModifyCustomBeehouses": true
+  "ModifyCustomBeehouses": true,
+  "DebugKey": "F9"
 }

@@ -1,5 +1,6 @@
 {
   "ModEnabled": false,
   "ExitToTitle": false,
-  "DayLimitCount": 3
+  "DayLimitCount": 3,
+  "TakeBreakUntilTime": null
 }

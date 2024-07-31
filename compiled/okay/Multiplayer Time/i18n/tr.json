@@ -1,0 +1,12 @@
+{
+  "Sunday": "Paz. {{day}}",
+  "Monday": "Pzt. {{day}}",
+  "Tuesday": "Sal. {{day}}",
+  "Wednesday": "Çar. {{day}}",
+  "Thursday": "Per. {{day}}",
+  "Friday": "Cum. {{day}}",
+  "Saturday": "Cmr. {{day}}",
+  "AM": "{{time}} am",
+  "PM": "{{time}} pm",
+  "Default": "24"
+}

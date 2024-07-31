@@ -1,9 +1,21 @@
 {
   "Message_FinalDay": "This is your final day! The game will exit after saving tomorrow morning.",
   "Message_ShutDown": "Day limit reached! Closing the game...",
+  "Message_OnBreak": "Your farmer is currently on break. Come back in {0} minute(s)!",
+  "GMCM_Option_DayLimit_SectionTitle": "Day Limit",
+  "GMCM_Option_DayLimit_Description": "Allows you to set a limit on the number of days you would like to play. Once the day limit is reached, the game will automatically quit after saving on the following morning.",
   "GMCM_Option_DaysPlayed": "Days played",
   "GMCM_Option_DaysRemaining": "Days remaining",
   "GMCM_Option_ModEnabled_Name": "Day Limit Enabled",
   "GMCM_Option_DayLimitCount_Name": "Day Limit",
-  "GMCM_Option_ExitToTitle_Name": "Exit to Title"
+  "GMCM_Option_ExitToTitle_Name": "Exit to Title",
+  "GMCM_Option_PreventChanging_Name": "Prevent Changing After Save",
+  "GMCM_Option_PreventChanging_Description": "Prevents you from changing these settings after saving until the game quits.",
+  "GMCM_Option_PreventChanging_Warning": "These settings are unavailable because you requested that they are locked in until the game quits.",
+  "GMCM_Option_BreakTime_SectionTitle": "Break Mode",
+  "GMCM_Option_BreakTime_Description": "Forces you to wait a defined number of minutes since the last game save before resuming play.",
+  "GMCM_Option_BreakTime_Warning": "WARNING: DO NOT SET THIS UNLESS YOU ARE SERIOUS. THIS SETTING CAN NOT BE CONFIGURED FROM THE TITLE MENU AND CAN ONLY BE REMOVED EARLY BY EDITING THE CONFIG.JSON FILE",
+  "GMCM_Option_BreakTime_Remaining": "ACTIVE: On break for {0} more minute(s)",
+  "GMCM_Option_BreakTime_RemainingNone": "Break Mode is not currently set",
+  "GMCM_Option_BreakTime_Name": "Minutes to Wait"
 }

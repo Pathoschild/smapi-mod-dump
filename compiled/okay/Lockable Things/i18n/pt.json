@@ -1,0 +1,21 @@
+{
+  "Error.Locked": "Esse item está trancado. Use a tecla de destrancar para interagir com ele.",
+  "Message.Locked": "Os itens estão trancados",
+  "Message.Unlocked": "Os itens estão destrancados",
+  "Config.UnlockKeybind.Name": "Tecla de Trancar/Destrancar",
+  "Config.UnlockKeybind.Tooltip": "A tecla para pressionar para permitir manipular itens trancados",
+  "Config.ToggleLock.Name": "Alternar Trancar/Destrancar",
+  "Config.ToggleLock.Tooltip": "Se ativado, a tecla alternará se os itens estão trancados ou destrancados. Se desmarcado, a tecla deve ser mantida pressionada para manipular itens trancados.",
+  "Config.LockItemSigns.Name": "Trancar Placas de Itens",
+  "Config.LockItemSigns.Tooltip": "Se ativado, placas de exibição de itens não permitirão que o item exibido seja substituído sem a tecla de trancar/destrancar. Se a placa estiver em branco, você pode configurá-la normalmente.",
+  "Config.LockTextSigns.Name": "Trancar Placas de Texto",
+  "Config.LockTextSigns.Tooltip": "Se ativado, placas de texto não exibirão a caixa de edição sem a tecla de trancar/destrancar. Se a placa estiver em branco, você pode configurá-la normalmente.",
+  "Config.LockCrabPots.Name": "Trancar Armadilhas para Caranguejos",
+  "Config.LockCrabPots.Tooltip": "Se ativado, você não poderá pegar armadilhas para caranguejos sem usar a tecla de trancar/destrancar.",
+  "Config.LockFloors.Name": "Trancar Pisos",
+  "Config.LockFloors.Tooltip": "Se ativado, você não poderá quebrar pisos sem usar a tecla de trancar/destrancar.",
+  "Config.LockDecorations.Name": "Trancar Decorações",
+  "Config.LockDecorations.Tooltip": "Se ativado, você não poderá pegar decorações sem usar a tecla de trancar/destrancar.",
+  "Config.LockFurniture.Name": "Trancar Móveis",
+  "Config.LockFurniture.Tooltip": "Se ativado, você não poderá pegar móveis sem usar a tecla de trancar/destrancar."
+}

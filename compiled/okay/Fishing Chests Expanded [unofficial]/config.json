@@ -1,7 +1,11 @@
 {
   "EnableMod": true,
   "VanillaLootChance": 0,
+  "AlwaysIncludeRoe": true,
+  "AlwaysIncludeBooks": true,
   "AlwaysIncludeGeodes": true,
+  "AlwaysIncludeArtifacts": true,
+  "AlwaysIncludeItems": "Golden Animal Cracker,Golden Egg",
   "ChanceForTreasureChest": 15,
   "MaxItems": 5,
   "ItemsBaseMaxValue": 100,

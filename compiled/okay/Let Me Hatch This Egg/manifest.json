@@ -1,12 +1,16 @@
 {
   "Name": "Let Me Hatch This Egg",
   "Author": "MikeW",
-  "Version": "1.0.1",
+  "Version": "1.0.4",
   "Description": "Just a simple mod to add missing hatching data for animals that produce eggs but can't they can't be incubated.",
   "UniqueID": "Mikew.letmehatchthisegg.smapi",
   "MinimumApiVersion": "2.5",
   "UpdateKeys": ["25175"],
   "Dependencies": [
+		{
+			"UniqueID": "JollyLlama.PrismaticValleyFramework",
+			"IsRequired": true
+		},
   ],
   "EntryDll": "LetMeHatchThisEgg.dll"
 }

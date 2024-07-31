@@ -1,0 +1,11 @@
+﻿{
+  "Name": "AutoCatchFishMod",
+  "Author": "WillTheMage",
+  "Version": "1.0.1",
+  "Description": "Automatically catches fish without playing the fishing minigame.",
+  "UniqueID": "WillTheMage.AutoCatchFishMod",
+  "EntryDll": "AutoCatchFishMod.dll",
+  "MinimumApiVersion": "3.0.0",
+  "MinimumGameVersion": "1.6.0",
+  "UpdateKeys": ["Nexus:25997"]
+}

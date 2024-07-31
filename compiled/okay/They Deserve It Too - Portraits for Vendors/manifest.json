@@ -2,7 +2,7 @@
   "Name": "TDIT - Dialogue Box for Mariner",
   "Author": "KediDili [Commissioned by Dolphin Is Not a Fish]",
   "Description": "Adds dialogue box and portrait to the Old Mariner",
-  "Version": "1.5.2",
+  "Version": "1.6.0",
   "UniqueID": "Dolphin.Kedi.OldMarinerDialogue",
   "EntryDLL": "OldMarinerDialogue.dll",
   "MinimumApiVersion": "4.0.0",

@@ -1,7 +1,7 @@
 {
 	"Name": "Furniture Framework",
 	"Author": "leroymilo",
-	"Version": "2.3.2",
+	"Version": "2.4.1",
 	"MinimumApiVersion": "4.0",
 	"MinimumGameVersion": "1.6",
 	"Description": "Allows a Content Pack to create highly customized Furniture",

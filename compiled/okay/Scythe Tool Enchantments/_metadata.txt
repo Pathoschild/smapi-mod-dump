@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/26217
+IDs: mushymato.ScytheToolEnchantments
+update keys: Nexus:26217

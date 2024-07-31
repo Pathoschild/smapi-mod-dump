@@ -1,9 +1,15 @@
 {
   "Name": "Quick Descend By Using Staircase",
   "Author": "kun2331",
-  "Version": "1.1.0",
+  "Version": "1.1.1",
   "Description": "Quick descend desert mine (skull cave) by using staircase",
   "UniqueID": "kun2331.QuickDescendByUsingStaircase",
   "EntryDll": "QuickDescendByUsingStaircase.dll",
-  "UpdateKeys": [ "Nexus:25161" ]
+  "UpdateKeys": [ "Nexus:25161" ],
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.GenericModConfigMenu",
+      "IsRequired": false
+    }
+  ]
 }

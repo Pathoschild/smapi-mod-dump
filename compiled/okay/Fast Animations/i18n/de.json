@@ -68,9 +68,6 @@
     "config.casino-slots.name": "Casino-Slots",
     "config.casino-slots.tooltip": "Wie schnell sich die Casino-Slots drehen. Standardwert {{defaultValue}}x.",
 
-    "config.event.name": "Event cutscene", // TODO
-    "config.event.tooltip": "How fast event cutscenes play. Default {{defaultValue}}x, suggested {{suggestedValue}}x.", // TODO
-
     "config.fade.name": "Fade", // TODO
     "config.fade.tooltip": "How fast the screen fades to black and fades back in. Default {{defaultValue}}x.", // TODO
 
@@ -113,5 +110,14 @@
     "config.title-menu.tooltip": "Wie schnell das Titelmenü zwischen den Bildschirmen wechselt. Standardwert {{defaultValue}}x.",
 
     "config.load-game-blink.name": "Spiel laden blinken",
-    "config.load-game-blink.tooltip": "Wie schnell die Verzögerung des blinkenden Slots auftritt, nachdem Sie auf einen Load-Save-Slot geklickt haben. Standardwert {{defaultValue}}x."
+    "config.load-game-blink.tooltip": "Wie schnell die Verzögerung des blinkenden Slots auftritt, nachdem Sie auf einen Load-Save-Slot geklickt haben. Standardwert {{defaultValue}}x.",
+
+    /****
+    ** 'Experimental' section
+    ****/
+    "config.experimental": "Experimental options", // TODO
+    "config.experimental-warning": "These options aren't fully stable yet, and may cause issues like freezes and crashes. Enabling any of these isn't recommended.", // TODO
+
+    "config.event.name": "Event cutscene", // TODO
+    "config.event.tooltip": "How fast event cutscenes play. Default {{defaultValue}}x, suggested {{suggestedValue}}x." // TODO
 }

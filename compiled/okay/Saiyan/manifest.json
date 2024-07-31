@@ -1,0 +1,10 @@
+{
+  "Name": "Saiyan",
+  "Author": "AlexDevilish",
+  "Version": "0.6.0", // fixed locally
+  "Description": "DBZ IN STARDEW VALLEY",
+  "UniqueID": "alexDevilish.saiyan",
+  "EntryDll": "Saiyan.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": []
+}
