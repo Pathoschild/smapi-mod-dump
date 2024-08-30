@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/9365
-IDs: spacechase0.DynamicGameAssets
-update keys: Nexus:9365, GitHub:spacechase0/StardewValleyMods

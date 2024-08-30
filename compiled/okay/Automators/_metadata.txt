@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/15776
-IDs: KristianSkistad.Automators.Code
-update keys: Nexus:15776, GitHub:kristian-skistad/automators

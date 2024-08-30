@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/4935
-IDs: MouseyPounds.HomeSewingKit
-update keys: Nexus:4935, GitHub:MouseyPounds/stardew-mods

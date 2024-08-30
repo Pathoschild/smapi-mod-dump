@@ -1,9 +1,0 @@
-{
-   "Name": "SkullCavernElevator",
-   "Author": "lestoph",
-   "Version": "1.6.1",
-   "Description": "Elevator for the Skull Cavern",
-   "UniqueID": "SkullCavernElevator",
-   "EntryDll": "SkullCavernElevator.dll",
-   "UpdateKeys": [ "Nexus:963" ]
-}

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3006
-IDs: kirbylink.pumpkinking
-update keys: Nexus:3006, GitHub:KirbyLink/PumpkinKing

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/20941
-IDs: Goldenrevolver.ObtainableCowboyBoots
-update keys: Nexus:20941, GitHub:Goldenrevolver/Stardew-Valley-Mods

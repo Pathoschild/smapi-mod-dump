@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/9043
-IDs: aedenthorn.FlowingMineRocks
-update keys: Nexus:9043, GitHub:aedenthorn/StardewValleyMods

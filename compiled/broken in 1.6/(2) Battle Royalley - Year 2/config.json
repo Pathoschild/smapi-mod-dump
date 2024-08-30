@@ -1,6 +1,0 @@
-{
-  "TimeInSecondsBetweenRounds": 15,
-  "TimeInMillisecondsBetweenPlayerJoiningAndServerExpectingTheirVersionNumber": 60000,
-  "PlayerLimit": 125,
-  "StormDamagePerSecond": 5
-}

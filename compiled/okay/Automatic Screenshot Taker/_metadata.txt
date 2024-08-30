@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10460
-IDs: Zamiel.AutomaticScreenshotTaker
-update keys: GitHub:Zamiell/AutomaticScreenshotTaker, Nexus:10460

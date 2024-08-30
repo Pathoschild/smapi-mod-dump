@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2838
-IDs: maxvollmer.audiodevices
-update keys: Nexus:2838, GitHub:maxvollmer/AudioDevices

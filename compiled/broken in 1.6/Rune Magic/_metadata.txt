@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/15065
-IDs: fierro.rune_magic
-update keys: Nexus:15065, GitHub:facufierro/RuneMagic

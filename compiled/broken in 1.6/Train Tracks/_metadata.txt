@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10927
-IDs: aedenthorn.TrainTracks
-update keys: Nexus:10927, GitHub:aedenthorn/StardewValleyMods

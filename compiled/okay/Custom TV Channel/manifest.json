@@ -1,9 +1,0 @@
-{
-  "Name": "CustomTVChannel",
-  "Author": "chieeri323",
-  "Version": "1.11",
-  "Description": "...",
-  "UniqueID": "chieeri323.customtvchannel",
-  "UpdateKey": [ "Nexus:24278"],
-  "EntryDll": "customtvchannel.dll"
-}

@@ -1,8 +1,0 @@
-{
-  "HoldToSprint": true,
-  "SprintSpeed": 3,
-  "SprintKey": "17",
-  "StaminaDrain": 1,
-  "StaminaDrainRate": 5,
-  "SprintKeyForControllers": "LeftStick"
-}

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10023
-IDs: aedenthorn.BedTweaks
-update keys: Nexus:10023, GitHub:aedenthorn/StardewValleyMods

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/25380
-IDs: calebstein1.CountingSheep
-update keys: GitHub:calebstein1/CountingSheep, Nexus:25380

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6548
-IDs: aedenthorn.QuickResponses
-update keys: Nexus:6548, GitHub:aedenthorn/StardewValleyMods

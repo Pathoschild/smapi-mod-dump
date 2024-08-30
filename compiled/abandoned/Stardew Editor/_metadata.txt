@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1298
-IDs: spacechase0.StardewEditor.GameIntegration
-update keys: Nexus:1298, GitHub:spacechase0/StardewEditor

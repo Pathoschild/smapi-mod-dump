@@ -1,9 +1,0 @@
-﻿{
-  "Name": "SkipFish",
-  "Author": "LucaINC",
-  "Version": "1.0.1",
-  "Description": "Skip Fish Animation Good Mod Hihiha!",
-  "UniqueID": "LucaINC.StardewValleyMods.SkipFish",
-  "EntryDll": "SkipFish.dll",
-  "MinimumApiVersion": "3.18.2"
-}

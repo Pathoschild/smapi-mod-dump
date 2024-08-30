@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1630
-IDs: eleanoot.todolist, eleanor.todolist
-update keys: Nexus:1630, GitHub:eleanoot/stardew-to-do-mod

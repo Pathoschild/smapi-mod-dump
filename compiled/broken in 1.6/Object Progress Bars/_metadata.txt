@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2803
-IDs: Adeel.ObjectProgressbars
-update keys: Nexus:2803, GitHub:AdeelTariq/ObjectProgressBars

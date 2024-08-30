@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2135
-IDs: unremarkable.fix-sellToStorePrice
-update keys: Nexus:2135, GitHub:Unremarkable/Stardew-Valley-Multiplayer-Sell-Price-Fix

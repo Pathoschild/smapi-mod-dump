@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/12037
-IDs: BlaDe.MiscTrolls
-update keys: Nexus:12037

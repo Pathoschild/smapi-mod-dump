@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2416
-IDs: Platonymous.CustomShirts
-update keys: Nexus:2416, GitHub:Platonymous/Stardew-Valley-Mods

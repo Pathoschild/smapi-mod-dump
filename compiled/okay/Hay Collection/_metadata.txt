@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/21008
-IDs: MindMeltMax.HayCollection
-update keys: Nexus:21008, GitHub:MindMeltMax/Stardew-Valley-Mods

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/15333
-IDs: NCarigon.CopperStill
-update keys: Nexus:15333, GitHub:ncarigon/StardewValleyMods

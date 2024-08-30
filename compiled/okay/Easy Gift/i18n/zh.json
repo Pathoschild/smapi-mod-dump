@@ -1,8 +1,0 @@
-{
-  "config.name.EasyGiftKey_Assist": "便捷送礼-辅助快捷键",
-  "config.tips.EasyGiftKey_Assist": "把礼物放到当前打开的箱子中，按下组合快捷键发送给全部认识的村民",
-  "config.name.EasyGiftKey_Main": "便捷送礼-主快捷键",
-  "config.tips.EasyGiftKey_Main": "把礼物放到当前打开的箱子中，按下组合快捷键发送给全部认识的村民",
-  "config.name.EnableNpcAllChat": "每天自动和认识的村民对话",
-  "config.name.EnableAnimalAllPet": "每天自动抚摸农场所有动物"
-}

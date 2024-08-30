@@ -1,3 +1,0 @@
-page URL: https://github.com/M3ales/RelationshipTooltips
-IDs: M3ales.RelationshipTooltips
-update keys: GitHub:M3ales/RelationshipTooltips

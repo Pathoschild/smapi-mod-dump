@@ -1,3 +1,0 @@
-page URL: https://www.moddrop.com/stardew-valley/mod/944622
-IDs: jas.ThunderstormTotem
-update keys: ModDrop:944622

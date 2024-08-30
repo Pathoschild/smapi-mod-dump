@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10918
-IDs: aedenthorn.PaintingDisplay
-update keys: Nexus:10918, GitHub:aedenthorn/StardewValleyMods

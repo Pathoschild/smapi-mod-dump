@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/984
-IDs: Platonymous.JunimoFarm
-update keys: Nexus:984, GitHub:Platonymous/Stardew-Valley-Mods

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/11840
-IDs: phjoker.MoreClocks
-update keys: Nexus:11840, GitHub:p-holodynski/StardewValleyMods

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/20801
-IDs: Lake1059.StardewFPS
-update keys: Nexus:20801, GitHub:Lake1059/StardewFPS

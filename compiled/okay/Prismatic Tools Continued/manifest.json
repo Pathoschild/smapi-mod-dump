@@ -1,9 +1,0 @@
-{
-    "Name": "Prismatic Tools Continued",
-    "Author": "iargue",
-    "Version": "1.2.0",
-    "Description": "Adds prismatic tools and sprinklers to the game.",
-    "UniqueID": "iargue.PrismaticToolsContinued",
-    "EntryDll": "PrismaticTools.dll",
-    "UpdateKeys": [ "Nexus:21450" ]
-}

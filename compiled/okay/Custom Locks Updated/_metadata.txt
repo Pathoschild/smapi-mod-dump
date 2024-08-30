@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/21148
-IDs: Rokugin.CustomLocksUpdated
-update keys: Nexus:21148, GitHub:rokugin/StardewMods

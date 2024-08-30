@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1312
-IDs: Juice805.StardewConfigMenu
-update keys: Nexus:1312, GitHub:StardewConfigFramework/StardewConfigMenu

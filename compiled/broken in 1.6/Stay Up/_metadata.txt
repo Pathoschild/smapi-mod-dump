@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7592
-IDs: Su226.StayUp
-update keys: Nexus:7592, GitHub:su226/StardewValleyMods

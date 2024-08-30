@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/4523
-IDs: Taskmaster.MonthlyMail
-update keys: Nexus:4523

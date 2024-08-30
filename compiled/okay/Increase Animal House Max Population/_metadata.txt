@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/4861
-IDs: mizzion.increaseanimalhousemaxpopulation
-update keys: Nexus:4861, GitHub:Mizzion/MyStardewMods

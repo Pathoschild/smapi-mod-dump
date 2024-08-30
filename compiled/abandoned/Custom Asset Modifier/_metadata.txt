@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1836
-IDs: Omegasis.CustomAssetModifier
-update keys: Nexus:1836, GitHub:janavarro95/Stardew_Valley_Mods

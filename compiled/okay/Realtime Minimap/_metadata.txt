@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/9386
-IDs: spacechase0.RealtimeMinimap
-update keys: Nexus:9386, GitHub:spacechase0/StardewValleyMods

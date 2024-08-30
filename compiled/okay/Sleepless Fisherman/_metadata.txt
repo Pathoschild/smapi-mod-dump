@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5915
-IDs: Annosz.SleeplessFisherman
-update keys: Nexus:5915, GitHub:Annosz/StardewValleyModding

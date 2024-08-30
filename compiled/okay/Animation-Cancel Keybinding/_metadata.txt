@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/20159
-IDs: swaglix.AnimationCancelKeybinding
-update keys: Nexus:20159

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/16253
-IDs: Platonymous.InstantLoad
-update keys: Nexus:16253

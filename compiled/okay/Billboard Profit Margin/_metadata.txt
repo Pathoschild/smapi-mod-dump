@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6948
-IDs: desto.BillboardProfitMargin
-update keys: Nexus:6948, GitHub:desto-git/sdv-mods

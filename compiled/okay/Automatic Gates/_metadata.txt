@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3109
-IDs: Rakiin.AutomaticGates
-update keys: Nexus:3109

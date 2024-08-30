@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/4779
-IDs: CompSciLauren.DailyScreenshot
-update keys: Nexus:4779, ModDrop:677025, Chucklefish:5907, CurseForge:353698, GitHub:CompSciLauren/stardew-valley-daily-screenshot-mod

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3049
-IDs: JoshJKe.PortalGun
-update keys: Nexus:3049

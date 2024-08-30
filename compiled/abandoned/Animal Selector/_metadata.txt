@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/8758
-IDs: rikai.AnimalSelector
-update keys: Nexus:8758, GitHub:rikai/AnimalSelector

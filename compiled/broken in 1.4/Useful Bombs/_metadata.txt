@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2488
-IDs: punyo.UsefulBombs
-update keys: Nexus:2488, GitHub:pomepome/UsefulBombs

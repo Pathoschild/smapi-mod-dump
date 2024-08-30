@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/26189
-IDs: jltaylor-us.HTPG
-update keys: Nexus:26189, GitHub:jltaylor-us/StardewHoldToProcessGeodes

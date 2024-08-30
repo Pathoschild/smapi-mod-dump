@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/23226
-IDs: Frostiverse.DeluxeAutoPetter
-update keys: Nexus:23226, GitHub:Hunter-Chambers/StardewValleyMods

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10469
-IDs: onemix.Sprinting
-update keys: Nexus:10469, GitHub:thiagomasson/Sprinting

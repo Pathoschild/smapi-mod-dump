@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/16738
-IDs: MindMeltMax.LetMeShop
-update keys: Nexus:16738

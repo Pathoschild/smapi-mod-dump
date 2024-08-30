@@ -1,6 +1,0 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <Version>0.6.5</Version>
-  <Platforms>AnyCPU;x64</Platforms>
-  </PropertyGroup>
-</Project>

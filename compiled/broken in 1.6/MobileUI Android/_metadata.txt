@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/17652
-IDs: WisnuNug.MobileUI
-update keys: Nexus:17652

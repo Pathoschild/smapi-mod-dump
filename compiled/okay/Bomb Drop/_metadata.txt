@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/26062
-IDs: WillTheMage.BombDropMod
-update keys: Nexus:26062

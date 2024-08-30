@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2463
-IDs: OlegSilkin.garbage_collector
-update keys: Nexus:2463

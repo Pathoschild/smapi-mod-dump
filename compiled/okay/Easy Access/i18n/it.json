@@ -1,7 +1,0 @@
-﻿{
-  // Config Pages
-  "section.general.name": "Generale",
-  "section.general.description": "Opzioni generali di personalizzazione delle funzionalità.",
-  "section.controls.name": "Controlli",
-  "section.controls.description": "Configurazioni di controller/tastiera."
-}

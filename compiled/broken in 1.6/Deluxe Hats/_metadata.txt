@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5836
-IDs: domsim1.DeluxeHats
-update keys: Nexus:5836, GitHub:domsim1/stardew-valley-deluxe-hats-mod

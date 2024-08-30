@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/21223
-IDs: Zamiel.VisibleArtifactSpots
-update keys: Nexus:21223, GitHub:Zamiell/stardew-valley-mods

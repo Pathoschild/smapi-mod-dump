@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/4192
-IDs: mytigio.customharvestfix
-update keys: Nexus:4192, GitHub:mytigio/CustomHarvestFix

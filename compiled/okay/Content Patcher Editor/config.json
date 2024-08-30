@@ -1,8 +1,0 @@
-{
-  "ModEnabled": true,
-  "ShowButton": true,
-  "Backup": true,
-  "OpenModsFolderAfterZip": true,
-  "ModsFolder": "",
-  "MenuButton": "LeftShift + OemCloseBrackets"
-}

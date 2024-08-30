@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10633
-IDs: aedenthorn.NightEventChanceTweak
-update keys: Nexus:10633, GitHub:aedenthorn/StardewValleyMods

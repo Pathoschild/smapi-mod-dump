@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/25736
-IDs: ThisIsCad.SearchableChests
-update keys: Nexus:25736, GitHub:brandonwamboldt/SearchableChests

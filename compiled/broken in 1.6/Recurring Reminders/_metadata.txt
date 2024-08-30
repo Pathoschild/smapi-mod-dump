@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6840
-IDs: Dem1se.RecurringReminders
-update keys: Nexus:6840, GitHub:dem1se/SDVMods

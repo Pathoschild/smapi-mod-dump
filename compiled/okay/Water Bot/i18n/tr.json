@@ -1,7 +1,0 @@
-{
-  "process.start": "Sulamaya Başlama Zamanı!",
-  "process.end": "Sulama Bitti",
-  "process.interrupt": "Sulama Durduruldu",
-  "process.exhausted": "Sulamadan Bıktım",
-  "process.waterless": "Su Bulunamadı!"
-}

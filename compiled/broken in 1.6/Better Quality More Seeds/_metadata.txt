@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/935
-IDs: SpaceBaby.BetterQualityMoreSeeds, SB_BQMS
-update keys: Nexus:935, GitHub:bmarquismarkail/SV_BetterQualityMoreSeeds

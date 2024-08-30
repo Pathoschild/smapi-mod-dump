@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5097
-IDs: spacechase0.ThrowableAxe
-update keys: Nexus:5097, GitHub:spacechase0/StardewValleyMods

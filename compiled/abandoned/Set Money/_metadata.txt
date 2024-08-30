@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3889
-IDs: j4c0b333.SetMoney
-update keys: Nexus:3889

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/13940
-IDs: aedenthorn.NPCClothing
-update keys: Nexus:13940, GitHub:aedenthorn/StardewValleyMods

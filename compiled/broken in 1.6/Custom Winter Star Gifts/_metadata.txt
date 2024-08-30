@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10024
-IDs: harvz.CWSG
-update keys: Nexus:10024, GitHub:XxHarvzBackxX/Custom-Winter-Star-Gifts

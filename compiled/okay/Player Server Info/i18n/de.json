@@ -1,4 +1,0 @@
-{
-  "player_connected_log": "[{timestamp}]: Spieler '{playerName}' (Farmer Name: '{farmerName}', SteamID: '{steamId}', UniqueID: '{uniqueId}') hat sich eingeloggt.",
-  "player_disconnected_log": "[{timestamp}]: Spieler '{playerName}' (Farmer Name: '{farmerName}', SteamID: '{steamId}', UniqueID: '{uniqueId}') hat sich ausgeloggt."
-}

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/13028
-IDs: AdroSlice.Relativity
-update keys: Nexus:13028, GitHub:adroslice/sdv-relativity-mirror

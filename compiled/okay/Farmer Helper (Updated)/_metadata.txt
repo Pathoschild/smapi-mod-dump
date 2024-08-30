@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10179
-IDs: Fiorbeth.FarmerHelper
-update keys: Nexus:10179, Nexus:21030, GitHub:NTaylor1993/FarmerHelper

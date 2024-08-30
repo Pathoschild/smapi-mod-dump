@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3279
-IDs: skn.HairGrowthMod
-update keys: Nexus:3279

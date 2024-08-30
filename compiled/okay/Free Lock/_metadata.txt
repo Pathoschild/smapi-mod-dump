@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/25329
-IDs: weizinai.FreeLock
-update keys: Nexus:25329, GitHub:weizinai/StardewValleyMods

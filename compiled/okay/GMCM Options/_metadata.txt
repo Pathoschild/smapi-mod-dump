@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10505
-IDs: jltaylor-us.GMCMOptions
-update keys: Nexus:10505, GitHub:jltaylor-us/StardewGMCMOptions

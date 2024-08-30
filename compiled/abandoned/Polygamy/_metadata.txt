@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3542
-IDs: bwdy.polygamy
-update keys: Nexus:3542, GitHub:bwdymods/SDV-Polygamy

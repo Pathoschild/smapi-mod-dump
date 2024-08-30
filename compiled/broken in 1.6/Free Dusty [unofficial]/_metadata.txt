@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2206
-IDs: skuldomg.freeDusty
-update keys: Nexus:2206, GitHub:skuldomg/freeDusty

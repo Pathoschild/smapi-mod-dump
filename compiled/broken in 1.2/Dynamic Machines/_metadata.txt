@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/374
-IDs: DynamicMachines
-update keys: Nexus:374

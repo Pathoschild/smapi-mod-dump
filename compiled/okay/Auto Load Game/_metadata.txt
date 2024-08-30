@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2509
-IDs: caraxian.AutoLoadGame
-update keys: Nexus:2509, GitHub:Caraxi/StardewValleyMods

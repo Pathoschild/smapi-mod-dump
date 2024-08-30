@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/12158
-IDs: tylergibbs2.StardewNametags
-update keys: GitHub:tylergibbs2/StardewNametags, Nexus:12158

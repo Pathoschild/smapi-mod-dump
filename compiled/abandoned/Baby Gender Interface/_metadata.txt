@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1947
-IDs: f4iTh.BabyGenderInterface
-update keys: Nexus:1947

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/14607
-IDs: SharedExp.Batzpup
-update keys: Nexus:14607

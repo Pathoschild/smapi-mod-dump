@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10996
-IDs: tlitookilakin.BetterBeehouses
-update keys: GitHub:tlitookilakin/BetterBeehouses, Nexus:10996, ModDrop:1105633

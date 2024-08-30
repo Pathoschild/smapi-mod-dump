@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6514
-IDs: Jessebot.GoodbyeSMAPI
-update keys: Nexus:6514, GitHub:JessebotX/StardewValleyMods

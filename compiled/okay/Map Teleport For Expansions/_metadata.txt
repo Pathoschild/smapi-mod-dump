@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/25279
-IDs: hlyvia.StardewValleyMapTeleport
-update keys: GitHub:kesesek/StardewValleyMapTeleport, Nexus:25279

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/18465
-IDs: neosinf.StardewDruid
-update keys: Nexus:18465, GitHub:Neosinf/StardewDruid

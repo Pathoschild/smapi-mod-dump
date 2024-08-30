@@ -1,9 +1,0 @@
-{
-  "EnableMod": true,
-  "DetachKey": "X",
-  "MoveKey": "MouseLeft",
-  "CloseKey": "Z",
-  "DetachModKey": "LeftShift",
-  "MoveModKey": "LeftShift",
-  "CloseModKey": "LeftShift"
-}

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5116
-IDs: eat.item.instantly
-update keys: Nexus:???, Nexus:5116

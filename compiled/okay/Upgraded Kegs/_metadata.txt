@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/15755
-IDs: CF.UpgradedKegs
-update keys: Nexus:15755@NoQualityBonus, Nexus:15755

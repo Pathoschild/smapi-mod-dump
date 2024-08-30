@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/16030
-IDs: scayze.MultiplayerPrairieKing
-update keys: Nexus:16030, GitHub:scayze/multiprairie

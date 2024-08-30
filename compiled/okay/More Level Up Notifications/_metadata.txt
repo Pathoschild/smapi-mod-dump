@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/21667
-IDs: binarynova.levelupnotifications
-update keys: Nexus:21667, GitHub:Binarynova/MyStardewMods

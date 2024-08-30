@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2329
-IDs: punyo.PassableObjects
-update keys: Nexus:2329, GitHub:pomepome/PassableObjects

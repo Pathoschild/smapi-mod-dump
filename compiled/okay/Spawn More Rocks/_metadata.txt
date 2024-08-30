@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7423
-IDs: Mase.SpawnMoreRocks
-update keys: Nexus:7423

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/14448
-IDs: spacechase0.AQualityMod
-update keys: Nexus:14448, GitHub:spacechase0/StardewValleyMods

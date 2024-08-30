@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/12161
-IDs: invatorzen.PBF
-update keys: Nexus:12161

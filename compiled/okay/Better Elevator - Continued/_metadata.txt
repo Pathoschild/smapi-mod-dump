@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/22340
-IDs: FlyingTNT.BetterElevator
-update keys: Nexus:22340, GitHub:FlyingTNT/StardewValleyMods

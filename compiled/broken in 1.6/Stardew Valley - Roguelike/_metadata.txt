@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/13614
-IDs: tylergibbs2.StardewRoguelike
-update keys: GitHub:tylergibbs2/StardewValleyRoguelike, Nexus:13614, GitHub:tylergibbs2/StardewValleyMods

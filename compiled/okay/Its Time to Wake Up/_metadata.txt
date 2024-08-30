@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/13798
-IDs: Krutonium.ItsTimeToWakeUp
-update keys: Nexus:13798

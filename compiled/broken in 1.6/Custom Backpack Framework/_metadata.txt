@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/13826
-IDs: aedenthorn.CustomBackpack
-update keys: Nexus:13826, GitHub:aedenthorn/StardewValleyMods

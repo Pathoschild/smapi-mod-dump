@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/679
-IDs: Pathoschild.DebugMode, Pathoschild.Stardew.DebugMode
-update keys: Nexus:679, GitHub:Pathoschild/StardewMods

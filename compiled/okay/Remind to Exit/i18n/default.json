@@ -1,9 +1,0 @@
-{
-  "config.hotkey.desc": "Will have effect only if 'Enabled' is true",
-  "config.hotkeycustmsg.desc": "Will have effect only if 'Enabled' is true",
-  "reminder.disabled": "Exit Reminder is disabled",
-  "reminder.enabled": "Exit Reminder is enabled",
-  "reminder.title": "REMINDER:",
-  "reminder.body-default": "You are being reminded to exit the game.",
-  "reminder-ui.custom-msg-label": "Custom Reminder Message"
-}

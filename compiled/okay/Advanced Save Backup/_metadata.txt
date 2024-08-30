@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/435
-IDs: Omegasis.AdvancedSaveBackup, Omegasis.SaveBackup
-update keys: Nexus:435, GitHub:janavarro95/Stardew_Valley_Mods

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6412
-IDs: aedenthorn.TransparentObjects
-update keys: Nexus:6412, GitHub:aedenthorn/StardewValleyMods

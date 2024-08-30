@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/24765
-IDs: tomokisan.highRollerSlots
-update keys: Nexus:24765

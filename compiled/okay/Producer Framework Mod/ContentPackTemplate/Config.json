@@ -1,3 +1,0 @@
-﻿{
-    "DefaultWarningsLogLevel": "Warn" //[Warn|Info|Debug|Trace] Default log level of messages warning the playing that something was missing when loading the rule. Default is Warn.
-}

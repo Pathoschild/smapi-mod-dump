@@ -1,7 +1,0 @@
-{
-  "DeselectItemOnRotate": false,
-  "Controls": {
-    "ShiftToPrevious": "",
-    "ShiftToNext": "Tab"
-  }
-}

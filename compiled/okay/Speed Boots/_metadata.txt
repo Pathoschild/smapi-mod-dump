@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/22958
-IDs: season.SpeedBoots
-update keys: Nexus:22958

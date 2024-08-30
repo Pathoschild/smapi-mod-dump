@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3375
-IDs: Paritee.TreatYourAnimals
-update keys: Nexus:3375, GitHub:paritee/Paritee.StardewValley.Frameworks

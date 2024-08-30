@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/13296
-IDs: maephie.AutofillPetBowl
-update keys: Nexus:13296, GitHub:maephie/StardewMods

@@ -1,8 +1,0 @@
-{
-  "StartFromBottom": true,
-  "OldestToNewest": true,
-  "NonNPCDialogue": true,
-  "ToggleHUDMessages": false,
-  "LogLimit": 50,
-  "LogButton": "L"
-}

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/16582
-IDs: multiplayer.mod
-update keys: Nexus:16582, GitHub:TMThong/Stardew-Mods

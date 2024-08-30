@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/21247
-IDs: stardemod.PetAgainstCrows
-update keys: Nexus:21247

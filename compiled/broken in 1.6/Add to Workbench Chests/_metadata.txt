@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5713
-IDs: Rui3.AddToWorkbenchChests
-update keys: Nexus:5713

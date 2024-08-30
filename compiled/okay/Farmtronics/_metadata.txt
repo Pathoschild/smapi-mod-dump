@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10634
-IDs: strout.farmtronics
-update keys: Nexus:10634, GitHub:JoeStrout/Farmtronics

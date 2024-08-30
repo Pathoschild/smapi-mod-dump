@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5527
-IDs: Strato35.RunningKey
-update keys: Nexus:5527

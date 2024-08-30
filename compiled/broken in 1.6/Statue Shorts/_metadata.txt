@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/17642
-IDs: aedenthorn.StatueShorts
-update keys: Nexus:17642, GitHub:aedenthorn/StardewValleyMods

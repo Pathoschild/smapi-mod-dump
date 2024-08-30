@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/21381
-IDs: Richard2091.MapTeleport
-update keys: GitHub:Richard2091/MapTeleport, Nexus:21381

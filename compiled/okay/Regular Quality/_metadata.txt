@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5090
-IDs: desto.RegularQuality
-update keys: Nexus:5090, GitHub:desto-git/smapi-RegularQuality

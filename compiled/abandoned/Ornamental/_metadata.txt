@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/4981
-IDs: Taskmaster.Ornamental
-update keys: Nexus:4981

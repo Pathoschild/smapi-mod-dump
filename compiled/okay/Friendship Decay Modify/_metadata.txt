@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/23862
-IDs: weizinai.FriendshipDecayModify
-update keys: Nexus:23862, GitHub:weizinai/StardewValleyMods

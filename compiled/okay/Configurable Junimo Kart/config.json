@@ -1,7 +1,0 @@
-{
-  "infinite_jumps": false,
-  "infinite_lives": false,
-  "speed_multiplier": 1.0,
-  "gravity": 300.0,
-  "jump_strength": 150.0
-}

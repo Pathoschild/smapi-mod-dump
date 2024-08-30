@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2502
-IDs: BunnyJumps.BJSCapsuleMod
-update keys: Nexus:2502

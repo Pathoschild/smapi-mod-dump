@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/14510
-IDs: Ivy.OrnithologistsGuild
-update keys: Nexus:14510, GitHub:greyivy/OrnithologistsGuild

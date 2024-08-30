@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10769
-IDs: Incognito357.PrairieKingUIEnhancements
-update keys: Nexus:10769, GitHub:Incognito357/PrairieKingUIEnhancements

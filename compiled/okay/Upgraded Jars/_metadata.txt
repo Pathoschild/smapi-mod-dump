@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/15756
-IDs: CF.UpgradedJars
-update keys: Nexus:15756@NoQualityBonus, Nexus:15756

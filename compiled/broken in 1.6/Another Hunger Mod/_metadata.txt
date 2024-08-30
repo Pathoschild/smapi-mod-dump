@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3379
-IDs: spacechase0.AnotherHungerMod
-update keys: Nexus:3379, GitHub:spacechase0/StardewValleyMods

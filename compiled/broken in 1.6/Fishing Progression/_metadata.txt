@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/18749
-IDs: chadlymasterson.fishingprogression
-update keys: Nexus:18749, GitHub:chudders1231/SDV-FishingProgression

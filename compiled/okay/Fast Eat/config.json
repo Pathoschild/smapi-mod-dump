@@ -1,7 +1,0 @@
-{
-  "EatKey": "V",
-  "EatSecondKey": "B",
-  "EnableSecondKey": false,
-  "EnableEatingAnimation": true,
-  "EatKeyBehavior": "FirstAvailableItem"
-}

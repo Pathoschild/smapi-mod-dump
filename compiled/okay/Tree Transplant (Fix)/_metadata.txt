@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/20852
-IDs: Siweipancc.TreeTransplant
-update keys: GitHub:siweipancc/TreeTransplant, Nexus:20852

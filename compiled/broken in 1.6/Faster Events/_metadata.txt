@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7631
-IDs: libraryaddict.FasterEvents
-update keys: Nexus:7631

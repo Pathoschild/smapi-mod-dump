@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/11217
-IDs: Shockah.PleaseGiftMeInPerson
-update keys: Nexus:11217, GitHub:Shockah/Stardew-Valley-Mods

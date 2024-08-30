@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2504
-IDs: RedstoneBoy.BetterCrafting
-update keys: Nexus:2504, GitHub:RedstoneBoy/BetterCrafting

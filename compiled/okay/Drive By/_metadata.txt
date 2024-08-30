@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/12033
-IDs: BlaDe.DriveBy
-update keys: Nexus:12033

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/11286
-IDs: Rifleman.JustSleepIn
-update keys: Nexus:11286, GitHub:9Rifleman/JustSleepIn

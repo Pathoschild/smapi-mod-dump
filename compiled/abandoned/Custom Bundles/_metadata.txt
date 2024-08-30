@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/8258
-IDs: furyx639.CustomBundles
-update keys: Nexus:8258

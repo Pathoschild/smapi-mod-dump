@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/16832
-IDs: MindMeltMax.QualityBait
-update keys: Nexus:16832, GitHub:MindMeltMax/Stardew-Valley-Mods

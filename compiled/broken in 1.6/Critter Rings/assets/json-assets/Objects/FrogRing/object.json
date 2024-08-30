@@ -1,8 +1,0 @@
-﻿{
-  "Name": "atravita.FrogRing",
-  "Category": "Ring",
-  "Edibility": -300,
-  "Price": 1000,
-  "TranslationKey": "frog-ring",
-  "CanSell": false,
-}

@@ -1,5 +1,0 @@
-{
-    EnabledIndoorsName:  "Ввімкнено в приміщеннях",      EnabledIndoorsTooltip:  "Завжди прокручувати карту в приміщеннях", 
-    EnabledOutdoorsName: "Ввімкнено на вулиці",     EnabledOutdoorsTooltip: "Завжди прокручувати карту на вулиці", 
-    ToggleScrollName:    "Кнопка активації", ToggleScrollTooltip:    "Кнопка для перемикання режиму прокрутки в поточному місці",
-}

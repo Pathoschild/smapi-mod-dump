@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/20703
-IDs: NermNermNerm.QuestableTractor
-update keys: Nexus:20703, GitHub:NermNermNerm/StardewMods

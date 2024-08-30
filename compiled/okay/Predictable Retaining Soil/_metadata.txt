@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10956
-IDs: Shockah.PredictableRetainingSoil
-update keys: Nexus:10956, GitHub:Shockah/Stardew-Valley-Mods

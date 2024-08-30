@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/11022
-IDs: leclair.almanacdga
-update keys: Nexus:11022@DGA, Nexus:11022, GitHub:KhloeLeclair/StardewMods

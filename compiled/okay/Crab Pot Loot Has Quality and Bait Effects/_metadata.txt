@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7767
-IDs: Goldenrevolver.CrabPotQuality
-update keys: Nexus:7767, GitHub:Goldenrevolver/Stardew-Valley-Mods

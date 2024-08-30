@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3101
-IDs: spacechase0.ConsoleCode
-update keys: Nexus:3101, GitHub:spacechase0/StardewValleyMods

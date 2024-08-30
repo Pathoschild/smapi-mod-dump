@@ -1,7 +1,0 @@
-{
-  "modConfigMenu.paragraph": "Why take your materials to the carpenter if they are building at your farm anyway? Instead, tell them which color chests to look inside for ingredients.",
-  "modConfigMenu.chestColorName": "Chest Color",
-  "modConfigMenu.chestColorTooltip": "Which color of chests will carpenters look for? The number matches the color picker above the Chest menu. Unpainted chests are not considered. By default, mod uses color 7 yellow.",
-  "modConfigMenu.chestLocationName": "Chests Location",
-  "modConfigMenu.chestLocationTooltip": "={{targetLocation}} (default): Carpenters will look for materials in chests on the farm they are building in. ={{mainFarmOnly}}: Carpenters will look for materials in chests on main farm regardless of where the building is constructed."
-}

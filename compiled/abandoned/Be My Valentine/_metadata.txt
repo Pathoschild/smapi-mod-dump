@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5219
-IDs: Taskmaster.BeMyValentine
-update keys: Nexus:5219

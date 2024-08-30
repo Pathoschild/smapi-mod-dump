@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/12893
-IDs: ribeena.dynamicbodies
-update keys: Nexus:12893, GitHub:ribeena/StardewValleyMods

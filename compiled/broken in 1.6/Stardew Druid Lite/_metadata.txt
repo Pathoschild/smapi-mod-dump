@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/19308
-IDs: neosinf.StardewDruidLite
-update keys: Nexus:19308

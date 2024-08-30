@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10760
-IDs: aedenthorn.TreeTweaks
-update keys: Nexus:10760, GitHub:aedenthorn/StardewValleyMods

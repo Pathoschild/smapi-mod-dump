@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1079
-IDs: Platonymous.PelicanTTS
-update keys: Nexus:1079, GitHub:Platonymous/Stardew-Valley-Mods

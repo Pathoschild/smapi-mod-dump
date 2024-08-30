@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/18762
-IDs: Isi0.GiftTasteHelper
-update keys: Nexus:18762, GitHub:Just-Chaldea/GiftTasteHelper

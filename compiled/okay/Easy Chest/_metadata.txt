@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/20842
-IDs: season.EasyChest
-update keys: Nexus:20842

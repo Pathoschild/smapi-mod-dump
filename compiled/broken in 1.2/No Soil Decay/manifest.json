@@ -1,9 +1,0 @@
-{
-  "Name": "NoSoilDecay",
-  "Authour": "ThatNorthernMonkey",
-  "Version": "0.0.1", // fixed locally from 0.0
-  "Description": "",
-  "UniqueID": "289dee03-5f38-4d8e-8ffc-e440198e8610",
-  "PerSaveConfigs": false,
-  "EntryDll": "NoSoilDecay.dll"
-}

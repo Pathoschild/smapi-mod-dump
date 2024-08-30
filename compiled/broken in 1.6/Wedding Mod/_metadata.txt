@@ -1,3 +1,0 @@
-page URL: https://www.moddrop.com/stardew-valley/mod/526231
-IDs: Opalie.Wedding
-update keys: ModDrop:526231, GitHub:Opalie/Wedding

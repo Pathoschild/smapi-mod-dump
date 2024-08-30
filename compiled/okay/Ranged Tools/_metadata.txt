@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6935
-IDs: vgperson.RangedTools
-update keys: Nexus:6935, GitHub:vgperson/RangedTools

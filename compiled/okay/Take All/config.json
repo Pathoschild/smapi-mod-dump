@@ -1,8 +1,0 @@
-{
-  "$id": "1",
-  "ModEnabled": true,
-  "TakeSameByDefault": false,
-  "CloseAfterTake": false,
-  "TakeButton": "Tab",
-  "ModButton": "LeftControl"
-}

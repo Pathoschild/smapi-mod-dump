@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6429
-IDs: aedenthorn.Familiars
-update keys: Nexus:6429, GitHub:aedenthorn/StardewValleyMods

@@ -1,3 +1,0 @@
-page URL: https://community.playstarbound.com/resources/3683
-IDs: F70D4FAB-0AB2-4B78-9F1B-AF2CA2236A59
-update keys: Chucklefish:3683, GitHub:Igorious/StardevValleyNewMachinesMod

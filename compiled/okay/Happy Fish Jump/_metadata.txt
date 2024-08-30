@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6516
-IDs: KoihimeNakamura.HappyFishJump
-update keys: Nexus:6516, GitHub:Sakorona/SDVMods

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/23155
-IDs: BadNetCode.PutBatteriesInFishTanks
-update keys: Nexus:23155

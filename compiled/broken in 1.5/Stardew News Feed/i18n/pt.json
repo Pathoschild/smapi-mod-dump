@@ -1,9 +1,0 @@
-﻿{
-    "news-feed.birthday-notice": "Hoje é o aniversário de {{npcName}}. Não esqueça de lhe dar um presente!",
-    "news-feed.harvest-items-found-in-location-notice": "Há {{numberOfItems}} itens prontos para serem colhidos em {{locationName}}!",
-    "news-feed.harvest-animals-found-in-location-notice.singular": "Há 1 animal com produto disponível em {{locationName}}!",
-    "news-feed.harvest-animals-found-in-location-notice.plural": "Há {{numberOfItems}} animais com produtos disponíveis em {{locationName}}!",
-    "news-feed.bats-dropped-fruit-notice": "Os morcegos lhe trouxeram algumas frutas!",
-    "news-feed.cave-display-name": "Caverna da Fazenda",
-    "news-feed.silo-low-notice": "Seus silos estão com pouco feno ({{piecesOfHay}}/{{maxCapacity}})"
-}

@@ -1,3 +1,0 @@
-page URL: https://github.com/Enaium-StardewValleyMods/ModMenu
-IDs: Enaium.ModMenu
-update keys: CurseForge:436844, GitHub:Enaium-StardewValleyMods/ModMenu

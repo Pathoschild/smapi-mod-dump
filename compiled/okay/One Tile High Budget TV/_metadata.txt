@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/20955
-IDs: Khitiara.BudgetTVFix
-update keys: Nexus:20955

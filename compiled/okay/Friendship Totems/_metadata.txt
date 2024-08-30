@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/25969
-IDs: ThisIsCad.FriendshipTotems
-update keys: Nexus:25969, GitHub:brandonwamboldt/FriendshipTotems

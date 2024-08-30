@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5082
-IDs: Blackclaw.SpeedMod
-update keys: Nexus:5082, GitHub:Xebeth/StardewValley-SpeedMod

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/22612
-IDs: leclair.morenightlyevents
-update keys: Nexus:22612@Main, Nexus:22612, GitHub:KhloeLeclair/StardewMods

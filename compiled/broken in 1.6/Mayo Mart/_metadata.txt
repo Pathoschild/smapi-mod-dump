@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/17175
-IDs: aedenthorn.MayoMart
-update keys: Nexus:17175, GitHub:aedenthorn/StardewValleyMods

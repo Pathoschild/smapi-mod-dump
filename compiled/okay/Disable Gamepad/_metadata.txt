@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2229
-IDs: lperkins2.DisableController
-update keys: Nexus:2229

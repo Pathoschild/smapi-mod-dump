@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10704
-IDs: aedenthorn.CustomPictureFrames
-update keys: Nexus:10704, GitHub:aedenthorn/StardewValleyMods

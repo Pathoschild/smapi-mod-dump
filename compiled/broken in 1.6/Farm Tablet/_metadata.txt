@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/16447
-IDs: com.boneskull.farm-tablet
-update keys: Nexus:16447, GitHub:Floogen/AlternativeTextures

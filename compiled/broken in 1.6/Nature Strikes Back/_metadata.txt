@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/19771
-IDs: ClumsyJackdaw.NatureStrikesBack
-update keys: Nexus:19771, GitHub:clumsyjackdaw/StardewValley_NatureStrikesBack

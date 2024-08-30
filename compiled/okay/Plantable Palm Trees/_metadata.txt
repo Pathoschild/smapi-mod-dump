@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/4096
-IDs: MouseyPounds.PlantablePalmTrees
-update keys: Nexus:4096, GitHub:MouseyPounds/stardew-mods

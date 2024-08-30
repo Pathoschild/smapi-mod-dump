@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3320
-IDs: DJ-STLN.FreeSlingshot
-update keys: Nexus:3320

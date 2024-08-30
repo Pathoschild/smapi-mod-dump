@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5521
-IDs: Entoarox.Utilities
-update keys: Nexus:5521, GitHub:Entoarox/StardewMods

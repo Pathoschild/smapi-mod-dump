@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/13852
-IDs: spacechase0.GiantOmelet
-update keys: Nexus:13852, GitHub:spacechase0/StardewValleyMods

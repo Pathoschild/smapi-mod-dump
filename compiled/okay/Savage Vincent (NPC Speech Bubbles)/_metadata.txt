@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/11833
-IDs: BlaDe.NPCSpeechBubblesVincent
-update keys: Nexus:11833

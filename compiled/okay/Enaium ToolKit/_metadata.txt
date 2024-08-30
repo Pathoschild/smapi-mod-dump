@@ -1,3 +1,0 @@
-page URL: https://github.com/Enaium-StardewValleyMods/EnaiumToolKit
-IDs: Enaium.EnaiumToolKit
-update keys: CurseForge:436787, GitHub:Enaium-StardewValleyMods/EnaiumToolKit

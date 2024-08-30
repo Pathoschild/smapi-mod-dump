@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/12311
-IDs: PeacefulEnd.SolidFoundationsAutomate
-update keys: Nexus:12311@Automate, Nexus:12311, GitHub:Floogen/SolidFoundations

@@ -1,7 +1,0 @@
-{
-  "EnableMod": true,
-  "GreenAmount": 0.8,
-  "DailyZombificationChance": 0.5,
-  "InfectionDistance": 128,
-  "InfectionChancePerSecond": 0.1
-}

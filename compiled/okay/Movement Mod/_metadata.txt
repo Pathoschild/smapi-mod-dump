@@ -1,3 +1,0 @@
-page URL: https://github.com/Zoryn4163/SMAPI-Mods
-IDs: Zoryn.MovementModifier
-update keys: GitHub:Zoryn4163/SMAPI-Mods

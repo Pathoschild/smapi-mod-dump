@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1153
-IDs: mmanlapat.GameReminder
-update keys: Nexus:1153

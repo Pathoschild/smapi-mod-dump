@@ -1,8 +1,0 @@
-{
-  "Config.AutoWarp.Name": "Auto Warp for 2P",
-  "Config.AutoWarp.Tooltip": "If enabled, will automatically warp you if there is only one other player. Disable to force show the friend selection menu.",
-  "WarpTotemFriend.Name": "Warp Totem: Friend",
-  "WarpTotemFriend.Description": "Warp directly to another farmer. Consumed on use.",
-  "WarpTo.Tooltip": "Warp to {{player}} in {{location}}",
-  "Error.NoOtherFarmers": "No other farmers are available to warp to"
-}

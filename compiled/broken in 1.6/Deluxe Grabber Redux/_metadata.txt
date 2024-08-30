@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7920
-IDs: ferdaber.DeluxeGrabberRedux
-update keys: Nexus:7920, GitHub:ferdaber/sdv-mods

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/14985
-IDs: spacechase0.PersistentMines
-update keys: Nexus:14985, GitHub:spacechase0/StardewValleyMods

@@ -1,8 +1,0 @@
-{
-  "Name": "Showcase Mod",
-  "Author": "Igorious",
-  "Version": "0.9", // fixed locally from 0.9-500
-  "Description": "Adds showcase furniture.",
-  "UniqueID": "Igorious.Showcase",
-  "EntryDll": "Igorious.StardewValley.ShowcaseMod.dll"
-}

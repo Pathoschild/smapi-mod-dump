@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/4970
-IDs: Digus.ProducerFrameworkMod
-update keys: Nexus:4970, GitHub:Digus/StardewValleyMods

@@ -1,8 +1,0 @@
-﻿{
-  "Name": "Smart Mod",
-  "Author": "KuroBear",
-  "Version": "0.0.1", // fixed locally from 0.0
-  "Description": "",
-  "UniqueID": "KuroBear.SmartMod",
-  "EntryDll": "SmartMod.dll"
-}

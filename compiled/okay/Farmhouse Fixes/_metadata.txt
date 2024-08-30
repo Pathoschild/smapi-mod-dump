@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/16507
-IDs: CF.FarmhouseFixes
-update keys: Nexus:16507

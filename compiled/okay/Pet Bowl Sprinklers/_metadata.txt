@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/22546
-IDs: andyruwruw.PetBowlSprinklers
-update keys: GitHub:andyruwruw/stardew-valley-pet-bowl-sprinklers, Nexus:22546

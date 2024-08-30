@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10160
-IDs: Tb.Stardew_Pause_Sync
-update keys: Nexus:10160

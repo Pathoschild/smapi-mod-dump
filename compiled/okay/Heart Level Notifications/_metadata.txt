@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/8655
-IDs: StultusV.HeartLevelNotifications
-update keys: Nexus:8655, GitHub:JudeRV/Stardew-HeartLevelNotifier

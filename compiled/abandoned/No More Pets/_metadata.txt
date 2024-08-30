@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/506
-IDs: Omegasis.NoMorePets, NoMorePets
-update keys: Nexus:506, GitHub:janavarro95/Stardew_Valley_Mods

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/12589
-IDs: aedenthorn.PrismaticFurniture
-update keys: Nexus:12589, GitHub:aedenthorn/StardewValleyMods

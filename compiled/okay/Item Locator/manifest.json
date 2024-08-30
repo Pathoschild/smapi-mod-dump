@@ -1,9 +1,0 @@
-{
-	"Name": "ItemLocator",
-	"Author": "Hitaxas",
-	"Version": "1.5.0", // fixed locally
-	"Description": "Test to see if I can invoke commands from game chat",
-	"UniqueID": "Hitaxas.Items2.DLL",
-	"EntryDLL": "ItemLocator.dll",
-	"UpdateKeys": [ "Nexus: " ]
-}

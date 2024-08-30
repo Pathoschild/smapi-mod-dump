@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7286
-IDs: Rafseazz.RidgesideVillage
-update keys: Nexus:-1, Nexus:7286, GitHub:Rafseazz/Ridgeside-Village-Mod

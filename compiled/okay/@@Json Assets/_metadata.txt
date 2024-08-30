@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1720
-IDs: spacechase0.JsonAssets
-update keys: Nexus:1720, GitHub:spacechase0/StardewValleyMods

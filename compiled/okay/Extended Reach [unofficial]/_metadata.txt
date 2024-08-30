@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1493
-IDs: spacechase0.ExtendedReach
-update keys: Nexus:1493, GitHub:spacechase0/StardewValleyMods

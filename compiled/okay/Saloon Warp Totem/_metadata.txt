@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/16450
-IDs: Artinity.SaloonWarpTotem
-update keys: Nexus:16450, GitHub:Artinity/SaloonWarpTotem

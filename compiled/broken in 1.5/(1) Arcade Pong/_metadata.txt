@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2044
-IDs: Platonymous.ArcadePong
-update keys: Nexus:2044, GitHub:Platonymous/Stardew-Valley-Mods

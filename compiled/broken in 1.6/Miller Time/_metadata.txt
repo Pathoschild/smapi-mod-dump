@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7575
-IDs: Satozaki.MillerTime
-update keys: Nexus:7575, GitHub:Sonozuki/StardewMods

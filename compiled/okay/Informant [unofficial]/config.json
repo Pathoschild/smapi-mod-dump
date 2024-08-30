@@ -1,8 +1,0 @@
-{
-  "ShowCropFertilizer": true,
-  "DisplayIds": {},
-  "TooltipTrigger": "Hover",
-  "TooltipTriggerButton": "MouseRight",
-  "HideMachineTooltips": "ForNonMachines",
-  "DecorateLockedBundles": false
-}

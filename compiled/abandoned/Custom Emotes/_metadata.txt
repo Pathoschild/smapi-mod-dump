@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10861
-IDs: PurrplingCat.CustomEmotes
-update keys: Nexus:10861, GitHub:purrplingcat/CustomEmotes

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/4862
-IDs: BrasileiroTop.Interacoes
-update keys: Nexus:4862

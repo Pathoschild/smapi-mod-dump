@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10971
-IDs: tlitookilakin.HDPortraits
-update keys: GitHub:tlitookilakin/HDPortraits, Nexus:10971, ModDrop:1103418

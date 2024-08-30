@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2221
-IDs: hawkfalcon.BetterJunimos
-update keys: Nexus:2221, GitHub:hawkfalcon/Stardew-Mods

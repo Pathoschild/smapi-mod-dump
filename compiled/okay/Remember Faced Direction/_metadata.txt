@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6946
-IDs: Annosz.RememberFacedDirection
-update keys: Nexus:6946, GitHub:Annosz/StardewValleyModding

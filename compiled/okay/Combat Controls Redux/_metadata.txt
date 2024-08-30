@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10496
-IDs: NormanPCN.CombatControlsRedux
-update keys: Nexus:10496, GitHub:NormanPCN/StardewValleyMods

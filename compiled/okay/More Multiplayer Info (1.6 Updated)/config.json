@@ -1,8 +1,0 @@
-{
-  "ShowInventory": true,
-  "ShowReadyInfoInChatBox": true,
-  "ShowLastPlayerReadyInfoInChatBox": true,
-  "HideInSinglePlayer": false,
-  "ShowSelf": true,
-  "HealthXPositionOffset": 69
-}

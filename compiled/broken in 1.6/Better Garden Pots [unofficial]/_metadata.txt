@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2209
-IDs: cat.bettergardenpots
-update keys: Nexus:2209, GitHub:danvolchek/StardewMods

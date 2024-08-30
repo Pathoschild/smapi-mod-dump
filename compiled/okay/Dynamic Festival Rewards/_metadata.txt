@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/20253
-IDs: mistyspring.DynamicFestivalRewards
-update keys: Nexus:20253

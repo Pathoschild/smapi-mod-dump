@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/8366
-IDs: heyseth.umbrellas
-update keys: Nexus:8366, GitHub:heyseth/SDVMods

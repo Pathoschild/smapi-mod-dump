@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3206
-IDs: OtherBuckets.StardewNewsFeed
-update keys: GitHub:MikeSNorth/StardewNewsFeed, Nexus:3206, GitHub:Mikesnorth/StardewNewsFeed

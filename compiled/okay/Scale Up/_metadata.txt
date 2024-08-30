@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3130
-IDs: Platonymous.ScaleUp
-update keys: Nexus:3130, GitHub:Platonymous/Stardew-Valley-Mods

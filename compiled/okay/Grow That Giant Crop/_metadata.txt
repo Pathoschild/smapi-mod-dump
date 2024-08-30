@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/23760
-IDs: MercuryVN.GrowThatGiantCrop
-update keys: Nexus:23760, GitHub:MercuryVN/GrowThatGiantCrop

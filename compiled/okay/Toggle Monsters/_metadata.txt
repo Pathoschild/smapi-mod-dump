@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/11801
-IDs: Me.ToggleMonsters
-update keys: Nexus:11801

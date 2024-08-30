@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/22534
-IDs: jeWel.TeleportationToolModCode
-update keys: Nexus:???, Nexus:22534

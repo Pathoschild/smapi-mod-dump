@@ -1,6 +1,0 @@
-{
-  "pronoun.male": "Er",
-  "pronoun.female": "Sie",
-  "notification-message.basic": "Es ist {name} Geburtstag!",
-  "notification-message.recommend-gift": " {pronoun} mag {gift}."
-}

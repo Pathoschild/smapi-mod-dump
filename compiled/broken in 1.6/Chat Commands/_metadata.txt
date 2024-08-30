@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2092
-IDs: cat.chatcommands
-update keys: Nexus:2092, GitHub:danvolchek/StardewMods

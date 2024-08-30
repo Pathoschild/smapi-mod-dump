@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/17152
-IDs: aedenthorn.PoopFramework
-update keys: Nexus:17152, GitHub:aedenthorn/StardewValleyMods

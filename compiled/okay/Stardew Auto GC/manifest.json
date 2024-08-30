@@ -1,8 +1,0 @@
-﻿{
-	"Name": "StardewAutoGC",
-	"Author": "Lake1059",
-	"Version": "3.1",
-	"UniqueID": "Lake1059.StardewAutoGC",
-	"EntryDll": "StardewAutoGC_NET6.dll",
-	"UpdateKeys": [ "Nexus:9293", "Github:Lake1059/StardewAutoGC" ]
-}

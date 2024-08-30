@@ -1,5 +1,0 @@
-{
-	"hint.wellfeeded": "Estas bien alimentado y tu energía será mayormente reestablecida si duermes en menos de 2 horas",
-	"hint.sleeped.unfeeded": "Has dormido y reestablecido {{StaminaRegeneratedProcent}}% de energía",
-	"hint.sleeped.wellfeeded": "Has dormido bien alimentado y reestablecido {{StaminaRegeneratedProcent}}% de energía",
-}

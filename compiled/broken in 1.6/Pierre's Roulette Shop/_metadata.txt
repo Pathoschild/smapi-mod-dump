@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10826
-IDs: xynerorias.pierresroulette
-update keys: Nexus:10826, GitHub:xynerorias/pierre-roulette-shop-SV

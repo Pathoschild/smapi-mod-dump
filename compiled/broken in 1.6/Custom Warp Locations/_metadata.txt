@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1688
-IDs: cat.customwarplocations
-update keys: Nexus:1688, GitHub:danvolchek/StardewMods

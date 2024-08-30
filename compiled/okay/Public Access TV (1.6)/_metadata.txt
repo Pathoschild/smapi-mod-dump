@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/22486
-IDs: JohnPeters.PublicAccessTV
-update keys: Nexus:22486, GitHub:emurphy42/PredictiveMods

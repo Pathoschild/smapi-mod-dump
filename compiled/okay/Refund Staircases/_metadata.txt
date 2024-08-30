@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/19209
-IDs: NickMartin.RefundStaircases
-update keys: GitHub:nickmartin1ee7/RefundStaircases, Nexus:19209

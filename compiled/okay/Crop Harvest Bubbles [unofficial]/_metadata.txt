@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/17761
-IDs: aedenthorn.CropHarvestBubbles
-update keys: Nexus:17761, GitHub:aedenthorn/StardewValleyMods

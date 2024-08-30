@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10978
-IDs: Goldenrevolver.MushroomRancher
-update keys: Nexus:10978, GitHub:Goldenrevolver/Stardew-Valley-Mods

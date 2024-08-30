@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/9119
-IDs: elbe.AnimalProduceExpansion
-update keys: Nexus:9119, GitHub:lshtech/AnimalProduceExpansion

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3175
-IDs: Redwood.CompanionNPCs
-update keys: Nexus:3175, GitHub:EKomperud/StardewMods

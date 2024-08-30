@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/18842
-IDs: Falson.TeleportMod
-update keys: Nexus:18842

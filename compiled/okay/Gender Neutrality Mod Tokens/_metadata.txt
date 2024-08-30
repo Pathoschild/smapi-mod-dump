@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/14426
-IDs: Hana.GNMTokens
-update keys: Nexus:14426

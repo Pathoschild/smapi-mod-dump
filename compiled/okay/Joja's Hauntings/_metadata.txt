@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7014
-IDs: MindMeltMax.HauntedJoja
-update keys: Nexus:7014, GitHub:MindMeltMax/Stardew-Valley-Mods

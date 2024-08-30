@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/17386
-IDs: CF.SeasonalGardenFarmhouseV2.SMAPI
-update keys: Nexus:17386

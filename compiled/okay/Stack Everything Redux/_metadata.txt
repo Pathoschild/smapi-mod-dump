@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/22381
-IDs: thimadera.StackEverythingRedux
-update keys: Nexus:22381, GitHub:thimadera/StardewMods

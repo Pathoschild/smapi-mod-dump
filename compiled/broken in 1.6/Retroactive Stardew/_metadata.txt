@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6953
-IDs: Millerscout.RetroactiveStardew
-update keys: Nexus:6953, GitHub:millerscout/StardewMillerMods

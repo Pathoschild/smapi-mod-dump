@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3145
-IDs: BunnyJumps.BJSOnlyTreasureRoom
-update keys: Nexus:3145

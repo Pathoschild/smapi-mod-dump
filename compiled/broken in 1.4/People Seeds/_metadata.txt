@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3635
-IDs: bwdy.peopleseeds
-update keys: Nexus:3635

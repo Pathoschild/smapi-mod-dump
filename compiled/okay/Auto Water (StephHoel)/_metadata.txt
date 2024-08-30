@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/21022
-IDs: StephHoel.AutoWater
-update keys: Nexus:21022, GitHub:StephHoel/ModsStardewValley

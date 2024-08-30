@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/22539
-IDs: FlyingTNT.ResourceStorage
-update keys: Nexus:22539, GitHub:FlyingTNT/StardewValleyMods

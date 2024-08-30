@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6688
-IDs: spacechase0.SurfingFestival
-update keys: Nexus:6688, GitHub:spacechase0/StardewValleyMods

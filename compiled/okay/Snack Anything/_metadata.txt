@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5196
-IDs: Cherry.SnackAnything
-update keys: Nexus:5196, GitHub:ChroniclerCherry/stardew-valley-mods

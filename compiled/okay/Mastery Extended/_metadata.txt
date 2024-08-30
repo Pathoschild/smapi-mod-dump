@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/23697
-IDs: AlanBF.MasteryExtended, AlanBF.MasteryExtended.SC
-update keys: Nexus:23697, GitHub:Pet-Slime/StardewValley

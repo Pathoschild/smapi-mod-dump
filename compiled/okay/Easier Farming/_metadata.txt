@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1426
-IDs: cautiouswaffle.EasierFarming, cautiouswafffle.EasierFarming
-update keys: Nexus:1426

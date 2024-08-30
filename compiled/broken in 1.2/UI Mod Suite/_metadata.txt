@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1023
-IDs: Demiacle.UiModSuite
-update keys: Nexus:1023, GitHub:demiacle/UiModSuite

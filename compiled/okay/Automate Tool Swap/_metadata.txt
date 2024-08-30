@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/21050
-IDs: Trapyy.AutomatetoolSwap
-update keys: Nexus:21050, GitHub:Caua-Oliveira/StardewValley-AutomateToolSwap

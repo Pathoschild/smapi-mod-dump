@@ -1,9 +1,0 @@
-﻿{
-	"config.MinValue.name": "Mínimo",
-	"config.MinValue.description": "Oro mínimo por item.",
-	"config.MaxValue.name": "Máximo",
-	"config.MaxValue.description": "Oro máximo por item. Si \"random\" está desactivado, los items siempre tienen este valor.",
-	"config.Randomize.description": "Se escogerá un valor entre mínimo y máximo.",
-	"config.UseYear.name": "Usar año en\nvez de puntaje",
-	"config.UseYear.description": "En vez de calcular usando el puntaje, se usa el año."
-}

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/16235
-IDs: trashcan9.BetterPanning.ExtraConfig
-update keys: Nexus:16235

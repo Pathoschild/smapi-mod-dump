@@ -1,3 +1,0 @@
-page URL: https://github.com/jaredlll08/Item-Tooltips
-IDs: BlameJared.ItemTooltips
-update keys: GitHub:jaredlll08/Item-Tooltips

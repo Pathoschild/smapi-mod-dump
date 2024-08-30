@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/4663
-IDs: Cherry.ProfitMargins
-update keys: Nexus:4663, GitHub:ChroniclerCherry/stardew-valley-mods

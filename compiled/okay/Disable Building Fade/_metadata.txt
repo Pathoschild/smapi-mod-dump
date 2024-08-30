@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/24558
-IDs: calebstein1.StardewDisableBuildingFade
-update keys: GitHub:calebstein1/StardewDisableBuildingFade, Nexus:24558

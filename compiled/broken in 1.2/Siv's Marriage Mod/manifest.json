@@ -1,9 +1,0 @@
-{
-  "Name": "Siv's Marriage Mod",
-  "Authour": "Tori Leblanc AKA Siv",
-  "Version": "1.2.2", // fixed locally
-  "Description": "This mod is an accompanying SMAPI mod to improve/add features to Siv's Marriage Mod.",
-  "UniqueID": "6266959802",
-  "PerSaveConfigs": false,
-  "EntryDll": "SivsMarriageMod.dll"
-}

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1068
-IDs: Platonymous.CustomElementHandler
-update keys: Nexus:1068, GitHub:Platonymous/Stardew-Valley-Mods

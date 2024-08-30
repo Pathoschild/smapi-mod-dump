@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/9107
-IDs: elbe.AnimalShopConditions
-update keys: Nexus:9107, GitHub:lshtech/AnimalShopConditions

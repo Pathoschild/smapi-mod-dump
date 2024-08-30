@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3086
-IDs: funnysnek.SeparateMoney
-update keys: Nexus:3086

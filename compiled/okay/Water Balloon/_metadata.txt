@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/14481
-IDs: HaulinOats.WaterBalloon
-update keys: Nexus:14481, GitHub:HaulinOats/StardewMods

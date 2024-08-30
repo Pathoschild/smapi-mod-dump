@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1735
-IDs: ScarletGreed.GreenHut, CroiDorcha.GreenHut
-update keys: Nexus:1735

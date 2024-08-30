@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7871
-IDs: aedenthorn.SocialPageOrderButton
-update keys: Nexus:7871, GitHub:aedenthorn/StardewValleyMods

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3797
-IDs: cat.betterdoors
-update keys: Nexus:3797, GitHub:danvolchek/StardewMods

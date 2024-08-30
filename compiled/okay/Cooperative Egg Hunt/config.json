@@ -1,9 +1,0 @@
-{
-  "ModEnabled": true,
-  "NPCMinEggs": 1,
-  "NPCMaxEggs": 8,
-  "EggsToWin": 35,
-  "EggsPerTalk": 1,
-  "PointsPerEgg": 1000,
-  "NPCHunters": "Maru,Abigail,Jas,Sam,Vincent,Leo"
-}

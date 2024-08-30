@@ -1,3 +1,0 @@
-page URL: https://github.com/Enaium-StardewValleyMods/TeleportNpc
-IDs: Enaium.TeleportNpc
-update keys: CurseForge:436803, GitHub:Enaium-StardewValleyMods/TeleportNpc

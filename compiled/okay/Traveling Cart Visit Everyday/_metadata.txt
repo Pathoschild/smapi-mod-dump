@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/22240
-IDs: nnn.TCVED
-update keys: Nexus:22240

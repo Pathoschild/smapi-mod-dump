@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3721
-IDs: CKextreme.AfkTimer
-update keys: Nexus:3721

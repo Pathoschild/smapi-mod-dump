@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2923
-IDs: onjulraz.ProFarm, onjulraz.ProFarm_2
-update keys: Nexus:2923

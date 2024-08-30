@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/908
-IDs: TehPers.ShroomSpotter
-update keys: Nexus:908, GitHub:TehPers/StardewValleyMods

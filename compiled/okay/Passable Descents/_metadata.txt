@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/22592
-IDs: Rokugin.PassableDescents
-update keys: Nexus:22592, GitHub:rokugin/StardewMods

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3000
-IDs: Pathoschild.CropsAnytimeAnywhere
-update keys: Nexus:3000, GitHub:Pathoschild/StardewMods

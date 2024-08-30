@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/16233
-IDs: trashcan9.TidySocial
-update keys: Nexus:16233

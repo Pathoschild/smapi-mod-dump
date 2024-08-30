@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7675
-IDs: aedenthorn.MapTeleport
-update keys: Nexus:7675, GitHub:aedenthorn/StardewValleyMods

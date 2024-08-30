@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/14125
-IDs: aedenthorn.PlaygroundMod
-update keys: Nexus:14125, GitHub:aedenthorn/StardewValleyMods

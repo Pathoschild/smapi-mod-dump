@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10117
-IDs: aedenthorn.WeddingTweaks
-update keys: Nexus:10117, GitHub:aedenthorn/StardewValleyMods

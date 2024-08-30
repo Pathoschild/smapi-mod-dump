@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1976
-IDs: cat.betterfruittrees
-update keys: Nexus:1976, GitHub:danvolchek/StardewMods

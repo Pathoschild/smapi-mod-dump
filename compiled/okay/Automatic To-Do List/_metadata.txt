@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/26008
-IDs: VoxaelFox.AutomaticTodoList
-update keys: Nexus:26008, GitHub:paulwrubel/stardew-mods

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/4630
-IDs: MouseyPounds.ShadowFestival
-update keys: Nexus:4630, GitHub:MouseyPounds/stardew-mods

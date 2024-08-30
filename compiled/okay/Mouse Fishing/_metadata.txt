@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/25231
-IDs: ruggerbuns.MouseFishing
-update keys: Nexus:25231

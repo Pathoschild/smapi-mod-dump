@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6944
-IDs: desto.GiftDecline
-update keys: Nexus:6944, GitHub:desto-git/sdv-mods

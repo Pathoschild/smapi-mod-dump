@@ -1,3 +1,0 @@
-page URL: https://github.com/Stardew-Valley-Modding/Snail-Mail
-IDs: darkhax.snailmail
-update keys: GitHub:Stardew-Valley-Modding/Snail-Mail

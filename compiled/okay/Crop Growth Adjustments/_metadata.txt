@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/18914
-IDs: GZhynko.CropGrowthAdjustments
-update keys: Nexus:18914, GitHub:gzhynko/stardew-mods

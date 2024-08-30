@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1350
-IDs: shuaiz.FishingAdjustMod
-update keys: Nexus:1350, GitHub:hcoona/StardewValleyMods

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/12764
-IDs: ApryllForever.RestStop.Rummage
-update keys: Nexus:12764, GitHub:ApryllForever/Rummage

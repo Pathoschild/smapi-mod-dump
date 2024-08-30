@@ -1,3 +1,0 @@
-page URL: https://github.com/gr3ger/Stardew_JJB
-IDs: Greger.JigglyJunimoBundles
-update keys: GitHub:gr3ger/Stardew_JJB

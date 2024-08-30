@@ -1,3 +1,0 @@
-page URL: https://github.com/justastranger/ArtisanProductsCopyQuality
-IDs: JAS.ArtisanProductsCopyQuality
-update keys: GitHub:justastranger/ArtisanProductsCopyQuality

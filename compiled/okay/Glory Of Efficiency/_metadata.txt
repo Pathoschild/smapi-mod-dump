@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1234567
-IDs: hackswell.GloryOfEfficiency
-update keys: Nexus:1234567, Nexus:25996, GitHub:Hackswell/GloryOfEfficiency

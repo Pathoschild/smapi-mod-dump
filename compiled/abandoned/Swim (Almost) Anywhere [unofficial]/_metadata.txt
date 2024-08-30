@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1215
-IDs: Platonymous.SwimSuit
-update keys: Nexus:1215, GitHub:Platonymous/Stardew-Valley-Mods

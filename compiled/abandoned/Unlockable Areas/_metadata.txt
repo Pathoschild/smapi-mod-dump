@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/15132
-IDs: DeLiXx.Unlockable_Areas
-update keys: Nexus:15132@MAIN, Nexus:15132

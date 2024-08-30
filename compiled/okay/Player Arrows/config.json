@@ -1,9 +1,0 @@
-{
-  "Enabled": true,
-  "Debug": true,
-  "NamesOnArrows": true,
-  "DrawBorders": true,
-  "PlayerLocationUpdateFPS": 40,
-  "ArrowOpacity": 90,
-  "ColourPalette": "All"
-}

@@ -1,9 +1,0 @@
-{
-  "Name": "Press to Quack",
-  "Author": "DraconisLeonidas",
-  "Version": "1.1.0",
-  "Description": "Press a button to quack. That's it that's the mod.",
-  "UniqueID": "DraconisLeonidas.PressToQuack",
-  "EntryDll": "PressToQuack.dll",
-  "UpdateKeys": [ "Nexus:13583" ]
-}

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5260
-IDs: SorryLate.TvRecipes
-update keys: Nexus:5260

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2067
-IDs: cat.betterslingshots
-update keys: Nexus:2067, GitHub:danvolchek/StardewMods

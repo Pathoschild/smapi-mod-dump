@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/12701
-IDs: krutonium.runfast, krutonium.sprint
-update keys: Nexus:12701

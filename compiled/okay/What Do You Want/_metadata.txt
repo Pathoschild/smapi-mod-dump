@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/24689
-IDs: JohnPeters.WhatDoYouWant
-update keys: Nexus:24689, GitHub:emurphy42/WhatDoYouWant

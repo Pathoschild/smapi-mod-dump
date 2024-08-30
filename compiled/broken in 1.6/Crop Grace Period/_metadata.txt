@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7203
-IDs: stoobinator.seasonspillover
-update keys: Nexus:7203, GitHub:stoobinator/Stardew-Valley-Grace-Period

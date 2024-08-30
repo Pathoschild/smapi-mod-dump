@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/21290
-IDs: GrimatGaming.SelectToolPower
-update keys: Nexus:21290

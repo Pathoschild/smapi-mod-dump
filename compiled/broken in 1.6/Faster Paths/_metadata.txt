@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2277
-IDs: Entoarox.FasterPaths, 615f85f8-5c89-44ee-aecc-c328f172e413
-update keys: Nexus:2277, Chucklefish:3641, GitHub:Entoarox/StardewMods

@@ -1,3 +1,0 @@
-page URL: https://github.com/Alhifar/WaitAroundSMAPI
-IDs: Alhifar.WaitAround
-update keys: GitHub:Alhifar/WaitAroundSMAPI

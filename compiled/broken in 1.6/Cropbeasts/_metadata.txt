@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6030
-IDs: kdau.Cropbeasts
-update keys: Nexus:6030, ModDrop:784523

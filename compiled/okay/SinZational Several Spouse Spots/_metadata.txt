@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/20655
-IDs: SinZ.SeveralSpouseSpots
-update keys: Nexus:20655, GitHub:SinZ163/StardewMods

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/15927
-IDs: NCarigon.TreeShakeMod
-update keys: Nexus:15927, GitHub:ncarigon/StardewValleyMods

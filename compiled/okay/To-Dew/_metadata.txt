@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7409
-IDs: jltaylor-us.ToDew
-update keys: Nexus:7409, GitHub:jltaylor-us/StardewToDew

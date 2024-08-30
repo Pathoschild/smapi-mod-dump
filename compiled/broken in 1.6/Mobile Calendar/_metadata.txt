@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6601
-IDs: aedenthorn.MobileCalendar
-update keys: Nexus:6601, GitHub:aedenthorn/StardewValleyMods

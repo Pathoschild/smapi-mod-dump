@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/11166
-IDs: NormanPCN.BetterButterflyHutch
-update keys: Nexus:11166, GitHub:NormanPCN/StardewValleyMods

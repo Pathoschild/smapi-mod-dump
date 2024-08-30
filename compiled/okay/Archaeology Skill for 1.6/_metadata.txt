@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/22199
-IDs: moonslime.ArchaeologySkill
-update keys: Nexus:22199

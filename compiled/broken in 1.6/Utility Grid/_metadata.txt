@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10197
-IDs: aedenthorn.UtilityGrid
-update keys: Nexus:10197, GitHub:aedenthorn/StardewValleyMods

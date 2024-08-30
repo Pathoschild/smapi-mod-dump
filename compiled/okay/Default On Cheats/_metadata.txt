@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/21035
-IDs: EnderTedi.DefaultOnCheats
-update keys: Nexus:21035, GitHub:EnderTedi/DefaultOnCheats

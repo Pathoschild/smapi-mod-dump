@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/425
-IDs: Omegasis.StardewSymphonyRemastered, Omegasis.StardewSymphony
-update keys: Nexus:425, GitHub:janavarro95/Stardew_Valley_Mods

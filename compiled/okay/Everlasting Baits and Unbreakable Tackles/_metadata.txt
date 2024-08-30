@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2360
-IDs: DIGUS.EverlastingBaitsAndUnbreakableTacklesMod
-update keys: Nexus:2360, GitHub:Digus/StardewValleyMods

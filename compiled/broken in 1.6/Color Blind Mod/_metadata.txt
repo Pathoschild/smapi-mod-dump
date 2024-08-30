@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10380
-IDs: Testing.SDVColorBlindMod
-update keys: Nexus:10380

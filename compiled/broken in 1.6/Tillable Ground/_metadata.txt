@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2175
-IDs: hawkfalcon.TillableGround
-update keys: Nexus:2175, GitHub:hawkfalcon/Stardew-Mods

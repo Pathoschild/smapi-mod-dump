@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6488
-IDs: nikperic.EnergyTime
-update keys: Nexus:6488

@@ -1,8 +1,0 @@
-{
-  "Activate": "LeftControl",
-  "Decrease": "MouseMiddle",
-  "Increase": "MouseMiddle",
-  "ShowMessages": true,
-  "LongPress": true,
-  "LongPressDelay": 13
-}

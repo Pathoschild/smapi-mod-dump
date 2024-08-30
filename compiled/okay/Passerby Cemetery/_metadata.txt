@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/22600
-IDs: DecidedlyHuman.ClownsSqueakyTools
-update keys: Nexus:22600

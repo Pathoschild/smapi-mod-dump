@@ -1,8 +1,0 @@
-﻿{
-  "Name": "Early Bed Mod",
-  "Author": "Nokane",
-  "Description": "Modifie le comportement du joueur lorsqu'il essaie de dormir avant 21h.",
-  "Version": "1.0",
-  "UniqueID": "Nokane.EarlyBedMod",
-  "EntryDll": "EarlyBedMod.dll"
-}

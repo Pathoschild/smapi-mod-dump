@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/15377
-IDs: miiohau.buildstats
-update keys: Nexus:15377

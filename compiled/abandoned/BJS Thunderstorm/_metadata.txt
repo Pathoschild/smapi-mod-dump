@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3144
-IDs: BunnyJumps.BJSThunderStorm
-update keys: Nexus:3144

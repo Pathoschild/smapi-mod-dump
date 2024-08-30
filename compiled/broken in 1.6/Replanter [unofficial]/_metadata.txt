@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/589
-IDs: jwdred.Replanter
-update keys: Nexus:589, GitHub:jdusbabek/stardewvalley

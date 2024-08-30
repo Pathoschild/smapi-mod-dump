@@ -1,8 +1,0 @@
-{
-  "MovementSpeedWhileOnSandOrDirt": true,
-  "BonusOnFootMovementSpeed": 2.0,
-  "BonusHorseMovementSpeed": 0.5,
-  "SkipHatCountIfBeatenCowboyArcadeGame": true,
-  "CanOnlyObtainOnce": true,
-  "RequiredCowboyHats": 4
-}

@@ -1,9 +1,0 @@
-﻿{
-  "Name": "Pony Weight Loss Program",
-  "Author": "BadNetCode",
-  "UpdateKeys": [ "Nexus:1232" ],
-  "Version": "0.8.2",
-  "Description": "Allows horses to pass vertically through single tile openings",
-  "UniqueID": "BadNetCode.PonyWeightLossProgram",
-  "EntryDll": "PonyWeightLossProgram.dll"
-}

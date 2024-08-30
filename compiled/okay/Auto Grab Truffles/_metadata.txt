@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/21705
-IDs: Frostiverse.AutoGrabTruffles
-update keys: Nexus:21705, GitHub:Hunter-Chambers/StardewValleyMods

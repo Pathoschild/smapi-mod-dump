@@ -1,7 +1,0 @@
-{
-  "ScienceHouse_Carpenter_CommunityUpgrade1": "...Bu nedir? Pam'a ev mi yaptırmak istiyorsun? Bu harika bir fikir! Bana yalnızca {{woodPieces}} odun ve {{goldPieces}}g gerekiyor...",
-  "ScienceHouse_Carpenter_CommunityUpgrade2": "...Ne? Vadiye kestirme yollar eklememi mi istiyorsun? Olur, yaparım! Yalnızca {{goldPieces}}g'ye mal olacak...",
-  "ScienceHouse_Carpenter_NotEnoughWood3": "Üzgünüm... Paran var ama bana ayrıyeten {{woodPieces}} parça odun lazım.",
-
-  "Robin_PamUpgrade_Accepted": "Bu çok cömertçe. Yarın başlayacağım. {{daysUpgrade}} günümü alacak gibi duruyor."
-}

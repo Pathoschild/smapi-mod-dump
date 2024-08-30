@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7755
-IDs: aedenthorn.CustomChestTypes
-update keys: Nexus:7755, GitHub:aedenthorn/StardewValleyMods

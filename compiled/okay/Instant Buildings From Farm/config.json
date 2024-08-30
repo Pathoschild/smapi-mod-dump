@@ -1,6 +1,0 @@
-{
-  "BuildUsesResources": true,
-  "ToggleInstantBuildMenuButton": "B",
-  "PerformInstantHouseUpgradeButton": "U",
-  "AllowMagicalBuildingsWithoutMagicInk": false
-}

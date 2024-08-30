@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5941
-IDs: themattfiles.HeartBeat
-update keys: Nexus:5941, GitHub:embolden/Heartbeat

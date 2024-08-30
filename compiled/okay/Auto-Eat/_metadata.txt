@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/643
-IDs: Permamiss.AutoEat, BALANCEMOD_AutoEat
-update keys: Nexus:643, GitHub:Permamiss/Auto-Eat

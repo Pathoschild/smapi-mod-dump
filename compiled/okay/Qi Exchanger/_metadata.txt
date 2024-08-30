@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1930
-IDs: mizzion.qiexchanger
-update keys: Nexus:1930, ModDrop:661359, GitHub:Mizzion/MyStardewMods

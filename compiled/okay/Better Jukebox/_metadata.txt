@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6017
-IDs: Gaphodil.BetterJukebox
-update keys: Nexus:6017, ModDrop:984775, GitHub:Gaphodil/BetterJukebox

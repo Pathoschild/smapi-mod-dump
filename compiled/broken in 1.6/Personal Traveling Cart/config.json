@@ -1,8 +1,0 @@
-{
-  "ModEnabled": true,
-  "DrawCartExterior": true,
-  "DrawCartExteriorWeather": true,
-  "Debug": false,
-  "HitchButton": "Back",
-  "ThisPlayerCartLocationName": null
-}

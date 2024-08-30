@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/22337
-IDs: Tocseoj.BigCropBonus
-update keys: Nexus:22337

@@ -1,7 +1,0 @@
-﻿{
-    /*********
-    ** Generic Mod Config Menu UI
-    *********/
-    "config.damage-scale.name": "อัตราความเสียหาย",
-    "config.damage-scale.tooltip": "จำนวนความเสียหายที่จะเพิ่มตามระดับการต่อสู้ เป็นเปอร์เซ็นต์"
-}

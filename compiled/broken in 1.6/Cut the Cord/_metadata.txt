@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/9571
-IDs: cgifox.CutTheCord
-update keys: Nexus:9571, GitHub:harshlele/CutTheCord

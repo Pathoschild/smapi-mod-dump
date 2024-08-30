@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1307
-IDs: JarvieK.RentedTools
-update keys: Nexus:1307, GitHub:Jarvie8176/StardewMods

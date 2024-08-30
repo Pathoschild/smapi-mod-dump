@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/23493
-IDs: tem696969696969.PlaceFloorOnTilledDirt
-update keys: Nexus:23493, GitHub:kqrse/StardewValleyMods

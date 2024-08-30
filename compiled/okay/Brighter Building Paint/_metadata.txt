@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/22807
-IDs: tem696969696969.BrighterBuildingPaint
-update keys: Nexus:22807, GitHub:kqrse/StardewValleyMods

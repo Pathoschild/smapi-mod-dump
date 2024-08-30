@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3094
-IDs: ChaosEnergy.LadderLocator
-update keys: Nexus:3094, GitHub:yuri-moens/LadderLocator

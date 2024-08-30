@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/8587
-IDs: DTZ.DowntownZuzuDLL, ZDT.DowntownZuzuDLL
-update keys: Nexus:8587

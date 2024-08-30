@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/13782
-IDs: aedenthorn.FarmAnimalHarvestHelper
-update keys: Nexus:13782, GitHub:aedenthorn/StardewValleyMods

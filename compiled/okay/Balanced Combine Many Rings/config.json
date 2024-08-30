@@ -1,5 +1,0 @@
-{
-  "DestroyRingOnFailure": false,
-  "FailureChancePerExtraRing": 20,
-  "CostPerExtraRing": 100
-}

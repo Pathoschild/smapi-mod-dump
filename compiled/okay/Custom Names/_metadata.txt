@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/23131
-IDs: MindMeltMax.CustomNames
-update keys: Nexus:23131, GitHub:MindMeltMax/Stardew-Valley-Mods

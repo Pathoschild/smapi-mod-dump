@@ -1,9 +1,0 @@
-{
-   "Name": "Chest Pooling",
-   "Author": "mralbobo",
-   "Version": "1.5.1",
-   "Description": "Lets you deposit into all chests in one operation.",
-   "UniqueID": "mralbobo.ChestPooling",
-   "EntryDll": "ChestPooling.dll",
-   "UpdateKeys": [ "GitHub:mralbobo/stardew-chest-pooling" ]
-}

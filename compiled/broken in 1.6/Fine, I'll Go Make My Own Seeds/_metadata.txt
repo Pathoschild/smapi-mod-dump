@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/13944
-IDs: HaulinOats.FineIWillGoMakeMyOwnSeeds
-update keys: Nexus:13944

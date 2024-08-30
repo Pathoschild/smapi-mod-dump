@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/14138
-IDs: aedenthorn.HedgeMaze
-update keys: Nexus:14138, GitHub:aedenthorn/StardewValleyMods

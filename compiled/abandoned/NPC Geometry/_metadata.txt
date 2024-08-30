@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/19259
-IDs: ichortower.NPCGeometry
-update keys: Nexus:19259, GitHub:ichortower/NPCGeometry

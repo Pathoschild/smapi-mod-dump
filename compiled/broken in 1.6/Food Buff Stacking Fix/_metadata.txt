@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/19944
-IDs: joreikarr.foodbuffstackingfix
-update keys: Nexus:19944

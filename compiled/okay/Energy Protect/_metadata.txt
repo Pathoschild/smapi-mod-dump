@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/21918
-IDs: philosquare.EnergyProtect
-update keys: Nexus:21918

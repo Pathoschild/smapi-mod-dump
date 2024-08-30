@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/9448
-IDs: blueberry.InstantPets
-update keys: Nexus:9448, GitHub:b-b-blueberry/InstantPets

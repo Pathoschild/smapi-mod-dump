@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2465
-IDs: jackkimball.averyspecialbluechicken
-update keys: Nexus:2465, GitHub:jacksonkimball/AVerySpecialBlueChicken

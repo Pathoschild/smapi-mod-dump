@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/13800
-IDs: HaulinOats.DynamicCrops
-update keys: Nexus:13800, GitHub:HaulinOats/StardewMods

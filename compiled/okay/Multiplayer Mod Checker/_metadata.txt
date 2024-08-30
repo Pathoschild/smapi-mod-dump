@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6609
-IDs: Cherry.MultiplayerModChecker
-update keys: Nexus:6609, GitHub:ChroniclerCherry/stardew-valley-mods

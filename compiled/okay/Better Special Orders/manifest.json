@@ -1,9 +1,0 @@
-{
-  "Name": "Better Special Orders",
-  "Author": "Xeru",
-  "Version": "1.0.2",
-  "Description": "Adds customization to Special Orders and Qi Quest frequency.",
-  "UniqueID": "xeru.BetterSpecialOrders",
-  "EntryDll": "BetterSpecialOrders.dll",
-  "UpdateKeys": [ "Nexus:24125" ]
-}

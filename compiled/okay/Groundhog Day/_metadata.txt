@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10151
-IDs: aedenthorn.GroundhogDay
-update keys: Nexus:10151, GitHub:aedenthorn/StardewValleyMods

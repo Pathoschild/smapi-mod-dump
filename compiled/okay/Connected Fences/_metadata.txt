@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10063
-IDs: sergiomadd.ConnectedFences
-update keys: Nexus:10063, GitHub:sergiomadd/StardewValleyMods

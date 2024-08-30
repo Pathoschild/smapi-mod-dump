@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3021
-IDs: Ilyaki.NetworkOptimizer
-update keys: Nexus:3021, GitHub:Ilyaki/NetworkOptimizer

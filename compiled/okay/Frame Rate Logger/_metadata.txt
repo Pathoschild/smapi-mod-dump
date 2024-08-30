@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/15002
-IDs: atravita.FrameRateLogger
-update keys: Nexus:15002, GitHub:atravita-mods/StardewMods

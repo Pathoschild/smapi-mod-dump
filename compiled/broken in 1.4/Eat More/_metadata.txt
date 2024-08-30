@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2724
-IDs: crc.eatmore
-update keys: Nexus:2724

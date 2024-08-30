@@ -1,3 +1,0 @@
-page URL: https://github.com/jlfulmer/PetEnhancementMod
-IDs: JfulmerPetEnhancementMod
-update keys: GitHub:jlfulmer/PetEnhancementMod

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7474
-IDs: KarratKake.AnimalsDontEatGrass
-update keys: Nexus:7474:, Nexus:7474

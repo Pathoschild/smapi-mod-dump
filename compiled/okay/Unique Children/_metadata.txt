@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6278
-IDs: shaklin.uniquechildren
-update keys: Nexus:6278

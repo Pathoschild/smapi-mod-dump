@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/14508
-IDs: aedenthorn.CustomMineCartSteam
-update keys: Nexus:14508, GitHub:aedenthorn/StardewValleyMods

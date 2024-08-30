@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7630
-IDs: kakashigr.RadioactiveTools
-update keys: Nexus:7630, GitHub:kakashigr/stardew-radioactivetools

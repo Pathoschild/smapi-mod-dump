@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/19096
-IDs: hixega.XtardewCore
-update keys: Nexus:19096

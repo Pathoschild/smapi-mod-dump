@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/8880
-IDs: thespbgamer.LovedLabelsRedux
-update keys: GitHub:thespbgamer/LovedLabelsRedux, Nexus:8880

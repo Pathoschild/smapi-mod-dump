@@ -1,6 +1,0 @@
-﻿{
-  "news-feed.birthday-notice": "Hoy es el cumpleaños de {{npcName}}. No olvides darles un regalo!",
-  "news-feed.harvest-items-found-in-location-notice": "Hay {{numberOfItems}} artículos listos para cosechar en la {{locationName}}!",
-  "news-feed.bats-dropped-fruit-notice": "¡Los murciélagos te han traído algo de fruta!",
-  "news-feed.cave-display-name": "Cueva de la granja"
-}

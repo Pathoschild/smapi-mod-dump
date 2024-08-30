@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10669
-IDs: Goldenrevolver.RingOverhaul
-update keys: Nexus:10669, GitHub:Goldenrevolver/Stardew-Valley-Mods

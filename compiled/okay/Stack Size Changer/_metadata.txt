@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/11866
-IDs: Shockah.StackSizeChanger
-update keys: Nexus:11866, GitHub:Shockah/Stardew-Valley-Mods

@@ -1,6 +1,0 @@
-{
-  "showMessages": true,
-  "defaultNewscaster": "assets/news.png",
-  "extension": "*.json",
-  "contentFolder": "news"
-}

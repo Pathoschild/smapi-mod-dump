@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/12643
-IDs: krutonium.turn_to_your_enemies
-update keys: Nexus:12643

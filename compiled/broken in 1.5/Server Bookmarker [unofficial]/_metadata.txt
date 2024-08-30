@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2968
-IDs: Ilyaki.ServerBookmarker
-update keys: Nexus:2968, GitHub:Ilyaki/ServerBookmarker

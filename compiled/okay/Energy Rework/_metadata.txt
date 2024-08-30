@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/21686
-IDs: seferoni.EnergyRework
-update keys: Nexus:21686, GitHub:seferoni/EnergyRework

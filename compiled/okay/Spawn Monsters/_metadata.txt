@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3201
-IDs: Berisan.SpawnMonsters
-update keys: Nexus:3201, GitHub:Berisan/SpawnMonsters

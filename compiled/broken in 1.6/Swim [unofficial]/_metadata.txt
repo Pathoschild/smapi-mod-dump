@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6326
-IDs: aedenthorn.Swim
-update keys: Nexus:6326, GitHub:aedenthorn/StardewValleyMods

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/14712
-IDs: aedenthorn.Spoilage
-update keys: Nexus:14712, GitHub:aedenthorn/StardewValleyMods

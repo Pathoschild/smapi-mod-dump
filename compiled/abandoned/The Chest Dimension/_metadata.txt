@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/4013
-IDs: zazizu.TheChestDimension
-update keys: Nexus:4013, GitHub:cilekli-link/SDVMods

@@ -1,9 +1,0 @@
-{
-  "CustomBirthdayDialogues": true,
-  "CustomSecretSantaDialogues": true,
-  "RevealDialogueChance": 0.025,
-  "RevealDialogueMinHeartLevel": 1,
-  "EnableNpcGifts": true,
-  "NpcGreetChance": 0.66,
-  "NpcGreetDistance": 4
-}

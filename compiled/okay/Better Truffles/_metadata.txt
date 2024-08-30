@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/23228
-IDs: tem696969696969.BetterTruffles
-update keys: Nexus:23228, GitHub:kqrse/StardewValleyMods

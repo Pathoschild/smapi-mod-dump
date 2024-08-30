@@ -1,1 +1,0 @@
-StardewModdingAPI.exe --mods-path Mods_BattleRoyalley

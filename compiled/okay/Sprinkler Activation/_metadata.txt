@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7661
-IDs: Blaxsmith.SprinklerActivation
-update keys: Nexus:7661, GitHub:Blaxsmith/SprinklerActivation

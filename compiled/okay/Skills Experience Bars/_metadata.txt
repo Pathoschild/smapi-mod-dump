@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/25112
-IDs: Muuaji.SkillsExpBars
-update keys: Nexus:25112

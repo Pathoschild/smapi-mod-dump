@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/22944
-IDs: CKSR.MoreSorting
-update keys: Nexus:22944

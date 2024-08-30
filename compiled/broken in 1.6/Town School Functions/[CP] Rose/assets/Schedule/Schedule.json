@@ -1,7 +1,0 @@
-{
-  "Mon": "710 School 7 29 0/1200 School 44 20 2/1330 School 40 19 3/1500 School 31 7 3/1700 School 7 29 0/1830 School 18 45 2",
-  "Tue": "710 School 7 29 0/1200 School 44 20 2/1330 School 40 19 3/1500 School 32 33 0/1650 School 7 29 0/1830 School 18 45 2",
-  "Wed": "GOTO Mon",
-  "Thu": "GOTO Tue",
-  "Fri": "GOTO Mon"
-}

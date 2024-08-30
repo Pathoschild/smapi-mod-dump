@@ -1,9 +1,0 @@
-{
-  "Name": "HardcoreMode",
-  "Author": "vermicyde",
-  "Version": "1.0.0",
-  "Description": "Mod that forces players to keep up with hunger and thirst.",
-  "UniqueID": "vermicyde.HardcoreModeDLL",
-  "EntryDll": "HardcoreMode.dll",
-  "UpdateKeys": []
-}

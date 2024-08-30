@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2546
-IDs: miome.MultiToolMod
-update keys: Nexus:2546, GitHub:miome/MultitoolMod

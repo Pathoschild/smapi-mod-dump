@@ -1,7 +1,0 @@
-﻿// entire file added locally
-{
-  "Name": "Taxes Mod",
-  "Version": "0.3.0",
-  "EntryDll": "Taxes.dll",
-  "UpdateKeys": ["Nexus:38"]
-}

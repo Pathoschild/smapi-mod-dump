@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1169
-IDs: LordXamon.ColdWeatherHaleyPRO
-update keys: Nexus:1169

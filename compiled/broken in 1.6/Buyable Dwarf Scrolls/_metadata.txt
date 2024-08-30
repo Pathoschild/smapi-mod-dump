@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5307
-IDs: MattDeDuck.BuyableDwarfScrolls
-update keys: Nexus:5307

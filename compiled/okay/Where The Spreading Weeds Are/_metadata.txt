@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/25450
-IDs: pneuma163.WhereTheSpreadingWeedsAre
-update keys: Nexus:25450, GitHub:pneuma163/StardewMods

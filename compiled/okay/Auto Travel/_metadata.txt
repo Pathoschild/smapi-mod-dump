@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10693
-IDs: GrumpyCrouton.AutoTravel2, GrumpyCrouton.AutoTravel
-update keys: Nexus:10693

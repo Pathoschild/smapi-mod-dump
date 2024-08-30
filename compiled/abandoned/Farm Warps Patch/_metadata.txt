@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/8236
-IDs: tlitookilakin.farmwarpspatch
-update keys: Nexus:8236, ModDrop:926207, GitHub:tlitookilakin/FarmWarpsPatch

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3997
-IDs: MouseyPounds.MonsterLogAnywhere
-update keys: Nexus:3997, GitHub:MouseyPounds/stardew-mods

@@ -1,3 +1,0 @@
-page URL: 
-IDs: hypherionsa.simplerpc
-update keys: 

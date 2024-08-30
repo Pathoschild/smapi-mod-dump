@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/16912
-IDs: Jboss.VillagerCompass
-update keys: Nexus:16912, GitHub:jbossjaslow/Stardew_Mods

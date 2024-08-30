@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/9624
-IDs: ZackHill.StashItems
-update keys: Nexus:9624, GitHub:zack-hill/stardew-valley-stash-items

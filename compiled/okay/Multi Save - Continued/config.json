@@ -1,8 +1,0 @@
-{
-  "EnableMod": true,
-  "AutoSaveDaily": true,
-  "AutoSaveOnDayOfWeek": 0,
-  "AutoSaveOnDayOfMonth": 0,
-  "MaxDaysOldToKeep": 7,
-  "SaveButton": "None"
-}

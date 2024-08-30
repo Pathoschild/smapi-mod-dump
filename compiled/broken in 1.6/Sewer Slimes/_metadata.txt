@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/18195
-IDs: aedenthorn.SewerSlimes
-update keys: Nexus:18195, GitHub:aedenthorn/StardewValleyMods

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/4154
-IDs: blueberry.SailorStyles, blueberry.SailorStyles.Clothing, blueberry.SailorStyles.Hair, blueberry.SailorStylesHairstyles
-update keys: Nexus:4154, GitHub:b-b-blueberry/SailorStyles

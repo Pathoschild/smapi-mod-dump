@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/9000
-IDs: ceruleandeep.nocooties, ceruleandeep.NoCooties
-update keys: Nexus:9000, GitHub:ceruleandeep/CeruleanStardewMods

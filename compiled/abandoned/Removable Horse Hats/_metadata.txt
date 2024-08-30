@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2223
-IDs: cat.removablehorsehats
-update keys: Nexus:2223, GitHub:danvolchek/StardewMods

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/19675
-IDs: tlitookilakin.HappyHomeDesigner
-update keys: Nexus:19675, GitHub:tlitookilakin/HappyHomeDesigner

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5421
-IDs: SorryLate.ToolUpgradeDelivery
-update keys: Nexus:5421, GitHub:sorrylate/Stardew-Valley-Mod

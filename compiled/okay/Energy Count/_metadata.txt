@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/4272
-IDs: Crystallyne.EnergyCount
-update keys: Nexus:4272, GitHub:Crystallyne/EnergyCount

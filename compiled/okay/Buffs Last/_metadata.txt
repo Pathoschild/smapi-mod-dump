@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/25611
-IDs: aceynk.BuffsLast
-update keys: GitHub:aceynk/Buffs-Last, Nexus:25611

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/520
-IDs: Omegasis.HappyBirthday
-update keys: Nexus:520, GitHub:janavarro95/Stardew_Valley_Mods

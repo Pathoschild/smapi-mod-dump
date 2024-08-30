@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1303
-IDs: spacechase0.LuckSkill, LuckSkill
-update keys: Nexus:1303, Nexus:521, GitHub:spacechase0/StardewValleyMods

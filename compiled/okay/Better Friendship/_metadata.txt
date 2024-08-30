@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10287
-IDs: BetterFriendship
-update keys: Nexus:10287, GitHub:urbanyeti/stardew-better-friendship

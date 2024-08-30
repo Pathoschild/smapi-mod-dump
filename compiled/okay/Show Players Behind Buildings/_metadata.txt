@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6540
-IDs: aedenthorn.ShowPlayerBehind
-update keys: Nexus:6540, GitHub:aedenthorn/stardewValleyMods

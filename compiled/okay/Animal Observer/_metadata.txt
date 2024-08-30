@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/8653
-IDs: NFN.ANIMOBS
-update keys: Nexus:8653, GitHub:nofilenamed/AnimalObserver

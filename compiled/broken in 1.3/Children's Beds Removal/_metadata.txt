@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1655
-IDs: Prismuth.ChildBedsRemoval
-update keys: Nexus:1655

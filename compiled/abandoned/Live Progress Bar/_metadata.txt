@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7330
-IDs: tylergibbs2.liveprogressbar
-update keys: Nexus:7330, GitHub:tylergibbs2/LiveProgressBar

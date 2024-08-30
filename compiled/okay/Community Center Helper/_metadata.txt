@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6893
-IDs: vgperson.CommunityCenterHelper
-update keys: Nexus:6893, GitHub:vgperson/CommunityCenterHelper

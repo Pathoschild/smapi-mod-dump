@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/14566
-IDs: aedenthorn.DynamicMapTiles
-update keys: Nexus:14566, GitHub:aedenthorn/StardewValleyMods

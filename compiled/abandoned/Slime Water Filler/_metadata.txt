@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7141
-IDs: speshkitty.slimewaterer
-update keys: Nexus:7141, GitHub:Speshkitty/SlimeWaterFiller

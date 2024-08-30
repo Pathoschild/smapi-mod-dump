@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/15311
-IDs: FricativeMelon.SkipDialogue
-update keys: Nexus:15311, GitHub:FricativeMelon/SkipDialogue

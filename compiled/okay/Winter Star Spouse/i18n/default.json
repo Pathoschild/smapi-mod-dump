@@ -1,6 +1,0 @@
-{
-    "config.SpouseIsRecipientChance": "Spouse Recipient Chance",
-    "config.SpouseIsRecipientChance.tooltip": "Chance spouse will receive your gift.",
-    "config.SpouseIsGiverChance": "Spouse Giver Chance",
-    "config.SpouseIsGiverChance.tooltip": "Chance spouse will give you a gift."
-}

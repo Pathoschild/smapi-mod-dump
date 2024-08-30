@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7334
-IDs: Entoarox.SitForStamina
-update keys: Nexus:7334, GitHub:Entoarox/StardewMods

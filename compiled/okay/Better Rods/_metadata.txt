@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/17026
-IDs: Achtuur.BetterRods
-update keys: Nexus:17026, GitHub:Achtuur/StardewMods

@@ -1,3 +1,0 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\_Common\_Common.projitems" Label="Shared" />
-</Project>

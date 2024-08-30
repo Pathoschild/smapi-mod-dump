@@ -1,9 +1,0 @@
-{
-  "Name": "Genie Lamp",
-  "Author": "KediDili [Commissioned by Dragonfabri]",
-  "Version": "1.1.0", // fixed locally
-  "Description": "Adds a genie lamp that brings you any item you wish for.",
-  "UniqueID": "KediDili.GenieLamp",
-  "EntryDLL": "GenieLamp.dll",
-  "UpdateKeys": [ "Nexus:???" ]
-}

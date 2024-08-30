@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/23458
-IDs: leroymilo.FurnitureFramework
-update keys: Nexus:23458, GitHub:Leroymilo/FurnitureFramework

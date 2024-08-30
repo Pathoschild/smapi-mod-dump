@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/9573
-IDs: pinocchio1231.instantanimals
-update keys: Nexus:9573, GitHub:joisse1101/InstantAnimals

@@ -1,9 +1,0 @@
-﻿{
-  "Name": "NPCSpeechBubbles",
-  "Author": "BlaDe",
-  "Version": "1.0.0",
-  "Description": "NPCs talk to you when you get near",
-  "UniqueID": "BlaDe.NPCSpeechBubblesVincent",
-  "EntryDll": "NPCSpeechBubbles.dll",
-  "UpdateKeys": []
-}

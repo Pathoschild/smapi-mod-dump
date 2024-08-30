@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5275
-IDs: misscoriel.hpstam
-update keys: Nexus:5275, GitHub:MissCoriel/Customize-Health-and-Stamina

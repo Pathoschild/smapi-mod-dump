@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3036
-IDs: funnysnek.displaycabinowner
-update keys: Nexus:3036

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2536
-IDs: cat.modupdatemenu
-update keys: Nexus:2536, GitHub:danvolchek/StardewMods

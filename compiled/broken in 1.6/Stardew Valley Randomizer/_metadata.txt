@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5185
-IDs: Tooshi.Randomizer
-update keys: GitHub:cTooshi/stardew-valley-randomizer, Nexus:5185

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/674
-IDs: Nishtra.MiningAtTheFarm, MiningAtTheFarm
-update keys: Nexus:674

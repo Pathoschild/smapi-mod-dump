@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6955
-IDs: Millerscout.EconomyMod
-update keys: Nexus:6955, GitHub:millerscout/StardewMillerMods

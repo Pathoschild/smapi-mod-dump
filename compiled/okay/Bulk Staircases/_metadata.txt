@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/23482
-IDs: BananaFruit.BulkStaircases
-update keys: Nexus:23482, GitHub:BananaFruit1492/BulkStaircases

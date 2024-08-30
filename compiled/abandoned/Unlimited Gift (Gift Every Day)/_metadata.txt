@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6850
-IDs: Tommy.GiftEveryDay
-update keys: Nexus:6850

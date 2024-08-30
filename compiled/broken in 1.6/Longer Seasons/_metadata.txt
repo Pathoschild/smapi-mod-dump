@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10108
-IDs: aedenthorn.LongerSeasons
-update keys: Nexus:10108, GitHub:aedenthorn/StardewValleyMods

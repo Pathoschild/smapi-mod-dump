@@ -1,7 +1,0 @@
-{
-    "config.option.keybind_name": "Shortcut",
-    "config.option.ignorecantakescreenshot_name": "Screenshot Anywhere",
-    "config.option.ignorecantakescreenshot_tooltip": "Ignores the \"CanTakeScreenshot\" check allowing you to take screenshots in circumstances where you normally wouldn’t be able to, like inside cut-scenes.",
-    "config.option.scale_name": "Image Quality",
-    "config.option.scale_tooltip": "Higher number means more pixels, but the file size of the image also increases\nThis does the same as the \"Zoom Level\" option in the Stardew Settings."
-}

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/973
-IDs: Omegasis.TimeFreeze, 4108e859-333c-4fec-a1a7-d2e18c1019fe
-update keys: Nexus:973, GitHub:janavarro95/Stardew_Valley_Mods

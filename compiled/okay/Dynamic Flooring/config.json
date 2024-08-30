@@ -1,8 +1,0 @@
-{
-  "ModEnabled": true,
-  "Consume": false,
-  "ModButton": "LeftControl",
-  "IgnoreButton": "LeftShift",
-  "RemoveButton": "Delete",
-  "PlaceButton": "MouseLeft"
-}

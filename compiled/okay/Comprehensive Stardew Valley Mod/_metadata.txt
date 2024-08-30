@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/20918
-IDs: BW.MyModding
-update keys: Nexus:20918

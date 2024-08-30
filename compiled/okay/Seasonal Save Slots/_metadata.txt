@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/14382
-IDs: tylergibbs2.SeasonalSaveSlots
-update keys: Nexus:14382, GitHub:tylergibbs2/StardewValleyMods

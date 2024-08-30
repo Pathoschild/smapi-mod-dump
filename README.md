@@ -1,46 +1,13 @@
-This repository contains all SMAPI mods in the [SMAPI compatibility list](https://stardewvalleywiki.com/Modding:SMAPI_compatibility).
-It's used to update that page, find mods using specific APIs, etc.
+**This repository is obsolete.**
 
-## Mod stats
-* Last updated 2024-07-31 (SMAPI 4.0.8 and Stardew Valley 1.6.8).
-* 2864 mods in the SMAPI compatibility list.
-* 1838 mods (64%) have a source code repo, with 1043 (57%) in a multi-mod repo and 795 (43%) in a single-mod repo.
+It previously contained every mod in the [SMAPI compatibility list](https://stardewvalleywiki.com/Modding:SMAPI_compatibility),
+including both compiled and source code versions, to allow searching mod code and performing analyses.
 
-## What's in this repository
-### `compiled`
-The `compiled` folder has the latest download for each mod, grouped into a few categories:
+Unfortunately, maintaining it became unsustainable with the increasing popularity of Stardew Valley mods.
 
-* `abandoned`  
-  Mods which are obsolete, or have been abandoned by their authors and probably won't be updated unofficially. These
-  will likely never be updated again.
-* `broken in *`  
-  Mods which broke in that game version.
-* `okay`  
-  Mods which work fine in the latest versions (and aren't in the next category).
-* `okay (special groups)`  
-  Mods which work fine in the latest version, but need to be tested separately from other mods. That include:
-
-  mod | reason
-  --- | ------
-  [Battle Royalley](https://www.nexusmods.com/stardewvalley/mods/9891)      | disables single-player and blocks other mods
-  [Betwitched](https://www.nexusmods.com/stardewvalley/mods/10172)          | prevents loading a save without a Twitch username + auth token configured
-  [Hardcore Mode](https://www.nexusmods.com/stardewvalley/mods/25376)       | deletes your save if you have a wiki tab open
-  [Instant Load](https://www.nexusmods.com/stardewvalley/mods/16253)        | instantly loads a save
-  [MobileUI Android](https://www.nexusmods.com/stardewvalley/mods/17652)    | only works on Android
-  [Please Fix Error](https://www.nexusmods.com/stardewvalley/mods/6492)     | spams fake errors
-  [In-Game SMAPI Log Uploader](https://www.nexusmods.com/stardewvalley/mods/13979) | opens a browser window
-  [Pong](https://www.nexusmods.com/stardewvalley/mods/1994)                 | overrides the entire game
-  [Stardew Access](https://www.nexusmods.com/stardewvalley/mods/10319)      | locks the mouse cursor by default
-  [Stardew Archipelago](https://www.nexusmods.com/stardewvalley/mods/16087) | prevents loading a save if it can't connect to Archipelago
-  [Stardew Debt](https://www.nexusmods.com/stardewvalley/mods/10005)        | exits to title if certain other mods are installed
-  [Stardew Roguelike](https://www.nexusmods.com/stardewvalley/mods/13614)   | prevents loading a save file
-
-### `source`
-The `source` folder has the latest source code for each open-source SMAPI mod. This only has the _code_, it doesn't
-mirror the Git history. Since many repositories contain multiple mods, mods in `compiled` don't necessarily map
-directly to repositories in `source`. Although `compiled` may contain unofficial updates, `source` only has the
-official repositories.
-
-## See also
-* [Pathoschild/stardew-mod-dump-utils](https://github.com/Pathoschild/stardew-mod-dump-utils) has
-  utility scripts used to maintain this repo.
+Instead, you can either:
+1. [Run the scripts to create a more automated dump](https://github.com/Pathoschild/StardewScripts) (requires special
+   permissions from mod sites to access private APIs).
+2. Join [#making-mods-general on the Stardew Valley Discord](https://smapi.io/community#Discord) (free) or
+   [my Patreon](https://www.patreon.com/pathoschild) (paid) for monthly updates, including both analyses/stats and a
+   link to download the full mod dump.

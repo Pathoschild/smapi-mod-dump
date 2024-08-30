@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10708
-IDs: blams.PostWeddingDates
-update keys: Nexus:10708

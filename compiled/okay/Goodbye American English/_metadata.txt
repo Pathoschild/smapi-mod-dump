@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7183
-IDs: TheMightyAmondee.GoodbyeAmericanEnglish
-update keys: Nexus:7183, ModDrop:854437, GitHub:TheMightyAmondee/GoodbyeAmericanEnglish

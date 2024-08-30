@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/4030
-IDs: Vrakyas.NewClothesEveryDay
-update keys: Nexus:4030

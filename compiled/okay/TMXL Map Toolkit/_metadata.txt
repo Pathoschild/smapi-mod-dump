@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1820
-IDs: Platonymous.TMXLoader
-update keys: Nexus:1820, GitHub:Platonymous/Stardew-Valley-Mods

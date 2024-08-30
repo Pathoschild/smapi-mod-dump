@@ -1,8 +1,0 @@
-{
-  "Name": "zelink's zeldaHome",
-  "Author": "zelink",
-  "Version": "1.0.0",
-  "Description": "Plays custom home music when you enter your home.",
-  "UniqueID": "zelink.zeldaHome",
-  "EntryDll": "zeldaHome.dll"
-}

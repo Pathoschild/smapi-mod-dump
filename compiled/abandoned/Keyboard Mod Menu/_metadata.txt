@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3147
-IDs: Shadowfoxss.KeyboardModMenu
-update keys: Nexus:3147

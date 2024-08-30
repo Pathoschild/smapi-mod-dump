@@ -1,7 +1,0 @@
-{
-  "ModEnabled": true,
-  "ForbiddenList": "George",
-  "MaintainGender": true,
-  "MaintainAge": true,
-  "MaintainDatable": true
-}

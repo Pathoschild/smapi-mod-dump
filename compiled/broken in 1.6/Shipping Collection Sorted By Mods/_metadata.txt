@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/15694
-IDs: holythesea.SortShippingCollection
-update keys: Nexus:15694, GitHub:holy-the-sea/SortShippingCollection

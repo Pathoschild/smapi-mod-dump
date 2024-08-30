@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10004
-IDs: atravita.GingerIslandMainlandAdjustments
-update keys: Nexus:10004@CodePack, ModDrop:1098263@CodePack, Nexus:10004, GitHub:atravita-mods/StardewMods

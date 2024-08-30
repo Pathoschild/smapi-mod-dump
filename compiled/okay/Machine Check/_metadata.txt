@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/9515
-IDs: FairfieldBW.MachineCheck
-update keys: Nexus:9515, GitHub:FairfieldBW/MachineCheck

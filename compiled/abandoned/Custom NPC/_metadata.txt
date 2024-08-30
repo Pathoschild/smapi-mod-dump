@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1607
-IDs: Platonymous.CustomNPC
-update keys: Nexus:1607, GitHub:Platonymous/Stardew-Valley-Mods

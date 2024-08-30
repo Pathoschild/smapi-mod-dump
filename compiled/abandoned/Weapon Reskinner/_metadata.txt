@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5095
-IDs: spacechase0.WeaponReskinner
-update keys: Nexus:5095, GitHub:spacechase0/WeaponReskinner

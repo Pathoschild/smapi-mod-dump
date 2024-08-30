@@ -1,9 +1,0 @@
-{
-  "BaseRadius": 1,
-  "TierIncrease": 1,
-  "CircularArea": true,
-  "ShowSprinklerArea": true,
-  "ShowScarecrowArea": true,
-  "ActivateWhenClicked": true,
-  "WaterGardenPots": true
-}

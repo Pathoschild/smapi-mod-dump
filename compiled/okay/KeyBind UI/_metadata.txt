@@ -1,3 +1,0 @@
-page URL: https://github.com/Enaium-StardewValleyMods/KeyBindUI
-IDs: Enaium.KeyBindUI
-update keys: CurseForge:538001, GitHub:Enaium-StardewValleyMods/KeyBindUI

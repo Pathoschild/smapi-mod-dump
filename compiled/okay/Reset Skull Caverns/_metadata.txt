@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/20846
-IDs: KoihimeNakamura.ResetCaverns
-update keys: Nexus:20846, GitHub:Sakorona/SDVMods

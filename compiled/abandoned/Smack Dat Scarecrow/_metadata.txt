@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/13528
-IDs: furyx639.SmackDatScarecrow
-update keys: Nexus:13528, GitHub:LeFauxMatt/StardewMods

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/16297
-IDs: Shockah.SeasonAffixes
-update keys: Nexus:16297, GitHub:Shockah/Stardew-Valley-Mods

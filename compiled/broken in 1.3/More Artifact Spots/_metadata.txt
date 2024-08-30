@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/451
-IDs: 451, momoaau.ArtifactSpots
-update keys: Nexus:451

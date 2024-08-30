@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7566
-IDs: KarratKake.FerngillRevenueService
-update keys: Nexus:7566

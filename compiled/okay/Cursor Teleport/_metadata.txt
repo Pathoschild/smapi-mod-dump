@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/17934
-IDs: Patap.CursorTeleport
-update keys: Nexus:17934, GitHub:pa4op/stardew-teleport

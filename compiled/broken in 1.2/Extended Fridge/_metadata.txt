@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/485
-IDs: Mystra007ExtendedFridge, Crystalmir.ExtendedFridge
-update keys: Nexus:485, GitHub:Mystra007/ExtendedFridgeSMAPI

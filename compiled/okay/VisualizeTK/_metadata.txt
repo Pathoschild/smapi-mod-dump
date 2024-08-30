@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/19009
-IDs: Platonymous.VisualizeTK
-update keys: Nexus:19009

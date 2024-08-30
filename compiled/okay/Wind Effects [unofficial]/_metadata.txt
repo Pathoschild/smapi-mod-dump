@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6647
-IDs: cat.windeffects
-update keys: Nexus:6647, GitHub:danvolchek/StardewMods

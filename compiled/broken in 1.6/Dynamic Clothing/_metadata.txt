@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10078
-IDs: hilovids.DynamicClothing
-update keys: Nexus:10078

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/4056
-IDs: zazizu.darkUICP
-update keys: Nexus:4056

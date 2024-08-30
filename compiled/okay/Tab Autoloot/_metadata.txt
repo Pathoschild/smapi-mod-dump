@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5115
-IDs: tab.autoloot
-update keys: Nexus:???, Nexus:5115

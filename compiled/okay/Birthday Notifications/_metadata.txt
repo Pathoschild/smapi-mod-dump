@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/20948
-IDs: Honduriel.SVM_BirthdayNotifications
-update keys: Nexus:20948, GitHub:Honduriel/StardewValleyMods_BirthdayNotifications

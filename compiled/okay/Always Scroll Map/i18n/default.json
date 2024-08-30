@@ -1,5 +1,0 @@
-{
-    EnabledIndoorsName:  "Enabled indoors",      EnabledIndoorsTooltip:  "Always scroll map indoors", 
-    EnabledOutdoorsName: "Enabled outdoors",     EnabledOutdoorsTooltip: "Always scroll map outdoors", 
-    ToggleScrollName:    "Scroll toggle button", ToggleScrollTooltip:    "Button to toggle scrolling in current location",
-}

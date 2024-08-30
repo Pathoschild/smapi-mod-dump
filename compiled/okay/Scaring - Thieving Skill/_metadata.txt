@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/23791
-IDs: moonslime.SpookySkill
-update keys: Nexus:23791, GitHub:Annosz/UIInfoSuite2

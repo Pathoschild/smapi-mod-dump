@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/11500
-IDs: atravita.NerfCavePuzzle
-update keys: Nexus:11500, GitHub:atravita-mods/StardewMods

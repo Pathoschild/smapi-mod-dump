@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1623
-IDs: spacechase0.ColorfulChests
-update keys: Nexus:1623, Chucklefish:5085, GitHub:spacechase0/ColorfulChests

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/446
-IDs: Omegasis.BuildHealth
-update keys: Nexus:446, GitHub:janavarro95/Stardew_Valley_Mods

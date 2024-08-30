@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/15846
-IDs: certifiableGrimalkin.StartupVolumeConfig
-update keys: Nexus:15846

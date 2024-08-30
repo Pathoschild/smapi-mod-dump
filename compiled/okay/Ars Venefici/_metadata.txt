@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/24409
-IDs: HeyImAmethyst.ArsVenefici
-update keys: Nexus:24409, GitHub:HeyImAmethyst/Ars-Venefici

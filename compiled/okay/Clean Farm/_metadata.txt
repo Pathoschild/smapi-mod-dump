@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/794
-IDs: tstaples.CleanFarm
-update keys: Nexus:794, GitHub:tstaples/CleanFarm

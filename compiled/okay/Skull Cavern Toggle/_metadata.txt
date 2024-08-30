@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7908
-IDs: TheMightyAmondee.SkullCavernToggle
-update keys: Nexus:7908, GitHub:TheMightyAmondee/SkullCavernToggle

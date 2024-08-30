@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/20931
-IDs: season.EasyFairy
-update keys: Nexus:20931

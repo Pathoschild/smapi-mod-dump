@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10650
-IDs: jorgamun.EventMusicVolume
-update keys: Nexus:10650, GitHub:jorgamun/EventMusicVolume

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7904
-IDs: UnknownLegacy.QiSprinklers
-update keys: Nexus:7904, GitHub:UnkLegacy/QiSprinklers

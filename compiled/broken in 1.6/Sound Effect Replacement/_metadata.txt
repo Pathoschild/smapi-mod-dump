@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10232
-IDs: aedenthorn.SoundEffectReplacement
-update keys: Nexus:10232, GitHub:aedenthorn/StardewValleyMods

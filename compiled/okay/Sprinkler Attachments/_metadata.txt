@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/25326
-IDs: mushymato.SprinklerAttachments
-update keys: Nexus:25326, GitHub:Mushymato/StardewMods

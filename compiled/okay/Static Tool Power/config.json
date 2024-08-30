@@ -1,9 +1,0 @@
-{
-  "Mode": "manual",
-  "maxPowerWateringCan": false,
-  "maxPowerHoe": false,
-  "saveHoePower": 0,
-  "saveWateringCanPower": 0,
-  "StaticHoePower": 0,
-  "StaticWateringCanPower": 0
-}

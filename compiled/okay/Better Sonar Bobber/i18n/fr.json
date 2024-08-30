@@ -1,7 +1,0 @@
-﻿{
-  "Config.RequireBobber.Name": "Nécessite le flotteur à sonar",
-  "Config.RequireBobber.Tooltip": "Si activé, le flotteur à sonar sera nécessaire pour la fonctionnalité du sonar. Si désactivé, vous pourrez toujours voir quel poisson est en train de mordre la ligne.",
-  
-  "Config.NibbleTime.Name": "Temps supplémentaire",
-  "Config.NibbleTime.Tooltip": "Le temps supplémentaire (en millisecondes) offert par le flotteur à sonar pour réagir à la morsure d’un poisson."
-}

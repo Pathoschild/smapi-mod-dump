@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/16294
-IDs: mistyspring.AudioDescription
-update keys: Nexus:16294, GitHub:misty-spring/StardewMods

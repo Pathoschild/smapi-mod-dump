@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/16455
-IDs: aedenthorn.WeatherTotem, aedenthorn.WeatherTotems
-update keys: Nexus:16455, UpdateManifest:https://raw.githubusercontent.com/mouahrara/aedenthorn/master/update-manifest.json@WeatherTotem, GitHub:aedenthorn/StardewValleyMods

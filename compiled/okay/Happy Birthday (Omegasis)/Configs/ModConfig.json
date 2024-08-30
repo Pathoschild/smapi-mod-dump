@@ -1,7 +1,0 @@
-{
-  "minimumFriendshipLevelForBirthdayWish": 2,
-  "minimumFriendshipLevelForCommunityBirthdayParty": 5,
-  "fallbackToEnglishTranslationWhenPossible": false,
-  "useOnlyFavoriteGiftsListToSelectFrom": false,
-  "KeyBinding": "O"
-}

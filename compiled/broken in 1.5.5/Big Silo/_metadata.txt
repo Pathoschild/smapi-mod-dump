@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2429
-IDs: lperkins2.BigSilo
-update keys: Nexus:2429

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/9550
-IDs: aedenthorn.DialogueTrees
-update keys: Nexus:9550, GitHub:aedenthorn/StardewValleyMods

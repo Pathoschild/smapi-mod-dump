@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/12096
-IDs: SinZ.MoonMisadventures_BiggerBackpackPatch
-update keys: Nexus:12096

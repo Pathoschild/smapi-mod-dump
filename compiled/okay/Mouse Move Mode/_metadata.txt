@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2614
-IDs: nghiango1.MouseMoveMode, ylsama.MouseMoveMode, ylsama.RightClickMoveMode
-update keys: Nexus:2614, GitHub:nghiango1/RightClickMoveMode, GitHub:ylsama/RightClickMoveMode

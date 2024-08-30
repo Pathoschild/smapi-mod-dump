@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5993
-IDs: Annosz.KrobusSellsLargerStacks
-update keys: Nexus:5993, GitHub:Annosz/StardewValleyModding

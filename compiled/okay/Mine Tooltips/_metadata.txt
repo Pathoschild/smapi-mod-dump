@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/26315
-IDs: Codeize.MineTooltips
-update keys: Nexus:26315, GitHub:Codeize/MineTooltips

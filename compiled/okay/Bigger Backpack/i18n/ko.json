@@ -1,7 +1,0 @@
-﻿{
-	"SetBackpackSizeCommand": "플레이어의 가방 크기를 설정합니다. 이 값은 12의 배율이어야 ​​합니다.",
-	"Purchase": "구매하기 ({{cost}}골드)",
-	"BackpackUpgrade": "가방 업그레이드 -- 48 lan",
-	"PremiumPack": "프리미엄 가방",
-	"BackpackCostName": "가방 비용", "BackpackCostTooltip": "상점에서 이 가방을 구매하는 데 필요한 비용."
-}

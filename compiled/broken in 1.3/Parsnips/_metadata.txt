@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2166
-IDs: SolomonsWorkshop.ParsnipsAbsolutelyEverywhere
-update keys: Nexus:2166

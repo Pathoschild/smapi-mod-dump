@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7936
-IDs: PeacefulEnd.HandyHeadphones
-update keys: Nexus:7936, GitHub:Floogen/HandyHeadphones

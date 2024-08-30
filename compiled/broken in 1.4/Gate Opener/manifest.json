@@ -1,9 +1,0 @@
-{
-   "Name": "Gate Opener",
-   "Author": "mralbobo",
-   "Version": "1.4.1",
-   "Description": "Opens and closes gates based on their proximity to you.",
-   "UniqueID": "mralbobo.GateOpener",
-   "EntryDll": "GateOpener.dll",
-   "UpdateKeys": [ "GitHub:mralbobo/stardew-gate-opener" ]
-}

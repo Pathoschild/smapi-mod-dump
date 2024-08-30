@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/21332
-IDs: JoXW.Predictor
-update keys: Nexus:21332

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7465
-IDs: MindMeltMax.SoundsPatcher
-update keys: Nexus:7465, GitHub:MindMeltMax/Stardew-Valley-Mods

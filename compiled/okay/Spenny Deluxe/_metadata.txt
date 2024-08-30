@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/14984
-IDs: spacechase0.SpennyDeluxe
-update keys: Nexus:14984, GitHub:spacechase0/StardewValleyMods

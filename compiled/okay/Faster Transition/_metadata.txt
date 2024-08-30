@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/19584
-IDs: Kumagabear.FasterTransition
-update keys: Nexus:19584, GitHub:DotSharkTeeth/StardewValleyMods

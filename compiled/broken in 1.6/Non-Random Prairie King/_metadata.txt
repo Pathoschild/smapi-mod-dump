@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6509
-IDs: aedenthorn.NonRandomPrairieKing
-update keys: Nexus:6509, GitHub:aedenthorn/StardewValleyMods

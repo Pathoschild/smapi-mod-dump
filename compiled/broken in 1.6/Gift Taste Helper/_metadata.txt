@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/229
-IDs: tstaples.GiftTasteHelper, 8008db57-fa67-4730-978e-34b37ef191d6
-update keys: Nexus:229, GitHub:tstaples/GiftTasteHelper

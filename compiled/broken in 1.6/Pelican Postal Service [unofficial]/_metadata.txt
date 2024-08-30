@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2770
-IDs: ElectroCrumpet.PelicanPostalService
-update keys: Nexus:2770

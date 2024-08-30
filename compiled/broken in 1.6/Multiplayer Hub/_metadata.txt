@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/9672
-IDs: AlbertoMoreiraLuiz.MultiplayerHub
-update keys: Nexus:9672

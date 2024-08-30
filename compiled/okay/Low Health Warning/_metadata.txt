@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/8326
-IDs: nmvh5.LowHealthWarning
-update keys: Nexus:8326

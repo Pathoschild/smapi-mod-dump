@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/8616
-IDs: ceruleandeep.personaleffects
-update keys: Nexus:8616, GitHub:ceruleandeep/CeruleanStardewMods

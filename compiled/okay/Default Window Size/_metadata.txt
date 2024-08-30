@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10939
-IDs: DecidedlyHuman.DefaultWindowSize
-update keys: Nexus:10939, GitHub:DecidedlyHuman/StardewValleyMods

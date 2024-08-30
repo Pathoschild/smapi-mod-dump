@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/76
-IDs: tZed.SimpleSprinkler
-update keys: Nexus:76, GitHub:ADoby/SimpleSprinkler

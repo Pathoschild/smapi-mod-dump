@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/15526
-IDs: Me.InstantBreak
-update keys: Nexus:15526

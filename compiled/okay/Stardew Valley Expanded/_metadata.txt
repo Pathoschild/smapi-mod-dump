@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3753
-IDs: FlashShifter.SVECode
-update keys: Nexus:???, Nexus:3753, GitHub:FlashShifter/StardewValleyExpanded

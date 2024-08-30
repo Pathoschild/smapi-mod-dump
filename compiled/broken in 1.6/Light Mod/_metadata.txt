@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/14247
-IDs: aedenthorn.LightMod
-update keys: Nexus:14247, Nexus:14387, GitHub:aedenthorn/StardewValleyMods

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6281
-IDs: Platonymous.Comics
-update keys: Nexus:6281, GitHub:Platonymous/Stardew-Valley-Mods

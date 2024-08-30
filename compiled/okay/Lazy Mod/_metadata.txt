@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/22826
-IDs: weizinai.LazyMod
-update keys: Nexus:22826, GitHub:weizinai/StardewValleyMods

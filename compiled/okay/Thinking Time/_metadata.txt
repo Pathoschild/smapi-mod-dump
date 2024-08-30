@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/24457
-IDs: PokeBenji.ThinkingTime, YourName.ThinkingTimeMobile
-update keys: Nexus:24457

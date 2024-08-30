@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/14553
-IDs: Sagittaeri.InputTools
-update keys: Nexus:14553, GitHub:sagittaeri/StardewValleyMods

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1845
-IDs: spacechase0.BiggerBackpack
-update keys: Nexus:1845, Chucklefish:5191, GitHub:spacechase0/BiggerBackpack

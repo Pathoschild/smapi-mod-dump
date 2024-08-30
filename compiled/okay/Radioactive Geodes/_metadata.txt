@@ -1,3 +1,0 @@
-page URL: https://www.moddrop.com/stardew-valley/mod/952722
-IDs: jas.RadioactiveGeodes
-update keys: ModDrop:952722

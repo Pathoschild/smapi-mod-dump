@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/8096
-IDs: IslandSecret
-update keys: Nexus:8096

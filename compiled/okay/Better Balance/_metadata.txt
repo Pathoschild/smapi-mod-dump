@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/8141
-IDs: Xen0nex.BetterBalance, Xen0nex.BetterBalanceAndroid
-update keys: Nexus:Ignore This, Nexus:8141

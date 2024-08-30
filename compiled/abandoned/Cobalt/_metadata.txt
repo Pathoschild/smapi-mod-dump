@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1723
-IDs: spacechase0.Cobalt
-update keys: Nexus:1723, GitHub:spacechase0/Cobalt

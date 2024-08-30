@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/19736
-IDs: BlueSight.EmptyYourHands
-update keys: Nexus:19736, GitHub:Hikari-BS/StardewMods

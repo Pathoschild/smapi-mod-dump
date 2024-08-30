@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/8167
-IDs: andyruwruw.WaterBot
-update keys: Nexus:8167, GitHub:andyruwruw/stardew-valley-water-bot

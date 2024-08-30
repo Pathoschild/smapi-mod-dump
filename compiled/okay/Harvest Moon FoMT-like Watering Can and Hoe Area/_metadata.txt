@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7851
-IDs: Goldenrevolver.ChangedWateringCanAndHoeArea
-update keys: Nexus:7851, GitHub:Goldenrevolver/Stardew-Valley-Mods

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/23544
-IDs: Espy.ParticleFramework
-update keys: Nexus:23544, GitHub:Smoked-Fish/ParticleFramework

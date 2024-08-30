@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/21826
-IDs: tem696969696969.SkinnyAnimals
-update keys: Nexus:21826, GitHub:kqrse/StardewValleyMods

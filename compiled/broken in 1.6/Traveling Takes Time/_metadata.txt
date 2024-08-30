@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/4031
-IDs: Vrakyas.TravelingTakesTime
-update keys: Nexus:4031

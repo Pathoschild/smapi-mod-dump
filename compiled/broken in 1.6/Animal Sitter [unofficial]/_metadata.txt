@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/581
-IDs: jwdred.AnimalSitter
-update keys: Nexus:581, GitHub:jdusbabek/stardewvalley

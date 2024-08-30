@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/21612
-IDs: bungus.DefaultSkinReplace
-update keys: Nexus:21612, GitHub:BussinBungus/BungusSDVMods

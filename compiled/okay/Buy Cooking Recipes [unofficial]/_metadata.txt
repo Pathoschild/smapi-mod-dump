@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1126
-IDs: Denifia.BuyRecipes
-update keys: Nexus:1126, GitHub:Denifia/StardewMods

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1895
-IDs: WhiteMind.AF
-update keys: Nexus:1895, GitHub:WhiteMinds/mod-sv-autofish

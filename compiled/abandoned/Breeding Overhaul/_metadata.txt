@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/13974
-IDs: StarAmy.BreedingOverhaul
-update keys: Nexus:13974, GitHub:StarAmy/BreedingOverhaul

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5371
-IDs: SuperAardvark.AntiSocial
-update keys: Nexus:5371, GitHub:super-aardvark/AardvarkMods-SDV

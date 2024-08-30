@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/15563
-IDs: nrm33n.weatherGod
-update keys: Nexus:15563

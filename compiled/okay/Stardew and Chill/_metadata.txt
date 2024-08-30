@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/12147
-IDs: mod.kitchen.stardewandchill
-update keys: Nexus:12147

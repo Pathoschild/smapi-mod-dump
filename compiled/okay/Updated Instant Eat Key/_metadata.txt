@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/15191
-IDs: apomorph.updatedInstantEatKey
-update keys: Nexus:15191

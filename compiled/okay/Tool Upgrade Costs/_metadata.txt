@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6576
-IDs: Cherry.ToolUpgradeCosts
-update keys: Nexus:6576, GitHub:ChroniclerCherry/stardew-valley-mods

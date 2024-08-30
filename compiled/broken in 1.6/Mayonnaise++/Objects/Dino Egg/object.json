@@ -1,9 +1,0 @@
-{
-  "Name": "Dino Egg",
-  "Description": "This dinosaur egg is infertile. I guess life didn't find a way after all.",
-  "Category": "Egg",
-  "Edibility": -300,
-  "Price": 350,
-  "IsColored": false,
-  "Recipe": null
-}

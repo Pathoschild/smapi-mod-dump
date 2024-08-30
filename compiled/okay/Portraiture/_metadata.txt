@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/999
-IDs: Platonymous.Portraiture
-update keys: Nexus:999, GitHub:Platonymous/Stardew-Valley-Mods

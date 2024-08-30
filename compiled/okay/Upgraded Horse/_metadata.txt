@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5242
-IDs: richard_cai.UpgradedHorse
-update keys: Nexus:5242, GitHub:RichardJCai/stardew-valley-mods

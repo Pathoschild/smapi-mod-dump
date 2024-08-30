@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10148
-IDs: Derslayr.GreenhouseConstruction
-update keys: Nexus:10148, GitHub:derslayr10/GreenhouseConstruction

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/16436
-IDs: Factknowhow.IFramesInMines
-update keys: Nexus:16436, GitHub:Mekadrom/IFramesInMines

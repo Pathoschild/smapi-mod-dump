@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10673
-IDs: spacechase0.MonstersTheFramework
-update keys: Nexus:10673, GitHub:spacechase0/StardewValleyMods

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/22631
-IDs: Syma.HatsOnPetsPlus
-update keys: Nexus:22631, GitHub:SymaLoernn/Stardew_HatsOnPetsPlus

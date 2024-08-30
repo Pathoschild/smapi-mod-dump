@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/23201
-IDs: GlassHammer.HopeToRiseMod
-update keys: Nexus:23201

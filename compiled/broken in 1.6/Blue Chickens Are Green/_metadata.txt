@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/4815
-IDs: explosivetortellini.BlueChickensAreGreen
-update keys: Nexus:4815, GitHub:explosivetortellini/bluechickensaregreen

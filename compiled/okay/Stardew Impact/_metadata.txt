@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/14365
-IDs: aedenthorn.StardewImpact
-update keys: Nexus:14365, GitHub:aedenthorn/StardewValleyMods

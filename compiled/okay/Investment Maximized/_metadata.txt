@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/9253
-IDs: misscoriel.investmax
-update keys: Nexus:9253, GitHub:MissCoriel/InvestmentMaximized

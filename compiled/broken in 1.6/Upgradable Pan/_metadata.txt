@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/9318
-IDs: com.anthonyhilyard.upgradablepan
-update keys: Nexus:9318, GitHub:AHilyard/UpgradeablePan

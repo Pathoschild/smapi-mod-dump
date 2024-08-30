@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6597
-IDs: aedenthorn.UndergroundSecrets
-update keys: Nexus:6597, GitHub:aedenthorn/StardewValleyMods

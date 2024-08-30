@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/21533
-IDs: DeadRobotDev.JackBeThicc
-update keys: Nexus:21533, GitHub:DeadRobotDev/StardewMods

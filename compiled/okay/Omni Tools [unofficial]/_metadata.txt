@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/14865
-IDs: aedenthorn.OmniTools
-update keys: Nexus:14865, GitHub:aedenthorn/StardewValleyMods

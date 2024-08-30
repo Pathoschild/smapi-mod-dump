@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/11421
-IDs: Shockah.Hibernation
-update keys: Nexus:11421, GitHub:Shockah/Stardew-Valley-Mods

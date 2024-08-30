@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/11424
-IDs: mod.kitchen.minecartpatcher, bwdymods.minecartpatcher
-update keys: Nexus:11424, GitHub:bwdy/SDVModding

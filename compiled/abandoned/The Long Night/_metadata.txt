@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1369
-IDs: Pathoschild.TheLongNight
-update keys: Nexus:1369, GitHub:Pathoschild/StardewMods

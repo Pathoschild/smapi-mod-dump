@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/14263
-IDs: spacechase0.SharingIsCaring
-update keys: Nexus:14263, GitHub:spacechase0/StardewValleyMods

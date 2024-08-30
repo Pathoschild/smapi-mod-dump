@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10899
-IDs: StultusV.ReportMobCounts
-update keys: Nexus:10899, GitHub:JudeRV/Stardew-ReportMobCounts

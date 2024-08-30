@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/24204
-IDs: alichan.AntiCheatWhitelist
-update keys: Nexus:24204

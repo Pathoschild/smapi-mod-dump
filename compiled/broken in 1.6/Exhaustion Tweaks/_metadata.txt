@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6247
-IDs: mytigio.exhaustiontweaks
-update keys: Nexus:6247, GitHub:mytigio/SDVMods

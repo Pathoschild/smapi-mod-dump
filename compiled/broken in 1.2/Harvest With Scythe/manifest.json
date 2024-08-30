@@ -1,9 +1,0 @@
-{
-  "Name": "HarvestWithScytheSMAPI",
-  "Authour": "ThatNorthernMonkey",
-  "Version": "0.0.1", // fixed locally from 0.0
-  "Description": "",
-  "UniqueID": "965169fd-e1ed-47d0-9f12-b104535fb4bc",
-  "PerSaveConfigs": false,
-  "EntryDll": "HarvestWithScytheSMAPI.dll"
-}

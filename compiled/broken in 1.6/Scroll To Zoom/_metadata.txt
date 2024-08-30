@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2163
-IDs: Tomwa.ScrollToZoom
-update keys: Nexus:2163

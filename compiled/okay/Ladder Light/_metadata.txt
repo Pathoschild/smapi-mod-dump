@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/22052
-IDs: Tocseoj.LadderLight
-update keys: Nexus:22052

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5423
-IDs: BrasileiroTop.Fundo
-update keys: Nexus:5423

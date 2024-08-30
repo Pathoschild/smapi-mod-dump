@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5776
-IDs: Aedenthorn.FruitTreeShaker
-update keys: Nexus:5776, GitHub:aedenthorn/StardewValleyMods

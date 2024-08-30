@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/12195
-IDs: mistyspring.extraGImapsCS, mistyspring.extraGImaps_CS
-update keys: Nexus:???, Nexus:12195, GitHub:misty-spring/StardewMods

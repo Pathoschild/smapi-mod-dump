@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/9786
-IDs: seeinggreen.StardewProgress
-update keys: Nexus:9786

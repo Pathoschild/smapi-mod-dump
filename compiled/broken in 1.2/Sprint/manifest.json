@@ -1,7 +1,0 @@
-// entire manifest added locally
-{
-  "Name": "Sprint",
-  "Version": "1.1.2",
-  "EntryDll": "Sprint.dll",
-  "UpdateKeys": ["Nexus:2"]
-}

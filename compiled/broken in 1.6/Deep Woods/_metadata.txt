@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2571
-IDs: maxvollmer.deepwoodsmod
-update keys: Nexus:2571, GitHub:maxvollmer/DeepWoodsMod

@@ -1,7 +1,0 @@
-{
-  "process.start": "水やりを始める時が来ました",
-  "process.end": "完成した水やり",
-  "process.interrupt": "水やりが止まった",
-  "process.exhausted": "水やりにうんざり",
-  "process.waterless": "水が見つかりませんでした"
-}

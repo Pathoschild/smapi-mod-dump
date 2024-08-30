@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5299
-IDs: SorryLate.ShopAnywhere
-update keys: Nexus:5299

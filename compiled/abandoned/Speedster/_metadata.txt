@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1102
-IDs: Platonymous.Speedster
-update keys: Nexus:1102, GitHub:Platonymous/Stardew-Valley-Mods

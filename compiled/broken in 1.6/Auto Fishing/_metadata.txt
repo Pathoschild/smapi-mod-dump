@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5235
-IDs: SorryLate.AutoFishing
-update keys: Nexus:5235

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/4734
-IDs: Cherry.CustomizeAnywhere
-update keys: Nexus:4734, GitHub:ChroniclerCherry/stardew-valley-mods

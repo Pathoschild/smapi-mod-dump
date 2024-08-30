@@ -1,9 +1,0 @@
-﻿{
-   "Name": "Children's Beds Removal",
-   "Author": "Prismuth",
-   "Version": "1.2",
-   "Description": "Removes the children's beds (and crib) from your upstairs.",
-   "UniqueID": "Prismuth.ChildBedsRemoval",
-   "EntryDll": "ChildBedsRemoval.dll",
-   "UpdateKeys": ["Nexus:1655"]
-}

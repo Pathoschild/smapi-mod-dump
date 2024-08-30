@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/25529
-IDs: Parzivl.DayLimiter, tadfoster.DayLimiter
-update keys: Nexus:25529, GitHub:tadfoster/StardewValleyMods

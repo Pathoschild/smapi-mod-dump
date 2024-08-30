@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/11021
-IDs: ytsc.QualityFishPonds
-update keys: Nexus:11021, GitHub:YTSC/StardewValleyMods

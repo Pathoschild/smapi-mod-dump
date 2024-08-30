@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10915
-IDs: FenrirAsonda.Starksouls
-update keys: Nexus:10915, GitHub:OhWellMikell/Starksouls

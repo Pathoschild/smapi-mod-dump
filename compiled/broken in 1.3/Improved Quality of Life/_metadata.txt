@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1025
-IDs: Demiacle.ImprovedQualityOfLife
-update keys: Nexus:1025, GitHub:demiacle/QualityOfLifeMods

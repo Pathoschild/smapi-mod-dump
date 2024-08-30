@@ -1,9 +1,0 @@
-{
-  "mod_setting_mod_name": "Pet Water Bowl",
-  "mod_setting_enabled_text" : "Enable Mod",
-  "mod_setting_enabled_description" : "Whether or not the mod is enabled.",
-  "mod_setting_enable_snow_watering_text" : "Enable Snow Watering",
-  "mod_setting_enable_snow_watering_description": "Whether or not the water bowl should be filled by snow.",
-  "mod_setting_enable_sprinkler_watering_text" : "Enable Sprinkler Watering",
-  "mod_setting_enable_sprinkler_watering_description": "Whether or not the water bowl should be filled by nearby sprinkler."
-}

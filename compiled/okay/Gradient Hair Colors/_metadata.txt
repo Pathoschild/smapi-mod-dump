@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/12744
-IDs: spacechase0.GradientHairColors
-update keys: Nexus:12744, GitHub:spacechase0/StardewValleyMods

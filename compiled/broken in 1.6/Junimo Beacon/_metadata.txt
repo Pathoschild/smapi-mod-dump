@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/17135
-IDs: Achtuur.JunimoBeacon
-update keys: Nexus:17135, GitHub:Achtuur/StardewMods

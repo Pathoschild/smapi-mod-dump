@@ -1,9 +1,0 @@
-{
-  "Name": "Pokemania Revised",
-  "Author": "The Krominator",
-  "Version": "4.1.1",
-  "Description": "Injects Pokemon all over the Stardew Valley world. For 1.6!",  "UniqueID": "TheKrominator.PokemaniaRevised",
-  "EntryDll": "Pokemania_3.dll",
-  "MinimumApiVersion": "3.16.1",
-  "UpdateKeys": [ "Nexus:12065" ]
-}

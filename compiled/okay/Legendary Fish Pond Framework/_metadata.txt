@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/14637
-IDs: sharpskull2.LegendaryFishPondFramework
-update keys: Nexus:14637

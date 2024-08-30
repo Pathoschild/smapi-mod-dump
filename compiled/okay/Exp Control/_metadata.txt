@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/23067
-IDs: moonslime.ExpControl
-update keys: Nexus:23067

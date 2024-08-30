@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/4
-IDs: CJBok.CheatsMenu, CJBCheatsMenu
-update keys: Nexus:4, GitHub:CJBok/SDV-Mods

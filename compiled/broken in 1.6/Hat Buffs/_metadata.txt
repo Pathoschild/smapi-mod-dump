@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/9050
-IDs: popska.HatBuffs
-update keys: Nexus:9050

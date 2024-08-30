@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/8798
-IDs: 2Retr0.PlacementPlus
-update keys: Nexus:8798, GitHub:2Retr0/PlacementPlus

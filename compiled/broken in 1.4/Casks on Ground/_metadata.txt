@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2406
-IDs: punyo.CasksOnGround
-update keys: Nexus:2406, GitHub:pomepome/CasksOnGround

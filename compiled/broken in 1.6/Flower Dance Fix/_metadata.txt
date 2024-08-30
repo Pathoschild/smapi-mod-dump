@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/8535
-IDs: FlowerDanceFix.elfuun
-update keys: Nexus:8535, ModDrop:980853, GitHub:elfuun1/FlowerDanceFix

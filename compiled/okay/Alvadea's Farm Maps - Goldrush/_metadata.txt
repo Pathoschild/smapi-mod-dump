@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/13187
-IDs: Alja.Shack
-update keys: Nexus:13187, GitHub:Jaksha6472/MiningShack

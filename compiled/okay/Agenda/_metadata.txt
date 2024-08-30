@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/20432
-IDs: ofts.agenda
-update keys: Nexus:20432, GitHub:ofts-cqm/StardewValley-Agenda

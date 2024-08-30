@@ -1,3 +1,0 @@
-page URL: https://github.com/mralbobo/stardew-chest-pooling
-IDs: mralbobo.ChestPooling
-update keys: GitHub:mralbobo/stardew-chest-pooling

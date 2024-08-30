@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/16097
-IDs: aedenthorn.PuristMod
-update keys: Nexus:16097, GitHub:aedenthorn/StardewValleyMods

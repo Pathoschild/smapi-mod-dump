@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6121
-IDs: S1mmyy.SkullCavernDrill
-update keys: Nexus:6121, GitHub:S1mmyy/StardewMods

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/878
-IDs: CasksAnywhere
-update keys: GitHub:LeonBlade/CasksAnywhere, Nexus:878, Chucklefish:5486

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3092
-IDs: gitstonic.svbdp
-update keys: Nexus:3092

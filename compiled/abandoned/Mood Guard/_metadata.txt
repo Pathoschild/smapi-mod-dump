@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1597
-IDs: YonKuma.MoodGuard
-update keys: Nexus:1597, GitHub:YonKuma/MoodGuard

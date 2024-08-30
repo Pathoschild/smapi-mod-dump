@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7218
-IDs: Candidus42.ImagEd
-update keys: Nexus:7218, GitHub:mus-candidus/ImagEd

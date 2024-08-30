@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/13096
-IDs: aedenthorn.Skateboard
-update keys: Nexus:13096, GitHub:aedenthorn/StardewValleyMods

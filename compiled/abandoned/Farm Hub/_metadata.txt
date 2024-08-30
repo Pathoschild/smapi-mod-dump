@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2309
-IDs: Platonymous.FarmHub
-update keys: Nexus:2309, GitHub:Platonymous/Stardew-Valley-Mods

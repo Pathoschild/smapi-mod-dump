@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10641
-IDs: aedenthorn.MeteorDefence
-update keys: Nexus:10641, GitHub:aedenthorn/StardewValleyMods

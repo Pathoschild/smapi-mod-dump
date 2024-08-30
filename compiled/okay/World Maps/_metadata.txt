@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/24210
-IDs: shekurika.worldMaps
-update keys: Nexus:24210

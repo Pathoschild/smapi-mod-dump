@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/23023
-IDs: Freaksaus.TilemanRedux
-update keys: Nexus:23023, GitHub:Freaksaus/Tileman-Redux

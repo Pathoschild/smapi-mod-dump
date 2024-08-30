@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10179
-IDs: aedenthorn.FarmerHelper
-update keys: Nexus:10179, GitHub:aedenthorn/StardewValleyMods

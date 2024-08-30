@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/13925
-IDs: Mustafa.StopSoundsWhenAltTabbed
-update keys: Nexus:13925, GitHub:mustafa-git/StopSoundsWhenAltTabbed

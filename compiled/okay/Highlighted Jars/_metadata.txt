@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6833
-IDs: Annosz.HighlightedJars
-update keys: Nexus:6833, GitHub:Annosz/StardewValleyModding

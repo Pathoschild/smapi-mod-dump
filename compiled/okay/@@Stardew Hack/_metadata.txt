@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3213
-IDs: bcmpinc.StardewHack
-update keys: Nexus:3213, GitHub:bcmpinc/StardewHack

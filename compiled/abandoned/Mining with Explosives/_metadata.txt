@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/770
-IDs: MiningWithExplosives, Nishtra.MiningWithExplosives
-update keys: Nexus:770

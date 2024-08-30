@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6414
-IDs: PurrplingCat.QuestFramework
-update keys: Nexus:6414, GitHub:purrplingcat/QuestFramework

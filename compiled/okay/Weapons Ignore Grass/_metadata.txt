@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/15409
-IDs: aedenthorn.WeaponsIgnoreGrass
-update keys: Nexus:15409, GitHub:aedenthorn/StardewValleyMods

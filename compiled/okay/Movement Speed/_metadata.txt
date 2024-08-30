@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2736
-IDs: bcmpinc.MovementSpeed
-update keys: Nexus:2736, GitHub:bcmpinc/StardewHack

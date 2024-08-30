@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3658
-IDs: MattDeDuck.Fischievements
-update keys: Nexus:3658

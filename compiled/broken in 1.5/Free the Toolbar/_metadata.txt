@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/4960
-IDs: danmw3.freethetoolbar
-update keys: Nexus:4960

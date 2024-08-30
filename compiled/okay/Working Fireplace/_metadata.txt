@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3654
-IDs: jahangmar.WorkingFireplace
-update keys: Nexus:3654, GitHub:jahangmar/StardewValleyMods

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6775
-IDs: Platonymous.CustomTV
-update keys: Nexus:6775, GitHub:Platonymous/Stardew-Valley-Mods

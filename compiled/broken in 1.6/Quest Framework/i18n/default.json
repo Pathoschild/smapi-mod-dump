@@ -1,6 +1,0 @@
-﻿{
-  "fallbackTitle": "(remove me)",
-  "fallbackDescription": "This quest was added by quest framework. If you see this text, this quest is abandoned due to quest framework or the mod was removed. You can delete this quest by clicking to remove button.",
-  "fallbackObjective": "Remove this quest by clicking remove button bellow",
-  "quest.itemHarvest.objective": "{{harvested}}/{{total}} {{itemName}} harvested"
-}

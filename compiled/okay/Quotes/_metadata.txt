@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6503
-IDs: aedenthorn.Quotes
-update keys: Nexus:6503, GitHub:aedenthorn/StardewValleyMods

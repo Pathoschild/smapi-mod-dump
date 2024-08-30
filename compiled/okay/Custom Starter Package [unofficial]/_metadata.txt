@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/14152
-IDs: aedenthorn.CustomStarterPackage
-update keys: Nexus:14152, UpdateManifest:https://raw.githubusercontent.com/mouahrara/aedenthorn/master/update-manifest.json@CustomStarterPackage, GitHub:aedenthorn/StardewValleyMods

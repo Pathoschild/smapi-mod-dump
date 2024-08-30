@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10240
-IDs: tlitookilakin.deepwoodswarpnet
-update keys: Nexus:10240, GitHub:tlitookilakin/WarpnetDeepwoods

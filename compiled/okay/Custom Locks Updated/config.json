@@ -1,9 +1,0 @@
-{
-  "Enabled": true,
-  "AllowSeedShopWed": true,
-  "AllowOutsideTime": true,
-  "AllowStrangerHomeEntry": true,
-  "AllowStrangerRoomEntry": true,
-  "AllowAdventureGuildEntry": true,
-  "IgnoreEvents": true
-}

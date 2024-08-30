@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/22797
-IDs: HeyImAmethyst.SkinToneLoader
-update keys: Nexus:22797, GitHub:HeyImAmethyst/SkinToneLoader

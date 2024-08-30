@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/771
-IDs: BetterQuarry
-update keys: Nexus:771

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/19405
-IDs: AimonsMoreLivelySewerOverhaulPatches
-update keys: Nexus:19405, GitHub:SimonK1122/More-Lively-Sewer-Overhaul-code-patches

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/8249
-IDs: akai.AnimatedPortrait
-update keys: Nexus:8249

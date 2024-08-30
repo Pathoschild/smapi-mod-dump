@@ -1,6 +1,0 @@
-﻿{
-    "fallbackTitle": "(Töröld ezt a küldetést)",
-    "fallbackDescription": "Ez a küldetés a Küldetés rendszer telepítésével jött létre. Ha ezt a küldetést látod, akkor valami történt a Küldetés rendszer moddal, vagy a küldetéshez tartozó modot eltávolították. Ezt a küldetést az eltávolítás gombra kattintva törölheted.",
-    "fallbackObjective": "Az eltávolítás gombra kattintva törölheted ezt a küldetést.",
-    "quest.itemHarvest.objective": "{{harvested}}/{{total}} betakarított {{itemName}}."
-}

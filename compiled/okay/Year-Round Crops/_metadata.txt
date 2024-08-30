@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/8196
-IDs: vincebel.YearRoundCrops
-update keys: Nexus:8196, GitHub:vincebel7/YearRoundCrops

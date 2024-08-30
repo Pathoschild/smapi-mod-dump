@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3782
-IDs: berkayylmao.ShipAnything, berkay2578.ShipAnything, berkay2578.ShipEverything
-update keys: Nexus:3782, GitHub:berkayylmao/StardewValleyMods

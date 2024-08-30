@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/26260
-IDs: tomokisan.customWakeUpTime
-update keys: Nexus:26260

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2738
-IDs: bcmpinc.TilledSoilDecay
-update keys: Nexus:2738, GitHub:bcmpinc/StardewHack

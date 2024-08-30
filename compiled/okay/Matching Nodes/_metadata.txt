@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/11124
-IDs: Vertigon.MinesTokens
-update keys: Nexus:11124

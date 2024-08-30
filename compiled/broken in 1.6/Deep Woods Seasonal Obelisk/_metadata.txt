@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5016
-IDs: maxvollmer.deepwoodsmod.seasonalobelisk
-update keys: Nexus:5016

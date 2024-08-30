@@ -1,8 +1,0 @@
-{
-	"Name": "TaT.mystery-treat",
-	"TranslationKey": "objects.mystery-treat",
-	"Category": "Junk",
-	"Edibility": 1, // Random?
-	"EdibleIsDrink": false,
-	"Price": 1,
-}

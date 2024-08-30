@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/21588
-IDs: platinummyr.CustomBackpackFramework
-update keys: Nexus:21588

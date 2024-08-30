@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3207
-IDs: Jessebot.HealthStaminaRegen
-update keys: Nexus:3207, GitHub:JessebotX/StardewValleyMods

@@ -1,9 +1,0 @@
-{
-  "Name": "EasyPathDestruction",
-  "Author": "StultusV",
-  "Version": "1.1.0",
-  "Description": "Lets user destroy paths much more easily to conserve energy",
-  "UniqueID": "StultusV.EasyPathDestruction",
-  "EntryDll": "EasyPathDestruction.dll",
-  "UpdateKeys": [ "Nexus:8775" ]
-}

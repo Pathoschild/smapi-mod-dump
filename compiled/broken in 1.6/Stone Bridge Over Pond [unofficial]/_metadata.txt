@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/316
-IDs: jinxiewinxie.StoneBridgeOverPond
-update keys: Nexus:316, GitHub:Jinxiewinxie/StardewValleyMods

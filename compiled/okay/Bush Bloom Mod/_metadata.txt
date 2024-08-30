@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/15792
-IDs: NCarigon.BushBloomMod
-update keys: Nexus:15792, GitHub:ncarigon/StardewValleyMods

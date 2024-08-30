@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3883
-IDs: lolmaj.AutoToolSelect
-update keys: Nexus:3883, GitHub:MaciejMarkuszewski/StardewValleyAutoToolSelect

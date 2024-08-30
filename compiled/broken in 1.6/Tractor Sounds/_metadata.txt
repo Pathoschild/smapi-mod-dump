@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5781
-IDs: misscoriel.tractorsounds
-update keys: Nexus:5781

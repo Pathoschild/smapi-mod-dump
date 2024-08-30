@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/13009
-IDs: DecidedlyHuman.CarryYourPet
-update keys: Nexus:13009, GitHub:DecidedlyHuman/StardewValleyMods

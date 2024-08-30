@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7934
-IDs: ShroomSpotter
-update keys: Nexus:7934, GitHub:strobel1ght/ShroomSpotterRedux

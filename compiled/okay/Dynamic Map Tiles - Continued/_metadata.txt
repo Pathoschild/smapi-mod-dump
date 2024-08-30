@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/14566
-IDs: datamancer.DynamicMapTiles
-update keys: Nexus:14566, Nexus:21084

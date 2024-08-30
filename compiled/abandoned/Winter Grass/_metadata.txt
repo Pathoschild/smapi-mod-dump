@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1601
-IDs: cat.wintergrass
-update keys: Nexus:1601, GitHub:danvolchek/StardewMods

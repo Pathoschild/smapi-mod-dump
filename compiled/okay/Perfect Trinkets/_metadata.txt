@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/22358
-IDs: season.PerfectTrinkets
-update keys: Nexus:22358

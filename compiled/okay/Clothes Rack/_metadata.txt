@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/18765
-IDs: LunaticShade.ClothesRack
-update keys: Nexus:18765

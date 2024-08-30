@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2047
-IDs: skuldomg.priceDrops
-update keys: Nexus:2047, GitHub:skuldomg/priceDrops

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/22457
-IDs: AlanBF.BigFridge
-update keys: Nexus:22457

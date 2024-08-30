@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/4689
-IDs: jahangmar.LevelingAdjustment
-update keys: Nexus:4689, GitHub:jahangmar/StardewValleyMods

@@ -1,3 +1,0 @@
-page URL: https://github.com/jaredlll08/Trash-Trash
-IDs: BlameJared.TrashTrash
-update keys: CurseForge:297981, GitHub:jaredlll08/Trash-Trash

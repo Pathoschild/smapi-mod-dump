@@ -1,3 +1,0 @@
-page URL: https://github.com/Enaium-StardewValleyMods/QuickMinigame
-IDs: Enaium.QuickMinigame
-update keys: CurseForge:438741, GitHub:Enaium-StardewValleyMods/QuickMinigame

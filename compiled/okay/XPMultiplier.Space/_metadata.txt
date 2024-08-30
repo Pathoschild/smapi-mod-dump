@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/8760
-IDs: NFN.XPMULSPA
-update keys: Nexus:8760, GitHub:nofilenamed/XPMultiplier.Space

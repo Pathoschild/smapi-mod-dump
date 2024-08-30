@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/11687
-IDs: aedenthorn.PlanterTrees
-update keys: Nexus:11687, GitHub:aedenthorn/StardewValleyMods

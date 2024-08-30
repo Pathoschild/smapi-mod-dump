@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/12750
-IDs: aedenthorn.TwoPlayerPrairieKing
-update keys: Nexus:12750, GitHub:aedenthorn/StardewValleyMods

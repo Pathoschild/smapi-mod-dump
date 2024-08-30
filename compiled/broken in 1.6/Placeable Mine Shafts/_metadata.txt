@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5440
-IDs: Aedenthorn.PlaceShaft
-update keys: Nexus:5440, GitHub:aedenthorn/StardewValleyMods

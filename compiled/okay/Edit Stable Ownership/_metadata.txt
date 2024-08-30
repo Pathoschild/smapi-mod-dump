@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/26346
-IDs: predo.sdvmods.EditStableOwnership
-update keys: Nexus:26346, GitHub:PedroLucasMiguel/PredoSDVMods

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/4949
-IDs: Cherry.CataloguesAnywhere
-update keys: Nexus:4949, GitHub:ChroniclerCherry/stardew-valley-mods

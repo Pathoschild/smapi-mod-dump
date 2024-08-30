@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/18850
-IDs: RainKuro.RainsInteractionMod
-update keys: Nexus:18850

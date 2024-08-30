@@ -1,9 +1,0 @@
-{
-  "yes": "Oui",
-  "no": "Non",
-  "use": "Utiliser l'ouvre-serrure?",
-  "tool": "Ouvre-serrure",
-  "tooltip": "Un outil pour ouvrir les portes verrouillées.",
-  "broke": "L'outil a cassé!",
-  "complex": "Ce verrou est trop complexe."
-}

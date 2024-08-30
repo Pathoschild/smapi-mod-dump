@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/14452
-IDs: spacechase0.SkillTraining
-update keys: Nexus:14452, GitHub:spacechase0/StardewValleyMods

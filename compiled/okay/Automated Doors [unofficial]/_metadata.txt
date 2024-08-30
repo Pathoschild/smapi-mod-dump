@@ -1,3 +1,0 @@
-page URL: https://github.com/azah/AutomatedDoors
-IDs: azah.automated-doors
-update keys: GitHub:azah/AutomatedDoors

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5127
-IDs: Drachenkatze.AdvancedKeyBindings
-update keys: Nexus:5127, GitHub:Drachenkaetzchen/AdvancedKeyBindings

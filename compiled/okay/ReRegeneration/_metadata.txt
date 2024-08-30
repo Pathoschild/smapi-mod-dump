@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6837
-IDs: lrsk_sdvm_rerg.0925160827
-update keys: Chucklefish:4465, Nexus:6837, ModDrop:827580, GitHub:littleraskol/ReRegeneration

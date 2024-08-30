@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2757
-IDs: spacechase0.MoreBuildings
-update keys: Nexus:2757, GitHub:spacechase0/StardewValleyMods

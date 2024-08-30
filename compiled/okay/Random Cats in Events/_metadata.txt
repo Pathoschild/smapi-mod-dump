@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/26444
-IDs: spacechase0.RandomCatsInEvents
-update keys: Nexus:26444, GitHub:spacechase0/StardewValleyMods

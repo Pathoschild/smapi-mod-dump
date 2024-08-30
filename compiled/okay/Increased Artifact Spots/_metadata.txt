@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3340
-IDs: mizzion.increasedartifactspots
-update keys: Nexus:3340, ModDrop:663705, GitHub:Mizzion/MyStardewMods

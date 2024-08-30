@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/13293
-IDs: MindMeltMax.Trading
-update keys: Nexus:13293, GitHub:MindMeltMax/Stardew-Valley-Mods

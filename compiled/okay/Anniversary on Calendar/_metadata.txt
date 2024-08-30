@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/8351
-IDs: greentodd.CalendarAnniversary
-update keys: Nexus:8351

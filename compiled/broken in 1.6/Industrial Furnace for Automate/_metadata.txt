@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5568
-IDs: Traktori.AM.IndustrialFurnace
-update keys: Nexus:5568@Automate, Nexus:5568, GitHub:Traktori7/StardewValleyMods

@@ -1,8 +1,0 @@
-{
-  "NotifyForUnknownNPCs": false,
-  "RecommendGift": true,
-  "DatableNPCsOnly": false,
-  "MinimumFriendshipHeartLevel": 1,
-  "MinimumFriendshipHeartLevelForGiftRecommendations": 2,
-  "ExcludedNPCs": []
-}

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/16628
-IDs: virtualbjorn.SharedProfessions
-update keys: Nexus:16628

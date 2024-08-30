@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/22953
-IDs: recon88.MultiSave
-update keys: Nexus:22953, GitHub:recon88/Multi-Save-Continued

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/25368
-IDs: weizinai.BetterCabin
-update keys: Nexus:25368, GitHub:weizinai/StardewValleyMods

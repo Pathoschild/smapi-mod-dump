@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2085
-IDs: dphile.BetterIridiumFarmTools
-update keys: Nexus:2085, GitHub:dphile/SDVBetterIridiumTools

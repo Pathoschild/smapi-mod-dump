@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/15928
-IDs: atravita.IdentifiableCombinedRings
-update keys: Nexus:15928, GitHub:atravita-mods/StardewMods

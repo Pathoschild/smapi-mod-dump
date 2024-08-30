@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/4171
-IDs: AairTheGreat.BetterGarbageCans
-update keys: Nexus:4171, GitHub:AairTheGreat/StardewValleyMods

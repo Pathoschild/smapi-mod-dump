@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/25175
-IDs: Mikew.letmehatchthisegg.smapi
-update keys: Nexus:25175

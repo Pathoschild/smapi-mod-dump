@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/11727
-IDs: SinZ.AutomateChests
-update keys: Nexus:11727, GitHub:SinZ163/StardewMods

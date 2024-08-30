@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2573
-IDs: stokastic.AnimalChooser
-update keys: Nexus:2573, GitHub:stokastic/AnimalChooser

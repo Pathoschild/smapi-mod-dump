@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/23452
-IDs: Saah.AlwaysShowBarValues
-update keys: Nexus:23452, GitHub:sarahvloos/StardewMods

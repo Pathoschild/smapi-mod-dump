@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/11548
-IDs: NormanPCN.EasierMonsterEradication
-update keys: Nexus:11548, GitHub:NormanPCN/StardewValleyMods

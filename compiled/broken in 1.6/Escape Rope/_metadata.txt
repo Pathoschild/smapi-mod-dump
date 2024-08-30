@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/8576
-IDs: lestoph.EscapeRope
-update keys: Nexus:8576, GitHub:Bifibi/SDVEscapeRope

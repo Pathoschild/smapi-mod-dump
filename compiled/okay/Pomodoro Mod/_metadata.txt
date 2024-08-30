@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/19780
-IDs: Yasser.PomodoroMod
-update keys: Nexus:19780

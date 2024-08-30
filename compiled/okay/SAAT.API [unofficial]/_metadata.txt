@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10747
-IDs: ZeroMeters.SAAT.API
-update keys: Nexus:10747, GitHub:Dawilly/SAAT

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10608
-IDs: ForgedBrass.BetterPanningSpot
-update keys: Nexus:10608

@@ -1,3 +1,0 @@
-page URL: https://community.playstarbound.com/resources/4373
-IDs: ExtendedBusSystem
-update keys: Chucklefish:4373

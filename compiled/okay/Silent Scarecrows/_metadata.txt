@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3258
-IDs: climaxius.silentscarecrows
-update keys: Nexus:3258, GitHub:robbiev/SilentScarecrows

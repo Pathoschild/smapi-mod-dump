@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2375
-IDs: WuestMan.QuickStart
-update keys: Nexus:2375, GitHub:Brian-Wuest/Quick_Start

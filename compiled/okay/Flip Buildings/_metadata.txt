@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/18444
-IDs: mouahrara.FlipBuildings
-update keys: Nexus:18444, GitHub:mouahrara/FlipBuildings

@@ -1,6 +1,0 @@
-{
-  "DefaultInterpolationTicks": 15,
-  "FarmerDeltaBroadcastPeriod": 3,
-  "LocationDeltaBroadcastPeriod": 3,
-  "WorldStateDeltaBroadcastPeriod": 3
-}

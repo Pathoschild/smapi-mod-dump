@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6183
-IDs: Cherry.TrainStation
-update keys: Nexus:6183, GitHub:ChroniclerCherry/stardew-valley-mods

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7619
-IDs: PeacefulEnd.GreenhouseGatherers.Automate
-update keys: Nexus:7619, GitHub:Floogen/GreenhouseGatherers

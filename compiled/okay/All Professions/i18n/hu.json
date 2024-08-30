@@ -1,8 +1,0 @@
-﻿{
-    /*********
-    ** Generic Mod Config Menu UI
-    *********/
-    "config.intro": "Válaszd ki, hogy mely szakmák kerüljenek hozzáadásra, amikor eléred a szükséges szintet. Ha már megvan a szakma, akkor ez nem fogja visszamenőlegesen eltávolítani (a CJB Cheats menü segítségével eltávolíthatod a tanult szakmákat).",
-    "config.skill-level": "{{skillName}} {{level}} szint",
-    "config.toggle-skill.desc": "A {{professionName}} jártasság hozzáadása, ha eléred a {{skillName}} képesség {{level}} szintjét."
-}

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7336
-IDs: misscoriel.sitnrelax
-update keys: Nexus:7336, GitHub:MissCoriel/Sit-n-Relax

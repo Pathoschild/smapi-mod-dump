@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/8970
-IDs: barteke22.FishingInfoOverlays, barteke22.FIshingInfoOverlays
-update keys: Nexus:8970, GitHub:barteke22/StardewMods

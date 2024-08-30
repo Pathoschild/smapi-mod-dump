@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/8947
-IDs: CrunchyDuck.SkipText
-update keys: Nexus:8947, GitHub:CrunchyDuck/Stardew-Skip-Text

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3960
-IDs: MouseyPounds.DishOfTheDayDisplay
-update keys: Nexus:3960, GitHub:MouseyPounds/stardew-mods

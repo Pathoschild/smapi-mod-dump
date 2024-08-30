@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5663
-IDs: Traktori.QualityScrubber
-update keys: Nexus:5663, GitHub:Traktori7/StardewValleyMods

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2845
-IDs: Branic.RelationshipTracker
-update keys: Nexus:2845, GitHub:Paradox355/SDVMods

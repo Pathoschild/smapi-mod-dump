@@ -1,7 +1,0 @@
-﻿{
-    /*********
-    ** Generic Mod Config Menu UI
-    *********/
-    "config.vanilla-flowers-only.name": "Використовувати лише стандартні квіти",
-    "config.vanilla-flowers-only.tooltip": "Чи варто використовувати тільки стандартні квіти в квітковому дощі."
-}

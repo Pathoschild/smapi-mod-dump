@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5674
-IDs: kdau.PortableTV
-update keys: Nexus:5674, ModDrop:761325

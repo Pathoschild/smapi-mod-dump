@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/12305
-IDs: DeLiXx.Lenient_Window_Resize
-update keys: Nexus:12305

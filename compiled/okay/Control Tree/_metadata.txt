@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/23119
-IDs: Cluom.ControlTree
-update keys: Nexus:23119

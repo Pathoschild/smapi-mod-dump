@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1138
-IDs: mmanlapat.StartingMoney, StartingMoney
-update keys: Nexus:1138

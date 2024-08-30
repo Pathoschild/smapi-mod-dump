@@ -1,6 +1,0 @@
-* configs -> Mechanic:
-duration: Snow falls between set duration of winter. It rains at other days.
-mix: During winter, it may snow or rain at any day. This is an issue about the way the weather is applied, so the chance of rain is applied only when it does not pass the chance of snow (so, it is applied with a smaller chance than the set value).
-replace: It just rains instead of snow.
-
-* You can set chances for each mechanic, and chances not related to the mechanic in use will be ignored.

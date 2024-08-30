@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3010
-IDs: Platonymous.CustomWallsAndFloors
-update keys: Nexus:3010, GitHub:Platonymous/Stardew-Valley-Mods

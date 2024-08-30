@@ -1,9 +1,0 @@
-﻿{
-  "Name": "QuestDelay",
-  "Author": "BadNetCode",
-  "UpdateKeys": [ "Nexus:1239" ],
-  "Version": "1.0.3",
-  "Description": "Removes daily quest time limits entirely.",
-  "UniqueID": "BadNetCode.QuestDelay",
-  "EntryDll": "QuestDelay.dll"
-}

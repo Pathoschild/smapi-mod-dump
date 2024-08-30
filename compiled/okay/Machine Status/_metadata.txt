@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/11177
-IDs: Shockah.MachineStatus
-update keys: Nexus:11177, GitHub:Shockah/Stardew-Valley-Mods

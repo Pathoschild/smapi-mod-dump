@@ -1,7 +1,0 @@
-{
-  "AllowGameDebug": false,
-  "AllowDangerousCommands": false,
-  "Controls": {
-    "ToggleDebug": "OemTilde"
-  }
-}

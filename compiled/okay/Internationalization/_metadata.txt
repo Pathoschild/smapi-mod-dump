@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/0
-IDs: bcmpinc.Internationalization
-update keys: Nexus:0, Nexus:21317

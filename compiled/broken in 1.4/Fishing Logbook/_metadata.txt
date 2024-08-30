@@ -1,3 +1,0 @@
-page URL: https://github.com/M3ales/FishingLogbook
-IDs: FishingLogbook
-update keys: GitHub:M3ales/FishingLogbook

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/14236
-IDs: vabrell.sm_bqms
-update keys: Nexus:14236, GitHub:vabrell/sdw-seed-maker-mod

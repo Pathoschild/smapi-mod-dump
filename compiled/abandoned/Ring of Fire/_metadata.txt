@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1166
-IDs: Platonymous.RingOfFire
-update keys: Nexus:1166, GitHub:Platonymous/Stardew-Valley-Mods

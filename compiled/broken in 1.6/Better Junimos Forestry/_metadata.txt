@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/8992
-IDs: ceruleandeep.BetterJunimosForestry
-update keys: Nexus:8992, GitHub:ceruleandeep/CeruleanStardewMods

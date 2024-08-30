@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/22349
-IDs: FlyingTNT.QuestTimeLimits
-update keys: Nexus:22349, GitHub:FlyingTNT/StardewValleyMods

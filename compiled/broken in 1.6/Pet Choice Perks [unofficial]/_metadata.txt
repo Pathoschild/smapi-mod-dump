@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3313
-IDs: skuldomg.petChoicePerks
-update keys: Nexus:3313, GitHub:skuldomg/petChoicePerks

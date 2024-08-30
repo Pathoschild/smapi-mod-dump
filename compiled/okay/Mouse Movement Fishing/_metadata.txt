@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/25571
-IDs: Night.MovementFishing
-update keys: Nexus:25571

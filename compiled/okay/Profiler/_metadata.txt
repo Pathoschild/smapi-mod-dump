@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/12135
-IDs: SinZ.Profiler
-update keys: Nexus:12135, GitHub:SinZ163/StardewMods

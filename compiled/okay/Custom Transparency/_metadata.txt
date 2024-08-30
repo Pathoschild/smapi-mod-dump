@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2359
-IDs: cat.customtransparency
-update keys: Nexus:2359, GitHub:danvolchek/StardewMods

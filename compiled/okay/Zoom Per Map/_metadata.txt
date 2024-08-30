@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/22227
-IDs: DecidedlyHuman.ZoomPerMap
-update keys: Nexus:22227, GitHub:DecidedlyHuman/StardewValleyMods

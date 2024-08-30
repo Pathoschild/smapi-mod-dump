@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6304
-IDs: Esca.DestroyableBushes
-update keys: Nexus:6304, GitHub:Esca-MMC/DestroyableBushes, ModDrop:798245

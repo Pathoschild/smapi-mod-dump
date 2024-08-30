@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/21318
-IDs: fox_white25.ultimate_fertilizer
-update keys: Nexus:21318, GitHub:foxwhite25/Stardew-Ultimate-Fertilizer

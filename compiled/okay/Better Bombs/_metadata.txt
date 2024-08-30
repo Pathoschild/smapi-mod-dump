@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7787
-IDs: Duno666.BetterBombs
-update keys: Nexus:7787, GitHub:PhillZitt/BetterBombs

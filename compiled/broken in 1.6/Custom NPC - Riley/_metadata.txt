@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5811
-IDs: SG.RileyHouse
-update keys: Nexus:5811

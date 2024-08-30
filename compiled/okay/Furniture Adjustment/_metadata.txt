@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10213
-IDs: aedenthorn.FurnitureAdjustment
-update keys: Nexus:10213, GitHub:aedenthorn/StardewValleyMods

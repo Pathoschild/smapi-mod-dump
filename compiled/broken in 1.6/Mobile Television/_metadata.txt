@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6575
-IDs: aedenthorn.MobileTelevision
-update keys: Nexus:6575, GitHub:aedenthorn/StardewValleyMods

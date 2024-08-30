@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/4483
-IDs: Jessebot.HelloSMAPI
-update keys: Nexus:4483, GitHub:JessebotX/StardewValleyMods

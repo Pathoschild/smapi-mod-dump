@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7354
-IDs: crazywig.notransitions
-update keys: Nexus:7354

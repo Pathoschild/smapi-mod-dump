@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/16071
-IDs: trashcan9.StorageContainers
-update keys: Nexus:16071

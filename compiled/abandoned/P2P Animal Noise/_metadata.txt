@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/17383
-IDs: modotte.P2PAnimalNoise
-update keys: GitHub:modotte/P2PAnimalNoise, Nexus:17383

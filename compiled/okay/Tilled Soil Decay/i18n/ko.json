@@ -1,6 +1,0 @@
-{
-	"DryingRateMultiplierName": "건조율 배수",
-	"DryingRateMultiplierTooltip": "경작된 토양이 사라질 확률을 이 배수만큼 증가시킵니다 (지연 시간이 충족된 후).",
-	"DelayName": "지연",
-	"DelayTooltip": "토양이 밤에 사라지기 전에 연속으로 물을 받아야 하는 일 수입니다."
-}

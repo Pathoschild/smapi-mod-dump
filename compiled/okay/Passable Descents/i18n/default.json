@@ -1,6 +1,0 @@
-{
-  "logging.label": "Debug logging",
-  "logging.tooltip": "Toggle log messages in console.",
-  "delay.label": "Delay",
-  "delay.tooltip": "Adjusts delay between checks for descents. Higher numbers lowers performance impact. Default: 10"
-}

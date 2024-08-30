@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/21450
-IDs: iargue.PrismaticToolsContinued
-update keys: Nexus:21450

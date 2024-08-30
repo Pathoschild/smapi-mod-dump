@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1664
-IDs: Blucifer.CoalRegen
-update keys: Nexus:1664, GitHub:AbbyNode/StardewValley-CoalRegen

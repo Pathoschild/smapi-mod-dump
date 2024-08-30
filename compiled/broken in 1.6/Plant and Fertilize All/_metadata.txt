@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10482
-IDs: aedenthorn.PlantAll
-update keys: Nexus:10482, GitHub:aedenthorn/StardewValleyMods

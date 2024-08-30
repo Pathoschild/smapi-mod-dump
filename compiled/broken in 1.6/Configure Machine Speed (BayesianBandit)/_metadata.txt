@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3519
-IDs: BayesianBandit.ConfigureMachineSpeed
-update keys: Nexus:3519, GitHub:BayesianBandit/ConfigureMachineSpeed

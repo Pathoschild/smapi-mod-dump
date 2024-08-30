@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/620
-IDs: TheCroak.BuildingsNotifications
-update keys: Nexus:620

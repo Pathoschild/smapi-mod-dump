@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/9969
-IDs: PeacefulEnd.FashionSense
-update keys: Nexus:9969, GitHub:Floogen/FashionSense

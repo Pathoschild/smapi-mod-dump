@@ -1,9 +1,0 @@
-{
-  "Name": "SharedRecipes",
-  "Author": "jslattery26",
-  "Version": "1.0.1", // fixed locally
-  "Description": "SharedRecipes between farmers and farmhands",
-  "UniqueID": "jslattery26.SharedRecipes",
-  "EntryDll": "SharedRecipes.dll",
-  "UpdateKeys": ["GitHub:jslattery26/stardew_mods"]
-}

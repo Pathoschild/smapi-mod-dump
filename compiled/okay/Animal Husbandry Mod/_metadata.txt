@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1538
-IDs: DIGUS.ANIMALHUSBANDRYMOD, DIGUS.BUTCHER
-update keys: Nexus:1538, GitHub:Digus/StardewValleyMods

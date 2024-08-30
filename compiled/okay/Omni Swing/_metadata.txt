@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7877
-IDs: AlejandroAkbal.OmniSwing
-update keys: Nexus:7877, GitHub:AlejandroAkbal/Stardew-Valley-OmniSwing-Mod

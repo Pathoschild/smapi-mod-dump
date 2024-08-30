@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/17288
-IDs: aedenthorn.TileTransparency
-update keys: Nexus:17288, GitHub:aedenthorn/StardewValleyMods

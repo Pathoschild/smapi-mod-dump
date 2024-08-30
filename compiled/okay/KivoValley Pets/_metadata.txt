@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/25705
-IDs: ST.KivoValley.SoundsLib
-update keys: Nexus:25705

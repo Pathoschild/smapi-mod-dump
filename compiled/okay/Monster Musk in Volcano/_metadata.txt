@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10651
-IDs: BananaFruit.MonsterMuskInVolcano
-update keys: Nexus:10651, GitHub:BananaFruit1492/MonsterMuskInVolcano

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2985
-IDs: J_Hizzal.PassableLadders
-update keys: Nexus:2985, GitHub:joelra/SDV-PassableLadders

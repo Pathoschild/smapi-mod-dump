@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1778
-IDs: Xangria.PersistentGameOptions
-update keys: Nexus:1778

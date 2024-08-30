@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10250
-IDs: aedenthorn.PelicanXVASynth, aedenthorn.PelicanxVASynth
-update keys: Nexus:10250, GitHub:aedenthorn/StardewValleyMods

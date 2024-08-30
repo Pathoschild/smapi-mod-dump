@@ -1,8 +1,0 @@
-{
-  "defaultOutdoorZoomLevel": 1.0,
-  "defaultIndoorZoomLevel": 1.5,
-  "defaultMineZoomLevel": 1.0,
-  "zoomLevels": {
-    "Farm": 1.0
-  }
-}

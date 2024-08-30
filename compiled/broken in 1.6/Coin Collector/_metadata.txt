@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/9843
-IDs: aedenthorn.CoinCollector
-update keys: Nexus:9843, GitHub:aedenthorn/StardewValleyMods

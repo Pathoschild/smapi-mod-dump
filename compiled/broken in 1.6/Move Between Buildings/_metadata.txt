@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/17391
-IDs: Vilaboa.MoveBetweenBuildings
-update keys: Nexus:17391

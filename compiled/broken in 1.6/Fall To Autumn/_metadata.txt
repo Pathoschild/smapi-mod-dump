@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7174
-IDs: jahangmar.FallToAutumn
-update keys: Nexus:7174, GitHub:jahangmar/StardewValleyMods

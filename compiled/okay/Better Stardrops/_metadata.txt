@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/21360
-IDs: rokugin.betterstardrops, Rokugin.BetterStardrops
-update keys: Nexus:21360, GitHub:rokugin/StardewMods

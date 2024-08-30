@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10681
-IDs: aedenthorn.SeedMakerTweaks
-update keys: Nexus:10681, GitHub:aedenthorn/StardewValleyMods

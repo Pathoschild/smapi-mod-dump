@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2149
-IDs: punyo.AdjustableStaminaHealing
-update keys: Nexus:2149, GitHub:pomepome/AdjustableStaminaHealing

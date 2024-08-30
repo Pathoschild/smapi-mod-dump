@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/22848
-IDs: NCarigon.BetterHoneyMead
-update keys: Nexus:22848, GitHub:ncarigon/StardewValleyMods

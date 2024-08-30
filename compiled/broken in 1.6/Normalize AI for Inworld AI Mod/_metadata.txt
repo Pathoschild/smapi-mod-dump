@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/19334
-IDs: Platonymous.NormalizeAI
-update keys: Nexus:19334

@@ -1,9 +1,0 @@
-{
-	EachNightName:  	"Щоденно",			EachNightTooltip:  "Налаштовує деградацію ґрунту щоденно",
-	EachSeasonName: 	"Щосезонно",			EachSeasonTooltip: "Налаштовує деградацію ґрунту щосезонно",
-	GreenhouseName: 	"Теплиця",			GreenhouseTooltip: "ННалаштовує деградацію ґрунту в Теплиці",
-	IslandName:     	"Імбірний острів",		IslandTooltip:     "Налаштовує деградацію ґрунту на Імбірномі острові",
-	NonFarmName:    	"За межами ферми",		NonFarmTooltip:    "Налаштовує деградацію ґрунту за межами ферми",
-	DryingRateName: 	"Швидкість деградації",		DryingRateTooltip: "Ймовірність деградації ґрунту. Зазвичай, це: {{rate}} (={{percentage}}%).",
-	DelayName:      	"Затримка деградацій",		DelayTooltip:      "Кількість днів поспіль, за які ґрунт без поливу деградується.",
-}

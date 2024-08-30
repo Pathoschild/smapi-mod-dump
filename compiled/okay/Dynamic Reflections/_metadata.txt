@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/12831
-IDs: PeacefulEnd.DynamicReflections
-update keys: Nexus:12831, GitHub:Floogen/DynamicReflections

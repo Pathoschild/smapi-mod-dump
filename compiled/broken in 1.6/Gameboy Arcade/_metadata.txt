@@ -1,3 +1,0 @@
-page URL: https://www.moddrop.com/stardew-valley/mod/1318487
-IDs: drbirbdev.GameboyArcade
-update keys: ModDrop:1318487, GitHub:drbirbdev/StardewValley

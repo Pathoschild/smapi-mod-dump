@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/8727
-IDs: pepoluan.RemindToExit
-update keys: Nexus:8727

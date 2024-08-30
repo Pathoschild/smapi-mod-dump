@@ -1,8 +1,0 @@
-{
-  "EnableMod": true,
-  "StartTime": 900,
-  "EndTime": 1700,
-  "FarmTravelTime": 160,
-  "TownTravelTime": 120,
-  "BackwoodsTravelTime": 170
-}

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/13778
-IDs: aedenthorn.SlimeHutchWaterSpots
-update keys: Nexus:13778, GitHub:aedenthorn/StardewValleyMods

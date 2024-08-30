@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2654
-IDs: Nobbele.NewGameOnLaunch
-update keys: Nexus:2654, GitHub:4ppleCracker/NewGameOnLaunch

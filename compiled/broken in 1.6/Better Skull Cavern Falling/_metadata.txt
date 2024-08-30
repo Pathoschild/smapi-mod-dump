@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2558
-IDs: maxvollmer.betterskullcavernfalling
-update keys: Nexus:2558, GitHub:maxvollmer/BetterSkullCavernFalling

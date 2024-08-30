@@ -1,7 +1,0 @@
-{
-  "Name": "Riverland w/o Debris",
-  "Description": "Same as Riverland, but starts without debris.",
-  "ID": "StardewValley.Farm_Fishing.NoDebris",
-  "BehaviorPreset": 1,
-  "FarmhousePreset": 1
-}

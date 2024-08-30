@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/11398
-IDs: aedenthorn.FarmerPortraits
-update keys: Nexus:11398, GitHub:aedenthorn/StardewValleyMods

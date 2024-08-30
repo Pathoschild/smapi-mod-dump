@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10612
-IDs: spacechase0.MoonMisadventures
-update keys: Nexus:10612, GitHub:spacechase0/StardewValleyMods

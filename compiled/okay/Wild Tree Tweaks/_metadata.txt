@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/24349
-IDs: chiccen.WildTreeTweaks
-update keys: Nexus:24349, GitHub:chiccenFL/StardewValleyMods

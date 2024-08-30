@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/24804
-IDs: FistOfTheNoob.MonsterFurnitureDrop
-update keys: Nexus:24804, GitHub:MangusuPixel/MonsterFurnitureDrop

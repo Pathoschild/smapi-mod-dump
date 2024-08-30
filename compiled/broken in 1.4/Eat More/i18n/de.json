@@ -1,5 +1,0 @@
-{
-    "hint.wellfeeded": "Du fühlst dich gesättigt. Lege dich in den nächten 2 Stunden in dein Bett um {{StaminaRegeneratedProcent}}% deiner Ausdauer zu regenerieren.",
-	"hint.sleeped.unfeeded": "Du hast gut geschlafen und {{StaminaRegeneratedProcent}}% Ausdauer regeneriert.",
-	"hint.sleeped.wellfeeded": "Du hast gut geschlafen und {{StaminaRegeneratedProcent}}% Ausdauer regeneriert. (Bonus durch Mahlzeit)",
-}

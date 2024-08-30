@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/20612
-IDs: violetlizabet.MigrateDGAItems
-update keys: Nexus:20612, GitHub:elizabethcd/MigrateDGAItems

@@ -1,7 +1,0 @@
-{
-  "EnableMod": true,
-  "AllowDiagonal": true,
-  "ModButton": "LeftShift",
-  "StraightModButton": "LeftControl",
-  "SprinklerModButton": "LeftAlt"
-}

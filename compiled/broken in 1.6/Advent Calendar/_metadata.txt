@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7444
-IDs: darzington.AdventCalendarMod
-update keys: Nexus:7444

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/21016
-IDs: StephHoel.AddMoney
-update keys: Nexus:21016, GitHub:StephHoel/ModsStardewValley

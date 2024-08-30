@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10498
-IDs: NormanPCN.LongerFenceLife
-update keys: Nexus:10498, GitHub:NormanPCN/StardewValleyMods

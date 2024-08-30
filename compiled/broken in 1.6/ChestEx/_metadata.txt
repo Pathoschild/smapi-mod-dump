@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/4180
-IDs: berkayylmao.ChestEx
-update keys: Nexus:4180, GitHub:berkayylmao/StardewValleyMods

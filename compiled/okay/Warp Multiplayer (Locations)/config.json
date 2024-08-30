@@ -1,8 +1,0 @@
-{
-  "Force_Locations": true,
-  "Force_Ridgeside_Location": true,
-  "Enable_Custom_Location": true,
-  "Custom_Location_Location_Name": "Custom Rightclick",
-  "Custom_Location_Location_Map": "BusStop",
-  "Custom_Location_Coordinates": "12,11"
-}

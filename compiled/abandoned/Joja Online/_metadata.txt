@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7486
-IDs: PeacefulEnd.JojaOnline
-update keys: Nexus:7486, GitHub:Floogen/JojaOnline

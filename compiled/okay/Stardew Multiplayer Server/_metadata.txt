@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/20659
-IDs: moy.Always_On_Server
-update keys: Nexus:20659, GitHub:AguirreMoy/Stardew-Multiplayer-Server-Mod

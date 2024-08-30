@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2731
-IDs: bcmpinc.HarvestWithScythe
-update keys: Nexus:2731, GitHub:bcmpinc/StardewHack

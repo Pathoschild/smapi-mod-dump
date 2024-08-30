@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/22223
-IDs: seferoni.HealthRework
-update keys: Nexus:22223, GitHub:seferoni/HealthRework

@@ -1,8 +1,0 @@
-{
-	"x-hat": "{0} Hat",
-
-	// GMCM
-	"GMCM.ModEnabled.Name": "Mod Enabled?",
-	"GMCM.AllowOthersToPick.Name": "Others Harvest?",
-	"GMCM.AllowOthersToPick.Tooltip": "Allow farmers to harvest other farmers' crop hats."
-}

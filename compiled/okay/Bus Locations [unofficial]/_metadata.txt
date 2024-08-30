@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2905
-IDs: hootless.BusLocations
-update keys: Nexus:2905, GitHub:hootless/StardewMods

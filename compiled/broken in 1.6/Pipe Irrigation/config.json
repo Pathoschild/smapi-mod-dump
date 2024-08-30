@@ -1,7 +1,0 @@
-{
-  "EnableMod": true,
-  "WaterSurroundingTiles": true,
-  "ShowSprinklerAnimations": true,
-  "ShowWateredTilesLabelOnGrid": true,
-  "PercentWaterPerTile": 25
-}

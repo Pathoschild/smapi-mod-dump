@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3208
-IDs: Platonymous.CropExtension
-update keys: Nexus:3208, GitHub:Platonymous/Stardew-Valley-Mods

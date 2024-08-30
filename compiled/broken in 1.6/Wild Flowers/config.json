@@ -1,9 +1,0 @@
-{
-  "ModEnabled": true,
-  "WildFlowersMakeFlowerHoney": true,
-  "FixFlowerFind": true,
-  "BeeRange": 5,
-  "WeaponsHarvestFlowers": false,
-  "wildflowerGrowChance": 0.005,
-  "DisallowNames": []
-}

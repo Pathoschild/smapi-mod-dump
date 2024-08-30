@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/16648
-IDs: SweetPanda.Organic
-update keys: Nexus:16648

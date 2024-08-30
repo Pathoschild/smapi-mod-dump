@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6773
-IDs: Alison-Li.AutoBaitAndTackles
-update keys: Nexus:6773, GitHub:Alison-Li/AutoBaitAndTacklesMod

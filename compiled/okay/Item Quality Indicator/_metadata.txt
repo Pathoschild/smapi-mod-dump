@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/15336
-IDs: funnymoney.itemqualityindicator
-update keys: Nexus:15336

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3986
-IDs: MouseyPounds.CropColorCombiner
-update keys: Nexus:3986, GitHub:MouseyPounds/stardew-mods

@@ -1,7 +1,0 @@
-{
-  "process.start": "물주기를 시작할 시간입니다",
-  "process.end": "완성 된 급수",
-  "process.interrupt": "급수 중지",
-  "process.exhausted": "물주기에 지쳤습니다",
-  "process.waterless": "물을 찾을 수 없습니다"
-}

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/9856
-IDs: MindMeltMax.MUC
-update keys: Nexus:9856, GitHub:MindMeltMax/Stardew-Valley-Mods

@@ -1,7 +1,0 @@
-{
-  "message.event.start": "{{playerName}}  进入事件",
-  "message.event.stop": "{{playerName}}  结束了事件",
-  "message.time.start": "，时间重新开始流动。",
-  "message.time.stop": "，时间已停止。",
-  "message.less.mod": "{{playerName}} 没有安装 {{ModManifestName}} Mod"
-}

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/17058
-IDs: aedenthorn.CooperativeEggHunt
-update keys: Nexus:17058, GitHub:aedenthorn/StardewValleyMods

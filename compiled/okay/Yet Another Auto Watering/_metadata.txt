@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/21036
-IDs: zhuoyun233.YetAnotherAutoWatering
-update keys: Nexus:21036, GitHub:ZhuoYun233/YetAnotherAutoWatering-StardrewValleyMod

@@ -1,7 +1,0 @@
-{
-  "BasePoisoningChance": 30,
-  "BaseDuration": 120,
-  "HarmfulThreshold": 0,
-  "HarmfulChanceOffset": 70,
-  "HarmfulDurationOffset": 60
-}

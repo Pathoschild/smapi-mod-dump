@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/21414
-IDs: paulsteele.fse
-update keys: Nexus:21414, GitHub:Annosz/UIInfoSuite2

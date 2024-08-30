@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10947
-IDs: aedenthorn.WateringCanTweaks
-update keys: Nexus:10947, GitHub:aedenthorn/StardewValleyMods

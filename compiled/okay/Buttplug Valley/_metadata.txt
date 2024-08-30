@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/19336
-IDs: Salty.ButtplugValley
-update keys: GitHub:DryIcedTea/Buttplug-Valley, Nexus:19336

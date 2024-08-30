@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7259
-IDs: stoobinator.fertilizeranytime
-update keys: Nexus:7259, GitHub:stoobinator/Stardew-Valley-Fertilizer-Anytime

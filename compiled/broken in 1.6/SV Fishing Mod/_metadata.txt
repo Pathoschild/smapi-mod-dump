@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6403
-IDs: KDERazorback.SvFishingMod
-update keys: GitHub:KDERazorback/SvFishingMod, Nexus:6403

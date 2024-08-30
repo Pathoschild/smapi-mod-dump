@@ -1,8 +1,0 @@
-{
-  "ScienceHouse_Carpenter_CommunityUpgrade1": "...Что-что? Хотите построить дом для Пэм? Отличная идея! Только мне нужно {{woodPieces}} кусков дерева и {{goldPieces}} золота...",
-  "ScienceHouse_Carpenter_CommunityUpgrade2": "...Что такое? Ты хочешь, чтобы я построил новые обходные пути в Долине? Конечно, я могу это сделать! Мне всего-то понадобится {{goldPieces}}з...",
-  "ScienceHouse_Carpenter_NotEnoughWood3": "Извините... Деньги есть, но еще нужно {{woodPieces}} кусков дерева.",
-
-  "Robin_PamUpgrade_Accepted": "Так щедро с вашей стороны! Завтра начну работать над улучшением. Займет где-то {{daysUpgrade}} дня."
-
-}

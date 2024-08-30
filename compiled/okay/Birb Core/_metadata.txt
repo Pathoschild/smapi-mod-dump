@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/19140
-IDs: drbirbdev.BirbCore
-update keys: Nexus:19140, GitHub:drbirbdev/StardewValley

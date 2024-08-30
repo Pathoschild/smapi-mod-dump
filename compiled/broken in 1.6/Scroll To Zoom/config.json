@@ -1,8 +1,0 @@
-{
-  "FunctionalityLevel": "Mostly",
-  "ModifierKey": "LeftControl",
-  "MinZoom": 0.34,
-  "MaxZoom": 1.1,
-  "ZoomIncrement": 0.03,
-  "SuppressModifierButton": true
-}

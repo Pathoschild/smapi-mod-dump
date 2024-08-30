@@ -1,8 +1,0 @@
-﻿{
-  "Name": "EasyFarming",
-  "Author": "MountainDewBoi",
-  "Version": "1.0.0",
-  "Description": "Easily farm a ton of plants without even using up any of your seeds. Totally not made specifically for the Steam Summer Sale 2019 Grand Prix game. I specifically want to discourage you from using this mod. It's no fun.",
-  "UniqueID": "MountainDewBoi.EasyFarming",
-  "EntryDll": "EasyFarming.dll"
-}

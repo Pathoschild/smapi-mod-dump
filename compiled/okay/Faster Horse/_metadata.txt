@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2791
-IDs: kibbe.faster_horse
-update keys: Nexus:2791

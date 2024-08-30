@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5986
-IDs: shaklin.petspawnlocation
-update keys: Nexus:5986

@@ -1,9 +1,0 @@
-{
-  "canAccessMenusAnywhere": true,
-  "ActivateButton": "LeftShift",
-  "customizeButton": "D1",
-  "dyeButton": "D2",
-  "tailoringButton": "D3",
-  "dresserButton": "D4",
-  "canTailorWithoutEvent": false
-}

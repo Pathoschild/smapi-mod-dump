@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/8950
-IDs: shaklin.warpmultiplayer_locations
-update keys: Nexus:8950

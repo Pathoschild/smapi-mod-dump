@@ -1,9 +1,0 @@
-{
-    "Name": "Searchable Collections Page",
-    "Author": "Spiderbuttons",
-    "Version": "1.0.1",
-    "Description": "Search for specific items, recipes, etc. in the Collections page of your pause menu.",
-    "UniqueID": "Spiderbuttons.SearchableCollectionsPage",
-    "EntryDll": "SearchableCollectionsPage.dll",
-    "UpdateKeys": [ "Nexus:25585" ]
-}

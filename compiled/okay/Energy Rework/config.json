@@ -1,7 +1,0 @@
-{
-  "BaseEnergyLoss": 2.0,
-  "EnergyFloor": 15.0,
-  "MovingEnergyOffset": 3.0,
-  "SittingEnergyOffset": 3.0,
-  "SittingEnergyCeiling": 140.0
-}

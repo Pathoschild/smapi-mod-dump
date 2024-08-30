@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/11056
-IDs: aedenthorn.ParticleEffects
-update keys: Nexus:11056, GitHub:aedenthorn/StardewValleyMods

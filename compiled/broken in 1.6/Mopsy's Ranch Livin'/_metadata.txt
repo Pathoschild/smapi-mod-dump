@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2200
-IDs: Mopquill.Ranch-Livin
-update keys: Nexus:2200, GitHub:mopquill/Mopsys-Ranch-Livin

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/8957
-IDs: Pillow.ConsoleCoordinates
-update keys: Nexus:8957

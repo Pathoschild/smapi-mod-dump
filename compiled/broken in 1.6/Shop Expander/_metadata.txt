@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2278
-IDs: Entoarox.ShopExpander, EntoaroxShopExpander
-update keys: Nexus:2278, Chucklefish:4381, GitHub:Entoarox/StardewMods

@@ -1,6 +1,0 @@
-﻿{
-  "fallbackTitle": "(me remova)",
-  "fallbackDescription": "Esta missão foi adicinada por Quest Framework. Se está vendo isso, algo aconteceu com Quest Framework ou o mod que adicionou está missão foi removido. Pode deletar isso ao apertar o botão de remover.",
-  "fallbackObjective": "Remova essa missão apertando no botão de remover.",
-  "quest.itemHarvest.objective": "{{harvested}}/{{total}} {{itemName}} colhidos"
-}

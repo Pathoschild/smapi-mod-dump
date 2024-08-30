@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/8689
-IDs: neat.newspaper
-update keys: Nexus:8689

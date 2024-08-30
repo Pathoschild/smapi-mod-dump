@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/12312
-IDs: PeacefulEnd.MysticalBuildings
-update keys: Nexus:12312, GitHub:Floogen/MysticalBuildings

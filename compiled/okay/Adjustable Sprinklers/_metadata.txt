@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/21843
-IDs: NCarigon.AdjustableSprinklers
-update keys: Nexus:21843

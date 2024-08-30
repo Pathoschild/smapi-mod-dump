@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/20600
-IDs: mouahrara.BuildableGingerIslandFarm
-update keys: Nexus:20600, GitHub:mouahrara/BuildableGingerIslandFarm

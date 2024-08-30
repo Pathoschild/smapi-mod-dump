@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/20745
-IDs: eternalsoap.sprinklers
-update keys: Nexus:20745, GitHub:ArjanSeijs/SprinklerMod

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/13153
-IDs: 2Retr0.FarmhandFinder
-update keys: Nexus:13153, GitHub:2Retr0/FarmhandFinder

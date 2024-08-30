@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/8169
-IDs: not4bene.MagicScepter
-update keys: Nexus:8169

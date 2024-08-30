@@ -1,9 +1,0 @@
-﻿{
-  "Name": "ActivatedSprinklers",
-  "Author": "StultusV",
-  "Version": "1.0.1",
-  "Description": "Activate sprinklers by right clicking them.",
-  "UniqueID": "StultusV.ActivatedSprinklers",
-  "EntryDll": "ActivatedSprinklers.dll",
-  "UpdateKeys": [ "Nexus:8688" ]
-}

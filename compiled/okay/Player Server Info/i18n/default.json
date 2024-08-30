@@ -1,4 +1,0 @@
-{
-  "player_connected_log": "[{timestamp}]: Player '{playerName}' (Farmer Name: '{farmerName}', SteamID: '{steamId}', UniqueID: '{uniqueId}') has connected.",
-  "player_disconnected_log": "[{timestamp}]: Player '{playerName}' (Farmer Name: '{farmerName}', SteamID: '{steamId}', UniqueID: '{uniqueId}') has disconnected."
-}

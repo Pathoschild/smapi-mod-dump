@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/9319
-IDs: com.anthonyhilyard.WeaponsOnDisplay
-update keys: Nexus:9319, GitHub:AHilyard/WeaponsOnDisplay

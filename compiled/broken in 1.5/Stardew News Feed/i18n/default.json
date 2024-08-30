@@ -1,9 +1,0 @@
-{
-    "news-feed.birthday-notice": "Today is {{npcName}}'s birthday. Don't forget to give them a gift!",
-    "news-feed.harvest-items-found-in-location-notice": "There are {{numberOfItems}} items ready to harvest in the {{locationName}}!",
-    "news-feed.harvest-animals-found-in-location-notice.singular": "There is 1 animal with available produce in the {{locationName}}!",
-    "news-feed.harvest-animals-found-in-location-notice.plural": "There are {{numberOfItems}} animals with available produce in the {{locationName}}!",
-    "news-feed.bats-dropped-fruit-notice": "The bats have brought you some fruit!",
-    "news-feed.cave-display-name": "Farm Cave",
-    "news-feed.silo-low-notice": "Your silos are low ({{piecesOfHay}}/{{maxCapacity}})"
-}

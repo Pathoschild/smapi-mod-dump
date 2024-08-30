@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/8107
-IDs: kelly2892.flower.dancing.harmony
-update keys: Nexus:8107, GitHub:kenny2892/StardewValleyMods

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/22005
-IDs: Moral.ObjectProgressbarsContinued
-update keys: Nexus:22005

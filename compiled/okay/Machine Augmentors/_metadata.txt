@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5600
-IDs: SlayerDharok.MachineAugmentors
-update keys: Nexus:5600, GitHub:Videogamers0/SDV-MachineAugmentors

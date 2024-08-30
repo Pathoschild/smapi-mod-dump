@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/22642
-IDs: MindMeltMax.EasyIslandPuzzle
-update keys: Nexus:22642, GitHub:MindMeltMax/Stardew-Valley-Mods

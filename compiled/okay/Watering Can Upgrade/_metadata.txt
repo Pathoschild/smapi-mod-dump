@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/25977
-IDs: WillTheMage.WateringCanUpgrade
-update keys: Nexus:25977

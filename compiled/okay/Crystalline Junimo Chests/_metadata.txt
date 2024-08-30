@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/20658
-IDs: furyx639.CrystallineJunimoChests
-update keys: Nexus:20658, GitHub:LeFauxMatt/StardewMods

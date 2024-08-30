@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/14379
-IDs: tylergibbs2.ColdPets
-update keys: Nexus:14379, GitHub:tylergibbs2/StardewValleyMods

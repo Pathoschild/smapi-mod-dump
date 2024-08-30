@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/4984
-IDs: Candidus42.TrendyHaley
-update keys: Nexus:4984, GitHub:mus-candidus/TrendyHaley

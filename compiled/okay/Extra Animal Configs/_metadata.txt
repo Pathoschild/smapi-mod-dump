@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/25328
-IDs: selph.ExtraAnimalConfig
-update keys: Nexus:25328, GitHub:urbanyeti/stardew-better-ranching

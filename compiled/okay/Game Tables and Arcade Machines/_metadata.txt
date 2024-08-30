@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/12859
-IDs: CF.SMAPI.GameTables
-update keys: Nexus:12859

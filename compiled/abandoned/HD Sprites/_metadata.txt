@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/4024
-IDs: NinthWorld.HDSprites
-update keys: Nexus:4024, GitHub:ninthworld/HDSprites

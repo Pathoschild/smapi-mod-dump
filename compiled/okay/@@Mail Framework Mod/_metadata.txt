@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1536
-IDs: DIGUS.MailFrameworkMod
-update keys: Nexus:1536, GitHub:Digus/StardewValleyMods

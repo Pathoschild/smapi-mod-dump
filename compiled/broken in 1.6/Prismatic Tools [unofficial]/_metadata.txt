@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2428
-IDs: stokastic.PrismaticTools
-update keys: Nexus:2428, GitHub:stokastic/PrismaticTools

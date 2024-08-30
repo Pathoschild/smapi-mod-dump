@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/11850
-IDs: ShivaGuy.FarmAnimalChoices
-update keys: Nexus:11850

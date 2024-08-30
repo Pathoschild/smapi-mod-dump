@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1906
-IDs: WhiteMind.LAST
-update keys: Nexus:1906

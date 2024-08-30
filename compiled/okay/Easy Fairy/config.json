@@ -1,9 +1,0 @@
-{
-  "MoreFairy": true,
-  "FairyFrequencyFirstMonth": 0.8,
-  "FairyFrequencySecondMonth": 0.5,
-  "FairyFrequencyAfterwards": 0.2,
-  "NoCrows": true,
-  "SpecialMixSeedCrop": true,
-  "MixAncientSeedRatio": 0.1
-}

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/17321
-IDs: Hexenentendrache.TwitchChatIntegration
-update keys: Nexus:17321, GitHub:Enteligenz/StardewMods

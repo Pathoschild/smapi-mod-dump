@@ -1,9 +1,0 @@
-{
-  "UseBackdrop": true,
-  "AnimationMilliseconds": 150,
-  "LeftStickSelection": false,
-  "HoverSelects": false,
-  "SwapTools": true,
-  "ConsiderHorseFlutAsTool": false,
-  "ToggleKey": "LeftAlt"
-}

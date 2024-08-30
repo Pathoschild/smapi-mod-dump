@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/4515
-IDs: Loe2run.FamilyPlanning
-update keys: Nexus:4515, GitHub:loe2run/FamilyPlanningMod

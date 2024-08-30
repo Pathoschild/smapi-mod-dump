@@ -1,7 +1,0 @@
-{
-  "Name": "Hill-top w/o Debris",
-  "Description": "Same as Hill-top, but starts without debris.",
-  "ID": "StardewValley.Farm_Mining.NoDebris",
-  "BehaviorPreset": 3,
-  "FarmhousePreset": 3
-}

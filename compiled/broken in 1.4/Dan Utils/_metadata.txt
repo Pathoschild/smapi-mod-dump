@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2287
-IDs: danmw3.DanUtils
-update keys: Nexus:2287

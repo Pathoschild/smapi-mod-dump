@@ -1,9 +1,0 @@
-{
-  "Name": "HappyBirthday",
-  "Authour": "Alpha_Omegasis/Oxyligen",
-  "Version": "1.2.2", // fixed locally from 1.2.1
-  "Description": "Adds a farmer's birthday to the game.",
-  "UniqueID": "HappyBirthday",
-  "PerSaveConfigs": false,
-  "EntryDll": "HappyBirthday.dll"
-}

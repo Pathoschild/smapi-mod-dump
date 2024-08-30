@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/4582
-IDs: purrplingcat.npcadventure
-update keys: Nexus:4582, GitHub:purrplingcat/PurrplingMod

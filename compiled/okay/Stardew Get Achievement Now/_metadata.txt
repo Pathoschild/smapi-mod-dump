@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/11515
-IDs: Lake1059.StardewGetAchievementNow
-update keys: Nexus:11515

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/14000
-IDs: MindMeltMax.ChangeFarmCaves
-update keys: Nexus:14000, GitHub:MindMeltMax/Stardew-Valley-Mods

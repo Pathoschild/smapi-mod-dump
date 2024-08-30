@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/21093
-IDs: weizinai.ActiveMenuAnywhere
-update keys: Nexus:21093

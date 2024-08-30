@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/4967
-IDs: Candidus42.GoToBed
-update keys: Nexus:4967, GitHub:mus-candidus/GoToBed

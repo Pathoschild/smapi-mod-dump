@@ -1,8 +1,0 @@
-{
-  "EnableMod": true,
-  "ExtendBerry": true,
-  "ExtendBirthdays": true,
-  "AvoidBirthdayOverlaps": true,
-  "DaysPerMonth": 28,
-  "MonthsPerSeason": 1
-}

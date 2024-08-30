@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/19895
-IDs: Ilyeana.FurnitureDisplayFramework
-update keys: Nexus:19895

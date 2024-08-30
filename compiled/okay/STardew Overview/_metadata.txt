@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/14564
-IDs: Sto13.STardewOverview
-update keys: Nexus:14564

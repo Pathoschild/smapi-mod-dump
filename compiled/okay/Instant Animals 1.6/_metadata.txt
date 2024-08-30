@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/21798
-IDs: Siweipancc.Instantanimals
-update keys: Nexus:21798, GitHub:siweipancc/InstantAnimals

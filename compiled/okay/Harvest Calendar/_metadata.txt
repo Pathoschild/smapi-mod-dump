@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/25103
-IDs: LonerAxl.HarvestCalendar
-update keys: Nexus:25103, GitHub:LonerAxl/Stardew_HarvestCalendar

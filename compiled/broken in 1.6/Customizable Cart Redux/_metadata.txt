@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1402
-IDs: KoihimeNakamura.CCR
-update keys: Nexus:1402, ModDrop:664037, GitHub:Sakorona/SDVMods

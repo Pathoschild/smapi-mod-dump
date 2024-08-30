@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/16820
-IDs: Achtuur.StardewTravelSkill
-update keys: Nexus:16820, GitHub:Achtuur/StardewTravelSkill

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/21005
-IDs: StephHoel.ConfigureMachineSpeed
-update keys: Nexus:21005, GitHub:StephHoel/ModsStardewValley

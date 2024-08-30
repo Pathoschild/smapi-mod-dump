@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3706
-IDs: CKextreme.TimeNotifier
-update keys: Nexus:3706

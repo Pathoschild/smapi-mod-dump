@@ -1,3 +1,0 @@
-page URL: https://github.com/philosquare/SDVSkipFishingMinigame2
-IDs: philosquare.SkipFishingMinigame2
-update keys: GitHub:philosquare/SDVSkipFishingMinigame2

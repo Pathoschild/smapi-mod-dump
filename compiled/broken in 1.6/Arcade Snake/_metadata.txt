@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2056
-IDs: Platonymous.Snake
-update keys: Nexus:2056, GitHub:Platonymous/Stardew-Valley-Mods

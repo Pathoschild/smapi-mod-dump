@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1991
-IDs: cat.customizabledeathpenalty
-update keys: Nexus:1991, GitHub:danvolchek/StardewMods

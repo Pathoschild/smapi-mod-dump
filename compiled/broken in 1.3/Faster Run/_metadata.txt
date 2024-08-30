@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/733
-IDs: KathrynHazuka.FasterRun
-update keys: Nexus:733, GitHub:KathrynHazuka/StardewValley_FasterRun

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6630
-IDs: aedenthorn.CustomSpousePatio
-update keys: Nexus:6630, GitHub:aedenthorn/StardewValleyMods

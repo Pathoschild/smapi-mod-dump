@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6196
-IDs: GZhynko.AnimalsNeedWater
-update keys: Nexus:6196, GitHub:gzhynko/StardewMods

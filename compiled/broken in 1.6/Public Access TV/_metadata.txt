@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5605
-IDs: kdau.PublicAccessTV
-update keys: Nexus:5605, ModDrop:757967

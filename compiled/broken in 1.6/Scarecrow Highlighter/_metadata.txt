@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3579
-IDs: WretchedPenguin.ScarecrowHighlighter
-update keys: Nexus:3579

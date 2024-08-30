@@ -1,9 +1,0 @@
-{
-  "CycleActiveDisplayKey": "F2",
-  "ShowRangeOfHeldItem": true,
-  "ShowRangeOfHoveredOverItem": true,
-  "HoverModifierKeys": [
-    "LeftControl",
-    "RightControl"
-  ]
-}

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/4403
-IDs: Felix-Dev.FeTK
-update keys: Nexus:4403, GitHub:Felix-Dev/StardewMods

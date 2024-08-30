@@ -1,9 +1,0 @@
-{
-  "Name": "Fast Parrot Express Animation",
-  "Author": "ErikShun",
-  "Version": "1.0.0",
-  "Description": "Speeds up Parrot Express animation.",
-  "UniqueID": "YourName.YourProjectName",
-  "EntryDll": "FastParrotExpress.dll",
-  "UpdateKeys": []
-}

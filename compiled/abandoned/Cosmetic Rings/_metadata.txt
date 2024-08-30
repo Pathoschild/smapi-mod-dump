@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/8522
-IDs: PeacefulEnd.CosmeticRings
-update keys: Nexus:8522, GitHub:Floogen/CosmeticRings

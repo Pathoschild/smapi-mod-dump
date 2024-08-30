@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/21339
-IDs: Tibbles.AutoFishing2, Tibbles.AutoFishing
-update keys: Nexus:21339

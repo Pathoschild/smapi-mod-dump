@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1084
-IDs: Platonymous.NoSoilDecayRedux
-update keys: Nexus:1084, GitHub:Platonymous/Stardew-Valley-Mods

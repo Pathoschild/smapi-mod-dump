@@ -1,8 +1,0 @@
-{
-  "ReloadHotkey": "RightShift + F5",
-  "OverrideDailyLuck": true,
-  "GaussianLuck": true,
-  "GaussianLuckStdDev": 30.3,
-  "ExperimentalChangeTodaysLuckHotkey": "RightControl + F5",
-  "ExperimentalForcePerTick": false
-}

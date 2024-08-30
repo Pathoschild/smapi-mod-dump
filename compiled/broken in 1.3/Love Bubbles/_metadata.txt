@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1318
-IDs: LoveBubbles
-update keys: Nexus:1318, GitHub:doncollins/StardewValleyMods

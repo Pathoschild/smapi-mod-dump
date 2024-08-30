@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5631
-IDs: TheFluffyRobot.TimeOfThePrairieKing
-update keys: GitHub:jamespfluger/Stardew-TimeOfThePrairieKing, Nexus:5631

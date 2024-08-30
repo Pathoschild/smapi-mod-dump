@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/9620
-IDs: cgifox.AutoAttack
-update keys: Nexus:9620

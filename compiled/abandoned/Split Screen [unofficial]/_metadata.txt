@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2139
-IDs: Ilyaki.SplitScreen
-update keys: GitHub:Ilyaki/SplitScreen, Nexus:2139

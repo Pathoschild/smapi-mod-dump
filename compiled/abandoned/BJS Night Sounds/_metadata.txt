@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2501
-IDs: BunnyJumps.BJSNightSounds
-update keys: Nexus:2501

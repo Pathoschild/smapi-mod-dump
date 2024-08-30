@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5336
-IDs: Enaium.RealTime
-update keys: Nexus:5336

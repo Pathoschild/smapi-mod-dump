@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10487
-IDs: MindMeltMax.BetterShipping
-update keys: Nexus:10487, GitHub:MindMeltMax/Stardew-Valley-Mods

@@ -1,6 +1,0 @@
-{
-	// GMCM
-	"GMCM.ModEnabled.Name": "Mod Enabled",
-	"GMCM.Granular.Name": "Granular",
-	"GMCM.Granular.Tooltip": "Displays friendship progression more accurately by subdividing friendship hearts into smaller parts."
-}

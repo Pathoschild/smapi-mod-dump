@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/13979
-IDs: aedenthorn.LogUploader
-update keys: Nexus:13979, GitHub:aedenthorn/StardewValleyMods

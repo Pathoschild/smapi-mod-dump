@@ -1,3 +1,0 @@
-page URL: https://github.com/jaredlll08/HotbarHotswap
-IDs: BlameJared.HotbarHotswap
-update keys: CurseForge:298033, GitHub:jaredlll08/HotbarHotswap

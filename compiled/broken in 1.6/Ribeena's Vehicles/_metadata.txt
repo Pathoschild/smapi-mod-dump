@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/11809
-IDs: ribeena.busspriteadjuster, ribeena.boatspriteadjuster
-update keys: Nexus:11809, GitHub:ribeena/BusLocations

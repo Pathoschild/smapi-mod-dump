@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/518
-IDs: Pathoschild.ChestsAnywhere, ChestsAnywhere
-update keys: Nexus:518, GitHub:Pathoschild/StardewMods

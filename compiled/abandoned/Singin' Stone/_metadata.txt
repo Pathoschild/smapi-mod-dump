@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6463
-IDs: CyTheGuy01.TestMod
-update keys: Nexus:6463

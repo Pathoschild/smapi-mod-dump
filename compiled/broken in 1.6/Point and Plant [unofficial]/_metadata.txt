@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/572
-IDs: jwdred.PointAndPlant
-update keys: Nexus:572, GitHub:jdusbabek/stardewvalley

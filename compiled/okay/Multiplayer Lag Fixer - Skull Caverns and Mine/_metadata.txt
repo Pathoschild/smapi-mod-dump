@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/25222
-IDs: Xoulious.MultiplayerLagFixer
-update keys: Nexus:25222

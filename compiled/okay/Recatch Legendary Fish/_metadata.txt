@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/172
-IDs: cantorsdust.RecatchLegendaryFish, community.RecatchLegendaryFish, b3af8c31-48f0-43cf-8343-3eb08bcfa1f9
-update keys: Nexus:172, GitHub:cantorsdust/StardewMods

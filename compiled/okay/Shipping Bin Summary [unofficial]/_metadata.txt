@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/18992
-IDs: futro.ShippingBinSummary
-update keys: Nexus:18992, GitHub:futroo/Stardew-Valley-Mods

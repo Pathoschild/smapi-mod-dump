@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6227
-IDs: aedenthorn.MultipleSpouses
-update keys: Nexus:6227, GitHub:aedenthorn/StardewValleyMods

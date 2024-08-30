@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2266
-IDs: thatnzguy.WindowResize
-update keys: GitHub:thatnzguy/WindowResize, Nexus:2266

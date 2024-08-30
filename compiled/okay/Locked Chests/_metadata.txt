@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/12452
-IDs: MindMeltMax.LockedChests
-update keys: Nexus:12452, GitHub:MindMeltMax/Stardew-Valley-Mods

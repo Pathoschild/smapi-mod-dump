@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7634
-IDs: exotico.SlimeProduce
-update keys: Nexus:7634, GitHub:andraemon/SlimeProduce

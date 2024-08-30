@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7681
-IDs: DelphinWave.MultiplayerHorseReskin
-update keys: Nexus:7681

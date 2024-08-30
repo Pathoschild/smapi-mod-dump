@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7109
-IDs: boogie.greenhouse
-update keys: Nexus:7109

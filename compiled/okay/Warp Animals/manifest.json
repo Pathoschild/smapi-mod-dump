@@ -1,9 +1,0 @@
-﻿{
-  "Name": "WarpAnimals",
-  "Author": "Symen",
-  "Version": "1.1",
-  "Description": "Manually warp wandering animals into their respective home",
-  "UniqueID": "Symen.WarpAnimals",
-  "EntryDll": "WarpAnimals.dll",
-  "UpdateKeys": [ "GitHub:simonbru/WarpAnimals" ]
-}

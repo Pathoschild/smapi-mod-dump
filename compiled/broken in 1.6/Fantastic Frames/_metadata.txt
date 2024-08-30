@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/4540
-IDs: Taskmaster.FantasticFrames
-update keys: Nexus:4540

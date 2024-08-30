@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1896
-IDs: WhiteMind.MonsterLT
-update keys: Nexus:1896

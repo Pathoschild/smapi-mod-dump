@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3227
-IDs: Ilyaki.ServerBrowser
-update keys: Nexus:3227, GitHub:Ilyaki/Server-Browser

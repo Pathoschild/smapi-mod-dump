@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2648
-IDs: ilyaki.neatadditions
-update keys: Nexus:2648, GitHub:Ilyaki/NeatAdditions

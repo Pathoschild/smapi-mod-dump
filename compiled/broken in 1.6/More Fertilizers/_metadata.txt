@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/11837
-IDs: atravita.MoreFertilizers
-update keys: Nexus:11837, GitHub:atravita-mods/StardewMods

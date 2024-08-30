@@ -1,3 +1,0 @@
-page URL: https://github.com/GenDeathrow/SDV_BlessingsAndCurses
-IDs: gendeathrow.BNC
-update keys: GitHub:GenDeathrow/SDV_BlessingsAndCurses

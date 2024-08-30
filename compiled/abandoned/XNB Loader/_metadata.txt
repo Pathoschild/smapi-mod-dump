@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2275
-IDs: Entoarox.XnbLoader
-update keys: Nexus:2275, Chucklefish:4506, GitHub:Entoarox/StardewMods

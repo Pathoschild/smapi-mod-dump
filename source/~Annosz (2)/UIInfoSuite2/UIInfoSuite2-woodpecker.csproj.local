@@ -1,6 +1,0 @@
-<Project>
-  <PropertyGroup>
-    <LangVersion>10</LangVersion>
-    <GamePath>/StardewValley</GamePath>
-  </PropertyGroup>
-</Project>

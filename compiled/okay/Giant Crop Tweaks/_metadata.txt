@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/14370
-IDs: leclair.giantcroptweaks
-update keys: Nexus:14370@Main, Nexus:14370, GitHub:KhloeLeclair/StardewMods

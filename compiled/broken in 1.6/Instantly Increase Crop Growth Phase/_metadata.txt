@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10146
-IDs: Ryanjesky.IncreaseCropGrowthPhase, RyanJesky.IncreaseCropGrowthPhase
-update keys: Nexus:10146, GitHub:RyanJesky/IncreaseCropGrowthPhase

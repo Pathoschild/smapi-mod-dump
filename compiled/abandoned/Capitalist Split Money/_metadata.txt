@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3083
-IDs: Ilyaki.CapitalistSplitMoney
-update keys: GitHub:Ilyaki/CapitalistSplitMoney, Nexus:3083

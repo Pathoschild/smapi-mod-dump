@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/18174
-IDs: aedenthorn.DeathTweaks
-update keys: Nexus:18174, GitHub:aedenthorn/StardewValleyMods

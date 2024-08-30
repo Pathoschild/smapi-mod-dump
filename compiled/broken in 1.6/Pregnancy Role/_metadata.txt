@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5762
-IDs: kdau.PregnancyRole
-update keys: Nexus:5762, ModDrop:768494

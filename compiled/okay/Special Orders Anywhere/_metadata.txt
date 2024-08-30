@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7588
-IDs: acidicNic.SpecialOrdersAnywhere, acidicnic.SpecialOrdersAnywhere
-update keys: Nexus:7588, GitHub:AcidicNic/StardewValleyMods

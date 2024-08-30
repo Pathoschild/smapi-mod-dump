@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2908
-IDs: princeleto.twentyfourhours
-update keys: Nexus:2908, GitHub:Prince-Leto/StardewValleyMods

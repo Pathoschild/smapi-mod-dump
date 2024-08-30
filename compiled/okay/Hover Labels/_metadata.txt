@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/17501
-IDs: Achtuur.HoverLabels
-update keys: Nexus:17501, GitHub:Achtuur/StardewMods

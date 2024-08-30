@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/8204
-IDs: furyx639.GarbageDay
-update keys: Nexus:8204@SMAPI, Nexus:8204, GitHub:LeFauxMatt/StardewMods

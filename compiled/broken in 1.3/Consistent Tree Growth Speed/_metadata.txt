@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1799
-IDs: IceGladiador.ConsistentTreeGrowthSpeed
-update keys: Nexus:1799

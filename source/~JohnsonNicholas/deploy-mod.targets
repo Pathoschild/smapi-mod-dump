@@ -1,8 +1,0 @@
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <ModZipPath>$(SolutionDir)\_releases</ModZipPath>
-	<!-- OR '$(MSBuildProjectName)' == 'FloodEventsTesting' -->
-    <!-- don't deploy old/unreleased mods -->
-    <EnableModDeploy Condition="'$(MSBuildProjectName)' == 'BetterShippingBox' OR '$(MSBuildProjectName)' == 'CustomizableClock' OR '$(MSBuildProjectName)' == 'TimeReminder'">False</EnableModDeploy>
-  </PropertyGroup>
-</Project>

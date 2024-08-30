@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7969
-IDs: DecidedlyHuman.PlayerCoordinates
-update keys: Nexus:7969, GitHub:DecidedlyHuman/PlayerCoordinates

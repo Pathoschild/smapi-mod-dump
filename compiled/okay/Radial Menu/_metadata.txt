@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/25257
-IDs: focustense.RadialMenu
-update keys: Nexus:25257, GitHub:focustense/StardewRadialMenu

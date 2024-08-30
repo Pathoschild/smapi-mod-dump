@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/4911
-IDs: aedenthorn.RandomNPC, Aedenthorn.RandomNPC
-update keys: Nexus:4911, GitHub:aedenthorn/StardewValleyMods

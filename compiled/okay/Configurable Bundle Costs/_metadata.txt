@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/9444
-IDs: sophie.ConfigurableBundleCosts, Vertigon.ConfigurableBundleCosts
-update keys: Nexus:9444, GitHub:sophiesalacia/StardewMods

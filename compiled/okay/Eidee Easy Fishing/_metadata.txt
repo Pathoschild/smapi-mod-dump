@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/4806
-IDs: net.eidee.stardew_valley.easy_fishing
-update keys: Nexus:4806, GitHub:eideehi/EideeEasyFishing

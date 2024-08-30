@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/21285
-IDs: tem696969696969.LikeADuckToWater
-update keys: Nexus:21285, GitHub:kqrse/StardewValleyMods-aedenthorn

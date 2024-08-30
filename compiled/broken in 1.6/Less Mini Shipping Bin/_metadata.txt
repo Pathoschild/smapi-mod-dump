@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10959
-IDs: atravita.LessMiniShippingBin
-update keys: Nexus:10959, GitHub:atravita-mods/StardewMods

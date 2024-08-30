@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/25258
-IDs: atravita.ColorfulFishingRods
-update keys: Nexus:25258, GitHub:6480k/colorful-fishing-rods

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2705
-IDs: renny.infinitejunimocartlives
-update keys: Nexus:2705, GitHub:OfficialRenny/InfiniteJunimoCartLives

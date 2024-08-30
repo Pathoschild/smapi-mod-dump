@@ -1,3 +1,0 @@
-page URL: 
-IDs: BlameJared.PDQPaths
-update keys: CurseForge:307090

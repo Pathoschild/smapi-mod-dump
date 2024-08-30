@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/99000
-IDs: jingshenSN2.replace_fertilizer
-update keys: Nexus:99000, Nexus:24550, GitHub:jingshenSN2/ReplaceFertilizer

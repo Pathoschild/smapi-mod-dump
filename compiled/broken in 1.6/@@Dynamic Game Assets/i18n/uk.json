@@ -1,6 +1,0 @@
-﻿{
-    "item-tooltip.added-by-mod": "Модифікація: {{name}}",
-	"not-enough-ingredients":  "{{item}} - необхідно більше",
-    "not-enough-ingredients-generic": "Недостатньо компонентів для рецепту",
-    "wrong-ingredient-selected": "Немає рецептів з основним компонентом \"{{item}}\""
-}

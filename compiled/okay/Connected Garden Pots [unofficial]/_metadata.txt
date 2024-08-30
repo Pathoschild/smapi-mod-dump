@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/11411
-IDs: aedenthorn.ConnectedGardenPots
-update keys: Nexus:11411, UpdateManifest:https://raw.githubusercontent.com/mouahrara/aedenthorn/master/update-manifest.json@ConnectedGardenPots, GitHub:aedenthorn/StardewValleyMods

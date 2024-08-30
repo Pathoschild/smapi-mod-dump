@@ -1,3 +1,0 @@
-page URL: https://github.com/oliverpl/SprintingMod
-IDs: 
-update keys: GitHub:oliverpl/SprintingMod

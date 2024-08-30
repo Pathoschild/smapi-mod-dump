@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/8011
-IDs: PeacefulEnd.SereneGreenhouse
-update keys: Nexus:8011, GitHub:Floogen/SereneGreenhouse

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/21925
-IDs: Tensor.ChasteValley
-update keys: Nexus:21925

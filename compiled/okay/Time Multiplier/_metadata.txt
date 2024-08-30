@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2262
-IDs: DefenTheNation.TimeMultiplier
-update keys: Nexus:2262, GitHub:DefenTheNation/StardewMod-TimeMultiplier

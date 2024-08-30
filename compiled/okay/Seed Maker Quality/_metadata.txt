@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/21000
-IDs: speshkitty.seedmakerquality
-update keys: Nexus:21000

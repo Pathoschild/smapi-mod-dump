@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6524
-IDs: aedenthorn.VideoPlayer
-update keys: Nexus:6524, GitHub:aedenthorn/StardewValleyMods

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/8182
-IDs: crpz.ItemTweaks
-update keys: GitHub:CreeperzEdge/ItemTweaks, Nexus:8182

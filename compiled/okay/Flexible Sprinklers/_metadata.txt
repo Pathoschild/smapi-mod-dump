@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10931
-IDs: Shockah.FlexibleSprinklers
-update keys: Nexus:10931, GitHub:Shockah/Stardew-Valley-Mods

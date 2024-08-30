@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/13956
-IDs: AllanWang.QuickSwap
-update keys: Nexus:13956, GitHub:AllanWang/Stardew-Mods

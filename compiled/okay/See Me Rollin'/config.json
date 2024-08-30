@@ -1,9 +1,0 @@
-{
-  "UseKey": "Space, LeftStick",
-  "ShowBuff": true,
-  "SpeedModifier": 6,
-  "FalloffMode": "Slight",
-  "EnableAnimation": true,
-  "AllowWhenSwimming": true,
-  "AllowWhenSlowed": false
-}

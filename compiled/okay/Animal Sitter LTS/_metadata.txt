@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/20831
-IDs: oliver.AnimalSitterLTS
-update keys: Nexus:20831, GitHub:jdusbabek/stardewvalley

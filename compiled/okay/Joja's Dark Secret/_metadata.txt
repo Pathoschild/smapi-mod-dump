@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/18927
-IDs: sophie.HalloweenJamCSharp
-update keys: Nexus:18927, GitHub:sophiesalacia/StardewMods

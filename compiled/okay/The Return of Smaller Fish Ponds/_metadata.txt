@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/21900
-IDs: platinummyr.SmallerFishPonds
-update keys: Nexus:21900

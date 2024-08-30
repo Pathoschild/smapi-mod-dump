@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1176
-IDs: QuicksilverFox.EmptyHands
-update keys: Nexus:1176, GitHub:quicksilverfox/StardewMods

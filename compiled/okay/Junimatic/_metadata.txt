@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/22672
-IDs: NermNermNerm.Junimatic
-update keys: GitHub:NermNermNerm/Junimatic, Nexus:22672

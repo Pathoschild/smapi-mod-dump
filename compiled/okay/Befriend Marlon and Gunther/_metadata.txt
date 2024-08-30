@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2569
-IDs: Yoshimax.BefriendMarlon, Yoshimax.UnfriendMarlonGunther
-update keys: Nexus:2569

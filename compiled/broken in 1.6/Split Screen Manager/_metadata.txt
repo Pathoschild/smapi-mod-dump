@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/12063
-IDs: RomenH.SplitScreenManager
-update keys: Nexus:12063

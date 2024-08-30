@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2818
-IDs: Eireon.MushroomLevels, BenPattherson.MushroomLevels
-update keys: Nexus:2818, GitHub:benrpatterson/MushroomLevels

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3326
-IDs: f4iTh.ShowCatchQuality
-update keys: Nexus:3326

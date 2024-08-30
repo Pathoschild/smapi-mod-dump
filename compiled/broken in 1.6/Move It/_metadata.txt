@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/15163
-IDs: aedenthorn.MoveIt
-update keys: Nexus:15163, GitHub:aedenthorn/StardewValleyMods

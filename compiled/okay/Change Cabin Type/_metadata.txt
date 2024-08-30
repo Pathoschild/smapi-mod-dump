@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3046
-IDs: funnysnek.ChangeCabinType
-update keys: Nexus:3046

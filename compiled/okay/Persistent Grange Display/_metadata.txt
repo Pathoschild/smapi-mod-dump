@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7977
-IDs: aedenthorn.PersisitentGrangeDisplay
-update keys: Nexus:7977, GitHub:aedenthorn/StardewValleyMods

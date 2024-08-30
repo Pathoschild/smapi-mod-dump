@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2628
-IDs: treyh0.StartWithHat
-update keys: Nexus:2628

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/23488
-IDs: Espy.PreciseFurniture
-update keys: Nexus:23488

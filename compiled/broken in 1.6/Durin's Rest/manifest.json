@@ -1,9 +1,0 @@
-{
-	"Name": "CSharp For Durins Rest",
-	"Author": "NoFogBob",
-	"Version": "1.1.3",
-	"Description": "This is the CSharp for Durins Rest",
-	"UniqueID": "NoFogBob.DurinsRest_CSharp",
-	"EntryDll": "DurinsRest.dll",
-	"MinimumApiVersion": "3.8.0",
-}

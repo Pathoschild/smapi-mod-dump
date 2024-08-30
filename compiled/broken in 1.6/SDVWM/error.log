@@ -1,9 +1,0 @@
-The remote server returned an error: (502) Bad Gateway.
-   at System.Net.HttpWebRequest.GetResponse()
-   at System.Net.WebClient.GetWebResponse(WebRequest request)
-   at System.Net.WebClient.DownloadBits(WebRequest request, Stream writeStream)
-   at System.Net.WebClient.DownloadDataInternal(Uri address, WebRequest& request)
-   at System.Net.WebClient.DownloadString(Uri address)
-   at A.ce3b0c17f58f02683d5d707ccb693566e.cd14db37fff2f111f9d91401e40551c77(String c3f7bfde383eba97477a37de2bd257473, String c1b6779093bf5f8cefed402e442398634)
-   at A.ce3b0c17f58f02683d5d707ccb693566e.c5a4f0ab4d79675ef8ac49bed3cf49a81(String c3f7bfde383eba97477a37de2bd257473, String c1b6779093bf5f8cefed402e442398634)
-System.Net.Requests

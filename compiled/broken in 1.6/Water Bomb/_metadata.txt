@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10267
-IDs: BlaDe.WaterBomb
-update keys: Nexus:10267

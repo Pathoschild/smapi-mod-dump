@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/9850
-IDs: blueberry.CustomCommunityCentre
-update keys: Nexus:9850, GitHub:b-b-blueberry/CustomCommunityCentre

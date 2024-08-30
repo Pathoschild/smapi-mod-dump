@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/16605
-IDs: Vexorth.Warp
-update keys: Nexus:16605

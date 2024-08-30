@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/17935
-IDs: DanielB.TrackerZoomFix
-update keys: Nexus:17935

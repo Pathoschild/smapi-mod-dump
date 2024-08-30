@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3964
-IDs: jpan.TreeChanges
-update keys: Nexus:3964, GitHub:JPANv2/Stardew-Valley-Tree-Changes

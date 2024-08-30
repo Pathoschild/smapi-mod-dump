@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/4971
-IDs: Cherry.LimitedCampfireCooking
-update keys: Nexus:4971, GitHub:ChroniclerCherry/stardew-valley-mods

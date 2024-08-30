@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1183
-IDs: BashNinja.DynamicNPCSprites
-update keys: Nexus:1183, GitHub:miketweaver/BashNinja_SDV_Mods

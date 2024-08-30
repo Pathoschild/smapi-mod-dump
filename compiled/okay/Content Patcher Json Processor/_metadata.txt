@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/13320
-IDs: jltaylor-us.ContentPatcherJsonProcessor
-update keys: Nexus:13320, GitHub:jltaylor-us/StardewJsonProcessor

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/15549
-IDs: RainzKuro.DetailedSprites
-update keys: Nexus:15549

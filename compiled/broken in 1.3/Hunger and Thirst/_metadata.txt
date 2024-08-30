@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1110
-IDs: PrimevalTitmouse.ModEntry
-update keys: Nexus:1110

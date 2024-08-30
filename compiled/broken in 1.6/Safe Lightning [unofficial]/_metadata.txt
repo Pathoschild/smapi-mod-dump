@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2039
-IDs: cat.safelightning
-update keys: Nexus:2039, GitHub:danvolchek/StardewMods

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2830
-IDs: f1r3w477.MoodyPlanet
-update keys: Nexus:2830, GitHub:F1r3w477/TheseModsAintLoyal

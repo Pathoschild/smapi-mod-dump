@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/26181
-IDs: JForea.SVLocationBot
-update keys: Nexus:26181

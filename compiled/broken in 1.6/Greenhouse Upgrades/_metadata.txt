@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/8042
-IDs: Cecidelus.GreenhouseUpgrades
-update keys: Nexus:8042

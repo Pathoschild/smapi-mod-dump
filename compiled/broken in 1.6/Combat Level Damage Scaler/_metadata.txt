@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3905
-IDs: spacechase0.CombatLevelDamageScaler
-update keys: Nexus:3905, GitHub:spacechase0/StardewValleyMods

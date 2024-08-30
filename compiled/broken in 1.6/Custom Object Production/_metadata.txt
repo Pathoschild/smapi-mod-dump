@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10152
-IDs: aedenthorn.CustomObjectProduction
-update keys: Nexus:10152, GitHub:aedenthorn/StardewValleyMods

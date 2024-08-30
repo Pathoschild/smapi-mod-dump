@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2992
-IDs: Platonymous.GhostTown
-update keys: Nexus:2992, GitHub:Platonymous/Stardew-Valley-Mods

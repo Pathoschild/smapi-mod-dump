@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/21678
-IDs: Entoarox.BiggerFridges
-update keys: Nexus:21678

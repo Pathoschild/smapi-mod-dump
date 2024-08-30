@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7515
-IDs: AlphaMeece.SkillRings
-update keys: Nexus:7515

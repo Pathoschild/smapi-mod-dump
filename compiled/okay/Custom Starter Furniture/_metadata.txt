@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/16729
-IDs: aedenthorn.CustomStarterFurniture
-update keys: Nexus:16729, GitHub:aedenthorn/StardewValleyMods

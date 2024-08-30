@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5764
-IDs: Asconoid.TimeBeforeHarvest
-update keys: Nexus:5764

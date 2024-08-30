@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/20656
-IDs: SinZ.SinZationalSpendingServices
-update keys: Nexus:20656, GitHub:SinZ163/StardewMods

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/4898
-IDs: abs.SprintNRegen
-update keys: Nexus:4898

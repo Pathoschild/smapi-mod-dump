@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/173
-IDs: cantorsdust.InstantGrowTrees, community.InstantGrowTrees, dc50c58b-c7d8-4e60-86cc-e27b5d95ee59
-update keys: Nexus:173, GitHub:cantorsdust/StardewMods

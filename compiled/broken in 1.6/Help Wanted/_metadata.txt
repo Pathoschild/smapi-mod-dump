@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/14640
-IDs: aedenthorn.HelpWanted
-update keys: Nexus:14640, GitHub:aedenthorn/StardewValleyMods

@@ -1,7 +1,0 @@
-{
-  "process.start": "Ideje kezdeni az öntözést!",
-  "process.end": "Befejezett",
-  "process.interrupt": "Megállt",
-  "process.exhausted": "Kimerült",
-  "process.waterless": "Nem találok vizet"
-}

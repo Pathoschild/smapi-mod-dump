@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/12638
-IDs: Shockah.ProjectFluent
-update keys: Nexus:12638, GitHub:Shockah/Stardew-Valley-Mods

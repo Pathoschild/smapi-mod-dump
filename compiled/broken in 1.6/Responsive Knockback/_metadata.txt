@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/12029
-IDs: spacechase0.ResponsiveKnockback
-update keys: Nexus:12029, GitHub:spacechase0/StardewValleyMods

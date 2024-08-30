@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/12932
-IDs: atravita.AtraCore
-update keys: Nexus:12932, GitHub:atravita-mods/StardewMods

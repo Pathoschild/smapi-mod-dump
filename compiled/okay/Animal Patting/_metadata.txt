@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3837
-IDs: DiddyP.AnimalPatting
-update keys: Nexus:3837

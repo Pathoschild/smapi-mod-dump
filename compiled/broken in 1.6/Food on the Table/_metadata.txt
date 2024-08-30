@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10886
-IDs: aedenthorn.FoodOnTheTable
-update keys: Nexus:10886, GitHub:aedenthorn/StardewValleyMods

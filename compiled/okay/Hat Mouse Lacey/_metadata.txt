@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/18177
-IDs: ichortower.HatMouseLacey.Core
-update keys: Nexus:18177, GitHub:ichortower/HatMouseLacey

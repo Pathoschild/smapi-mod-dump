@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5693
-IDs: Windmill_City.InputFix
-update keys: Nexus:5693, GitHub:Windmill-City/InputFix

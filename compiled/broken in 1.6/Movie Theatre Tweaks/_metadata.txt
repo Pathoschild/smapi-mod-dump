@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/16395
-IDs: aedenthorn.MovieTheatreTweaks
-update keys: Nexus:16395, GitHub:aedenthorn/StardewValleyMods

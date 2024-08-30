@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/15123
-IDs: aedenthorn.Moolah
-update keys: Nexus:15123, GitHub:aedenthorn/StardewValleyMods

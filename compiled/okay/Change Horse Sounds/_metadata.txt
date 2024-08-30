@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/13428
-IDs: CF.ChangeHorseSounds
-update keys: Nexus:13428

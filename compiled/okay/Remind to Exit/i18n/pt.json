@@ -1,9 +1,0 @@
-{
-  "config.hotkey.desc": "Só terá efeito se 'Activado' for verdadeiro",
-  "config.hotkeycustmsg.desc": "Só terá efeito se 'Activado' for verdadeiro",
-  "reminder.disabled": "O Lembrete de Saída está desactivado",
-  "reminder.enabled": "O Lembrete de Saída está activado",
-  "reminder.title": "Lembrete:",
-  "reminder.body-default": "Está a ser lembrado de sair do jogo.",
-  "reminder-ui.custom-msg-label": "Mensagem de Lembrete Personalizada"
-}

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/22975
-IDs: selph.CustomTapperFramework
-update keys: Nexus:22975, GitHub:zombifier/My_Stardew_Mods

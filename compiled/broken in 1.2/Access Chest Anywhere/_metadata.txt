@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/257
-IDs: AccessChestAnywhere
-update keys: Nexus:257

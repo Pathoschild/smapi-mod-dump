@@ -1,8 +1,0 @@
-{
-   "Name": "RelationShipStatus",
-   "Author": "Dragonisser",
-   "Version": "1.0.5", // fixed locally from 1.0.4-0
-   "Description": "Tracks your relationship status on the left side. Changeable via config",
-   "UniqueID": "relationshipstatus",
-   "EntryDll": "RelationShipStatus.dll"
-}

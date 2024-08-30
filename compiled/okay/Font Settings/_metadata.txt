@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/12467
-IDs: Becks723.FontSettings
-update keys: Nexus:12467

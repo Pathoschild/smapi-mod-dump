@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/18507
-IDs: fernass354.SlimeHutchResize
-update keys: Nexus:18507

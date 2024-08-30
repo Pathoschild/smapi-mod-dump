@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/12549
-IDs: krutonium.TakeABreak
-update keys: Nexus:12549

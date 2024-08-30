@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2332
-IDs: lperkins2.RecoverStamina
-update keys: Nexus:2332

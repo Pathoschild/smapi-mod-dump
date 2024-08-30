@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/17126
-IDs: Hexenentendrache.FoodCravings
-update keys: Nexus:17126, GitHub:Enteligenz/StardewMods

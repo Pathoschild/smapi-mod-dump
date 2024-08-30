@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/20519
-IDs: UncannyValley.UncannyValleyMod
-update keys: Nexus:20519@Mod, Nexus:20519, GitHub:jasisco5/UncannyValleyMod

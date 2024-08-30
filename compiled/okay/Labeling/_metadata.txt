@@ -1,3 +1,0 @@
-page URL: https://github.com/Enaium-StardewValleyMods/Labeling
-IDs: Enaium.Labeling
-update keys: CurseForge:443134, GitHub:Enaium-StardewValleyMods/Labeling

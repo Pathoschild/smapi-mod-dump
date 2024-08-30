@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3270
-IDs: skn.HungerMod
-update keys: Nexus:3270

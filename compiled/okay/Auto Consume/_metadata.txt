@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/24178
-IDs: JihyunSomin.AutoConsume
-update keys: Nexus:24178

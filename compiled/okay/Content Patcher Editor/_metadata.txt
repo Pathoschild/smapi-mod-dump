@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/17661
-IDs: aedenthorn.ContentPatcherEditor
-update keys: Nexus:17661, GitHub:aedenthorn/StardewValleyMods

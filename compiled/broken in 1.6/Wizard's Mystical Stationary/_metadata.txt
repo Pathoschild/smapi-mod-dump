@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5246
-IDs: Taskmaster.WizardsMysticalStationary
-update keys: Nexus:5246

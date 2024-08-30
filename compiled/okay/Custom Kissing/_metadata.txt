@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/4664
-IDs: Digus.CustomKissingMod, DIGUS.CustomKissingMod
-update keys: Nexus:4664, GitHub:Digus/StardewValleyMods

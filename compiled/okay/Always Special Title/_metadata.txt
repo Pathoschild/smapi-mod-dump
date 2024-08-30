@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/22150
-IDs: DespairScent.AlwaysSpecialTitle
-update keys: Nexus:22150, GitHub:DespairScent/AlwaysSpecialTitle

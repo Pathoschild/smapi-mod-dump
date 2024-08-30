@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/4856
-IDs: Cheath.MagnetModRedux, Aedenthorn.MagnetMod
-update keys: Nexus:4856, GitHub:aedenthorn/StardewValleyMods

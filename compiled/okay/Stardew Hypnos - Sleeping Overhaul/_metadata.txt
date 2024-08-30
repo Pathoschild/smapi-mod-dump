@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5935
-IDs: davikr.hypnos
-update keys: Nexus:5935, GitHub:davicr/StardewHypnos

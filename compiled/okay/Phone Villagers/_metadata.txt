@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2681
-IDs: DewMods.StardewValleyMods.PhoneVillagers
-update keys: Nexus:2681

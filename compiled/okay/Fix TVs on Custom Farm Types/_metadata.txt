@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/12717
-IDs: mouse.FixTVsOnCustomFarmTypes
-update keys: Nexus:12717, GitHub:notevenamouse/StardewMods

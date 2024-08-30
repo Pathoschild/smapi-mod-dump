@@ -1,9 +1,0 @@
-{
-  "sparkle": "Despite the sparkle you saw, there doesn't seem to be anything here.",
-  "gold": "Gold",
-  "yesCost": "Yes, costs {{amount}} {{itemName}}",
-  "no": "No",
-  "notEnough": "You don't have enough {{itemName}} for this.",
-  "cancel": "Cancel",
-  "teleporter": "Choose a destination:"
-}

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/11664
-IDs: atravita.HighlightEmptyMachines
-update keys: Nexus:11664, GitHub:atravita-mods/StardewMods

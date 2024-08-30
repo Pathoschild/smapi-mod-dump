@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7436
-IDs: spacechase0.MultiFertilizer
-update keys: Nexus:7436, GitHub:spacechase0/StardewValleyMods

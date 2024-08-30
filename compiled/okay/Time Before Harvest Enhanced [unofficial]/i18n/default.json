@@ -1,6 +1,0 @@
-{
-  "crop.not-hovered": "No crop at this location",
-  "crop.remaining-days": "Crop will be ready for harvest in {{days}} days",
-  "crop.remaining-days.1": "Crop will be ready for harvest in {{days}} day",
-  "crop.ready": "Crop is ready for harvest"
-}

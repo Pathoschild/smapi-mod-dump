@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/15223
-IDs: NCarigon.PassableCrops
-update keys: Nexus:15223, GitHub:ncarigon/StardewValleyMods

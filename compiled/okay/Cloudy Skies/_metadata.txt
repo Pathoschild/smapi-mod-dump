@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/23135
-IDs: leclair.cloudyskies
-update keys: Nexus:23135, GitHub:KhloeLeclair/StardewMods

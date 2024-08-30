@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10761
-IDs: violetlizabet.CustomizeWeddingAttire
-update keys: Nexus:10761, GitHub:elizabethcd/CustomizeWeddingAttire

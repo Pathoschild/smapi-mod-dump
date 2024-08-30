@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2922
-IDs: princeleto.multiplayershaftfix
-update keys: Nexus:2922, GitHub:Prince-Leto/StardewValleyMods

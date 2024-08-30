@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/23614
-IDs: ofts.jojaExp
-update keys: Nexus:23614, GitHub:ofts-cqm/SDV_JojaExpress

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6529
-IDs: Cherry.ExpandedPreconditionsUtility
-update keys: Nexus:6529, GitHub:ChroniclerCherry/stardew-valley-mods

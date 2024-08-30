@@ -1,5 +1,0 @@
-﻿{
-	"idle_text":"You are now idle!",
-	"config_reload_error":"Couldn't reload the config file",
-	"config_reload_success":"Configuration was successfully reloaded"
-}

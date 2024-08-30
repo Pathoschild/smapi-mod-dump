@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/522
-IDs: spacechase0.CookingSkill, CookingSkill
-update keys: Nexus:522, GitHub:spacechase0/StardewValleyMods

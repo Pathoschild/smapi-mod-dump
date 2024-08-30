@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/20618
-IDs: furyx639.FauxCore
-update keys: Nexus:20618, GitHub:LeFauxMatt/StardewMods

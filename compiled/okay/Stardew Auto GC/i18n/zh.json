@@ -1,9 +1,0 @@
-﻿{
-    "Auto.Part1": "自动回收内存完成。",
-    "Auto.Part2": "RAM 从 ",
-    "Auto.Part3": "降低至 ",
-
-    "Manual.Part1": "手动回收内存完成。",
-    "Manual.Part2": "RAM 从 ",
-    "Manual.Part3": "降低至 ",
-}

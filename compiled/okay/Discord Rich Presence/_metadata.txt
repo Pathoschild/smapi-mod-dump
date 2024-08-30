@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2156
-IDs: RuiNtD.RichPresence, FayneAldan.RichPresence
-update keys: Nexus:2156, GitHub:RuiNtD/SVRichPresence

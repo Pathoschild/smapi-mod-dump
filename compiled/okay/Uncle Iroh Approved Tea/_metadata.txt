@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/22376
-IDs: slimerrain.byproducts
-update keys: Nexus:22376, GitHub:slimerrain/stardew-mods

@@ -1,7 +1,0 @@
-﻿{
-  "ContextName": "prism99.advize.stardewrealty.always_rain",
-  "CopyDefaultFields": true,
-  "LocationContextData": {
-    "WeatherConditions": [ { "Weather": "Rain" } ]
-  }
-}

@@ -1,7 +1,0 @@
-﻿{
-  "Config.RequireBobber.Name": "需要声纳浮漂",
-  "Config.RequireBobber.Tooltip": "如果启用，声纳浮漂将是声纳功能所必需的。如果禁用，您将始终能够看到是哪条鱼在咬钩。",
-  
-  "Config.NibbleTime.Name": "额外咬钩时间",
-  "Config.NibbleTime.Tooltip": "声纳浮漂将为您提供多少额外的时间（毫秒）来对咬钩做出反应。"
-}

@@ -1,9 +1,0 @@
-{
-  "EnableMod": true,
-  "IsBed": true,
-  "BedChance": 100,
-  "IndoorBedName": "Pet Bed",
-  "OutdoorBedName": "Pet Bed",
-  "IndoorBedOffset": "0,0",
-  "OutdoorBedOffset": "0,0"
-}

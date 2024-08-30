@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2524
-IDs: Sabera.CraftAnything
-update keys: Nexus:2524, GitHub:ebehar/CraftAnything

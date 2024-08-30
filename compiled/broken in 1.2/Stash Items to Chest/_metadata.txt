@@ -1,3 +1,0 @@
-page URL: https://github.com/lambui/StardewValleyMod_StashItemsToChest
-IDs: BlueMod_StashItemsToChest
-update keys: GitHub:lambui/StardewValleyMod_StashItemsToChest

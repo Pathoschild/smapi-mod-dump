@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/16099
-IDs: Shockah.MaximizeFix
-update keys: Nexus:16099, GitHub:Shockah/Stardew-Valley-Mods

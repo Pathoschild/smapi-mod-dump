@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3089
-IDs: mcoocr.smcq
-update keys: Nexus:3089, GitHub:Noomklaw/SV_BetterQualityMoreSeeds

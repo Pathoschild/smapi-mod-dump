@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/260
-IDs: Goldenrevolver.ATappersDream, ddde5195-8f85-4061-90cc-0d4fd5459358
-update keys: Nexus:260, GitHub:Goldenrevolver/Stardew-Valley-Mods

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/22818
-IDs: Tocseoj.MossyTreeBubble
-update keys: Nexus:22818, GitHub:Tocseoj/StardewValleyMods

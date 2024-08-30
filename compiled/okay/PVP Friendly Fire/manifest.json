@@ -1,9 +1,0 @@
-﻿{
-  "Name": "PVP",
-  "Author": "DewMods",
-  "Version": "0.1.1",
-  "Description": "",
-  "UniqueID": "DewMods.StardewValleyMods.PVP",
-  "EntryDll": "PVP.dll",
-  "UpdateKeys": [ "Nexus:15589" ]
-}

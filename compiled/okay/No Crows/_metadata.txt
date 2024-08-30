@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1682
-IDs: cat.nocrows
-update keys: Nexus:1682, GitHub:danvolchek/StardewMods

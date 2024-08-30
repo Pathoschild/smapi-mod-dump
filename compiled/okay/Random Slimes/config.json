@@ -1,9 +1,0 @@
-{
-  "InWoods": false,
-  "InSlimeArea": true,
-  "InQuarryArea": true,
-  "InSkullCaverns": true,
-  "InRegularMines": true,
-  "AffectTigerSlimes": false,
-  "Anywhere": false
-}

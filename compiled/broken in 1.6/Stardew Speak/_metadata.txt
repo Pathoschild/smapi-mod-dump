@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7929
-IDs: evfredericksen.StardewSpeak
-update keys: GitHub:evfredericksen/StardewSpeak, Nexus:7929

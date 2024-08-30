@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/4924
-IDs: droreo002.autotrash
-update keys: Nexus:4924

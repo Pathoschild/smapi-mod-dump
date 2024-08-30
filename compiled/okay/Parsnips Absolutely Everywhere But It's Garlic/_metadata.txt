@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3524
-IDs: SolomonsWorkshop.ParsnipsAbsolutelyEverywhereButItsGarlic
-update keys: Nexus:3524

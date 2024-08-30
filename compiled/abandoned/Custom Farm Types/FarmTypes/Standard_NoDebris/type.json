@@ -1,7 +1,0 @@
-{
-  "Name": "Standard w/o Debris",
-  "Description": "Same as Standard, but starts without debris.",
-  "ID": "StardewValley.Farm.NoDebris",
-  "BehaviorPreset": 0,
-  "FarmhousePreset": 0
-}

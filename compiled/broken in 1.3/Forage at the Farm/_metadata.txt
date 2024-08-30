@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/673
-IDs: Nishtra.ForageAtTheFarm, ForageAtTheFarm
-update keys: Nexus:673

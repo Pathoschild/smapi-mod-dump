@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3853
-IDs: spacechase0.ContentPatcherAnimations
-update keys: Nexus:3853, GitHub:spacechase0/StardewValleyMods

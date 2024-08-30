@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/25593
-IDs: aceynk.PersistentBuffs
-update keys: GitHub:aceynk/PersistentBuffs, Nexus:25593

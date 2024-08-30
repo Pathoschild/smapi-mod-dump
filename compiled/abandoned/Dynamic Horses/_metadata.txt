@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/874
-IDs: Bpendragon-DynamicHorses
-update keys: Nexus:874, GitHub:Bpendragon/DynamicHorses

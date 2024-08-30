@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/14196
-IDs: Slothsoft.Challenger
-update keys: GitHub:slothsoft/stardew-challenger, Nexus:14196

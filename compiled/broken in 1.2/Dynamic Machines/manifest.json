@@ -1,9 +1,0 @@
-{
-  "Name": "Dynamic Machines",
-  "Authour": "Ryuuze",
-  "Version": "1.1.1", // fixed locally from 1.1
-  "Description": "Allows the user to change recipes and machine outputs dynamically.",
-  "UniqueID": "DynamicMachines",
-  "PerSaveConfigs": false,
-  "EntryDll": "DynamicMachines.dll"
-}

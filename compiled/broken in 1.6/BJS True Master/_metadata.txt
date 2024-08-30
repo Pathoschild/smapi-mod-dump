@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5324
-IDs: BunnyJumps.BJSTrueMaster
-update keys: Nexus:5324

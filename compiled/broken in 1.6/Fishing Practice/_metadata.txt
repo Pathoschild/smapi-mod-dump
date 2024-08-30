@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/4157
-IDs: BlaDe.FishingPractice
-update keys: Nexus:4157

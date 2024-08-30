@@ -1,9 +1,0 @@
-{
-  "Name": "SevenDeadlySins-SMAPI",
-  "Author": "ricehit",
-  "Version": "3.4.4",
-  "Description": "SevenDeadlySinsSAMPI",
-  "UniqueID": "ricehit.SevenDeadlySinsSAMPI",
-  "EntryDll": "SevenDeadlySins.dll",
-  "MinimumApiVersion": "3.18.1"
-}

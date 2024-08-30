@@ -1,9 +1,0 @@
-{
-  "Name": "Quick Agenda",
-  "Author": "BadNetCode",
-  "Version": "1.1.1",
-  "Description": "Add agenda overlay that can be toggled",
-  "UniqueID": "BadNetCode.QuickAgenda",
-  "EntryDll": "QuickAgenda.dll",
-  "UpdateKeys": [ "Nexus:22258" ]
-}

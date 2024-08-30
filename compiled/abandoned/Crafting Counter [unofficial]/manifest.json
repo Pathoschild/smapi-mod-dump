@@ -1,9 +1,0 @@
-﻿{
-   "Name": "CraftingCounter",
-   "Author": "lolpcgaming",
-   "Version": "1.1.1-unofficial.3-minervamaga",
-   "Description": "Displays a tooltip showing the number of an item crafted",
-   "UniqueID": "lolpcgaming.CraftingCounter",
-   "EntryDll": "CraftCounter.dll",
-   "UpdateKeys": ["Nexus:1585"]
-}

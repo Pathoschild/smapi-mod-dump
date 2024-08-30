@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/15262
-IDs: drbirbdev.LookToTheSky
-update keys: Nexus:15262, GitHub:drbirbdev/StardewValley

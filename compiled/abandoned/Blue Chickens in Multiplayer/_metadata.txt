@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2336
-IDs: WindHero.BlueChickensInMultiplayer
-update keys: Nexus:2336, GitHub:HeroOfTheWinds/BlueChickensInMultiplayer

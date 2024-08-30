@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/21128
-IDs: glimmerDev.SleepWarning
-update keys: Nexus:21128, GitHub:GlimmerDev/StardewValleyMod_SleepWarning

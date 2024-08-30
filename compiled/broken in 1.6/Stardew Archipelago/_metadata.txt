@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/16087
-IDs: KaitoKid.StardewArchipelago
-update keys: Nexus:16087, GitHub:agilbert1412/StardewArchipelago

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/21949
-IDs: ca.krutonium.becomingfamiliar
-update keys: Nexus:21949

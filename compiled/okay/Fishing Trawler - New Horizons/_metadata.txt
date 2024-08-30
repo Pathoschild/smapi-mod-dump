@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/15941
-IDs: PeacefulEnd.FishingTrawler.NewHorizons
-update keys: Nexus:15941, GitHub:Floogen/FishingTrawler

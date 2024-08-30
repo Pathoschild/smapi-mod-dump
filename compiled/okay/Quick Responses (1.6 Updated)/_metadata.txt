@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/21103
-IDs: yummypecho.QuickResponses
-update keys: Nexus:21103, GitHub:aedenthorn/StardewValleyMods

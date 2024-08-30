@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/8796
-IDs: pepoluan.DamageOverlay
-update keys: Nexus:8796

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6396
-IDs: lech43.PriceFluctuation
-update keys: Nexus:6396

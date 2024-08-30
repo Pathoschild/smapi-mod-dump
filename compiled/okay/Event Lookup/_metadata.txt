@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/8505
-IDs: shekurika.EventLookup
-update keys: Nexus:8505

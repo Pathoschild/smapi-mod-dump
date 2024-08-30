@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/21924
-IDs: bungus.HeartEventHelper
-update keys: Nexus:21924, GitHub:BussinBungus/BungusSDVMods

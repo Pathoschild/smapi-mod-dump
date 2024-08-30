@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/17717
-IDs: error27.infinite_energy
-update keys: Nexus:17717

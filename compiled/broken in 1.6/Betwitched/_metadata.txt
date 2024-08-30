@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10172
-IDs: b_wandert.Betwitched
-update keys: Nexus:10172

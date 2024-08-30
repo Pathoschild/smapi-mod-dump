@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7508
-IDs: ActionJackson.VendingMachine
-update keys: Nexus:7508

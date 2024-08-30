@@ -1,6 +1,0 @@
-{
-    "Config.ActionButton.Name": "动作键速度",
-    "Config.ActionButton.Tooltip": "游戏响应动作键的速度。",
-    "Config.UseToolButton.Name": "工具键速度",
-    "Config.UseToolButton.Tooltip": "游戏响应工具键的速度。"
-}

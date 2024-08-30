@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/13819
-IDs: MindMeltMax.Fishnets
-update keys: Nexus:13819, GitHub:MindMeltMax/Stardew-Valley-Mods

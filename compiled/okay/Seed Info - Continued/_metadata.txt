@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/22519
-IDs: FlyingTNT.SeedInfo
-update keys: Nexus:22519, GitHub:FlyingTNT/StardewValleyMods

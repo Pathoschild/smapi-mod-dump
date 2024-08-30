@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/11132
-IDs: aedenthorn.StardewRPG
-update keys: Nexus:11132, GitHub:aedenthorn/StardewValleyMods

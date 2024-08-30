@@ -1,7 +1,0 @@
-{
-  "BigLoopThreshold": 100,
-  "BigLoopInnerThreshold": 0.01,
-  "EventThreshold": 10,
-  "LoggerDurationOuterThreshold": 5.0,
-  "LoggerDurationInnerThreshold": 0.1
-}

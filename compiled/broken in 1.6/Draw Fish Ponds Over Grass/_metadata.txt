@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/11352
-IDs: atravita.DrawFishPondsOverGrass
-update keys: Nexus:11352, GitHub:atravita-mods/StardewMods

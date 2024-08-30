@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/15696
-IDs: spacechase0.QiChest
-update keys: Nexus:15696, GitHub:spacechase0/StardewValleyMods

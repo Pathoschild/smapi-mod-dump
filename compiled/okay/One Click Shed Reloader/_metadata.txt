@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2052
-IDs: BitwiseJonMods.OneClickShedReloader
-update keys: Nexus:2052, GitHub:bitwisejon/StardewValleyMods

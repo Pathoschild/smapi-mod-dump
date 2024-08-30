@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/15345
-IDs: SevenChords.Night_Shift
-update keys: Nexus:15345

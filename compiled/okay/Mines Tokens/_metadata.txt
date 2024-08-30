@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/18776
-IDs: sophie.MinesTokens
-update keys: Nexus:18776, GitHub:sophiesalacia/StardewMods

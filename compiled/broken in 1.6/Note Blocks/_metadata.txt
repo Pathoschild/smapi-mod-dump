@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6646
-IDs: yaramy.noteblocks
-update keys: Nexus:6646

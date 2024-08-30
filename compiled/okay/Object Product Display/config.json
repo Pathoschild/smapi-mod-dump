@@ -1,9 +1,0 @@
-{
-  "ModEnabled": true,
-  "RequireKeyPress": false,
-  "ShowProgress": true,
-  "ShowProgressing": true,
-  "OpacityPercent": 75,
-  "SizePercent": 100,
-  "PressKeys": "None"
-}

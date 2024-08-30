@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6324
-IDs: Jonqora.AngryGrandpa
-update keys: Nexus:6324, GitHub:Jonqora/StardewMods

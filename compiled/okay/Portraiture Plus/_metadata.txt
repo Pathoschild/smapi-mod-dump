@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/24534
-IDs: Arborsm.PortraiturePlus
-update keys: Nexus:24534, GitHub:Arborsm/PortraiturePlus

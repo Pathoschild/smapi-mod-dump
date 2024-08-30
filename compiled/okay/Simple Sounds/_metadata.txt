@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/14540
-IDs: BleakCodex.SimpleSounds
-update keys: Nexus:14540, GitHub:BleakCodex/SimpleSounds

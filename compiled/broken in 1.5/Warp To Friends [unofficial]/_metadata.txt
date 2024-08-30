@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2180
-IDs: Shalankwa.WarpToFriends
-update keys: Nexus:2180, GitHub:Shalankwa/SDV_Mods

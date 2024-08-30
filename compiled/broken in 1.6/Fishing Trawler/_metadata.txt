@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/8406
-IDs: PeacefulEnd.FishingTrawler
-update keys: Nexus:8406, GitHub:Floogen/FishingTrawler

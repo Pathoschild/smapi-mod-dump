@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1073
-IDs: spacechase0.MapImageExporter, MapImageExporter
-update keys: Nexus:1073, Chucklefish:4655, GitHub:spacechase0/MapImageExporter

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/8893
-IDs: Start.BuildableForge
-update keys: Nexus:8893, GitHub:SlivaStari/BuildableForge

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/16527
-IDs: Moonwolf.StardewAquariumInformant
-update keys: Nexus:16527, GitHub:Moonwolf287/stardew-aquarium-informant-addon

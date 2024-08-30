@@ -1,3 +1,0 @@
-page URL: https://github.com/Telshin/twitch-for-stardew
-IDs: telshin.twitch-for-stardew
-update keys: GitHub:Telshin/twitch-for-stardew

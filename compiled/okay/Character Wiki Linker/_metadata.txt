@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/12999
-IDs: StultusV.WikiLinker
-update keys: Nexus:12999, GitHub:JudeRV/SDV_WikiLinker

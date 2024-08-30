@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/9651
-IDs: aedenthorn.CustomWarpPoints
-update keys: Nexus:9651, GitHub:aedenthorn/StardewValleyMods

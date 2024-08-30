@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6088
-IDs: macer.AuroraGSI
-update keys: Nexus:6088

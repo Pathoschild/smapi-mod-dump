@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/8545
-IDs: kerlin.sonasfarm
-update keys: Nexus:8545

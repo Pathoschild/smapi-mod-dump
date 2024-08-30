@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/235
-IDs: SPDSprintAndDash
-update keys: Nexus:235

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2070
-IDs: BitwiseJonMods.InstantBuildings
-update keys: Nexus:2070, GitHub:bitwisejon/StardewValleyMods

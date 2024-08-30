@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3241
-IDs: SwizzyStudios.SwizzyMeads
-update keys: Nexus:3241, GitHub:SwizzyStudios/SV-SwizzyMeads

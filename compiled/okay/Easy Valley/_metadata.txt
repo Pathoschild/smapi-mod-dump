@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/21181
-IDs: season.EasyValley
-update keys: Nexus:21181

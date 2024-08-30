@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2270
-IDs: Entoarox.AdvancedLocationLoader
-update keys: Nexus:2270, Chucklefish:3619, GitHub:Entoarox/StardewMods

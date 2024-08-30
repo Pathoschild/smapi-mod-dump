@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/21028
-IDs: MrShreddie.AnimalsDontRemoveGrass
-update keys: Nexus:21028

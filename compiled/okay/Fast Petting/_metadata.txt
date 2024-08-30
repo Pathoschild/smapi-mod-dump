@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5039
-IDs: de.dertod2.FastPetting
-update keys: Nexus:5039

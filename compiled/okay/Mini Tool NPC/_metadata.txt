@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7060
-IDs: mini.tool.npc.mod
-update keys: Nexus:7060, GitHub:TMThong/Stardew-Mods

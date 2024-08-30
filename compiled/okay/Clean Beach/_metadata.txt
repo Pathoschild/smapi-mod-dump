@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/14936
-IDs: Artinity.CleanBeach
-update keys: Nexus:14936, GitHub:Artinity/clean-beach

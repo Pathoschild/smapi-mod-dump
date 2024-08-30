@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2733
-IDs: bcmpinc.AlwaysScrollMap
-update keys: Nexus:2733, GitHub:bcmpinc/StardewHack

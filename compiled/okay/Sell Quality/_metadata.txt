@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/12469
-IDs: DonDorscha.SellQuality
-update keys: Nexus:12469

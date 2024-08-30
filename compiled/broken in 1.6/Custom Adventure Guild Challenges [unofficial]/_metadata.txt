@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2301
-IDs: DefenTheNation.CustomGuildChallenges
-update keys: Nexus:2301, GitHub:defenthenation/StardewMod-CustomSlayerChallenges

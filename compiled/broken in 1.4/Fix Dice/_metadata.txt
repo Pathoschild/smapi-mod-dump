@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/4556
-IDs: ashley.fixdice
-update keys: Nexus:4556

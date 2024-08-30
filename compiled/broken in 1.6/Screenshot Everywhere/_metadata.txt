@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10805
-IDs: Gaiadin.Stardew-Screenshot-Everywhere
-update keys: Nexus:10805, GitHub:Gaiadin/Stardew-Screenshot-Everywhere

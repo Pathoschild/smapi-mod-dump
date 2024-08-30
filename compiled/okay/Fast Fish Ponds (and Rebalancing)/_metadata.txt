@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/14005
-IDs: zeldela.FastFishPond
-update keys: Nexus:14005, GitHub:zeldela/sdv-mods

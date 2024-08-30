@@ -1,9 +1,0 @@
-{
-  "config.hotkey.desc": "N'aura d'effet que si 'Enabled' est vrai",
-  "config.hotkeycustmsg.desc": "N'aura d'effet que si 'Enabled' est vrai",
-  "reminder.disabled": "Rappel de sortie est désactivé",
-  "reminder.enabled": "Rappel de sortie est activé",
-  "reminder.title": "RAPPEL:",
-  "reminder.body-default": "On vous rappelle que vous devez quitter le jeu.",
-  "reminder-ui.custom-msg-label": "Message de Rappel Personnalisé"
-}

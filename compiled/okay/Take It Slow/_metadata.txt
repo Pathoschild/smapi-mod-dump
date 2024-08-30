@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/13432
-IDs: KarratKake.TakeItSlow
-update keys: Nexus:13432

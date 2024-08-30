@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6119
-IDs: nman130.MenusEverywhere
-update keys: Nexus:6119, GitHub:nman130/Stardew-Mods

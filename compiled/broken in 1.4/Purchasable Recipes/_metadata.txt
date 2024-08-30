@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1722
-IDs: Paracosm.PurchasableRecipes
-update keys: Nexus:1722

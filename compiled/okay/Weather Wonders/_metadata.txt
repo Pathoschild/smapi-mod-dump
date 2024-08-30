@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/23868
-IDs: Kana.WeatherWonders.DLL
-update keys: CurseForge:1016623, Nexus:23868

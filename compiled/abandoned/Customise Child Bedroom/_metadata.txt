@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5540
-IDs: speshkitty.CustomiseChildBedroom
-update keys: Nexus:5540, GitHub:Speshkitty/CustomiseChildBedroom

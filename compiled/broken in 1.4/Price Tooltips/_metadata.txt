@@ -1,3 +1,0 @@
-page URL: https://github.com/Stardew-Valley-Modding/PriceTooltips
-IDs: darkhax.pricetooltip
-update keys: GitHub:Stardew-Valley-Modding/PriceTooltips

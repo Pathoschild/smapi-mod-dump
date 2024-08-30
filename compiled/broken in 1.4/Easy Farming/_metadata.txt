@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/4162
-IDs: MountainDewBoi.EasyFarming
-update keys: Nexus:4162

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/22752
-IDs: wrongcoder.UnscheduledEvaluation
-update keys: Nexus:22752, GitHub:wrongcoder/UnscheduledEvaluation

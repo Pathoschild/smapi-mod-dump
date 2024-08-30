@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/16028
-IDs: moonslime.ShovelToolUpgrades
-update keys: Nexus:-1, Nexus:16028

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10735
-IDs: TheMightyAmondee.EventLimiter
-update keys: Nexus:10735, GitHub:TheMightyAmondee/EventLimiter

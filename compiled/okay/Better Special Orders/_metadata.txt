@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/24125
-IDs: xeru.BetterSpecialOrders
-update keys: Nexus:24125, GitHub:xeru98/StardewMods

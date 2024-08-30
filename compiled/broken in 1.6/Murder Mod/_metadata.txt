@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/17470
-IDs: Aren.MurderMod
-update keys: Nexus:17470, GitHub:ArenKDesai/Murder-Mod

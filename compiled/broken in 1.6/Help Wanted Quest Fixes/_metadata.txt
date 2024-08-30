@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2644
-IDs: Pokeytax.HelpWantedQuestFixes
-update keys: Nexus:2644, GitHub:gembree/HelpWantedQuestFixes

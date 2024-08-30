@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7247
-IDs: Rafael.TeleportToFarm
-update keys: Nexus:7247

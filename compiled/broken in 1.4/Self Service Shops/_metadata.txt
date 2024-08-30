@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1622
-IDs: GuiNoya.SelfServiceShop
-update keys: Nexus:1622, GitHub:GuiNoya/SVMods

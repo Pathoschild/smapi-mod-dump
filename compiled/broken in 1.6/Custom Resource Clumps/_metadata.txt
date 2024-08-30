@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6669
-IDs: aedenthorn.CustomResourceClumps
-update keys: Nexus:6669, GitHub:aedenthorn/StardewValleyMods

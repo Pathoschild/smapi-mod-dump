@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7451
-IDs: Strato35.WarpMultiplayer
-update keys: Nexus:7451, GitHub:Shalankwa/SDV_Mods

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/14519
-IDs: aedenthorn.Restauranteer
-update keys: Nexus:14519, GitHub:aedenthorn/StardewValleyMods

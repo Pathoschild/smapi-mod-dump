@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/13701
-IDs: furyx639.ShoppingCart
-update keys: Nexus:13701, GitHub:LeFauxMatt/StardewMods

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5603
-IDs: kdau.ScryingOrb
-update keys: Nexus:5603, ModDrop:756553

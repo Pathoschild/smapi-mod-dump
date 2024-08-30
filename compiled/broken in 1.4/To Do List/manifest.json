@@ -1,9 +1,0 @@
-﻿{
-   "Name": "To Do List",
-   "Author": "eleanoot",
-   "Version": "1.1.2",
-   "Description": "Record the other little tasks you were up to.",
-   "UniqueID": "eleanoot.todolist",
-   "EntryDll": "ToDoMod.dll",
-   "UpdateKeys": [ "Nexus:1630" ]
-}

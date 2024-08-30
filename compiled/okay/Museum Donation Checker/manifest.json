@@ -1,9 +1,0 @@
-{
-	"Name": "MuseumDonationChecker",
-	"Author": "Hitaxas",
-	"Version": "1.2",
-	"Description": "Detects if an item has been donated to Gunther's museum.",
-	"UniqueID": "Hitaxas.Dono.DLL",
-	"EntryDLL": "MuseumDonationChecker.dll",
-	"UpdateKeys": [ "Nexus: 24225" ]
-}

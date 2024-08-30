@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/20374
-IDs: TheMightyAmondee.BetterMeowmere
-update keys: Nexus:20374, GitHub:TheMightyAmondee/BetterMeowmere

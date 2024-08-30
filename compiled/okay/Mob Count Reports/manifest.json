@@ -1,9 +1,0 @@
-﻿{
-  "Name": "ReportMobCounts",
-  "Author": "StultusV",
-  "Version": "1.0.2",
-  "Description": "Reports the number of mobs in a room when you walk into it",
-  "UniqueID": "StultusV.ReportMobCounts",
-  "EntryDll": "ReportMobCounts.dll",
-  "UpdateKeys": [ "Nexus:10899" ]
-}

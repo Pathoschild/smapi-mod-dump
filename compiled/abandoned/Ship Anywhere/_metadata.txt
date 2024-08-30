@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1379
-IDs: spacechase0.ShipAnywhere
-update keys: Nexus:1379, GitHub:spacechase0/ShipAnywhere

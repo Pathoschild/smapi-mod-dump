@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5625
-IDs: SG.Partners
-update keys: Nexus:5625

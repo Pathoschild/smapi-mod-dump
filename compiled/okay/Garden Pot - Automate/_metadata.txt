@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/15212
-IDs: NCarigon.GardenPotAutomate
-update keys: Nexus:15212, GitHub:ncarigon/StardewValleyMods

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/24344
-IDs: b1rdyw1rdy.FarmIconOnLoadScreen
-update keys: Nexus:24344

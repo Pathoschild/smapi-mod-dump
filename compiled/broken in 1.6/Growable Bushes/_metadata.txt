@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/15111
-IDs: atravita.GrowableBushes
-update keys: Nexus:15111, GitHub:atravita-mods/StardewMods

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/15004
-IDs: atravita.LastDayToPlantRedux
-update keys: Nexus:15004, GitHub:atravita-mods/StardewMods

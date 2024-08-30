@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2462
-IDs: stokastic.DeluxeGrabber, stokastic.CoopGrabber
-update keys: Nexus:2462, GitHub:stokastic/CoopGrabber

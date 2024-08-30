@@ -1,8 +1,0 @@
-{
-  "MPPirateArrivalTime": 1600,
-  "MinDartCount": 10,
-  "MaxDartCount": 20,
-  "ShowDartMarker": false,
-  "JitterMultiplier": 1.0,
-  "DartPrecision": 1.0
-}

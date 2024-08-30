@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10205
-IDs: aedenthorn.PipeIrrigation
-update keys: Nexus:10205, GitHub:aedenthorn/StardewValleyMods

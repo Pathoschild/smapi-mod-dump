@@ -1,3 +1,0 @@
-page URL: https://www.moddrop.com/stardew-valley/mod/752859
-IDs: minervamaga.FeelingLucky
-update keys: ModDrop:752859, GitHub:minervamaga/FeelingLucky

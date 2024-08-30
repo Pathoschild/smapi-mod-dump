@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6752
-IDs: jltaylor-us.RangeHighlight
-update keys: Nexus:6752, GitHub:jltaylor-us/StardewRangeHighlight

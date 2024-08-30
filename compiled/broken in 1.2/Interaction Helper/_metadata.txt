@@ -1,3 +1,0 @@
-page URL: https://community.playstarbound.com/resources/4640
-IDs: HammurabiInteractionHelper
-update keys: Chucklefish:4640

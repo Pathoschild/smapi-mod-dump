@@ -1,5 +1,0 @@
-{
-    "hint.wellfeeded": "You feel well fed and will regain {{StaminaRegeneratedProcent}}% stamina if you go to sleep within 2h",
-	"hint.sleeped.unfeeded": "You have slept and regained {{StaminaRegeneratedProcent}}% stamina",
-	"hint.sleeped.wellfeeded": "You have slept well fed and regained {{StaminaRegeneratedProcent}}% stamina",
-}

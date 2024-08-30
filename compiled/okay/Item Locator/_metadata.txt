@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/24305
-IDs: Hitaxas.Items2.DLL
-update keys: Nexus:24305

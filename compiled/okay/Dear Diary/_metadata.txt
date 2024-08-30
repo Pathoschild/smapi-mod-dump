@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/4451
-IDs: misscoriel.diary
-update keys: Nexus:4451, GitHub:MissCoriel/Dear-Diary

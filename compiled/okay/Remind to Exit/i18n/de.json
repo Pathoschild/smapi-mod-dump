@@ -1,9 +1,0 @@
-{
-  "config.hotkey.desc": "Wirkt sich nur aus, wenn 'Enabled' wahr ist",
-  "config.hotkeycustmsg.desc": "Wirkt sich nur aus, wenn 'Enabled' wahr ist",
-  "reminder.disabled": "Die Beenden-Erinnerung ist deaktiviert.",
-  "reminder.enabled": "Beenden-Erinnerung ist aktiviert",
-  "reminder.title": "ERINNERUNG:",
-  "reminder.body-default": "Sie werden daran erinnert, das Spiel zu beenden.",
-  "reminder-ui.custom-msg-label": "Benutzerdefinierte Erinnerungsmeldung"
-}

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/14630
-IDs: aedenthorn.DungeonMerchants
-update keys: Nexus:14630, GitHub:aedenthorn/StardewValleyMods

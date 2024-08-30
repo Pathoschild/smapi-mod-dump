@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10975
-IDs: Expl0.CauldronOfChance
-update keys: Nexus:10975, GitHub:WizardsLizards/CauldronOfChance

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/9052
-IDs: Kryspur.HypnoValley
-update keys: Nexus:9052

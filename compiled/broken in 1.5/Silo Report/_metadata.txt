@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3194
-IDs: bogie5464.SiloReport
-update keys: Nexus:3194, GitHub:bogie5464/SiloReport

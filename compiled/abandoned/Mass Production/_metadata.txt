@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7021
-IDs: JacquePott.MassProduction
-update keys: Nexus:7021, GitHub:JacquePott/StardewValleyMods

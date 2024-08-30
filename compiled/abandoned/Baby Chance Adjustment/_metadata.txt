@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3311
-IDs: Late's.AdjustBabyChance
-update keys: Nexus:3311, Nexus:15018

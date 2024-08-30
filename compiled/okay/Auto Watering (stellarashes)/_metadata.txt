@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5463
-IDs: stellarashes.Autowatering
-update keys: Nexus:5463, GitHub:stellarashes/SDVMods

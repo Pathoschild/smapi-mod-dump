@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/22218
-IDs: Hana.AdoptWithKrobus
-update keys: Nexus:22218, GitHub:aeremyns/AdoptWithKrobus

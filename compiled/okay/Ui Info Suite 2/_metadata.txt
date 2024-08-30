@@ -1,3 +1,0 @@
-page URL: https://github.com/Annosz/UIInfoSuite2
-IDs: Annosz.UiInfoSuite2
-update keys: GitHub:Annosz/UIInfoSuite2, GitHub:Annosz/UiInfoSuite2

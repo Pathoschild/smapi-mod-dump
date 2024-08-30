@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3521
-IDs: bwdy.lockpicks
-update keys: Nexus:3521, GitHub:bwdymods/SDV-Lockpicks

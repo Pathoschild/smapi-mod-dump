@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/17291
-IDs: PeacefulEnd.AMouseWithAHat.Core
-update keys: Nexus:17291, GitHub:Floogen/StardewSandbox

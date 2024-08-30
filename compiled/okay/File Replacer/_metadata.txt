@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/17553
-IDs: certifiableGrimalkin.FileReplacer
-update keys: Nexus:17553

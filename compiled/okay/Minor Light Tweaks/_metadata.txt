@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10223
-IDs: greentodd.MinorLightTweaks
-update keys: Nexus:10223

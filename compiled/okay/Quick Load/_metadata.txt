@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7756
-IDs: aedenthorn.QuickLoad
-update keys: Nexus:7756, GitHub:aedenthorn/StardewValleyMods

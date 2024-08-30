@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5125
-IDs: Ryaon.FectorChallenge
-update keys: Nexus:5125

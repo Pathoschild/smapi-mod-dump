@@ -1,8 +1,0 @@
-﻿{
-  "energy-time.reloaded": "EnergyTime mod config reloaded",
-  "energy-time.multiplier-changed": "Energy multiplier changed to {{multiplier}}",
-  "energy-time.paused": "Time has been paused...",
-  "energy-time.unpaused": "Time has been unpaused",
-  "energy-time.vanilla-mode": "Time mode: Vanilla Time",
-  "energy-time.energy-time-mode": "Time mode: Energy Time"
-}

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/638
-IDs: CurrentLocation102120161203
-update keys: Nexus:638, GitHub:janavarro95/Stardew_Valley_Mods

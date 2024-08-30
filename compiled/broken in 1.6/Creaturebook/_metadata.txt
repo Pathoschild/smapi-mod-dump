@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/13807
-IDs: KediDili.Creaturebook
-update keys: ModDrop:???, Nexus:13807, GitHub:KediDili/Creaturebook

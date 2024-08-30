@@ -1,7 +1,0 @@
-{
-  "ModEnabled": true,
-  "RejectDisliked": true,
-  "RejectHated": true,
-  "DislikedThrowDistance": 2.0,
-  "HatedThrowDistance": 3.0
-}

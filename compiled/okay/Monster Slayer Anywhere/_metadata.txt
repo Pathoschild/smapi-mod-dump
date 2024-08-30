@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/21162
-IDs: acidicNic.MonsterSlayerAnywhere
-update keys: Nexus:21162, GitHub:spacechase0/StardewValleyMods

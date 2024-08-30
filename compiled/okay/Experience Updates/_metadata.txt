@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7581
-IDs: Quipex.ExperienceUpdates
-update keys: Nexus:7581, GitHub:Quipex/ExperienceUpdates

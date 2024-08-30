@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/16159
-IDs: certifiableGrimalkin.HotChocolateCoffeeAlternative
-update keys: Nexus:16159

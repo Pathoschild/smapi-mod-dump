@@ -1,3 +1,0 @@
-page URL: https://github.com/rupak0577/FishDex
-IDs: rupak0577.FishDex
-update keys: GitHub:rupak0577/FishDex

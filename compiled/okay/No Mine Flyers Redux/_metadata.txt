@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/4498
-IDs: minervamaga.NoMineFlyersRedux
-update keys: Nexus:4498, GitHub:minervamaga/NoMineFlyersRedux

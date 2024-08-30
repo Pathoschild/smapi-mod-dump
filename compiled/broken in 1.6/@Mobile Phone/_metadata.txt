@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6523
-IDs: aedenthorn.MobilePhone
-update keys: Nexus:6523, GitHub:aedenthorn/StardewValleyMods

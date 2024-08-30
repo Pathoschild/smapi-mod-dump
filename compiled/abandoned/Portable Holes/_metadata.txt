@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/13471
-IDs: furyx639.PortableHoles
-update keys: Nexus:13471, GitHub:LeFauxMatt/StardewMods

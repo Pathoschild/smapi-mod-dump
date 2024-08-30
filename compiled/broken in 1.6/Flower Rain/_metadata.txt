@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6131
-IDs: spacechase0.FlowerRain
-update keys: Nexus:6131, GitHub:spacechase0/StardewValleyMods

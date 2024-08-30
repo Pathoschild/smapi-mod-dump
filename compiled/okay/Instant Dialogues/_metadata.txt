@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/22468
-IDs: idermailer.InstantDialogues
-update keys: Nexus:22468, GitHub:idermailer/InstantDialogues

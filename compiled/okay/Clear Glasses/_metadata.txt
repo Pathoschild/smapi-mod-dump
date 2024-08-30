@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/21090
-IDs: aurpine.ClearGlasses
-update keys: Nexus:21090, GitHub:aurpine/Stardew-SpriteMaster

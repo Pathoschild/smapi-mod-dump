@@ -1,7 +1,0 @@
-{
-  "StartTime": 2400,
-  "SpawnChancePerTile": 100,
-  "Explaination": "SpawnChancePerTile is not how you think - A bigger number will *decrease* the number of mobs being spawned - At a setting of 1, it will spawn a mob on every single valid tile. This is very laggy. Recommend 100 for a balanced experience, 50 for a more intense one, and 25 for a fight for your life.",
-  "ScaleWithCombatSkill": true,
-  "scaleFactor": 1.5
-}

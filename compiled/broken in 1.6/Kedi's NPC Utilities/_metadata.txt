@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/17884
-IDs: KediDili.KNU
-update keys: Nexus:17884, GitHub:KediDili/NPCUtilities

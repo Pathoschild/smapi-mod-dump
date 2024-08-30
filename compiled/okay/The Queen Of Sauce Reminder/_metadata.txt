@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5172
-IDs: TheShwamp.TheQueenOfSauceReminder
-update keys: Nexus:5172, GitHub:Swampen/stardew-valley-mods

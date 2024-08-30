@@ -1,5 +1,0 @@
-How to install:
-1. Navigate to Stardew Valley installation folder.
-2. Open mod file and choose a file version. (If there are any)
-3. Extract the contents into Stardew Valley/Mods/. (Updating) Remove\Replace any previous version of the mod.
-4. Run the game using SMAPI.

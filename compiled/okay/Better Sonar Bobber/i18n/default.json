@@ -1,7 +1,0 @@
-﻿{
-  "Config.RequireBobber.Name": "Require Sonar Bobber",
-  "Config.RequireBobber.Tooltip": "If enabled, the Sonar Bobber will be required for the sonar functionality. If disabled, you will always be able to see which fish is nibbling.",
-  
-  "Config.NibbleTime.Name": "Extra Nibble Time",
-  "Config.NibbleTime.Tooltip": "How much extra time in milliseconds the Sonar Bobber will give you to react to a nibble."
-}

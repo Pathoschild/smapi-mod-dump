@@ -1,5 +1,0 @@
-Put Characters of Monsters in this folder. (*.png or *.xnb)
-
-Or put them in inner folder, and set config file "_MonstersFolders.json" in this dir as follows:
-
-["Folder1","Folder2","Folder3/internalFolder","FolderN"]

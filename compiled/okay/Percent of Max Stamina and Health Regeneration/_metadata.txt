@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/20900
-IDs: Mercurius.RegenPercent
-update keys: Nexus:20900, GitHub:MercuriusXeno/RegenPercent

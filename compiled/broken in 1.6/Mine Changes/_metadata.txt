@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3963
-IDs: jpan.MineChanges
-update keys: Nexus:3963, GitHub:JPANv2/Stardew-Valley-Mine-Changes

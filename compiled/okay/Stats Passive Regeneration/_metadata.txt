@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7428
-IDs: Strato35.StatsReloader
-update keys: Nexus:7428

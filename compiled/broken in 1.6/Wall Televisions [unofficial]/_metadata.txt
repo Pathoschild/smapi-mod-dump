@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/11448
-IDs: aedenthorn.WallTelevision
-update keys: Nexus:11448, GitHub:aedenthorn/StardewValleyMods

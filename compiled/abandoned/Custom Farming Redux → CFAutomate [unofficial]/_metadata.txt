@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/991
-IDs: Platonymous.CFAutomate
-update keys: Nexus:991, GitHub:Platonymous/Stardew-Valley-Mods

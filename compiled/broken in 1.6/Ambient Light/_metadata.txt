@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/4639
-IDs: SixthTitan.SDVWM_AmbientLight, SixthTitan.AmbientLight
-update keys: Nexus:4639

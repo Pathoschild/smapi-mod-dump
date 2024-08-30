@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7455
-IDs: spacechase0.PyromancersJourney, spacechase0.FireArcadeGame
-update keys: Nexus:7455, GitHub:spacechase0/StardewValleyMods

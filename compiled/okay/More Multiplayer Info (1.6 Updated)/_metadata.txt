@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/22024
-IDs: yummypecho.moremultiplayerinfo
-update keys: Nexus:22024, GitHub:cheesysteak/stardew-steak

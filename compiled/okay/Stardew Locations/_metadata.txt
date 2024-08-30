@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1929
-IDs: mizzion.stardewlocations
-update keys: Nexus:1929, ModDrop:661357, GitHub:Mizzion/MyStardewMods

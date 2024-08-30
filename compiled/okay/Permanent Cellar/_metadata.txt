@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/17257
-IDs: CF.PermanentCellar
-update keys: Nexus:17257, GitHub:CyanFireUK/StardewValleyMods

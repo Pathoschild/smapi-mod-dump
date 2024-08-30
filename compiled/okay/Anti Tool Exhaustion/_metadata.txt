@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/26371
-IDs: tomokisan.antiToolExhaustion
-update keys: Nexus:26371

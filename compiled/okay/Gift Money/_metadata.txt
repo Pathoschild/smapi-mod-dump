@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/17564
-IDs: AvalonMFX.GiftMoney
-update keys: Nexus:17564

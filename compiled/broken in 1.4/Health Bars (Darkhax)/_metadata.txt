@@ -1,3 +1,0 @@
-page URL: https://github.com/Stardew-Valley-Modding/HealthBars
-IDs: darkhax.healthbars
-update keys: GitHub:Stardew-Valley-Modding/HealthBars

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1915
-IDs: Pathoschild.ContentPatcher
-update keys: Nexus:1915, GitHub:Pathoschild/StardewMods

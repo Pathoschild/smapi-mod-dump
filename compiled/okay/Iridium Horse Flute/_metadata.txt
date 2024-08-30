@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/15285
-IDs: AnthonyMaciel.IridiumHorseFlute, AnthonyMaciel.BetterHorseFlute
-update keys: Nexus:15285

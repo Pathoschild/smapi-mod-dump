@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/21703
-IDs: prism99.aedenthorn.FieldHarvest
-update keys: Nexus:21703

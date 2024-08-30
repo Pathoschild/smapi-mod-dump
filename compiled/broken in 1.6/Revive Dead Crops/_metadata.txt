@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/15005
-IDs: atravita.ReviveDeadCrops
-update keys: Nexus:15005, GitHub:atravita-mods/StardewMods

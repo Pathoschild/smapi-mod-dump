@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/25339
-IDs: weizinai.SpectatorMode
-update keys: Nexus:25339, GitHub:weizinai/StardewValleyMods

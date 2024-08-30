@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/25136
-IDs: CodeWordZ.ToolPouch
-update keys: Nexus:25136, GitHub:Brandon22Adams/ToolPouch

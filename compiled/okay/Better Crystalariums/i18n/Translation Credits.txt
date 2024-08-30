@@ -1,3 +1,0 @@
-de.json is proper — translated by Expl0
-fr.json is partially proper — touched up by Lumina
-ru.json is proper — translated by Alu from the Discord

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1672
-IDs: TaintedCellar
-update keys: Nexus:1672, GitHub:Jinxiewinxie/StardewValleyMods

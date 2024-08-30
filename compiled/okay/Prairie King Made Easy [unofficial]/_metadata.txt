@@ -1,3 +1,0 @@
-page URL: https://community.playstarbound.com/resources/3594
-IDs: Mucchan.PrairieKingMadeEasy
-update keys: Chucklefish:3594, GitHub:mucchan/sv-mod-prairie-king

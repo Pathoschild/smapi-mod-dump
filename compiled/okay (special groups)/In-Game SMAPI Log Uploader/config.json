@@ -1,8 +1,0 @@
-{
-  "ModEnabled": true,
-  "OpenBehind": false,
-  "SendOnFatalError": true,
-  "ShowButton": true,
-  "SendButton": "F15",
-  "ShowButtonButton": "LeftAlt"
-}

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3731
-IDs: mabelsyrup.farmhouse
-update keys: Nexus:3731, GitHub:mjSurber/FarmHouseRedone

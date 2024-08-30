@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/16879
-IDs: MindMeltMax.WinterPigs
-update keys: Nexus:16879, GitHub:MindMeltMax/Stardew-Valley-Mods

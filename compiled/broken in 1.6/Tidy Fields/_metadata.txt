@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10929
-IDs: seitanicbean.tidyfields
-update keys: Nexus:10929

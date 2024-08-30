@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3097
-IDs: ChaosEnergy.BetterActivateSprinklers
-update keys: Nexus:3097, GitHub:yuri-moens/BetterActivateSprinklers

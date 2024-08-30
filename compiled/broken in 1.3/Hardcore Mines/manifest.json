@@ -1,9 +1,0 @@
-{
-  "Name": "Hardcore mines",
-  "Author": "kibbe",
-  "Version": "1.12",
-  "Description": "Increases the difficulty of the mines.",
-  "UniqueID": "kibbe.hardcore_mines",
-  "EntryDll": "hardcore_mines.dll",
-  "UpdateKeys": []
-}

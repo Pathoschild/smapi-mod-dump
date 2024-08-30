@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2527
-IDs: Drynwynn.FishingAutomaton
-update keys: Nexus:2527, GitHub:Drynwynn/StardewValleyMods

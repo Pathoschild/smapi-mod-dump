@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/9303
-IDs: tech.enghao.sv.eh-smash-quality
-update keys: Nexus:9303

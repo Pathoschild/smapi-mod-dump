@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1927
-IDs: mizzion.enhancedrelationships
-update keys: Nexus:1927, ModDrop:661356, GitHub:Mizzion/MyStardewMods

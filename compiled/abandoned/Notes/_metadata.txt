@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3068
-IDs: Platonymous.Notes
-update keys: Nexus:3068, GitHub:Platonymous/Stardew-Valley-Mods

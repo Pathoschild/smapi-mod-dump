@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2587
-IDs: OrneryWalrus.MoreSiloStorage
-update keys: Nexus:2587

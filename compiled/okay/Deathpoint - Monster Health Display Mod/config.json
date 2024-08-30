@@ -1,7 +1,0 @@
-{
-  "Enable": true,
-  "KeybindEnable": "J",
-  "KeybindToggleHealthDisplay": "K",
-  "ShowHealthOnlyWhenDamaged": true,
-  "ShowInvisibleMonsters": false
-}

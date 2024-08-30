@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/4973
-IDs: kodfod.hitbox
-update keys: GitHub:kodfod/BetterHitboxStardew, Nexus:4973, GitHub:Kodfod/BetterHitboxStardew

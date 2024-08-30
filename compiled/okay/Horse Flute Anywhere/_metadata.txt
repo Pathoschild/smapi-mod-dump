@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7500
-IDs: Pathoschild.HorseFluteAnywhere
-update keys: Nexus:7500, GitHub:Pathoschild/StardewMods

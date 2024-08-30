@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/9693
-IDs: shekurika.DailySpecialOrders
-update keys: Nexus:9693, GitHub:shekurika/DailySpecialOrders

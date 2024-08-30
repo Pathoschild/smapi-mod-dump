@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10936
-IDs: micfort.BetterJunimosCropFields
-update keys: Nexus:10936

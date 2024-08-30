@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/8160
-IDs: TheTexanTesla.ControlValley
-update keys: Nexus:8160, GitHub:tesla1889tv/ControlValleyMod

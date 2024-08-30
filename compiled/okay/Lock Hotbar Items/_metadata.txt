@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/23702
-IDs: Falson.LockHotbarItems
-update keys: Nexus:23702

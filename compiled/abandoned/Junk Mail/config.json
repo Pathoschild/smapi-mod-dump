@@ -1,7 +1,0 @@
-{
-  "ConfigHelper": "Set MailChance (percentage), from 0 (no junk) to 100 (one junk letter per day until all sent). MailNotification can be none, basic or detailed depending on what you want displayed. Set MailReplay to true if you want the junk mail to start over once all sent.(This item does nothing!)",
-  "MailChance": 10,
-  "MailNotification": "detailed",
-  "MailReplay": false,
-  "ShowDebug": false
-}

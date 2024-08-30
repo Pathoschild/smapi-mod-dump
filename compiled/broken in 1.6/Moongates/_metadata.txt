@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3545
-IDs: bwdy.moongates
-update keys: Nexus:3545, GitHub:bwdymods/SDV-Moongates

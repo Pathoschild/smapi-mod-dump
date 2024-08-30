@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/20930
-IDs: ChrisMzz.slimeminerals
-update keys: Nexus:20930, GitHub:ChrisMzz/StardewValleyMods

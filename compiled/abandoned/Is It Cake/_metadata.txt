@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/14775
-IDs: furyx639.IsItCake
-update keys: Nexus:14775, GitHub:LeFauxMatt/StardewMods

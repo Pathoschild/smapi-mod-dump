@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/18119
-IDs: jangofett4.fishingtreasurespawner
-update keys: Nexus:18119, GitHub:jangofett4/FishingTreasureSpawner

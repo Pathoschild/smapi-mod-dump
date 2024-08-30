@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7684
-IDs: spacechase0.PreexistingRelationship
-update keys: Nexus:7684, GitHub:spacechase0/StardewValleyMods

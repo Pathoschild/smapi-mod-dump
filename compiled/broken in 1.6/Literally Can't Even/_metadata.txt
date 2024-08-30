@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/14262
-IDs: spacechase0.LiterallyCantEven
-update keys: Nexus:14262, GitHub:spacechase0/StardewValleyMods

@@ -1,3 +1,0 @@
-DiscordRPC.dll is licensed under the MIT License, made by Lachee. https://github.com/Lachee/discord-rpc-csharp
-
-StardewRPC.dll is licensed under the MIT License, made by ElocinDev. https://github.com/nvb-uy/StardewRPC

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/11903
-IDs: underscore.clay_map
-update keys: GitHub:Underscore76/ClayMap, Nexus:11903

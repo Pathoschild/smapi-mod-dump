@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5176
-IDs: MadaraUchiha.NonDestructiveNPCs
-update keys: Nexus:5176, GitHub:MadaraUchiha/NonDestructiveNPCs

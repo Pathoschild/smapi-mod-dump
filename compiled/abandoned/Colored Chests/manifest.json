@@ -1,9 +1,0 @@
-{
-  "Name": "ColoredChestsMod",
-  "Authour": "Igorious",
-  "Version": "1.0.1", // fixed locally from 1.0.0-1
-  "Description": "Allows change chests color.",
-  "UniqueID": "4befde5c-731c-4853-8e4b-c5cdf946805f",
-  "PerSaveConfigs": false,
-  "EntryDll": "Igorious.StardewValley.ColoredChestsMod.dll"
-}

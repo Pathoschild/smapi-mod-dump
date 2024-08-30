@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/23312
-IDs: AvalonMFX.OreDetector
-update keys: Nexus:23312, GitHub:1Avalon/Ore-Detector

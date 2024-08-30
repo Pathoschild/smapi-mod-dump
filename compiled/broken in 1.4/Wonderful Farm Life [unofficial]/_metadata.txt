@@ -1,3 +1,0 @@
-page URL: https://github.com/Jinxiewinxie/StardewValleyMods
-IDs: WonderfulFarmLife
-update keys: GitHub:Jinxiewinxie/StardewValleyMods

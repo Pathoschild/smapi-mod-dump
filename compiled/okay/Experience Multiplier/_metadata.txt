@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/25945
-IDs: Falson.ExperienceMultiplier
-update keys: Nexus:25945

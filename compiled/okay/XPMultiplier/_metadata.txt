@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/8649
-IDs: NFN.XPMUL
-update keys: Nexus:8649, GitHub:nofilenamed/XPMultiplier

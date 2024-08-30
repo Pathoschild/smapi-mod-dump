@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/21009
-IDs: MindMeltMax.GeodePreview
-update keys: Nexus:21009, GitHub:MindMeltMax/Stardew-Valley-Mods

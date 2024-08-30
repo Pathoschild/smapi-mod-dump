@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/11336
-IDs: aedenthorn.CustomSigns
-update keys: Nexus:11336, GitHub:aedenthorn/StardewValleyMods

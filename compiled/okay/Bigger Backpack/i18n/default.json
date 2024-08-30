@@ -1,8 +1,0 @@
-{
-    // Translation provided by: <leave your name or nexus/discord username here>
-	SetBackpackSizeCommand: "Set the size of the player's backpack. This must be a multiple of 12",
-	Purchase: "Purchase ({{cost}}g)",
-	BackpackUpgrade: "Backpack Upgrade -- 48 slots",
-	PremiumPack: "Premium Pack",
-	BackpackCostName: "Backpack cost", BackpackCostTooltip: "How much you have to pay to buy this backpack in the shop.",
-}

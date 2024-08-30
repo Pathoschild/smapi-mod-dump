@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/17749
-IDs: Kryspur.NoFallDamage
-update keys: Nexus:17749

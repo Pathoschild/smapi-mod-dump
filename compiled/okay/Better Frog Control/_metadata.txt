@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/26144
-IDs: malkavian.betterfrogcontrol
-update keys: Nexus:26144, GitHub:LucasOCastro/StardewValley-BetterFrogControl

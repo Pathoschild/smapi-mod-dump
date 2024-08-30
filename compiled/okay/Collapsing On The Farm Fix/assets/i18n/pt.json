@@ -1,9 +1,0 @@
-{
-  "PostPassoutDialogues.neutral.sunny.1": "Ei, você está bem? Você desmaiou lá fora.$s#$b#Você precisa cuidar melhor de si mesmo.$k",
-  "PostPassoutDialogues.rude.sunny.1": "Você está acordado! Você desmaiou na fazenda.#$b#Eu tive que te carregar até aqui.",
-  "PostPassoutDialogues.shy.sunny.1": "Você está... Você está bem? Você desmaiou lá fora. Eu tive que te carregar até aqui...",
-  "PostPassoutDialogues.rude.rain.1": "...#$b#Você não pode ficar assim fora de casa na chuva. E se você pegasse um resfriado?",
-  "PostPassoutDialogues.Abigail.rain.1": "Ei! Você acordou!$h#$b#Eu não consegui dormir à noite então vim verificar você e você estava no chão.",
-  "HospitalKilledEvent.generic": "none/-100 -100/farmer 20 12 2 {0} 21 12 3 Harvey 22 11 3/pause 1500/showFrame 5/message \" ...{{name}}?\"/pause 1000/message \"Fácil, agora... vá devagar.\"/viewport 20 12 true/pause 1000/speak {0} \"Você está bem! Eu estava tão preocupado!!#$b#Eu te encontrei inconsciente na fazenda...#$b#O Dr. Harvey teve que fazer uma cirurgia de emergência em você!#$b#Tenha um pouco mais de cuidado da próxima vez, está bem?$s\"/showFrame 0/pause 1000/emote farmer 28/hospitaldeath/end",
-  "HospitalKilledEvent.Emily": "none/-100 -100/farmer 20 12 2 Emily 21 12 3 Harvey 22 11 3/pause 1500/showFrame 5/message \" {{name}}?\"/pause 1000/message \"Fácil aí, querida.\"/viewport 20 12 true/pause 1000/emote Emily 20/speak Emily \"Você se machucou gravemente. Realmente me deixou preocupada lá!$s#$b#Você realmente precisa cuidar melhor de si mesmo, {{name}}.\"/showFrame 0/pause 300/faceDirection Emily 0 continue/move Harvey -1 0 2 continue/speak Emily \"Obrigada por vir tão tarde, Harvey.$k\"/pause 200/emote farmer 28/hospitaldeath/end"
-}

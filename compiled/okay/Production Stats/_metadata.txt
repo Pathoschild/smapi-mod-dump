@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/21270
-IDs: FlameHorizon.ProductionStats
-update keys: Nexus:21270, GitHub:FlameHorizon/ProductionStats

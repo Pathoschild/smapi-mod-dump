@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/9676
-IDs: barteke22.CustomSpouseLocation
-update keys: Nexus:9676, GitHub:barteke22/StardewMods

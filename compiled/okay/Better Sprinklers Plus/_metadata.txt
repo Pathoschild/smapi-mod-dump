@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/17767
-IDs: com.CodesThings.BetterSprinklersPlus
-update keys: Nexus:17767, GitHub:jamescodesthings/smapi-better-sprinklers

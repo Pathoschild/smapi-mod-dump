@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5361
-IDs: SuperAardvark.GameOfLife
-update keys: Nexus:5361, GitHub:super-aardvark/AardvarkMods-SDV

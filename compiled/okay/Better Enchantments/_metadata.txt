@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/23368
-IDs: kalik.Enchantment
-update keys: Nexus:23368, GitHub:rusunu/Enchantment

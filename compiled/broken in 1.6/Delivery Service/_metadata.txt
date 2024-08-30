@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5187
-IDs: AxesOfEvil.DeliveryService
-update keys: Nexus:5187, GitHub:AxesOfEvil/SV_DeliveryService

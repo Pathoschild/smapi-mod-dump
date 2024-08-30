@@ -1,9 +1,0 @@
-{
-  "Name": "Player Server Info",
-  "Author": "EuroCent",
-  "Version": "1.0.1",
-  "Description": "Protokolliert Ein- und Ausloggaktivitäten der Spieler, einschließlich SteamID, Farmer Name und Spielername.",
-  "UniqueID": "EuroCent.PlayerServerInfo",
-  "EntryDll": "PlayerServerInfo.dll",
-  "UpdateKeys": ["Nexus:24267"]
-}

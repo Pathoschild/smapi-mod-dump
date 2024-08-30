@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/9354
-IDs: Mysty.ItemRecovery
-update keys: Nexus:9354

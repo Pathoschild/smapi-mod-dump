@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/21017
-IDs: JoXW.MobilePhone
-update keys: Nexus:21017, GitHub:JoXW100/StardewValleyMods

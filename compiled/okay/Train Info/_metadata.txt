@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/21883
-IDs: BinaryLip.TrainInfo
-update keys: Nexus:21883, CurseForge:1035850, GitHub:BinaryLip/TrainInfo

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/20802
-IDs: EnderTedi.NoFenceDecayRedux
-update keys: Nexus:20802, GitHub:EnderTedi/No-Fence-Decay-Redux

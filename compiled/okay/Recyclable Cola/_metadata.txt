@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10865
-IDs: harvz.RecyclableCola
-update keys: Nexus:???, Nexus:10865, GitHub:XxHarvzBackxX/recyclableCola

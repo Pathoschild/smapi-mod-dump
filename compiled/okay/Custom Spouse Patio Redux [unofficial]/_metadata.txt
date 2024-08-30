@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10889
-IDs: aedenthorn.CustomSpousePatioRedux
-update keys: Nexus:10889, GitHub:aedenthorn/StardewValleyMods

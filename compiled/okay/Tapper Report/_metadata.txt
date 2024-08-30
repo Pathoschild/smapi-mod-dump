@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/8700
-IDs: pepoluan.TapperReport
-update keys: Nexus:8700

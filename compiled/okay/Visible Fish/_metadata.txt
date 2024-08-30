@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/8897
-IDs: shekurika.WaterFish
-update keys: Nexus:8897

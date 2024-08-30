@@ -1,9 +1,0 @@
-{
-  "Name": "Bigger Fish Tank Capacity",
-  "Author": "shekurika",
-  "Version": "1.1.0",
-  "Description": "Allows more fish in your fish tanks",
-  "UniqueID": "shekurika.fishtankCapacity",
-  "EntryDll": "IncreasedFishTankCapacity.dll",
-  "UpdateKeys": [ "Nexus:11388" ]
-}

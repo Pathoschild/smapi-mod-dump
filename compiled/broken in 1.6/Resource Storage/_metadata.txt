@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/17951
-IDs: aedenthorn.ResourceStorage
-update keys: Nexus:17951, GitHub:aedenthorn/StardewValleyMods

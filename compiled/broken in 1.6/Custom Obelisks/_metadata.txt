@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10202
-IDs: harvz.CustomObelisks
-update keys: Nexus:10202, GitHub:XxHarvzBackxX/Custom-Obelisks

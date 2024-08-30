@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10047
-IDs: aedenthorn.CustomAchievements
-update keys: Nexus:10047, GitHub:aedenthorn/StardewValleyMods

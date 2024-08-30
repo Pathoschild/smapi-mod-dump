@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7719
-IDs: MindMeltMax.UnbreakableTackles
-update keys: Nexus:7719, GitHub:MindMeltMax/Stardew-Valley-Mods

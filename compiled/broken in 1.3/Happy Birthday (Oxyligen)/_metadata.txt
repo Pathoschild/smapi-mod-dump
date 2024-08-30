@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1064
-IDs: HappyBirthday
-update keys: Nexus:1064

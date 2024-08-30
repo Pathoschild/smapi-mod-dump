@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5803
-IDs: k4rakara.JoJa84Plus
-update keys: Nexus:5803, GitHub:K4rakara/Stardew-Mods

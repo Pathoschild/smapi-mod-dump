@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/8690
-IDs: Vertigon.ConfigurableSpecialOrdersUnlock
-update keys: Nexus:8690, GitHub:sophiesalacia/StardewMods

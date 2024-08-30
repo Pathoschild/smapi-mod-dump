@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10150
-IDs: Stingray.CommunityCenterAnywhere, Stingray.CCA
-update keys: Nexus:10150, GitHub:Stingrayss/StardewValley

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/21129
-IDs: Siweipancc.NoCrowsRevisited
-update keys: Nexus:21129, GitHub:siweipancc/StardewMods

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/13564
-IDs: balllight.BetterFishing
-update keys: Nexus:13564, Nexus:13585

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2990
-IDs: TehPers.FestiveSlimes
-update keys: Nexus:2990, GitHub:TehPers/StardewValleyMods

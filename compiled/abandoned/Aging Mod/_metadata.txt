@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1129
-IDs: skn.AgingMod
-update keys: Nexus:1129

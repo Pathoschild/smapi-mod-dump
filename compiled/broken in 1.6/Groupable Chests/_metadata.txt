@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/15375
-IDs: FricativeMelon.GroupableChests
-update keys: Nexus:15375, GitHub:FricativeMelon/GroupableChests

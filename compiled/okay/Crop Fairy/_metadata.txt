@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/4885
-IDs: abs.CropFairy
-update keys: Nexus:4885

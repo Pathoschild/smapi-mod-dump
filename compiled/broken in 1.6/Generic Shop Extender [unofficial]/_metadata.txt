@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/814
-IDs: GenericShopExtender
-update keys: Nexus:814, GitHub:IrregularPorygon/SMAPIGenericShopMod

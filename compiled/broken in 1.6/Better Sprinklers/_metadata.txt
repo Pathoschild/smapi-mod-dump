@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/41
-IDs: Speeder.BetterSprinklers, SPDSprinklersMod
-update keys: Nexus:41, Chucklefish:3551

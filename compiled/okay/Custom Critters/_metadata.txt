@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1255
-IDs: spacechase0.CustomCritters
-update keys: Nexus:1255, GitHub:spacechase0/StardewValleyMods

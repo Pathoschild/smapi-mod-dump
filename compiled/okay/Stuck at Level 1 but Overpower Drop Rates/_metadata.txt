@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/17380
-IDs: Darkmushu.StuckAtLevel1ButOverPowerDropRates
-update keys: Nexus:17380

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/12931
-IDs: aedenthorn.PrismaticFire
-update keys: Nexus:12931, GitHub:aedenthorn/StardewValleyMods

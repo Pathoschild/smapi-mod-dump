@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7511
-IDs: HamioDracny.ProficienciaEmDano
-update keys: Nexus:7511

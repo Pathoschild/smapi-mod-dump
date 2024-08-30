@@ -1,3 +1,0 @@
-page URL: https://community.playstarbound.com/threads/111931
-IDs: FAKE.FarmAutomation.ItemCollector
-update keys: 

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/16386
-IDs: norite.DwarfScrollPrice, noriteway.DwarfScrollPrice
-update keys: Nexus:16386@Dwarf Scroll Prices 1.1, Nexus:16386, GitHub:noriteway/StardewMods

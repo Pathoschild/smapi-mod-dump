@@ -1,9 +1,0 @@
-{
-  "Name": "InfiniteWateringCan",
-  "Author": "CaptainSully",
-  "Version": "1.1.0",
-  "Description": "Infinite water in watering can",
-  "UniqueID": "CaptainSully.InfiniteWateringCan",
-  "EntryDll": "InfiniteWateringCan.dll",
-  "UpdateKeys": [ "Nexus:12739" ]
-}

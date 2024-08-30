@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1592
-IDs: spacechase0.CustomCrops
-update keys: Nexus:1592, GitHub:spacechase0/CustomCrops

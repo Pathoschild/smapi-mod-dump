@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/4077
-IDs: WuestMan.InstaCrops
-update keys: Nexus:4077, GitHub:Brian-Wuest/Instacrops

@@ -1,7 +1,0 @@
-﻿{
-    /*********
-    ** Generic Mod Config Menu UI
-    *********/
-    "config.jump-key.name": "ปุ่มกระโดด",
-    "config.jump-key.tooltip": "ปุ่มสำหรับใช้ในการกระโดด"
-}

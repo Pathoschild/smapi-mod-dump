@@ -1,8 +1,0 @@
-{
-  "ScienceHouse_Carpenter_CommunityUpgrade1": "...What's that? You want to build Pam a house? That's a great idea! I'll just need {{woodPieces}} wood and {{goldPieces}}g...",
-  "ScienceHouse_Carpenter_CommunityUpgrade2": "...What's that? You'd like me to add a few shortcuts around the valley? Sure, I can do that! I'll just need {{goldPieces}}g...",
-  "ScienceHouse_Carpenter_NotEnoughWood3": "Sorry... You have the money, but I also need {{woodPieces}} pieces of wood.",
-
-  "Robin_PamUpgrade_Accepted": "That's so generous of you! I'll start working on the upgrade tomorrow. It should take around {{daysUpgrade}} days."
-
-}

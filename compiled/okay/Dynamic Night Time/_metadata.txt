@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2072
-IDs: knakamura.dynamicnighttime
-update keys: Nexus:2072, GitHub:Sakorona/SDVMods

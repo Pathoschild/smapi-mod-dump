@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2057
-IDs: cylon.stardewbrewery
-update keys: Nexus:2057, GitHub:JustCylon/stardew-brewery

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2132
-IDs: skuldomg.catGifts
-update keys: Nexus:2132, GitHub:skuldomg/catGifts

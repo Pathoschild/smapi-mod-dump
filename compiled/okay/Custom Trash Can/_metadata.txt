@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/11835
-IDs: ShivaGuy.CustomTrashCan
-update keys: Nexus:11835

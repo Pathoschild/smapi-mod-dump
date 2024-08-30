@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10855
-IDs: aedenthorn.FurnitureDisplayFramework
-update keys: Nexus:10855, GitHub:aedenthorn/StardewValleyMods

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7337
-IDs: underscore.ac_practice, underscore.speedrun_practie
-update keys: GitHub:Underscore76/SDVPracticeMod, Nexus:7337

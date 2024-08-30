@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/12578
-IDs: krutonium.stayuplate
-update keys: Nexus:12578

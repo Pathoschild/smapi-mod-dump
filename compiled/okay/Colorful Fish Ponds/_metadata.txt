@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/23615
-IDs: rokugin.colorfulfishponds
-update keys: Nexus:23615, GitHub:rokugin/StardewMods

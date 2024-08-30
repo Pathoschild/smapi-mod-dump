@@ -1,7 +1,0 @@
-{
-  "MinWeatherLevel": 0,
-  "MaxWeatherLevel": 100,
-  "DayFactor": 1.0,
-  "RainWeight": 100,
-  "DebrisWeight": 100
-}

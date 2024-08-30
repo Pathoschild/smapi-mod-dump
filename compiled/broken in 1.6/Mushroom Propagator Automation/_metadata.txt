@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/4637
-IDs: blueberry.BlueberryMushroomAutomation
-update keys: Nexus:4637, GitHub:b-b-blueberry/BlueberryMushroomMachine

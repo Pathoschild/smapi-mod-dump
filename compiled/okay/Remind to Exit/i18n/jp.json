@@ -1,9 +1,0 @@
-﻿{
-  "config.hotkey.desc": "Enabled」が真である場合にのみ効果があります。",
-  "config.hotkeycustmsg.desc": "Enabled」が真である場合にのみ効果があります。",
-  "reminder.disabled": "Exit Reminder が無効です。",
-  "reminder.enabled": "Exit Reminder が有効になっています。",
-  "reminder.title": "リマインダーです。",
-  "reminder.body-default": "ゲームを終了するように促されています。",
-  "reminder-ui.custom-msg-label": "カスタムリマインダーメッセージ"
-}

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6894
-IDs: AngelaRanna.WeaponBalanceCode
-update keys: Nexus:6894, GitHub:AngelaRanna/StardewMods

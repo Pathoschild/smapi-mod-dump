@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1106
-IDs: mmanlapat.ScytheHarvesting, ScytheHarvesting
-update keys: Nexus:1106

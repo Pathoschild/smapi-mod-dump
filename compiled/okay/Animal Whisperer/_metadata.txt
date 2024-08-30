@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/8885
-IDs: shaklin.animalwhisperer
-update keys: Nexus:8885

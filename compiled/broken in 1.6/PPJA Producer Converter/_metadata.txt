@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/4972
-IDs: Digus.PPJAProducerConverter
-update keys: Nexus:4972, GitHub:Digus/StardewValleyMods

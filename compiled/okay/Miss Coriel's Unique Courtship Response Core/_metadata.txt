@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/8284
-IDs: misscoriel.UCRFix
-update keys: Nexus:8284, GitHub:MissCoriel/UniqueCourtshipResponseCore

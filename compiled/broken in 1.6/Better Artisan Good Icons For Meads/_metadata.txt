@@ -1,3 +1,0 @@
-page URL: https://github.com/daleao/bagi-meads
-IDs: DaLion.Meads
-update keys: GitHub:daleao/bagi-meads

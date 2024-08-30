@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/4338
-IDs: damien.unlocked_doors
-update keys: Nexus:4338

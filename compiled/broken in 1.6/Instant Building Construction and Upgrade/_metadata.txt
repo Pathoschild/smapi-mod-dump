@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/14110
-IDs: aedenthorn.InstantBuildingConstruction
-update keys: Nexus:14110, GitHub:aedenthorn/StardewValleyMods

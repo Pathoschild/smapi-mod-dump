@@ -1,9 +1,0 @@
-Available topics:
-   files        coding        demos
-   text         input         community
-   farm         me            world
-   toDo
-   
-(Access these with, for example: 
-`help "demos"` -- remember to use
-quotation marks.)

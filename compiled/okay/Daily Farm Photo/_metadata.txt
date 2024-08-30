@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/4791
-IDs: Seawolf.DailyFarmPhoto
-update keys: Nexus:4791, GitHub:Seawolf87/DailyFarmPhoto

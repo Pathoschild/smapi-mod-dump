@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10506
-IDs: aedenthorn.FarmCaveFramework
-update keys: Nexus:10506, GitHub:aedenthorn/StardewValleyMods

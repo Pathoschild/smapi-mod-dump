@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/14073
-IDs: drbirbdev.BinningSkill
-update keys: Nexus:14073, GitHub:drbirbdev/StardewValley

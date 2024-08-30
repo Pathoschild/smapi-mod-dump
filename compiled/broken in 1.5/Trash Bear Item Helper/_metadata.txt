@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5252
-IDs: MattDeDuck.TrashBearName
-update keys: Nexus:5252

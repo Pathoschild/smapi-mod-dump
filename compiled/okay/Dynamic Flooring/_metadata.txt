@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/14780
-IDs: aedenthorn.DynamicFlooring
-update keys: Nexus:14780, GitHub:aedenthorn/StardewValleyMods

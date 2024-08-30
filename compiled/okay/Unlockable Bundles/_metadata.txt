@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/17265
-IDs: DLX.Bundles
-update keys: Nexus:17265@MAIN, Nexus:17265

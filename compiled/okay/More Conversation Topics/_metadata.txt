@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10008
-IDs: violetlizabet.MoreConvoTopics
-update keys: Nexus:10008, GitHub:elizabethcd/MoreConversationTopics

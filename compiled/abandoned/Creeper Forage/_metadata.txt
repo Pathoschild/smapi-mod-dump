@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2115
-IDs: bwdy.creeperforage, bawdybytes.creeperforage
-update keys: Nexus:2115

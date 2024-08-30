@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3232
-IDs: Satozaki.BetterRarecrows, EpicBellyFlop45.BetterRarecrows
-update keys: Nexus:3232, GitHub:Sonozuki/StardewMods

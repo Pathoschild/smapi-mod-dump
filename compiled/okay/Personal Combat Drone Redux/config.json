@@ -1,9 +1,0 @@
-{
-  "Active": true,
-  "KeyboardShortcut": "F7",
-  "Keybind": "None",
-  "RotationSpeed": 10,
-  "DroneRadius": 120.0,
-  "Damage": -1,
-  "ProjectileVelocity": 16
-}

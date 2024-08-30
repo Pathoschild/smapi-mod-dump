@@ -1,9 +1,0 @@
-{
-  "ActivationKey": "K",
-  "NumberOfNextGeodeDropsToShow": 20,
-  "ShowStarsNextToMineralsAndArtifactsNotDonatedToTheMuseum": true,
-  "RememberMenuStateAfterClose": true,
-  "IfRememberingMenuStateAlsoRememberScrollBarPositions": true,
-  "RightClickOnOnlySearchBoxToClearText": false,
-  "PressingEscapeWhileTypingInSearchBoxInstantlyClosesMenu": true
-}

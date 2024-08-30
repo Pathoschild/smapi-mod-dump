@@ -1,8 +1,0 @@
-{
-  "Multiplier": 1.0,
-  "SittingVerification": true,
-  "RidingVerification": false,
-  "StandingVerification": true,
-  "EnableSecrets": true,
-  "EnableBuffs": true
-}

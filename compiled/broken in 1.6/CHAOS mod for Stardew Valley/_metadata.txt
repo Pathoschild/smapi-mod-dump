@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/19052
-IDs: Majesity.Stardew_CHAOS_Mod
-update keys: Nexus:19052, GitHub:DevWithMaj/Stardew-CHAOS

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/24885
-IDs: tomokisan.TVshoppingChannel
-update keys: Nexus:24885

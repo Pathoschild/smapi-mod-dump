@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2528
-IDs: Drynwynn.NoAddedFlyingMineMonsters
-update keys: Nexus:2528, GitHub:Drynwynn/StardewValleyMods

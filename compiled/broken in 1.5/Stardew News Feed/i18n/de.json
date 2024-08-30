@@ -1,6 +1,0 @@
-﻿{
-  "news-feed.birthday-notice": "Heute hat {{npcName}} Geburtstag. Vergiss nicht, ihnen ein Geschenk zu geben!",
-  "news-feed.harvest-items-found-in-location-notice": "Im {{locationName}} gibt es {{numberOfItems}} erntebereite Artikel!",
-  "news-feed.bats-dropped-fruit-notice": "Die Fledermäuse haben dir etwas Obst gebracht!",
-  "news-feed.cave-display-name": "Höhle"
-}

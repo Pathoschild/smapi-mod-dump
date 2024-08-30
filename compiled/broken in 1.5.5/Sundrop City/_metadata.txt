@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/4014
-IDs: SundropTeam.SundropCity, SundropCity.Main
-update keys: Nexus:4014

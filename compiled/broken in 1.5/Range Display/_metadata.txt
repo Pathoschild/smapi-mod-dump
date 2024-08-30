@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1179
-IDs: cat.sprinklerrange
-update keys: Nexus:1179, GitHub:danvolchek/StardewMods

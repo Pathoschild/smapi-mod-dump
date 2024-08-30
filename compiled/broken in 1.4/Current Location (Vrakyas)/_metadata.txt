@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/4028
-IDs: Vrakyas.CurrentLocation
-update keys: Nexus:4028

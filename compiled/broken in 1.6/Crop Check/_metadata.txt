@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/9224
-IDs: FairfieldBW.CropCheck
-update keys: Nexus:9224, GitHub:FairfieldBW/CropCheck

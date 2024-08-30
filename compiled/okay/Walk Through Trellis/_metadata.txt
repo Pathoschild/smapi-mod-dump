@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1958
-IDs: theofficialtab.walkthroughtrellis
-update keys: Nexus:1958, GitHub:OfficialTab/walk-through-trellis

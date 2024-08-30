@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/25209
-IDs: TheShwamp.TravelingCartReminder
-update keys: Nexus:25209

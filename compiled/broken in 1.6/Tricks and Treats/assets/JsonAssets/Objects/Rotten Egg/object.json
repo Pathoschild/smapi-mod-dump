@@ -1,9 +1,0 @@
-{
-	"Name": "TaT.rotten-egg",
-	"TranslationKey": "objects.rotten-egg",
-	"Category": "Junk",
-	"Edibility": -5,
-	"EdibleIsDrink": false,
-	"Price": 1,
-	"ContextTags": [ "Universal_Hate" ],
-}

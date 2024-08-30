@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6293
-IDs: Cherry.CustomCraftingStations
-update keys: Nexus:6293, GitHub:ChroniclerCherry/stardew-valley-mods

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5797
-IDs: Aedenthorn.WitcherMod
-update keys: Nexus:5797, GitHub:aedenthorn/StardewValleyMods

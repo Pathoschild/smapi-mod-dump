@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/443
-IDs: Omegasis.AutoSpeed
-update keys: Nexus:443, GitHub:janavarro95/Stardew_Valley_Mods

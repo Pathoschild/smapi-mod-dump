@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/11325
-IDs: aedenthorn.Email
-update keys: Nexus:11325, GitHub:aedenthorn/StardewValleyMods

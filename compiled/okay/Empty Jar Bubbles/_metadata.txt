@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/22598
-IDs: tem696969696969.EmptyJarBubbles
-update keys: Nexus:22598, GitHub:kqrse/StardewValleyMods

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7962
-IDs: GZhynko.EventBlackBars
-update keys: Nexus:7962, GitHub:gzhynko/StardewMods

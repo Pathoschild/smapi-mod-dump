@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/691
-IDs: Nishtra.StumpsTohardwoodStumps, StumpsToHardwoodStumps
-update keys: Nexus:691

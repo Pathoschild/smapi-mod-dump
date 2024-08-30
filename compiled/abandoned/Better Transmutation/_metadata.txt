@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2120
-IDs: f4iTh.BetterTransmutation
-update keys: Nexus:2120

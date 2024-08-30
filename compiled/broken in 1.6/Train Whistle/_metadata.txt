@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/4473
-IDs: Taskmaster.TrainWhistle
-update keys: Nexus:4473

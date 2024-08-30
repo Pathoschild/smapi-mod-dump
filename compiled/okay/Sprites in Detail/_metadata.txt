@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/14487
-IDs: BleakCodex.SpritesInDetail
-update keys: Nexus:14487, GitHub:BleakCodex/SpritesInDetail

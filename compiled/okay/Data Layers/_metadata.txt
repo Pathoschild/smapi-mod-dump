@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1691
-IDs: Pathoschild.DataLayers, Pathoschild.DataMaps
-update keys: Nexus:1691, GitHub:Pathoschild/StardewMods

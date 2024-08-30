@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2543
-IDs: lolmaj.MultiplayerTime
-update keys: Nexus:2543, GitHub:MaciejMarkuszewski/StardewValleyMod

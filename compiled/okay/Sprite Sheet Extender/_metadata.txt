@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/26072
-IDs: mooseybrutale.spriteextender
-update keys: Nexus:26072

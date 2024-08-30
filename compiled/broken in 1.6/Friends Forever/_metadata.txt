@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1738
-IDs: IsaacS.FriendsForever
-update keys: Nexus:1738, GitHub:isaacs-dev/Minidew-Mods

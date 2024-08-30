@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6101
-IDs: shaklin.changeshoecolor
-update keys: Nexus:6101

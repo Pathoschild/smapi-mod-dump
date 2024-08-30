@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3615
-IDs: mizzion.fishreminder
-update keys: Nexus:3615, ModDrop:661375, GitHub:Mizzion/MyStardewMods

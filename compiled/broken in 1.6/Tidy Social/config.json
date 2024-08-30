@@ -1,9 +1,0 @@
-{
-  "EnableMod": true,
-  "ShowUnmetNPCsOnSocialPage": false,
-  "MinHeartsForSocialPage": 0.0,
-  "MaxHeartsForSocialPage": 14.0,
-  "ShowUnmetNPCsOnCalendar": false,
-  "MinHeartsForBirthdayCalendar": 0.0,
-  "MaxHeartsForBirthdayCalendar": 14.0
-}

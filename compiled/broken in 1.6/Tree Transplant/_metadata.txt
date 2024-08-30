@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1342
-IDs: TreeTransplant
-update keys: GitHub:LeonBlade/TreeTransplant, Nexus:1342, Chucklefish:5485

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/8680
-IDs: pepoluan.EvenBetterRNG
-update keys: Chucklefish:6117, Nexus:8680@PC, Nexus:8680

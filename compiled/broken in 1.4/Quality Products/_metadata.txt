@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3609
-IDs: SilentOak.QualityProducts
-update keys: Nexus:3609, GitHub:silentoak/StardewMods

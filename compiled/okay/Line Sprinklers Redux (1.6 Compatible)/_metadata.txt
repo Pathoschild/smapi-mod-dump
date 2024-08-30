@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/23895
-IDs: rtrox.LineSprinklersRedux
-update keys: Nexus:23895, GitHub:rtrox/LineSprinklersRedux

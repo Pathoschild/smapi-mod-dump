@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2247
-IDs: DevinLematty.InfiniteInventory
-update keys: Nexus:2247, GitHub:unidarkshin/Stardew-Mods

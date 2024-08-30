@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3118
-IDs: Platonymous.JoJaBan
-update keys: Nexus:3118, GitHub:Platonymous/Stardew-Valley-Mods
